@@ -33,9 +33,17 @@ pnpm dev:expo     # Expo dev server
 
 4. **Look at it** in the docs (light and dark, narrow and wide) and in Expo on
    at least one platform. If you could not run a platform, say so in the PR.
-5. **Update visual baselines** when the look changes on purpose:
-   `pnpm --filter @adv-ui/docs test:visual:update`. Review the new images
-   before committing them.
+5. **Update visual baselines** when the look changes on purpose. Screenshots
+   differ per OS, so there are two sets:
+   - your OS: `pnpm --filter @adv-ui/docs test:visual:update`;
+   - Linux, which CI uses: run the **Update visual baselines** workflow on
+     GitHub (Actions tab → Run workflow), then download its
+     `visual-baselines-linux` artifact into
+     `apps/docs/e2e/visual.spec.ts-snapshots/`, for example
+     `gh run download <run-id> -n visual-baselines-linux -D apps/docs/e2e/visual.spec.ts-snapshots`.
+
+   Review the new images before committing them.
+
 6. **Add a CHANGELOG entry** under _Unreleased_.
 
 ## Commits and pull requests

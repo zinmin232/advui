@@ -68,8 +68,9 @@ file: `pnpm --filter @adv-ui/core exec vitest run src/components/button`.
 - `pnpm lint`, `pnpm typecheck` and `pnpm test` pass.
 - Component changes: `pnpm test:native` passes, and metadata and examples are
   updated (`pnpm catalog` passes).
-- Visual changes: visual baselines are updated intentionally
-  (`pnpm --filter @adv-ui/docs test:visual:update`).
+- Visual changes: visual baselines are updated intentionally. Update both the
+  local set (`pnpm --filter @adv-ui/docs test:visual:update`) and the Linux set
+  CI uses (the "Update visual baselines" workflow; see CONTRIBUTING.md).
 - Report honestly what you ran and what you could not run, such as iOS without
   macOS or a physical device. Never claim a platform works without running it.
 

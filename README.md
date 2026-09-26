@@ -160,11 +160,11 @@ What has been run on the development machine (Windows 11, Node 22, pnpm 12):
 | Expo on iOS                                                                                                    | ⚠️ not run: needs macOS/Xcode. The iOS code path is covered only by jest-expo's iOS preset. |
 | Physical devices                                                                                               | ⚠️ not run                                                                                  |
 | GitHub Actions on Ubuntu: `check` job (lint, typecheck, unit + native tests, build)                            | ✅                                                                                          |
-| GitHub Actions on Ubuntu: `e2e` job (desktop + mobile, axe)                                                    | ✅ 16/16                                                                                    |
+| GitHub Actions on Ubuntu: `e2e` job (desktop + mobile, axe, visual regression)                                 | ✅                                                                                          |
 
-Visual baselines are platform-specific (`*-win32.png`). On macOS or Linux, run
-`pnpm --filter @adv-ui/docs test:visual:update` to create baselines for
-that platform.
+Visual baselines are platform-specific: `*-win32.png` for local runs on
+Windows and `*-linux.png` for CI. [CONTRIBUTING.md](CONTRIBUTING.md) explains
+how to update them.
 
 ## Documentation for contributors and AI agents
 
