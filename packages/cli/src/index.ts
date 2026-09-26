@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { parseArgs } from 'node:util'
 import { addCommand, initCommand, listCommand } from './commands.js'
-import { CLI_NAME, PRODUCT_NAME } from './constants.js'
+import { CLI_NAME, DEFAULT_REGISTRY, PRODUCT_NAME } from './constants.js'
 import type { Framework } from './project.js'
 
 const help = `${PRODUCT_NAME} CLI
@@ -12,7 +12,7 @@ Usage
   npx ${CLI_NAME} list
 
 Options
-  --registry <url|path>  Registry to read from (default: from adv-ui.json)
+  --registry <url|path>  Registry to read from (default: from adv-ui.json, else ${DEFAULT_REGISTRY})
   --cwd <path>           Project directory (default: current directory)
   --no-install           Print the install command instead of running it
   --overwrite            Replace existing files

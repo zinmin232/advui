@@ -30,6 +30,8 @@
     "format:check": "prettier --check .",
     "create-component": "node scripts/create-component.mjs",
     "registry:build": "node scripts/build-registry.mjs",
+    "release:check": "pnpm -r publish --dry-run --access public --no-git-checks",
+    "release": "pnpm -r publish --access public",
     "rename": "node scripts/rename.mjs",
     "catalog": "node scripts/generate-catalog.mjs",
     "clean": "turbo run clean && node -e \"require('fs').rmSync('node_modules',{recursive:true,force:true})\""

@@ -15,6 +15,8 @@ one version.
 
 ### Changed
 
+- `adv-ui list` works before `init`: it falls back to the published registry.
+
 - Renamed the project to **Adv UI**:
   - packages are published under the `@adv-ui/*` scope, and the CLI is `adv-ui`;
   - the logo mark reads "aUI";

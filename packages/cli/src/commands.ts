@@ -6,6 +6,7 @@ import {
   BASE_DEPENDENCIES,
   CLI_NAME,
   CONFIG_FILE,
+  DEFAULT_REGISTRY,
   PACKAGE_SCOPE,
   PRODUCT_NAME,
 } from './constants.js'
@@ -145,8 +146,8 @@ export async function listCommand(options: CommonOptions) {
     }
   })()
   const config = project ? readConfig(options.cwd) : null
-  const registry = options.registry ?? config?.registry
-  if (!registry) throw new Error('No registry configured. Pass --registry <url|path>.')
+  // Listing needs no project, so fall back to the published registry.
+  const registry = options.registry ?? config?.registry ?? DEFAULT_REGISTRY
   const index = await fetchRegistryJson<RegistryIndex>(registry, 'index', options.cwd)
   for (const item of index.items) {
     options.log(`${item.name.padEnd(16)} ${(item.status ?? '').padEnd(8)} ${item.description}`)

@@ -41,6 +41,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "prepack": "pnpm run build",
     "generate": "node scripts/generate-icons.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",

@@ -80,8 +80,14 @@ Packages are versioned together.
 1. Move the _Unreleased_ entries to a version section in `CHANGELOG.md`.
 2. Bump `version` in the published packages (`core`, `theme`, `icons`, `utils`,
    `cli`) and in `apps/docs/src/lib/site.ts`.
-3. `pnpm build`, then publish with `pnpm -r publish --access public`.
-   `publishConfig` points the entry points at `dist/`.
+3. Commit, then check what would be published: `pnpm release:check`. Each
+   package rebuilds its `dist/` first (`prepack`), and `publishConfig` points
+   the entry points there.
+4. Log in with `npm login`, then run `pnpm release`. It publishes the five
+   public packages in dependency order, skips private ones and any version
+   already on npm, and asks for your 2FA code. If a code expires midway, run
+   it again with a new code.
+5. Tag the release: `git tag v<version> && git push --tags`.
 
 ## Reporting issues
 
