@@ -85,8 +85,10 @@ describe('init + add against the local registry', () => {
     expect(existsSync(join(dir, 'tamagui.config.ts'))).toBe(true)
 
     const { items } = await addCommand(['icon-button'], options())
-    expect(items.map((i) => i.name)).toEqual(['spinner', 'button', 'icon-button'])
+    expect(items.map((i) => i.name)).toEqual(['spinner', 'utils', 'button', 'icon-button'])
     expect(existsSync(join(dir, 'ui/components/button/Button.tsx'))).toBe(true)
+    // Button imports ../../utils/isTextContent, which must land next to it.
+    expect(existsSync(join(dir, 'ui/utils/isTextContent.ts'))).toBe(true)
     expect(existsSync(join(dir, 'ui/components/spinner/Spinner.native.tsx'))).toBe(true)
     expect(logs.join('\n')).toMatch(/npm install @advui\/icons/)
   })

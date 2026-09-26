@@ -61,7 +61,7 @@ entry, search entry, Expo screen and registry item then appear automatically.
 - **Motion is optional.** Use named animations (`quick`, `medium`…). On web,
   the provider's stylesheet removes transitions under
   `prefers-reduced-motion`. Components with enter/exit motion (Dialog, Select,
-  Tooltip, Toast) also read `useReducedMotion()` and drop their `transition`,
+  Tooltip, Toast, Popover, Dropdown Menu, Accordion) also read `useReducedMotion()` and drop their `transition`,
   which covers native. Never animate `TextInput` styles: Android rejects
   animated style objects there.
 - **Tamagui factories.** Components built with `createCheckbox`, `createSwitch`

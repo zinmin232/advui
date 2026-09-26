@@ -7,6 +7,33 @@ one version.
 
 ## [Unreleased]
 
+### Added
+
+- **Accordion** (beta): single or multiple open sections, `default` and `card`
+  variants, disabled items. Triggers sit in headings (`level`, default 3) and
+  follow the WAI-ARIA accordion keyboard pattern (arrows, Home, End).
+- **Slider** (beta): one value or a range, `sm`/`md`/`lg`, horizontal or
+  vertical, `step`, `getValueText` and per-thumb labels. On iOS and Android
+  thumbs have 44pt touch targets and respond to screen-reader
+  increment/decrement gestures.
+- **Popover** (beta): a non-modal dialog anchored to a trigger, named by
+  `Popover.Title`, with `side`/`align`/`offset`. On phones and on native it
+  opens as a bottom sheet.
+- **Dropdown Menu** (beta): items with icons, shortcuts and destructive
+  styling, checkbox and radio items, labels, groups and separators. On iOS and
+  Android it opens as a bottom sheet of 48dp rows exposed as menu items,
+  checkboxes and radios.
+- Registry: a `utils` item for shared helpers. `build-registry` now fails if a
+  component imports a file that no registry item ships.
+- e2e: axe checks for the new component pages, and open-state tests for Popover
+  and Dropdown Menu.
+
+### Fixed
+
+- Button, Badge, Tabs: children made of several text pieces (for example
+  `Status ({count})`) crashed on iOS and Android with "Text strings must be
+  rendered within a \<Text\> component". They are now wrapped in `Text`.
+
 ## [0.1.0] - 2026-09-26
 
 First release of **Adv UI**. Repository: https://github.com/zinmin232/advui.

@@ -115,23 +115,70 @@ test('registry JSON is published for the CLI', async ({ request }) => {
   expect(button.files[0].content).toContain('export const Button')
 })
 
+async function seriousViolations(page: Page) {
+  const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()
+  return results.violations
+    .filter((v) => v.impact === 'serious' || v.impact === 'critical')
+    .map((v) => `${v.id}: ${v.nodes.length} node(s) — ${v.help}`)
+}
+
 for (const path of [
   '/',
   '/docs/introduction',
   '/docs/components/button',
   '/docs/components/dialog',
+  '/docs/components/accordion',
+  '/docs/components/slider',
+  '/docs/components/popover',
+  '/docs/components/dropdown-menu',
   '/examples/login',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {
     await page.goto(path)
     await page.waitForLoadState('networkidle')
-    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()
-    const serious = results.violations.filter(
-      (v) => v.impact === 'serious' || v.impact === 'critical',
-    )
-    expect(serious.map((v) => `${v.id}: ${v.nodes.length} node(s) — ${v.help}`)).toEqual([])
+    expect(await seriousViolations(page)).toEqual([])
   })
 }
+
+// Overlays are only in the DOM while open, so check them open, with real focus handling.
+test('popover opens as a named dialog and returns focus on Escape', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/popover')
+  await page.waitForLoadState('networkidle')
+  const trigger = page.getByRole('button', { name: 'Dimensions' }).first()
+  await trigger.click()
+  const dialog = page.getByRole('dialog', { name: 'Dimensions' })
+  await expect(dialog).toBeVisible()
+  expect(await seriousViolations(page)).toEqual([])
+  await page.keyboard.press('Escape')
+  await expect(dialog).toBeHidden()
+  await expect(trigger).toBeFocused()
+  expect(errors).toEqual([])
+})
+
+test('dropdown menu is keyboard operable', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/dropdown-menu')
+  await page.waitForLoadState('networkidle')
+  const trigger = page.getByRole('button', { name: 'My account' }).first()
+  await trigger.focus()
+  await page.keyboard.press('Enter')
+  const menu = page.getByRole('menu')
+  await expect(menu).toBeVisible()
+  // Focus moves into the menu: to the first item, or to the menu itself when the
+  // browser reports pointer movement while it opens (Radix heuristic). Arrow
+  // keys, Home and End work from either.
+  await expect.poll(() => menu.evaluate((el) => el.contains(document.activeElement))).toBe(true)
+  await page.keyboard.press('Home')
+  await expect(menu.getByRole('menuitem', { name: 'Profile' })).toBeFocused()
+  await page.keyboard.press('ArrowDown')
+  await expect(menu.getByRole('menuitem', { name: 'Billing' })).toBeFocused()
+  expect(await seriousViolations(page)).toEqual([])
+  await page.keyboard.press('Escape')
+  await expect(menu).toBeHidden()
+  await expect(trigger).toBeFocused()
+  expect(errors).toEqual([])
+})
 
 test('no serious accessibility violations in dark mode', async ({ page }) => {
   await page.addInitScript(() => window.localStorage.setItem('aui-color-mode', 'dark'))

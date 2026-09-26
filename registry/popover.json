@@ -1,0 +1,52 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "popover",
+  "title": "Popover",
+  "type": "registry:component",
+  "description": "Rich, interactive content anchored to a trigger, such as quick settings, filters or a short form.",
+  "category": "overlay",
+  "status": "beta",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/popover/Popover.tsx",
+      "type": "registry:ui",
+      "content": "import { shadows, zIndex } from '@advui/theme'\nimport {\n  type ReactNode,\n  createContext,\n  forwardRef,\n  useContext,\n  useEffect,\n  useId,\n  useRef,\n} from 'react'\nimport {\n  Adapt,\n  type GetProps,\n  Popover as TamaguiPopover,\n  type PopoverProps as TamaguiPopoverProps,\n  Sheet,\n  type TamaguiElement,\n  View,\n  isWeb,\n  withStaticProperties,\n} from 'tamagui'\nimport { useReducedMotion } from '../../hooks/useReducedMotion'\nimport { Text } from '../typography/Text'\n\ntype Side = 'top' | 'right' | 'bottom' | 'left'\ntype Align = 'start' | 'center' | 'end'\n\n// Links the dialog to its title for screen readers.\nconst TitleIdContext = createContext<string | undefined>(undefined)\n\nexport interface PopoverProps extends Omit<\n  TamaguiPopoverProps,\n  'placement' | 'children' | 'onOpenChange'\n> {\n  children: ReactNode\n  open?: boolean\n  defaultOpen?: boolean\n  onOpenChange?: (open: boolean) => void\n  /** Side of the trigger to open on (desktop web). Default `bottom`. */\n  side?: Side\n  /** Alignment along that side. Default `center`. */\n  align?: Align\n  /** Gap between trigger and panel in px. Default 8. */\n  offset?: number\n}\n\nfunction PopoverRoot({\n  children,\n  side = 'bottom',\n  align = 'center',\n  offset = 8,\n  ...props\n}: PopoverProps) {\n  const reducedMotion = useReducedMotion()\n  const titleId = useId()\n  const placement = (\n    align === 'center' ? side : `${side}-${align}`\n  ) as TamaguiPopoverProps['placement']\n  return (\n    <TitleIdContext.Provider value={titleId}>\n      <TamaguiPopover\n        placement={placement}\n        offset={offset}\n        allowFlip\n        stayInFrame={{ padding: 8 }}\n        zIndex={zIndex.popover}\n        {...props}\n      >\n        {children}\n        {/* Phones and native apps get a bottom sheet instead of a floating panel. */}\n        <Adapt when={isWeb ? 'max-md' : true} platform=\"touch\">\n          <Sheet\n            modal\n            dismissOnSnapToBottom\n            snapPointsMode=\"fit\"\n            transition={reducedMotion ? undefined : 'medium'}\n          >\n            <Sheet.Overlay\n              backgroundColor=\"$overlay\"\n              enterStyle={{ opacity: 0 }}\n              exitStyle={{ opacity: 0 }}\n              transition={reducedMotion ? undefined : 'quick'}\n            />\n            <Sheet.Handle backgroundColor=\"$borderStrong\" />\n            <Sheet.Frame backgroundColor=\"$popover\" padding=\"$5\" paddingBottom=\"$8\">\n              {/* Not on Sheet.Frame: Tamagui copies its props onto a decorative cover view. */}\n              <View role=\"dialog\" aria-labelledby={titleId} gap=\"$3\">\n                <Adapt.Contents />\n              </View>\n            </Sheet.Frame>\n          </Sheet>\n        </Adapt>\n      </TamaguiPopover>\n    </TitleIdContext.Provider>\n  )\n}\n\nexport type PopoverTriggerProps = GetProps<typeof TamaguiPopover.Trigger>\n\nconst PopoverTrigger = forwardRef<TamaguiElement, PopoverTriggerProps>(\n  function PopoverTrigger(props, ref) {\n    return <TamaguiPopover.Trigger ref={ref as never} aria-haspopup=\"dialog\" {...props} />\n  },\n)\n\nexport type PopoverContentProps = GetProps<typeof TamaguiPopover.Content>\n\nconst PopoverContent = forwardRef<TamaguiElement, PopoverContentProps>(function PopoverContent(\n  { children, ...props },\n  ref,\n) {\n  const reducedMotion = useReducedMotion()\n  return (\n    <TamaguiPopover.Content\n      ref={ref as never}\n      unstyled\n      backgroundColor=\"$popover\"\n      borderWidth={1}\n      borderColor=\"$border\"\n      borderRadius=\"$lg\"\n      padding=\"$4\"\n      gap=\"$3\"\n      width=\"$72\"\n      maxWidth=\"100%\"\n      {...shadows.md}\n      enterStyle={{ opacity: 0, scale: 0.96, y: -4 }}\n      exitStyle={{ opacity: 0, scale: 0.96, y: -4 }}\n      opacity={1}\n      scale={1}\n      y={0}\n      transition={reducedMotion ? null : 'quick'}\n      animateOnly={['transform', 'opacity']}\n      {...props}\n    >\n      {children}\n    </TamaguiPopover.Content>\n  )\n})\n\nexport type PopoverTitleProps = GetProps<typeof Text>\n\n/** Names the popover dialog for screen readers. */\nfunction PopoverTitle(props: PopoverTitleProps) {\n  const titleId = useContext(TitleIdContext)\n  const ref = useRef<TamaguiElement>(null)\n\n  // On web, Tamagui's floating wrapper carries role=\"dialog\"; point its label\n  // at this title once both are in the document.\n  useEffect(() => {\n    if (!isWeb || !titleId) return\n    const dialog = (ref.current as HTMLElement | null)?.closest('[role=\"dialog\"]')\n    dialog?.setAttribute('aria-labelledby', titleId)\n  }, [titleId])\n\n  return <Text ref={ref} id={titleId} size=\"sm\" weight=\"semibold\" {...props} />\n}\n\nfunction PopoverDescription(props: GetProps<typeof Text>) {\n  return <Text size=\"sm\" tone=\"muted\" {...props} />\n}\n\n/**\n * Rich, interactive content anchored to a trigger: settings, filters, short\n * forms. For plain hints use Tooltip; for blocking tasks use Dialog.\n */\nexport const Popover = withStaticProperties(PopoverRoot, {\n  Trigger: PopoverTrigger,\n  Content: PopoverContent,\n  Title: PopoverTitle,\n  Description: PopoverDescription,\n  Close: TamaguiPopover.Close,\n})\n"
+    },
+    {
+      "path": "components/popover/index.ts",
+      "type": "registry:ui",
+      "content": "export {\n  Popover,\n  type PopoverContentProps,\n  type PopoverProps,\n  type PopoverTitleProps,\n  type PopoverTriggerProps,\n} from './Popover'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Form fields",
+      "code": "import { Button, HStack, Input, Label, Popover, VStack } from '@advui/core'\nimport { SettingsIcon } from '@advui/icons'\n\nexport default function PopoverBasic() {\n  return (\n    <Popover>\n      <Popover.Trigger asChild>\n        <Button variant=\"outline\" icon={<SettingsIcon />}>\n          Dimensions\n        </Button>\n      </Popover.Trigger>\n      <Popover.Content>\n        <VStack gap=\"$1\">\n          <Popover.Title>Dimensions</Popover.Title>\n          <Popover.Description>Set the size of the layer in pixels.</Popover.Description>\n        </VStack>\n        <HStack gap=\"$3\" alignItems=\"center\">\n          <Label htmlFor=\"popover-width\" width=\"$16\">\n            Width\n          </Label>\n          <Input id=\"popover-width\" size=\"sm\" defaultValue=\"320\" flex={1} />\n        </HStack>\n        <HStack gap=\"$3\" alignItems=\"center\">\n          <Label htmlFor=\"popover-height\" width=\"$16\">\n            Height\n          </Label>\n          <Input id=\"popover-height\" size=\"sm\" defaultValue=\"240\" flex={1} />\n        </HStack>\n      </Popover.Content>\n    </Popover>\n  )\n}\n"
+    },
+    {
+      "name": "filter",
+      "title": "Controlled filter",
+      "code": "import { Button, Checkbox, HStack, Label, Popover, Text, VStack } from '@advui/core'\nimport { FilterIcon } from '@advui/icons'\nimport { useState } from 'react'\n\nconst statuses = ['Active', 'Invited', 'Suspended'] as const\n\nexport default function PopoverFilter() {\n  const [open, setOpen] = useState(false)\n  const [selected, setSelected] = useState<string[]>(['Active'])\n  const toggle = (status: string, checked: boolean) =>\n    setSelected((prev) => (checked ? [...prev, status] : prev.filter((s) => s !== status)))\n\n  return (\n    <VStack gap=\"$2\" alignItems=\"center\">\n      <Popover open={open} onOpenChange={setOpen} side=\"bottom\" align=\"start\">\n        <Popover.Trigger asChild>\n          <Button variant=\"outline\" size=\"sm\" icon={<FilterIcon />}>\n            Status ({selected.length})\n          </Button>\n        </Popover.Trigger>\n        <Popover.Content width=\"$64\">\n          <Popover.Title>Filter by status</Popover.Title>\n          <VStack gap=\"$2.5\">\n            {statuses.map((status) => (\n              <HStack key={status} gap=\"$2\" alignItems=\"center\">\n                <Checkbox\n                  id={`filter-${status}`}\n                  checked={selected.includes(status)}\n                  onCheckedChange={(checked) => toggle(status, checked === true)}\n                />\n                <Label htmlFor={`filter-${status}`}>{status}</Label>\n              </HStack>\n            ))}\n          </VStack>\n          <HStack gap=\"$2\" justifyContent=\"flex-end\">\n            <Button variant=\"ghost\" size=\"sm\" onPress={() => setSelected([])}>\n              Clear\n            </Button>\n            <Button size=\"sm\" onPress={() => setOpen(false)}>\n              Apply\n            </Button>\n          </HStack>\n        </Popover.Content>\n      </Popover>\n      <Text size=\"sm\" tone=\"muted\">\n        Showing: {selected.length ? selected.join(', ') : 'everyone'}\n      </Text>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/popover",
+  "dependencies": [
+    "@advui/theme"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "hooks",
+    "typography"
+  ],
+  "version": "0.1.0"
+}

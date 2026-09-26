@@ -9,6 +9,7 @@ import {
   styled,
   withStaticProperties,
 } from 'tamagui'
+import { isTextContent } from '../../utils/isTextContent'
 
 export type BadgeVariant =
   'default' | 'secondary' | 'outline' | 'destructive' | 'success' | 'warning' | 'info'
@@ -92,11 +93,7 @@ const BadgeImpl = forwardRef<TamaguiElement, BadgeProps>(function Badge(
     <BadgeFrame ref={ref} variant={variant} size={size} {...props}>
       <IconDefaults size={12} color={foreground[variant]}>
         {icon}
-        {typeof children === 'string' || typeof children === 'number' ? (
-          <BadgeText>{children}</BadgeText>
-        ) : (
-          children
-        )}
+        {isTextContent(children) ? <BadgeText>{children}</BadgeText> : children}
       </IconDefaults>
     </BadgeFrame>
   )

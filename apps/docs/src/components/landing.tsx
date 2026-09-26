@@ -18,6 +18,7 @@ import {
   VStack,
   toast,
 } from '@advui/core'
+import { components } from '@advui/core/meta'
 import {
   ArrowRightIcon,
   CheckCircleIcon,
@@ -172,7 +173,7 @@ export function Landing() {
         >
           <Link href="/docs/components" className="plain-link">
             <Badge variant="secondary" icon={<StarIcon />}>
-              25 components · web, iOS, Android
+              {components.length} components · web, iOS, Android
             </Badge>
           </Link>
           <Text

@@ -40,7 +40,7 @@ if (problems.length) {
   process.exit(1)
 }
 
-// --- library-internal items (hooks, provider) -----------------------------------------
+// --- library-internal items (hooks, utils, provider) ----------------------------------
 const listDir = (dir) =>
   readdirSync(join(uiSrc, dir))
     .filter((f) => /\.tsx?$/.test(f) && !f.includes('.test.'))
@@ -53,6 +53,13 @@ const libItems = [
     type: 'registry:lib',
     description: 'Shared hooks: controllable state and reduced-motion detection.',
     files: listDir('hooks'),
+  },
+  {
+    name: 'utils',
+    title: 'Utilities',
+    type: 'registry:lib',
+    description: 'Small shared helpers used by several components.',
+    files: listDir('utils'),
   },
   {
     name: 'provider',
@@ -96,8 +103,10 @@ for (const item of items) {
       if (spec.startsWith('.')) {
         const target = resolveRelative(file, spec)
         const dep = target && owner.get(target)
-        if (dep && dep !== item.name) registryDeps.add(dep)
         if (!target) throw new Error(`${file}: cannot resolve "${spec}"`)
+        // Every imported file must ship with some registry item, or `add` breaks.
+        if (!dep) throw new Error(`${file}: "${spec}" is not part of any registry item`)
+        if (dep !== item.name) registryDeps.add(dep)
       } else {
         const pkg = spec.startsWith('@')
           ? spec.split('/').slice(0, 2).join('/')
