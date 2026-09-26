@@ -1,0 +1,46 @@
+{
+  "name": "adv-ui-monorepo",
+  "private": true,
+  "description": "Adv UI — a cross-platform component library for React, Next.js, React Native and Expo, built on Tamagui.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zinmin232/advui.git"
+  },
+  "homepage": "https://github.com/zinmin232/advui#readme",
+  "bugs": {
+    "url": "https://github.com/zinmin232/advui/issues"
+  },
+  "packageManager": "pnpm@12.6.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "turbo run dev --filter=@adv-ui/docs",
+    "dev:expo": "pnpm --filter @adv-ui/expo-playground start",
+    "android": "pnpm --filter @adv-ui/expo-playground android",
+    "ios": "pnpm --filter @adv-ui/expo-playground ios",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "test:native": "turbo run test:native",
+    "test:e2e": "pnpm --filter @adv-ui/docs test:e2e",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "create-component": "node scripts/create-component.mjs",
+    "registry:build": "node scripts/build-registry.mjs",
+    "rename": "node scripts/rename.mjs",
+    "catalog": "node scripts/generate-catalog.mjs",
+    "clean": "turbo run clean && node -e \"require('fs').rmSync('node_modules',{recursive:true,force:true})\""
+  },
+  "devDependencies": {
+    "@adv-ui/core": "workspace:*",
+    "@adv-ui/eslint-config": "workspace:*",
+    "@adv-ui/tsconfig": "workspace:*",
+    "eslint": "^10.11.0",
+    "prettier": "^3.9.9",
+    "turbo": "^2.11.4",
+    "typescript": "~6.0.3"
+  }
+}

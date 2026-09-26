@@ -1,0 +1,336 @@
+{
+  "name": "adv-ui",
+  "version": "0.1.0",
+  "items": [
+    {
+      "name": "hooks",
+      "title": "Hooks",
+      "type": "registry:lib",
+      "description": "Shared hooks: controllable state and reduced-motion detection.",
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "provider",
+      "title": "UniversalProvider",
+      "type": "registry:lib",
+      "description": "Root provider: Tamagui config, color mode, icons, toasts, global styles.",
+      "dependencies": [
+        "@adv-ui/icons",
+        "@adv-ui/theme"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "toast"
+      ]
+    },
+    {
+      "name": "alert",
+      "title": "Alert",
+      "type": "registry:component",
+      "description": "An inline message that draws attention without interrupting the task.",
+      "category": "feedback",
+      "status": "stable",
+      "dependencies": [
+        "@adv-ui/icons"
+      ],
+      "registryDependencies": [
+        "typography"
+      ]
+    },
+    {
+      "name": "avatar",
+      "title": "Avatar",
+      "type": "registry:component",
+      "description": "A profile image with an automatic initials fallback.",
+      "category": "foundations",
+      "status": "stable",
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "badge",
+      "title": "Badge",
+      "type": "registry:component",
+      "description": "A small label for status, counts or categories.",
+      "category": "foundations",
+      "status": "stable",
+      "dependencies": [
+        "@adv-ui/icons"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "button",
+      "title": "Button",
+      "type": "registry:component",
+      "description": "Triggers an action or event, such as submitting a form or opening a dialog.",
+      "category": "buttons",
+      "status": "stable",
+      "dependencies": [
+        "@adv-ui/icons"
+      ],
+      "registryDependencies": [
+        "spinner"
+      ]
+    },
+    {
+      "name": "card",
+      "title": "Card",
+      "type": "registry:component",
+      "description": "A surface that groups related content and actions.",
+      "category": "data-display",
+      "status": "stable",
+      "dependencies": [
+        "@adv-ui/theme"
+      ],
+      "registryDependencies": [
+        "typography"
+      ]
+    },
+    {
+      "name": "checkbox",
+      "title": "Checkbox",
+      "type": "registry:component",
+      "description": "Lets users select one or more options, or toggle a single setting before submitting.",
+      "category": "forms",
+      "status": "stable",
+      "dependencies": [
+        "@adv-ui/icons"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "dialog",
+      "title": "Dialog",
+      "type": "registry:component",
+      "description": "A modal window for focused tasks that require the user’s attention.",
+      "category": "overlay",
+      "status": "stable",
+      "dependencies": [
+        "@adv-ui/icons",
+        "@adv-ui/theme"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "icon-button",
+        "typography"
+      ]
+    },
+    {
+      "name": "icon-button",
+      "title": "Icon Button",
+      "type": "registry:component",
+      "description": "A square, icon-only button for compact toolbars and headers.",
+      "category": "buttons",
+      "status": "stable",
+      "dependencies": [],
+      "registryDependencies": [
+        "button"
+      ]
+    },
+    {
+      "name": "input",
+      "title": "Input",
+      "type": "registry:component",
+      "description": "A single-line text field.",
+      "category": "forms",
+      "status": "stable",
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "label",
+      "title": "Label",
+      "type": "registry:component",
+      "description": "An accessible label linked to a form control.",
+      "category": "forms",
+      "status": "stable",
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "container",
+      "title": "Container",
+      "type": "registry:component",
+      "description": "Centers page content with a max width and responsive side padding.",
+      "category": "layout",
+      "status": "stable",
+      "dependencies": [
+        "@adv-ui/theme"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "grid",
+      "title": "Grid",
+      "type": "registry:component",
+      "description": "Equal-width responsive columns that work identically on web and native.",
+      "category": "layout",
+      "status": "stable",
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "stack",
+      "title": "Stack",
+      "type": "registry:component",
+      "description": "Flexbox primitives: Box, Stack, HStack, VStack, Center and Spacer.",
+      "category": "layout",
+      "status": "stable",
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "progress",
+      "title": "Progress",
+      "type": "registry:component",
+      "description": "Shows how much of a task is complete.",
+      "category": "feedback",
+      "status": "stable",
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "radio-group",
+      "title": "Radio Group",
+      "type": "registry:component",
+      "description": "A set of mutually exclusive options where exactly one can be selected.",
+      "category": "forms",
+      "status": "stable",
+      "dependencies": [],
+      "registryDependencies": [
+        "hooks"
+      ]
+    },
+    {
+      "name": "select",
+      "title": "Select",
+      "type": "registry:component",
+      "description": "Choose one option from a list — a dropdown on desktop, a bottom sheet on touch devices.",
+      "category": "forms",
+      "status": "beta",
+      "dependencies": [
+        "@adv-ui/icons",
+        "@adv-ui/theme"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "input"
+      ]
+    },
+    {
+      "name": "separator",
+      "title": "Separator",
+      "type": "registry:component",
+      "description": "A thin line that divides content horizontally or vertically.",
+      "category": "foundations",
+      "status": "stable",
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "skeleton",
+      "title": "Skeleton",
+      "type": "registry:component",
+      "description": "A pulsing placeholder that previews the shape of loading content.",
+      "category": "foundations",
+      "status": "stable",
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "spinner",
+      "title": "Spinner",
+      "type": "registry:component",
+      "description": "An indeterminate loading indicator.",
+      "category": "feedback",
+      "status": "stable",
+      "dependencies": [
+        "@adv-ui/icons"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "switch",
+      "title": "Switch",
+      "type": "registry:component",
+      "description": "An on/off toggle for settings that take effect immediately.",
+      "category": "forms",
+      "status": "stable",
+      "dependencies": [
+        "@adv-ui/theme"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "tabs",
+      "title": "Tabs",
+      "type": "registry:component",
+      "description": "Switch between related panels of content within the same view.",
+      "category": "navigation",
+      "status": "stable",
+      "dependencies": [
+        "@adv-ui/icons",
+        "@adv-ui/theme"
+      ],
+      "registryDependencies": [
+        "hooks"
+      ]
+    },
+    {
+      "name": "textarea",
+      "title": "Textarea",
+      "type": "registry:component",
+      "description": "A multi-line text field for longer input.",
+      "category": "forms",
+      "status": "stable",
+      "dependencies": [],
+      "registryDependencies": [
+        "input"
+      ]
+    },
+    {
+      "name": "toast",
+      "title": "Toast",
+      "type": "registry:component",
+      "description": "Brief, non-blocking notifications triggered imperatively with `toast()`.",
+      "category": "feedback",
+      "status": "beta",
+      "dependencies": [
+        "@adv-ui/icons",
+        "@adv-ui/theme",
+        "@tamagui/toast"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "spinner",
+        "typography"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "title": "Tooltip",
+      "type": "registry:component",
+      "description": "A short hint shown when an element is hovered or focused.",
+      "category": "overlay",
+      "status": "stable",
+      "dependencies": [
+        "@adv-ui/utils"
+      ],
+      "registryDependencies": [
+        "hooks"
+      ]
+    },
+    {
+      "name": "typography",
+      "title": "Typography",
+      "type": "registry:component",
+      "description": "Text, Heading and Kbd components built on the type scale and semantic colors.",
+      "category": "foundations",
+      "status": "stable",
+      "dependencies": [],
+      "registryDependencies": []
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "name": "skeleton",
+  "title": "Skeleton",
+  "type": "registry:component",
+  "description": "A pulsing placeholder that previews the shape of loading content.",
+  "category": "foundations",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/skeleton/Skeleton.tsx",
+      "type": "registry:ui",
+      "content": "import { type GetProps, View, styled } from 'tamagui'\n\n/**\n * Placeholder shown while content loads. Hidden from assistive technology —\n * announce loading on the container instead (e.g. `aria-busy`).\n */\nexport const Skeleton = styled(View, {\n  name: 'Skeleton',\n  backgroundColor: '$muted',\n  borderRadius: '$md',\n  'aria-hidden': true,\n  className: 'aui-skeleton',\n\n  variants: {\n    circle: {\n      true: { borderRadius: '$full' },\n    },\n  } as const,\n})\n\nexport type SkeletonProps = GetProps<typeof Skeleton>\n"
+    },
+    {
+      "path": "components/skeleton/index.ts",
+      "type": "registry:ui",
+      "content": "export { Skeleton, type SkeletonProps } from './Skeleton'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "card",
+      "title": "Loading card",
+      "code": "import { HStack, Skeleton, VStack } from '@adv-ui/core'\n\nexport default function SkeletonCard() {\n  return (\n    <VStack gap=\"$3\" width=\"100%\" maxWidth=\"$80\" aria-busy aria-label=\"Loading profile\">\n      <HStack gap=\"$3\">\n        <Skeleton circle width=\"$12\" height=\"$12\" />\n        <VStack gap=\"$2\" flex={1} justifyContent=\"center\">\n          <Skeleton height=\"$3\" width=\"70%\" />\n          <Skeleton height=\"$3\" width=\"40%\" />\n        </VStack>\n      </HStack>\n      <Skeleton height=\"$32\" borderRadius=\"$lg\" />\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/skeleton",
+  "dependencies": [],
+  "peerDependencies": [
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.1.0"
+}

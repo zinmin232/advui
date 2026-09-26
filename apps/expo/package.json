@@ -1,0 +1,42 @@
+{
+  "name": "@adv-ui/expo-playground",
+  "version": "0.1.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "export:android": "expo export --platform android --output-dir dist-android",
+    "export:ios": "expo export --platform ios --output-dir dist-ios",
+    "android:emulator": "node scripts/android-dev.mjs"
+  },
+  "dependencies": {
+    "@tamagui/theme": "2.7.7",
+    "@adv-ui/core": "workspace:*",
+    "@adv-ui/examples": "workspace:*",
+    "@adv-ui/icons": "workspace:*",
+    "@adv-ui/theme": "workspace:*",
+    "expo": "~57.0.25",
+    "expo-constants": "~57.0.19",
+    "expo-linking": "~57.0.11",
+    "expo-router": "~57.0.23",
+    "expo-status-bar": "~57.0.1",
+    "expo-system-ui": "~57.0.4",
+    "react": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-screens": "~4.26.0",
+    "react-native-svg": "15.15.4",
+    "tamagui": "2.7.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@types/react": "~19.2.2",
+    "@adv-ui/eslint-config": "workspace:*",
+    "@adv-ui/tsconfig": "workspace:*",
+    "typescript": "~6.0.3"
+  }
+}

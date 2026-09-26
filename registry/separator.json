@@ -1,0 +1,41 @@
+{
+  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "name": "separator",
+  "title": "Separator",
+  "type": "registry:component",
+  "description": "A thin line that divides content horizontally or vertically.",
+  "category": "foundations",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/separator/Separator.tsx",
+      "type": "registry:ui",
+      "content": "import { type GetProps, View, styled } from 'tamagui'\n\nconst SeparatorFrame = styled(View, {\n  name: 'Separator',\n  backgroundColor: '$border',\n  flexShrink: 0,\n\n  variants: {\n    orientation: {\n      horizontal: { height: 1, width: '100%' },\n      vertical: { width: 1, alignSelf: 'stretch' },\n    },\n  } as const,\n\n  defaultVariants: { orientation: 'horizontal' },\n})\n\nexport type SeparatorProps = GetProps<typeof SeparatorFrame> & {\n  /**\n   * Purely visual separators are hidden from assistive technology (default).\n   * Set `false` when the line separates meaningful sections.\n   */\n  decorative?: boolean\n}\n\n/** A thin line that visually (and optionally semantically) divides content. */\nexport function Separator({\n  decorative = true,\n  orientation = 'horizontal',\n  ...props\n}: SeparatorProps) {\n  return (\n    <SeparatorFrame\n      orientation={orientation}\n      {...(decorative\n        ? { 'aria-hidden': true, role: 'none' as const }\n        : { role: 'separator' as const, 'aria-orientation': orientation ?? 'horizontal' })}\n      {...props}\n    />\n  )\n}\n"
+    },
+    {
+      "path": "components/separator/index.ts",
+      "type": "registry:ui",
+      "content": "export { Separator, type SeparatorProps } from './Separator'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Horizontal and vertical",
+      "code": "import { HStack, Separator, Text, VStack } from '@adv-ui/core'\n\nexport default function SeparatorBasic() {\n  return (\n    <VStack gap=\"$3\" maxWidth=\"$80\" width=\"100%\">\n      <VStack gap=\"$1\">\n        <Text weight=\"medium\">Adv UI</Text>\n        <Text size=\"sm\" tone=\"muted\">\n          Cross-platform components.\n        </Text>\n      </VStack>\n      <Separator />\n      <HStack gap=\"$3\" height=\"$5\">\n        <Text size=\"sm\">Docs</Text>\n        <Separator orientation=\"vertical\" />\n        <Text size=\"sm\">Components</Text>\n        <Separator orientation=\"vertical\" />\n        <Text size=\"sm\">Themes</Text>\n      </HStack>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/separator",
+  "dependencies": [],
+  "peerDependencies": [
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.1.0"
+}

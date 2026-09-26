@@ -1,0 +1,42 @@
+{
+  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "name": "label",
+  "title": "Label",
+  "type": "registry:component",
+  "description": "An accessible label linked to a form control.",
+  "category": "forms",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/label/Label.tsx",
+      "type": "registry:ui",
+      "content": "import { forwardRef } from 'react'\nimport {\n  type GetProps,\n  Label as TamaguiLabel,\n  type TamaguiTextElement,\n  Text,\n  styled,\n} from 'tamagui'\n\nconst LabelFrame = styled(TamaguiLabel, {\n  name: 'Label',\n  fontFamily: '$body',\n  fontSize: '$2',\n  lineHeight: '$2',\n  fontWeight: '500',\n  color: '$foreground',\n  height: 'auto',\n  paddingHorizontal: 0,\n  cursor: 'default',\n  userSelect: 'none',\n\n  variants: {\n    disabled: {\n      true: { opacity: 0.6 },\n    },\n  } as const,\n})\n\nconst RequiredMark = styled(Text, {\n  name: 'LabelRequired',\n  color: '$error',\n  fontSize: '$2',\n})\n\nexport type LabelProps = GetProps<typeof LabelFrame> & {\n  /** Appends a visual required marker (screen readers get `required` from the input). */\n  required?: boolean\n}\n\n/**\n * Accessible label. Link it to a control with `htmlFor` = the control's `id`.\n * On web this renders `<label for>`; on native, pressing the label focuses or\n * toggles the linked control.\n */\nexport const Label = forwardRef<TamaguiTextElement, LabelProps>(function Label(\n  { required, children, ...props },\n  ref,\n) {\n  return (\n    <LabelFrame ref={ref} {...props}>\n      {children}\n      {required ? <RequiredMark aria-hidden> *</RequiredMark> : null}\n    </LabelFrame>\n  )\n})\n"
+    },
+    {
+      "path": "components/label/index.ts",
+      "type": "registry:ui",
+      "content": "export { Label, type LabelProps } from './Label'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Labelling controls",
+      "code": "import { Checkbox, HStack, Input, Label, VStack } from '@adv-ui/core'\n\nexport default function LabelBasic() {\n  return (\n    <VStack gap=\"$4\" width=\"100%\" maxWidth=\"$80\">\n      <VStack gap=\"$2\">\n        <Label htmlFor=\"full-name\" required>\n          Full name\n        </Label>\n        <Input id=\"full-name\" required placeholder=\"Ada Lovelace\" />\n      </VStack>\n      <HStack gap=\"$2\">\n        <Checkbox id=\"remember\" />\n        <Label htmlFor=\"remember\">Remember me</Label>\n      </HStack>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/label",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.1.0"
+}

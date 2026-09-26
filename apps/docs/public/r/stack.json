@@ -1,0 +1,41 @@
+{
+  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "name": "stack",
+  "title": "Stack",
+  "type": "registry:component",
+  "description": "Flexbox primitives: Box, Stack, HStack, VStack, Center and Spacer.",
+  "category": "layout",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/layout/Stack.tsx",
+      "type": "registry:ui",
+      "content": "import { type GetProps, View, styled } from 'tamagui'\n\n/** The base layout primitive — a `View` that accepts every style prop and token. */\nexport const Box = styled(View, {\n  name: 'Box',\n})\n\n/**\n * Flex container (column by default). Use regular style props for layout:\n * `flexDirection`, `alignItems`, `justifyContent`, `flexWrap`, `gap` — or the\n * shorthands `items`/`justify` — and media props for responsive changes.\n */\nexport const Stack = styled(View, {\n  name: 'Stack',\n  flexDirection: 'column',\n})\n\n/** Horizontal stack. Use `gap=\"$2\"` for spacing. */\nexport const HStack = styled(Stack, {\n  name: 'HStack',\n  flexDirection: 'row',\n  alignItems: 'center',\n})\n\n/** Vertical stack. Use `gap=\"$2\"` for spacing. */\nexport const VStack = styled(Stack, {\n  name: 'VStack',\n  flexDirection: 'column',\n})\n\n/** Centers its children on both axes. */\nexport const Center = styled(View, {\n  name: 'Center',\n  alignItems: 'center',\n  justifyContent: 'center',\n})\n\n/** Flexible space that pushes siblings apart inside a stack. */\nexport const Spacer = styled(View, {\n  name: 'Spacer',\n  flex: 1,\n  alignSelf: 'stretch',\n  'aria-hidden': true,\n})\n\nexport type BoxProps = GetProps<typeof Box>\nexport type StackProps = GetProps<typeof Stack>\nexport type HStackProps = GetProps<typeof HStack>\nexport type VStackProps = GetProps<typeof VStack>\nexport type CenterProps = GetProps<typeof Center>\nexport type SpacerProps = GetProps<typeof Spacer>\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Stacks and spacer",
+      "code": "import { Avatar, Badge, Button, HStack, Spacer, Text, VStack } from '@adv-ui/core'\n\nexport default function StackBasic() {\n  return (\n    <VStack gap=\"$3\" width=\"100%\" maxWidth=\"$96\">\n      {['Maya Chen', 'Jordan Lee'].map((name) => (\n        <HStack\n          key={name}\n          gap=\"$3\"\n          padding=\"$3\"\n          borderWidth={1}\n          borderColor=\"$border\"\n          borderRadius=\"$lg\"\n        >\n          <Avatar alt={name} size=\"sm\" />\n          <VStack>\n            <Text weight=\"medium\">{name}</Text>\n            <Text size=\"sm\" tone=\"muted\">\n              Product designer\n            </Text>\n          </VStack>\n          <Spacer />\n          <Badge variant=\"secondary\" size=\"sm\">\n            Admin\n          </Badge>\n          <Button size=\"sm\" variant=\"ghost\">\n            Edit\n          </Button>\n        </HStack>\n      ))}\n    </VStack>\n  )\n}\n"
+    },
+    {
+      "name": "responsive",
+      "title": "Responsive direction",
+      "code": "import { Box, Stack, Text } from '@adv-ui/core'\n\nexport default function StackResponsive() {\n  return (\n    <Stack gap=\"$3\" width=\"100%\" $md={{ flexDirection: 'row' }}>\n      {['One', 'Two', 'Three'].map((label) => (\n        <Box key={label} flex={1} padding=\"$4\" backgroundColor=\"$muted\" borderRadius=\"$lg\">\n          <Text weight=\"medium\">{label}</Text>\n          <Text size=\"sm\" tone=\"muted\">\n            Column on phones, row from md.\n          </Text>\n        </Box>\n      ))}\n    </Stack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/stack",
+  "dependencies": [],
+  "peerDependencies": [
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.1.0"
+}

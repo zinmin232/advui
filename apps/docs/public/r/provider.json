@@ -1,0 +1,48 @@
+{
+  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "name": "provider",
+  "title": "UniversalProvider",
+  "type": "registry:lib",
+  "description": "Root provider: Tamagui config, color mode, icons, toasts, global styles.",
+  "files": [
+    {
+      "path": "provider/ColorMode.tsx",
+      "type": "registry:ui",
+      "content": "import { type ReactNode, createContext, useContext, useMemo } from 'react'\nimport { useColorScheme } from 'react-native'\nimport { useControllableState } from '../hooks/useControllableState'\nimport type { ColorModePreference, ResolvedColorMode } from '../types'\n\nexport interface ColorModeContextValue {\n  /** What the user picked: `light`, `dark` or follow the `system`. */\n  colorMode: ColorModePreference\n  /** The mode actually applied. */\n  resolvedColorMode: ResolvedColorMode\n  setColorMode: (mode: ColorModePreference) => void\n}\n\nconst ColorModeContext = createContext<ColorModeContextValue | null>(null)\n\nexport interface ColorModeProviderProps {\n  colorMode?: ColorModePreference\n  defaultColorMode?: ColorModePreference\n  onColorModeChange?: (mode: ColorModePreference) => void\n  children: (resolved: ResolvedColorMode) => ReactNode\n}\n\nexport function ColorModeProvider({\n  colorMode: colorModeProp,\n  defaultColorMode = 'system',\n  onColorModeChange,\n  children,\n}: ColorModeProviderProps) {\n  const system = useColorScheme()\n  const [colorMode, setColorMode] = useControllableState<ColorModePreference>({\n    value: colorModeProp,\n    defaultValue: defaultColorMode,\n    onChange: onColorModeChange,\n  })\n  const resolvedColorMode: ResolvedColorMode =\n    colorMode === 'system' ? (system === 'dark' ? 'dark' : 'light') : colorMode\n\n  const value = useMemo(\n    () => ({ colorMode, resolvedColorMode, setColorMode }),\n    [colorMode, resolvedColorMode, setColorMode],\n  )\n\n  return (\n    <ColorModeContext.Provider value={value}>\n      {children(resolvedColorMode)}\n    </ColorModeContext.Provider>\n  )\n}\n\n/** Read and change the light/dark/system preference from anywhere in the tree. */\nexport function useColorMode(): ColorModeContextValue {\n  const context = useContext(ColorModeContext)\n  if (!context) {\n    throw new Error('[adv-ui] useColorMode must be used inside <UniversalProvider>.')\n  }\n  return context\n}\n"
+    },
+    {
+      "path": "provider/GlobalStyles.native.tsx",
+      "type": "registry:ui",
+      "content": "// Native has no global stylesheet; reduced motion is handled per component via `useReducedMotion`.\nexport function GlobalStyles() {\n  return null\n}\n"
+    },
+    {
+      "path": "provider/GlobalStyles.tsx",
+      "type": "registry:ui",
+      "content": "// Web-only global rules. React 19 hoists `<style href precedence>` into <head>\n// (including during SSR), so no framework-specific wiring is needed.\nconst css = `\na.is_Button { text-decoration: none; }\n@keyframes aui-spin { to { transform: rotate(360deg); } }\n.aui-spinner { animation: aui-spin 0.8s linear infinite; }\n@keyframes aui-pulse { 50% { opacity: 0.5; } }\n.aui-skeleton { animation: aui-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after {\n    animation-duration: 0.01ms !important;\n    animation-iteration-count: 1 !important;\n    transition-duration: 0.01ms !important;\n    scroll-behavior: auto !important;\n  }\n  /* Loading indicators convey state, so keep them moving — just slower. */\n  .aui-spinner {\n    animation-duration: 1.6s !important;\n    animation-iteration-count: infinite !important;\n  }\n}\n`\n\nexport function GlobalStyles() {\n  return (\n    <style href=\"adv-ui-global\" precedence=\"default\">\n      {css}\n    </style>\n  )\n}\n"
+    },
+    {
+      "path": "provider/UniversalProvider.tsx",
+      "type": "registry:ui",
+      "content": "import { IconProvider, type IconRegistry } from '@adv-ui/icons'\nimport type { ReactNode } from 'react'\nimport { TamaguiProvider, type TamaguiInternalConfig, type TamaguiProviderProps } from 'tamagui'\nimport { Toaster, type ToasterProps } from '../components/toast/Toaster'\nimport type { ColorModePreference } from '../types'\nimport { ColorModeProvider } from './ColorMode'\nimport { GlobalStyles } from './GlobalStyles'\n\nexport interface UniversalProviderProps {\n  /** Result of `createUniversalConfig()`. */\n  config: TamaguiInternalConfig\n  children: ReactNode\n  /** Controlled color mode. Omit to let the provider manage it. */\n  colorMode?: ColorModePreference\n  /** Initial color mode when uncontrolled. Default: `system`. */\n  defaultColorMode?: ColorModePreference\n  onColorModeChange?: (mode: ColorModePreference) => void\n  /** Swap or extend the icons used by `<Icon name=\"…\" />` and components. */\n  icons?: IconRegistry\n  /** Options for the built-in toast viewport, or `false` to render your own `<Toaster />`. */\n  toaster?: ToasterProps | false\n  /** Skip Tamagui's runtime CSS injection when you ship a pre-generated stylesheet. */\n  disableInjectCSS?: boolean\n  /**\n   * Native safe-area insets (e.g. from `useSafeAreaInsets()`). Overlays such\n   * as toasts use them to stay clear of the notch and home indicator.\n   */\n  insets?: TamaguiProviderProps['insets']\n}\n\n/**\n * Root provider for Adv UI. Wraps Tamagui's provider and adds color-mode\n * management, reduced-motion handling, the icon registry and toasts.\n */\nexport function UniversalProvider({\n  config,\n  children,\n  colorMode,\n  defaultColorMode,\n  onColorModeChange,\n  icons,\n  toaster = {},\n  disableInjectCSS,\n  insets,\n}: UniversalProviderProps) {\n  const content = (\n    <>\n      {children}\n      {toaster === false ? null : <Toaster {...toaster} />}\n    </>\n  )\n\n  return (\n    <ColorModeProvider\n      colorMode={colorMode}\n      defaultColorMode={defaultColorMode}\n      onColorModeChange={onColorModeChange}\n    >\n      {(resolved) => (\n        <TamaguiProvider\n          config={config}\n          defaultTheme={resolved}\n          disableInjectCSS={disableInjectCSS}\n          insets={insets}\n        >\n          <GlobalStyles />\n          {icons ? <IconProvider icons={icons}>{content}</IconProvider> : content}\n        </TamaguiProvider>\n      )}\n    </ColorModeProvider>\n  )\n}\n"
+    },
+    {
+      "path": "types.ts",
+      "type": "registry:ui",
+      "content": "import type { UniversalConfig } from '@adv-ui/theme'\n\n// Registers Adv UI's tokens and themes with Tamagui so props like\n// `backgroundColor=\"$primary\"` and `padding=\"$4\"` are type-checked.\ndeclare module 'tamagui' {\n  // Module augmentation requires an interface; the empty body is intentional.\n  // eslint-disable-next-line @typescript-eslint/no-empty-object-type\n  interface TamaguiCustomConfig extends UniversalConfig {}\n}\n\nexport type ColorModePreference = 'light' | 'dark' | 'system'\nexport type ResolvedColorMode = 'light' | 'dark'\n"
+    }
+  ],
+  "dependencies": [
+    "@adv-ui/icons",
+    "@adv-ui/theme"
+  ],
+  "peerDependencies": [
+    "react",
+    "react-native",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "hooks",
+    "toast"
+  ],
+  "version": "0.1.0"
+}

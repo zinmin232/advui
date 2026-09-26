@@ -1,0 +1,44 @@
+{
+  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "name": "radio-group",
+  "title": "Radio Group",
+  "type": "registry:component",
+  "description": "A set of mutually exclusive options where exactly one can be selected.",
+  "category": "forms",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/radio-group/RadioGroup.tsx",
+      "type": "registry:ui",
+      "content": "import { createContext, forwardRef, useContext } from 'react'\nimport {\n  RadioGroupFrame as TamaguiRadioGroupFrame,\n  RadioGroupIndicatorFrame as TamaguiIndicatorFrame,\n  RadioGroupItemFrame as TamaguiItemFrame,\n  type RadioGroupItemProps as TamaguiItemProps,\n  type RadioGroupProps as TamaguiRadioGroupProps,\n  type TamaguiElement,\n  createRadioGroup,\n  isWeb,\n  styled,\n  withStaticProperties,\n} from 'tamagui'\nimport { useControllableState } from '../../hooks/useControllableState'\n\nconst SelectedValueContext = createContext<string | undefined>(undefined)\n\nconst Frame = styled(TamaguiRadioGroupFrame, {\n  name: 'RadioGroup',\n  gap: '$3',\n})\n\n// Visual styles live in the `unstyled: false` variant so they override the\n// defaults Tamagui's createRadioGroup applies through the same variant.\nconst Item = styled(TamaguiItemFrame, {\n  name: 'RadioGroupItem',\n  padding: 0,\n  alignItems: 'center',\n  justifyContent: 'center',\n  cursor: 'pointer',\n\n  variants: {\n    unstyled: {\n      false: {\n        borderRadius: '$full',\n        borderWidth: 1,\n        borderColor: '$input',\n        backgroundColor: '$background',\n        hoverStyle: { borderColor: '$borderStrong' },\n        focusVisibleStyle: {\n          outlineColor: '$ring',\n          outlineStyle: 'solid',\n          outlineWidth: 2,\n          outlineOffset: 2,\n        },\n      },\n    },\n    size: {\n      sm: { width: '$4', height: '$4', minHeight: '$4', padding: 0 },\n      md: { width: '$5', height: '$5', minHeight: '$5', padding: 0 },\n    },\n    disabled: {\n      true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: 'none' },\n    },\n  } as const,\n\n  defaultVariants: { size: 'md' },\n})\n\nconst Indicator = styled(TamaguiIndicatorFrame, {\n  name: 'RadioGroupIndicator',\n  variants: {\n    unstyled: {\n      false: {\n        width: '50%',\n        height: '50%',\n        borderRadius: '$full',\n        backgroundColor: '$primary',\n      },\n    },\n  } as const,\n})\n\nconst BaseRadioGroup = createRadioGroup({ Frame, Item, Indicator, disableActiveTheme: true })\n\nexport type RadioGroupProps = TamaguiRadioGroupProps\n\nexport interface RadioGroupItemProps extends Omit<TamaguiItemProps, 'size'> {\n  size?: 'sm' | 'md'\n}\n\nconst RadioGroupItem = forwardRef<TamaguiElement, RadioGroupItemProps>(function RadioGroupItem(\n  { size = 'md', ...props },\n  ref,\n) {\n  const checked = useContext(SelectedValueContext) === props.value\n  return (\n    <BaseRadioGroup.Item\n      ref={ref}\n      size={size as never}\n      {...(isWeb ? null : { accessible: true })}\n      {...(checked ? { borderColor: '$primary' as const } : null)}\n      {...props}\n    >\n      <BaseRadioGroup.Indicator />\n    </BaseRadioGroup.Item>\n  )\n})\n\nconst RadioGroupRoot = forwardRef<TamaguiElement, RadioGroupProps>(function RadioGroup(\n  { value: valueProp, defaultValue, onValueChange, ...props },\n  ref,\n) {\n  const [value, setValue] = useControllableState({\n    value: valueProp,\n    defaultValue: defaultValue ?? '',\n    onChange: onValueChange,\n  })\n  return (\n    <SelectedValueContext.Provider value={value}>\n      <BaseRadioGroup ref={ref} value={value} onValueChange={setValue} {...props} />\n    </SelectedValueContext.Provider>\n  )\n})\n\n/**\n * A set of mutually exclusive options. Arrow keys move between items (roving\n * focus) on web; each `RadioGroup.Item` needs a `value` and an `id` for its Label.\n */\nexport const RadioGroup = withStaticProperties(RadioGroupRoot, {\n  Item: RadioGroupItem,\n})\n"
+    },
+    {
+      "path": "components/radio-group/index.ts",
+      "type": "registry:ui",
+      "content": "export { RadioGroup, type RadioGroupItemProps, type RadioGroupProps } from './RadioGroup'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Plans",
+      "code": "import { HStack, Label, RadioGroup, Text, VStack } from '@adv-ui/core'\nimport { useState } from 'react'\n\nconst plans = [\n  { value: 'free', label: 'Free', hint: 'Up to 3 projects' },\n  { value: 'pro', label: 'Pro', hint: 'Unlimited projects' },\n  { value: 'team', label: 'Team', hint: 'Shared workspaces' },\n]\n\nexport default function RadioGroupBasic() {\n  const [plan, setPlan] = useState('pro')\n  return (\n    <RadioGroup value={plan} onValueChange={setPlan} aria-label=\"Plan\">\n      {plans.map((p) => (\n        <HStack key={p.value} gap=\"$3\" alignItems=\"flex-start\">\n          <RadioGroup.Item value={p.value} id={`plan-${p.value}`} marginTop=\"$0.5\" />\n          <VStack>\n            <Label htmlFor={`plan-${p.value}`}>{p.label}</Label>\n            <Text size=\"sm\" tone=\"muted\">\n              {p.hint}\n            </Text>\n          </VStack>\n        </HStack>\n      ))}\n    </RadioGroup>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/radio-group",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "hooks"
+  ],
+  "version": "0.1.0"
+}

@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Adv UI",
+    "slug": "adv-ui-playground",
+    "scheme": "advui",
+    "version": "0.1.0",
+    "orientation": "default",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": { "supportsTablet": true, "bundleIdentifier": "dev.advui.playground" },
+    "android": { "package": "dev.advui.playground", "edgeToEdgeEnabled": true },
+    "plugins": ["expo-router"],
+    "experiments": { "typedRoutes": false }
+  }
+}

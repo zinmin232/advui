@@ -1,0 +1,44 @@
+{
+  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "name": "tooltip",
+  "title": "Tooltip",
+  "type": "registry:component",
+  "description": "A short hint shown when an element is hovered or focused.",
+  "category": "overlay",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web"
+  ],
+  "files": [
+    {
+      "path": "components/tooltip/Tooltip.tsx",
+      "type": "registry:ui",
+      "content": "import { composeEventHandlers } from '@adv-ui/utils'\nimport {\n  type FocusEvent,\n  type KeyboardEvent,\n  type ReactElement,\n  type ReactNode,\n  cloneElement,\n  useId,\n} from 'react'\nimport { Text, Tooltip as TamaguiTooltip, type TooltipProps as TamaguiTooltipProps } from 'tamagui'\nimport { useControllableState } from '../../hooks/useControllableState'\nimport { useReducedMotion } from '../../hooks/useReducedMotion'\n\nexport interface TooltipProps extends Omit<\n  TamaguiTooltipProps,\n  'children' | 'open' | 'onOpenChange'\n> {\n  /** Short supplementary text. Never put essential information only in a tooltip. */\n  content: ReactNode\n  /** A single focusable element (Button, IconButton, link…). */\n  children: ReactElement<TriggerProps>\n  /** Delay before showing on hover, in ms. Default 300. */\n  delay?: number\n  side?: 'top' | 'right' | 'bottom' | 'left'\n  disabled?: boolean\n  open?: boolean\n  defaultOpen?: boolean\n  onOpenChange?: (open: boolean) => void\n}\n\ntype TriggerProps = {\n  onFocus?: (event: FocusEvent) => void\n  onBlur?: (event: FocusEvent) => void\n  onKeyDown?: (event: KeyboardEvent) => void\n  'aria-describedby'?: string\n}\n\nfunction isFocusVisible(target: EventTarget | null) {\n  try {\n    return (target as Element | null)?.matches?.(':focus-visible') ?? true\n  } catch {\n    return true\n  }\n}\n\n/**\n * Hint shown on hover and on keyboard focus (web), dismissed with Escape.\n * Touch devices have no hover, so on iOS/Android only the trigger renders —\n * make sure it already has an accessible name (e.g. IconButton's `aria-label`).\n */\nexport function Tooltip({\n  content,\n  children,\n  delay = 300,\n  side = 'top',\n  disabled,\n  open: openProp,\n  defaultOpen = false,\n  onOpenChange,\n  ...props\n}: TooltipProps) {\n  const reducedMotion = useReducedMotion()\n  const id = useId()\n  const [open, setOpen] = useControllableState({\n    value: openProp,\n    defaultValue: defaultOpen,\n    onChange: onOpenChange,\n  })\n\n  if (disabled || content == null) return children\n\n  // Tamagui's tooltip handles hover; keyboard focus + Escape are wired here so\n  // keyboard users get the same hint (WCAG 1.4.13 / 2.1.1).\n  const trigger = cloneElement(children, {\n    'aria-describedby': open ? id : children.props['aria-describedby'],\n    onFocus: composeEventHandlers(children.props.onFocus, (event: FocusEvent) => {\n      if (isFocusVisible(event.target)) setOpen(true)\n    }),\n    onBlur: composeEventHandlers(children.props.onBlur, () => setOpen(false)),\n    onKeyDown: composeEventHandlers(children.props.onKeyDown, (event: KeyboardEvent) => {\n      if (event.key === 'Escape') setOpen(false)\n    }),\n  })\n\n  return (\n    <TamaguiTooltip\n      placement={side}\n      delay={delay}\n      restMs={delay}\n      offset={6}\n      open={open}\n      onOpenChange={setOpen}\n      {...props}\n    >\n      <TamaguiTooltip.Trigger asChild>{trigger}</TamaguiTooltip.Trigger>\n      <TamaguiTooltip.Content\n        id={id}\n        zIndex=\"$tooltip\"\n        backgroundColor=\"$foreground\"\n        borderRadius=\"$md\"\n        paddingHorizontal=\"$2.5\"\n        paddingVertical=\"$1.5\"\n        maxWidth=\"$72\"\n        pointerEvents=\"none\"\n        enterStyle={{ opacity: 0, scale: 0.96, y: side === 'bottom' ? -4 : 4 }}\n        exitStyle={{ opacity: 0, scale: 0.96 }}\n        opacity={1}\n        scale={1}\n        y={0}\n        transition={reducedMotion ? null : 'quicker'}\n        animateOnly={['transform', 'opacity']}\n      >\n        {typeof content === 'string' ? (\n          <Text fontSize=\"$1\" lineHeight=\"$1\" color=\"$background\">\n            {content}\n          </Text>\n        ) : (\n          content\n        )}\n      </TamaguiTooltip.Content>\n    </TamaguiTooltip>\n  )\n}\n"
+    },
+    {
+      "path": "components/tooltip/index.ts",
+      "type": "registry:ui",
+      "content": "export { Tooltip, type TooltipProps } from './Tooltip'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Toolbar",
+      "code": "import { HStack, IconButton, Tooltip } from '@adv-ui/core'\nimport { CopyIcon, DownloadIcon, TrashIcon } from '@adv-ui/icons'\n\nexport default function TooltipBasic() {\n  return (\n    <HStack gap=\"$1\">\n      <Tooltip content=\"Copy link\">\n        <IconButton aria-label=\"Copy link\" icon={<CopyIcon />} />\n      </Tooltip>\n      <Tooltip content=\"Download\" side=\"bottom\">\n        <IconButton aria-label=\"Download\" icon={<DownloadIcon />} />\n      </Tooltip>\n      <Tooltip content=\"Move to trash\">\n        <IconButton aria-label=\"Move to trash\" icon={<TrashIcon />} />\n      </Tooltip>\n    </HStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/tooltip",
+  "dependencies": [
+    "@adv-ui/utils"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "hooks"
+  ],
+  "version": "0.1.0"
+}

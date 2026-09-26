@@ -1,0 +1,44 @@
+{
+  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "name": "textarea",
+  "title": "Textarea",
+  "type": "registry:component",
+  "description": "A multi-line text field for longer input.",
+  "category": "forms",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/textarea/Textarea.tsx",
+      "type": "registry:ui",
+      "content": "import { forwardRef } from 'react'\nimport { type GetProps, type TamaguiElement, TextArea, styled } from 'tamagui'\nimport { inputBaseStyle } from '../input/Input'\n\nconst TextareaFrame = styled(TextArea, {\n  name: 'Textarea',\n  ...inputBaseStyle,\n  minHeight: '$20',\n  paddingHorizontal: '$3',\n  paddingVertical: '$2',\n  fontSize: '$2',\n  lineHeight: '$2',\n  textAlignVertical: 'top',\n\n  variants: {\n    invalid: {\n      true: {\n        borderColor: '$error',\n        hoverStyle: { borderColor: '$error' },\n        focusStyle: { borderColor: '$error' },\n        focusVisibleStyle: { outlineColor: '$error' },\n      },\n    },\n    disabled: {\n      true: { opacity: 0.5, cursor: 'not-allowed' },\n    },\n    resize: {\n      none: { resize: 'none' },\n      vertical: { resize: 'vertical' },\n    },\n  } as const,\n\n  defaultVariants: { resize: 'vertical' },\n})\n\nexport type TextareaProps = GetProps<typeof TextareaFrame>\n\n/** Multi-line text field. Grows with `rows`/`minHeight`; set `invalid` for errors. */\nexport const Textarea = forwardRef<TamaguiElement, TextareaProps>(function Textarea(\n  { invalid, disabled, ...props },\n  ref,\n) {\n  return (\n    <TextareaFrame\n      ref={ref}\n      invalid={invalid}\n      disabled={disabled}\n      aria-invalid={invalid || undefined}\n      multiline\n      {...props}\n    />\n  )\n})\n"
+    },
+    {
+      "path": "components/textarea/index.ts",
+      "type": "registry:ui",
+      "content": "export { Textarea, type TextareaProps } from './Textarea'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "With label and hint",
+      "code": "import { Label, Text, Textarea, VStack } from '@adv-ui/core'\n\nexport default function TextareaBasic() {\n  return (\n    <VStack gap=\"$2\" width=\"100%\" maxWidth=\"$96\">\n      <Label htmlFor=\"feedback\">Feedback</Label>\n      <Textarea\n        id=\"feedback\"\n        placeholder=\"What could we improve?\"\n        aria-describedby=\"feedback-hint\"\n      />\n      <Text id=\"feedback-hint\" size=\"sm\" tone=\"muted\">\n        Markdown is supported.\n      </Text>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/textarea",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "input"
+  ],
+  "version": "0.1.0"
+}

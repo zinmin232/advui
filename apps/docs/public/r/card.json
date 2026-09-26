@@ -1,0 +1,56 @@
+{
+  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "name": "card",
+  "title": "Card",
+  "type": "registry:component",
+  "description": "A surface that groups related content and actions.",
+  "category": "data-display",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/card/Card.tsx",
+      "type": "registry:ui",
+      "content": "import { shadows } from '@adv-ui/theme'\nimport { forwardRef } from 'react'\nimport { type GetProps, type TamaguiTextElement, View, styled, withStaticProperties } from 'tamagui'\nimport { Text } from '../typography/Text'\n\nconst CardFrame = styled(View, {\n  name: 'Card',\n  flexDirection: 'column',\n  backgroundColor: '$card',\n  borderRadius: '$xl',\n  borderWidth: 1,\n  borderColor: '$border',\n  overflow: 'hidden',\n\n  variants: {\n    variant: {\n      outline: {},\n      elevated: { ...shadows.sm },\n      ghost: { borderColor: 'transparent', backgroundColor: 'transparent' },\n      filled: { backgroundColor: '$muted', borderColor: 'transparent' },\n    },\n    /** Adds hover/press feedback. Pair with `onPress` and an accessible `role`/label. */\n    interactive: {\n      true: {\n        cursor: 'pointer',\n        transition: 'quick',\n        hoverStyle: { borderColor: '$borderStrong' },\n        pressStyle: { scale: 0.99, opacity: 0.95 },\n        focusVisibleStyle: {\n          outlineColor: '$ring',\n          outlineStyle: 'solid',\n          outlineWidth: 2,\n          outlineOffset: 2,\n        },\n      },\n    },\n  } as const,\n\n  defaultVariants: { variant: 'outline' },\n})\n\nconst CardHeader = styled(View, {\n  name: 'CardHeader',\n  flexDirection: 'column',\n  gap: '$1.5',\n  padding: '$4',\n  paddingBottom: '$0',\n  $sm: { padding: '$6', paddingBottom: '$0' },\n})\n\nconst CardTitleText = styled(Text, {\n  name: 'CardTitle',\n  role: 'heading',\n  fontFamily: '$heading',\n  fontWeight: '600',\n  size: 'lg',\n})\n\n/** Card heading. Defaults to heading level 3 — pass `aria-level` to fit your page outline. */\nconst CardTitle = forwardRef<TamaguiTextElement, GetProps<typeof CardTitleText>>(\n  function CardTitle(props, ref) {\n    return <CardTitleText ref={ref} aria-level={3} {...props} />\n  },\n)\n\nconst CardDescription = styled(Text, {\n  name: 'CardDescription',\n  size: 'sm',\n  tone: 'muted',\n})\n\nconst CardContent = styled(View, {\n  name: 'CardContent',\n  padding: '$4',\n  gap: '$4',\n  $sm: { padding: '$6' },\n})\n\nconst CardFooter = styled(View, {\n  name: 'CardFooter',\n  flexDirection: 'row',\n  alignItems: 'center',\n  gap: '$2',\n  padding: '$4',\n  paddingTop: '$0',\n  $sm: { padding: '$6', paddingTop: '$0' },\n})\n\n/**\n * Groups related content. Compose with `Card.Header`, `Card.Title`,\n * `Card.Description`, `Card.Content` and `Card.Footer`.\n */\nexport const Card = withStaticProperties(CardFrame, {\n  Header: CardHeader,\n  Title: CardTitle,\n  Description: CardDescription,\n  Content: CardContent,\n  Footer: CardFooter,\n})\n\nexport type CardProps = GetProps<typeof CardFrame>\nexport type CardHeaderProps = GetProps<typeof CardHeader>\nexport type CardTitleProps = GetProps<typeof CardTitleText>\nexport type CardDescriptionProps = GetProps<typeof CardDescription>\nexport type CardContentProps = GetProps<typeof CardContent>\nexport type CardFooterProps = GetProps<typeof CardFooter>\n"
+    },
+    {
+      "path": "components/card/index.ts",
+      "type": "registry:ui",
+      "content": "export {\n  Card,\n  type CardContentProps,\n  type CardDescriptionProps,\n  type CardFooterProps,\n  type CardHeaderProps,\n  type CardProps,\n  type CardTitleProps,\n} from './Card'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Form card",
+      "code": "import { Button, Card, Input, Label, VStack } from '@adv-ui/core'\n\nexport default function CardBasic() {\n  return (\n    <Card width=\"100%\" maxWidth=\"$96\">\n      <Card.Header>\n        <Card.Title>Create project</Card.Title>\n        <Card.Description>Deploy your new project in one click.</Card.Description>\n      </Card.Header>\n      <Card.Content>\n        <VStack gap=\"$2\">\n          <Label htmlFor=\"card-name\">Name</Label>\n          <Input id=\"card-name\" placeholder=\"Name of your project\" />\n        </VStack>\n      </Card.Content>\n      <Card.Footer justifyContent=\"flex-end\">\n        <Button variant=\"outline\">Cancel</Button>\n        <Button>Deploy</Button>\n      </Card.Footer>\n    </Card>\n  )\n}\n"
+    },
+    {
+      "name": "variants",
+      "title": "Variants",
+      "code": "import { Card, Grid, Text } from '@adv-ui/core'\n\nconst variants = ['outline', 'elevated', 'filled', 'ghost'] as const\n\nexport default function CardVariants() {\n  return (\n    <Grid columns={{ base: 1, sm: 2 }} gap=\"$4\" width=\"100%\">\n      {variants.map((variant) => (\n        <Card key={variant} variant={variant}>\n          <Card.Header>\n            <Card.Title>{variant}</Card.Title>\n          </Card.Header>\n          <Card.Content>\n            <Text size=\"sm\" tone=\"muted\">\n              A {variant} card surface.\n            </Text>\n          </Card.Content>\n        </Card>\n      ))}\n    </Grid>\n  )\n}\n"
+    },
+    {
+      "name": "interactive",
+      "title": "Interactive",
+      "code": "import { Badge, Card, HStack, Text, toast } from '@adv-ui/core'\n\nexport default function CardInteractive() {\n  return (\n    <Card\n      interactive\n      role=\"link\"\n      aria-label=\"Open project Atlas\"\n      width=\"100%\"\n      maxWidth=\"$80\"\n      onPress={() => toast('Opening Atlas…')}\n    >\n      <Card.Header>\n        <HStack justifyContent=\"space-between\">\n          <Card.Title>Atlas</Card.Title>\n          <Badge variant=\"success\" size=\"sm\">\n            Live\n          </Badge>\n        </HStack>\n        <Card.Description>Updated 2 hours ago</Card.Description>\n      </Card.Header>\n      <Card.Content>\n        <Text size=\"sm\">Customer analytics dashboard.</Text>\n      </Card.Content>\n    </Card>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/card",
+  "dependencies": [
+    "@adv-ui/theme"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "typography"
+  ],
+  "version": "0.1.0"
+}

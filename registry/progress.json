@@ -1,0 +1,41 @@
+{
+  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "name": "progress",
+  "title": "Progress",
+  "type": "registry:component",
+  "description": "Shows how much of a task is complete.",
+  "category": "feedback",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/progress/Progress.tsx",
+      "type": "registry:ui",
+      "content": "import { type GetProps, View, isWeb, styled } from 'tamagui'\n\nconst Track = styled(View, {\n  name: 'Progress',\n  width: '100%',\n  overflow: 'hidden',\n  backgroundColor: '$muted',\n  borderRadius: '$full',\n\n  variants: {\n    size: {\n      sm: { height: '$1' },\n      md: { height: '$2' },\n      lg: { height: '$3' },\n    },\n  } as const,\n\n  defaultVariants: { size: 'md' },\n})\n\nconst Indicator = styled(View, {\n  name: 'ProgressIndicator',\n  height: '100%',\n  borderRadius: '$full',\n  transition: 'medium',\n\n  variants: {\n    tone: {\n      primary: { backgroundColor: '$primary' },\n      success: { backgroundColor: '$success' },\n      warning: { backgroundColor: '$warning' },\n      error: { backgroundColor: '$error' },\n    },\n  } as const,\n\n  defaultVariants: { tone: 'primary' },\n})\n\nexport type ProgressProps = Omit<GetProps<typeof Track>, 'children'> & {\n  /** Current value. Omit (or `null`) for an indeterminate bar. */\n  value?: number | null\n  max?: number\n  tone?: GetProps<typeof Indicator>['tone']\n  /** Accessible name, e.g. \"Upload progress\". */\n  label?: string\n}\n\n/** Determinate progress bar exposing `progressbar` semantics with min/max/now values. */\nexport function Progress({\n  value = null,\n  max = 100,\n  tone = 'primary',\n  label,\n  ...props\n}: ProgressProps) {\n  const clamped = value === null ? null : Math.min(max, Math.max(0, value))\n  const percent = clamped === null ? 35 : (clamped / max) * 100\n  return (\n    <Track\n      role=\"progressbar\"\n      {...(isWeb ? null : { accessible: true })}\n      aria-label={label}\n      aria-valuemin={0}\n      aria-valuemax={max}\n      aria-valuenow={clamped ?? undefined}\n      {...props}\n    >\n      <Indicator tone={tone} width={`${percent}%`} opacity={clamped === null ? 0.6 : 1} />\n    </Track>\n  )\n}\n"
+    },
+    {
+      "path": "components/progress/index.ts",
+      "type": "registry:ui",
+      "content": "export { Progress, type ProgressProps } from './Progress'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Animated upload",
+      "code": "import { Button, HStack, Progress, Text, VStack } from '@adv-ui/core'\nimport { useEffect, useState } from 'react'\n\nexport default function ProgressBasic() {\n  const [value, setValue] = useState(20)\n  useEffect(() => {\n    const id = setInterval(() => setValue((v) => (v >= 100 ? 100 : v + 10)), 700)\n    return () => clearInterval(id)\n  }, [])\n  return (\n    <VStack gap=\"$3\" width=\"100%\" maxWidth=\"$96\">\n      <HStack justifyContent=\"space-between\">\n        <Text size=\"sm\">Uploading…</Text>\n        <Text size=\"sm\" tone=\"muted\">\n          {value}%\n        </Text>\n      </HStack>\n      <Progress\n        value={value}\n        label=\"Upload progress\"\n        tone={value === 100 ? 'success' : 'primary'}\n      />\n      <Button size=\"sm\" variant=\"outline\" alignSelf=\"flex-start\" onPress={() => setValue(0)}>\n        Restart\n      </Button>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/progress",
+  "dependencies": [],
+  "peerDependencies": [
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.1.0"
+}

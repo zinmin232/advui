@@ -1,0 +1,54 @@
+{
+  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "name": "spinner",
+  "title": "Spinner",
+  "type": "registry:component",
+  "description": "An indeterminate loading indicator.",
+  "category": "feedback",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/spinner/Spinner.tsx",
+      "type": "registry:ui",
+      "content": "import { useIconColor } from '@adv-ui/icons'\nimport { View, type ViewProps } from 'tamagui'\nimport { spinnerSizes } from './sizes'\n\nexport interface SpinnerProps extends Omit<ViewProps, 'children'> {\n  /** `sm` 16px · `md` 20px · `lg` 28px. */\n  size?: 'sm' | 'md' | 'lg'\n  /** Theme token or color. Defaults to the current text color. */\n  color?: string\n  /** Announced to assistive technology. Default: \"Loading\". */\n  label?: string\n}\n\n/** Web: a lightweight CSS-animated SVG arc (keyframes live in GlobalStyles). */\nexport function Spinner({ size = 'md', color, label = 'Loading', ...props }: SpinnerProps) {\n  const px = spinnerSizes[size]\n  const stroke = useIconColor(color) ?? 'currentColor'\n  return (\n    <View role=\"progressbar\" aria-label={label} aria-busy {...props}>\n      <svg\n        className=\"aui-spinner\"\n        width={px}\n        height={px}\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        aria-hidden\n        style={{ color: stroke, display: 'block' }}\n      >\n        <circle cx=\"12\" cy=\"12\" r=\"9\" stroke=\"currentColor\" strokeOpacity=\"0.25\" strokeWidth=\"3\" />\n        <path\n          d=\"M21 12a9 9 0 0 0-9-9\"\n          stroke=\"currentColor\"\n          strokeWidth=\"3\"\n          strokeLinecap=\"round\"\n        />\n      </svg>\n    </View>\n  )\n}\n"
+    },
+    {
+      "path": "components/spinner/Spinner.native.tsx",
+      "type": "registry:ui",
+      "content": "import { useIconColor } from '@adv-ui/icons'\nimport { ActivityIndicator } from 'react-native'\nimport { View } from 'tamagui'\nimport { spinnerSizes } from './sizes'\nimport type { SpinnerProps } from './Spinner'\n\n/** Native: the platform ActivityIndicator, tinted with a theme color. */\nexport function Spinner({ size = 'md', color, label = 'Loading', ...props }: SpinnerProps) {\n  const resolved = useIconColor(color ?? '$color')\n  return (\n    <View\n      accessible\n      role=\"progressbar\"\n      aria-label={label}\n      aria-busy\n      width={spinnerSizes[size]}\n      height={spinnerSizes[size]}\n      alignItems=\"center\"\n      justifyContent=\"center\"\n      {...props}\n    >\n      <ActivityIndicator size={size === 'lg' ? 'large' : 'small'} color={resolved} />\n    </View>\n  )\n}\n\nexport type { SpinnerProps }\n"
+    },
+    {
+      "path": "components/spinner/sizes.ts",
+      "type": "registry:ui",
+      "content": "/** Pixel sizes shared by the web and native spinners. */\nexport const spinnerSizes = { sm: 16, md: 20, lg: 28 } as const\n"
+    },
+    {
+      "path": "components/spinner/index.ts",
+      "type": "registry:ui",
+      "content": "export { Spinner, type SpinnerProps } from './Spinner'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Sizes and colors",
+      "code": "import { HStack, Spinner } from '@adv-ui/core'\n\nexport default function SpinnerBasic() {\n  return (\n    <HStack gap=\"$4\" alignItems=\"center\">\n      <Spinner size=\"sm\" />\n      <Spinner size=\"md\" color=\"$primary\" />\n      <Spinner size=\"lg\" color=\"$success\" label=\"Syncing\" />\n    </HStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/spinner",
+  "dependencies": [
+    "@adv-ui/icons"
+  ],
+  "peerDependencies": [
+    "react-native",
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.1.0"
+}

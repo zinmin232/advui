@@ -1,0 +1,31 @@
+{
+  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "name": "hooks",
+  "title": "Hooks",
+  "type": "registry:lib",
+  "description": "Shared hooks: controllable state and reduced-motion detection.",
+  "files": [
+    {
+      "path": "hooks/useControllableState.ts",
+      "type": "registry:hook",
+      "content": "import { useCallback, useState } from 'react'\n\n/**\n * State that can be either controlled (`value` + `onChange`) or uncontrolled\n * (`defaultValue`). Every stateful component uses this so both styles work.\n */\nexport function useControllableState<T>({\n  value,\n  defaultValue,\n  onChange,\n}: {\n  value?: T\n  defaultValue: T\n  onChange?: (next: T) => void\n}): [T, (next: T | ((prev: T) => T)) => void] {\n  const [internal, setInternal] = useState(defaultValue)\n  const isControlled = value !== undefined\n  const current = isControlled ? value : internal\n\n  const setValue = useCallback(\n    (next: T | ((prev: T) => T)) => {\n      const resolved = typeof next === 'function' ? (next as (prev: T) => T)(current) : next\n      if (Object.is(resolved, current)) return\n      if (!isControlled) setInternal(resolved)\n      onChange?.(resolved)\n    },\n    [current, isControlled, onChange],\n  )\n\n  return [current, setValue]\n}\n"
+    },
+    {
+      "path": "hooks/useReducedMotion.native.ts",
+      "type": "registry:hook",
+      "content": "import { useEffect, useState } from 'react'\nimport { AccessibilityInfo } from 'react-native'\n\n/** `true` when \"Reduce Motion\" (iOS) / \"Remove animations\" (Android) is enabled. */\nexport function useReducedMotion(): boolean {\n  const [reduced, setReduced] = useState(false)\n\n  useEffect(() => {\n    let mounted = true\n    AccessibilityInfo.isReduceMotionEnabled().then((value) => {\n      if (mounted) setReduced(value)\n    })\n    const subscription = AccessibilityInfo.addEventListener('reduceMotionChanged', setReduced)\n    return () => {\n      mounted = false\n      subscription.remove()\n    }\n  }, [])\n\n  return reduced\n}\n"
+    },
+    {
+      "path": "hooks/useReducedMotion.ts",
+      "type": "registry:hook",
+      "content": "import { useEffect, useState } from 'react'\n\nconst QUERY = '(prefers-reduced-motion: reduce)'\n\n/** `true` when the user asked the OS/browser to minimise motion. */\nexport function useReducedMotion(): boolean {\n  const [reduced, setReduced] = useState(false)\n\n  useEffect(() => {\n    if (typeof window === 'undefined' || !window.matchMedia) return\n    const query = window.matchMedia(QUERY)\n    const update = () => setReduced(query.matches)\n    update()\n    query.addEventListener('change', update)\n    return () => query.removeEventListener('change', update)\n  }, [])\n\n  return reduced\n}\n"
+    }
+  ],
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "react-native"
+  ],
+  "registryDependencies": [],
+  "version": "0.1.0"
+}

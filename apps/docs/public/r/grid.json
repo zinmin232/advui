@@ -1,0 +1,37 @@
+{
+  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "name": "grid",
+  "title": "Grid",
+  "type": "registry:component",
+  "description": "Equal-width responsive columns that work identically on web and native.",
+  "category": "layout",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/layout/Grid.tsx",
+      "type": "registry:ui",
+      "content": "import { Children, type ReactNode, isValidElement } from 'react'\nimport { type SpaceTokens, type Token, View, type ViewProps, getTokenValue } from 'tamagui'\n\ntype Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'\nexport type ResponsiveColumns = number | ({ base?: number } & Partial<Record<Breakpoint, number>>)\n\nexport interface GridProps extends Omit<ViewProps, 'children' | 'gap'> {\n  children?: ReactNode\n  /** Column count, or a mobile-first map such as `{ base: 1, md: 2, lg: 3 }`. */\n  columns?: ResponsiveColumns\n  /** Space between cells (token). */\n  gap?: SpaceTokens\n}\n\nconst breakpoints: Breakpoint[] = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl']\nconst percent = (count: number) => `${100 / Math.max(1, count)}%` as const\n\n/**\n * Equal-width responsive grid built on flex-wrap so it behaves identically on\n * web, iOS and Android (CSS grid is not available in React Native).\n * Breakpoints compile to CSS media queries on web, so SSR output is stable.\n */\nexport function Grid({ children, columns = 1, gap = '$4', ...props }: GridProps) {\n  const half = (getTokenValue(gap as Token, 'space') as number) / 2\n  const map = typeof columns === 'number' ? { base: columns } : columns\n  const cellWidth: Record<string, unknown> = { width: percent(map.base ?? 1) }\n  for (const bp of breakpoints) {\n    const count = map[bp]\n    if (count !== undefined) cellWidth[`$${bp}`] = { width: percent(count) }\n  }\n\n  return (\n    <View flexDirection=\"row\" flexWrap=\"wrap\" marginHorizontal={-half} rowGap={gap} {...props}>\n      {Children.toArray(children).map((child, index) => (\n        <View\n          key={isValidElement(child) && child.key != null ? child.key : index}\n          paddingHorizontal={half}\n          {...(cellWidth as ViewProps)}\n        >\n          {child}\n        </View>\n      ))}\n    </View>\n  )\n}\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "grid",
+      "title": "Responsive stats",
+      "code": "import { Card, Grid, Text } from '@adv-ui/core'\n\nconst stats = [\n  { label: 'Revenue', value: '$45,231' },\n  { label: 'Subscriptions', value: '+2,350' },\n  { label: 'Sales', value: '+12,234' },\n  { label: 'Active now', value: '573' },\n]\n\nexport default function GridExample() {\n  return (\n    <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap=\"$4\" width=\"100%\">\n      {stats.map((s) => (\n        <Card key={s.label}>\n          <Card.Content gap=\"$1\">\n            <Text size=\"sm\" tone=\"muted\">\n              {s.label}\n            </Text>\n            <Text size=\"2xl\" weight=\"bold\">\n              {s.value}\n            </Text>\n          </Card.Content>\n        </Card>\n      ))}\n    </Grid>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/grid",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.1.0"
+}

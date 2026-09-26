@@ -1,0 +1,57 @@
+{
+  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "name": "typography",
+  "title": "Typography",
+  "type": "registry:component",
+  "description": "Text, Heading and Kbd components built on the type scale and semantic colors.",
+  "category": "foundations",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/typography/Text.tsx",
+      "type": "registry:ui",
+      "content": "import { type GetProps, Text as TamaguiText, styled } from 'tamagui'\n\nconst tones = {\n  default: { color: '$foreground' },\n  muted: { color: '$mutedForeground' },\n  primary: { color: '$primaryText' },\n  success: { color: '$successSoftForeground' },\n  warning: { color: '$warningSoftForeground' },\n  error: { color: '$errorSoftForeground' },\n  info: { color: '$infoSoftForeground' },\n  inherit: {},\n} as const\n\nconst sizes = {\n  xs: { fontSize: '$1', lineHeight: '$1' },\n  sm: { fontSize: '$2', lineHeight: '$2' },\n  base: { fontSize: '$3', lineHeight: '$3' },\n  lg: { fontSize: '$4', lineHeight: '$4' },\n  xl: { fontSize: '$5', lineHeight: '$5' },\n  '2xl': { fontSize: '$6', lineHeight: '$6' },\n  '3xl': { fontSize: '$7', lineHeight: '$7' },\n  '4xl': { fontSize: '$8', lineHeight: '$8' },\n  '5xl': { fontSize: '$9', lineHeight: '$9' },\n  '6xl': { fontSize: '$10', lineHeight: '$10' },\n} as const\n\nconst weights = {\n  normal: { fontWeight: '400' },\n  medium: { fontWeight: '500' },\n  semibold: { fontWeight: '600' },\n  bold: { fontWeight: '700' },\n} as const\n\n/** Body text. Sizes follow the type scale; `tone` maps to semantic theme colors. */\nexport const Text = styled(TamaguiText, {\n  name: 'Text',\n  fontFamily: '$body',\n  color: '$foreground',\n\n  variants: {\n    size: sizes,\n    weight: weights,\n    tone: tones,\n    truncate: {\n      true: { numberOfLines: 1, ellipsis: true },\n    },\n    mono: {\n      true: { fontFamily: '$mono' },\n    },\n  } as const,\n\n  defaultVariants: {\n    size: 'base',\n  },\n})\n\nexport type TextProps = GetProps<typeof Text>\nexport type TextSize = keyof typeof sizes\nexport type TextTone = keyof typeof tones\n"
+    },
+    {
+      "path": "components/typography/Heading.tsx",
+      "type": "registry:ui",
+      "content": "import { forwardRef } from 'react'\nimport type { TamaguiTextElement } from 'tamagui'\nimport { Text, type TextProps, type TextSize } from './Text'\n\ntype Level = 1 | 2 | 3 | 4 | 5 | 6\n\nconst defaultSizes: Record<Level, TextSize> = {\n  1: '4xl',\n  2: '3xl',\n  3: '2xl',\n  4: 'xl',\n  5: 'lg',\n  6: 'base',\n}\n\nexport type HeadingProps = TextProps & {\n  /** Semantic level (h1–h6). Visual size can be changed independently with `size`. */\n  level?: Level\n}\n\n/**\n * Semantic heading: renders `<h1>`–`<h6>` on web and exposes the `header`\n * role with its level to VoiceOver/TalkBack on native.\n */\nexport const Heading = forwardRef<TamaguiTextElement, HeadingProps>(function Heading(\n  { level = 2, size, weight = 'semibold', ...props },\n  ref,\n) {\n  return (\n    <Text\n      ref={ref}\n      role=\"heading\"\n      aria-level={level}\n      render={`h${level}`}\n      fontFamily=\"$heading\"\n      size={size ?? defaultSizes[level]}\n      weight={weight}\n      margin={0}\n      {...props}\n    />\n  )\n})\n"
+    },
+    {
+      "path": "components/typography/Kbd.tsx",
+      "type": "registry:ui",
+      "content": "import { type GetProps, Text as TamaguiText, styled } from 'tamagui'\n\n/** Keyboard key or shortcut hint, e.g. `<Kbd>Ctrl K</Kbd>`. Renders `<kbd>` on web. */\nexport const Kbd = styled(TamaguiText, {\n  name: 'Kbd',\n  render: 'kbd',\n  fontFamily: '$mono',\n  fontSize: '$1',\n  lineHeight: '$1',\n  color: '$mutedForeground',\n  backgroundColor: '$muted',\n  borderWidth: 1,\n  borderColor: '$border',\n  borderBottomWidth: 2,\n  borderRadius: '$sm',\n  paddingHorizontal: '$1.5',\n  paddingVertical: '$0.5',\n  userSelect: 'none',\n})\n\nexport type KbdProps = GetProps<typeof Kbd>\n"
+    },
+    {
+      "path": "components/typography/index.ts",
+      "type": "registry:ui",
+      "content": "export { Heading, type HeadingProps } from './Heading'\nexport { Kbd, type KbdProps } from './Kbd'\nexport { Text, type TextProps, type TextSize, type TextTone } from './Text'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "scale",
+      "title": "Type scale",
+      "code": "import { HStack, Heading, Kbd, Text, VStack } from '@adv-ui/core'\n\nexport default function TypographyScale() {\n  return (\n    <VStack gap=\"$2\">\n      <Heading level={1}>The quick brown fox</Heading>\n      <Heading level={2}>The quick brown fox</Heading>\n      <Heading level={3}>The quick brown fox</Heading>\n      <Heading level={4}>The quick brown fox</Heading>\n      <Text size=\"lg\">Large body text for introductions.</Text>\n      <Text>Base body text for most content.</Text>\n      <Text size=\"sm\">Small text for supporting content.</Text>\n      <Text size=\"xs\" tone=\"muted\">\n        Extra small for captions.\n      </Text>\n      <Text mono size=\"sm\">\n        pnpm add @adv-ui/core\n      </Text>\n      <HStack gap=\"$1\">\n        <Text size=\"sm\">Search with</Text>\n        <Kbd>Ctrl</Kbd>\n        <Kbd>K</Kbd>\n      </HStack>\n    </VStack>\n  )\n}\n"
+    },
+    {
+      "name": "tones",
+      "title": "Tones",
+      "code": "import { Text, VStack } from '@adv-ui/core'\n\nconst tones = ['default', 'muted', 'primary', 'success', 'warning', 'error', 'info'] as const\n\nexport default function TypographyTones() {\n  return (\n    <VStack gap=\"$1\">\n      {tones.map((tone) => (\n        <Text key={tone} tone={tone} weight=\"medium\">\n          {tone} text\n        </Text>\n      ))}\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/typography",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.1.0"
+}

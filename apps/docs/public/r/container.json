@@ -1,0 +1,38 @@
+{
+  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "name": "container",
+  "title": "Container",
+  "type": "registry:component",
+  "description": "Centers page content with a max width and responsive side padding.",
+  "category": "layout",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/layout/Container.tsx",
+      "type": "registry:ui",
+      "content": "import { breakpoints } from '@adv-ui/theme'\nimport { type GetProps, View, styled } from 'tamagui'\n\n/**\n * Horizontally centered, width-capped page container with responsive padding.\n */\nexport const Container = styled(View, {\n  name: 'Container',\n  width: '100%',\n  marginHorizontal: 'auto',\n  paddingHorizontal: '$4',\n  $md: { paddingHorizontal: '$6' },\n  $lg: { paddingHorizontal: '$8' },\n\n  variants: {\n    size: {\n      sm: { maxWidth: breakpoints.sm },\n      md: { maxWidth: breakpoints.md },\n      lg: { maxWidth: breakpoints.lg },\n      xl: { maxWidth: breakpoints.xl },\n      full: { maxWidth: '100%' },\n    },\n  } as const,\n\n  defaultVariants: {\n    size: 'xl',\n  },\n})\n\nexport type ContainerProps = GetProps<typeof Container>\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "container",
+      "title": "Page container",
+      "code": "import { Container, Text } from '@adv-ui/core'\n\nexport default function ContainerExample() {\n  return (\n    <Container size=\"sm\" backgroundColor=\"$muted\" borderRadius=\"$lg\" paddingVertical=\"$6\">\n      <Text>This content is centered and capped at the sm breakpoint (640px).</Text>\n    </Container>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/container",
+  "dependencies": [
+    "@adv-ui/theme"
+  ],
+  "peerDependencies": [
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.1.0"
+}

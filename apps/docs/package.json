@@ -1,0 +1,42 @@
+{
+  "name": "@adv-ui/docs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start --port 3000",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test",
+    "clean": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true})\"",
+    "predev": "node ../../scripts/generate-catalog.mjs",
+    "prebuild": "node ../../scripts/generate-catalog.mjs && node ../../scripts/build-registry.mjs",
+    "test:visual": "playwright test --project=visual",
+    "test:visual:update": "playwright test --project=visual --update-snapshots"
+  },
+  "dependencies": {
+    "@tamagui/theme": "2.7.7",
+    "@adv-ui/core": "workspace:*",
+    "@adv-ui/examples": "workspace:*",
+    "@adv-ui/icons": "workspace:*",
+    "@adv-ui/theme": "workspace:*",
+    "@adv-ui/utils": "workspace:*",
+    "next": "16.3.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native-web": "~0.21.0",
+    "shiki": "^4.4.3",
+    "tamagui": "2.7.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^22.15.0",
+    "@types/react": "~19.2.2",
+    "@types/react-dom": "~19.2.2",
+    "@adv-ui/eslint-config": "workspace:*",
+    "@adv-ui/tsconfig": "workspace:*",
+    "react-native": "0.86.3"
+  }
+}
