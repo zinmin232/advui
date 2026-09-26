@@ -39,9 +39,12 @@ export default defineConfig({
   ],
   // Tests run against the production build (`pnpm build` first).
   webServer: {
-    command: `pnpm exec next start --port ${port}`,
+    // Run Next directly: behind `pnpm exec` the stop signal never reaches the
+    // server on Linux and Playwright's teardown hangs.
+    command: `node node_modules/next/dist/bin/next start --port ${port}`,
     url: `http://localhost:${port}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
+    gracefulShutdown: { signal: 'SIGTERM', timeout: 5_000 },
   },
 })
