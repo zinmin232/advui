@@ -9,6 +9,7 @@ import { View } from 'tamagui'
 import { themeToCode, useThemeStore } from '../lib/theme-store'
 import { PreviewSurface } from './component-preview'
 import { Segmented } from './customizer-panel'
+import { withBasePath } from '../lib/site'
 
 type Values = Record<string, string | number | boolean>
 
@@ -254,7 +255,7 @@ export function Playground({
               size="sm"
               variant="link"
               iconAfter={<ExternalLinkIcon />}
-              render={<a href={`/playground?${query}`} />}
+              render={<a href={withBasePath(`/playground?${query}`)} />}
             >
               Open in Playground
             </Button>

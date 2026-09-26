@@ -9,13 +9,13 @@ npx adv-ui add --all
 npx adv-ui list
 ```
 
-| Option                                       | Description                                                          |
-| -------------------------------------------- | -------------------------------------------------------------------- |
-| `--registry <url or path>`                   | Registry to read (default: `adv-ui.json`, then https://adv-ui.dev/r) |
-| `--cwd <path>`                               | Project directory                                                    |
-| `--framework next\|expo\|react-native\|vite` | Skip detection in `init`                                             |
-| `--no-install`                               | Print the install command instead of running it                      |
-| `--overwrite`                                | Replace existing files                                               |
+| Option                                       | Description                                                                         |
+| -------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `--registry <url or path>`                   | Registry to read (default: `adv-ui.json`, then https://zinmin232.github.io/advui/r) |
+| `--cwd <path>`                               | Project directory                                                                   |
+| `--framework next\|expo\|react-native\|vite` | Skip detection in `init`                                                            |
+| `--no-install`                               | Print the install command instead of running it                                     |
+| `--overwrite`                                | Replace existing files                                                              |
 
 The registry is generated from component metadata by `pnpm registry:build` in
 the monorepo. License: MIT.

@@ -16,7 +16,7 @@ export interface CliConfig {
 
 export function defaultConfig(framework: Framework, srcDir: boolean): CliConfig {
   return {
-    $schema: 'https://adv-ui.dev/schema/config.json',
+    $schema: 'https://zinmin232.github.io/advui/schema/config.json',
     framework,
     uiDir: srcDir ? 'src/ui' : 'ui',
     registry: DEFAULT_REGISTRY,

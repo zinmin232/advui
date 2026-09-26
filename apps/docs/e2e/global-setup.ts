@@ -22,7 +22,7 @@ export default async function globalSetup(config: FullConfig) {
   if (!baseURL) return
   for (const route of routes) {
     // A failed warm-up is not a test failure; the test itself will report it.
-    await fetch(new URL(route, baseURL))
+    await fetch(new URL(route, baseURL), { signal: AbortSignal.timeout(60_000) })
       .then((response) => response.arrayBuffer())
       .catch(() => undefined)
   }

@@ -4,6 +4,7 @@ import { Alert, Heading, Text, VStack } from '@adv-ui/core'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { View } from 'tamagui'
+import { withBasePath } from '../lib/site'
 
 export const slugify = (value: string) =>
   value
@@ -101,8 +102,14 @@ export function C({ children }: { children: ReactNode }) {
 
 export function A({ href, children }: { href: string; children: ReactNode }) {
   const external = href.startsWith('http')
+  // Static files (`/r/button.json`) are not pages: link to them directly.
+  const file = /\.[a-z0-9]+$/i.test(href)
   return external ? (
     <a className="prose-link" href={href} target="_blank" rel="noreferrer">
+      {children}
+    </a>
+  ) : file ? (
+    <a className="prose-link" href={withBasePath(href)}>
       {children}
     </a>
   ) : (

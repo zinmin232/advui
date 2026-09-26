@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation'
 import { type RefObject, useCallback, useEffect, useRef, useState } from 'react'
 import { View } from 'tamagui'
 import { type NavCategory, type NavItem, type NavSection, sectionLinks } from '../lib/navigation'
+import { normalizePath } from '../lib/site'
 
 const STORAGE_KEY = 'aui-sidebar-sections'
 
@@ -263,7 +264,7 @@ export function SidebarNav({
   sections: NavSection[]
   onNavigate?: () => void
 }) {
-  const pathname = usePathname()
+  const pathname = normalizePath(usePathname())
   const navRef = useRef<HTMLElement>(null)
   const { isOpen, toggle } = useSectionState(sections, pathname)
   useActiveItemInView(navRef, pathname)

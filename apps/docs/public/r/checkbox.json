@@ -1,5 +1,5 @@
 {
-  "$schema": "https://adv-ui.dev/schema/registry-item.json",
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
   "name": "checkbox",
   "title": "Checkbox",
   "type": "registry:component",

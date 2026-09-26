@@ -7,6 +7,12 @@ one version.
 
 ## [Unreleased]
 
+### Added
+
+- The docs are published to GitHub Pages at https://zinmin232.github.io/advui/
+  by a new `Deploy docs` workflow (a static export under the `/advui` base
+  path). The CLI's default registry is now `https://zinmin232.github.io/advui/r`.
+
 ### Changed
 
 - Renamed the project to **Adv UI**:

@@ -12,8 +12,11 @@ export default defineConfig({
   // than three starves the server on a typical dev machine (CI keeps the default).
   workers: process.env.CI ? undefined : 3,
   retries: process.env.CI ? 2 : 0,
-  reporter: process.env.CI ? 'github' : 'list',
+  // CI: live progress in the log, annotations on the run, and an HTML report artifact.
+  reporter: process.env.CI ? [['list'], ['github'], ['html', { open: 'never' }]] : 'list',
   timeout: 60_000,
+  // Stop and report well before the CI job's own 30-minute limit.
+  globalTimeout: process.env.CI ? 15 * 60_000 : undefined,
   expect: {
     // Parallel workers share one `next start` server; client navigations can
     // take several seconds under that load even though every page is static.

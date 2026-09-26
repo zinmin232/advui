@@ -4,7 +4,7 @@ export const CLI_NAME = 'adv-ui'
 export const PACKAGE_SCOPE = '@adv-ui'
 export const CONFIG_FILE = 'adv-ui.json'
 /** Default remote registry. Override with `--registry` or the config file. */
-export const DEFAULT_REGISTRY = 'https://adv-ui.dev/r'
+export const DEFAULT_REGISTRY = 'https://zinmin232.github.io/advui/r'
 
 /** Packages every project needs, regardless of which components are added. */
 export const BASE_DEPENDENCIES = [

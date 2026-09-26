@@ -4,6 +4,8 @@ Cross-platform React components for **web, iOS and Android** — one codebase fo
 React, Next.js, React Native and Expo. Built on [Tamagui](https://tamagui.dev),
 themeable from a single config, accessible by default.
 
+**Docs, playground and component registry:** https://zinmin232.github.io/advui/
+
 ```tsx
 import { Button, Card, Input } from '@adv-ui/core'
 
@@ -157,7 +159,8 @@ What has been run on the development machine (Windows 11, Node 22, pnpm 12):
 | Expo on Android emulator (API 35, Expo Go): components, examples, theme switching, Select sheet, Dialog, Toast | ✅ (manual)                                                                                 |
 | Expo on iOS                                                                                                    | ⚠️ not run: needs macOS/Xcode. The iOS code path is covered only by jest-expo's iOS preset. |
 | Physical devices                                                                                               | ⚠️ not run                                                                                  |
-| GitHub Actions workflow (`.github/workflows/ci.yml`)                                                           | ⚠️ not run yet: no remote repository                                                        |
+| GitHub Actions on Ubuntu: `check` job (lint, typecheck, unit + native tests, build)                            | ✅                                                                                          |
+| GitHub Actions on Ubuntu: `e2e` job                                                                            | ⚠️ first run stalled; diagnostics added, being fixed                                        |
 
 Visual baselines are platform-specific (`*-win32.png`). On macOS or Linux, run
 `pnpm --filter @adv-ui/docs test:visual:update` to create baselines for

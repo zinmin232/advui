@@ -6,6 +6,7 @@ import { MonitorIcon, SmartphoneIcon } from '@adv-ui/icons'
 import { useState } from 'react'
 import { View } from 'tamagui'
 import { CodeBlock } from './code-block'
+import { withBasePath } from '../lib/site'
 
 type Viewport = 'desktop' | 'tablet' | 'mobile'
 const widths: Record<Exclude<Viewport, 'desktop'>, number> = { tablet: 768, mobile: 375 }
@@ -108,7 +109,7 @@ export function ComponentPreview({
               >
                 <iframe
                   title={`${title} at ${widths[viewport]}px`}
-                  src={`/preview/${slug}/${name}`}
+                  src={withBasePath(`/preview/${slug}/${name}`)}
                   style={{
                     width: widths[viewport],
                     maxWidth: '100%',

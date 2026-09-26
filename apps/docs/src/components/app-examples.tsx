@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { View } from 'tamagui'
 import { SiteHeader } from './site-header'
+import { withBasePath } from '../lib/site'
 
 export function ExamplesGallery() {
   return (
@@ -132,7 +133,7 @@ export function ExampleViewer({ slug }: { slug: string }) {
           <View alignItems="center">
             <iframe
               title={`${example.title} on a phone`}
-              src={`/examples/${example.slug}/frame`}
+              src={withBasePath(`/examples/${example.slug}/frame`)}
               style={{
                 width: 390,
                 height: 780,

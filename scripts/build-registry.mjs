@@ -117,7 +117,7 @@ mkdirSync(registryDir, { recursive: true })
 
 for (const item of items) {
   const output = {
-    $schema: 'https://adv-ui.dev/schema/registry-item.json',
+    $schema: 'https://zinmin232.github.io/advui/schema/registry-item.json',
     ...item,
     version: uiPackage.version,
     files: item.files.map((file) => ({
