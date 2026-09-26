@@ -1,0 +1,35 @@
+name: Update visual baselines
+
+# Screenshots differ per OS, so CI compares against Linux baselines made on the
+# same runner image. Run this after an intentional visual change, download the
+# `visual-baselines-linux` artifact into apps/docs/e2e/visual.spec.ts-snapshots/
+# and commit the images.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6 # version comes from "packageManager"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @adv-ui/docs exec playwright install --with-deps chromium
+      - run: pnpm --filter @adv-ui/docs build
+      - name: Write baselines
+        run: pnpm --filter @adv-ui/docs exec playwright test --project=visual --update-snapshots=all
+      - name: Check they reproduce
+        run: pnpm --filter @adv-ui/docs exec playwright test --project=visual
+      - uses: actions/upload-artifact@v7
+        with:
+          name: visual-baselines-linux
+          path: apps/docs/e2e/visual.spec.ts-snapshots/*-linux.png
+          if-no-files-found: error
