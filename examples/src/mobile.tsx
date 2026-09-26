@@ -12,7 +12,7 @@ import {
   Text,
   VStack,
   toast,
-} from '@adv-ui/core'
+} from '@advui/core'
 import {
   BellIcon,
   ChevronRightIcon,
@@ -26,7 +26,7 @@ import {
   ShoppingCartIcon,
   StarIcon,
   UserIcon,
-} from '@adv-ui/icons'
+} from '@advui/icons'
 import { type ReactNode, useState } from 'react'
 import { View } from 'tamagui'
 import { InputIcon, avatarUrl } from './shared'

@@ -11,8 +11,8 @@ import {
   Text,
   VStack,
   toast,
-} from '@adv-ui/core'
-import { HeartIcon, MinusIcon, PlusIcon, ShoppingCartIcon, StarIcon } from '@adv-ui/icons'
+} from '@advui/core'
+import { HeartIcon, MinusIcon, PlusIcon, ShoppingCartIcon, StarIcon } from '@advui/icons'
 import { useState } from 'react'
 import { Image } from 'react-native'
 import { View } from 'tamagui'

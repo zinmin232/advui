@@ -19,8 +19,8 @@ const root = fileURLToPath(new URL('..', import.meta.url))
 // Updated by this script after each rename, so it always describes the repo.
 const current = {
   name: 'Adv UI',
-  slug: 'adv-ui',
-  scope: '@adv-ui',
+  slug: 'advui',
+  scope: '@advui',
   short: 'aUI',
 }
 // Storage keys and CSS names use the lowercase short name (`uui-color-mode`);
@@ -83,6 +83,7 @@ const ignoredDirs = new Set([
   'node_modules',
   '.git',
   '.next',
+  'out',
   '.turbo',
   '.expo',
   'dist',
@@ -134,6 +135,7 @@ for (const file of walk(root)) {
   let output = source
   let hits = 0
   for (const [from, to] of replacements) {
+    if (from === to) continue
     const parts = output.split(from)
     hits += parts.length - 1
     output = parts.join(to)

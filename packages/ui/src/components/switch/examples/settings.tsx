@@ -1,4 +1,4 @@
-import { HStack, Label, Separator, Switch, Text, VStack } from '@adv-ui/core'
+import { HStack, Label, Separator, Switch, Text, VStack } from '@advui/core'
 import { useState } from 'react'
 
 export default function SwitchSettings() {

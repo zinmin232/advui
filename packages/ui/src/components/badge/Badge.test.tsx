@@ -1,4 +1,4 @@
-import { CheckIcon } from '@adv-ui/icons'
+import { CheckIcon } from '@advui/icons'
 import { describe, expect, it } from 'vitest'
 import { renderWithProvider, screen } from '../../../test/utils'
 import { Badge } from './Badge'

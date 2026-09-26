@@ -1,4 +1,4 @@
-import { Label, Select, VStack } from '@adv-ui/core'
+import { Label, Select, VStack } from '@advui/core'
 import { useState } from 'react'
 
 export default function SelectBasic() {

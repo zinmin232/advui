@@ -1,6 +1,6 @@
 'use client'
 
-import { HStack, Text, createIcon } from '@adv-ui/core'
+import { HStack, Text, createIcon } from '@advui/core'
 import Link from 'next/link'
 import { View } from 'tamagui'
 import { siteConfig } from '../lib/site'

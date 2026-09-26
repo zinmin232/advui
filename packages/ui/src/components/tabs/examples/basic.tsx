@@ -1,4 +1,4 @@
-import { Button, Card, Input, Label, Tabs, VStack } from '@adv-ui/core'
+import { Button, Card, Input, Label, Tabs, VStack } from '@advui/core'
 
 export default function TabsBasic() {
   return (

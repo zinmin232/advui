@@ -16,8 +16,8 @@ import {
   Tooltip,
   VStack,
   toast,
-} from '@adv-ui/core'
-import { EditIcon, PlusIcon, SearchIcon, TrashIcon } from '@adv-ui/icons'
+} from '@advui/core'
+import { EditIcon, PlusIcon, SearchIcon, TrashIcon } from '@advui/icons'
 import { useMemo, useState } from 'react'
 import { InputIcon, SectionTitle, avatarUrl, people } from './shared'
 

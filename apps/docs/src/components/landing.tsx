@@ -17,7 +17,7 @@ import {
   Text,
   VStack,
   toast,
-} from '@adv-ui/core'
+} from '@advui/core'
 import {
   ArrowRightIcon,
   CheckCircleIcon,
@@ -26,7 +26,7 @@ import {
   PaletteIcon,
   SmartphoneIcon,
   StarIcon,
-} from '@adv-ui/icons'
+} from '@advui/icons'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { View } from 'tamagui'

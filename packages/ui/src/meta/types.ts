@@ -49,7 +49,7 @@ export type PlaygroundControl =
   | { prop: string; type: 'number'; default: number; min?: number; max?: number; step?: number }
 
 export interface PlaygroundSpec {
-  /** Export name from `@adv-ui/core`. */
+  /** Export name from `@advui/core`. */
   component: string
   controls: PlaygroundControl[]
   /** Text rendered as children (omit for void components). */

@@ -1,4 +1,4 @@
-import { shadows } from '@adv-ui/theme'
+import { shadows } from '@advui/theme'
 import { forwardRef } from 'react'
 import {
   SwitchFrame as TamaguiSwitchFrame,

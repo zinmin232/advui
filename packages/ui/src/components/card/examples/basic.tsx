@@ -1,4 +1,4 @@
-import { Button, Card, Input, Label, VStack } from '@adv-ui/core'
+import { Button, Card, Input, Label, VStack } from '@advui/core'
 
 export default function CardBasic() {
   return (

@@ -1,4 +1,4 @@
-import { shadows } from '@adv-ui/theme'
+import { shadows } from '@advui/theme'
 import { forwardRef } from 'react'
 import { type GetProps, type TamaguiTextElement, View, styled, withStaticProperties } from 'tamagui'
 import { Text } from '../typography/Text'

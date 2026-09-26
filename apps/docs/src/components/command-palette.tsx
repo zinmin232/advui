@@ -1,6 +1,6 @@
 'use client'
 
-import { Badge, Dialog, HStack, Input, Text, VStack } from '@adv-ui/core'
+import { Badge, Dialog, HStack, Input, Text, VStack } from '@advui/core'
 import {
   ArrowRightIcon,
   CodeIcon,
@@ -12,8 +12,8 @@ import {
   SearchIcon,
   SmartphoneIcon,
   SunIcon,
-} from '@adv-ui/icons'
-import { themePresetNames, themePresets } from '@adv-ui/theme'
+} from '@advui/icons'
+import { themePresetNames, themePresets } from '@advui/theme'
 import { useRouter } from 'next/navigation'
 import {
   type ReactNode,

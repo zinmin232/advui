@@ -1,4 +1,4 @@
-import { Select, VStack } from '@adv-ui/core'
+import { Select, VStack } from '@advui/core'
 
 export default function SelectGroups() {
   return (

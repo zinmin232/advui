@@ -1,4 +1,4 @@
-# @adv-ui/expo-playground
+# @advui/expo-playground
 
 Expo Router app showing every component and the app examples on iOS and
 Android. It runs in Expo Go, with no native build required.
@@ -7,7 +7,7 @@ Android. It runs in Expo Go, with no native build required.
 pnpm dev:expo      # scan the QR code with Expo Go
 pnpm android       # Android device or emulator
 pnpm ios           # iOS simulator (macOS)
-pnpm --filter @adv-ui/expo-playground android:emulator   # Windows-friendly emulator launcher
+pnpm --filter @advui/expo-playground android:emulator   # Windows-friendly emulator launcher
 ```
 
 Screens: `app/index.tsx` (metadata-driven home),

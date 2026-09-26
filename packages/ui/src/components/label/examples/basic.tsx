@@ -1,4 +1,4 @@
-import { Checkbox, HStack, Input, Label, VStack } from '@adv-ui/core'
+import { Checkbox, HStack, Input, Label, VStack } from '@advui/core'
 
 export default function LabelBasic() {
   return (

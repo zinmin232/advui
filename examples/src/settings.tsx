@@ -15,7 +15,7 @@ import {
   Textarea,
   VStack,
   toast,
-} from '@adv-ui/core'
+} from '@advui/core'
 import { useState } from 'react'
 import { SectionTitle, avatarUrl } from './shared'
 

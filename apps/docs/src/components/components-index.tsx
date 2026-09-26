@@ -1,8 +1,8 @@
 'use client'
 
-import type { CategoryMeta, ComponentMeta, RoadmapItem } from '@adv-ui/core/meta'
-import { Badge, Card, Grid, HStack, Input, Text, VStack } from '@adv-ui/core'
-import { SearchIcon } from '@adv-ui/icons'
+import type { CategoryMeta, ComponentMeta, RoadmapItem } from '@advui/core/meta'
+import { Badge, Card, Grid, HStack, Input, Text, VStack } from '@advui/core'
+import { SearchIcon } from '@advui/icons'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { View } from 'tamagui'

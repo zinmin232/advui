@@ -1,8 +1,8 @@
 'use client'
 
-import type { ComponentStatus } from '@adv-ui/core/meta'
-import { HStack, Text, VStack } from '@adv-ui/core'
-import { ChevronRightIcon } from '@adv-ui/icons'
+import type { ComponentStatus } from '@advui/core/meta'
+import { HStack, Text, VStack } from '@advui/core'
+import { ChevronRightIcon } from '@advui/icons'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { type RefObject, useCallback, useEffect, useRef, useState } from 'react'

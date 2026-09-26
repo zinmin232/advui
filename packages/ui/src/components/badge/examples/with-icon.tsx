@@ -1,5 +1,5 @@
-import { Badge, HStack } from '@adv-ui/core'
-import { CheckIcon, StarIcon } from '@adv-ui/icons'
+import { Badge, HStack } from '@advui/core'
+import { CheckIcon, StarIcon } from '@advui/icons'
 
 export default function BadgeWithIcon() {
   return (

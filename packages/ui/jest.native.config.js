@@ -10,7 +10,7 @@ const allow = [
   'tamagui',
   '@tamagui[+/].*',
   'react-native-svg',
-  '@adv-ui[+/].*',
+  '@advui[+/].*',
 ].join('|')
 
 module.exports = {

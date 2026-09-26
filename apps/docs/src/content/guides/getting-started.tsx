@@ -53,16 +53,16 @@ export async function Introduction() {
       <H2 id="packages">Packages</H2>
       <UL>
         <LI>
-          <C>@adv-ui/core</C> — components and <C>UniversalProvider</C>
+          <C>@advui/core</C> — components and <C>UniversalProvider</C>
         </LI>
         <LI>
-          <C>@adv-ui/theme</C> — tokens, color presets and <C>createUniversalConfig()</C>
+          <C>@advui/theme</C> — tokens, color presets and <C>createUniversalConfig()</C>
         </LI>
         <LI>
-          <C>@adv-ui/icons</C> — the icon abstraction and a tree-shakable default set
+          <C>@advui/icons</C> — the icon abstraction and a tree-shakable default set
         </LI>
         <LI>
-          <C>@adv-ui/utils</C> — color math (OKLCH, WCAG contrast) and helpers
+          <C>@advui/utils</C> — color math (OKLCH, WCAG contrast) and helpers
         </LI>
         <LI>
           <C>{siteConfig.cliName}</C> — CLI for copying component source
@@ -106,14 +106,14 @@ export async function Installation() {
         Install the core package. Peer dependencies (Tamagui and React Native Web on web) are
         installed automatically by pnpm and npm 7+.
       </P>
-      <Code lang="bash" code={`pnpm add @adv-ui/core @adv-ui/theme @adv-ui/icons tamagui`} />
+      <Code lang="bash" code={`pnpm add @advui/core @advui/theme @advui/icons tamagui`} />
       <P>Or let the CLI detect your framework and do it for you:</P>
       <Code lang="bash" code={`npx ${siteConfig.cliName} init`} />
       <H2 id="config">Create a config</H2>
       <P>One config drives every component. Pick a preset or pass your brand colors:</P>
       <Code
         title="tamagui.config.ts"
-        code={`import { createUniversalConfig } from '@adv-ui/theme'
+        code={`import { createUniversalConfig } from '@advui/theme'
 
 export const config = createUniversalConfig({
   preset: 'indigo',          // or 'violet', 'emerald', 'rose', 'slate'…
@@ -131,7 +131,7 @@ export default config`}
         code={`import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['@adv-ui/core', '@adv-ui/theme', '@adv-ui/icons', '@adv-ui/utils', 'react-native-web'],
+  transpilePackages: ['@advui/core', '@advui/theme', '@advui/icons', '@advui/utils', 'react-native-web'],
   turbopack: {
     resolveAlias: { 'react-native': 'react-native-web' },
     resolveExtensions: ['.web.tsx', '.web.ts', '.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'],
@@ -148,7 +148,7 @@ export default nextConfig`}
         title="app/providers.tsx"
         code={`'use client'
 
-import { UniversalProvider } from '@adv-ui/core'
+import { UniversalProvider } from '@advui/core'
 import { config } from '../tamagui.config'
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -162,7 +162,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       </P>
       <Code
         title="app/_layout.tsx"
-        code={`import { UniversalProvider } from '@adv-ui/core'
+        code={`import { UniversalProvider } from '@advui/core'
 import { Stack } from 'expo-router'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { config } from '../tamagui.config'
@@ -190,7 +190,7 @@ export default function RootLayout() {
       </Callout>
       <H2 id="first-component">Use a component</H2>
       <Code
-        code={`import { Button, Card, Input } from '@adv-ui/core'
+        code={`import { Button, Card, Input } from '@advui/core'
 
 export function ProfileCard() {
   return (
@@ -237,7 +237,7 @@ export async function Cli() {
       <UL>
         <LI>Detects Next.js, Expo, React Native or Vite and your package manager.</LI>
         <LI>
-          Writes <C>adv-ui.json</C> (target folder, registry) and a <C>tamagui.config.ts</C>.
+          Writes <C>advui.json</C> (target folder, registry) and a <C>tamagui.config.ts</C>.
         </LI>
         <LI>
           Installs the theme, icons, utils and Tamagui packages, and prints framework setup notes.
@@ -268,7 +268,7 @@ export async function Cli() {
         code={`{
   "name": "button",
   "type": "registry:component",
-  "dependencies": ["@adv-ui/icons"],
+  "dependencies": ["@advui/icons"],
   "registryDependencies": ["spinner"],
   "files": [{ "path": "components/button/Button.tsx", "content": "…" }]
 }`}

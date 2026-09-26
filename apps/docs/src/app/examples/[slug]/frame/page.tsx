@@ -1,4 +1,4 @@
-import { appExamples } from '@adv-ui/examples/meta'
+import { appExamples } from '@advui/examples/meta'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { ExampleFrame } from '../../../../components/app-examples'

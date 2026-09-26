@@ -1,7 +1,7 @@
 'use client'
 
-import { HStack, IconButton, Text, Tooltip } from '@adv-ui/core'
-import { CheckIcon, CopyIcon } from '@adv-ui/icons'
+import { HStack, IconButton, Text, Tooltip } from '@advui/core'
+import { CheckIcon, CopyIcon } from '@advui/icons'
 import { useState } from 'react'
 import { View } from 'tamagui'
 

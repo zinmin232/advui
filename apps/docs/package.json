@@ -1,5 +1,5 @@
 {
-  "name": "@adv-ui/docs",
+  "name": "@advui/docs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -17,11 +17,11 @@
   },
   "dependencies": {
     "@tamagui/theme": "2.7.7",
-    "@adv-ui/core": "workspace:*",
-    "@adv-ui/examples": "workspace:*",
-    "@adv-ui/icons": "workspace:*",
-    "@adv-ui/theme": "workspace:*",
-    "@adv-ui/utils": "workspace:*",
+    "@advui/core": "workspace:*",
+    "@advui/examples": "workspace:*",
+    "@advui/icons": "workspace:*",
+    "@advui/theme": "workspace:*",
+    "@advui/utils": "workspace:*",
     "next": "16.3.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -35,8 +35,8 @@
     "@types/node": "^22.15.0",
     "@types/react": "~19.2.2",
     "@types/react-dom": "~19.2.2",
-    "@adv-ui/eslint-config": "workspace:*",
-    "@adv-ui/tsconfig": "workspace:*",
+    "@advui/eslint-config": "workspace:*",
+    "@advui/tsconfig": "workspace:*",
     "react-native": "0.86.3"
   }
 }

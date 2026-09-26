@@ -30,7 +30,7 @@ export async function ThemeGuide() {
       <CustomizerControls compact />
       <H2 id="config">Config</H2>
       <Code
-        code={`import { createUniversalConfig } from '@adv-ui/theme'
+        code={`import { createUniversalConfig } from '@advui/theme'
 
 export const config = createUniversalConfig({
   preset: 'violet',
@@ -92,7 +92,7 @@ export const config = createUniversalConfig({
       </P>
       <Code
         code={`import { updateTheme } from '@tamagui/theme'
-import { createThemeColors } from '@adv-ui/theme'
+import { createThemeColors } from '@advui/theme'
 
 const themes = createThemeColors({ primary: '#e11d48' })
 updateTheme({ name: 'light', theme: themes.light })
@@ -178,7 +178,7 @@ export async function SpacingGuide() {
       </P>
       <ShadowScale />
       <Code
-        code={`import { shadows } from '@adv-ui/theme'\n\nconst Panel = styled(View, { ...shadows.md })`}
+        code={`import { shadows } from '@advui/theme'\n\nconst Panel = styled(View, { ...shadows.md })`}
       />
       <H2 id="breakpoints">Breakpoints</H2>
       <P>
@@ -203,7 +203,7 @@ export async function IconsGuide() {
     <>
       <H2 id="usage">Usage</H2>
       <Code
-        code={`import { Icon, SearchIcon } from '@adv-ui/icons'
+        code={`import { Icon, SearchIcon } from '@advui/icons'
 
 <SearchIcon size={20} color="$mutedForeground" />   // tree-shakable named import
 <Icon name="search" />                              // by name (resolved through IconProvider)`}

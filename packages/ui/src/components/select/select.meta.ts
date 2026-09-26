@@ -12,7 +12,7 @@ export default defineMeta({
   exports: ['Select'],
   files: ['components/select/Select.tsx', 'components/select/index.ts'],
   keywords: ['dropdown', 'picker', 'listbox', 'combobox', 'options'],
-  usage: `import { Label, Select } from '@adv-ui/core'
+  usage: `import { Label, Select } from '@advui/core'
 
 <Label htmlFor="country">Country</Label>
 <Select id="country" value={country} onValueChange={setCountry} placeholder="Choose…">

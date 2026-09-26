@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Textarea'],
   files: ['components/textarea/Textarea.tsx', 'components/textarea/index.ts'],
   keywords: ['multiline', 'comment', 'message', 'bio'],
-  usage: `import { Textarea } from '@adv-ui/core'
+  usage: `import { Textarea } from '@advui/core'
 
 <Textarea aria-label="Message" placeholder="Type your message…" />`,
   parts: [

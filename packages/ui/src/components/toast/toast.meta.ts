@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['toast', 'Toaster'],
   files: ['components/toast/Toaster.tsx', 'components/toast/index.ts'],
   keywords: ['notification', 'snackbar', 'message', 'sonner'],
-  usage: `import { toast } from '@adv-ui/core'
+  usage: `import { toast } from '@advui/core'
 
 toast.success('Profile saved', { description: 'Your changes are live.' })`,
   parts: [

@@ -1,4 +1,4 @@
-import { HStack, Skeleton, VStack } from '@adv-ui/core'
+import { HStack, Skeleton, VStack } from '@advui/core'
 
 export default function SkeletonCard() {
   return (

@@ -28,7 +28,7 @@
     {
       "name": "basic",
       "title": "Labelling controls",
-      "code": "import { Checkbox, HStack, Input, Label, VStack } from '@adv-ui/core'\n\nexport default function LabelBasic() {\n  return (\n    <VStack gap=\"$4\" width=\"100%\" maxWidth=\"$80\">\n      <VStack gap=\"$2\">\n        <Label htmlFor=\"full-name\" required>\n          Full name\n        </Label>\n        <Input id=\"full-name\" required placeholder=\"Ada Lovelace\" />\n      </VStack>\n      <HStack gap=\"$2\">\n        <Checkbox id=\"remember\" />\n        <Label htmlFor=\"remember\">Remember me</Label>\n      </HStack>\n    </VStack>\n  )\n}\n"
+      "code": "import { Checkbox, HStack, Input, Label, VStack } from '@advui/core'\n\nexport default function LabelBasic() {\n  return (\n    <VStack gap=\"$4\" width=\"100%\" maxWidth=\"$80\">\n      <VStack gap=\"$2\">\n        <Label htmlFor=\"full-name\" required>\n          Full name\n        </Label>\n        <Input id=\"full-name\" required placeholder=\"Ada Lovelace\" />\n      </VStack>\n      <HStack gap=\"$2\">\n        <Checkbox id=\"remember\" />\n        <Label htmlFor=\"remember\">Remember me</Label>\n      </HStack>\n    </VStack>\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/label",

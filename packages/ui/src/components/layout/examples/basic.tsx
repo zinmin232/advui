@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, HStack, Spacer, Text, VStack } from '@adv-ui/core'
+import { Avatar, Badge, Button, HStack, Spacer, Text, VStack } from '@advui/core'
 
 export default function StackBasic() {
   return (

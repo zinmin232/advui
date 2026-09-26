@@ -1,4 +1,4 @@
-# @adv-ui/utils
+# @advui/utils
 
 Framework-free helpers used by Adv UI.
 

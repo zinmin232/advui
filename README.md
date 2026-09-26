@@ -7,7 +7,7 @@ themeable from a single config, accessible by default.
 **Docs, playground and component registry:** https://zinmin232.github.io/advui/
 
 ```tsx
-import { Button, Card, Input } from '@adv-ui/core'
+import { Button, Card, Input } from '@advui/core'
 
 export function ProfileCard() {
   return (
@@ -43,27 +43,27 @@ The same file renders DOM elements in Next.js and native views in Expo.
   rings and reduced motion. Axe checks run in e2e for light and dark mode.
 - **Docs site** — interactive previews, a playground, a live theme customizer,
   ⌘K search and full API tables.
-- **CLI + registry** — `npx adv-ui add dialog` copies source into your app,
+- **CLI + registry** — `npx advui add dialog` copies source into your app,
   shadcn-style.
 - **Expo playground** — every component and seven app screens, running in Expo
   Go.
 
 ## Repository layout
 
-| Path                     | What it is                                                                      |
-| ------------------------ | ------------------------------------------------------------------------------- |
-| `packages/ui`            | `@adv-ui/core`: components, provider, hooks, component metadata                 |
-| `packages/theme`         | `@adv-ui/theme`: tokens, palettes, theme generation, `createUniversalConfig`    |
-| `packages/icons`         | `@adv-ui/icons`: Lucide-based icons for web (SVG) and native (react-native-svg) |
-| `packages/utils`         | `@adv-ui/utils`: color math (OKLCH, contrast), event helpers                    |
-| `packages/cli`           | `adv-ui`: CLI (`init`, `add`, `list`) that reads the registry                   |
-| `packages/eslint-config` | Shared ESLint flat config (bans color literals in library code)                 |
-| `packages/tsconfig`      | Shared strict TypeScript configs                                                |
-| `apps/docs`              | Next.js 16 documentation site                                                   |
-| `apps/expo`              | Expo Router app (Expo Go compatible)                                            |
-| `examples`               | `@adv-ui/examples`: login, dashboard, admin, settings, product, mobile screens  |
-| `registry`               | Generated registry JSON consumed by the CLI                                     |
-| `scripts`                | Catalog/registry generators, `create-component`, `rename`                       |
+| Path                     | What it is                                                                     |
+| ------------------------ | ------------------------------------------------------------------------------ |
+| `packages/ui`            | `@advui/core`: components, provider, hooks, component metadata                 |
+| `packages/theme`         | `@advui/theme`: tokens, palettes, theme generation, `createUniversalConfig`    |
+| `packages/icons`         | `@advui/icons`: Lucide-based icons for web (SVG) and native (react-native-svg) |
+| `packages/utils`         | `@advui/utils`: color math (OKLCH, contrast), event helpers                    |
+| `packages/cli`           | `advui`: CLI (`init`, `add`, `list`) that reads the registry                   |
+| `packages/eslint-config` | Shared ESLint flat config (bans color literals in library code)                |
+| `packages/tsconfig`      | Shared strict TypeScript configs                                               |
+| `apps/docs`              | Next.js 16 documentation site                                                  |
+| `apps/expo`              | Expo Router app (Expo Go compatible)                                           |
+| `examples`               | `@advui/examples`: login, dashboard, admin, settings, product, mobile screens  |
+| `registry`               | Generated registry JSON consumed by the CLI                                    |
+| `scripts`                | Catalog/registry generators, `create-component`, `rename`                      |
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for how the pieces fit together.
 
@@ -114,19 +114,19 @@ folders, such as `src/app/preview/[slug]/[example]`. Save that route's
 not affected.
 
 **Android emulator on Windows.** Metro can advertise an address the emulator
-can't reach. Run `pnpm --filter @adv-ui/expo-playground android:emulator`
+can't reach. Run `pnpm --filter @advui/expo-playground android:emulator`
 instead. It sets up `adb reverse`, starts Metro on `127.0.0.1` and opens the
 app in Expo Go.
 
 ## Using it in an app
 
 ```bash
-pnpm add @adv-ui/core @adv-ui/theme @adv-ui/icons tamagui
+pnpm add @advui/core @advui/theme @advui/icons tamagui
 ```
 
 ```ts
 // tamagui.config.ts
-import { createUniversalConfig } from '@adv-ui/theme'
+import { createUniversalConfig } from '@advui/theme'
 
 export const config = createUniversalConfig({ preset: 'indigo', radius: 'md' })
 export default config
@@ -141,8 +141,8 @@ runtime themes.
 To own the source instead of installing the package:
 
 ```bash
-npx adv-ui init
-npx adv-ui add button dialog
+npx advui init
+npx advui add button dialog
 ```
 
 ## Verification status

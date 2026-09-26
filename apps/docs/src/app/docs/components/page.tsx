@@ -1,4 +1,4 @@
-import { categories, components, roadmap } from '@adv-ui/core/meta'
+import { categories, components, roadmap } from '@advui/core/meta'
 import type { Metadata } from 'next'
 import { ComponentsIndex } from '../../../components/components-index'
 

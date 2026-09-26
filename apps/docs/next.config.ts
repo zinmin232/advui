@@ -12,11 +12,11 @@ const nextConfig: NextConfig = {
   ...(staticExport ? { output: 'export' as const, trailingSlash: true } : {}),
   // Workspace packages ship TypeScript source; react-native-web ships untranspiled ESM.
   transpilePackages: [
-    '@adv-ui/core',
-    '@adv-ui/theme',
-    '@adv-ui/icons',
-    '@adv-ui/utils',
-    '@adv-ui/examples',
+    '@advui/core',
+    '@advui/theme',
+    '@advui/icons',
+    '@advui/utils',
+    '@advui/examples',
     'react-native-web',
   ],
   turbopack: {

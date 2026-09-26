@@ -1,4 +1,4 @@
-import { createUniversalConfig } from '@adv-ui/theme'
+import { createUniversalConfig } from '@advui/theme'
 import { type RenderOptions, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { ReactElement } from 'react'

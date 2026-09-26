@@ -1,4 +1,4 @@
-import { useIconColor } from '@adv-ui/icons'
+import { useIconColor } from '@advui/icons'
 import { View, type ViewProps } from 'tamagui'
 import { spinnerSizes } from './sizes'
 

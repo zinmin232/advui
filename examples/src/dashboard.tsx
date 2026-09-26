@@ -9,8 +9,8 @@ import {
   Tabs,
   Text,
   VStack,
-} from '@adv-ui/core'
-import { CreditCardIcon, DownloadIcon, PackageIcon, UsersIcon, BarChartIcon } from '@adv-ui/icons'
+} from '@advui/core'
+import { CreditCardIcon, DownloadIcon, PackageIcon, UsersIcon, BarChartIcon } from '@advui/icons'
 import { View } from 'tamagui'
 import { Kpi, SectionTitle, avatarUrl, people } from './shared'
 

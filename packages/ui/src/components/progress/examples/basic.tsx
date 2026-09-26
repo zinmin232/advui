@@ -1,4 +1,4 @@
-import { Button, HStack, Progress, Text, VStack } from '@adv-ui/core'
+import { Button, HStack, Progress, Text, VStack } from '@advui/core'
 import { useEffect, useState } from 'react'
 
 export default function ProgressBasic() {

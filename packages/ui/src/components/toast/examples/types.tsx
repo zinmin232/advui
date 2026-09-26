@@ -1,4 +1,4 @@
-import { Button, HStack, toast } from '@adv-ui/core'
+import { Button, HStack, toast } from '@advui/core'
 
 export default function ToastTypes() {
   return (

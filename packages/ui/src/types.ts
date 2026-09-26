@@ -1,4 +1,4 @@
-import type { UniversalConfig } from '@adv-ui/theme'
+import type { UniversalConfig } from '@advui/theme'
 
 // Registers Adv UI's tokens and themes with Tamagui so props like
 // `backgroundColor="$primary"` and `padding="$4"` are type-checked.

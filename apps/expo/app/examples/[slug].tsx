@@ -1,5 +1,5 @@
-import { Text } from '@adv-ui/core'
-import { getAppExample } from '@adv-ui/examples'
+import { Text } from '@advui/core'
+import { getAppExample } from '@advui/examples'
 import { Stack, useLocalSearchParams } from 'expo-router'
 import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native'
 

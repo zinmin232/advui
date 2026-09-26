@@ -1,10 +1,10 @@
-# @adv-ui/icons
+# @advui/icons
 
 Lucide icons as Tamagui-aware components for web (SVG) and native
 (react-native-svg).
 
 ```tsx
-import { SearchIcon, IconDefaults, createIcon } from '@adv-ui/icons'
+import { SearchIcon, IconDefaults, createIcon } from '@advui/icons'
 
 <SearchIcon size={16} color="$mutedForeground" />
 
@@ -15,6 +15,6 @@ import { SearchIcon, IconDefaults, createIcon } from '@adv-ui/icons'
 
 Icons are decorative (`aria-hidden`) unless you pass `aria-label`. Colors
 accept theme tokens. To add icons, edit the list in
-`scripts/generate-icons.mjs` and run `pnpm --filter @adv-ui/icons generate`.
+`scripts/generate-icons.mjs` and run `pnpm --filter @advui/icons generate`.
 
 License: MIT. Icon artwork from [Lucide](https://lucide.dev) (ISC).

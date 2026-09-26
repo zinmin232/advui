@@ -12,7 +12,7 @@ export default defineMeta({
   exports: ['Checkbox'],
   files: ['components/checkbox/Checkbox.tsx', 'components/checkbox/index.ts'],
   keywords: ['check', 'tick', 'option', 'terms', 'indeterminate'],
-  usage: `import { Checkbox, HStack, Label } from '@adv-ui/core'
+  usage: `import { Checkbox, HStack, Label } from '@advui/core'
 
 <HStack gap="$2">
   <Checkbox id="terms" checked={accepted} onCheckedChange={setAccepted} />

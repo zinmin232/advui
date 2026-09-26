@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Dialog'],
   files: ['components/dialog/Dialog.tsx', 'components/dialog/index.ts'],
   keywords: ['modal', 'popup', 'lightbox', 'overlay'],
-  usage: `import { Button, Dialog } from '@adv-ui/core'
+  usage: `import { Button, Dialog } from '@advui/core'
 
 <Dialog>
   <Dialog.Trigger asChild>

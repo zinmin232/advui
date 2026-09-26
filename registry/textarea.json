@@ -28,7 +28,7 @@
     {
       "name": "basic",
       "title": "With label and hint",
-      "code": "import { Label, Text, Textarea, VStack } from '@adv-ui/core'\n\nexport default function TextareaBasic() {\n  return (\n    <VStack gap=\"$2\" width=\"100%\" maxWidth=\"$96\">\n      <Label htmlFor=\"feedback\">Feedback</Label>\n      <Textarea\n        id=\"feedback\"\n        placeholder=\"What could we improve?\"\n        aria-describedby=\"feedback-hint\"\n      />\n      <Text id=\"feedback-hint\" size=\"sm\" tone=\"muted\">\n        Markdown is supported.\n      </Text>\n    </VStack>\n  )\n}\n"
+      "code": "import { Label, Text, Textarea, VStack } from '@advui/core'\n\nexport default function TextareaBasic() {\n  return (\n    <VStack gap=\"$2\" width=\"100%\" maxWidth=\"$96\">\n      <Label htmlFor=\"feedback\">Feedback</Label>\n      <Textarea\n        id=\"feedback\"\n        placeholder=\"What could we improve?\"\n        aria-describedby=\"feedback-hint\"\n      />\n      <Text id=\"feedback-hint\" size=\"sm\" tone=\"muted\">\n        Markdown is supported.\n      </Text>\n    </VStack>\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/textarea",

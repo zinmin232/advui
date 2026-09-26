@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Switch'],
   files: ['components/switch/Switch.tsx', 'components/switch/index.ts'],
   keywords: ['toggle', 'on off', 'setting', 'preference'],
-  usage: `import { HStack, Label, Switch } from '@adv-ui/core'
+  usage: `import { HStack, Label, Switch } from '@advui/core'
 
 <HStack gap="$3">
   <Switch id="notifications" checked={enabled} onCheckedChange={setEnabled} />

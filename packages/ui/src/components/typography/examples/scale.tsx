@@ -1,4 +1,4 @@
-import { HStack, Heading, Kbd, Text, VStack } from '@adv-ui/core'
+import { HStack, Heading, Kbd, Text, VStack } from '@advui/core'
 
 export default function TypographyScale() {
   return (
@@ -14,7 +14,7 @@ export default function TypographyScale() {
         Extra small for captions.
       </Text>
       <Text mono size="sm">
-        pnpm add @adv-ui/core
+        pnpm add @advui/core
       </Text>
       <HStack gap="$1">
         <Text size="sm">Search with</Text>

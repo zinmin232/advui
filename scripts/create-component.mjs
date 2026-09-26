@@ -113,7 +113,7 @@ export default defineMeta({
   exports: ['${Name}'],
   files: ['components/${slug}/${Name}.tsx', 'components/${slug}/index.ts'],
   keywords: [],
-  usage: \`import { ${Name} } from '@adv-ui/core'
+  usage: \`import { ${Name} } from '@advui/core'
 
 <${Name}>…</${Name}>\`,
   parts: [
@@ -129,7 +129,7 @@ export default defineMeta({
 })
 `,
   'index.ts': `export { ${Name}, type ${Name}Props } from './${Name}'\n`,
-  'examples/basic.tsx': `import { ${Name}, Text } from '@adv-ui/core'
+  'examples/basic.tsx': `import { ${Name}, Text } from '@advui/core'
 
 export default function ${Name}Basic() {
   return (

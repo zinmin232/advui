@@ -39,11 +39,11 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @adv-ui/docs exec playwright install --with-deps chromium
-      - run: pnpm --filter @adv-ui/docs build
+      - run: pnpm --filter @advui/docs exec playwright install --with-deps chromium
+      - run: pnpm --filter @advui/docs build
       # Visual baselines are OS-specific: CI compares against the *-linux.png
       # images, which the "Update visual baselines" workflow regenerates.
-      - run: pnpm --filter @adv-ui/docs exec playwright test --project=desktop --project=mobile --project=visual
+      - run: pnpm --filter @advui/docs exec playwright test --project=desktop --project=mobile --project=visual
       - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:

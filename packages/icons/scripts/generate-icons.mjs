@@ -1,6 +1,6 @@
 // Generates src/generated.ts from the `lucide` package (ISC license).
 // Only the curated list below is emitted so the default set stays small.
-// Usage: pnpm --filter @adv-ui/icons generate
+// Usage: pnpm --filter @advui/icons generate
 import { writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'

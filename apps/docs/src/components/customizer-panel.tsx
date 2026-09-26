@@ -1,15 +1,15 @@
 'use client'
 
-import { Button, HStack, IconButton, Input, Label, Text, VStack, toast } from '@adv-ui/core'
-import { CheckIcon, CopyIcon, MonitorIcon, MoonIcon, SunIcon, XIcon } from '@adv-ui/icons'
+import { Button, HStack, IconButton, Input, Label, Text, VStack, toast } from '@advui/core'
+import { CheckIcon, CopyIcon, MonitorIcon, MoonIcon, SunIcon, XIcon } from '@advui/icons'
 import {
   type FontScale,
   type RadiusScale,
   createThemeColors,
   themePresetNames,
   themePresets,
-} from '@adv-ui/theme'
-import { isValidColor, toHex } from '@adv-ui/utils'
+} from '@advui/theme'
+import { isValidColor, toHex } from '@advui/utils'
 import { type ReactNode, useEffect, useId, useMemo, useRef } from 'react'
 import { View } from 'tamagui'
 import { useColorModeSetting } from '../lib/color-mode'

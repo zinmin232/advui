@@ -1,4 +1,4 @@
-import { Box, Stack, Text } from '@adv-ui/core'
+import { Box, Stack, Text } from '@advui/core'
 
 export default function StackResponsive() {
   return (

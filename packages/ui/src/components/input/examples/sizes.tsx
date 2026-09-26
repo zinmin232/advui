@@ -1,4 +1,4 @@
-import { Input, VStack } from '@adv-ui/core'
+import { Input, VStack } from '@advui/core'
 
 export default function InputSizes() {
   return (

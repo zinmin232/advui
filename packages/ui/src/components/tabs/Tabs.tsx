@@ -1,5 +1,5 @@
-import { IconDefaults } from '@adv-ui/icons'
-import { shadows } from '@adv-ui/theme'
+import { IconDefaults } from '@advui/icons'
+import { shadows } from '@advui/theme'
 import { type ReactNode, createContext, forwardRef, useContext } from 'react'
 import {
   type GetProps,

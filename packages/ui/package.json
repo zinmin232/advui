@@ -1,5 +1,5 @@
 {
-  "name": "@adv-ui/core",
+  "name": "@advui/core",
   "version": "0.1.0",
   "description": "Cross-platform React / React Native component library built on Tamagui.",
   "license": "MIT",
@@ -58,9 +58,9 @@
     "@tamagui/dismissable": "2.7.7",
     "@tamagui/toast": "2.7.7",
     "@tamagui/web": "2.7.7",
-    "@adv-ui/icons": "workspace:*",
-    "@adv-ui/theme": "workspace:*",
-    "@adv-ui/utils": "workspace:*"
+    "@advui/icons": "workspace:*",
+    "@advui/theme": "workspace:*",
+    "@advui/utils": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=19",
@@ -82,8 +82,8 @@
     "@types/node": "^22.15.0",
     "@types/react": "~19.2.2",
     "@types/react-dom": "~19.2.2",
-    "@adv-ui/eslint-config": "workspace:*",
-    "@adv-ui/tsconfig": "workspace:*",
+    "@advui/eslint-config": "workspace:*",
+    "@advui/tsconfig": "workspace:*",
     "@vitejs/plugin-react": "^6.1.1",
     "babel-preset-expo": "~57.0.13",
     "expo": "~57.0.25",

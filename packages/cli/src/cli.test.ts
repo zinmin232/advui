@@ -80,7 +80,7 @@ describe('init + add against the local registry', () => {
   it('writes config, tamagui config and component source with dependencies', async () => {
     expect(detectPackageManager(dir)).toBe('npm')
     await initCommand(options())
-    const config = JSON.parse(readFileSync(join(dir, 'adv-ui.json'), 'utf8'))
+    const config = JSON.parse(readFileSync(join(dir, 'advui.json'), 'utf8'))
     expect(config.framework).toBe('expo')
     expect(existsSync(join(dir, 'tamagui.config.ts'))).toBe(true)
 
@@ -88,7 +88,7 @@ describe('init + add against the local registry', () => {
     expect(items.map((i) => i.name)).toEqual(['spinner', 'button', 'icon-button'])
     expect(existsSync(join(dir, 'ui/components/button/Button.tsx'))).toBe(true)
     expect(existsSync(join(dir, 'ui/components/spinner/Spinner.native.tsx'))).toBe(true)
-    expect(logs.join('\n')).toMatch(/npm install @adv-ui\/icons/)
+    expect(logs.join('\n')).toMatch(/npm install @advui\/icons/)
   })
 
   it('does not overwrite existing files unless asked', async () => {

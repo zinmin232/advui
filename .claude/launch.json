@@ -4,7 +4,7 @@
     {
       "name": "docs",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "@adv-ui/docs", "dev"],
+      "runtimeArgs": ["--filter", "@advui/docs", "dev"],
       "port": 3000
     }
   ]

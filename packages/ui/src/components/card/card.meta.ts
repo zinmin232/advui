@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Card'],
   files: ['components/card/Card.tsx', 'components/card/index.ts'],
   keywords: ['panel', 'surface', 'container', 'tile'],
-  usage: `import { Button, Card } from '@adv-ui/core'
+  usage: `import { Button, Card } from '@advui/core'
 
 <Card>
   <Card.Header>

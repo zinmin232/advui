@@ -1,4 +1,4 @@
-import { contrastRatio } from '@adv-ui/utils'
+import { contrastRatio } from '@advui/utils'
 import { describe, expect, it } from 'vitest'
 import { generateScale, resolveScale, scales } from './palettes'
 import { themePresetNames, themePresets } from './presets'

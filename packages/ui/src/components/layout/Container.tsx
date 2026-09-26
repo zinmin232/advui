@@ -1,4 +1,4 @@
-import { breakpoints } from '@adv-ui/theme'
+import { breakpoints } from '@advui/theme'
 import { type GetProps, View, styled } from 'tamagui'
 
 /**

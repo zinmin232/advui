@@ -1,4 +1,4 @@
-import { Avatar, HStack } from '@adv-ui/core'
+import { Avatar, HStack } from '@advui/core'
 
 const people = ['Maya Chen', 'Jordan Lee', 'Sam Park', 'Riley Quinn']
 

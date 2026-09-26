@@ -1,8 +1,8 @@
 // Branding lives here so the project can be renamed in one place (see scripts/rename.mjs).
 export const PRODUCT_NAME = 'Adv UI'
-export const CLI_NAME = 'adv-ui'
-export const PACKAGE_SCOPE = '@adv-ui'
-export const CONFIG_FILE = 'adv-ui.json'
+export const CLI_NAME = 'advui'
+export const PACKAGE_SCOPE = '@advui'
+export const CONFIG_FILE = 'advui.json'
 /** Default remote registry. Override with `--registry` or the config file. */
 export const DEFAULT_REGISTRY = 'https://zinmin232.github.io/advui/r'
 

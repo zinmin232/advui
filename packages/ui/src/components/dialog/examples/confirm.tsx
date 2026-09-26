@@ -1,4 +1,4 @@
-import { Button, Dialog, toast } from '@adv-ui/core'
+import { Button, Dialog, toast } from '@advui/core'
 import { useState } from 'react'
 
 export default function DialogConfirm() {

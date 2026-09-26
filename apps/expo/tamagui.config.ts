@@ -1,4 +1,4 @@
-import { createUniversalConfig } from '@adv-ui/theme'
+import { createUniversalConfig } from '@advui/theme'
 
 export const config = createUniversalConfig({ preset: 'indigo', radius: 'md' })
 

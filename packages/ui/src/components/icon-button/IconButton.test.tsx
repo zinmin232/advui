@@ -1,4 +1,4 @@
-import { SearchIcon } from '@adv-ui/icons'
+import { SearchIcon } from '@advui/icons'
 import { describe, expect, it, vi } from 'vitest'
 import { renderWithProvider, screen } from '../../../test/utils'
 import { IconButton } from './IconButton'

@@ -1,5 +1,5 @@
 {
-  "name": "@adv-ui/examples",
+  "name": "@advui/examples",
   "version": "0.1.0",
   "private": true,
   "description": "Realistic application screens built only with Adv UI — rendered by the docs site and the Expo app.",
@@ -15,9 +15,9 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@adv-ui/core": "workspace:*",
-    "@adv-ui/icons": "workspace:*",
-    "@adv-ui/theme": "workspace:*"
+    "@advui/core": "workspace:*",
+    "@advui/icons": "workspace:*",
+    "@advui/theme": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=19",
@@ -26,8 +26,8 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
-    "@adv-ui/eslint-config": "workspace:*",
-    "@adv-ui/tsconfig": "workspace:*",
+    "@advui/eslint-config": "workspace:*",
+    "@advui/tsconfig": "workspace:*",
     "react": "19.2.3",
     "react-native": "0.86.3",
     "tamagui": "2.7.7"

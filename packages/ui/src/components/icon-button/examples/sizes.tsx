@@ -1,5 +1,5 @@
-import { HStack, IconButton } from '@adv-ui/core'
-import { BellIcon } from '@adv-ui/icons'
+import { HStack, IconButton } from '@advui/core'
+import { BellIcon } from '@advui/icons'
 
 export default function IconButtonSizes() {
   return (

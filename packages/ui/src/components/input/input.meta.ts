@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Input', 'inputBaseStyle', 'fieldBoxStyle'],
   files: ['components/input/Input.tsx', 'components/input/index.ts'],
   keywords: ['text field', 'textbox', 'form', 'email', 'password'],
-  usage: `import { Input, Label, VStack } from '@adv-ui/core'
+  usage: `import { Input, Label, VStack } from '@advui/core'
 
 <VStack gap="$2">
   <Label htmlFor="email">Email</Label>

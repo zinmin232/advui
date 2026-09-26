@@ -1,8 +1,8 @@
 'use client'
 
-import { Button, HStack, Tabs, Text, Tooltip, VStack } from '@adv-ui/core'
-import { examples } from '@adv-ui/core/examples'
-import { MonitorIcon, SmartphoneIcon } from '@adv-ui/icons'
+import { Button, HStack, Tabs, Text, Tooltip, VStack } from '@advui/core'
+import { examples } from '@advui/core/examples'
+import { MonitorIcon, SmartphoneIcon } from '@advui/icons'
 import { useState } from 'react'
 import { View } from 'tamagui'
 import { CodeBlock } from './code-block'

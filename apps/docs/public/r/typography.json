@@ -38,12 +38,12 @@
     {
       "name": "scale",
       "title": "Type scale",
-      "code": "import { HStack, Heading, Kbd, Text, VStack } from '@adv-ui/core'\n\nexport default function TypographyScale() {\n  return (\n    <VStack gap=\"$2\">\n      <Heading level={1}>The quick brown fox</Heading>\n      <Heading level={2}>The quick brown fox</Heading>\n      <Heading level={3}>The quick brown fox</Heading>\n      <Heading level={4}>The quick brown fox</Heading>\n      <Text size=\"lg\">Large body text for introductions.</Text>\n      <Text>Base body text for most content.</Text>\n      <Text size=\"sm\">Small text for supporting content.</Text>\n      <Text size=\"xs\" tone=\"muted\">\n        Extra small for captions.\n      </Text>\n      <Text mono size=\"sm\">\n        pnpm add @adv-ui/core\n      </Text>\n      <HStack gap=\"$1\">\n        <Text size=\"sm\">Search with</Text>\n        <Kbd>Ctrl</Kbd>\n        <Kbd>K</Kbd>\n      </HStack>\n    </VStack>\n  )\n}\n"
+      "code": "import { HStack, Heading, Kbd, Text, VStack } from '@advui/core'\n\nexport default function TypographyScale() {\n  return (\n    <VStack gap=\"$2\">\n      <Heading level={1}>The quick brown fox</Heading>\n      <Heading level={2}>The quick brown fox</Heading>\n      <Heading level={3}>The quick brown fox</Heading>\n      <Heading level={4}>The quick brown fox</Heading>\n      <Text size=\"lg\">Large body text for introductions.</Text>\n      <Text>Base body text for most content.</Text>\n      <Text size=\"sm\">Small text for supporting content.</Text>\n      <Text size=\"xs\" tone=\"muted\">\n        Extra small for captions.\n      </Text>\n      <Text mono size=\"sm\">\n        pnpm add @advui/core\n      </Text>\n      <HStack gap=\"$1\">\n        <Text size=\"sm\">Search with</Text>\n        <Kbd>Ctrl</Kbd>\n        <Kbd>K</Kbd>\n      </HStack>\n    </VStack>\n  )\n}\n"
     },
     {
       "name": "tones",
       "title": "Tones",
-      "code": "import { Text, VStack } from '@adv-ui/core'\n\nconst tones = ['default', 'muted', 'primary', 'success', 'warning', 'error', 'info'] as const\n\nexport default function TypographyTones() {\n  return (\n    <VStack gap=\"$1\">\n      {tones.map((tone) => (\n        <Text key={tone} tone={tone} weight=\"medium\">\n          {tone} text\n        </Text>\n      ))}\n    </VStack>\n  )\n}\n"
+      "code": "import { Text, VStack } from '@advui/core'\n\nconst tones = ['default', 'muted', 'primary', 'success', 'warning', 'error', 'info'] as const\n\nexport default function TypographyTones() {\n  return (\n    <VStack gap=\"$1\">\n      {tones.map((tone) => (\n        <Text key={tone} tone={tone} weight=\"medium\">\n          {tone} text\n        </Text>\n      ))}\n    </VStack>\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/typography",

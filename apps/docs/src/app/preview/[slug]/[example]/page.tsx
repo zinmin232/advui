@@ -1,4 +1,4 @@
-import { components } from '@adv-ui/core/meta'
+import { components } from '@advui/core/meta'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { PreviewFrame } from './preview-frame'

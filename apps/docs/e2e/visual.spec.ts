@@ -1,7 +1,7 @@
 import { expect, test } from './fixtures'
 
 // Visual regression for every documented example, in light and dark mode.
-// Baselines live next to this file; refresh with `pnpm --filter @adv-ui/docs test:visual:update`.
+// Baselines live next to this file; refresh with `pnpm --filter @advui/docs test:visual:update`.
 for (const mode of ['light', 'dark'] as const) {
   test(`component examples — ${mode}`, async ({ page }) => {
     await page.addInitScript((m) => window.localStorage.setItem('aui-color-mode', m), mode)

@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Separator'],
   files: ['components/separator/Separator.tsx', 'components/separator/index.ts'],
   keywords: ['divider', 'hr', 'rule', 'line'],
-  usage: `import { Separator } from '@adv-ui/core'
+  usage: `import { Separator } from '@advui/core'
 
 <Separator />`,
   parts: [

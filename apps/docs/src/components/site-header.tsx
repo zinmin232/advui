@@ -1,7 +1,7 @@
 'use client'
 
-import { Button, HStack, IconButton, Kbd, Text, Tooltip } from '@adv-ui/core'
-import { MenuIcon, MonitorIcon, MoonIcon, PaletteIcon, SearchIcon, SunIcon } from '@adv-ui/icons'
+import { Button, HStack, IconButton, Kbd, Text, Tooltip } from '@advui/core'
+import { MenuIcon, MonitorIcon, MoonIcon, PaletteIcon, SearchIcon, SunIcon } from '@advui/icons'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'

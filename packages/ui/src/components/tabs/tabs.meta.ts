@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Tabs'],
   files: ['components/tabs/Tabs.tsx', 'components/tabs/index.ts'],
   keywords: ['tab bar', 'segmented', 'panels', 'sections'],
-  usage: `import { Tabs } from '@adv-ui/core'
+  usage: `import { Tabs } from '@advui/core'
 
 <Tabs defaultValue="account">
   <Tabs.List aria-label="Settings">

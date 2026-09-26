@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Skeleton'],
   files: ['components/skeleton/Skeleton.tsx', 'components/skeleton/index.ts'],
   keywords: ['loading', 'placeholder', 'shimmer'],
-  usage: `import { Skeleton } from '@adv-ui/core'
+  usage: `import { Skeleton } from '@advui/core'
 
 <Skeleton height="$4" width="60%" />`,
   parts: [

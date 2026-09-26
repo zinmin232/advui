@@ -1,4 +1,4 @@
-import { Button, HStack } from '@adv-ui/core'
+import { Button, HStack } from '@advui/core'
 import { useState } from 'react'
 
 export default function ButtonLoading() {

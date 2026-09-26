@@ -1,5 +1,5 @@
 {
-  "extends": "@adv-ui/tsconfig/base.json",
+  "extends": "@advui/tsconfig/base.json",
   "compilerOptions": { "noEmit": true },
   "include": ["src"]
 }

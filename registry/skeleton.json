@@ -28,7 +28,7 @@
     {
       "name": "card",
       "title": "Loading card",
-      "code": "import { HStack, Skeleton, VStack } from '@adv-ui/core'\n\nexport default function SkeletonCard() {\n  return (\n    <VStack gap=\"$3\" width=\"100%\" maxWidth=\"$80\" aria-busy aria-label=\"Loading profile\">\n      <HStack gap=\"$3\">\n        <Skeleton circle width=\"$12\" height=\"$12\" />\n        <VStack gap=\"$2\" flex={1} justifyContent=\"center\">\n          <Skeleton height=\"$3\" width=\"70%\" />\n          <Skeleton height=\"$3\" width=\"40%\" />\n        </VStack>\n      </HStack>\n      <Skeleton height=\"$32\" borderRadius=\"$lg\" />\n    </VStack>\n  )\n}\n"
+      "code": "import { HStack, Skeleton, VStack } from '@advui/core'\n\nexport default function SkeletonCard() {\n  return (\n    <VStack gap=\"$3\" width=\"100%\" maxWidth=\"$80\" aria-busy aria-label=\"Loading profile\">\n      <HStack gap=\"$3\">\n        <Skeleton circle width=\"$12\" height=\"$12\" />\n        <VStack gap=\"$2\" flex={1} justifyContent=\"center\">\n          <Skeleton height=\"$3\" width=\"70%\" />\n          <Skeleton height=\"$3\" width=\"40%\" />\n        </VStack>\n      </HStack>\n      <Skeleton height=\"$32\" borderRadius=\"$lg\" />\n    </VStack>\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/skeleton",

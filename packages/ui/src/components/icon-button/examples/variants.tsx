@@ -1,5 +1,5 @@
-import { HStack, IconButton } from '@adv-ui/core'
-import { HeartIcon, PlusIcon, SearchIcon, TrashIcon } from '@adv-ui/icons'
+import { HStack, IconButton } from '@advui/core'
+import { HeartIcon, PlusIcon, SearchIcon, TrashIcon } from '@advui/icons'
 
 export default function IconButtonVariants() {
   return (

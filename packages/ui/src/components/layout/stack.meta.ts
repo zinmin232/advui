@@ -22,7 +22,7 @@ export default defineMeta({
     'center',
     'spacer',
   ],
-  usage: `import { HStack, Spacer, Text, VStack } from '@adv-ui/core'
+  usage: `import { HStack, Spacer, Text, VStack } from '@advui/core'
 
 <VStack gap="$3">
   <HStack gap="$2">

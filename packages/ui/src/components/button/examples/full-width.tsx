@@ -1,4 +1,4 @@
-import { Button, VStack } from '@adv-ui/core'
+import { Button, VStack } from '@advui/core'
 
 export default function ButtonFullWidth() {
   return (

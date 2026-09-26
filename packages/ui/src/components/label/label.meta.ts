@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Label'],
   files: ['components/label/Label.tsx', 'components/label/index.ts'],
   keywords: ['form', 'caption', 'field name'],
-  usage: `import { Checkbox, HStack, Label } from '@adv-ui/core'
+  usage: `import { Checkbox, HStack, Label } from '@advui/core'
 
 <HStack gap="$2">
   <Checkbox id="newsletter" />

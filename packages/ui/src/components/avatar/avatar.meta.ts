@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Avatar', 'getInitials'],
   files: ['components/avatar/Avatar.tsx', 'components/avatar/index.ts'],
   keywords: ['profile', 'user', 'picture', 'image', 'initials'],
-  usage: `import { Avatar } from '@adv-ui/core'
+  usage: `import { Avatar } from '@advui/core'
 
 <Avatar src={user.photoUrl} alt={user.name} />`,
   parts: [

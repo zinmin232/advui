@@ -1,4 +1,4 @@
-import { Button, toast } from '@adv-ui/core'
+import { Button, toast } from '@advui/core'
 
 export default function ToastAction() {
   return (

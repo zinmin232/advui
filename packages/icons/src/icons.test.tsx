@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
-import { createUniversalConfig } from '@adv-ui/theme'
+import { createUniversalConfig } from '@advui/theme'
 import type { ReactNode } from 'react'
 import { TamaguiProvider } from 'tamagui'
 import { afterEach, describe, expect, it, vi } from 'vitest'

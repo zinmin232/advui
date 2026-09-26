@@ -11,8 +11,8 @@ export default defineMeta({
   exports: ['IconButton'],
   files: ['components/icon-button/IconButton.tsx', 'components/icon-button/index.ts'],
   keywords: ['toolbar', 'icon', 'action'],
-  usage: `import { IconButton } from '@adv-ui/core'
-import { SearchIcon } from '@adv-ui/icons'
+  usage: `import { IconButton } from '@advui/core'
+import { SearchIcon } from '@advui/icons'
 
 <IconButton aria-label="Search" icon={<SearchIcon />} />`,
   parts: [

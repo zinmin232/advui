@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Container'],
   files: ['components/layout/Container.tsx'],
   keywords: ['page', 'wrapper', 'max width', 'center'],
-  usage: `import { Container } from '@adv-ui/core'
+  usage: `import { Container } from '@advui/core'
 
 <Container size="lg">…page…</Container>`,
   parts: [

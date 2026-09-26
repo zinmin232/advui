@@ -1,9 +1,9 @@
 'use client'
 
-import { Card, Grid, HStack, Heading, Icon, Input, Text, VStack, useTheme } from '@adv-ui/core'
-import { iconNames } from '@adv-ui/icons'
-import { breakpoints, radiusScales, shadows, size, space, zIndex } from '@adv-ui/theme'
-import { contrastRatio } from '@adv-ui/utils'
+import { Card, Grid, HStack, Heading, Icon, Input, Text, VStack, useTheme } from '@advui/core'
+import { iconNames } from '@advui/icons'
+import { breakpoints, radiusScales, shadows, size, space, zIndex } from '@advui/theme'
+import { contrastRatio } from '@advui/utils'
 import { useMemo, useState } from 'react'
 import { View } from 'tamagui'
 

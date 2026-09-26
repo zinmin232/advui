@@ -1,6 +1,6 @@
 'use client'
 
-import { Dialog, HStack, Text, VStack } from '@adv-ui/core'
+import { Dialog, HStack, Text, VStack } from '@advui/core'
 import Link from 'next/link'
 import { useMemo } from 'react'
 import { buildNavigation } from '../lib/navigation'

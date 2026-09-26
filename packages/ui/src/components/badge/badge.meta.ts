@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Badge', 'BadgeText', 'BadgeFrame'],
   files: ['components/badge/Badge.tsx', 'components/badge/index.ts'],
   keywords: ['tag', 'chip', 'status', 'label', 'pill'],
-  usage: `import { Badge } from '@adv-ui/core'
+  usage: `import { Badge } from '@advui/core'
 
 <Badge variant="success">Active</Badge>`,
   parts: [

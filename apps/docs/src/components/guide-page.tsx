@@ -1,6 +1,6 @@
 'use client'
 
-import { Text } from '@adv-ui/core'
+import { Text } from '@advui/core'
 import type { ReactNode } from 'react'
 import { Breadcrumbs, DocPage, PrevNext, type TocItem } from './docs-shell'
 import { PageHeader } from './prose'

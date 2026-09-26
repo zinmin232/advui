@@ -39,7 +39,7 @@ export {
   themePresets,
   type UniversalConfig,
   type UniversalConfigOptions,
-} from '@adv-ui/theme'
+} from '@advui/theme'
 export {
   Icon,
   IconDefaults,
@@ -47,5 +47,5 @@ export {
   createIcon,
   type IconName,
   type IconProps,
-} from '@adv-ui/icons'
+} from '@advui/icons'
 export { Theme, useMedia, useTheme, type TamaguiElement } from 'tamagui'

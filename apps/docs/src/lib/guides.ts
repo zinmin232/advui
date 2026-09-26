@@ -26,7 +26,7 @@ export const guides: GuideMeta[] = [
   {
     slug: 'cli',
     title: 'CLI',
-    description: 'Copy component source into your project with `npx adv-ui add`.',
+    description: 'Copy component source into your project with `npx advui add`.',
     section: 'getting-started',
     keywords: ['command line', 'registry', 'shadcn', 'add', 'init'],
   },

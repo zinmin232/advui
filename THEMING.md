@@ -4,7 +4,7 @@ One call creates everything the components need:
 
 ```ts
 // tamagui.config.ts
-import { createUniversalConfig } from '@adv-ui/theme'
+import { createUniversalConfig } from '@advui/theme'
 
 export const config = createUniversalConfig({
   preset: 'violet', // starting palette
@@ -39,7 +39,7 @@ color is the neutral scale's high-contrast step (near-black in light mode,
 near-white in dark mode).
 
 ```ts
-import { themePresetNames, themePresets } from '@adv-ui/theme'
+import { themePresetNames, themePresets } from '@advui/theme'
 ```
 
 ## Color inputs
@@ -137,7 +137,7 @@ Colors can be swapped live, on web and native, without re-creating the config:
 
 ```ts
 import { updateTheme } from '@tamagui/theme'
-import { createThemeColors, themePresets } from '@adv-ui/theme'
+import { createThemeColors, themePresets } from '@advui/theme'
 
 const themes = createThemeColors({ ...themePresets.emerald.colors, primary: '#10b981' })
 updateTheme({ name: 'light', theme: themes.light })

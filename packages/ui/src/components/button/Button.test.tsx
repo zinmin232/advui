@@ -1,4 +1,4 @@
-import { PlusIcon } from '@adv-ui/icons'
+import { PlusIcon } from '@advui/icons'
 import { describe, expect, it, vi } from 'vitest'
 import { renderWithProvider, screen } from '../../../test/utils'
 import { Button } from './Button'

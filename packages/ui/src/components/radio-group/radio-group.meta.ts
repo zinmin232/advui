@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['RadioGroup'],
   files: ['components/radio-group/RadioGroup.tsx', 'components/radio-group/index.ts'],
   keywords: ['radio', 'option', 'choice', 'single select'],
-  usage: `import { HStack, Label, RadioGroup } from '@adv-ui/core'
+  usage: `import { HStack, Label, RadioGroup } from '@advui/core'
 
 <RadioGroup value={plan} onValueChange={setPlan} aria-label="Plan">
   <HStack gap="$2">

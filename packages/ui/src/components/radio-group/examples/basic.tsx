@@ -1,4 +1,4 @@
-import { HStack, Label, RadioGroup, Text, VStack } from '@adv-ui/core'
+import { HStack, Label, RadioGroup, Text, VStack } from '@advui/core'
 import { useState } from 'react'
 
 const plans = [

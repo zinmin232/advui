@@ -1,4 +1,4 @@
-import { HStack, Separator, Text, VStack } from '@adv-ui/core'
+import { HStack, Separator, Text, VStack } from '@advui/core'
 
 export default function SeparatorBasic() {
   return (

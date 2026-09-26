@@ -7,9 +7,9 @@ export const siteConfig = {
   url: 'https://zinmin232.github.io/advui',
   github: 'https://github.com/zinmin232/advui',
   githubBranch: 'main',
-  npmScope: '@adv-ui',
-  corePackage: '@adv-ui/core',
-  cliName: 'adv-ui',
+  npmScope: '@advui',
+  corePackage: '@advui/core',
+  cliName: 'advui',
   version: '0.1.0',
 }
 

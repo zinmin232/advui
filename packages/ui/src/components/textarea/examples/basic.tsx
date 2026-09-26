@@ -1,4 +1,4 @@
-import { Label, Text, Textarea, VStack } from '@adv-ui/core'
+import { Label, Text, Textarea, VStack } from '@advui/core'
 
 export default function TextareaBasic() {
   return (

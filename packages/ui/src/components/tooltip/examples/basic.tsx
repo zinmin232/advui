@@ -1,5 +1,5 @@
-import { HStack, IconButton, Tooltip } from '@adv-ui/core'
-import { CopyIcon, DownloadIcon, TrashIcon } from '@adv-ui/icons'
+import { HStack, IconButton, Tooltip } from '@advui/core'
+import { CopyIcon, DownloadIcon, TrashIcon } from '@advui/icons'
 
 export default function TooltipBasic() {
   return (

@@ -29,14 +29,14 @@ folders.
 
 ## Packages
 
-| Package            | Depends on                                   | Notes                                                                                                                                                                                          |
-| ------------------ | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@adv-ui/utils`    | —                                            | Color math: parse, OKLCH conversion with gamut mapping, WCAG contrast, `ensureContrast`, `accessibleSolid`. Event composition. Framework-free.                                                 |
-| `@adv-ui/theme`    | utils, tamagui                               | Tokens (space, size, radius, zIndex), fonts, media queries, animations, shadows, palettes, theme generation, presets, `createUniversalConfig`.                                                 |
-| `@adv-ui/icons`    | tamagui, react-native-svg (native)           | Icons generated from Lucide by `scripts/generate-icons.mjs`. `SvgIcon.tsx` renders DOM SVG; `SvgIcon.native.tsx` renders react-native-svg. `IconDefaults` sets size and color through context. |
-| `@adv-ui/core`     | theme, icons, utils, tamagui, @tamagui/toast | Components, `UniversalProvider`, color mode, hooks, metadata.                                                                                                                                  |
-| `@adv-ui/examples` | core                                         | Full app screens shared by the docs and Expo.                                                                                                                                                  |
-| `adv-ui` (cli)     | —                                            | Reads the registry and copies source into a project.                                                                                                                                           |
+| Package           | Depends on                                   | Notes                                                                                                                                                                                          |
+| ----------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@advui/utils`    | —                                            | Color math: parse, OKLCH conversion with gamut mapping, WCAG contrast, `ensureContrast`, `accessibleSolid`. Event composition. Framework-free.                                                 |
+| `@advui/theme`    | utils, tamagui                               | Tokens (space, size, radius, zIndex), fonts, media queries, animations, shadows, palettes, theme generation, presets, `createUniversalConfig`.                                                 |
+| `@advui/icons`    | tamagui, react-native-svg (native)           | Icons generated from Lucide by `scripts/generate-icons.mjs`. `SvgIcon.tsx` renders DOM SVG; `SvgIcon.native.tsx` renders react-native-svg. `IconDefaults` sets size and color through context. |
+| `@advui/core`     | theme, icons, utils, tamagui, @tamagui/toast | Components, `UniversalProvider`, color mode, hooks, metadata.                                                                                                                                  |
+| `@advui/examples` | core                                         | Full app screens shared by the docs and Expo.                                                                                                                                                  |
+| `advui` (cli)     | —                                            | Reads the registry and copies source into a project.                                                                                                                                           |
 
 Inside the repo, packages resolve to their TypeScript source (`main: src/index.ts`),
 so apps pick up changes without a build step. `publishConfig` switches the entry
@@ -128,7 +128,7 @@ become npm dependencies, and relative imports into another component folder
 become registry dependencies. The CLI (`packages/cli`):
 
 - `init` detects the framework and package manager, then writes
-  `adv-ui.json` and `tamagui.config.ts`.
+  `advui.json` and `tamagui.config.ts`.
 - `add` resolves the dependency graph, rewrites import paths and installs npm
   dependencies.
 

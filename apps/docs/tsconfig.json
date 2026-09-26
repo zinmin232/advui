@@ -1,5 +1,5 @@
 {
-  "extends": "@adv-ui/tsconfig/nextjs.json",
+  "extends": "@advui/tsconfig/nextjs.json",
   "compilerOptions": {
     "types": ["node"],
     "paths": { "@/*": ["./src/*"] }

@@ -23,7 +23,7 @@
     {
       "name": "grid",
       "title": "Responsive stats",
-      "code": "import { Card, Grid, Text } from '@adv-ui/core'\n\nconst stats = [\n  { label: 'Revenue', value: '$45,231' },\n  { label: 'Subscriptions', value: '+2,350' },\n  { label: 'Sales', value: '+12,234' },\n  { label: 'Active now', value: '573' },\n]\n\nexport default function GridExample() {\n  return (\n    <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap=\"$4\" width=\"100%\">\n      {stats.map((s) => (\n        <Card key={s.label}>\n          <Card.Content gap=\"$1\">\n            <Text size=\"sm\" tone=\"muted\">\n              {s.label}\n            </Text>\n            <Text size=\"2xl\" weight=\"bold\">\n              {s.value}\n            </Text>\n          </Card.Content>\n        </Card>\n      ))}\n    </Grid>\n  )\n}\n"
+      "code": "import { Card, Grid, Text } from '@advui/core'\n\nconst stats = [\n  { label: 'Revenue', value: '$45,231' },\n  { label: 'Subscriptions', value: '+2,350' },\n  { label: 'Sales', value: '+12,234' },\n  { label: 'Active now', value: '573' },\n]\n\nexport default function GridExample() {\n  return (\n    <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap=\"$4\" width=\"100%\">\n      {stats.map((s) => (\n        <Card key={s.label}>\n          <Card.Content gap=\"$1\">\n            <Text size=\"sm\" tone=\"muted\">\n              {s.label}\n            </Text>\n            <Text size=\"2xl\" weight=\"bold\">\n              {s.value}\n            </Text>\n          </Card.Content>\n        </Card>\n      ))}\n    </Grid>\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/grid",

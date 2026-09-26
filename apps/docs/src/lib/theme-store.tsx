@@ -10,7 +10,7 @@ import {
   createThemeColors,
   createUniversalFonts,
   themePresets,
-} from '@adv-ui/theme'
+} from '@advui/theme'
 import {
   type ReactNode,
   createContext,
@@ -62,7 +62,7 @@ export function themeToCode(theme: CustomTheme): string {
     `  radius: '${theme.radius}',`,
     `  fontScale: '${theme.fontScale}',`,
   ].filter(Boolean)
-  return `import { createUniversalConfig } from '@adv-ui/theme'
+  return `import { createUniversalConfig } from '@advui/theme'
 
 export const config = createUniversalConfig({
 ${lines.join('\n')}

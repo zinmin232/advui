@@ -1,7 +1,7 @@
 'use client'
 
-import type { RoadmapItem } from '@adv-ui/core/meta'
-import { Alert, Button, Text } from '@adv-ui/core'
+import type { RoadmapItem } from '@advui/core/meta'
+import { Alert, Button, Text } from '@advui/core'
 import { siteConfig } from '../lib/site'
 import { Breadcrumbs, DocPage } from './docs-shell'
 import { PageHeader } from './prose'

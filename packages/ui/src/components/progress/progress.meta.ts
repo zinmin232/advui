@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Progress'],
   files: ['components/progress/Progress.tsx', 'components/progress/index.ts'],
   keywords: ['progress bar', 'upload', 'loading', 'percentage'],
-  usage: `import { Progress } from '@adv-ui/core'
+  usage: `import { Progress } from '@advui/core'
 
 <Progress value={uploaded} max={total} label="Uploading photos" />`,
   parts: [

@@ -1,4 +1,4 @@
-import { Avatar, HStack } from '@adv-ui/core'
+import { Avatar, HStack } from '@advui/core'
 
 export default function AvatarSizes() {
   return (

@@ -1,4 +1,4 @@
-import { Checkbox, HStack, Label, VStack } from '@adv-ui/core'
+import { Checkbox, HStack, Label, VStack } from '@advui/core'
 import { useState } from 'react'
 
 export default function CheckboxBasic() {

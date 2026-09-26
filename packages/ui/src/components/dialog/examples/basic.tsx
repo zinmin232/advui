@@ -1,4 +1,4 @@
-import { Button, Dialog, Input, Label, VStack } from '@adv-ui/core'
+import { Button, Dialog, Input, Label, VStack } from '@advui/core'
 
 export default function DialogBasic() {
   return (

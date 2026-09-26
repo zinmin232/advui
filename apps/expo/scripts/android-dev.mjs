@@ -3,7 +3,7 @@
 // Works around two common local issues:
 //  - `expo start --localhost` binds IPv6 (::1) only, but `adb reverse` connects over IPv4;
 //  - LAN IPs are often blocked by firewalls, so the bundle never finishes downloading.
-// Usage: pnpm --filter @adv-ui/expo-playground android:emulator
+// Usage: pnpm --filter @advui/expo-playground android:emulator
 import { execFileSync, spawn } from 'node:child_process'
 
 const port = process.env.RCT_METRO_PORT ?? '8081'

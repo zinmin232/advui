@@ -171,13 +171,13 @@ importers:
 
   .:
     devDependencies:
-      '@adv-ui/core':
+      '@advui/core':
         specifier: workspace:*
         version: link:packages/ui
-      '@adv-ui/eslint-config':
+      '@advui/eslint-config':
         specifier: workspace:*
         version: link:packages/eslint-config
-      '@adv-ui/tsconfig':
+      '@advui/tsconfig':
         specifier: workspace:*
         version: link:packages/tsconfig
       eslint:
@@ -198,19 +198,19 @@ importers:
       '@tamagui/theme':
         specifier: 2.7.7
         version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@adv-ui/core':
+      '@advui/core':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@adv-ui/examples':
+      '@advui/examples':
         specifier: workspace:*
         version: link:../../examples
-      '@adv-ui/icons':
+      '@advui/icons':
         specifier: workspace:*
         version: link:../../packages/icons
-      '@adv-ui/theme':
+      '@advui/theme':
         specifier: workspace:*
         version: link:../../packages/theme
-      '@adv-ui/utils':
+      '@advui/utils':
         specifier: workspace:*
         version: link:../../packages/utils
       next:
@@ -247,10 +247,10 @@ importers:
       '@types/react-dom':
         specifier: ~19.2.2
         version: 19.2.7(@types/react@19.2.18)
-      '@adv-ui/eslint-config':
+      '@advui/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@adv-ui/tsconfig':
+      '@advui/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
       react-native:
@@ -262,16 +262,16 @@ importers:
       '@tamagui/theme':
         specifier: 2.7.7
         version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@adv-ui/core':
+      '@advui/core':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@adv-ui/examples':
+      '@advui/examples':
         specifier: workspace:*
         version: link:../../examples
-      '@adv-ui/icons':
+      '@advui/icons':
         specifier: workspace:*
         version: link:../../packages/icons
-      '@adv-ui/theme':
+      '@advui/theme':
         specifier: workspace:*
         version: link:../../packages/theme
       expo:
@@ -317,10 +317,10 @@ importers:
       '@types/react':
         specifier: ~19.2.2
         version: 19.2.18
-      '@adv-ui/eslint-config':
+      '@advui/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@adv-ui/tsconfig':
+      '@advui/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
       typescript:
@@ -329,23 +329,23 @@ importers:
 
   examples:
     dependencies:
-      '@adv-ui/core':
+      '@advui/core':
         specifier: workspace:*
         version: link:../packages/ui
-      '@adv-ui/icons':
+      '@advui/icons':
         specifier: workspace:*
         version: link:../packages/icons
-      '@adv-ui/theme':
+      '@advui/theme':
         specifier: workspace:*
         version: link:../packages/theme
     devDependencies:
       '@types/react':
         specifier: ~19.2.2
         version: 19.2.18
-      '@adv-ui/eslint-config':
+      '@advui/eslint-config':
         specifier: workspace:*
         version: link:../packages/eslint-config
-      '@adv-ui/tsconfig':
+      '@advui/tsconfig':
         specifier: workspace:*
         version: link:../packages/tsconfig
       react:
@@ -363,10 +363,10 @@ importers:
       '@types/node':
         specifier: ^22.15.0
         version: 22.20.4
-      '@adv-ui/eslint-config':
+      '@advui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@adv-ui/tsconfig':
+      '@advui/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
       vitest:
@@ -415,13 +415,13 @@ importers:
       '@types/react-dom':
         specifier: ~19.2.2
         version: 19.2.7(@types/react@19.2.18)
-      '@adv-ui/eslint-config':
+      '@advui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@adv-ui/theme':
+      '@advui/theme':
         specifier: workspace:*
         version: link:../theme
-      '@adv-ui/tsconfig':
+      '@advui/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
       '@vitejs/plugin-react':
@@ -469,17 +469,17 @@ importers:
       '@tamagui/web':
         specifier: 2.7.7
         version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@adv-ui/utils':
+      '@advui/utils':
         specifier: workspace:*
         version: link:../utils
     devDependencies:
       '@types/react':
         specifier: ~19.2.2
         version: 19.2.18
-      '@adv-ui/eslint-config':
+      '@advui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@adv-ui/tsconfig':
+      '@advui/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
       react:
@@ -517,13 +517,13 @@ importers:
       '@tamagui/web':
         specifier: 2.7.7
         version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@adv-ui/icons':
+      '@advui/icons':
         specifier: workspace:*
         version: link:../icons
-      '@adv-ui/theme':
+      '@advui/theme':
         specifier: workspace:*
         version: link:../theme
-      '@adv-ui/utils':
+      '@advui/utils':
         specifier: workspace:*
         version: link:../utils
     devDependencies:
@@ -551,10 +551,10 @@ importers:
       '@types/react-dom':
         specifier: ~19.2.2
         version: 19.2.7(@types/react@19.2.18)
-      '@adv-ui/eslint-config':
+      '@advui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@adv-ui/tsconfig':
+      '@advui/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
       '@vitejs/plugin-react':
@@ -611,10 +611,10 @@ importers:
       '@types/react':
         specifier: ~19.2.2
         version: 19.2.18
-      '@adv-ui/eslint-config':
+      '@advui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@adv-ui/tsconfig':
+      '@advui/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
       react:

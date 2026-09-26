@@ -28,7 +28,7 @@
     {
       "name": "basic",
       "title": "Horizontal and vertical",
-      "code": "import { HStack, Separator, Text, VStack } from '@adv-ui/core'\n\nexport default function SeparatorBasic() {\n  return (\n    <VStack gap=\"$3\" maxWidth=\"$80\" width=\"100%\">\n      <VStack gap=\"$1\">\n        <Text weight=\"medium\">Adv UI</Text>\n        <Text size=\"sm\" tone=\"muted\">\n          Cross-platform components.\n        </Text>\n      </VStack>\n      <Separator />\n      <HStack gap=\"$3\" height=\"$5\">\n        <Text size=\"sm\">Docs</Text>\n        <Separator orientation=\"vertical\" />\n        <Text size=\"sm\">Components</Text>\n        <Separator orientation=\"vertical\" />\n        <Text size=\"sm\">Themes</Text>\n      </HStack>\n    </VStack>\n  )\n}\n"
+      "code": "import { HStack, Separator, Text, VStack } from '@advui/core'\n\nexport default function SeparatorBasic() {\n  return (\n    <VStack gap=\"$3\" maxWidth=\"$80\" width=\"100%\">\n      <VStack gap=\"$1\">\n        <Text weight=\"medium\">Adv UI</Text>\n        <Text size=\"sm\" tone=\"muted\">\n          Cross-platform components.\n        </Text>\n      </VStack>\n      <Separator />\n      <HStack gap=\"$3\" height=\"$5\">\n        <Text size=\"sm\">Docs</Text>\n        <Separator orientation=\"vertical\" />\n        <Text size=\"sm\">Components</Text>\n        <Separator orientation=\"vertical\" />\n        <Text size=\"sm\">Themes</Text>\n      </HStack>\n    </VStack>\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/separator",

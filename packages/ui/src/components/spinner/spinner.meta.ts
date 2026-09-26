@@ -16,7 +16,7 @@ export default defineMeta({
     'components/spinner/index.ts',
   ],
   keywords: ['loading', 'busy', 'activity indicator'],
-  usage: `import { Spinner } from '@adv-ui/core'
+  usage: `import { Spinner } from '@advui/core'
 
 <Spinner label="Loading orders" />`,
   parts: [

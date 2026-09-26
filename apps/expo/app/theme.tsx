@@ -1,11 +1,11 @@
 import { updateTheme } from '@tamagui/theme'
-import { Button, Card, HStack, Text, VStack, useColorMode } from '@adv-ui/core'
+import { Button, Card, HStack, Text, VStack, useColorMode } from '@advui/core'
 import {
   type ThemePresetName,
   createThemeColors,
   themePresetNames,
   themePresets,
-} from '@adv-ui/theme'
+} from '@advui/theme'
 import { Stack } from 'expo-router'
 import { useState } from 'react'
 import { ScrollView } from 'react-native'

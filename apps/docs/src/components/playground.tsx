@@ -1,9 +1,9 @@
 'use client'
 
-import * as UI from '@adv-ui/core'
-import type { PlaygroundControl, PlaygroundSpec } from '@adv-ui/core/meta'
-import { Button, HStack, Input, Label, Switch, Text, VStack, toast } from '@adv-ui/core'
-import { CopyIcon, ExternalLinkIcon, SettingsIcon } from '@adv-ui/icons'
+import * as UI from '@advui/core'
+import type { PlaygroundControl, PlaygroundSpec } from '@advui/core/meta'
+import { Button, HStack, Input, Label, Switch, Text, VStack, toast } from '@advui/core'
+import { CopyIcon, ExternalLinkIcon, SettingsIcon } from '@advui/icons'
 import { type ReactNode, useMemo, useState } from 'react'
 import { View } from 'tamagui'
 import { themeToCode, useThemeStore } from '../lib/theme-store'

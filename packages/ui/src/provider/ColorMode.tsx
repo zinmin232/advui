@@ -51,7 +51,7 @@ export function ColorModeProvider({
 export function useColorMode(): ColorModeContextValue {
   const context = useContext(ColorModeContext)
   if (!context) {
-    throw new Error('[adv-ui] useColorMode must be used inside <UniversalProvider>.')
+    throw new Error('[advui] useColorMode must be used inside <UniversalProvider>.')
   }
   return context
 }

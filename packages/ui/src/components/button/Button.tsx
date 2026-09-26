@@ -1,4 +1,4 @@
-import { IconDefaults } from '@adv-ui/icons'
+import { IconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
 import {
   type GetProps,

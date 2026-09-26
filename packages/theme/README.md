@@ -1,9 +1,9 @@
-# @adv-ui/theme
+# @advui/theme
 
 Tokens, palettes and theme generation for Adv UI.
 
 ```ts
-import { createUniversalConfig } from '@adv-ui/theme'
+import { createUniversalConfig } from '@advui/theme'
 
 export const config = createUniversalConfig({
   preset: 'violet',

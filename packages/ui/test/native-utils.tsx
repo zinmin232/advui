@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react-native'
-import { createUniversalConfig } from '@adv-ui/theme'
+import { createUniversalConfig } from '@advui/theme'
 import type { ReactElement } from 'react'
 import { UniversalProvider } from '../src/provider/UniversalProvider'
 

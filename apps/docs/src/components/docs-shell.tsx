@@ -1,7 +1,7 @@
 'use client'
 
-import { HStack, Text, VStack } from '@adv-ui/core'
-import { ChevronLeftIcon, ChevronRightIcon } from '@adv-ui/icons'
+import { HStack, Text, VStack } from '@advui/core'
+import { ChevronLeftIcon, ChevronRightIcon } from '@advui/icons'
 import Link from 'next/link'
 import { type ReactNode, useEffect, useMemo, useState } from 'react'
 import { View } from 'tamagui'

@@ -9,8 +9,8 @@ import {
   Text,
   VStack,
   toast,
-} from '@adv-ui/core'
-import { LockIcon, MailIcon } from '@adv-ui/icons'
+} from '@advui/core'
+import { LockIcon, MailIcon } from '@advui/icons'
 import { useState } from 'react'
 import { InputIcon, LogoMark } from './shared'
 

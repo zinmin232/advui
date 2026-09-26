@@ -1,4 +1,4 @@
-import { categories, components, roadmap } from '@adv-ui/core/meta'
+import { categories, components, roadmap } from '@advui/core/meta'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { Metadata } from 'next'

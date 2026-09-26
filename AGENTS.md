@@ -26,8 +26,8 @@ pnpm registry:build          # regenerate registry JSON
 pnpm create-component <slug> # scaffold a component
 ```
 
-Run a single package: `pnpm --filter @adv-ui/core test`. Run one test
-file: `pnpm --filter @adv-ui/core exec vitest run src/components/button`.
+Run a single package: `pnpm --filter @advui/core test`. Run one test
+file: `pnpm --filter @advui/core exec vitest run src/components/button`.
 
 ## Where things live
 
@@ -44,7 +44,7 @@ file: `pnpm --filter @adv-ui/core exec vitest run src/components/button`.
 
 1. **Tokens only.** No hex, rgb or hsl literals and no magic pixel values in
    `packages/*`. Use theme keys (`$primary`), tokens (`$4`, `$md`) and
-   `zIndex`/`shadows` from `@adv-ui/theme`. ESLint enforces color
+   `zIndex`/`shadows` from `@advui/theme`. ESLint enforces color
    literals.
 2. **Color roles have meaning.** `$primary` is a fill, `$primaryText` is text.
    Pair surfaces with their `*Foreground`. Contrast tests will fail otherwise.
@@ -69,7 +69,7 @@ file: `pnpm --filter @adv-ui/core exec vitest run src/components/button`.
 - Component changes: `pnpm test:native` passes, and metadata and examples are
   updated (`pnpm catalog` passes).
 - Visual changes: visual baselines are updated intentionally. Update both the
-  local set (`pnpm --filter @adv-ui/docs test:visual:update`) and the Linux set
+  local set (`pnpm --filter @advui/docs test:visual:update`) and the Linux set
   CI uses (the "Update visual baselines" workflow; see CONTRIBUTING.md).
 - Report honestly what you ran and what you could not run, such as iOS without
   macOS or a physical device. Never claim a platform works without running it.
@@ -92,5 +92,5 @@ file: `pnpm --filter @adv-ui/core exec vitest run src/components/button`.
 - **pnpm stores scoped packages** as `.pnpm/@scope+name`. The jest
   `transformIgnorePatterns` account for this.
 - **Windows + Android emulator**: use
-  `pnpm --filter @adv-ui/expo-playground android:emulator` (adb reverse +
+  `pnpm --filter @advui/expo-playground android:emulator` (adb reverse +
   `127.0.0.1` Metro host).

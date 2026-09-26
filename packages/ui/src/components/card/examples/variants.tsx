@@ -1,4 +1,4 @@
-import { Card, Grid, Text } from '@adv-ui/core'
+import { Card, Grid, Text } from '@advui/core'
 
 const variants = ['outline', 'elevated', 'filled', 'ghost'] as const
 

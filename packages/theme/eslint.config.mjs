@@ -1,3 +1,3 @@
-import { base } from '@adv-ui/eslint-config'
+import { base } from '@advui/eslint-config'
 
 export default base

@@ -1,4 +1,4 @@
-# @adv-ui/eslint-config
+# @advui/eslint-config
 
 Shared ESLint flat configs.
 

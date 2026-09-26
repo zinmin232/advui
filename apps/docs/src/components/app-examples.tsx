@@ -1,8 +1,8 @@
 'use client'
 
-import { appExamples, getAppExample } from '@adv-ui/examples'
-import { Badge, Button, Card, Grid, HStack, Text, VStack } from '@adv-ui/core'
-import { ArrowLeftIcon, MonitorIcon, SmartphoneIcon } from '@adv-ui/icons'
+import { appExamples, getAppExample } from '@advui/examples'
+import { Badge, Button, Card, Grid, HStack, Text, VStack } from '@advui/core'
+import { ArrowLeftIcon, MonitorIcon, SmartphoneIcon } from '@advui/icons'
 import Link from 'next/link'
 import { useState } from 'react'
 import { View } from 'tamagui'

@@ -23,7 +23,7 @@ a.is_Button { text-decoration: none; }
 
 export function GlobalStyles() {
   return (
-    <style href="adv-ui-global" precedence="default">
+    <style href="advui-global" precedence="default">
       {css}
     </style>
   )

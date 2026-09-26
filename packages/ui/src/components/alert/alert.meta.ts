@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Alert'],
   files: ['components/alert/Alert.tsx', 'components/alert/index.ts'],
   keywords: ['callout', 'banner', 'notice', 'message', 'warning', 'error'],
-  usage: `import { Alert } from '@adv-ui/core'
+  usage: `import { Alert } from '@advui/core'
 
 <Alert variant="warning">
   <Alert.Title>Trial ending</Alert.Title>

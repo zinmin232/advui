@@ -39,7 +39,7 @@ import {
   violet,
   violetDark,
 } from '@tamagui/colors'
-import { fromOklch, isValidColor, toOklch } from '@adv-ui/utils'
+import { fromOklch, isValidColor, toOklch } from '@advui/utils'
 
 export type ScaleSteps = readonly [
   string,
@@ -118,6 +118,6 @@ export function resolveScale(source: ColorSource): ColorScale {
   if (source in scales) return scales[source as ScaleName]
   if (isValidColor(source)) return generateScale(source)
   throw new Error(
-    `[adv-ui] Unknown color "${source}". Use a scale name (${Object.keys(scales).join(', ')}) or a color string.`,
+    `[advui] Unknown color "${source}". Use a scale name (${Object.keys(scales).join(', ')}) or a color string.`,
   )
 }

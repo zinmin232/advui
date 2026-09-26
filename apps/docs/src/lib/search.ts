@@ -1,5 +1,5 @@
-import { components, roadmap } from '@adv-ui/core/meta'
-import { appExamples } from '@adv-ui/examples/meta'
+import { components, roadmap } from '@advui/core/meta'
+import { appExamples } from '@advui/examples/meta'
 import { guides } from './guides'
 
 export type SearchKind = 'component' | 'guide' | 'example' | 'prop' | 'planned' | 'app-example'
@@ -14,7 +14,7 @@ export interface SearchEntry {
   text: string
 }
 
-export { appExamples } from '@adv-ui/examples/meta'
+export { appExamples } from '@advui/examples/meta'
 
 /** Builds the search index from metadata — runs at build time on the server. */
 export function buildSearchIndex(): SearchEntry[] {

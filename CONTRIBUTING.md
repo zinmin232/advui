@@ -35,7 +35,7 @@ pnpm dev:expo     # Expo dev server
    at least one platform. If you could not run a platform, say so in the PR.
 5. **Update visual baselines** when the look changes on purpose. Screenshots
    differ per OS, so there are two sets:
-   - your OS: `pnpm --filter @adv-ui/docs test:visual:update`;
+   - your OS: `pnpm --filter @advui/docs test:visual:update`;
    - Linux, which CI uses: run the **Update visual baselines** workflow on
      GitHub (Actions tab → Run workflow), then download its
      `visual-baselines-linux` artifact into
@@ -71,7 +71,7 @@ Don't edit these by hand. Change the source and re-run the generator:
 | ---------------------------------------------- | -------------------------------------------------- |
 | `packages/ui/src/meta/index.ts`, `examples.ts` | `pnpm catalog` (runs before `dev`/`build`)         |
 | `registry/*.json`, `apps/docs/public/r/*`      | `pnpm registry:build` (runs before the docs build) |
-| `packages/icons/src/generated.ts`, `icons.ts`  | `pnpm --filter @adv-ui/icons generate`             |
+| `packages/icons/src/generated.ts`, `icons.ts`  | `pnpm --filter @advui/icons generate`              |
 
 ## Releases
 

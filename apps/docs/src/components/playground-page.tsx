@@ -1,7 +1,7 @@
 'use client'
 
-import type { ComponentMeta } from '@adv-ui/core/meta'
-import { Card, HStack, Text, VStack } from '@adv-ui/core'
+import type { ComponentMeta } from '@advui/core/meta'
+import { Card, HStack, Text, VStack } from '@advui/core'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { View } from 'tamagui'
 import { CustomizerControls, Segmented } from './customizer-panel'

@@ -1,8 +1,8 @@
 'use client'
 
-import type { ComponentMeta, Platform, PartDoc } from '@adv-ui/core/meta'
-import { Badge, Button, Card, Grid, HStack, Tabs, Text, VStack } from '@adv-ui/core'
-import { ExternalLinkIcon, GlobeIcon, SmartphoneIcon } from '@adv-ui/icons'
+import type { ComponentMeta, Platform, PartDoc } from '@advui/core/meta'
+import { Badge, Button, Card, Grid, HStack, Tabs, Text, VStack } from '@advui/core'
+import { ExternalLinkIcon, GlobeIcon, SmartphoneIcon } from '@advui/icons'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { View } from 'tamagui'

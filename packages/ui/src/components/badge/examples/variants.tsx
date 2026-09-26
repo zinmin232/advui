@@ -1,4 +1,4 @@
-import { Badge, HStack } from '@adv-ui/core'
+import { Badge, HStack } from '@advui/core'
 
 export default function BadgeVariants() {
   return (

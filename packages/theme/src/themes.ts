@@ -1,4 +1,4 @@
-import { accessibleSolid, adjustLightness, ensureContrast, withAlpha } from '@adv-ui/utils'
+import { accessibleSolid, adjustLightness, ensureContrast, withAlpha } from '@advui/utils'
 import { type ColorScale, type ColorSource, type ScaleSteps, resolveScale } from './palettes'
 
 export type ColorMode = 'light' | 'dark'

@@ -1,4 +1,4 @@
-import { composeEventHandlers } from '@adv-ui/utils'
+import { composeEventHandlers } from '@advui/utils'
 import {
   type FocusEvent,
   type KeyboardEvent,

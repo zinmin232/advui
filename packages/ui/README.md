@@ -1,14 +1,14 @@
-# @adv-ui/core
+# @advui/core
 
 Cross-platform React components for web, iOS and Android, built on Tamagui.
 
 ```bash
-pnpm add @adv-ui/core @adv-ui/theme @adv-ui/icons tamagui
+pnpm add @advui/core @advui/theme @advui/icons tamagui
 ```
 
 ```tsx
-import { UniversalProvider, Button, toast } from '@adv-ui/core'
-import { createUniversalConfig } from '@adv-ui/theme'
+import { UniversalProvider, Button, toast } from '@advui/core'
+import { createUniversalConfig } from '@advui/theme'
 
 const config = createUniversalConfig({ preset: 'indigo' })
 
@@ -22,7 +22,7 @@ export function App() {
 ```
 
 On web, alias `react-native` to `react-native-web` and transpile the
-`@adv-ui/*` packages (see the Installation guide). Expo needs no extra
+`@advui/*` packages (see the Installation guide). Expo needs no extra
 setup.
 
 **Exports:** Alert, Avatar, Badge, Button, Card, Checkbox, Container, Dialog,

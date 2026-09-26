@@ -1,6 +1,6 @@
 'use client'
 
-import { Text, VStack } from '@adv-ui/core'
+import { Text, VStack } from '@advui/core'
 import { View } from 'tamagui'
 import { ExampleRenderer } from './component-preview'
 

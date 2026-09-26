@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Grid'],
   files: ['components/layout/Grid.tsx'],
   keywords: ['columns', 'grid', 'responsive', 'cards', 'gallery'],
-  usage: `import { Card, Grid } from '@adv-ui/core'
+  usage: `import { Card, Grid } from '@advui/core'
 
 <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="$4">
   {items.map((item) => <Card key={item.id}>…</Card>)}

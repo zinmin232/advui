@@ -22,12 +22,12 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @adv-ui/docs exec playwright install --with-deps chromium
-      - run: pnpm --filter @adv-ui/docs build
+      - run: pnpm --filter @advui/docs exec playwright install --with-deps chromium
+      - run: pnpm --filter @advui/docs build
       - name: Write baselines
-        run: pnpm --filter @adv-ui/docs exec playwright test --project=visual --update-snapshots=all
+        run: pnpm --filter @advui/docs exec playwright test --project=visual --update-snapshots=all
       - name: Check they reproduce
-        run: pnpm --filter @adv-ui/docs exec playwright test --project=visual
+        run: pnpm --filter @advui/docs exec playwright test --project=visual
       - uses: actions/upload-artifact@v7
         with:
           name: visual-baselines-linux

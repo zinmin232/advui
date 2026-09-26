@@ -1,6 +1,6 @@
 'use client'
 
-import { UniversalProvider } from '@adv-ui/core'
+import { UniversalProvider } from '@advui/core'
 import { useServerInsertedHTML } from 'next/navigation'
 import type { ReactNode } from 'react'
 import { StyleSheet } from 'react-native'

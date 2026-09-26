@@ -21,7 +21,7 @@ export function Icon({ name, ...props }: NamedIconProps) {
   const Component = registry?.[name] ?? defaultIcons[name as IconName]
   if (!Component) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn(`[adv-ui] Unknown icon "${name}". Register it with <IconProvider>.`)
+      console.warn(`[advui] Unknown icon "${name}". Register it with <IconProvider>.`)
     }
     return null
   }

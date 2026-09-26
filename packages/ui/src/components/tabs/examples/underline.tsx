@@ -1,5 +1,5 @@
-import { Tabs, Text } from '@adv-ui/core'
-import { BellIcon, SettingsIcon, UserIcon } from '@adv-ui/icons'
+import { Tabs, Text } from '@advui/core'
+import { BellIcon, SettingsIcon, UserIcon } from '@advui/icons'
 
 export default function TabsUnderline() {
   return (

@@ -1,4 +1,4 @@
-import { UniversalProvider, useColorMode, useTheme } from '@adv-ui/core'
+import { UniversalProvider, useColorMode, useTheme } from '@advui/core'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'

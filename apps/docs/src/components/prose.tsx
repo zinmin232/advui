@@ -1,6 +1,6 @@
 'use client'
 
-import { Alert, Heading, Text, VStack } from '@adv-ui/core'
+import { Alert, Heading, Text, VStack } from '@advui/core'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { View } from 'tamagui'

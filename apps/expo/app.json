@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Adv UI",
-    "slug": "adv-ui-playground",
+    "slug": "advui-playground",
     "scheme": "advui",
     "version": "0.1.0",
     "orientation": "default",

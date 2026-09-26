@@ -1,5 +1,5 @@
-import { IconButton } from '@adv-ui/core'
-import { SettingsIcon } from '@adv-ui/icons'
+import { IconButton } from '@advui/core'
+import { SettingsIcon } from '@advui/icons'
 
 export default function IconButtonBasic() {
   return <IconButton aria-label="Settings" icon={<SettingsIcon />} />

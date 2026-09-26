@@ -28,17 +28,17 @@
     {
       "name": "basic",
       "title": "Image with fallback",
-      "code": "import { Avatar, HStack } from '@adv-ui/core'\n\nexport default function AvatarBasic() {\n  return (\n    <HStack gap=\"$3\">\n      <Avatar src=\"https://i.pravatar.cc/128?img=47\" alt=\"Maya Chen\" />\n      <Avatar alt=\"Jordan Lee\" />\n      <Avatar src=\"https://invalid.example/broken.png\" alt=\"Sam Park\" />\n    </HStack>\n  )\n}\n"
+      "code": "import { Avatar, HStack } from '@advui/core'\n\nexport default function AvatarBasic() {\n  return (\n    <HStack gap=\"$3\">\n      <Avatar src=\"https://i.pravatar.cc/128?img=47\" alt=\"Maya Chen\" />\n      <Avatar alt=\"Jordan Lee\" />\n      <Avatar src=\"https://invalid.example/broken.png\" alt=\"Sam Park\" />\n    </HStack>\n  )\n}\n"
     },
     {
       "name": "sizes",
       "title": "Sizes",
-      "code": "import { Avatar, HStack } from '@adv-ui/core'\n\nexport default function AvatarSizes() {\n  return (\n    <HStack gap=\"$3\" alignItems=\"center\">\n      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (\n        <Avatar key={size} size={size} alt=\"Riley Quinn\" />\n      ))}\n      <Avatar size=\"lg\" shape=\"square\" alt=\"Acme Inc\" />\n    </HStack>\n  )\n}\n"
+      "code": "import { Avatar, HStack } from '@advui/core'\n\nexport default function AvatarSizes() {\n  return (\n    <HStack gap=\"$3\" alignItems=\"center\">\n      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (\n        <Avatar key={size} size={size} alt=\"Riley Quinn\" />\n      ))}\n      <Avatar size=\"lg\" shape=\"square\" alt=\"Acme Inc\" />\n    </HStack>\n  )\n}\n"
     },
     {
       "name": "group",
       "title": "Stacked group",
-      "code": "import { Avatar, HStack } from '@adv-ui/core'\n\nconst people = ['Maya Chen', 'Jordan Lee', 'Sam Park', 'Riley Quinn']\n\nexport default function AvatarGroup() {\n  return (\n    <HStack>\n      {people.map((name, index) => (\n        <Avatar\n          key={name}\n          alt={name}\n          src={`https://i.pravatar.cc/128?img=${index + 10}`}\n          borderWidth={2}\n          borderColor=\"$background\"\n          marginLeft={index === 0 ? 0 : '$-2'}\n        />\n      ))}\n    </HStack>\n  )\n}\n"
+      "code": "import { Avatar, HStack } from '@advui/core'\n\nconst people = ['Maya Chen', 'Jordan Lee', 'Sam Park', 'Riley Quinn']\n\nexport default function AvatarGroup() {\n  return (\n    <HStack>\n      {people.map((name, index) => (\n        <Avatar\n          key={name}\n          alt={name}\n          src={`https://i.pravatar.cc/128?img=${index + 10}`}\n          borderWidth={2}\n          borderColor=\"$background\"\n          marginLeft={index === 0 ? 0 : '$-2'}\n        />\n      ))}\n    </HStack>\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/avatar",

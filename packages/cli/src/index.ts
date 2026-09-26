@@ -12,7 +12,7 @@ Usage
   npx ${CLI_NAME} list
 
 Options
-  --registry <url|path>  Registry to read from (default: from adv-ui.json, else ${DEFAULT_REGISTRY})
+  --registry <url|path>  Registry to read from (default: from advui.json, else ${DEFAULT_REGISTRY})
   --cwd <path>           Project directory (default: current directory)
   --no-install           Print the install command instead of running it
   --overwrite            Replace existing files

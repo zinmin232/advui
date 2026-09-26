@@ -28,17 +28,17 @@
     {
       "name": "basic",
       "title": "Basic",
-      "code": "import { IconButton } from '@adv-ui/core'\nimport { SettingsIcon } from '@adv-ui/icons'\n\nexport default function IconButtonBasic() {\n  return <IconButton aria-label=\"Settings\" icon={<SettingsIcon />} />\n}\n"
+      "code": "import { IconButton } from '@advui/core'\nimport { SettingsIcon } from '@advui/icons'\n\nexport default function IconButtonBasic() {\n  return <IconButton aria-label=\"Settings\" icon={<SettingsIcon />} />\n}\n"
     },
     {
       "name": "variants",
       "title": "Variants",
-      "code": "import { HStack, IconButton } from '@adv-ui/core'\nimport { HeartIcon, PlusIcon, SearchIcon, TrashIcon } from '@adv-ui/icons'\n\nexport default function IconButtonVariants() {\n  return (\n    <HStack gap=\"$2\">\n      <IconButton aria-label=\"Search\" icon={<SearchIcon />} />\n      <IconButton aria-label=\"Add\" variant=\"outline\" icon={<PlusIcon />} />\n      <IconButton aria-label=\"Favorite\" variant=\"secondary\" circular icon={<HeartIcon />} />\n      <IconButton aria-label=\"New\" variant=\"default\" icon={<PlusIcon />} />\n      <IconButton aria-label=\"Delete\" variant=\"destructive\" icon={<TrashIcon />} />\n    </HStack>\n  )\n}\n"
+      "code": "import { HStack, IconButton } from '@advui/core'\nimport { HeartIcon, PlusIcon, SearchIcon, TrashIcon } from '@advui/icons'\n\nexport default function IconButtonVariants() {\n  return (\n    <HStack gap=\"$2\">\n      <IconButton aria-label=\"Search\" icon={<SearchIcon />} />\n      <IconButton aria-label=\"Add\" variant=\"outline\" icon={<PlusIcon />} />\n      <IconButton aria-label=\"Favorite\" variant=\"secondary\" circular icon={<HeartIcon />} />\n      <IconButton aria-label=\"New\" variant=\"default\" icon={<PlusIcon />} />\n      <IconButton aria-label=\"Delete\" variant=\"destructive\" icon={<TrashIcon />} />\n    </HStack>\n  )\n}\n"
     },
     {
       "name": "sizes",
       "title": "Sizes",
-      "code": "import { HStack, IconButton } from '@adv-ui/core'\nimport { BellIcon } from '@adv-ui/icons'\n\nexport default function IconButtonSizes() {\n  return (\n    <HStack gap=\"$2\" alignItems=\"center\">\n      <IconButton aria-label=\"Notifications\" variant=\"outline\" size=\"sm\" icon={<BellIcon />} />\n      <IconButton aria-label=\"Notifications\" variant=\"outline\" size=\"md\" icon={<BellIcon />} />\n      <IconButton aria-label=\"Notifications\" variant=\"outline\" size=\"lg\" icon={<BellIcon />} />\n    </HStack>\n  )\n}\n"
+      "code": "import { HStack, IconButton } from '@advui/core'\nimport { BellIcon } from '@advui/icons'\n\nexport default function IconButtonSizes() {\n  return (\n    <HStack gap=\"$2\" alignItems=\"center\">\n      <IconButton aria-label=\"Notifications\" variant=\"outline\" size=\"sm\" icon={<BellIcon />} />\n      <IconButton aria-label=\"Notifications\" variant=\"outline\" size=\"md\" icon={<BellIcon />} />\n      <IconButton aria-label=\"Notifications\" variant=\"outline\" size=\"lg\" icon={<BellIcon />} />\n    </HStack>\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/icon-button",

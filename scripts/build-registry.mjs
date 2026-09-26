@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Builds the component registry consumed by the CLI (`adv-ui add <name>`)
+// Builds the component registry consumed by the CLI (`advui add <name>`)
 // and served by the docs site at /r/<name>.json.
 //
 //   registry/index.json          – list of items
@@ -130,7 +130,7 @@ for (const item of items) {
 }
 
 const index = {
-  name: 'adv-ui',
+  name: 'advui',
   version: uiPackage.version,
   items: items.map(
     ({ name, title, type, description, category, status, dependencies, registryDependencies }) => ({

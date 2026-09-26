@@ -1,4 +1,4 @@
-import { Badge, Card, HStack, Text, toast } from '@adv-ui/core'
+import { Badge, Card, HStack, Text, toast } from '@advui/core'
 
 export default function CardInteractive() {
   return (

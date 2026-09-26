@@ -1,4 +1,4 @@
-import { IconProvider, type IconRegistry } from '@adv-ui/icons'
+import { IconProvider, type IconRegistry } from '@advui/icons'
 import type { ReactNode } from 'react'
 import { TamaguiProvider, type TamaguiInternalConfig, type TamaguiProviderProps } from 'tamagui'
 import { Toaster, type ToasterProps } from '../components/toast/Toaster'

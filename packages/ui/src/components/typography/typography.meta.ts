@@ -16,7 +16,7 @@ export default defineMeta({
     'components/typography/index.ts',
   ],
   keywords: ['text', 'heading', 'font', 'h1', 'paragraph', 'type scale'],
-  usage: `import { Heading, Text } from '@adv-ui/core'
+  usage: `import { Heading, Text } from '@advui/core'
 
 <Heading level={2}>Billing</Heading>
 <Text tone="muted">Manage your plan and invoices.</Text>`,

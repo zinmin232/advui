@@ -1,4 +1,4 @@
-import { CheckIcon, MinusIcon } from '@adv-ui/icons'
+import { CheckIcon, MinusIcon } from '@advui/icons'
 import { forwardRef } from 'react'
 import {
   isWeb,

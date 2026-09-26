@@ -16,7 +16,7 @@ The generator creates `packages/ui/src/components/<slug>/`:
 ├── <Name>.tsx          component (+ <Name>.native.tsx only if platforms truly differ)
 ├── <Name>.test.tsx     web tests (Vitest + Testing Library)
 ├── <slug>.meta.ts      documentation metadata — pure data, no React imports
-├── examples/basic.tsx  default export, imports from '@adv-ui/core'
+├── examples/basic.tsx  default export, imports from '@advui/core'
 └── index.ts            public exports
 ```
 
@@ -50,7 +50,7 @@ entry, search entry, Expo screen and registry item then appear automatically.
 
 - **Tokens only.** Colors come from theme keys (`$primary`,
   `$mutedForeground`), spacing and sizes from `$` tokens, radius from `$sm`…`$full`,
-  z-index from `zIndex` in `@adv-ui/theme`. The lint config rejects hex,
+  z-index from `zIndex` in `@advui/theme`. The lint config rejects hex,
   rgb and hsl literals in library code.
 - **Pick the right color role.** `$primary` is a fill. Use `$primaryText` for
   primary-colored text on the page background. Soft intent colors

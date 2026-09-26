@@ -1,5 +1,5 @@
-import { Button, HStack } from '@adv-ui/core'
-import { ArrowRightIcon, MailIcon, PlusIcon } from '@adv-ui/icons'
+import { Button, HStack } from '@advui/core'
+import { ArrowRightIcon, MailIcon, PlusIcon } from '@advui/icons'
 
 export default function ButtonWithIcon() {
   return (

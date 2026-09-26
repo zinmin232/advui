@@ -1,4 +1,4 @@
-import { Alert, VStack } from '@adv-ui/core'
+import { Alert, VStack } from '@advui/core'
 
 export default function AlertVariants() {
   return (

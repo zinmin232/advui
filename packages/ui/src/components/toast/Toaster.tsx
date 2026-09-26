@@ -5,8 +5,8 @@ import {
   IconDefaults,
   InfoIcon,
   XIcon,
-} from '@adv-ui/icons'
-import { shadows, zIndex } from '@adv-ui/theme'
+} from '@advui/icons'
+import { shadows, zIndex } from '@advui/theme'
 import {
   Toast,
   type ToastT,

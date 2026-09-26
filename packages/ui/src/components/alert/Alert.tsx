@@ -4,7 +4,7 @@ import {
   CheckCircleIcon,
   IconDefaults,
   InfoIcon,
-} from '@adv-ui/icons'
+} from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
 import {
   type GetProps,

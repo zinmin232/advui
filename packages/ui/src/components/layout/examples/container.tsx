@@ -1,4 +1,4 @@
-import { Container, Text } from '@adv-ui/core'
+import { Container, Text } from '@advui/core'
 
 export default function ContainerExample() {
   return (

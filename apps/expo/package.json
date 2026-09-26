@@ -1,5 +1,5 @@
 {
-  "name": "@adv-ui/expo-playground",
+  "name": "@advui/expo-playground",
   "version": "0.1.0",
   "private": true,
   "main": "expo-router/entry",
@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "@tamagui/theme": "2.7.7",
-    "@adv-ui/core": "workspace:*",
-    "@adv-ui/examples": "workspace:*",
-    "@adv-ui/icons": "workspace:*",
-    "@adv-ui/theme": "workspace:*",
+    "@advui/core": "workspace:*",
+    "@advui/examples": "workspace:*",
+    "@advui/icons": "workspace:*",
+    "@advui/theme": "workspace:*",
     "expo": "~57.0.25",
     "expo-constants": "~57.0.19",
     "expo-linking": "~57.0.11",
@@ -35,8 +35,8 @@
   "devDependencies": {
     "@babel/core": "^7.28.0",
     "@types/react": "~19.2.2",
-    "@adv-ui/eslint-config": "workspace:*",
-    "@adv-ui/tsconfig": "workspace:*",
+    "@advui/eslint-config": "workspace:*",
+    "@advui/tsconfig": "workspace:*",
     "typescript": "~6.0.3"
   }
 }

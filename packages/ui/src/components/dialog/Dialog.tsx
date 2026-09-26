@@ -1,5 +1,5 @@
-import { XIcon } from '@adv-ui/icons'
-import { shadows } from '@adv-ui/theme'
+import { XIcon } from '@advui/icons'
+import { shadows } from '@advui/theme'
 import { type ReactNode, forwardRef } from 'react'
 import {
   Dialog as TamaguiDialog,

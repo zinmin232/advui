@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['Button', 'ButtonText', 'ButtonFrame', 'ButtonContext'],
   files: ['components/button/Button.tsx', 'components/button/index.ts'],
   keywords: ['action', 'submit', 'cta', 'click', 'press'],
-  usage: `import { Button } from '@adv-ui/core'
+  usage: `import { Button } from '@advui/core'
 
 export function SaveButton() {
   return <Button onPress={() => save()}>Save</Button>

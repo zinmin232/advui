@@ -28,17 +28,17 @@
     {
       "name": "basic",
       "title": "With label",
-      "code": "import { Input, Label, Text, VStack } from '@adv-ui/core'\n\nexport default function InputBasic() {\n  return (\n    <VStack gap=\"$2\" width=\"100%\" maxWidth=\"$80\">\n      <Label htmlFor=\"example-email\">Email</Label>\n      <Input\n        id=\"example-email\"\n        placeholder=\"you@example.com\"\n        inputMode=\"email\"\n        autoComplete=\"email\"\n      />\n      <Text size=\"sm\" tone=\"muted\">\n        We’ll never share your email.\n      </Text>\n    </VStack>\n  )\n}\n"
+      "code": "import { Input, Label, Text, VStack } from '@advui/core'\n\nexport default function InputBasic() {\n  return (\n    <VStack gap=\"$2\" width=\"100%\" maxWidth=\"$80\">\n      <Label htmlFor=\"example-email\">Email</Label>\n      <Input\n        id=\"example-email\"\n        placeholder=\"you@example.com\"\n        inputMode=\"email\"\n        autoComplete=\"email\"\n      />\n      <Text size=\"sm\" tone=\"muted\">\n        We’ll never share your email.\n      </Text>\n    </VStack>\n  )\n}\n"
     },
     {
       "name": "sizes",
       "title": "Sizes",
-      "code": "import { Input, VStack } from '@adv-ui/core'\n\nexport default function InputSizes() {\n  return (\n    <VStack gap=\"$3\" width=\"100%\" maxWidth=\"$80\">\n      <Input size=\"sm\" aria-label=\"Small\" placeholder=\"Small\" />\n      <Input size=\"md\" aria-label=\"Medium\" placeholder=\"Medium\" />\n      <Input size=\"lg\" aria-label=\"Large\" placeholder=\"Large\" />\n    </VStack>\n  )\n}\n"
+      "code": "import { Input, VStack } from '@advui/core'\n\nexport default function InputSizes() {\n  return (\n    <VStack gap=\"$3\" width=\"100%\" maxWidth=\"$80\">\n      <Input size=\"sm\" aria-label=\"Small\" placeholder=\"Small\" />\n      <Input size=\"md\" aria-label=\"Medium\" placeholder=\"Medium\" />\n      <Input size=\"lg\" aria-label=\"Large\" placeholder=\"Large\" />\n    </VStack>\n  )\n}\n"
     },
     {
       "name": "states",
       "title": "Invalid and disabled",
-      "code": "import { Input, Label, Text, VStack } from '@adv-ui/core'\n\nexport default function InputStates() {\n  return (\n    <VStack gap=\"$4\" width=\"100%\" maxWidth=\"$80\">\n      <VStack gap=\"$2\">\n        <Label htmlFor=\"username\">Username</Label>\n        <Input id=\"username\" defaultValue=\"ab\" invalid aria-describedby=\"username-error\" />\n        <Text id=\"username-error\" size=\"sm\" tone=\"error\">\n          Username must be at least 3 characters.\n        </Text>\n      </VStack>\n      <VStack gap=\"$2\">\n        <Label htmlFor=\"team\" disabled>\n          Team\n        </Label>\n        <Input id=\"team\" defaultValue=\"Design\" disabled />\n      </VStack>\n    </VStack>\n  )\n}\n"
+      "code": "import { Input, Label, Text, VStack } from '@advui/core'\n\nexport default function InputStates() {\n  return (\n    <VStack gap=\"$4\" width=\"100%\" maxWidth=\"$80\">\n      <VStack gap=\"$2\">\n        <Label htmlFor=\"username\">Username</Label>\n        <Input id=\"username\" defaultValue=\"ab\" invalid aria-describedby=\"username-error\" />\n        <Text id=\"username-error\" size=\"sm\" tone=\"error\">\n          Username must be at least 3 characters.\n        </Text>\n      </VStack>\n      <VStack gap=\"$2\">\n        <Label htmlFor=\"team\" disabled>\n          Team\n        </Label>\n        <Input id=\"team\" defaultValue=\"Design\" disabled />\n      </VStack>\n    </VStack>\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/input",

@@ -1,4 +1,4 @@
-import { Text, VStack } from '@adv-ui/core'
+import { Text, VStack } from '@advui/core'
 
 const tones = ['default', 'muted', 'primary', 'success', 'warning', 'error', 'info'] as const
 

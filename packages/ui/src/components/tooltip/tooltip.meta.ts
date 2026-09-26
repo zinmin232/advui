@@ -11,8 +11,8 @@ export default defineMeta({
   exports: ['Tooltip'],
   files: ['components/tooltip/Tooltip.tsx', 'components/tooltip/index.ts'],
   keywords: ['hint', 'popover', 'title', 'help'],
-  usage: `import { IconButton, Tooltip } from '@adv-ui/core'
-import { TrashIcon } from '@adv-ui/icons'
+  usage: `import { IconButton, Tooltip } from '@advui/core'
+import { TrashIcon } from '@advui/icons'
 
 <Tooltip content="Delete file">
   <IconButton aria-label="Delete file" icon={<TrashIcon />} />

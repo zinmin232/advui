@@ -1,5 +1,5 @@
-import { Card, HStack, Text, VStack } from '@adv-ui/core'
-import { TrendingUpIcon } from '@adv-ui/icons'
+import { Card, HStack, Text, VStack } from '@advui/core'
+import { TrendingUpIcon } from '@advui/icons'
 import type { ReactNode } from 'react'
 import { View } from 'tamagui'
 

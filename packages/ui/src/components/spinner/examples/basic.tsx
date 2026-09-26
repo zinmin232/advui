@@ -1,4 +1,4 @@
-import { HStack, Spinner } from '@adv-ui/core'
+import { HStack, Spinner } from '@advui/core'
 
 export default function SpinnerBasic() {
   return (

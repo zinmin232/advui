@@ -1,7 +1,7 @@
-import { Badge, Card, HStack, Text, VStack } from '@adv-ui/core'
-import { categories, components } from '@adv-ui/core/meta'
-import { appExamples } from '@adv-ui/examples/meta'
-import { ChevronRightIcon, PaletteIcon, SmartphoneIcon } from '@adv-ui/icons'
+import { Badge, Card, HStack, Text, VStack } from '@advui/core'
+import { categories, components } from '@advui/core/meta'
+import { appExamples } from '@advui/examples/meta'
+import { ChevronRightIcon, PaletteIcon, SmartphoneIcon } from '@advui/icons'
 import { Link, Stack } from 'expo-router'
 import { ScrollView } from 'react-native'
 

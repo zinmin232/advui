@@ -1,4 +1,4 @@
-import { Input, Label, Text, VStack } from '@adv-ui/core'
+import { Input, Label, Text, VStack } from '@advui/core'
 
 export default function InputBasic() {
   return (

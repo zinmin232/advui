@@ -1,5 +1,5 @@
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@adv-ui/icons'
-import { shadows, zIndex } from '@adv-ui/theme'
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@advui/icons'
+import { shadows, zIndex } from '@advui/theme'
 import {
   Children,
   Fragment,
