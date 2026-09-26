@@ -15,6 +15,7 @@ import {
   withStaticProperties,
 } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
+import { isTextContent } from '../../utils/isTextContent'
 
 type TabsVariant = 'pills' | 'underline'
 
@@ -184,7 +185,7 @@ const TabsTrigger = forwardRef<TamaguiElement, TabsTriggerProps>(function TabsTr
     >
       <IconDefaults size={16} color={active ? '$foreground' : '$mutedForeground'}>
         {icon}
-        {typeof children === 'string' ? (
+        {isTextContent(children) ? (
           <TriggerText color={active ? '$foreground' : '$mutedForeground'}>{children}</TriggerText>
         ) : (
           children

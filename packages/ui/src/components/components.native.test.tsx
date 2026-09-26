@@ -4,15 +4,19 @@ import { PlusIcon } from '@advui/icons'
 import { zIndex } from '@advui/theme'
 import { StyleSheet } from 'react-native'
 import { renderNative } from '../../test/native-utils'
+import { Accordion } from './accordion/Accordion'
 import { Alert } from './alert/Alert'
 import { Avatar } from './avatar/Avatar'
 import { Badge } from './badge/Badge'
 import { Button } from './button/Button'
 import { Card } from './card/Card'
 import { Checkbox } from './checkbox/Checkbox'
+import { DropdownMenu } from './dropdown-menu/DropdownMenu'
 import { IconButton } from './icon-button/IconButton'
 import { Input } from './input/Input'
+import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
+import { Slider } from './slider/Slider'
 import { Switch } from './switch/Switch'
 import { Toaster, toast } from './toast/Toaster'
 import { Heading } from './typography/Heading'
@@ -128,5 +132,87 @@ describe('native rendering', () => {
       jest.runAllTimers()
     })
     jest.useRealTimers()
+  })
+  it('Accordion triggers are buttons that expand their section', async () => {
+    await renderNative(
+      <Accordion type="single" collapsible>
+        <Accordion.Item value="one">
+          <Accordion.Trigger>Shipping</Accordion.Trigger>
+          <Accordion.Content>Three to five days</Accordion.Content>
+        </Accordion.Item>
+      </Accordion>,
+    )
+    const trigger = screen.getByRole('button', { name: 'Shipping' })
+    expect(trigger).toBeCollapsed()
+    await fireEvent.press(trigger)
+    expect(screen.getByRole('button', { name: 'Shipping' })).toBeExpanded()
+    expect(screen.getByText('Three to five days')).toBeOnTheScreen()
+  })
+
+  it('Slider thumbs respond to screen-reader increment / decrement actions', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <Slider aria-label="Volume" defaultValue={40} step={5} onValueChange={onValueChange} />,
+    )
+    const thumb = screen.getByRole('slider', { name: 'Volume' })
+    await fireEvent(thumb, 'accessibilityAction', { nativeEvent: { actionName: 'increment' } })
+    expect(onValueChange).toHaveBeenLastCalledWith(45)
+    await fireEvent(thumb, 'accessibilityAction', { nativeEvent: { actionName: 'decrement' } })
+    expect(onValueChange).toHaveBeenLastCalledWith(40)
+  })
+
+  it('DropdownMenu opens a sheet of accessible items and closes after a choice', async () => {
+    const onSelect = jest.fn()
+    const onCheckedChange = jest.fn()
+    await renderNative(
+      <DropdownMenu>
+        <DropdownMenu.Trigger>
+          <Button>Options</Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item onSelect={onSelect}>Rename</DropdownMenu.Item>
+          <DropdownMenu.CheckboxItem checked onCheckedChange={onCheckedChange}>
+            Pinned
+          </DropdownMenu.CheckboxItem>
+        </DropdownMenu.Content>
+      </DropdownMenu>,
+    )
+    await fireEvent.press(screen.getByRole('button', { name: 'Options' }))
+    expect(screen.getByRole('checkbox', { name: 'Pinned' })).toBeChecked()
+    // Screen readers activate rows with the "activate" action (double-tap).
+    await fireEvent(screen.getByRole('menuitem', { name: 'Rename' }), 'accessibilityAction', {
+      nativeEvent: { actionName: 'activate' },
+    })
+    expect(onSelect).toHaveBeenCalledTimes(1)
+  })
+  it('Popover opens its content from the trigger (bottom sheet on native)', async () => {
+    await renderNative(
+      <Popover>
+        <Popover.Trigger asChild>
+          <Button>Dimensions</Button>
+        </Popover.Trigger>
+        <Popover.Content>
+          <Popover.Title>Layer size</Popover.Title>
+          <Text>Width and height</Text>
+        </Popover.Content>
+      </Popover>,
+    )
+    expect(screen.queryByText('Layer size')).toBeNull()
+    await fireEvent.press(screen.getByRole('button', { name: 'Dimensions' }))
+    expect(await screen.findByText('Layer size')).toBeOnTheScreen()
+    expect(screen.getByText('Width and height')).toBeOnTheScreen()
+  })
+  it('wraps text made of several JSX pieces ("Status ({count})") in Text', async () => {
+    const count = 2
+    await renderNative(
+      <>
+        <Button>Status ({count})</Button>
+        <Badge>{count} new</Badge>
+      </>,
+    )
+    // Smoke test: devices throw on bare strings outside <Text>, the Jest renderer
+    // does not; the logic is covered by utils/isTextContent.test.ts.
+    expect(screen.getByText('Status (2)').type).toBe('Text')
+    expect(screen.getByText('2 new').type).toBe('Text')
   })
 })

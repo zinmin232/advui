@@ -19,5 +19,6 @@ module.exports = {
   // pnpm nests packages under node_modules/.pnpm/<name>@<version>/node_modules/<name>
   // and encodes scopes as @scope+name inside .pnpm
   transformIgnorePatterns: [`node_modules/(?!(?:\\.pnpm/)?(${allow}))`],
+  setupFiles: ['<rootDir>/test/native-setup.js'],
   testTimeout: 30000,
 }

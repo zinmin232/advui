@@ -11,6 +11,14 @@
       "registryDependencies": []
     },
     {
+      "name": "utils",
+      "title": "Utilities",
+      "type": "registry:lib",
+      "description": "Small shared helpers used by several components.",
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
       "name": "provider",
       "title": "UniversalProvider",
       "type": "registry:lib",
@@ -22,6 +30,22 @@
       "registryDependencies": [
         "hooks",
         "toast"
+      ]
+    },
+    {
+      "name": "accordion",
+      "title": "Accordion",
+      "type": "registry:component",
+      "description": "Vertically stacked sections that expand to reveal their content, such as FAQs or grouped settings.",
+      "category": "data-display",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "typography",
+        "utils"
       ]
     },
     {
@@ -58,7 +82,9 @@
       "dependencies": [
         "@advui/icons"
       ],
-      "registryDependencies": []
+      "registryDependencies": [
+        "utils"
+      ]
     },
     {
       "name": "button",
@@ -71,7 +97,8 @@
         "@advui/icons"
       ],
       "registryDependencies": [
-        "spinner"
+        "spinner",
+        "utils"
       ]
     },
     {
@@ -114,6 +141,22 @@
       "registryDependencies": [
         "hooks",
         "icon-button",
+        "typography"
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "title": "Dropdown Menu",
+      "type": "registry:component",
+      "description": "A list of actions or options that opens from a button.",
+      "category": "navigation",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons",
+        "@advui/theme"
+      ],
+      "registryDependencies": [
+        "hooks",
         "typography"
       ]
     },
@@ -182,6 +225,21 @@
       "registryDependencies": []
     },
     {
+      "name": "popover",
+      "title": "Popover",
+      "type": "registry:component",
+      "description": "Rich, interactive content anchored to a trigger, such as quick settings, filters or a short form.",
+      "category": "overlay",
+      "status": "beta",
+      "dependencies": [
+        "@advui/theme"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "typography"
+      ]
+    },
+    {
       "name": "progress",
       "title": "Progress",
       "type": "registry:component",
@@ -240,6 +298,20 @@
       "registryDependencies": []
     },
     {
+      "name": "slider",
+      "title": "Slider",
+      "type": "registry:component",
+      "description": "Pick a number, or a range, by dragging a thumb along a track.",
+      "category": "forms",
+      "status": "beta",
+      "dependencies": [
+        "@advui/theme"
+      ],
+      "registryDependencies": [
+        "hooks"
+      ]
+    },
+    {
       "name": "spinner",
       "title": "Spinner",
       "type": "registry:component",
@@ -275,7 +347,8 @@
         "@advui/theme"
       ],
       "registryDependencies": [
-        "hooks"
+        "hooks",
+        "utils"
       ]
     },
     {

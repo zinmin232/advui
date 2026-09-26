@@ -11,6 +11,7 @@ import {
   withStaticProperties,
 } from 'tamagui'
 import { Spinner } from '../spinner'
+import { isTextContent } from '../../utils/isTextContent'
 
 export type ButtonVariant = 'default' | 'secondary' | 'outline' | 'ghost' | 'destructive' | 'link'
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'icon'
@@ -175,12 +176,7 @@ const ButtonImpl = forwardRef<TamaguiElement, ButtonProps>(function Button(
 ) {
   const inactive = disabled || loading
   const foreground = buttonForeground[variant]
-  const content =
-    typeof children === 'string' || typeof children === 'number' ? (
-      <ButtonText>{children}</ButtonText>
-    ) : (
-      children
-    )
+  const content = isTextContent(children) ? <ButtonText>{children}</ButtonText> : children
 
   return (
     <ButtonFrame

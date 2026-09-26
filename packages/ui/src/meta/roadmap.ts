@@ -21,8 +21,6 @@ export const roadmap: RoadmapItem[] = [
   { name: 'Multi Select', slug: 'multi-select', category: 'forms', phase: 3 },
   { name: 'Combobox', slug: 'combobox', category: 'forms', phase: 3 },
   { name: 'Autocomplete', slug: 'autocomplete', category: 'forms', phase: 3 },
-  { name: 'Slider', slug: 'slider', category: 'forms', phase: 3 },
-  { name: 'Range Slider', slug: 'range-slider', category: 'forms', phase: 3 },
   { name: 'Date Picker', slug: 'date-picker', category: 'forms', phase: 3 },
   { name: 'Date Range Picker', slug: 'date-range-picker', category: 'forms', phase: 3 },
   { name: 'Time Picker', slug: 'time-picker', category: 'forms', phase: 3 },
@@ -37,7 +35,6 @@ export const roadmap: RoadmapItem[] = [
   { name: 'Breadcrumb', slug: 'breadcrumb', category: 'navigation', phase: 2 },
   { name: 'Pagination', slug: 'pagination', category: 'navigation', phase: 4 },
   { name: 'Menu', slug: 'menu', category: 'navigation', phase: 2 },
-  { name: 'Dropdown Menu', slug: 'dropdown-menu', category: 'navigation', phase: 2 },
   { name: 'Navigation Menu', slug: 'navigation-menu', category: 'navigation', phase: 4 },
   { name: 'Sidebar', slug: 'sidebar', category: 'navigation', phase: 4 },
   { name: 'Bottom Navigation', slug: 'bottom-navigation', category: 'navigation', phase: 4 },
@@ -51,7 +48,6 @@ export const roadmap: RoadmapItem[] = [
 
   { name: 'Drawer', slug: 'drawer', category: 'overlay', phase: 2 },
   { name: 'Sheet', slug: 'sheet', category: 'overlay', phase: 2 },
-  { name: 'Popover', slug: 'popover', category: 'overlay', phase: 2 },
   { name: 'Hover Card', slug: 'hover-card', category: 'overlay', phase: 2 },
   { name: 'Context Menu', slug: 'context-menu', category: 'overlay', phase: 2 },
 
@@ -59,7 +55,6 @@ export const roadmap: RoadmapItem[] = [
   { name: 'Data Table', slug: 'data-table', category: 'data-display', phase: 4 },
   { name: 'List', slug: 'list', category: 'data-display', phase: 4 },
   { name: 'Timeline', slug: 'timeline', category: 'data-display', phase: 4 },
-  { name: 'Accordion', slug: 'accordion', category: 'data-display', phase: 2 },
   { name: 'Collapsible', slug: 'collapsible', category: 'data-display', phase: 2 },
   { name: 'Calendar', slug: 'calendar', category: 'data-display', phase: 3 },
   { name: 'Stat', slug: 'stat', category: 'data-display', phase: 4 },

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "utils",
+  "title": "Utilities",
+  "type": "registry:lib",
+  "description": "Small shared helpers used by several components.",
+  "files": [
+    {
+      "path": "utils/isTextContent.ts",
+      "type": "registry:ui",
+      "content": "import type { ReactNode } from 'react'\n\n/**\n * True for children that are only text: `\"Save\"`, `3`, or `Status ({count})`\n * (JSX turns that into `['Status (', 3, ')']`). Such children must be wrapped in\n * a Text component: React Native throws on bare strings inside a View.\n */\nexport function isTextContent(\n  children: ReactNode,\n): children is string | number | Array<string | number> {\n  if (typeof children === 'string' || typeof children === 'number') return true\n  return (\n    Array.isArray(children) &&\n    children.length > 0 &&\n    children.every((child) => typeof child === 'string' || typeof child === 'number')\n  )\n}\n"
+    }
+  ],
+  "dependencies": [],
+  "peerDependencies": [
+    "react"
+  ],
+  "registryDependencies": [],
+  "version": "0.1.0"
+}
