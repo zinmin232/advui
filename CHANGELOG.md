@@ -7,37 +7,9 @@ one version.
 
 ## [Unreleased]
 
-### Added
-
-- The docs are published to GitHub Pages at https://zinmin232.github.io/advui/
-  by a new `Deploy docs` workflow (a static export under the `/advui` base
-  path). The CLI's default registry is now `https://zinmin232.github.io/advui/r`.
-
-### Changed
-
-- `adv-ui list` works before `init`: it falls back to the published registry.
-
-- Renamed the project to **Adv UI**:
-  - packages are published under the `@adv-ui/*` scope, and the CLI is `adv-ui`;
-  - the logo mark reads "aUI";
-  - repository: https://github.com/zinmin232/advui.
-- Docs sidebar redesign:
-  - collapsible **Getting started**, **Customization** and **Components**
-    sections, with only the section holding the current page open by default;
-  - a guide line with category markers;
-  - an accent bar on the current page;
-  - pill badges for beta, experimental and deprecated components;
-  - the current page scrolls into view, on desktop and in the mobile drawer.
-
-### Fixed
-
-- On the web, the input icons (Login, Admin, Mobile home), the Mobile home
-  notification badge and the product "-20%" badge were positioned against the
-  page instead of their own container.
-
 ## [0.1.0] - 2026-09-26
 
-First release.
+First release of **Adv UI**. Repository: https://github.com/zinmin232/advui.
 
 ### Added
 
@@ -57,15 +29,17 @@ First release.
 - **Utils** (`@adv-ui/utils`): color parsing, OKLCH, contrast and event
   helpers.
 - **CLI** (`adv-ui`): `init`, `add` and `list`, backed by a generated
-  registry.
-- **Docs site**: component pages with live previews, API tables,
-  accessibility and platform notes; a playground; a theme customizer; ⌘K
-  search; app examples.
+  registry. `list` works before `init` by reading the published registry.
+- **Docs site**, published at https://zinmin232.github.io/advui/: component
+  pages with live previews, API tables, accessibility and platform notes; a
+  playground; a theme customizer; ⌘K search; app examples; and the component
+  registry at `/r`. The sidebar has collapsible sections, a guide line with
+  category markers, an accent bar on the current page and status badges.
 - **Expo playground**: every component, seven app screens and runtime theme
   switching. Runs in Expo Go.
 - **Tooling**: `create-component` generator, `rename` script, catalog
-  validation, Vitest, jest-expo, Playwright e2e with axe, and visual
-  regression.
+  validation, release scripts, Vitest, jest-expo, Playwright e2e with axe, and
+  visual regression on Windows and Linux (CI).
 
 ### Fixed during pre-release verification
 
@@ -73,3 +47,5 @@ First release.
   overflowed 32 bits.
 - Tabs showed no active indicator on native.
 - Inputs crashed on Android when given animated border styles.
+- On the web, the input icons in the examples and the example badges were
+  positioned against the page instead of their own container.
