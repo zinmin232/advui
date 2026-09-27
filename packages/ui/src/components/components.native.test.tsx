@@ -1,6 +1,6 @@
 import { describe, expect, it, jest } from '@jest/globals'
 import { act, fireEvent, screen } from '@testing-library/react-native'
-import { PlusIcon } from '@advui/icons'
+import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
 import { zIndex } from '@advui/theme'
 import { StyleSheet } from 'react-native'
 import { renderNative } from '../../test/native-utils'
@@ -13,13 +13,17 @@ import { Breadcrumb } from './breadcrumb/Breadcrumb'
 import { Button } from './button/Button'
 import { Card } from './card/Card'
 import { Checkbox } from './checkbox/Checkbox'
+import { Chip } from './chip/Chip'
 import { DropdownMenu } from './dropdown-menu/DropdownMenu'
+import { Fab } from './fab/Fab'
 import { IconButton } from './icon-button/IconButton'
 import { Input } from './input/Input'
+import { NavigationBar } from './navigation-bar/NavigationBar'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
 import { Sheet } from './sheet/Sheet'
 import { Slider } from './slider/Slider'
+import { Snackbar } from './snackbar/Snackbar'
 import { Switch } from './switch/Switch'
 import { Toaster, toast } from './toast/Toaster'
 import { Toggle } from './toggle/Toggle'
@@ -309,6 +313,61 @@ describe('native rendering', () => {
     })
     expect(onPress).toHaveBeenCalledTimes(2)
     expect(screen.getByLabelText('Atlas, current page')).toBeOnTheScreen()
+  })
+
+  it('Fab is a button named by its label', async () => {
+    const onPress = jest.fn()
+    await renderNative(<Fab icon={<PlusIcon />} aria-label="New project" onPress={onPress} />)
+    await fireEvent.press(screen.getByRole('button', { name: 'New project' }))
+    expect(onPress).toHaveBeenCalledTimes(1)
+  })
+
+  it('Chip: filter chips report checked; input chips have a remove button', async () => {
+    const onRemove = jest.fn()
+    await renderNative(
+      <>
+        <Chip defaultSelected={false}>Vegan</Chip>
+        <Chip onRemove={onRemove}>Ada Lovelace</Chip>
+      </>,
+    )
+    const vegan = screen.getByRole('togglebutton', { name: 'Vegan' })
+    expect(vegan.props.accessibilityState).toMatchObject({ checked: false })
+    await fireEvent.press(vegan)
+    expect(
+      screen.getByRole('togglebutton', { name: 'Vegan' }).props.accessibilityState,
+    ).toMatchObject({ checked: true })
+    await fireEvent.press(screen.getByRole('button', { name: 'Remove Ada Lovelace' }))
+    expect(onRemove).toHaveBeenCalledTimes(1)
+  })
+
+  it('Snackbar shows its message and runs the action', async () => {
+    const onUndo = jest.fn()
+    const onOpenChange = jest.fn()
+    await renderNative(
+      <Snackbar open onOpenChange={onOpenChange} action={{ label: 'Undo', onPress: onUndo }}>
+        Conversation archived
+      </Snackbar>,
+    )
+    expect(await screen.findByText('Conversation archived')).toBeOnTheScreen()
+    await fireEvent.press(screen.getByRole('button', { name: 'Undo' }))
+    expect(onUndo).toHaveBeenCalledTimes(1)
+    expect(onOpenChange).toHaveBeenLastCalledWith(false)
+  })
+
+  it('NavigationBar items are tabs with a selected state', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <NavigationBar defaultValue="home" onValueChange={onValueChange}>
+        <NavigationBar.Item value="home" icon={<HomeIcon />} label="Home" />
+        <NavigationBar.Item value="search" icon={<SearchIcon />} label="Search" badge={2} />
+      </NavigationBar>,
+    )
+    expect(screen.getByRole('tab', { name: 'Home' })).toBeSelected()
+    const search = screen.getByRole('tab', { name: 'Search, 2 new' })
+    expect(search).not.toBeSelected()
+    await fireEvent.press(search)
+    expect(onValueChange).toHaveBeenLastCalledWith('search')
+    expect(screen.getByRole('tab', { name: 'Search, 2 new' })).toBeSelected()
   })
 
   it('wraps text made of several JSX pieces ("Status ({count})") in Text', async () => {

@@ -150,6 +150,7 @@ function buildMode(
     primaryPress: layer(primary, onPrimary, PRESS),
     primaryForeground: onPrimary,
     primaryText: ensureContrast(primary, surface),
+    inversePrimary: ensureContrast(hex(s.inversePrimary), onSurface),
     primarySoft: primaryContainer,
     primarySoftHover: layer(primaryContainer, onPrimaryContainer, HOVER),
     primarySoftForeground: onPrimaryContainer,

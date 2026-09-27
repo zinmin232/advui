@@ -173,6 +173,10 @@ for (const path of [
   '/docs/components/toggle',
   '/docs/components/toggle-group',
   '/docs/components/breadcrumb',
+  '/docs/components/fab',
+  '/docs/components/chip',
+  '/docs/components/snackbar',
+  '/docs/components/navigation-bar',
   '/examples/login',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {
@@ -272,6 +276,24 @@ test('toggle group is one Tab stop and arrow keys choose', async ({ page }) => {
   await expect(center).toBeFocused()
   await expect(center).toHaveAttribute('aria-checked', 'true')
   await expect(center).toHaveAttribute('tabindex', '0')
+})
+
+test('snackbar announces politely and its action works from the keyboard', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/snackbar')
+  await page.waitForLoadState('networkidle')
+  // The live region is in the page before any message, so it gets announced.
+  const regions = page.getByRole('status')
+  await expect(regions.first()).toHaveAttribute('aria-live', 'polite')
+  await page.getByRole('button', { name: 'Go offline' }).first().click()
+  const message = page.getByText(/offline. Changes will sync/).first()
+  await expect(message).toBeVisible()
+  expect(await seriousViolations(page)).toEqual([])
+  const retry = page.getByRole('button', { name: 'Retry' })
+  await retry.focus()
+  await page.keyboard.press('Enter')
+  await expect(message).toBeHidden()
+  expect(errors).toEqual([])
 })
 
 test('no serious accessibility violations in dark mode', async ({ page }) => {

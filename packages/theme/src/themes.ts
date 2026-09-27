@@ -65,6 +65,8 @@ export type ThemeValues = {
   primaryForeground: string
   /** Primary-colored text/links on the page background (≥4.5:1). `primary` is a fill color. */
   primaryText: string
+  /** Primary-colored text on inverse surfaces (`$foreground` as a background), e.g. a snackbar action. */
+  inversePrimary: string
   primarySoft: string
   primarySoftHover: string
   primarySoftForeground: string
@@ -240,6 +242,10 @@ function buildMode(mode: ColorMode, input: Required<Omit<ThemeColorsInput, 'over
     primaryPress: primary.press,
     primaryForeground: primary.foreground,
     primaryText: input.monochrome ? n[11] : ensureContrast(primaryScale[10], background),
+    // The other mode's text step reads on the inverted surface.
+    inversePrimary: input.monochrome
+      ? background
+      : ensureContrast(resolveScale(input.primary)[isDark ? 'light' : 'dark'][10], n[11]),
     primarySoft: primaryScale[2],
     primarySoftHover: primaryScale[3],
     primarySoftForeground: ensureContrast(primaryScale[10], primaryScale[3]),

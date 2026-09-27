@@ -14,28 +14,24 @@ type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
 const AvatarContext = createStyledContext<{ size: AvatarSize }>({ size: 'md' })
 
+// Tamagui's Avatar sizes itself from its own `size` prop, which must be a size
+// token: passing our names ('xs') fell back to 40 on native.
+const frameSizes = { xs: '$6', sm: '$8', md: '$10', lg: '$12', xl: '$16' } as const
+
 const AvatarFrame = styled(TamaguiAvatar, {
   name: 'Avatar',
-  context: AvatarContext,
   circular: true,
   overflow: 'hidden',
   flexShrink: 0,
 
   variants: {
-    size: {
-      xs: { width: '$6', height: '$6' },
-      sm: { width: '$8', height: '$8' },
-      md: { width: '$10', height: '$10' },
-      lg: { width: '$12', height: '$12' },
-      xl: { width: '$16', height: '$16' },
-    },
     shape: {
       circle: { borderRadius: '$full' },
       square: { borderRadius: '$md' },
     },
   } as const,
 
-  defaultVariants: { size: 'md', shape: 'circle' },
+  defaultVariants: { shape: 'circle' },
 })
 
 const AvatarImage = styled(TamaguiAvatar.Image, {
@@ -93,23 +89,25 @@ const AvatarImpl = forwardRef<TamaguiElement, AvatarProps>(function Avatar(
   ref,
 ) {
   return (
-    <AvatarFrame
-      ref={ref}
-      size={size}
-      role="img"
-      {...(isWeb || !alt ? null : { accessible: true })}
-      aria-label={alt}
-      {...props}
-    >
-      {children ?? (
-        <>
-          {src ? <AvatarImage src={src} alt={alt} aria-hidden /> : null}
-          <AvatarFallbackFrame>
-            <AvatarFallbackText aria-hidden>{fallback ?? getInitials(alt)}</AvatarFallbackText>
-          </AvatarFallbackFrame>
-        </>
-      )}
-    </AvatarFrame>
+    <AvatarContext.Provider size={size}>
+      <AvatarFrame
+        ref={ref}
+        size={frameSizes[size]}
+        role="img"
+        {...(isWeb || !alt ? null : { accessible: true })}
+        aria-label={alt}
+        {...props}
+      >
+        {children ?? (
+          <>
+            {src ? <AvatarImage src={src} alt={alt} aria-hidden /> : null}
+            <AvatarFallbackFrame>
+              <AvatarFallbackText aria-hidden>{fallback ?? getInitials(alt)}</AvatarFallbackText>
+            </AvatarFallbackFrame>
+          </>
+        )}
+      </AvatarFrame>
+    </AvatarContext.Provider>
   )
 })
 

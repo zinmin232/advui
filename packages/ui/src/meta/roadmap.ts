@@ -14,7 +14,6 @@ export interface RoadmapItem {
 
 export const roadmap: RoadmapItem[] = [
   { name: 'Button Group', slug: 'button-group', category: 'buttons', phase: 2 },
-  { name: 'Floating Action Button', slug: 'fab', category: 'buttons', phase: 3 },
 
   { name: 'Multi Select', slug: 'multi-select', category: 'forms', phase: 3 },
   { name: 'Combobox', slug: 'combobox', category: 'forms', phase: 3 },
@@ -34,10 +33,8 @@ export const roadmap: RoadmapItem[] = [
   { name: 'Menu', slug: 'menu', category: 'navigation', phase: 2 },
   { name: 'Navigation Menu', slug: 'navigation-menu', category: 'navigation', phase: 4 },
   { name: 'Sidebar', slug: 'sidebar', category: 'navigation', phase: 4 },
-  { name: 'Bottom Navigation', slug: 'bottom-navigation', category: 'navigation', phase: 4 },
   { name: 'Stepper', slug: 'stepper', category: 'navigation', phase: 4 },
 
-  { name: 'Snackbar', slug: 'snackbar', category: 'feedback', phase: 2 },
   { name: 'Circular Progress', slug: 'circular-progress', category: 'feedback', phase: 2 },
   { name: 'Empty State', slug: 'empty-state', category: 'feedback', phase: 4 },
   { name: 'Error State', slug: 'error-state', category: 'feedback', phase: 4 },

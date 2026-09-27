@@ -30,11 +30,12 @@ The same file renders DOM elements in Next.js and native views in Expo.
 
 ## Highlights
 
-- **34 components** — Button, IconButton, Toggle, Toggle Group, Input,
-  Textarea, Label, Checkbox, Radio Group, Switch, Select, Slider, Card, Badge,
-  Avatar, Separator, Dialog, Alert Dialog, Sheet, Popover, Dropdown Menu,
-  Toast, Tabs, Breadcrumb, Tooltip, Accordion, Alert, Progress, Spinner,
-  Skeleton, Typography, Stack, Grid, Container. Each one has tests, metadata, examples, docs and a registry entry.
+- **38 components** — Button, IconButton, Floating Action Button, Toggle,
+  Toggle Group, Input, Textarea, Label, Checkbox, Radio Group, Switch, Select,
+  Slider, Card, Badge, Chip, Avatar, Separator, Dialog, Alert Dialog, Sheet,
+  Popover, Dropdown Menu, Toast, Snackbar, Tabs, Breadcrumb, Navigation Bar,
+  Tooltip, Accordion, Alert, Progress, Spinner, Skeleton, Typography, Stack,
+  Grid, Container. Each one has tests, metadata, examples, docs and a registry entry.
 - **One theme config** — presets or any brand color. Light and dark palettes are
   generated and checked against WCAG AA contrast. Radius and type scale are
   global knobs.

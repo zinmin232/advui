@@ -14,6 +14,7 @@ const pairs = [
   ['info', 'infoForeground'],
   ['background', 'foreground'],
   ['background', 'primaryText'],
+  ['foreground', 'inversePrimary'],
   ['card', 'primaryText'],
   ['card', 'cardForeground'],
   ['popover', 'popoverForeground'],

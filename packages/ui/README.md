@@ -26,9 +26,9 @@ On web, alias `react-native` to `react-native-web` and transpile the
 setup.
 
 **Exports:** Accordion, Alert, AlertDialog, Avatar, Badge, Breadcrumb, Button,
-Card, Checkbox, Container, Dialog, DropdownMenu, Grid, IconButton, Input, Label,
-Popover, Progress, RadioGroup, Select, Separator, Sheet, Skeleton, Slider,
-Spinner, Stack (Box, HStack, VStack, Center, Spacer), Switch, Tabs, Text,
+Card, Checkbox, Chip, Container, Dialog, DropdownMenu, Fab, Grid, IconButton,
+Input, Label, NavigationBar, Popover, Progress, RadioGroup, Select, Separator,
+Sheet, Skeleton, Slider, Snackbar, Spinner, Stack (Box, HStack, VStack, Center, Spacer), Switch, Tabs, Text,
 Heading, Kbd, Textarea, Toaster, `toast`, Toggle, ToggleGroup, Tooltip,
 UniversalProvider,
 `useColorMode`, `useControllableState`, `useReducedMotion`, plus re-exports of

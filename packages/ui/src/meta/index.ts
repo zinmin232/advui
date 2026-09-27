@@ -8,13 +8,16 @@ import breadcrumbMeta from '../components/breadcrumb/breadcrumb.meta'
 import buttonMeta from '../components/button/button.meta'
 import cardMeta from '../components/card/card.meta'
 import checkboxMeta from '../components/checkbox/checkbox.meta'
+import chipMeta from '../components/chip/chip.meta'
 import containerMeta from '../components/layout/container.meta'
 import dialogMeta from '../components/dialog/dialog.meta'
 import dropdownMenuMeta from '../components/dropdown-menu/dropdown-menu.meta'
+import fabMeta from '../components/fab/fab.meta'
 import gridMeta from '../components/layout/grid.meta'
 import iconButtonMeta from '../components/icon-button/icon-button.meta'
 import inputMeta from '../components/input/input.meta'
 import labelMeta from '../components/label/label.meta'
+import navigationBarMeta from '../components/navigation-bar/navigation-bar.meta'
 import popoverMeta from '../components/popover/popover.meta'
 import progressMeta from '../components/progress/progress.meta'
 import radioGroupMeta from '../components/radio-group/radio-group.meta'
@@ -23,6 +26,7 @@ import separatorMeta from '../components/separator/separator.meta'
 import sheetMeta from '../components/sheet/sheet.meta'
 import skeletonMeta from '../components/skeleton/skeleton.meta'
 import sliderMeta from '../components/slider/slider.meta'
+import snackbarMeta from '../components/snackbar/snackbar.meta'
 import spinnerMeta from '../components/spinner/spinner.meta'
 import stackMeta from '../components/layout/stack.meta'
 import switchMeta from '../components/switch/switch.meta'
@@ -45,13 +49,16 @@ export const components: ComponentMeta[] = [
   buttonMeta,
   cardMeta,
   checkboxMeta,
+  chipMeta,
   containerMeta,
   dialogMeta,
   dropdownMenuMeta,
+  fabMeta,
   gridMeta,
   iconButtonMeta,
   inputMeta,
   labelMeta,
+  navigationBarMeta,
   popoverMeta,
   progressMeta,
   radioGroupMeta,
@@ -60,6 +67,7 @@ export const components: ComponentMeta[] = [
   sheetMeta,
   skeletonMeta,
   sliderMeta,
+  snackbarMeta,
   spinnerMeta,
   stackMeta,
   switchMeta,

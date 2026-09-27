@@ -24,11 +24,15 @@ import CardVariants from '../components/card/examples/variants'
 import CardInteractive from '../components/card/examples/interactive'
 import CheckboxBasic from '../components/checkbox/examples/basic'
 import CheckboxIndeterminate from '../components/checkbox/examples/indeterminate'
+import ChipFilter from '../components/chip/examples/filter'
+import ChipInput from '../components/chip/examples/input'
 import ContainerContainer from '../components/layout/examples/container'
 import DialogBasic from '../components/dialog/examples/basic'
 import DialogConfirm from '../components/dialog/examples/confirm'
 import DropdownMenuBasic from '../components/dropdown-menu/examples/basic'
 import DropdownMenuOptions from '../components/dropdown-menu/examples/options'
+import FabBasic from '../components/fab/examples/basic'
+import FabExtended from '../components/fab/examples/extended'
 import GridGrid from '../components/layout/examples/grid'
 import IconButtonBasic from '../components/icon-button/examples/basic'
 import IconButtonVariants from '../components/icon-button/examples/variants'
@@ -37,6 +41,7 @@ import InputBasic from '../components/input/examples/basic'
 import InputSizes from '../components/input/examples/sizes'
 import InputStates from '../components/input/examples/states'
 import LabelBasic from '../components/label/examples/basic'
+import NavigationBarBasic from '../components/navigation-bar/examples/basic'
 import PopoverBasic from '../components/popover/examples/basic'
 import PopoverFilter from '../components/popover/examples/filter'
 import ProgressBasic from '../components/progress/examples/basic'
@@ -49,6 +54,8 @@ import SheetScroll from '../components/sheet/examples/scroll'
 import SkeletonCard from '../components/skeleton/examples/card'
 import SliderBasic from '../components/slider/examples/basic'
 import SliderRange from '../components/slider/examples/range'
+import SnackbarBasic from '../components/snackbar/examples/basic'
+import SnackbarPersistent from '../components/snackbar/examples/persistent'
 import SpinnerBasic from '../components/spinner/examples/basic'
 import StackBasic from '../components/layout/examples/basic'
 import StackResponsive from '../components/layout/examples/responsive'
@@ -109,6 +116,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': CheckboxBasic,
     'indeterminate': CheckboxIndeterminate,
   },
+  'chip': {
+    'filter': ChipFilter,
+    'input': ChipInput,
+  },
   'container': {
     'container': ContainerContainer,
   },
@@ -119,6 +130,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'dropdown-menu': {
     'basic': DropdownMenuBasic,
     'options': DropdownMenuOptions,
+  },
+  'fab': {
+    'basic': FabBasic,
+    'extended': FabExtended,
   },
   'grid': {
     'grid': GridGrid,
@@ -135,6 +150,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'label': {
     'basic': LabelBasic,
+  },
+  'navigation-bar': {
+    'basic': NavigationBarBasic,
   },
   'popover': {
     'basic': PopoverBasic,
@@ -163,6 +181,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'slider': {
     'basic': SliderBasic,
     'range': SliderRange,
+  },
+  'snackbar': {
+    'basic': SnackbarBasic,
+    'persistent': SnackbarPersistent,
   },
   'spinner': {
     'basic': SpinnerBasic,
