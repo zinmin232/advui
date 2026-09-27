@@ -30,7 +30,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   const searchIndex = buildSearchIndex()
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      {/* Extensions such as Grammarly add attributes to <body> before React
+          hydrates. This ignores attribute differences on <body> only; content
+          mismatches are still reported. */}
+      <body suppressHydrationWarning>
         {/* Applies the saved color mode before first paint (no flash of the wrong theme). */}
         <Script id="aui-color-mode" strategy="beforeInteractive">
           {colorModeScript}
