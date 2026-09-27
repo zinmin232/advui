@@ -25,6 +25,12 @@ one version.
   scrollbars in theme colors on web. It takes keyboard focus, and becomes a
   named region with `aria-label`.
 
+### Fixed
+
+- IconButton: square corners in every theme, because it passed
+  `borderRadius={undefined}` to Button. It now uses the theme's button radius
+  (`$button`), so icon buttons match buttons, including Material's pill shape.
+
 ## [0.2.0] - 2026-09-27
 
 ### Added
