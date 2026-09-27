@@ -1,0 +1,50 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "alert-dialog",
+  "title": "Alert Dialog",
+  "type": "registry:component",
+  "description": "Interrupts the user to confirm an important or destructive action before it happens.",
+  "category": "feedback",
+  "status": "beta",
+  "since": "0.2.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/alert-dialog/AlertDialog.tsx",
+      "type": "registry:ui",
+      "content": "import { type ReactNode, forwardRef } from 'react'\nimport {\n  AlertDialog as TamaguiAlertDialog,\n  type AlertDialogContentProps as TamaguiAlertDialogContentProps,\n  type AlertDialogProps as TamaguiAlertDialogProps,\n  type GetProps,\n  type TamaguiElement,\n  View,\n  styled,\n  withStaticProperties,\n} from 'tamagui'\nimport { useReducedMotion } from '../../hooks/useReducedMotion'\nimport {\n  contentSizes,\n  contentStyle,\n  descriptionStyle,\n  footerStyle,\n  headerStyle,\n  overlayStyle,\n  titleStyle,\n} from '../dialog/styles'\n\nconst Overlay = styled(TamaguiAlertDialog.Overlay, { name: 'AlertDialogOverlay', ...overlayStyle })\n\nconst Header = styled(View, { name: 'AlertDialogHeader', ...headerStyle })\n\nconst Footer = styled(View, { name: 'AlertDialogFooter', ...footerStyle })\n\nconst Title = styled(TamaguiAlertDialog.Title, { name: 'AlertDialogTitle', ...titleStyle })\n\nconst Description = styled(TamaguiAlertDialog.Description, {\n  name: 'AlertDialogDescription',\n  ...descriptionStyle,\n})\n\nexport type AlertDialogProps = Omit<TamaguiAlertDialogProps, 'native'>\n\nexport interface AlertDialogContentProps extends Omit<TamaguiAlertDialogContentProps, 'size'> {\n  size?: keyof typeof contentSizes\n  children?: ReactNode\n}\n\nconst Content = forwardRef<TamaguiElement, AlertDialogContentProps>(function AlertDialogContent(\n  { children, size = 'sm', ...props },\n  ref,\n) {\n  const reducedMotion = useReducedMotion()\n  const transition = reducedMotion ? null : 'quick'\n  return (\n    <TamaguiAlertDialog.Portal>\n      <Overlay key=\"overlay\" transition={transition} />\n      {/* Not wrapped in styled(): Tamagui's AlertDialog.Content is a plain\n          component, and a styled wrapper keeps it mounted after it closes. */}\n      <TamaguiAlertDialog.Content\n        key=\"content\"\n        ref={ref}\n        {...contentStyle}\n        {...contentSizes[size]}\n        transition={transition}\n        animateOnly={['transform', 'opacity']}\n        {...props}\n      >\n        {children}\n      </TamaguiAlertDialog.Content>\n    </TamaguiAlertDialog.Portal>\n  )\n})\n\n// Tamagui's Cancel and Action set `aria-label=\"Dialog Close\"`, which would hide\n// visible labels such as \"Delete\"; clearing it keeps the child's text as the name.\n\nexport type AlertDialogCancelProps = GetProps<typeof TamaguiAlertDialog.Cancel>\n\nconst Cancel = forwardRef<TamaguiElement, AlertDialogCancelProps>(\n  function AlertDialogCancel(props, ref) {\n    return <TamaguiAlertDialog.Cancel ref={ref} aria-label={undefined} {...props} />\n  },\n)\n\nexport type AlertDialogActionProps = GetProps<typeof TamaguiAlertDialog.Action>\n\nconst Action = forwardRef<TamaguiElement, AlertDialogActionProps>(\n  function AlertDialogAction(props, ref) {\n    return <TamaguiAlertDialog.Action ref={ref} aria-label={undefined} {...props} />\n  },\n)\n\nfunction AlertDialogRoot(props: AlertDialogProps) {\n  return <TamaguiAlertDialog {...props} />\n}\n\n/**\n * Interrupts the user to confirm an important or destructive action. Unlike\n * Dialog it has no close button and ignores presses outside: the user answers\n * with Cancel or the Action (Escape cancels). Focus starts on Cancel.\n */\nexport const AlertDialog = withStaticProperties(AlertDialogRoot, {\n  Trigger: TamaguiAlertDialog.Trigger,\n  Content,\n  Header,\n  Footer,\n  Title,\n  Description,\n  Cancel,\n  Action,\n})\n"
+    },
+    {
+      "path": "components/alert-dialog/index.ts",
+      "type": "registry:ui",
+      "content": "export {\n  AlertDialog,\n  type AlertDialogActionProps,\n  type AlertDialogCancelProps,\n  type AlertDialogContentProps,\n  type AlertDialogProps,\n} from './AlertDialog'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Destructive confirmation",
+      "code": "import { AlertDialog, Button, toast } from '@advui/core'\n\nexport default function AlertDialogBasic() {\n  return (\n    <AlertDialog>\n      <AlertDialog.Trigger asChild>\n        <Button variant=\"destructive\">Delete project</Button>\n      </AlertDialog.Trigger>\n      <AlertDialog.Content>\n        <AlertDialog.Header>\n          <AlertDialog.Title>Delete “Atlas”?</AlertDialog.Title>\n          <AlertDialog.Description>\n            The project, its 12 environments and all deploy history are removed. This cannot be\n            undone.\n          </AlertDialog.Description>\n        </AlertDialog.Header>\n        <AlertDialog.Footer>\n          <AlertDialog.Cancel asChild>\n            <Button variant=\"outline\">Cancel</Button>\n          </AlertDialog.Cancel>\n          <AlertDialog.Action asChild>\n            <Button variant=\"destructive\" onPress={() => toast.success('Project deleted')}>\n              Delete project\n            </Button>\n          </AlertDialog.Action>\n        </AlertDialog.Footer>\n      </AlertDialog.Content>\n    </AlertDialog>\n  )\n}\n"
+    },
+    {
+      "name": "async",
+      "title": "Waits for the action",
+      "code": "import { AlertDialog, Button, toast } from '@advui/core'\nimport { LogOutIcon } from '@advui/icons'\nimport { useState } from 'react'\n\nexport default function AlertDialogAsync() {\n  const [open, setOpen] = useState(false)\n  const [pending, setPending] = useState(false)\n\n  // A plain Button instead of AlertDialog.Action: Action closes at once, but\n  // here the dialog stays open (and busy) until the request finishes.\n  const signOut = () => {\n    setPending(true)\n    setTimeout(() => {\n      setPending(false)\n      setOpen(false)\n      toast.success('Signed out of 3 devices')\n    }, 1200)\n  }\n\n  return (\n    <AlertDialog open={open} onOpenChange={(next) => !pending && setOpen(next)}>\n      <AlertDialog.Trigger asChild>\n        <Button variant=\"outline\" icon={<LogOutIcon />}>\n          Sign out everywhere\n        </Button>\n      </AlertDialog.Trigger>\n      <AlertDialog.Content>\n        <AlertDialog.Header>\n          <AlertDialog.Title>Sign out of all devices?</AlertDialog.Title>\n          <AlertDialog.Description>\n            You will need to sign in again on your phone, tablet and other browsers.\n          </AlertDialog.Description>\n        </AlertDialog.Header>\n        <AlertDialog.Footer>\n          <AlertDialog.Cancel asChild>\n            <Button variant=\"outline\" disabled={pending}>\n              Stay signed in\n            </Button>\n          </AlertDialog.Cancel>\n          <Button loading={pending} onPress={signOut}>\n            Sign out\n          </Button>\n        </AlertDialog.Footer>\n      </AlertDialog.Content>\n    </AlertDialog>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/alert-dialog",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "dialog",
+    "hooks"
+  ],
+  "version": "0.1.0"
+}

@@ -9,7 +9,11 @@ export default defineMeta({
   since: '0.1.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Dialog'],
-  files: ['components/dialog/Dialog.tsx', 'components/dialog/index.ts'],
+  files: [
+    'components/dialog/Dialog.tsx',
+    'components/dialog/styles.ts',
+    'components/dialog/index.ts',
+  ],
   keywords: ['modal', 'popup', 'lightbox', 'overlay'],
   usage: `import { Button, Dialog } from '@advui/core'
 

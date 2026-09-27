@@ -1,0 +1,49 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "breadcrumb",
+  "title": "Breadcrumb",
+  "type": "registry:component",
+  "description": "Shows where the current page sits in the hierarchy, with links back up to each level.",
+  "category": "navigation",
+  "status": "beta",
+  "since": "0.2.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/breadcrumb/Breadcrumb.tsx",
+      "type": "registry:ui",
+      "content": "import { ChevronRightIcon, MoreHorizontalIcon } from '@advui/icons'\nimport {\n  Children,\n  type ReactElement,\n  type ReactNode,\n  createContext,\n  isValidElement,\n  useContext,\n  useState,\n} from 'react'\nimport { type GetProps, Text, View, isWeb, withStaticProperties } from 'tamagui'\n\ntype ItemState = { current: boolean; separator: ReactNode }\n\nconst ItemContext = createContext<ItemState>({ current: false, separator: null })\n\nexport interface BreadcrumbProps extends Omit<GetProps<typeof View>, 'children'> {\n  /** Breadcrumb.Item elements, from the top level down to the current page. */\n  children: ReactNode\n  /**\n   * Show at most this many items. The first one and the last ones stay; the\n   * rest collapse behind a “Show all” button. Useful for deep paths on phones.\n   */\n  maxItems?: number\n  /** Replaces the default chevron between items. */\n  separator?: ReactNode\n  /** Names the navigation landmark. Default \"Breadcrumb\". */\n  'aria-label'?: string\n}\n\nfunction BreadcrumbRoot({\n  children,\n  maxItems,\n  separator = <ChevronRightIcon size={14} color=\"$mutedForeground\" />,\n  'aria-label': ariaLabel = 'Breadcrumb',\n  ...props\n}: BreadcrumbProps) {\n  const [expanded, setExpanded] = useState(false)\n  const items = Children.toArray(children).filter(isValidElement) as ReactElement[]\n  const collapsed = !expanded && maxItems !== undefined && maxItems > 1 && items.length > maxItems\n  const tail = collapsed ? items.slice(items.length - (maxItems - 1)) : items.slice(1)\n  const hiddenCount = items.length - 1 - tail.length\n\n  const ellipsis = (\n    <View\n      key=\"ellipsis\"\n      render=\"button\"\n      role=\"button\"\n      aria-label={`Show ${hiddenCount} more`}\n      alignItems=\"center\"\n      justifyContent=\"center\"\n      width=\"$6\"\n      height=\"$6\"\n      padding={0}\n      borderWidth={0}\n      borderRadius=\"$sm\"\n      backgroundColor=\"transparent\"\n      cursor=\"pointer\"\n      hoverStyle={{ backgroundColor: '$accent' }}\n      focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}\n      {...(isWeb ? { type: 'button' } : { accessible: true, hitSlop: 10 })}\n      onPress={() => setExpanded(true)}\n    >\n      <MoreHorizontalIcon size={16} color=\"$mutedForeground\" />\n    </View>\n  )\n\n  const shown: ReactNode[] = [items[0], ...(collapsed ? [ellipsis] : []), ...tail]\n  const last = shown.length - 1\n\n  return (\n    <View render=\"nav\" aria-label={ariaLabel} {...(!isWeb && { role: 'navigation' })} {...props}>\n      <View\n        render=\"ol\"\n        flexDirection=\"row\"\n        flexWrap=\"wrap\"\n        alignItems=\"center\"\n        rowGap=\"$1\"\n        columnGap=\"$1.5\"\n        margin={0}\n        padding={0}\n      >\n        {shown.map((item, index) => (\n          <ItemContext.Provider\n            // Items keep their identity when the trail expands.\n            key={isValidElement(item) && item.key !== null ? item.key : index}\n            value={{ current: index === last, separator: index > 0 ? separator : null }}\n          >\n            {item === ellipsis ? <ListItem>{ellipsis}</ListItem> : item}\n          </ItemContext.Provider>\n        ))}\n      </View>\n    </View>\n  )\n}\n\nfunction ListItem({ children }: { children: ReactNode }) {\n  const { separator } = useContext(ItemContext)\n  return (\n    <View render=\"li\" flexDirection=\"row\" alignItems=\"center\" gap=\"$1.5\" minWidth={0}>\n      {separator ? (\n        <View aria-hidden {...(!isWeb && { accessible: false })}>\n          {separator}\n        </View>\n      ) : null}\n      {children}\n    </View>\n  )\n}\n\nexport interface BreadcrumbItemProps extends Omit<GetProps<typeof Text>, 'children'> {\n  children: ReactNode\n  /** Link target on web. On iOS/Android pass `onPress` (e.g. `router.push`). */\n  href?: string\n  /** Render your router's link instead of `<a>`, e.g. `render={<Link href=\"/docs\" />}`. */\n  render?: GetProps<typeof Text>['render']\n  /** Mark the current page. Default: the last item. */\n  current?: boolean\n}\n\nfunction BreadcrumbItem({\n  children,\n  href,\n  render,\n  current: currentProp,\n  onPress,\n  ...props\n}: BreadcrumbItemProps) {\n  const context = useContext(ItemContext)\n  const current = currentProp ?? context.current\n  // Native apps navigate with their router, so there an item is a link only\n  // with onPress; an href alone would be a dead link.\n  const isLink =\n    !current && (onPress !== undefined || (isWeb && (href !== undefined || render !== undefined)))\n\n  return (\n    <ListItem>\n      {isLink ? (\n        <Text\n          render={render ?? (href !== undefined ? 'a' : 'button')}\n          {...(href !== undefined && { href })}\n          role=\"link\"\n          {...(!isWeb && {\n            accessible: true,\n            hitSlop: 8,\n            // TalkBack's double-tap on text arrives as the \"activate\" action.\n            accessibilityActions: [{ name: 'activate' }],\n            onAccessibilityAction: (event: { nativeEvent: { actionName: string } }) => {\n              if (event.nativeEvent.actionName === 'activate') onPress?.(event as never)\n            },\n          })}\n          // Without an href this renders a <button>: drop the browser's button chrome.\n          padding={0}\n          borderWidth={0}\n          backgroundColor=\"transparent\"\n          fontFamily=\"$body\"\n          fontSize=\"$2\"\n          lineHeight=\"$2\"\n          color=\"$mutedForeground\"\n          cursor=\"pointer\"\n          textDecorationLine=\"none\"\n          numberOfLines={1}\n          hoverStyle={{ color: '$foreground', textDecorationLine: 'underline' }}\n          focusVisibleStyle={{\n            outlineColor: '$ring',\n            outlineStyle: 'solid',\n            outlineWidth: 2,\n            outlineOffset: 2,\n            borderRadius: '$sm',\n          }}\n          onPress={onPress}\n          {...props}\n        >\n          {children}\n        </Text>\n      ) : (\n        <Text\n          aria-current={current ? 'page' : undefined}\n          // Native has no aria-current; say it in the label instead.\n          {...(!isWeb &&\n            current &&\n            typeof children === 'string' && { 'aria-label': `${children}, current page` })}\n          fontFamily=\"$body\"\n          fontSize=\"$2\"\n          lineHeight=\"$2\"\n          color={current ? '$foreground' : '$mutedForeground'}\n          fontWeight={current ? '500' : '400'}\n          numberOfLines={1}\n          {...props}\n        >\n          {children}\n        </Text>\n      )}\n    </ListItem>\n  )\n}\n\n/**\n * Shows where the current page sits in the hierarchy and links back up it.\n * The last item is the current page (`aria-current=\"page\"`).\n */\nexport const Breadcrumb = withStaticProperties(BreadcrumbRoot, {\n  Item: BreadcrumbItem,\n})\n"
+    },
+    {
+      "path": "components/breadcrumb/index.ts",
+      "type": "registry:ui",
+      "content": "export { Breadcrumb, type BreadcrumbItemProps, type BreadcrumbProps } from './Breadcrumb'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { Breadcrumb, toast } from '@advui/core'\n\n// In an app, pass `href` (web) and/or `onPress` with your router, e.g.\n// onPress={() => router.push('/projects')}.\nconst go = (page: string) => () => toast(`Go to ${page}`)\n\nexport default function BreadcrumbBasic() {\n  return (\n    <Breadcrumb>\n      <Breadcrumb.Item onPress={go('Home')}>Home</Breadcrumb.Item>\n      <Breadcrumb.Item onPress={go('Projects')}>Projects</Breadcrumb.Item>\n      <Breadcrumb.Item onPress={go('Atlas')}>Atlas</Breadcrumb.Item>\n      <Breadcrumb.Item>Settings</Breadcrumb.Item>\n    </Breadcrumb>\n  )\n}\n"
+    },
+    {
+      "name": "collapsed",
+      "title": "Collapsed and custom separator",
+      "code": "import { Breadcrumb, Text, VStack, toast } from '@advui/core'\n\nconst path = ['Home', 'Acme Inc.', 'Workspaces', 'Design', 'Projects', 'Atlas', 'Billing']\nconst go = (page: string) => () => toast(`Go to ${page}`)\n\nexport default function BreadcrumbCollapsed() {\n  return (\n    <VStack gap=\"$4\">\n      {/* Deep paths: keep the first item and the last two; the rest are one press away. */}\n      <Breadcrumb maxItems={3}>\n        {path.map((page, index) => (\n          <Breadcrumb.Item key={page} onPress={index < path.length - 1 ? go(page) : undefined}>\n            {page}\n          </Breadcrumb.Item>\n        ))}\n      </Breadcrumb>\n\n      <Breadcrumb\n        separator={\n          <Text size=\"sm\" tone=\"muted\">\n            /\n          </Text>\n        }\n      >\n        <Breadcrumb.Item onPress={go('Docs')}>Docs</Breadcrumb.Item>\n        <Breadcrumb.Item onPress={go('Guides')}>Guides</Breadcrumb.Item>\n        <Breadcrumb.Item>Theming</Breadcrumb.Item>\n      </Breadcrumb>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/breadcrumb",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.1.0"
+}

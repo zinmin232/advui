@@ -1,5 +1,4 @@
 import { XIcon } from '@advui/icons'
-import { shadows } from '@advui/theme'
 import { type ReactNode, forwardRef } from 'react'
 import {
   Dialog as TamaguiDialog,
@@ -14,69 +13,33 @@ import {
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { IconButton } from '../icon-button/IconButton'
 import { Text } from '../typography/Text'
+import {
+  contentSizes,
+  contentStyle,
+  descriptionStyle,
+  footerStyle,
+  headerStyle,
+  overlayStyle,
+  titleStyle,
+} from './styles'
 
-const Overlay = styled(TamaguiDialog.Overlay, {
-  name: 'DialogOverlay',
-  backgroundColor: '$overlay',
-  opacity: 1,
-  enterStyle: { opacity: 0 },
-  exitStyle: { opacity: 0 },
-})
+const Overlay = styled(TamaguiDialog.Overlay, { name: 'DialogOverlay', ...overlayStyle })
 
 const ContentFrame = styled(TamaguiDialog.Content, {
   name: 'DialogContent',
-  backgroundColor: '$popover',
-  borderColor: '$border',
-  borderWidth: 1,
-  borderRadius: '$xl',
-  padding: '$6',
-  gap: '$4',
-  width: '92%',
-  maxWidth: '$128',
-  maxHeight: '90%',
-  ...shadows.lg,
-  opacity: 1,
-  scale: 1,
-  y: 0,
-  enterStyle: { opacity: 0, scale: 0.96, y: 8 },
-  exitStyle: { opacity: 0, scale: 0.98, y: 4 },
-
-  variants: {
-    size: {
-      sm: { maxWidth: '$96' },
-      md: { maxWidth: '$128' },
-      lg: { maxWidth: '$168' },
-      xl: { maxWidth: '$224' },
-    },
-  } as const,
+  ...contentStyle,
+  variants: { size: contentSizes } as const,
 })
 
-const Header = styled(View, { name: 'DialogHeader', gap: '$1.5', paddingRight: '$6' })
+const Header = styled(View, { name: 'DialogHeader', ...headerStyle, paddingRight: '$6' })
 
-const Footer = styled(View, {
-  name: 'DialogFooter',
-  flexDirection: 'column-reverse',
-  gap: '$2',
-  $sm: { flexDirection: 'row', justifyContent: 'flex-end' },
-})
+const Footer = styled(View, { name: 'DialogFooter', ...footerStyle })
 
-const Title = styled(TamaguiDialog.Title, {
-  name: 'DialogTitle',
-  fontFamily: '$heading',
-  fontSize: '$5',
-  lineHeight: '$5',
-  fontWeight: '600',
-  color: '$foreground',
-  margin: 0,
-})
+const Title = styled(TamaguiDialog.Title, { name: 'DialogTitle', ...titleStyle })
 
 const Description = styled(TamaguiDialog.Description, {
   name: 'DialogDescription',
-  fontFamily: '$body',
-  fontSize: '$2',
-  lineHeight: '$2',
-  color: '$mutedForeground',
-  margin: 0,
+  ...descriptionStyle,
 })
 
 export type DialogProps = TamaguiDialogProps

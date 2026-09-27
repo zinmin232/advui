@@ -167,6 +167,9 @@ overrides:
   react-native-worklets: 0.10.1
   test-renderer: ~1.2.0
 
+patchedDependencies:
+  '@tamagui/toast@2.7.7': 37eca4a5edd77dfb74103f6fbbd4511a610e2c2a072b6ddb3afd503f46d0ebb2
+
 importers:
 
   .:
@@ -195,9 +198,6 @@ importers:
 
   apps/docs:
     dependencies:
-      '@tamagui/theme':
-        specifier: 2.7.7
-        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@advui/core':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -213,6 +213,9 @@ importers:
       '@advui/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@tamagui/theme':
+        specifier: 2.7.7
+        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       next:
         specifier: 16.3.6
         version: 16.3.6(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.63.0)(@types/node@22.20.4)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -232,6 +235,12 @@ importers:
         specifier: 2.7.7
         version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
     devDependencies:
+      '@advui/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@advui/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       '@axe-core/playwright':
         specifier: ^4.13.0
         version: 4.13.0(playwright-core@1.63.0)
@@ -247,21 +256,12 @@ importers:
       '@types/react-dom':
         specifier: ~19.2.2
         version: 19.2.7(@types/react@19.2.18)
-      '@advui/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@advui/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
       react-native:
         specifier: 0.86.3
         version: 0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1)
 
   apps/expo:
     dependencies:
-      '@tamagui/theme':
-        specifier: 2.7.7
-        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@advui/core':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -274,6 +274,9 @@ importers:
       '@advui/theme':
         specifier: workspace:*
         version: link:../../packages/theme
+      '@tamagui/theme':
+        specifier: 2.7.7
+        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       expo:
         specifier: ~57.0.25
         version: 57.0.25(8b45f64956d0f90524155f9e731aacdd)
@@ -311,18 +314,18 @@ importers:
         specifier: 2.7.7
         version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
     devDependencies:
-      '@babel/core':
-        specifier: ^7.28.0
-        version: 7.29.7(supports-color@8.1.1)
-      '@types/react':
-        specifier: ~19.2.2
-        version: 19.2.18
       '@advui/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
       '@advui/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
+      '@babel/core':
+        specifier: ^7.28.0
+        version: 7.29.7(supports-color@8.1.1)
+      '@types/react':
+        specifier: ~19.2.2
+        version: 19.2.18
       typescript:
         specifier: ~6.0.3
         version: 6.0.3
@@ -339,15 +342,15 @@ importers:
         specifier: workspace:*
         version: link:../packages/theme
     devDependencies:
-      '@types/react':
-        specifier: ~19.2.2
-        version: 19.2.18
       '@advui/eslint-config':
         specifier: workspace:*
         version: link:../packages/eslint-config
       '@advui/tsconfig':
         specifier: workspace:*
         version: link:../packages/tsconfig
+      '@types/react':
+        specifier: ~19.2.2
+        version: 19.2.18
       react:
         specifier: 19.2.3
         version: 19.2.3
@@ -360,15 +363,15 @@ importers:
 
   packages/cli:
     devDependencies:
-      '@types/node':
-        specifier: ^22.15.0
-        version: 22.20.4
       '@advui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
       '@advui/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@types/node':
+        specifier: ^22.15.0
+        version: 22.20.4
       vitest:
         specifier: ^5.0.2
         version: 5.0.2(@types/node@22.20.4)(happy-dom@20.14.5)(jsdom@30.1.1)(vite@8.3.1(@types/node@22.20.4)(terser@5.51.2)(yaml@2.9.1))
@@ -400,6 +403,15 @@ importers:
         specifier: 2.7.7
         version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
     devDependencies:
+      '@advui/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@advui/theme':
+        specifier: workspace:*
+        version: link:../theme
+      '@advui/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       '@testing-library/jest-dom':
         specifier: ^7.0.1
         version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.2(@types/node@22.20.4)(happy-dom@20.14.5)(jsdom@30.1.1)(vite@8.3.1(@types/node@22.20.4)(terser@5.51.2)(yaml@2.9.1)))
@@ -415,15 +427,6 @@ importers:
       '@types/react-dom':
         specifier: ~19.2.2
         version: 19.2.7(@types/react@19.2.18)
-      '@advui/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@advui/theme':
-        specifier: workspace:*
-        version: link:../theme
-      '@advui/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
       '@vitejs/plugin-react':
         specifier: ^6.1.1
         version: 6.1.1(babel-plugin-react-compiler@1.0.0)(vite@8.3.1(@types/node@22.20.4)(terser@5.51.2)(yaml@2.9.1))
@@ -457,6 +460,9 @@ importers:
 
   packages/theme:
     dependencies:
+      '@advui/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@tamagui/animations-css':
         specifier: 2.7.7
         version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -469,19 +475,16 @@ importers:
       '@tamagui/web':
         specifier: 2.7.7
         version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@advui/utils':
-        specifier: workspace:*
-        version: link:../utils
     devDependencies:
-      '@types/react':
-        specifier: ~19.2.2
-        version: 19.2.18
       '@advui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
       '@advui/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@types/react':
+        specifier: ~19.2.2
+        version: 19.2.18
       react:
         specifier: 19.2.3
         version: 19.2.3
@@ -505,18 +508,6 @@ importers:
 
   packages/ui:
     dependencies:
-      '@tamagui/core':
-        specifier: 2.7.7
-        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@tamagui/dismissable':
-        specifier: 2.7.7
-        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@tamagui/toast':
-        specifier: 2.7.7
-        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@tamagui/web':
-        specifier: 2.7.7
-        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@advui/icons':
         specifier: workspace:*
         version: link:../icons
@@ -526,7 +517,28 @@ importers:
       '@advui/utils':
         specifier: workspace:*
         version: link:../utils
+      '@tamagui/core':
+        specifier: 2.7.7
+        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@tamagui/dismissable':
+        specifier: 2.7.7
+        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@tamagui/focus-scope':
+        specifier: 2.7.7
+        version: 2.7.7(react@19.2.3)
+      '@tamagui/toast':
+        specifier: 2.7.7
+        version: 2.7.7(patch_hash=37eca4a5edd77dfb74103f6fbbd4511a610e2c2a072b6ddb3afd503f46d0ebb2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@tamagui/web':
+        specifier: 2.7.7
+        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
     devDependencies:
+      '@advui/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@advui/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       '@jest/globals':
         specifier: ^29.7.0
         version: 29.7.0(supports-color@8.1.1)
@@ -551,12 +563,6 @@ importers:
       '@types/react-dom':
         specifier: ~19.2.2
         version: 19.2.7(@types/react@19.2.18)
-      '@advui/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@advui/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
       '@vitejs/plugin-react':
         specifier: ^6.1.1
         version: 6.1.1(babel-plugin-react-compiler@1.0.0)(vite@8.3.1(@types/node@22.20.4)(terser@5.51.2)(yaml@2.9.1))
@@ -608,15 +614,15 @@ importers:
 
   packages/utils:
     devDependencies:
-      '@types/react':
-        specifier: ~19.2.2
-        version: 19.2.18
       '@advui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
       '@advui/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@types/react':
+        specifier: ~19.2.2
+        version: 19.2.18
       react:
         specifier: 19.2.3
         version: 19.2.3
@@ -8911,7 +8917,7 @@ snapshots:
 
   '@tamagui/timer@2.7.7': {}
 
-  '@tamagui/toast@2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@tamagui/toast@2.7.7(patch_hash=37eca4a5edd77dfb74103f6fbbd4511a610e2c2a072b6ddb3afd503f46d0ebb2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@tamagui/animate-presence': 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@tamagui/collection': 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -12668,7 +12674,7 @@ snapshots:
       '@tamagui/tabs': 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@tamagui/text': 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@tamagui/theme': 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@tamagui/toast': 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@tamagui/toast': 2.7.7(patch_hash=37eca4a5edd77dfb74103f6fbbd4511a610e2c2a072b6ddb3afd503f46d0ebb2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@tamagui/toggle-group': 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@tamagui/tooltip': 2.7.7(react-dom@19.2.3(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
       '@tamagui/use-controllable-state': 2.7.7(react@19.2.3)

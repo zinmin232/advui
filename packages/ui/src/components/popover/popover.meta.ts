@@ -7,7 +7,7 @@ export default defineMeta({
   description:
     'Rich, interactive content anchored to a trigger, such as quick settings, filters or a short form.',
   status: 'beta',
-  since: '0.1.0',
+  since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Popover'],
   files: ['components/popover/Popover.tsx', 'components/popover/index.ts'],

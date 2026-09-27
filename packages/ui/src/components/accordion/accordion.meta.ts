@@ -7,7 +7,7 @@ export default defineMeta({
   description:
     'Vertically stacked sections that expand to reveal their content, such as FAQs or grouped settings.',
   status: 'beta',
-  since: '0.1.0',
+  since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Accordion'],
   files: ['components/accordion/Accordion.tsx', 'components/accordion/index.ts'],

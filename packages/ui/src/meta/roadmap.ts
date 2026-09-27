@@ -14,8 +14,6 @@ export interface RoadmapItem {
 
 export const roadmap: RoadmapItem[] = [
   { name: 'Button Group', slug: 'button-group', category: 'buttons', phase: 2 },
-  { name: 'Toggle', slug: 'toggle', category: 'buttons', phase: 2 },
-  { name: 'Toggle Group', slug: 'toggle-group', category: 'buttons', phase: 2 },
   { name: 'Floating Action Button', slug: 'fab', category: 'buttons', phase: 3 },
 
   { name: 'Multi Select', slug: 'multi-select', category: 'forms', phase: 3 },
@@ -32,7 +30,6 @@ export const roadmap: RoadmapItem[] = [
   { name: 'Aspect Ratio', slug: 'aspect-ratio', category: 'layout', phase: 2 },
   { name: 'Scroll Area', slug: 'scroll-area', category: 'layout', phase: 2 },
 
-  { name: 'Breadcrumb', slug: 'breadcrumb', category: 'navigation', phase: 2 },
   { name: 'Pagination', slug: 'pagination', category: 'navigation', phase: 4 },
   { name: 'Menu', slug: 'menu', category: 'navigation', phase: 2 },
   { name: 'Navigation Menu', slug: 'navigation-menu', category: 'navigation', phase: 4 },
@@ -40,14 +37,12 @@ export const roadmap: RoadmapItem[] = [
   { name: 'Bottom Navigation', slug: 'bottom-navigation', category: 'navigation', phase: 4 },
   { name: 'Stepper', slug: 'stepper', category: 'navigation', phase: 4 },
 
-  { name: 'Alert Dialog', slug: 'alert-dialog', category: 'feedback', phase: 2 },
   { name: 'Snackbar', slug: 'snackbar', category: 'feedback', phase: 2 },
   { name: 'Circular Progress', slug: 'circular-progress', category: 'feedback', phase: 2 },
   { name: 'Empty State', slug: 'empty-state', category: 'feedback', phase: 4 },
   { name: 'Error State', slug: 'error-state', category: 'feedback', phase: 4 },
 
   { name: 'Drawer', slug: 'drawer', category: 'overlay', phase: 2 },
-  { name: 'Sheet', slug: 'sheet', category: 'overlay', phase: 2 },
   { name: 'Hover Card', slug: 'hover-card', category: 'overlay', phase: 2 },
   { name: 'Context Menu', slug: 'context-menu', category: 'overlay', phase: 2 },
 
