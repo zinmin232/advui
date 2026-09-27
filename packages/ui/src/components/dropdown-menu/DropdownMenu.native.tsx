@@ -3,6 +3,7 @@ import { type ReactElement, type ReactNode, cloneElement, createContext, useCont
 import { Sheet, View, withStaticProperties } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { useRipple } from '../../hooks/useRipple'
 import { Text } from '../typography/Text'
 import type {
   DropdownMenuCheckboxItemProps,
@@ -118,6 +119,7 @@ function Row({
   onPress: () => void
   children: ReactNode
 }) {
+  const ripple = useRipple({ color: '$popoverForeground', disabled })
   return (
     <View
       role={role}
@@ -131,7 +133,7 @@ function Row({
       paddingHorizontal="$3"
       borderRadius="$md"
       opacity={disabled ? 0.5 : 1}
-      pressStyle={disabled ? undefined : { backgroundColor: '$accent' }}
+      pressStyle={disabled || ripple.active ? undefined : { backgroundColor: '$accent' }}
       onPress={disabled ? undefined : onPress}
       // VoiceOver / TalkBack double-tap sends "activate"; a plain onPress on a
       // non-button view is not guaranteed to receive it.
@@ -139,7 +141,9 @@ function Row({
       onAccessibilityAction={(event: { nativeEvent: { actionName: string } }) => {
         if (!disabled && event.nativeEvent.actionName === 'activate') onPress()
       }}
+      {...ripple.props}
     >
+      {ripple.element}
       {children}
     </View>
   )

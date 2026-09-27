@@ -129,7 +129,8 @@ export function SaveButton() {
   platformNotes: {
     web: 'Hover and press states use CSS; `render={<a href="/pricing" />}` turns it into a link.',
     ios: 'Pressable area is extended with `hitSlop` to meet the 44pt minimum touch target.',
-    android: 'Same touch-target extension as iOS (48dp recommended; use `lg` for primary actions).',
+    android:
+      'Same touch-target extension as iOS (48dp recommended; use `lg` for primary actions). With `androidRipple` (on in `material()`), presses show the native ripple.',
   },
   related: ['icon-button', 'button-group', 'toggle'],
 })

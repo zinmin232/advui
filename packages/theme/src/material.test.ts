@@ -1,7 +1,7 @@
 import { Hct, SchemeTonalSpot, argbFromHex, hexFromArgb } from '@material/material-color-utilities'
 import { contrastRatio } from '@advui/utils'
 import { describe, expect, it } from 'vitest'
-import { createUniversalConfig } from './config'
+import { createUniversalConfig, getUniversalSettings } from './config'
 import { MATERIAL_BASELINE_SEED, createMaterialThemes, material, materialShape } from './material'
 import { createRadius } from './tokens'
 
@@ -90,6 +90,12 @@ describe('material()', () => {
     expect(config.tokens.radius.button?.val).toBe(9999)
     expect(config.tokens.radius.dialog?.val).toBe(28)
     expect(config.tokens.radius.md?.val).toBe(4)
+  })
+
+  it('turns on the Android ripple unless asked not to', () => {
+    expect(getUniversalSettings(createUniversalConfig(material())).androidRipple).toBe(true)
+    const off = createUniversalConfig(material({ androidRipple: false }))
+    expect(getUniversalSettings(off).androidRipple).toBe(false)
   })
 
   it('leaves the default shapes unchanged for other presets', () => {

@@ -113,7 +113,8 @@ export default defineMeta({
   platformNotes: {
     web: 'Triggers are wrapped in `h3` headings by default (see `level`).',
     ios: 'Triggers are exposed as buttons with their expanded state; heading wrappers are web-only.',
-    android: 'Same as iOS.',
+    android:
+      'Same as iOS. With `androidRipple` (on in `material()`), presses show the native ripple.',
   },
   related: ['collapsible', 'tabs', 'card'],
 })

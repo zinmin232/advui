@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createUniversalConfig } from './config'
+import { createUniversalConfig, getUniversalSettings } from './config'
 
 describe('createUniversalConfig', () => {
   it('creates light and dark themes plus tokens, fonts and media', () => {
@@ -17,5 +17,13 @@ describe('createUniversalConfig', () => {
     })
     const light = config.themes.light as unknown as Record<string, { val: string }>
     expect(light.primary?.val).not.toBe(light.foreground?.val)
+  })
+
+  it('keeps Adv UI settings on the config, with the ripple off by default', () => {
+    expect(getUniversalSettings(createUniversalConfig()).androidRipple).toBe(false)
+    const config = createUniversalConfig({ androidRipple: true })
+    expect(getUniversalSettings(config)).toEqual({ androidRipple: true })
+    // A config made without createUniversalConfig gets the defaults.
+    expect(getUniversalSettings({}).androidRipple).toBe(false)
   })
 })

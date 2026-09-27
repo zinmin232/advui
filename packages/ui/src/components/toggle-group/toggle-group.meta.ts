@@ -108,7 +108,8 @@ export default defineMeta({
   platformNotes: {
     web: 'One Tab stop for the whole group (roving tabindex).',
     ios: 'VoiceOver reads each item as a radio button or toggle button.',
-    android: 'TalkBack reads each item as a radio button or toggle button.',
+    android:
+      'TalkBack reads each item as a radio button or toggle button. With `androidRipple` (on in `material()`), presses show the native ripple.',
   },
   related: ['toggle', 'radio-group', 'tabs'],
 })

@@ -6,8 +6,10 @@
       "name": "hooks",
       "title": "Hooks",
       "type": "registry:lib",
-      "description": "Shared hooks: controllable state and reduced-motion detection.",
-      "dependencies": [],
+      "description": "Shared hooks: controllable state, reduced-motion detection and the Android press ripple.",
+      "dependencies": [
+        "@advui/theme"
+      ],
       "registryDependencies": []
     },
     {
@@ -122,6 +124,7 @@
         "@advui/icons"
       ],
       "registryDependencies": [
+        "hooks",
         "spinner",
         "utils"
       ]
@@ -137,6 +140,7 @@
         "@advui/theme"
       ],
       "registryDependencies": [
+        "hooks",
         "typography"
       ]
     },
@@ -211,7 +215,9 @@
         "@advui/icons",
         "@advui/theme"
       ],
-      "registryDependencies": []
+      "registryDependencies": [
+        "hooks"
+      ]
     },
     {
       "name": "icon-button",

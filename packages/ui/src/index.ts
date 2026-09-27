@@ -5,6 +5,7 @@ export { ColorModeProvider, useColorMode, type ColorModeContextValue } from './p
 export { UniversalProvider, type UniversalProviderProps } from './provider/UniversalProvider'
 export { useControllableState } from './hooks/useControllableState'
 export { useReducedMotion } from './hooks/useReducedMotion'
+export { useRipple, type Ripple, type RippleOptions } from './hooks/useRipple'
 export type { ColorModePreference, ResolvedColorMode } from './types'
 
 // Components

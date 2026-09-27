@@ -65,6 +65,10 @@ entry, search entry, Expo screen and registry item then appear automatically.
   Tooltip, Toast, Popover, Dropdown Menu, Accordion, Alert Dialog, Sheet) also read `useReducedMotion()` and drop their `transition`,
   which covers native. Never animate `TextInput` styles: Android rejects
   animated style objects there.
+- **Press feedback.** Pressables call `useRipple()`: spread `ripple.props`
+  last, render `ripple.element` first, and while `ripple.active` keep the
+  resting fill as the `pressStyle` and drop a transparent border (Android
+  clips children inside the border).
 - **Tamagui factories.** Components built with `createCheckbox`, `createSwitch`
   or `createRadioGroup` must put their styles in the `unstyled.false` variant.
 - **No layout assumptions.** Components don't set outer margins. They size to

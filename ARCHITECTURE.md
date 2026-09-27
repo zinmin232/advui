@@ -55,6 +55,8 @@ points to `dist/` for npm.
     reduced-motion CSS)
   - `hooks/useReducedMotion.native.ts`: `AccessibilityInfo` instead of
     `matchMedia`
+  - `hooks/useRipple.native.tsx`: Android's native ripple (the view commands
+    Pressable's `android_ripple` uses); the web file is a no-op
   - `theme/animations.native.ts`: React Native Animated driver instead of CSS
     transitions
 - **Accessibility props** are written once, as ARIA props (`role`,

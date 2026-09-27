@@ -77,7 +77,8 @@ import { BellIcon, HomeIcon, SearchIcon } from '@advui/icons'
   platformNotes: {
     web: 'Keep it fixed at the bottom of mobile layouts; use `render` with your router’s link.',
     ios: 'Add the bottom safe-area inset as padding so it clears the home indicator.',
-    android: 'Can replace Expo Router’s default tab bar through its `tabBar` option.',
+    android:
+      'Can replace Expo Router’s default tab bar through its `tabBar` option. With `androidRipple` (on in `material()`), presses show the native ripple.',
   },
   related: ['tabs', 'fab', 'breadcrumb'],
 })

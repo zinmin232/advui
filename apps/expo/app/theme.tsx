@@ -101,8 +101,9 @@ export default function ThemeScreen() {
           </HStack>
           {preset === 'material' ? (
             <Text size="sm" tone="muted">
-              Colors switch live. Material’s shapes (pill buttons, 28px dialogs) come from
-              material() in your config, as tokens cannot change at runtime on native.
+              Colors switch live. Material’s shapes (pill buttons, 28px dialogs) and the Android
+              press ripple come from material() in your config, as tokens cannot change at runtime
+              on native.
             </Text>
           ) : null}
         </VStack>

@@ -14,7 +14,8 @@ Screens: `app/index.tsx` (metadata-driven home),
 `app/components/[slug].tsx`, `app/examples/[slug].tsx`, and `app/theme.tsx`
 (runtime presets and color mode).
 
-To see the Material 3 preset (Material colors, pill buttons, 28px dialogs),
+To see the Material 3 preset (Material colors, pill buttons, 28px dialogs
+and, on Android, the press ripple),
 start with `EXPO_PUBLIC_ADVUI_STYLE=material`, e.g.
 `EXPO_PUBLIC_ADVUI_STYLE=material pnpm dev:expo` (PowerShell:
 `$env:EXPO_PUBLIC_ADVUI_STYLE='material'; pnpm dev:expo`). The theme screen

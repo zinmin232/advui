@@ -87,7 +87,8 @@ export default defineMeta({
   platformNotes: {
     web: 'Keyboard navigation follows the WAI-ARIA Authoring Practices.',
     ios: 'For app-level navigation prefer a native tab bar (expo-router Tabs).',
-    android: 'Same as iOS.',
+    android:
+      'Same as iOS. With `androidRipple` (on in `material()`), presses show the native ripple.',
   },
   related: ['navigation-bar', 'toggle-group'],
 })

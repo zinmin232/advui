@@ -68,7 +68,8 @@ import { EditIcon } from '@advui/icons'
   platformNotes: {
     web: 'A native `<button type="button">` with a shadow that lifts on hover.',
     ios: 'Keep it above the home indicator: give the container a bottom safe-area inset.',
-    android: 'Uses elevation for its shadow.',
+    android:
+      'Uses elevation for its shadow. With `androidRipple` (on in `material()`), presses show the native ripple.',
   },
   related: ['button', 'icon-button', 'navigation-bar'],
 })

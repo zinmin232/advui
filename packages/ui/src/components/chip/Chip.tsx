@@ -2,6 +2,7 @@ import { CheckIcon, IconDefaults, XIcon } from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
 import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
+import { useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
 
 const ChipFrame = styled(View, {
@@ -105,6 +106,8 @@ export const Chip = forwardRef<TamaguiElement, ChipProps>(function Chip(
     removeLabel,
     disabled = false,
     onPress,
+    onPressIn,
+    onPressOut,
     ...props
   },
   ref,
@@ -120,13 +123,18 @@ export const Chip = forwardRef<TamaguiElement, ChipProps>(function Chip(
   const color: LabelColor = on ? '$secondaryForeground' : '$foreground'
   const leading = on ? <CheckIcon /> : icon
   const pressable = filter || onPress !== undefined
+  const ripple = useRipple({ color, disabled: disabled || !pressable, onPressIn, onPressOut })
+  const removeRipple = useRipple({
+    color: '$mutedForeground',
+    disabled: disabled || !onRemove || filter,
+  })
 
   // An input chip is a group: its text plus a separate remove button, so the
   // remove action has its own name and focus stop.
   if (onRemove && !filter) {
     const name = removeLabel ?? (typeof children === 'string' ? `Remove ${children}` : 'Remove')
     return (
-      <ChipFrame ref={ref} paddingRight="$1" disabled={disabled} {...props}>
+      <ChipFrame ref={ref} paddingRight="$1" disabled={disabled} {...props} {...ripple.props}>
         <IconDefaults size={18} color="$mutedForeground">
           {icon}
         </IconDefaults>
@@ -142,13 +150,15 @@ export const Chip = forwardRef<TamaguiElement, ChipProps>(function Chip(
           borderRadius="$full"
           cursor="pointer"
           hoverStyle={{ backgroundColor: '$accent' }}
-          pressStyle={{ backgroundColor: '$accentHover' }}
+          pressStyle={removeRipple.active ? undefined : { backgroundColor: '$accentHover' }}
           focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
           {...(isWeb
             ? { type: 'button', padding: 0, borderWidth: 0, backgroundColor: 'transparent' }
             : { accessible: true, hitSlop: 10 })}
           onPress={() => !disabled && onRemove()}
+          {...removeRipple.props}
         >
+          {removeRipple.element}
           <XIcon size={14} color="$mutedForeground" />
         </View>
       </ChipFrame>
@@ -191,8 +201,16 @@ export const Chip = forwardRef<TamaguiElement, ChipProps>(function Chip(
             }
           : undefined
       }
+      {...(ripple.active && {
+        pressStyle: { backgroundColor: on ? '$secondary' : 'transparent' },
+        // The ripple is clipped inside the border; a selected chip's border
+        // matches its fill, so drop it and let the ripple reach the edge.
+        ...(on && { borderWidth: 0 }),
+      })}
       {...props}
+      {...ripple.props}
     >
+      {ripple.element}
       <IconDefaults size={18} color={on ? '$secondaryForeground' : '$mutedForeground'}>
         {leading}
       </IconDefaults>

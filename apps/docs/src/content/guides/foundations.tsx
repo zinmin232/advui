@@ -89,6 +89,14 @@ export const config = createUniversalConfig({
           platform font on iOS and Android.
         </LI>
         <LI>
+          <strong>Press ripple (Android):</strong> buttons, chips, tabs, the navigation bar, menu
+          rows and other pressables show Android’s native ripple from the touch point instead of a
+          pressed color. Web and iOS keep their press colors. Turn it off with{' '}
+          <C>material({'{ androidRipple: false }'})</C>, or on for any theme with{' '}
+          <C>createUniversalConfig({'{ androidRipple: true }'})</C>; <C>useRipple()</C> adds it to
+          your own pressables.
+        </LI>
+        <LI>
           <strong>Accessibility:</strong> the same WCAG AA contrast checks run on Material themes as
           on every preset.
         </LI>

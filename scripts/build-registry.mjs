@@ -51,7 +51,8 @@ const libItems = [
     name: 'hooks',
     title: 'Hooks',
     type: 'registry:lib',
-    description: 'Shared hooks: controllable state and reduced-motion detection.',
+    description:
+      'Shared hooks: controllable state, reduced-motion detection and the Android press ripple.',
     files: listDir('hooks'),
   },
   {

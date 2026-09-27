@@ -25,6 +25,23 @@ export interface UniversalConfigOptions {
    * `@advui/theme/material`. Replaces `preset` and `colors`.
    */
   themes?: GeneratedThemes
+  /**
+   * Android only: pressing a button, chip, tab or list row shows the native
+   * ripple instead of darkening it. `material()` turns it on. Default: false.
+   */
+  androidRipple?: boolean
+}
+
+/** Adv UI settings that are not Tamagui's, such as `androidRipple`. */
+export interface UniversalSettings {
+  androidRipple: boolean
+}
+
+const defaultSettings: UniversalSettings = { androidRipple: false }
+
+/** The Adv UI settings stored on a config from `createUniversalConfig()`. */
+export function getUniversalSettings(config: object): UniversalSettings {
+  return (config as { advui?: UniversalSettings }).advui ?? defaultSettings
 }
 
 /**
@@ -38,7 +55,7 @@ export function createUniversalConfig(options: UniversalConfigOptions = {}) {
   const { preset = 'indigo', colors, radius = 'md', fontScale = 'default', fonts } = options
   const themes = options.themes ?? createThemeColors({ ...themePresets[preset].colors, ...colors })
 
-  return createTamagui({
+  const config = createTamagui({
     tokens: createUniversalTokens({ radius }),
     themes,
     fonts: createUniversalFonts({ scale: fontScale, families: fonts }),
@@ -58,6 +75,10 @@ export function createUniversalConfig(options: UniversalConfigOptions = {}) {
       styleCompat: 'web',
     },
   })
+  // Stored on the config object, which components reach from anywhere with
+  // getConfig(), including native portals that do not carry React context.
+  const advui: UniversalSettings = { androidRipple: options.androidRipple ?? false }
+  return Object.assign(config, { advui })
 }
 
 export type UniversalConfig = ReturnType<typeof createUniversalConfig>

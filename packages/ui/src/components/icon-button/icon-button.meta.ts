@@ -72,7 +72,8 @@ import { SearchIcon } from '@advui/icons'
   platformNotes: {
     web: 'Renders a native `<button>`.',
     ios: 'Use `size="lg"` in navigation bars for comfortable tapping.',
-    android: 'Ripple is not emulated; press feedback uses the pressed background.',
+    android:
+      'Press feedback is the pressed background, or the native ripple with `androidRipple` (on in `material()`).',
   },
   related: ['button', 'tooltip'],
 })

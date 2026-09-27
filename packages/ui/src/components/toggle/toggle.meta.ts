@@ -76,7 +76,8 @@ import { BoldIcon } from '@advui/icons'
   platformNotes: {
     web: 'A native `<button type="button">`.',
     ios: 'VoiceOver reads “toggle button”, then on or off.',
-    android: 'TalkBack reads “toggle button”, then on or off.',
+    android:
+      'TalkBack reads “toggle button”, then on or off. With `androidRipple` (on in `material()`), presses show the native ripple.',
   },
   related: ['toggle-group', 'switch', 'button'],
 })

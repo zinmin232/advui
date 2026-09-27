@@ -9,6 +9,13 @@ one version.
 
 ### Added
 
+- **Android press ripple**: with `androidRipple` in the config (on in
+  `material()`), pressables show Android's native ripple from the touch point
+  instead of a pressed color: Button, IconButton, Toggle, Toggle Group, Chip,
+  FAB, Tabs, Navigation Bar (in the indicator's pill), Accordion, Android menu
+  and Select rows, interactive Card, and Snackbar and toast actions. Web and
+  iOS are unchanged. `useRipple()` adds it to your own pressables.
+
 - **Floating Action Button** (beta, `Fab`): a screen's primary action. It has
   `soft` (Material's primary container), `primary`, `secondary` and `surface`
   variants, 40/56/96 sizes, an extended FAB with `label`, and `placement` to
@@ -77,6 +84,9 @@ one version.
 
 ### Fixed
 
+- Toast: pressing the action button no longer turns it gray (Tamagui's
+  default pressed color); it darkens like a primary button. The dismiss
+  button has a visible focus ring.
 - Avatar on iOS and Android: every size rendered at 40pt, because Tamagui's
   Avatar reads its own `size` prop as a size token. Sizes are now passed as
   tokens (xs 24 → xl 64).
