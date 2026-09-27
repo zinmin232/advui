@@ -118,6 +118,7 @@ export function ExampleViewer({ slug }: { slug: string }) {
         </HStack>
         {device === 'desktop' ? (
           <View
+            testID="example-frame"
             borderWidth={1}
             borderColor="$border"
             borderRadius="$xl"

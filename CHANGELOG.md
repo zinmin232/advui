@@ -33,6 +33,8 @@ one version.
 - Button, Badge, Tabs: children made of several text pieces (for example
   `Status ({count})`) crashed on iOS and Android with "Text strings must be
   rendered within a \<Text\> component". They are now wrapped in `Text`.
+- Docs: the Login example collapsed to a thin strip in the Desktop frame. An
+  e2e test now checks that no app example is clipped there.
 
 ## [0.1.0] - 2026-09-26
 

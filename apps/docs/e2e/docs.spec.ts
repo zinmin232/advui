@@ -1,3 +1,4 @@
+import { appExamples } from '@advui/examples/meta'
 import AxeBuilder from '@axe-core/playwright'
 import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
@@ -105,6 +106,23 @@ test('theme customizer restyles the whole site live', async ({ page }) => {
     .toBe('12px')
   await page.keyboard.press('Escape')
   await expect(panel).toBeHidden()
+})
+
+// The desktop frame has no fixed height, so a screen that sizes itself with
+// flex={1} collapses and is clipped (it happened to the login example).
+test('app examples are not clipped in the desktop frame', async ({ page }) => {
+  for (const { slug } of appExamples) {
+    await page.goto(`/examples/${slug}`)
+    await page.getByRole('button', { name: 'Desktop' }).click()
+    const frame = page.getByTestId('example-frame')
+    await expect(frame).toBeVisible()
+    const size = await frame.evaluate((el) => ({
+      scroll: el.scrollHeight,
+      client: el.clientHeight,
+    }))
+    expect(size.client, `${slug} frame height`).toBeGreaterThan(200)
+    expect(size.scroll, `${slug} content is clipped`).toBeLessThanOrEqual(size.client + 1)
+  }
 })
 
 test('registry JSON is published for the CLI', async ({ request }) => {
