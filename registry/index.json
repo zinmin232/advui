@@ -386,7 +386,7 @@
       "name": "scroll-area",
       "title": "Scroll Area",
       "type": "registry:component",
-      "description": "A box that scrolls its content within a set height or width, with thin scrollbars in the theme colors.",
+      "description": "A box that scrolls its content within a set height or width. On web its scrollbars are thin and in the theme colors.",
       "category": "layout",
       "status": "beta",
       "dependencies": [],
