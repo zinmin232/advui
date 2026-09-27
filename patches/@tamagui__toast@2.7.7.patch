@@ -1,0 +1,39 @@
+diff --git a/dist/cjs/ToastComposable.cjs b/dist/cjs/ToastComposable.cjs
+index 1a85cbefa2276ba7dd8e771872784f4924c04ee6..038e657cdabb44b934f18c5b1941bb904ea61f67 100644
+--- a/dist/cjs/ToastComposable.cjs
++++ b/dist/cjs/ToastComposable.cjs
+@@ -763,7 +763,7 @@ const ToastItemInner = import_ToastItemFrame.ToastItemFrame.styleable(function T
+   return /* @__PURE__ */(0, import_jsx_runtime.jsx)(import_ToastItemFrame.ToastPositionWrapper, {
+     ref,
+     testID: rest.testID,
+-    accessibilityLabel: rest.accessibilityLabel,
++    "aria-label": rest.accessibilityLabel,
+     ...dataAttributes,
+     transition: isDragging || ctx.reducedMotion ? void 0 : removed ? "200ms" : "400ms",
+     animateOnly: import_constants.isWeb ? ["transform", "opacity", "height"] : ["transform", "opacity"],
+diff --git a/dist/esm/ToastComposable.mjs b/dist/esm/ToastComposable.mjs
+index 05cb1bed148d6c062fa6c68af9d7785e3be4ef09..e7050d234474543454e042d4e6b1e8bd49bf2428 100644
+--- a/dist/esm/ToastComposable.mjs
++++ b/dist/esm/ToastComposable.mjs
+@@ -723,7 +723,7 @@ const ToastItemInner = ToastItemFrame.styleable(function ToastItem(props, ref) {
+   return /* @__PURE__ */jsx(ToastPositionWrapper, {
+     ref,
+     testID: rest.testID,
+-    accessibilityLabel: rest.accessibilityLabel,
++    "aria-label": rest.accessibilityLabel,
+     ...dataAttributes,
+     transition: isDragging || ctx.reducedMotion ? void 0 : removed ? "200ms" : "400ms",
+     animateOnly: isWeb ? ["transform", "opacity", "height"] : ["transform", "opacity"],
+diff --git a/dist/jsx/ToastComposable.mjs b/dist/jsx/ToastComposable.mjs
+index 05cb1bed148d6c062fa6c68af9d7785e3be4ef09..e7050d234474543454e042d4e6b1e8bd49bf2428 100644
+--- a/dist/jsx/ToastComposable.mjs
++++ b/dist/jsx/ToastComposable.mjs
+@@ -723,7 +723,7 @@ const ToastItemInner = ToastItemFrame.styleable(function ToastItem(props, ref) {
+   return /* @__PURE__ */jsx(ToastPositionWrapper, {
+     ref,
+     testID: rest.testID,
+-    accessibilityLabel: rest.accessibilityLabel,
++    "aria-label": rest.accessibilityLabel,
+     ...dataAttributes,
+     transition: isDragging || ctx.reducedMotion ? void 0 : removed ? "200ms" : "400ms",
+     animateOnly: isWeb ? ["transform", "opacity", "height"] : ["transform", "opacity"],

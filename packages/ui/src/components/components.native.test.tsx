@@ -5,9 +5,11 @@ import { zIndex } from '@advui/theme'
 import { StyleSheet } from 'react-native'
 import { renderNative } from '../../test/native-utils'
 import { Accordion } from './accordion/Accordion'
+import { AlertDialog } from './alert-dialog/AlertDialog'
 import { Alert } from './alert/Alert'
 import { Avatar } from './avatar/Avatar'
 import { Badge } from './badge/Badge'
+import { Breadcrumb } from './breadcrumb/Breadcrumb'
 import { Button } from './button/Button'
 import { Card } from './card/Card'
 import { Checkbox } from './checkbox/Checkbox'
@@ -16,9 +18,12 @@ import { IconButton } from './icon-button/IconButton'
 import { Input } from './input/Input'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
+import { Sheet } from './sheet/Sheet'
 import { Slider } from './slider/Slider'
 import { Switch } from './switch/Switch'
 import { Toaster, toast } from './toast/Toaster'
+import { Toggle } from './toggle/Toggle'
+import { ToggleGroup } from './toggle-group/ToggleGroup'
 import { Heading } from './typography/Heading'
 import { Text } from './typography/Text'
 
@@ -177,6 +182,8 @@ describe('native rendering', () => {
         </DropdownMenu.Content>
       </DropdownMenu>,
     )
+    // The sheet stays mounted while closed; its rows must be hidden from screen readers.
+    expect(screen.queryByRole('menuitem', { name: 'Rename' })).toBeNull()
     await fireEvent.press(screen.getByRole('button', { name: 'Options' }))
     expect(screen.getByRole('checkbox', { name: 'Pinned' })).toBeChecked()
     // Screen readers activate rows with the "activate" action (double-tap).
@@ -202,6 +209,108 @@ describe('native rendering', () => {
     expect(await screen.findByText('Layer size')).toBeOnTheScreen()
     expect(screen.getByText('Width and height')).toBeOnTheScreen()
   })
+  it('AlertDialog opens an alertdialog and runs the action', async () => {
+    const onDelete = jest.fn()
+    await renderNative(
+      <AlertDialog>
+        <AlertDialog.Trigger asChild>
+          <Button>Delete project</Button>
+        </AlertDialog.Trigger>
+        <AlertDialog.Content>
+          <AlertDialog.Title>Delete Atlas?</AlertDialog.Title>
+          <AlertDialog.Description>This cannot be undone.</AlertDialog.Description>
+          <AlertDialog.Cancel asChild>
+            <Button>Cancel</Button>
+          </AlertDialog.Cancel>
+          <AlertDialog.Action asChild>
+            <Button onPress={onDelete}>Delete</Button>
+          </AlertDialog.Action>
+        </AlertDialog.Content>
+      </AlertDialog>,
+    )
+    expect(screen.queryByText('Delete Atlas?')).toBeNull()
+    await fireEvent.press(screen.getByRole('button', { name: 'Delete project' }))
+    // Dialog containers are not accessibility elements, so query their content.
+    let node: { props: { role?: string }; parent: unknown } | null =
+      await screen.findByText('Delete Atlas?')
+    while (node && node.props.role !== 'alertdialog') node = node.parent as typeof node
+    expect(node?.props.role).toBe('alertdialog')
+    await fireEvent.press(screen.getByRole('button', { name: 'Delete' }))
+    expect(onDelete).toHaveBeenCalledTimes(1)
+  })
+
+  it('Sheet content is hidden from screen readers until it opens', async () => {
+    const onOpenChange = jest.fn()
+    await renderNative(
+      <Sheet onOpenChange={onOpenChange}>
+        <Sheet.Trigger>
+          <Button>Edit profile</Button>
+        </Sheet.Trigger>
+        <Sheet.Content>
+          <Sheet.Title>Profile</Sheet.Title>
+          <Sheet.Close>
+            <Button>Cancel</Button>
+          </Sheet.Close>
+        </Sheet.Content>
+      </Sheet>,
+    )
+    expect(screen.queryByRole('heading', { name: 'Profile' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Cancel' })).toBeNull()
+    await fireEvent.press(screen.getByRole('button', { name: 'Edit profile' }))
+    expect(await screen.findByRole('heading', { name: 'Profile' })).toBeOnTheScreen()
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeOnTheScreen()
+    await fireEvent.press(screen.getByRole('button', { name: 'Close' }))
+    expect(onOpenChange).toHaveBeenLastCalledWith(false)
+  })
+
+  it('Toggle and ToggleGroup report their checked state', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <>
+        <Toggle aria-label="Bold" />
+        <ToggleGroup type="single" defaultValue="left" onValueChange={onValueChange}>
+          <ToggleGroup.Item value="left">Left</ToggleGroup.Item>
+          <ToggleGroup.Item value="right">Right</ToggleGroup.Item>
+        </ToggleGroup>
+      </>,
+    )
+    const bold = screen.getByRole('togglebutton', { name: 'Bold' })
+    expect(bold.props.accessibilityState).toMatchObject({ checked: false })
+    await fireEvent.press(bold)
+    expect(
+      screen.getByRole('togglebutton', { name: 'Bold' }).props.accessibilityState,
+    ).toMatchObject({ checked: true })
+
+    expect(screen.getByRole('radio', { name: 'Left' })).toBeChecked()
+    await fireEvent.press(screen.getByRole('radio', { name: 'Right' }))
+    expect(onValueChange).toHaveBeenLastCalledWith('right')
+    expect(screen.getByRole('radio', { name: 'Right' })).toBeChecked()
+    // Screen-reader double-tap.
+    await fireEvent(screen.getByRole('radio', { name: 'Left' }), 'accessibilityAction', {
+      nativeEvent: { actionName: 'activate' },
+    })
+    expect(onValueChange).toHaveBeenLastCalledWith('left')
+  })
+
+  it('Breadcrumb items are links only with onPress; the current page says so', async () => {
+    const onPress = jest.fn()
+    await renderNative(
+      <Breadcrumb>
+        <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+        <Breadcrumb.Item onPress={onPress}>Projects</Breadcrumb.Item>
+        <Breadcrumb.Item>Atlas</Breadcrumb.Item>
+      </Breadcrumb>,
+    )
+    expect(screen.queryByRole('link', { name: 'Home' })).toBeNull()
+    await fireEvent.press(screen.getByRole('link', { name: 'Projects' }))
+    expect(onPress).toHaveBeenCalledTimes(1)
+    await fireEvent(screen.getByRole('link', { name: 'Projects' }), 'accessibilityAction', {
+      nativeEvent: { actionName: 'activate' },
+    })
+    expect(onPress).toHaveBeenCalledTimes(2)
+    expect(screen.getByLabelText('Atlas, current page')).toBeOnTheScreen()
+  })
+
   it('wraps text made of several JSX pieces ("Status ({count})") in Text', async () => {
     const count = 2
     await renderNative(

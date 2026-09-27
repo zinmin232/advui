@@ -25,11 +25,12 @@ On web, alias `react-native` to `react-native-web` and transpile the
 `@advui/*` packages (see the Installation guide). Expo needs no extra
 setup.
 
-**Exports:** Accordion, Alert, Avatar, Badge, Button, Card, Checkbox, Container,
-Dialog, DropdownMenu, Grid, IconButton, Input, Label, Popover, Progress,
-RadioGroup, Select, Separator, Skeleton, Slider, Spinner, Stack (Box, HStack,
-VStack, Center, Spacer), Switch, Tabs, Text, Heading, Kbd, Textarea, Toaster,
-`toast`, Tooltip, UniversalProvider,
+**Exports:** Accordion, Alert, AlertDialog, Avatar, Badge, Breadcrumb, Button,
+Card, Checkbox, Container, Dialog, DropdownMenu, Grid, IconButton, Input, Label,
+Popover, Progress, RadioGroup, Select, Separator, Sheet, Skeleton, Slider,
+Spinner, Stack (Box, HStack, VStack, Center, Spacer), Switch, Tabs, Text,
+Heading, Kbd, Textarea, Toaster, `toast`, Toggle, ToggleGroup, Tooltip,
+UniversalProvider,
 `useColorMode`, `useControllableState`, `useReducedMotion`, plus re-exports of
 `createUniversalConfig`, `Icon`, `IconDefaults`, `createIcon`, `Theme`, `useTheme` and `useMedia`.
 

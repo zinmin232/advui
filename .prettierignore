@@ -18,3 +18,6 @@ apps/docs/e2e/*-snapshots
 apps/expo/android
 apps/expo/ios
 next-env.d.ts
+
+# Agent worktrees (local only)
+.claude/worktrees

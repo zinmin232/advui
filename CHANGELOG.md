@@ -23,16 +23,42 @@ one version.
   styling, checkbox and radio items, labels, groups and separators. On iOS and
   Android it opens as a bottom sheet of 48dp rows exposed as menu items,
   checkboxes and radios.
+- **Alert Dialog** (beta): confirms important or destructive actions. An
+  `alertdialog` named and described by its text, focus starts on Cancel, and
+  presses outside are ignored; Escape cancels.
+- **Sheet** (beta): a bottom sheet on web, iOS and Android, with fit or
+  `snapPoints` heights and `Sheet.ScrollView`. On web it is a modal dialog with
+  a focus trap and Escape; while closed its content is hidden from screen
+  readers and the tab order.
+- **Toggle** (beta): a two-state button (`aria-pressed` on web, a toggle
+  button with a checked state on iOS and Android).
+- **Toggle Group** (beta): `single` (a radio group) or `multiple` (toggle
+  buttons), with one Tab stop and arrow-key navigation on web.
+- **Breadcrumb** (beta): a `nav` landmark with an ordered list, the current
+  page marked, `render` for router links, and `maxItems` to collapse deep
+  paths behind a “Show N more” button.
+- Icons: `align-left`, `align-center`, `align-right`, `bold`, `italic`,
+  `underline`, `folder`, `layout-grid` and `list` (65 icons in total).
 - Registry: a `utils` item for shared helpers. `build-registry` now fails if a
   component imports a file that no registry item ships.
-- e2e: axe checks for the new component pages, and open-state tests for Popover
-  and Dropdown Menu.
+- e2e: axe checks for the new component pages, and open-state tests for Popover,
+  Dropdown Menu, Alert Dialog, Sheet and Toggle Group.
 
 ### Fixed
 
 - Button, Badge, Tabs: children made of several text pieces (for example
   `Status ({count})`) crashed on iOS and Android with "Text strings must be
   rendered within a \<Text\> component". They are now wrapped in `Text`.
+- Dropdown Menu on iOS and Android: the closed menu's rows could be reached by
+  screen readers, because the sheet stays mounted while closed. They are now
+  hidden until it opens.
+- Docs: the four components added since 0.1.0 said “Since v0.1.0”; they
+  first ship in 0.2.0.
+- Toasts logged “React does not recognize the `accessibilityLabel` prop” in
+  development: `@tamagui/toast` 2.7.7 passes that React Native prop to a DOM
+  element. This repo now carries a `pnpm patch` (`patches/`) that passes it as
+  `aria-label` instead. Apps installing `@advui/core` still see the dev-only
+  warning until Tamagui fixes it upstream.
 - Docs: the Login example collapsed to a thin strip in the Desktop frame. An
   e2e test now checks that no app example is clipped there.
 

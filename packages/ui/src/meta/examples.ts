@@ -3,11 +3,15 @@ import type { ComponentType } from 'react'
 import AccordionBasic from '../components/accordion/examples/basic'
 import AccordionCard from '../components/accordion/examples/card'
 import AlertVariants from '../components/alert/examples/variants'
+import AlertDialogBasic from '../components/alert-dialog/examples/basic'
+import AlertDialogAsync from '../components/alert-dialog/examples/async'
 import AvatarBasic from '../components/avatar/examples/basic'
 import AvatarSizes from '../components/avatar/examples/sizes'
 import AvatarGroup from '../components/avatar/examples/group'
 import BadgeVariants from '../components/badge/examples/variants'
 import BadgeWithIcon from '../components/badge/examples/with-icon'
+import BreadcrumbBasic from '../components/breadcrumb/examples/basic'
+import BreadcrumbCollapsed from '../components/breadcrumb/examples/collapsed'
 import ButtonBasic from '../components/button/examples/basic'
 import ButtonVariants from '../components/button/examples/variants'
 import ButtonSizes from '../components/button/examples/sizes'
@@ -40,6 +44,8 @@ import RadioGroupBasic from '../components/radio-group/examples/basic'
 import SelectBasic from '../components/select/examples/basic'
 import SelectGroups from '../components/select/examples/groups'
 import SeparatorBasic from '../components/separator/examples/basic'
+import SheetBasic from '../components/sheet/examples/basic'
+import SheetScroll from '../components/sheet/examples/scroll'
 import SkeletonCard from '../components/skeleton/examples/card'
 import SliderBasic from '../components/slider/examples/basic'
 import SliderRange from '../components/slider/examples/range'
@@ -52,6 +58,10 @@ import TabsUnderline from '../components/tabs/examples/underline'
 import TextareaBasic from '../components/textarea/examples/basic'
 import ToastTypes from '../components/toast/examples/types'
 import ToastAction from '../components/toast/examples/action'
+import ToggleBasic from '../components/toggle/examples/basic'
+import ToggleControlled from '../components/toggle/examples/controlled'
+import ToggleGroupBasic from '../components/toggle-group/examples/basic'
+import ToggleGroupMultiple from '../components/toggle-group/examples/multiple'
 import TooltipBasic from '../components/tooltip/examples/basic'
 import TypographyScale from '../components/typography/examples/scale'
 import TypographyTones from '../components/typography/examples/tones'
@@ -64,6 +74,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'alert': {
     'variants': AlertVariants,
   },
+  'alert-dialog': {
+    'basic': AlertDialogBasic,
+    'async': AlertDialogAsync,
+  },
   'avatar': {
     'basic': AvatarBasic,
     'sizes': AvatarSizes,
@@ -72,6 +86,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'badge': {
     'variants': BadgeVariants,
     'with-icon': BadgeWithIcon,
+  },
+  'breadcrumb': {
+    'basic': BreadcrumbBasic,
+    'collapsed': BreadcrumbCollapsed,
   },
   'button': {
     'basic': ButtonBasic,
@@ -135,6 +153,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'separator': {
     'basic': SeparatorBasic,
   },
+  'sheet': {
+    'basic': SheetBasic,
+    'scroll': SheetScroll,
+  },
   'skeleton': {
     'card': SkeletonCard,
   },
@@ -162,6 +184,14 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'toast': {
     'types': ToastTypes,
     'action': ToastAction,
+  },
+  'toggle': {
+    'basic': ToggleBasic,
+    'controlled': ToggleControlled,
+  },
+  'toggle-group': {
+    'basic': ToggleGroupBasic,
+    'multiple': ToggleGroupMultiple,
   },
   'tooltip': {
     'basic': TooltipBasic,

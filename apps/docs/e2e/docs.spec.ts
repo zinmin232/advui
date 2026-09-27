@@ -149,6 +149,11 @@ for (const path of [
   '/docs/components/slider',
   '/docs/components/popover',
   '/docs/components/dropdown-menu',
+  '/docs/components/alert-dialog',
+  '/docs/components/sheet',
+  '/docs/components/toggle',
+  '/docs/components/toggle-group',
+  '/docs/components/breadcrumb',
   '/examples/login',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {
@@ -196,6 +201,58 @@ test('dropdown menu is keyboard operable', async ({ page }) => {
   await expect(menu).toBeHidden()
   await expect(trigger).toBeFocused()
   expect(errors).toEqual([])
+})
+
+test('alert dialog starts on Cancel and returns focus on Escape', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/alert-dialog')
+  await page.waitForLoadState('networkidle')
+  const trigger = page.getByRole('button', { name: 'Delete project' }).first()
+  await trigger.click()
+  const dialog = page.getByRole('alertdialog', { name: 'Delete “Atlas”?' })
+  await expect(dialog).toBeVisible()
+  await expect(dialog.getByRole('button', { name: 'Cancel' })).toBeFocused()
+  expect(await seriousViolations(page)).toEqual([])
+  await page.keyboard.press('Escape')
+  await expect(dialog).toBeHidden()
+  await expect(trigger).toBeFocused()
+  expect(errors).toEqual([])
+})
+
+test('sheet is hidden until opened, traps focus and returns it on Escape', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/sheet')
+  await page.waitForLoadState('networkidle')
+  // Closed sheets stay mounted off-screen; they must not reach the accessibility tree.
+  await expect(page.getByRole('dialog')).toHaveCount(0)
+  const trigger = page.getByRole('button', { name: 'Edit profile' }).first()
+  await trigger.click()
+  const sheet = page.getByRole('dialog', { name: 'Edit profile' })
+  await expect(sheet).toBeVisible()
+  await expect(sheet.getByRole('textbox').first()).toBeFocused()
+  expect(await seriousViolations(page)).toEqual([])
+  // Shift+Tab from the first field wraps to the last control inside the sheet.
+  await page.keyboard.press('Shift+Tab')
+  await expect.poll(() => sheet.evaluate((el) => el.contains(document.activeElement))).toBe(true)
+  await page.keyboard.press('Escape')
+  await expect(page.getByRole('dialog')).toHaveCount(0)
+  await expect(trigger).toBeFocused()
+  expect(errors).toEqual([])
+})
+
+test('toggle group is one Tab stop and arrow keys choose', async ({ page }) => {
+  await page.goto('/docs/components/toggle-group')
+  await page.waitForLoadState('networkidle')
+  const group = page.getByRole('radiogroup', { name: 'Text alignment' }).first()
+  const left = group.getByRole('radio', { name: 'Align left' })
+  const center = group.getByRole('radio', { name: 'Align center' })
+  await expect(left).toHaveAttribute('aria-checked', 'true')
+  await expect(center).toHaveAttribute('tabindex', '-1')
+  await left.focus()
+  await page.keyboard.press('ArrowRight')
+  await expect(center).toBeFocused()
+  await expect(center).toHaveAttribute('aria-checked', 'true')
+  await expect(center).toHaveAttribute('tabindex', '0')
 })
 
 test('no serious accessibility violations in dark mode', async ({ page }) => {

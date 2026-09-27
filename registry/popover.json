@@ -6,7 +6,7 @@
   "description": "Rich, interactive content anchored to a trigger, such as quick settings, filters or a short form.",
   "category": "overlay",
   "status": "beta",
-  "since": "0.1.0",
+  "since": "0.2.0",
   "platforms": [
     "web",
     "ios",

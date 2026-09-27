@@ -91,7 +91,11 @@ function DropdownMenuContent({ children }: DropdownMenuContentProps) {
         <Sheet.ScrollView>
           {/* The sheet renders in a portal, which does not carry React context. */}
           <MenuContext.Provider value={menu}>
-            <View role="menu">{children}</View>
+            {/* The sheet stays mounted while closed; hide its rows from screen
+                readers until it opens, and keep VoiceOver inside while open. */}
+            <View role="menu" aria-hidden={!open || undefined} accessibilityViewIsModal={open}>
+              {children}
+            </View>
           </MenuContext.Provider>
         </Sheet.ScrollView>
       </Sheet.Frame>

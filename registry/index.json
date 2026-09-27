@@ -49,6 +49,19 @@
       ]
     },
     {
+      "name": "alert-dialog",
+      "title": "Alert Dialog",
+      "type": "registry:component",
+      "description": "Interrupts the user to confirm an important or destructive action before it happens.",
+      "category": "feedback",
+      "status": "beta",
+      "dependencies": [],
+      "registryDependencies": [
+        "dialog",
+        "hooks"
+      ]
+    },
+    {
       "name": "alert",
       "title": "Alert",
       "type": "registry:component",
@@ -85,6 +98,18 @@
       "registryDependencies": [
         "utils"
       ]
+    },
+    {
+      "name": "breadcrumb",
+      "title": "Breadcrumb",
+      "type": "registry:component",
+      "description": "Shows where the current page sits in the hierarchy, with links back up to each level.",
+      "category": "navigation",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": []
     },
     {
       "name": "button",
@@ -288,6 +313,24 @@
       "registryDependencies": []
     },
     {
+      "name": "sheet",
+      "title": "Sheet",
+      "type": "registry:component",
+      "description": "A panel that slides up from the bottom of the screen for extra actions, details or a short form.",
+      "category": "overlay",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons",
+        "@tamagui/dismissable",
+        "@tamagui/focus-scope"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "icon-button",
+        "typography"
+      ]
+    },
+    {
       "name": "skeleton",
       "title": "Skeleton",
       "type": "registry:component",
@@ -379,6 +422,34 @@
         "hooks",
         "spinner",
         "typography"
+      ]
+    },
+    {
+      "name": "toggle-group",
+      "title": "Toggle Group",
+      "type": "registry:component",
+      "description": "A set of toggle buttons: pick one, like text alignment, or turn on several, like bold and italic.",
+      "category": "buttons",
+      "status": "beta",
+      "dependencies": [],
+      "registryDependencies": [
+        "hooks",
+        "toggle"
+      ]
+    },
+    {
+      "name": "toggle",
+      "title": "Toggle",
+      "type": "registry:component",
+      "description": "A button that stays on or off, such as Bold in a text toolbar.",
+      "category": "buttons",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "utils"
       ]
     },
     {
