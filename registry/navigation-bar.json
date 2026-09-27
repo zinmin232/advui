@@ -1,0 +1,46 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "navigation-bar",
+  "title": "Navigation Bar",
+  "type": "registry:component",
+  "description": "Switches between three to five top-level destinations of an app, at the bottom of the screen on phones.",
+  "category": "navigation",
+  "status": "beta",
+  "since": "0.2.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/navigation-bar/NavigationBar.tsx",
+      "type": "registry:ui",
+      "content": "import { IconDefaults } from '@advui/icons'\nimport { type ReactNode, createContext, forwardRef, useContext } from 'react'\nimport {\n  type GetProps,\n  type TamaguiElement,\n  Text,\n  View,\n  isWeb,\n  withStaticProperties,\n} from 'tamagui'\nimport { useControllableState } from '../../hooks/useControllableState'\n\ntype BarState = { value: string; select: (value: string) => void }\n\nconst BarContext = createContext<BarState | null>(null)\n\nexport interface NavigationBarProps extends Omit<\n  GetProps<typeof View>,\n  'children' | 'defaultValue'\n> {\n  /** The current destination. */\n  value?: string\n  defaultValue?: string\n  onValueChange?: (value: string) => void\n  /** Names the navigation landmark, e.g. \"Main\". */\n  'aria-label'?: string\n  /** 3 to 5 NavigationBar.Item elements. */\n  children: ReactNode\n}\n\nconst NavigationBarRoot = forwardRef<TamaguiElement, NavigationBarProps>(function NavigationBar(\n  { value: valueProp, defaultValue = '', onValueChange, children, ...props },\n  ref,\n) {\n  const [value, setValue] = useControllableState({\n    value: valueProp,\n    defaultValue,\n    onChange: onValueChange,\n  })\n  return (\n    <BarContext.Provider value={{ value, select: setValue }}>\n      <View\n        ref={ref}\n        render=\"nav\"\n        // Web: a navigation landmark of links; native: a tab bar, as screen readers expect.\n        {...(!isWeb && { role: 'tablist' })}\n        flexDirection=\"row\"\n        alignItems=\"stretch\"\n        width=\"100%\"\n        minHeight=\"$20\"\n        paddingVertical=\"$3\"\n        gap=\"$2\"\n        backgroundColor=\"$card\"\n        borderTopWidth={1}\n        borderColor=\"$border\"\n        {...props}\n      >\n        {children}\n      </View>\n    </BarContext.Provider>\n  )\n})\n\nexport interface NavigationBarItemProps extends Omit<GetProps<typeof View>, 'children'> {\n  value: string\n  icon: ReactNode\n  /** Always visible under the icon. */\n  label: string\n  /** A count (e.g. unread messages) or `true` for a dot. Announced with the label. */\n  badge?: number | boolean\n  /** Web: render your router's link, e.g. `render={<Link href=\"/inbox\" />}`. */\n  render?: GetProps<typeof View>['render']\n  disabled?: boolean\n}\n\nfunction badgeText(badge: number | boolean | undefined) {\n  if (badge === undefined || badge === false) return null\n  if (badge === true) return ''\n  return badge > 99 ? '99+' : String(badge)\n}\n\nconst NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(\n  function NavigationBarItem(\n    { value, icon, label, badge, render, disabled = false, onPress, ...props },\n    ref,\n  ) {\n    const bar = useContext(BarContext)\n    if (!bar) throw new Error('NavigationBar.Item must be rendered inside <NavigationBar>.')\n    const active = bar.value === value\n    const count = badgeText(badge)\n    const name = count === null ? label : count === '' ? `${label}, new` : `${label}, ${count} new`\n\n    const semantics = isWeb\n      ? {\n          render: render ?? 'button',\n          ...(render ? null : { type: 'button' }),\n          'aria-current': active ? ('page' as const) : undefined,\n        }\n      : {\n          accessible: true,\n          role: 'tab' as const,\n          accessibilityState: { selected: active, disabled },\n        }\n\n    return (\n      <View\n        ref={ref}\n        {...semantics}\n        aria-label={name}\n        aria-disabled={disabled || undefined}\n        flex={1}\n        alignItems=\"center\"\n        justifyContent=\"flex-start\"\n        gap=\"$1\"\n        minWidth={0}\n        paddingVertical={0}\n        borderWidth={0}\n        backgroundColor=\"transparent\"\n        cursor={disabled ? 'default' : 'pointer'}\n        opacity={disabled ? 0.5 : 1}\n        userSelect=\"none\"\n        focusVisibleStyle={{\n          outlineColor: '$ring',\n          outlineStyle: 'solid',\n          outlineWidth: 2,\n          outlineOffset: 2,\n          borderRadius: '$lg',\n        }}\n        onPress={(event) => {\n          if (disabled) return\n          onPress?.(event)\n          bar.select(value)\n        }}\n        {...props}\n      >\n        <View\n          width=\"$16\"\n          height=\"$8\"\n          alignItems=\"center\"\n          justifyContent=\"center\"\n          position=\"relative\"\n        >\n          {/* Material's active indicator: a pill behind the icon. It is always\n              painted and faded in, because Android does not round a background\n              that is added after the view mounts. */}\n          <View\n            aria-hidden\n            position=\"absolute\"\n            top={0}\n            right={0}\n            bottom={0}\n            left={0}\n            borderRadius=\"$full\"\n            backgroundColor=\"$secondary\"\n            opacity={active ? 1 : 0}\n            hoverStyle={{ opacity: active ? 1 : 0.6 }}\n          />\n          <IconDefaults size={24} color={active ? '$secondaryForeground' : '$mutedForeground'}>\n            {icon}\n          </IconDefaults>\n          {count !== null ? (\n            <View\n              aria-hidden\n              position=\"absolute\"\n              top={count === '' ? '$1' : 0}\n              left=\"$9\"\n              minWidth={count === '' ? '$1.5' : '$4'}\n              height={count === '' ? '$1.5' : '$4'}\n              paddingHorizontal={count === '' ? 0 : '$1'}\n              borderRadius=\"$full\"\n              backgroundColor=\"$error\"\n              alignItems=\"center\"\n              justifyContent=\"center\"\n            >\n              {count === '' ? null : (\n                <Text\n                  fontFamily=\"$body\"\n                  fontSize=\"$1\"\n                  lineHeight=\"$1\"\n                  fontWeight=\"600\"\n                  color=\"$errorForeground\"\n                >\n                  {count}\n                </Text>\n              )}\n            </View>\n          ) : null}\n        </View>\n        <Text\n          aria-hidden\n          fontFamily=\"$body\"\n          fontSize=\"$1\"\n          lineHeight=\"$1\"\n          fontWeight={active ? '700' : '500'}\n          color={active ? '$foreground' : '$mutedForeground'}\n          numberOfLines={1}\n        >\n          {label}\n        </Text>\n      </View>\n    )\n  },\n)\n\n/**\n * Switches between 3 to 5 top-level destinations of an app, at the bottom of\n * the screen on phones. Each item has an icon and a label; the current one is\n * marked with a pill behind the icon.\n */\nexport const NavigationBar = withStaticProperties(NavigationBarRoot, {\n  Item: NavigationBarItem,\n})\n"
+    },
+    {
+      "path": "components/navigation-bar/index.ts",
+      "type": "registry:ui",
+      "content": "export {\n  NavigationBar,\n  type NavigationBarItemProps,\n  type NavigationBarProps,\n} from './NavigationBar'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Four destinations with badges",
+      "code": "import { Card, NavigationBar, Text, VStack } from '@advui/core'\nimport { BellIcon, HomeIcon, SearchIcon, UserIcon } from '@advui/icons'\nimport { useState } from 'react'\n\nconst titles: Record<string, string> = {\n  home: 'Home',\n  search: 'Search',\n  inbox: 'Inbox',\n  profile: 'Profile',\n}\n\nexport default function NavigationBarBasic() {\n  const [tab, setTab] = useState('home')\n  return (\n    // A card stands in for the phone screen; in an app the bar sits at the bottom.\n    <Card width=\"100%\" maxWidth=\"$96\" overflow=\"hidden\">\n      <VStack height=\"$40\" padding=\"$4\" gap=\"$1\">\n        <Text size=\"lg\" weight=\"semibold\">\n          {titles[tab]}\n        </Text>\n        <Text size=\"sm\" tone=\"muted\">\n          Pick a destination below.\n        </Text>\n      </VStack>\n      <NavigationBar value={tab} onValueChange={setTab} aria-label=\"Main\">\n        <NavigationBar.Item value=\"home\" icon={<HomeIcon />} label=\"Home\" />\n        <NavigationBar.Item value=\"search\" icon={<SearchIcon />} label=\"Search\" />\n        <NavigationBar.Item value=\"inbox\" icon={<BellIcon />} label=\"Inbox\" badge={3} />\n        <NavigationBar.Item value=\"profile\" icon={<UserIcon />} label=\"Profile\" badge />\n      </NavigationBar>\n    </Card>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/navigation-bar",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "hooks"
+  ],
+  "version": "0.1.0"
+}

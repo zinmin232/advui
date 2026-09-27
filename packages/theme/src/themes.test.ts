@@ -16,6 +16,7 @@ const solidPairs = [
 const textPairs = [
   ['background', 'foreground'],
   ['background', 'primaryText'],
+  ['foreground', 'inversePrimary'],
   ['card', 'primaryText'],
   ['card', 'cardForeground'],
   ['popover', 'popoverForeground'],

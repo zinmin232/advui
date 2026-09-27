@@ -153,6 +153,21 @@
       "registryDependencies": []
     },
     {
+      "name": "chip",
+      "title": "Chip",
+      "type": "registry:component",
+      "description": "A compact element for a filter, an entered value such as a recipient, or a suggested action.",
+      "category": "data-display",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "utils"
+      ]
+    },
+    {
       "name": "dialog",
       "title": "Dialog",
       "type": "registry:component",
@@ -184,6 +199,19 @@
         "hooks",
         "typography"
       ]
+    },
+    {
+      "name": "fab",
+      "title": "Floating Action Button",
+      "type": "registry:component",
+      "description": "The primary action of a screen, such as Compose or New, floating above the content.",
+      "category": "buttons",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons",
+        "@advui/theme"
+      ],
+      "registryDependencies": []
     },
     {
       "name": "icon-button",
@@ -248,6 +276,20 @@
       "status": "stable",
       "dependencies": [],
       "registryDependencies": []
+    },
+    {
+      "name": "navigation-bar",
+      "title": "Navigation Bar",
+      "type": "registry:component",
+      "description": "Switches between three to five top-level destinations of an app, at the bottom of the screen on phones.",
+      "category": "navigation",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks"
+      ]
     },
     {
       "name": "popover",
@@ -348,6 +390,21 @@
       "category": "forms",
       "status": "beta",
       "dependencies": [
+        "@advui/theme"
+      ],
+      "registryDependencies": [
+        "hooks"
+      ]
+    },
+    {
+      "name": "snackbar",
+      "title": "Snackbar",
+      "type": "registry:component",
+      "description": "A brief message at the bottom of the screen about something the app did, with an optional action like Undo.",
+      "category": "feedback",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons",
         "@advui/theme"
       ],
       "registryDependencies": [

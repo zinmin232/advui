@@ -89,5 +89,5 @@ export default defineMeta({
     ios: 'For app-level navigation prefer a native tab bar (expo-router Tabs).',
     android: 'Same as iOS.',
   },
-  related: ['bottom-navigation', 'toggle-group'],
+  related: ['navigation-bar', 'toggle-group'],
 })

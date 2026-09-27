@@ -9,6 +9,22 @@ one version.
 
 ### Added
 
+- **Floating Action Button** (beta, `Fab`): a screen's primary action. It has
+  `soft` (Material's primary container), `primary`, `secondary` and `surface`
+  variants, 40/56/96 sizes, an extended FAB with `label`, and `placement` to
+  pin it to a corner.
+- **Snackbar** (beta): a brief bottom message with one optional action such
+  as Undo. It uses a persistent polite live region (announced on iOS with
+  `AccessibilityInfo`), and its timer pauses on hover and focus and runs
+  longer when there is an action. `duration={null}` keeps it open with a
+  close button.
+- **Chip** (beta): filter chips (toggle buttons with a check), input chips
+  with a named remove button, and action chips.
+- **Navigation Bar** (beta): 3–5 bottom destinations with Material's pill
+  indicator and badges ("Inbox, 3 new"). It is a `nav` with `aria-current` on
+  web and a tab bar with a selected state on iOS and Android.
+- Theme: an `inversePrimary` role for primary-colored text on inverse
+  surfaces, contrast-checked in every preset and in Material themes.
 - **Material 3 theme** (`@advui/theme/material`): `material({ seed })` gives
   every component Google's Material 3 look with no component changes. It
   generates color roles from one seed color with Google's
@@ -61,6 +77,9 @@ one version.
 
 ### Fixed
 
+- Avatar on iOS and Android: every size rendered at 40pt, because Tamagui's
+  Avatar reads its own `size` prop as a size token. Sizes are now passed as
+  tokens (xs 24 → xl 64).
 - Button, Badge, Tabs: children made of several text pieces (for example
   `Status ({count})`) crashed on iOS and Android with "Text strings must be
   rendered within a \<Text\> component". They are now wrapped in `Text`.
