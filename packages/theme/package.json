@@ -17,6 +17,7 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
+    "./material": "./src/material.ts",
     "./package.json": "./package.json"
   },
   "files": [
@@ -33,6 +34,10 @@
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       },
+      "./material": {
+        "types": "./dist/material.d.ts",
+        "default": "./dist/material.js"
+      },
       "./package.json": "./package.json"
     }
   },
@@ -45,11 +50,12 @@
     "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\""
   },
   "dependencies": {
+    "@advui/utils": "workspace:*",
+    "@material/material-color-utilities": "0.3.0",
     "@tamagui/animations-css": "2.7.7",
     "@tamagui/animations-react-native": "2.7.7",
     "@tamagui/colors": "2.7.7",
-    "@tamagui/web": "2.7.7",
-    "@advui/utils": "workspace:*"
+    "@tamagui/web": "2.7.7"
   },
   "peerDependencies": {
     "react": ">=19",
@@ -57,9 +63,9 @@
     "tamagui": "^2.7.7"
   },
   "devDependencies": {
-    "@types/react": "~19.2.2",
     "@advui/eslint-config": "workspace:*",
     "@advui/tsconfig": "workspace:*",
+    "@types/react": "~19.2.2",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.3",

@@ -82,7 +82,13 @@ function PopoverRoot({
               transition={reducedMotion ? undefined : 'quick'}
             />
             <Sheet.Handle backgroundColor="$borderStrong" />
-            <Sheet.Frame backgroundColor="$popover" padding="$5" paddingBottom="$8">
+            <Sheet.Frame
+              backgroundColor="$popover"
+              borderTopLeftRadius="$dialog"
+              borderTopRightRadius="$dialog"
+              padding="$5"
+              paddingBottom="$8"
+            >
               {/* Not on Sheet.Frame: Tamagui copies its props onto a decorative cover view. */}
               <View role="dialog" aria-labelledby={titleId} gap="$3">
                 <Adapt.Contents />

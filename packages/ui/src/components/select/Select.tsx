@@ -284,7 +284,13 @@ function SelectRoot({
             transition={reducedMotion ? undefined : 'quick'}
           />
           <Sheet.Handle backgroundColor="$borderStrong" />
-          <Sheet.Frame backgroundColor="$popover" padding="$2" paddingBottom="$6">
+          <Sheet.Frame
+            backgroundColor="$popover"
+            borderTopLeftRadius="$dialog"
+            borderTopRightRadius="$dialog"
+            padding="$2"
+            paddingBottom="$6"
+          >
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>

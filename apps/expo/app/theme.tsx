@@ -6,6 +6,7 @@ import {
   themePresetNames,
   themePresets,
 } from '@advui/theme'
+import { MATERIAL_BASELINE_SEED, createMaterialThemes } from '@advui/theme/material'
 import { Stack } from 'expo-router'
 import { useState } from 'react'
 import { ScrollView } from 'react-native'
@@ -17,10 +18,11 @@ import { View } from 'tamagui'
  */
 export default function ThemeScreen() {
   const { colorMode, setColorMode, resolvedColorMode } = useColorMode()
-  const [preset, setPreset] = useState<ThemePresetName>('indigo')
+  const [preset, setPreset] = useState<ThemePresetName | 'material'>('indigo')
 
-  const applyPreset = (name: ThemePresetName) => {
-    const themes = createThemeColors(themePresets[name].colors)
+  const applyPreset = (name: ThemePresetName | 'material') => {
+    const themes =
+      name === 'material' ? createMaterialThemes() : createThemeColors(themePresets[name].colors)
     updateTheme({ name: 'light', theme: themes.light })
     updateTheme({ name: 'dark', theme: themes.dark })
     setPreset(name)
@@ -77,7 +79,32 @@ export default function ThemeScreen() {
                 {themePresets[name].label}
               </Button>
             ))}
+            <Button
+              size="sm"
+              variant="outline"
+              role="radio"
+              aria-checked={preset === 'material'}
+              borderColor={preset === 'material' ? '$ring' : '$input'}
+              borderWidth={preset === 'material' ? 2 : 1}
+              onPress={() => applyPreset('material')}
+              icon={
+                <View
+                  width="$3.5"
+                  height="$3.5"
+                  borderRadius="$full"
+                  backgroundColor={MATERIAL_BASELINE_SEED as never}
+                />
+              }
+            >
+              Material 3
+            </Button>
           </HStack>
+          {preset === 'material' ? (
+            <Text size="sm" tone="muted">
+              Colors switch live. Material’s shapes (pill buttons, 28px dialogs) come from
+              material() in your config, as tokens cannot change at runtime on native.
+            </Text>
+          ) : null}
         </VStack>
         <Card>
           <Card.Header>

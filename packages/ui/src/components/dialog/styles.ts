@@ -14,7 +14,7 @@ export const contentStyle = {
   backgroundColor: '$popover',
   borderColor: '$border',
   borderWidth: 1,
-  borderRadius: '$xl',
+  borderRadius: '$dialog',
   padding: '$6',
   gap: '$4',
   width: '92%',

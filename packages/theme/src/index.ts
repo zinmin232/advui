@@ -33,5 +33,8 @@ export {
   size,
   space,
   zIndex,
+  type RadiusInput,
+  type RadiusOverrides,
   type RadiusScale,
+  type RadiusToken,
 } from './tokens'

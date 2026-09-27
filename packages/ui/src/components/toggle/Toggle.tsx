@@ -19,7 +19,7 @@ export const ToggleFrame = styled(View, {
   gap: '$2',
   borderWidth: 1,
   borderColor: 'transparent',
-  borderRadius: '$md',
+  borderRadius: '$button',
   backgroundColor: 'transparent',
   cursor: 'pointer',
   userSelect: 'none',

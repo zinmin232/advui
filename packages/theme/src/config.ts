@@ -4,19 +4,27 @@ import { type FontFamilies, type FontScale, createUniversalFonts } from './fonts
 import { media, mediaQueryDefaultActive } from './media'
 import { type ThemePresetName, themePresets } from './presets'
 import { shorthands } from './shorthands'
-import { type ThemeColorsInput, createThemeColors } from './themes'
-import { type RadiusScale, createUniversalTokens } from './tokens'
+import { type GeneratedThemes, type ThemeColorsInput, createThemeColors } from './themes'
+import { type RadiusInput, createUniversalTokens } from './tokens'
 
 export interface UniversalConfigOptions {
   /** Starting color preset. Individual `colors` win over the preset. Default: `indigo`. */
   preset?: ThemePresetName
   /** Brand and intent colors — scale names (`'violet'`) or any color string (`'#6366f1'`). */
   colors?: ThemeColorsInput
-  /** Corner roundness for every component. Default: `md` (8px base). */
-  radius?: RadiusScale | number
+  /**
+   * Corner roundness for every component: a scale name or base in px (default
+   * `md`, 8px), or exact values per token, e.g. `{ button: 9999 }`.
+   */
+  radius?: RadiusInput
   /** Global type scale. Default: `default`. */
   fontScale?: FontScale | number
   fonts?: FontFamilies
+  /**
+   * Complete light and dark themes, e.g. from `material()` in
+   * `@advui/theme/material`. Replaces `preset` and `colors`.
+   */
+  themes?: GeneratedThemes
 }
 
 /**
@@ -28,7 +36,7 @@ export interface UniversalConfigOptions {
  */
 export function createUniversalConfig(options: UniversalConfigOptions = {}) {
   const { preset = 'indigo', colors, radius = 'md', fontScale = 'default', fonts } = options
-  const themes = createThemeColors({ ...themePresets[preset].colors, ...colors })
+  const themes = options.themes ?? createThemeColors({ ...themePresets[preset].colors, ...colors })
 
   return createTamagui({
     tokens: createUniversalTokens({ radius }),
