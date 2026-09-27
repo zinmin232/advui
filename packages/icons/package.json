@@ -1,6 +1,6 @@
 {
   "name": "@advui/icons",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Swappable icon abstraction for Adv UI with a tree-shakable default set (Lucide paths).",
   "license": "MIT",
   "repository": {
