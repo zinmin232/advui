@@ -85,4 +85,26 @@ describe('ButtonGroup', () => {
       getComputedStyle(own).backgroundColor,
     )
   })
+
+  it('makes an icon button match the buttons it is joined to (split button)', () => {
+    const { unmount } = renderWithProvider(
+      <ButtonGroup aria-label="Merge">
+        <Button>Merge</Button>
+        <IconButton aria-label="More merge options" icon={<PlusIcon />} />
+      </ButtonGroup>,
+    )
+    const fill = (name: string) =>
+      getComputedStyle(screen.getByRole('button', { name })).backgroundColor
+    expect(fill('More merge options')).toBe(fill('Merge'))
+    unmount()
+
+    // Spaced apart, it keeps its own ghost look.
+    renderWithProvider(
+      <ButtonGroup aria-label="Tools" attached={false}>
+        <Button>Save</Button>
+        <IconButton aria-label="Settings" icon={<PlusIcon />} />
+      </ButtonGroup>,
+    )
+    expect(fill('Settings')).not.toBe(fill('Save'))
+  })
 })
