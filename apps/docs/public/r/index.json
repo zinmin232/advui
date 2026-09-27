@@ -1,6 +1,6 @@
 {
   "name": "advui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "items": [
     {
       "name": "hooks",
@@ -78,6 +78,16 @@
       ]
     },
     {
+      "name": "aspect-ratio",
+      "title": "Aspect Ratio",
+      "type": "registry:component",
+      "description": "Keeps content at a fixed width-to-height ratio as the width changes, for images, video and maps.",
+      "category": "layout",
+      "status": "beta",
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
       "name": "avatar",
       "title": "Avatar",
       "type": "registry:component",
@@ -112,6 +122,18 @@
         "@advui/icons"
       ],
       "registryDependencies": []
+    },
+    {
+      "name": "button-group",
+      "title": "Button Group",
+      "type": "registry:component",
+      "description": "Groups related buttons, joined into one control or spaced apart, such as a split button or a set of actions.",
+      "category": "buttons",
+      "status": "beta",
+      "dependencies": [],
+      "registryDependencies": [
+        "button"
+      ]
     },
     {
       "name": "button",
@@ -169,6 +191,32 @@
       "registryDependencies": [
         "hooks",
         "utils"
+      ]
+    },
+    {
+      "name": "circular-progress",
+      "title": "Circular Progress",
+      "type": "registry:component",
+      "description": "A ring that fills as a task completes, for tight spaces and dashboards. Without a value it spins.",
+      "category": "feedback",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks"
+      ]
+    },
+    {
+      "name": "collapsible",
+      "title": "Collapsible",
+      "type": "registry:component",
+      "description": "Shows and hides a section with one trigger, such as \"Show 3 more\" or \"Advanced options\".",
+      "category": "data-display",
+      "status": "beta",
+      "dependencies": [],
+      "registryDependencies": [
+        "hooks"
       ]
     },
     {
@@ -333,6 +381,16 @@
       "registryDependencies": [
         "hooks"
       ]
+    },
+    {
+      "name": "scroll-area",
+      "title": "Scroll Area",
+      "type": "registry:component",
+      "description": "A box that scrolls its content within a set height or width, with thin scrollbars in the theme colors.",
+      "category": "layout",
+      "status": "beta",
+      "dependencies": [],
+      "registryDependencies": []
     },
     {
       "name": "select",

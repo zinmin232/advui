@@ -1,6 +1,7 @@
-import { type ReactElement, forwardRef } from 'react'
+import { type ReactElement, forwardRef, useContext } from 'react'
 import type { TamaguiElement } from 'tamagui'
 import { Button, type ButtonProps } from '../button/Button'
+import { ButtonGroupContext } from '../button/groupContext'
 
 const squareSizes = {
   sm: '$8',
@@ -26,9 +27,13 @@ export interface IconButtonProps extends Omit<
  * announced by screen readers.
  */
 export const IconButton = forwardRef<TamaguiElement, IconButtonProps>(function IconButton(
-  { icon, size = 'md', circular, variant = 'ghost', ...props },
+  { icon, size: sizeProp, circular, variant: variantProp, ...props },
   ref,
 ) {
+  // Inside a ButtonGroup, take its size and variant unless set here.
+  const group = useContext(ButtonGroupContext)
+  const size = sizeProp ?? group?.size ?? 'md'
+  const variant = variantProp ?? group?.variant ?? 'ghost'
   return (
     <Button
       ref={ref}
@@ -36,7 +41,7 @@ export const IconButton = forwardRef<TamaguiElement, IconButtonProps>(function I
       size="icon"
       width={squareSizes[size]}
       height={squareSizes[size]}
-      borderRadius={circular ? '$full' : undefined}
+      {...(circular && { borderRadius: '$full' })}
       icon={icon}
       {...props}
     />

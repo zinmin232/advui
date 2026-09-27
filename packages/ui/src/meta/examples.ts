@@ -5,6 +5,8 @@ import AccordionCard from '../components/accordion/examples/card'
 import AlertVariants from '../components/alert/examples/variants'
 import AlertDialogBasic from '../components/alert-dialog/examples/basic'
 import AlertDialogAsync from '../components/alert-dialog/examples/async'
+import AspectRatioBasic from '../components/aspect-ratio/examples/basic'
+import AspectRatioRatios from '../components/aspect-ratio/examples/ratios'
 import AvatarBasic from '../components/avatar/examples/basic'
 import AvatarSizes from '../components/avatar/examples/sizes'
 import AvatarGroup from '../components/avatar/examples/group'
@@ -19,6 +21,9 @@ import ButtonWithIcon from '../components/button/examples/with-icon'
 import ButtonLoading from '../components/button/examples/loading'
 import ButtonDisabled from '../components/button/examples/disabled'
 import ButtonFullWidth from '../components/button/examples/full-width'
+import ButtonGroupBasic from '../components/button-group/examples/basic'
+import ButtonGroupSplit from '../components/button-group/examples/split'
+import ButtonGroupOrientation from '../components/button-group/examples/orientation'
 import CardBasic from '../components/card/examples/basic'
 import CardVariants from '../components/card/examples/variants'
 import CardInteractive from '../components/card/examples/interactive'
@@ -26,6 +31,10 @@ import CheckboxBasic from '../components/checkbox/examples/basic'
 import CheckboxIndeterminate from '../components/checkbox/examples/indeterminate'
 import ChipFilter from '../components/chip/examples/filter'
 import ChipInput from '../components/chip/examples/input'
+import CircularProgressBasic from '../components/circular-progress/examples/basic'
+import CircularProgressSizes from '../components/circular-progress/examples/sizes'
+import CollapsibleBasic from '../components/collapsible/examples/basic'
+import CollapsibleSettings from '../components/collapsible/examples/settings'
 import ContainerContainer from '../components/layout/examples/container'
 import DialogBasic from '../components/dialog/examples/basic'
 import DialogConfirm from '../components/dialog/examples/confirm'
@@ -46,6 +55,8 @@ import PopoverBasic from '../components/popover/examples/basic'
 import PopoverFilter from '../components/popover/examples/filter'
 import ProgressBasic from '../components/progress/examples/basic'
 import RadioGroupBasic from '../components/radio-group/examples/basic'
+import ScrollAreaBasic from '../components/scroll-area/examples/basic'
+import ScrollAreaHorizontal from '../components/scroll-area/examples/horizontal'
 import SelectBasic from '../components/select/examples/basic'
 import SelectGroups from '../components/select/examples/groups'
 import SeparatorBasic from '../components/separator/examples/basic'
@@ -85,6 +96,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': AlertDialogBasic,
     'async': AlertDialogAsync,
   },
+  'aspect-ratio': {
+    'basic': AspectRatioBasic,
+    'ratios': AspectRatioRatios,
+  },
   'avatar': {
     'basic': AvatarBasic,
     'sizes': AvatarSizes,
@@ -107,6 +122,11 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'disabled': ButtonDisabled,
     'full-width': ButtonFullWidth,
   },
+  'button-group': {
+    'basic': ButtonGroupBasic,
+    'split': ButtonGroupSplit,
+    'orientation': ButtonGroupOrientation,
+  },
   'card': {
     'basic': CardBasic,
     'variants': CardVariants,
@@ -119,6 +139,14 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'chip': {
     'filter': ChipFilter,
     'input': ChipInput,
+  },
+  'circular-progress': {
+    'basic': CircularProgressBasic,
+    'sizes': CircularProgressSizes,
+  },
+  'collapsible': {
+    'basic': CollapsibleBasic,
+    'settings': CollapsibleSettings,
   },
   'container': {
     'container': ContainerContainer,
@@ -163,6 +191,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'radio-group': {
     'basic': RadioGroupBasic,
+  },
+  'scroll-area': {
+    'basic': ScrollAreaBasic,
+    'horizontal': ScrollAreaHorizontal,
   },
   'select': {
     'basic': SelectBasic,

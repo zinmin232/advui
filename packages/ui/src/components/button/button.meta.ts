@@ -9,7 +9,11 @@ export default defineMeta({
   since: '0.1.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Button', 'ButtonText', 'ButtonFrame', 'ButtonContext'],
-  files: ['components/button/Button.tsx', 'components/button/index.ts'],
+  files: [
+    'components/button/Button.tsx',
+    'components/button/groupContext.ts',
+    'components/button/index.ts',
+  ],
   keywords: ['action', 'submit', 'cta', 'click', 'press'],
   usage: `import { Button } from '@advui/core'
 

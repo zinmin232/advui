@@ -7,6 +7,24 @@ one version.
 
 ## [Unreleased]
 
+### Added
+
+- **Button Group** (beta): groups Buttons and IconButtons as a labelled
+  `group`, joined into one control (square inner corners, shared borders) or
+  spaced apart with `attached={false}`, in a row or a column. Buttons take the
+  group's `variant` and `size` unless they set their own.
+- **Collapsible** (beta): one trigger that shows and hides a section, with
+  `aria-expanded` and `aria-controls` on the trigger. Closed content stays
+  mounted, so text typed inside survives closing.
+- **Circular Progress** (beta): a progress ring for tight spaces, with
+  `progressbar` semantics, an optional percentage in the middle, four tones,
+  and a spinning indeterminate state (slower with reduced motion).
+- **Aspect Ratio** (beta): keeps images, video or maps at a fixed ratio as the
+  width changes.
+- **Scroll Area** (beta): a box that scrolls within a set size, with thin
+  scrollbars in theme colors on web. It takes keyboard focus, and becomes a
+  named region with `aria-label`.
+
 ## [0.2.0] - 2026-09-27
 
 ### Added

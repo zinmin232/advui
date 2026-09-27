@@ -1,0 +1,63 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "circular-progress",
+  "title": "Circular Progress",
+  "type": "registry:component",
+  "description": "A ring that fills as a task completes, for tight spaces and dashboards. Without a value it spins.",
+  "category": "feedback",
+  "status": "beta",
+  "since": "0.3.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/circular-progress/CircularProgress.tsx",
+      "type": "registry:ui",
+      "content": "import { useIconColor } from '@advui/icons'\nimport { Text, View, type ViewProps } from 'tamagui'\nimport {\n  type CircularProgressSize,\n  type CircularProgressTone,\n  progressFraction,\n  ring,\n  toneColor,\n  valueFontSize,\n} from './geometry'\n\nexport interface CircularProgressProps extends Omit<ViewProps, 'children'> {\n  /** Current value. Omit (or `null`) for a spinning, indeterminate ring. */\n  value?: number | null\n  max?: number\n  /** `sm` 24px · `md` 40px · `lg` 64px. */\n  size?: CircularProgressSize\n  tone?: CircularProgressTone\n  /** Accessible name, e.g. \"Storage used\". */\n  label?: string\n  /** Show the percentage in the middle (`md` and `lg`). */\n  showValue?: boolean\n}\n\n/**\n * A ring that fills as a task completes, for tight spaces and dashboards.\n * Web: an SVG circle; the indeterminate ring spins with the spinner keyframes\n * in GlobalStyles.\n */\nexport function CircularProgress({\n  value = null,\n  max = 100,\n  size = 'md',\n  tone = 'primary',\n  label,\n  showValue = false,\n  ...props\n}: CircularProgressProps) {\n  const { clamped, fraction } = progressFraction(value, max)\n  const geometry = ring(size, fraction)\n  const indicator = useIconColor(toneColor[tone])\n  const track = useIconColor('$muted')\n  const fontSize = valueFontSize[size]\n\n  return (\n    <View\n      role=\"progressbar\"\n      aria-label={label}\n      aria-valuemin={0}\n      aria-valuemax={max}\n      aria-valuenow={clamped ?? undefined}\n      aria-busy={fraction === null || undefined}\n      width={geometry.diameter}\n      height={geometry.diameter}\n      alignItems=\"center\"\n      justifyContent=\"center\"\n      {...props}\n    >\n      <svg\n        className={fraction === null ? 'aui-spinner' : undefined}\n        width={geometry.diameter}\n        height={geometry.diameter}\n        viewBox={`0 0 ${geometry.diameter} ${geometry.diameter}`}\n        fill=\"none\"\n        aria-hidden\n        // Start the ring at 12 o'clock.\n        style={{ display: 'block', transform: fraction === null ? undefined : 'rotate(-90deg)' }}\n      >\n        <circle\n          cx={geometry.center}\n          cy={geometry.center}\n          r={geometry.radius}\n          stroke={track}\n          strokeWidth={geometry.stroke}\n        />\n        {geometry.visible ? (\n          <circle\n            cx={geometry.center}\n            cy={geometry.center}\n            r={geometry.radius}\n            stroke={indicator}\n            strokeWidth={geometry.stroke}\n            strokeLinecap=\"round\"\n            strokeDasharray={geometry.circumference}\n            strokeDashoffset={geometry.offset}\n            style={{ transition: 'stroke-dashoffset 300ms ease-out' }}\n          />\n        ) : null}\n      </svg>\n      {showValue && fontSize && fraction !== null ? (\n        <Text\n          aria-hidden\n          position=\"absolute\"\n          fontFamily=\"$body\"\n          fontSize={fontSize}\n          lineHeight={fontSize}\n          fontWeight=\"600\"\n          color=\"$foreground\"\n        >\n          {Math.round(fraction * 100)}%\n        </Text>\n      ) : null}\n    </View>\n  )\n}\n"
+    },
+    {
+      "path": "components/circular-progress/CircularProgress.native.tsx",
+      "type": "registry:ui",
+      "content": "import { useIconColor } from '@advui/icons'\nimport { useEffect, useRef } from 'react'\nimport { Animated, Easing } from 'react-native'\nimport Svg, { Circle } from 'react-native-svg'\nimport { Text, View } from 'tamagui'\nimport { useReducedMotion } from '../../hooks/useReducedMotion'\nimport type { CircularProgressProps } from './CircularProgress'\nimport { progressFraction, ring, toneColor, valueFontSize } from './geometry'\n\n// One turn, like the web spinner keyframes; slower when motion is reduced, as\n// a loading indicator still has to show it is busy.\nconst TURN_MS = 800\nconst REDUCED_TURN_MS = 1600\n\n/** Native: react-native-svg, with an Animated rotation for the indeterminate ring. */\nexport function CircularProgress({\n  value = null,\n  max = 100,\n  size = 'md',\n  tone = 'primary',\n  label,\n  showValue = false,\n  ...props\n}: CircularProgressProps) {\n  const { clamped, fraction } = progressFraction(value, max)\n  const geometry = ring(size, fraction)\n  const indicator = useIconColor(toneColor[tone])\n  const track = useIconColor('$muted')\n  const fontSize = valueFontSize[size]\n  const reducedMotion = useReducedMotion()\n  const spin = useRef(new Animated.Value(0)).current\n  const spinning = fraction === null\n\n  useEffect(() => {\n    if (!spinning) return\n    const loop = Animated.loop(\n      Animated.timing(spin, {\n        toValue: 1,\n        duration: reducedMotion ? REDUCED_TURN_MS : TURN_MS,\n        easing: Easing.linear,\n        useNativeDriver: true,\n      }),\n    )\n    loop.start()\n    return () => {\n      loop.stop()\n      spin.setValue(0)\n    }\n  }, [spin, spinning, reducedMotion])\n\n  const rotate = spinning\n    ? spin.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] })\n    : // Start the ring at 12 o'clock.\n      '-90deg'\n\n  return (\n    <View\n      accessible\n      role=\"progressbar\"\n      aria-label={label}\n      aria-valuemin={0}\n      aria-valuemax={max}\n      aria-valuenow={clamped ?? undefined}\n      aria-busy={spinning || undefined}\n      width={geometry.diameter}\n      height={geometry.diameter}\n      alignItems=\"center\"\n      justifyContent=\"center\"\n      {...props}\n    >\n      <Animated.View style={{ transform: [{ rotate }] }}>\n        <Svg\n          width={geometry.diameter}\n          height={geometry.diameter}\n          viewBox={`0 0 ${geometry.diameter} ${geometry.diameter}`}\n          fill=\"none\"\n          importantForAccessibility=\"no-hide-descendants\"\n        >\n          <Circle\n            cx={geometry.center}\n            cy={geometry.center}\n            r={geometry.radius}\n            stroke={track}\n            strokeWidth={geometry.stroke}\n          />\n          {geometry.visible ? (\n            <Circle\n              cx={geometry.center}\n              cy={geometry.center}\n              r={geometry.radius}\n              stroke={indicator}\n              strokeWidth={geometry.stroke}\n              strokeLinecap=\"round\"\n              strokeDasharray={geometry.circumference}\n              strokeDashoffset={geometry.offset}\n            />\n          ) : null}\n        </Svg>\n      </Animated.View>\n      {showValue && fontSize && fraction !== null ? (\n        <Text\n          aria-hidden\n          position=\"absolute\"\n          fontFamily=\"$body\"\n          fontSize={fontSize}\n          lineHeight={fontSize}\n          fontWeight=\"600\"\n          color=\"$foreground\"\n        >\n          {Math.round(fraction * 100)}%\n        </Text>\n      ) : null}\n    </View>\n  )\n}\n\nexport type { CircularProgressProps }\n"
+    },
+    {
+      "path": "components/circular-progress/geometry.ts",
+      "type": "registry:ui",
+      "content": "/** Diameter and stroke in px per size, shared by the web and native renderers. */\nexport const circularSizes = {\n  sm: { diameter: 24, stroke: 3 },\n  md: { diameter: 40, stroke: 4 },\n  lg: { diameter: 64, stroke: 6 },\n} as const\n\nexport type CircularProgressSize = keyof typeof circularSizes\nexport type CircularProgressTone = 'primary' | 'success' | 'warning' | 'error'\n\nexport const toneColor = {\n  primary: '$primary',\n  success: '$success',\n  warning: '$warning',\n  error: '$error',\n} as const satisfies Record<CircularProgressTone, `$${string}`>\n\n// The percentage label is only legible from `md` up.\nexport const valueFontSize = { sm: null, md: '$1', lg: '$3' } as const\n\n/** The share of the ring an indeterminate indicator covers while it spins. */\nconst INDETERMINATE_FRACTION = 0.25\n\n/**\n * Circle geometry for a ring of `size`: its radius, circumference and the\n * dash offset that shows `fraction` (0–1) of it, or a spinning quarter when\n * `fraction` is null.\n */\nexport function ring(size: CircularProgressSize, fraction: number | null) {\n  const { diameter, stroke } = circularSizes[size]\n  const radius = (diameter - stroke) / 2\n  const circumference = 2 * Math.PI * radius\n  const shown = fraction ?? INDETERMINATE_FRACTION\n  return {\n    diameter,\n    stroke,\n    center: diameter / 2,\n    radius,\n    circumference,\n    offset: circumference * (1 - shown),\n    visible: shown > 0,\n  }\n}\n\n/** The value clamped to 0…max, as a fraction, or null when indeterminate. */\nexport function progressFraction(value: number | null, max: number) {\n  if (value === null) return { clamped: null, fraction: null }\n  const clamped = Math.min(max, Math.max(0, value))\n  return { clamped, fraction: max > 0 ? clamped / max : 0 }\n}\n"
+    },
+    {
+      "path": "components/circular-progress/index.ts",
+      "type": "registry:ui",
+      "content": "export { CircularProgress, type CircularProgressProps } from './CircularProgress'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Storage used",
+      "code": "import { CircularProgress, HStack, Text, VStack } from '@advui/core'\n\nconst storage = [\n  { name: 'Photos', used: 82, tone: 'warning' },\n  { name: 'Documents', used: 45, tone: 'primary' },\n  { name: 'Backups', used: 100, tone: 'success' },\n] as const\n\nexport default function CircularProgressBasic() {\n  return (\n    <HStack gap=\"$6\" flexWrap=\"wrap\" justifyContent=\"center\">\n      {storage.map((item) => (\n        <VStack key={item.name} gap=\"$2\" alignItems=\"center\">\n          <CircularProgress\n            size=\"lg\"\n            value={item.used}\n            tone={item.tone}\n            label={`${item.name} storage used`}\n            showValue\n          />\n          <Text size=\"sm\" tone=\"muted\">\n            {item.name}\n          </Text>\n        </VStack>\n      ))}\n    </HStack>\n  )\n}\n"
+    },
+    {
+      "name": "sizes",
+      "title": "Sizes and indeterminate",
+      "code": "import { CircularProgress, HStack, Text, VStack } from '@advui/core'\n\nexport default function CircularProgressSizes() {\n  return (\n    <VStack gap=\"$4\" alignItems=\"center\">\n      <HStack gap=\"$5\" alignItems=\"center\">\n        <CircularProgress size=\"sm\" value={30} label=\"Small\" />\n        <CircularProgress size=\"md\" value={60} label=\"Medium\" showValue />\n        <CircularProgress size=\"lg\" value={90} label=\"Large\" showValue />\n      </HStack>\n      {/* Without a value the ring spins: use it when the length is unknown. */}\n      <HStack gap=\"$3\" alignItems=\"center\">\n        <CircularProgress size=\"sm\" label=\"Syncing\" />\n        <Text size=\"sm\" tone=\"muted\">\n          Syncing…\n        </Text>\n      </HStack>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/circular-progress",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "react-native",
+    "react-native-svg",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "hooks"
+  ],
+  "version": "0.2.0"
+}

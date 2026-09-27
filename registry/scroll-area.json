@@ -1,0 +1,52 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "scroll-area",
+  "title": "Scroll Area",
+  "type": "registry:component",
+  "description": "A box that scrolls its content within a set height or width, with thin scrollbars in the theme colors.",
+  "category": "layout",
+  "status": "beta",
+  "since": "0.3.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/scroll-area/ScrollArea.tsx",
+      "type": "registry:ui",
+      "content": "import { type ReactNode, forwardRef } from 'react'\nimport { type GetProps, type TamaguiElement, View, styled } from 'tamagui'\n\nexport type ScrollAreaOrientation = 'vertical' | 'horizontal'\n\nconst ScrollAreaFrame = styled(View, {\n  name: 'ScrollArea',\n  // Keyboard users scroll it with the arrow keys once it has focus.\n  tabIndex: 0,\n  focusVisibleStyle: {\n    outlineColor: '$ring',\n    outlineStyle: 'solid',\n    outlineWidth: 2,\n    outlineOffset: 2,\n  },\n\n  variants: {\n    orientation: {\n      vertical: { overflowX: 'hidden', overflowY: 'auto' },\n      horizontal: { flexDirection: 'row', overflowX: 'auto', overflowY: 'hidden' },\n    },\n  } as const,\n\n  defaultVariants: { orientation: 'vertical' },\n})\n\nexport interface ScrollAreaProps extends Omit<\n  GetProps<typeof ScrollAreaFrame>,\n  'orientation' | 'children'\n> {\n  /** Which way it scrolls. Default: `vertical`. */\n  orientation?: ScrollAreaOrientation\n  /** Names the region, e.g. \"Release tags\". Recommended. */\n  'aria-label'?: string\n  /** Put the content in one child, such as a VStack (or an HStack when horizontal). */\n  children: ReactNode\n}\n\n/**\n * A box that scrolls its content within a set height or width, with thin\n * scrollbars in the theme's colors (web) or the platform's own (native).\n */\nexport const ScrollArea = forwardRef<TamaguiElement, ScrollAreaProps>(function ScrollArea(\n  { orientation = 'vertical', 'aria-label': label, ...props },\n  ref,\n) {\n  return (\n    <ScrollAreaFrame\n      ref={ref}\n      orientation={orientation}\n      // Scrollbar colors live in GlobalStyles (`.aui-scroll-area`).\n      className=\"aui-scroll-area\"\n      {...(label && { role: 'region', 'aria-label': label })}\n      {...props}\n    />\n  )\n})\n"
+    },
+    {
+      "path": "components/scroll-area/ScrollArea.native.tsx",
+      "type": "registry:ui",
+      "content": "import { forwardRef } from 'react'\nimport { ScrollView, type TamaguiElement } from 'tamagui'\nimport type { ScrollAreaProps } from './ScrollArea'\n\n/** Native: a React Native ScrollView with the platform's scroll indicators. */\nexport const ScrollArea = forwardRef<TamaguiElement, ScrollAreaProps>(function ScrollArea(\n  { orientation = 'vertical', 'aria-label': label, children, ...props },\n  ref,\n) {\n  const horizontal = orientation === 'horizontal'\n  return (\n    <ScrollView\n      ref={ref as never}\n      horizontal={horizontal}\n      showsHorizontalScrollIndicator={horizontal}\n      showsVerticalScrollIndicator={!horizontal}\n      aria-label={label}\n      {...(props as object)}\n    >\n      {children}\n    </ScrollView>\n  )\n})\n\nexport type { ScrollAreaOrientation, ScrollAreaProps } from './ScrollArea'\n"
+    },
+    {
+      "path": "components/scroll-area/index.ts",
+      "type": "registry:ui",
+      "content": "export { ScrollArea, type ScrollAreaOrientation, type ScrollAreaProps } from './ScrollArea'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Vertical list",
+      "code": "import { ScrollArea, Separator, Text, VStack } from '@advui/core'\nimport { Fragment } from 'react'\n\nconst tags = Array.from({ length: 30 }, (_, index) => `v1.${30 - index}.0`)\n\nexport default function ScrollAreaBasic() {\n  return (\n    <ScrollArea\n      aria-label=\"Release tags\"\n      height=\"$72\"\n      width=\"$48\"\n      borderWidth={1}\n      borderColor=\"$border\"\n      borderRadius=\"$md\"\n    >\n      <VStack padding=\"$4\" gap=\"$2\">\n        <Text size=\"sm\" weight=\"medium\">\n          Tags\n        </Text>\n        {tags.map((tag) => (\n          <Fragment key={tag}>\n            <Text size=\"sm\" fontFamily=\"$mono\">\n              {tag}\n            </Text>\n            <Separator />\n          </Fragment>\n        ))}\n      </VStack>\n    </ScrollArea>\n  )\n}\n"
+    },
+    {
+      "name": "horizontal",
+      "title": "Horizontal row",
+      "code": "import { AspectRatio, Center, HStack, ScrollArea, Text, VStack } from '@advui/core'\n\nconst albums = ['Nightfall', 'Tidal', 'Aurora', 'Monsoon', 'Ember', 'Cirrus', 'Harbor']\n\nexport default function ScrollAreaHorizontal() {\n  return (\n    <ScrollArea\n      orientation=\"horizontal\"\n      aria-label=\"New albums\"\n      width=\"100%\"\n      maxWidth=\"$96\"\n      borderWidth={1}\n      borderColor=\"$border\"\n      borderRadius=\"$md\"\n    >\n      <HStack gap=\"$4\" padding=\"$4\">\n        {albums.map((album) => (\n          <VStack key={album} width=\"$32\" gap=\"$2\">\n            <AspectRatio borderRadius=\"$md\" backgroundColor=\"$primarySoft\">\n              <Center flex={1}>\n                <Text size=\"lg\" weight=\"semibold\" color=\"$primarySoftForeground\">\n                  {album[0]}\n                </Text>\n              </Center>\n            </AspectRatio>\n            <Text size=\"sm\">{album}</Text>\n          </VStack>\n        ))}\n      </HStack>\n    </ScrollArea>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/scroll-area",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.2.0"
+}

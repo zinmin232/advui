@@ -111,5 +111,5 @@ export default defineMeta({
     android:
       'TalkBack reads each item as a radio button or toggle button. With `androidRipple` (on in `material()`), presses show the native ripple.',
   },
-  related: ['toggle', 'radio-group', 'tabs'],
+  related: ['toggle', 'button-group', 'radio-group'],
 })

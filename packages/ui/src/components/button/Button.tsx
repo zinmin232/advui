@@ -1,5 +1,5 @@
 import { IconDefaults } from '@advui/icons'
-import { type ReactNode, forwardRef } from 'react'
+import { type ReactNode, forwardRef, useContext } from 'react'
 import {
   type GetProps,
   type TamaguiElement,
@@ -11,6 +11,7 @@ import {
   withStaticProperties,
 } from 'tamagui'
 import { useRipple } from '../../hooks/useRipple'
+import { ButtonGroupContext, ButtonGroupItemContext, attachedStyle } from './groupContext'
 import { Spinner } from '../spinner'
 import { isTextContent } from '../../utils/isTextContent'
 
@@ -174,8 +175,8 @@ const nativeHitSlop: Record<ButtonSize, number> = { sm: 6, md: 2, lg: 0, icon: 2
 
 const ButtonImpl = forwardRef<TamaguiElement, ButtonProps>(function Button(
   {
-    variant = 'default',
-    size = 'md',
+    variant: variantProp,
+    size: sizeProp,
     loading = false,
     disabled = false,
     icon,
@@ -187,6 +188,10 @@ const ButtonImpl = forwardRef<TamaguiElement, ButtonProps>(function Button(
   },
   ref,
 ) {
+  const group = useContext(ButtonGroupContext)
+  const position = useContext(ButtonGroupItemContext)
+  const variant = variantProp ?? group?.variant ?? 'default'
+  const size = sizeProp ?? group?.size ?? 'md'
   const inactive = disabled || loading
   const foreground = buttonForeground[variant]
   // Material gives text links no ripple, so links keep their own press style.
@@ -208,6 +213,7 @@ const ButtonImpl = forwardRef<TamaguiElement, ButtonProps>(function Button(
       aria-busy={loading || undefined}
       hitSlop={isWeb ? undefined : nativeHitSlop[size]}
       {...(isWeb ? { type: 'button' } : null)}
+      {...(group?.attached && position && attachedStyle(position, group.orientation, variant))}
       {...(ripple.active && {
         pressStyle: { backgroundColor: buttonBackground[variant] },
         // The ripple is clipped inside the border: drop the transparent one

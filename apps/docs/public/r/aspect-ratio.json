@@ -1,0 +1,47 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "aspect-ratio",
+  "title": "Aspect Ratio",
+  "type": "registry:component",
+  "description": "Keeps content at a fixed width-to-height ratio as the width changes, for images, video and maps.",
+  "category": "layout",
+  "status": "beta",
+  "since": "0.3.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/aspect-ratio/AspectRatio.tsx",
+      "type": "registry:ui",
+      "content": "import { forwardRef } from 'react'\nimport { type GetProps, type TamaguiElement, View, styled } from 'tamagui'\n\nconst AspectRatioFrame = styled(View, {\n  name: 'AspectRatio',\n  position: 'relative',\n  width: '100%',\n  overflow: 'hidden',\n})\n\nexport interface AspectRatioProps extends Omit<GetProps<typeof AspectRatioFrame>, 'aspectRatio'> {\n  /** Width divided by height, e.g. `16 / 9`. Default: 1 (a square). */\n  ratio?: number\n}\n\n/**\n * Keeps its content at a fixed width-to-height ratio as the width changes,\n * for images, video and maps. Content should fill it (`width` and `height`\n * 100%, or absolute positioning).\n */\nexport const AspectRatio = forwardRef<TamaguiElement, AspectRatioProps>(function AspectRatio(\n  { ratio = 1, ...props },\n  ref,\n) {\n  return <AspectRatioFrame ref={ref} aspectRatio={ratio} {...props} />\n})\n"
+    },
+    {
+      "path": "components/aspect-ratio/index.ts",
+      "type": "registry:ui",
+      "content": "export { AspectRatio, type AspectRatioProps } from './AspectRatio'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Image",
+      "code": "import { AspectRatio, Text, VStack } from '@advui/core'\nimport { Image } from 'react-native'\n\nexport default function AspectRatioBasic() {\n  return (\n    <VStack gap=\"$2\" width=\"100%\" maxWidth=\"$96\">\n      <AspectRatio ratio={16 / 9} borderRadius=\"$lg\" backgroundColor=\"$muted\">\n        <Image\n          source={{\n            uri: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=900&q=70',\n          }}\n          style={{ width: '100%', height: '100%' }}\n          accessibilityLabel=\"A road winding through a green valley\"\n        />\n      </AspectRatio>\n      <Text size=\"sm\" tone=\"muted\">\n        The photo stays 16:9 at any width.\n      </Text>\n    </VStack>\n  )\n}\n"
+    },
+    {
+      "name": "ratios",
+      "title": "Common ratios",
+      "code": "import { AspectRatio, Center, HStack, Text } from '@advui/core'\n\nconst ratios = [\n  { label: '1:1', ratio: 1 },\n  { label: '4:3', ratio: 4 / 3 },\n  { label: '16:9', ratio: 16 / 9 },\n]\n\nexport default function AspectRatioRatios() {\n  return (\n    <HStack gap=\"$3\" flexWrap=\"wrap\" alignItems=\"flex-start\">\n      {ratios.map((item) => (\n        // Same width, so the height alone shows the ratio.\n        <AspectRatio\n          key={item.label}\n          ratio={item.ratio}\n          width=\"$32\"\n          borderRadius=\"$md\"\n          borderWidth={1}\n          borderColor=\"$border\"\n          backgroundColor=\"$muted\"\n        >\n          <Center flex={1}>\n            <Text size=\"sm\" weight=\"medium\">\n              {item.label}\n            </Text>\n          </Center>\n        </AspectRatio>\n      ))}\n    </HStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/aspect-ratio",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.2.0"
+}

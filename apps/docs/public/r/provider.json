@@ -18,7 +18,7 @@
     {
       "path": "provider/GlobalStyles.tsx",
       "type": "registry:ui",
-      "content": "// Web-only global rules. React 19 hoists `<style href precedence>` into <head>\n// (including during SSR), so no framework-specific wiring is needed.\nconst css = `\na.is_Button { text-decoration: none; }\n@keyframes aui-spin { to { transform: rotate(360deg); } }\n.aui-spinner { animation: aui-spin 0.8s linear infinite; }\n@keyframes aui-pulse { 50% { opacity: 0.5; } }\n.aui-skeleton { animation: aui-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after {\n    animation-duration: 0.01ms !important;\n    animation-iteration-count: 1 !important;\n    transition-duration: 0.01ms !important;\n    scroll-behavior: auto !important;\n  }\n  /* Loading indicators convey state, so keep them moving — just slower. */\n  .aui-spinner {\n    animation-duration: 1.6s !important;\n    animation-iteration-count: infinite !important;\n  }\n}\n`\n\nexport function GlobalStyles() {\n  return (\n    <style href=\"advui-global\" precedence=\"default\">\n      {css}\n    </style>\n  )\n}\n"
+      "content": "// Web-only global rules. React 19 hoists `<style href precedence>` into <head>\n// (including during SSR), so no framework-specific wiring is needed.\nconst css = `\na.is_Button { text-decoration: none; }\n@keyframes aui-spin { to { transform: rotate(360deg); } }\n.aui-spinner { animation: aui-spin 0.8s linear infinite; }\n@keyframes aui-pulse { 50% { opacity: 0.5; } }\n.aui-skeleton { animation: aui-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }\n.aui-scroll-area { scrollbar-width: thin; scrollbar-color: var(--borderStrong) transparent; }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after {\n    animation-duration: 0.01ms !important;\n    animation-iteration-count: 1 !important;\n    transition-duration: 0.01ms !important;\n    scroll-behavior: auto !important;\n  }\n  /* Loading indicators convey state, so keep them moving — just slower. */\n  .aui-spinner {\n    animation-duration: 1.6s !important;\n    animation-iteration-count: infinite !important;\n  }\n}\n`\n\nexport function GlobalStyles() {\n  return (\n    <style href=\"advui-global\" precedence=\"default\">\n      {css}\n    </style>\n  )\n}\n"
     },
     {
       "path": "provider/UniversalProvider.tsx",
@@ -44,5 +44,5 @@
     "hooks",
     "toast"
   ],
-  "version": "0.1.0"
+  "version": "0.2.0"
 }
