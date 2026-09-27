@@ -1,0 +1,54 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "button-group",
+  "title": "Button Group",
+  "type": "registry:component",
+  "description": "Groups related buttons, joined into one control or spaced apart, such as a split button or a set of actions.",
+  "category": "buttons",
+  "status": "beta",
+  "since": "0.3.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/button-group/ButtonGroup.tsx",
+      "type": "registry:ui",
+      "content": "import { Children, type ReactNode, forwardRef, isValidElement } from 'react'\nimport { type GetProps, type TamaguiElement, View } from 'tamagui'\nimport type { ButtonVariant } from '../button/Button'\nimport {\n  ButtonGroupContext,\n  ButtonGroupItemContext,\n  type ButtonGroupOrientation,\n  type ButtonGroupSize,\n  positionOf,\n} from '../button/groupContext'\n\nexport interface ButtonGroupProps extends Omit<GetProps<typeof View>, 'children'> {\n  /** Names the group for screen readers, e.g. \"Text formatting\". */\n  'aria-label'?: string\n  /** Join the buttons into one control. Default: true. */\n  attached?: boolean\n  orientation?: ButtonGroupOrientation\n  /** Variant for buttons that do not set their own. */\n  variant?: ButtonVariant\n  /** Size for buttons and icon buttons that do not set their own. */\n  size?: ButtonGroupSize\n  /** Buttons and icon buttons. */\n  children: ReactNode\n}\n\n/**\n * Groups related Buttons and IconButtons, joined into one control or spaced\n * apart, such as a split button or Previous · Today · Next.\n */\nexport const ButtonGroup = forwardRef<TamaguiElement, ButtonGroupProps>(function ButtonGroup(\n  { attached = true, orientation = 'horizontal', variant, size, children, ...props },\n  ref,\n) {\n  const items = Children.toArray(children).filter(isValidElement)\n  const horizontal = orientation === 'horizontal'\n  return (\n    <ButtonGroupContext.Provider value={{ attached, orientation, variant, size }}>\n      <View\n        ref={ref}\n        role=\"group\"\n        flexDirection={horizontal ? 'row' : 'column'}\n        alignItems={horizontal ? 'center' : 'stretch'}\n        alignSelf=\"flex-start\"\n        gap={attached ? 0 : '$2'}\n        {...props}\n      >\n        {items.map((child, index) => (\n          <ButtonGroupItemContext.Provider\n            key={child.key ?? index}\n            value={positionOf(index, items.length)}\n          >\n            {child}\n          </ButtonGroupItemContext.Provider>\n        ))}\n      </View>\n    </ButtonGroupContext.Provider>\n  )\n})\n"
+    },
+    {
+      "path": "components/button-group/index.ts",
+      "type": "registry:ui",
+      "content": "export { ButtonGroup, type ButtonGroupProps } from './ButtonGroup'\nexport type { ButtonGroupOrientation, ButtonGroupSize } from '../button/groupContext'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Joined actions",
+      "code": "import { Button, ButtonGroup, IconButton } from '@advui/core'\nimport { MoreHorizontalIcon } from '@advui/icons'\n\nexport default function ButtonGroupBasic() {\n  return (\n    <ButtonGroup aria-label=\"Message actions\" variant=\"outline\">\n      <Button>Archive</Button>\n      <Button>Report</Button>\n      <Button>Snooze</Button>\n      <IconButton aria-label=\"More actions\" icon={<MoreHorizontalIcon />} />\n    </ButtonGroup>\n  )\n}\n"
+    },
+    {
+      "name": "split",
+      "title": "Split button",
+      "code": "import { Button, ButtonGroup, IconButton } from '@advui/core'\nimport { ChevronDownIcon, GitBranchIcon } from '@advui/icons'\n\nexport default function ButtonGroupSplit() {\n  return (\n    <ButtonGroup aria-label=\"Merge\">\n      <Button icon={<GitBranchIcon />}>Merge pull request</Button>\n      <IconButton aria-label=\"More merge options\" icon={<ChevronDownIcon />} />\n    </ButtonGroup>\n  )\n}\n"
+    },
+    {
+      "name": "orientation",
+      "title": "Vertical and spaced",
+      "code": "import { Button, ButtonGroup, HStack, IconButton } from '@advui/core'\nimport { MinusIcon, PlusIcon } from '@advui/icons'\n\nexport default function ButtonGroupOrientation() {\n  return (\n    <HStack gap=\"$6\" alignItems=\"center\">\n      <ButtonGroup aria-label=\"Zoom\" orientation=\"vertical\" variant=\"outline\" size=\"sm\">\n        <IconButton aria-label=\"Zoom in\" icon={<PlusIcon />} />\n        <IconButton aria-label=\"Zoom out\" icon={<MinusIcon />} />\n      </ButtonGroup>\n      {/* attached={false}: related actions, spaced apart. */}\n      <ButtonGroup aria-label=\"Form actions\" attached={false}>\n        <Button variant=\"outline\">Cancel</Button>\n        <Button>Save</Button>\n      </ButtonGroup>\n    </HStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/button-group",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "button"
+  ],
+  "version": "0.2.0"
+}

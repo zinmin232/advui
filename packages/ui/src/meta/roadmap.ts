@@ -13,8 +13,6 @@ export interface RoadmapItem {
 }
 
 export const roadmap: RoadmapItem[] = [
-  { name: 'Button Group', slug: 'button-group', category: 'buttons', phase: 2 },
-
   { name: 'Multi Select', slug: 'multi-select', category: 'forms', phase: 3 },
   { name: 'Combobox', slug: 'combobox', category: 'forms', phase: 3 },
   { name: 'Autocomplete', slug: 'autocomplete', category: 'forms', phase: 3 },
@@ -26,16 +24,12 @@ export const roadmap: RoadmapItem[] = [
   { name: 'OTP Input', slug: 'otp-input', category: 'forms', phase: 3 },
   { name: 'Form Field', slug: 'form-field', category: 'forms', phase: 3 },
 
-  { name: 'Aspect Ratio', slug: 'aspect-ratio', category: 'layout', phase: 2 },
-  { name: 'Scroll Area', slug: 'scroll-area', category: 'layout', phase: 2 },
-
   { name: 'Pagination', slug: 'pagination', category: 'navigation', phase: 4 },
   { name: 'Menu', slug: 'menu', category: 'navigation', phase: 2 },
   { name: 'Navigation Menu', slug: 'navigation-menu', category: 'navigation', phase: 4 },
   { name: 'Sidebar', slug: 'sidebar', category: 'navigation', phase: 4 },
   { name: 'Stepper', slug: 'stepper', category: 'navigation', phase: 4 },
 
-  { name: 'Circular Progress', slug: 'circular-progress', category: 'feedback', phase: 2 },
   { name: 'Empty State', slug: 'empty-state', category: 'feedback', phase: 4 },
   { name: 'Error State', slug: 'error-state', category: 'feedback', phase: 4 },
 
@@ -47,7 +41,6 @@ export const roadmap: RoadmapItem[] = [
   { name: 'Data Table', slug: 'data-table', category: 'data-display', phase: 4 },
   { name: 'List', slug: 'list', category: 'data-display', phase: 4 },
   { name: 'Timeline', slug: 'timeline', category: 'data-display', phase: 4 },
-  { name: 'Collapsible', slug: 'collapsible', category: 'data-display', phase: 2 },
   { name: 'Calendar', slug: 'calendar', category: 'data-display', phase: 3 },
   { name: 'Stat', slug: 'stat', category: 'data-display', phase: 4 },
   { name: 'KPI Card', slug: 'kpi-card', category: 'data-display', phase: 4 },

@@ -177,6 +177,11 @@ for (const path of [
   '/docs/components/chip',
   '/docs/components/snackbar',
   '/docs/components/navigation-bar',
+  '/docs/components/button-group',
+  '/docs/components/collapsible',
+  '/docs/components/circular-progress',
+  '/docs/components/aspect-ratio',
+  '/docs/components/scroll-area',
   '/examples/login',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {
@@ -294,6 +299,32 @@ test('snackbar announces politely and its action works from the keyboard', async
   await page.keyboard.press('Enter')
   await expect(message).toBeHidden()
   expect(errors).toEqual([])
+})
+
+test('collapsible opens from the keyboard and passes axe while open', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/collapsible')
+  await page.waitForLoadState('networkidle')
+  const trigger = page.getByRole('button', { name: 'Advanced options' }).first()
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false')
+  const content = page.locator(`[id="${await trigger.getAttribute('aria-controls')}"]`)
+  await expect(content).toBeHidden()
+  await trigger.focus()
+  await page.keyboard.press('Enter')
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true')
+  await expect(content.getByLabel('URL slug')).toBeVisible()
+  expect(await seriousViolations(page)).toEqual([])
+  expect(errors).toEqual([])
+})
+
+test('scroll area scrolls from the keyboard', async ({ page }) => {
+  await page.goto('/docs/components/scroll-area')
+  await page.waitForLoadState('networkidle')
+  const region = page.getByRole('region', { name: 'Release tags' }).first()
+  await region.focus()
+  await expect(region).toBeFocused()
+  await page.keyboard.press('PageDown')
+  await expect.poll(() => region.evaluate((node) => node.scrollTop)).toBeGreaterThan(0)
 })
 
 test('no serious accessibility violations in dark mode', async ({ page }) => {

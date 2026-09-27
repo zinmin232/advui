@@ -2,13 +2,17 @@
 import accordionMeta from '../components/accordion/accordion.meta'
 import alertMeta from '../components/alert/alert.meta'
 import alertDialogMeta from '../components/alert-dialog/alert-dialog.meta'
+import aspectRatioMeta from '../components/aspect-ratio/aspect-ratio.meta'
 import avatarMeta from '../components/avatar/avatar.meta'
 import badgeMeta from '../components/badge/badge.meta'
 import breadcrumbMeta from '../components/breadcrumb/breadcrumb.meta'
 import buttonMeta from '../components/button/button.meta'
+import buttonGroupMeta from '../components/button-group/button-group.meta'
 import cardMeta from '../components/card/card.meta'
 import checkboxMeta from '../components/checkbox/checkbox.meta'
 import chipMeta from '../components/chip/chip.meta'
+import circularProgressMeta from '../components/circular-progress/circular-progress.meta'
+import collapsibleMeta from '../components/collapsible/collapsible.meta'
 import containerMeta from '../components/layout/container.meta'
 import dialogMeta from '../components/dialog/dialog.meta'
 import dropdownMenuMeta from '../components/dropdown-menu/dropdown-menu.meta'
@@ -21,6 +25,7 @@ import navigationBarMeta from '../components/navigation-bar/navigation-bar.meta'
 import popoverMeta from '../components/popover/popover.meta'
 import progressMeta from '../components/progress/progress.meta'
 import radioGroupMeta from '../components/radio-group/radio-group.meta'
+import scrollAreaMeta from '../components/scroll-area/scroll-area.meta'
 import selectMeta from '../components/select/select.meta'
 import separatorMeta from '../components/separator/separator.meta'
 import sheetMeta from '../components/sheet/sheet.meta'
@@ -43,13 +48,17 @@ export const components: ComponentMeta[] = [
   accordionMeta,
   alertMeta,
   alertDialogMeta,
+  aspectRatioMeta,
   avatarMeta,
   badgeMeta,
   breadcrumbMeta,
   buttonMeta,
+  buttonGroupMeta,
   cardMeta,
   checkboxMeta,
   chipMeta,
+  circularProgressMeta,
+  collapsibleMeta,
   containerMeta,
   dialogMeta,
   dropdownMenuMeta,
@@ -62,6 +71,7 @@ export const components: ComponentMeta[] = [
   popoverMeta,
   progressMeta,
   radioGroupMeta,
+  scrollAreaMeta,
   selectMeta,
   separatorMeta,
   sheetMeta,

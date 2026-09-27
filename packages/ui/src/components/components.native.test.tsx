@@ -6,14 +6,18 @@ import { StyleSheet } from 'react-native'
 import { renderNative } from '../../test/native-utils'
 import { Accordion } from './accordion/Accordion'
 import { AlertDialog } from './alert-dialog/AlertDialog'
+import { AspectRatio } from './aspect-ratio/AspectRatio'
 import { Alert } from './alert/Alert'
 import { Avatar } from './avatar/Avatar'
 import { Badge } from './badge/Badge'
 import { Breadcrumb } from './breadcrumb/Breadcrumb'
 import { Button } from './button/Button'
+import { ButtonGroup } from './button-group/ButtonGroup'
 import { Card } from './card/Card'
 import { Checkbox } from './checkbox/Checkbox'
 import { Chip } from './chip/Chip'
+import { CircularProgress } from './circular-progress/CircularProgress'
+import { Collapsible } from './collapsible/Collapsible'
 import { DropdownMenu } from './dropdown-menu/DropdownMenu'
 import { Fab } from './fab/Fab'
 import { IconButton } from './icon-button/IconButton'
@@ -21,6 +25,7 @@ import { Input } from './input/Input'
 import { NavigationBar } from './navigation-bar/NavigationBar'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
+import { ScrollArea } from './scroll-area/ScrollArea'
 import { Sheet } from './sheet/Sheet'
 import { Slider } from './slider/Slider'
 import { Snackbar } from './snackbar/Snackbar'
@@ -382,5 +387,76 @@ describe('native rendering', () => {
     // does not; the logic is covered by utils/isTextContent.test.ts.
     expect(screen.getByText('Status (2)').type).toBe('Text')
     expect(screen.getByText('2 new').type).toBe('Text')
+  })
+
+  it('CircularProgress exposes its value, and spins busy without one', async () => {
+    await renderNative(
+      <>
+        <CircularProgress value={40} label="Storage used" showValue />
+        <CircularProgress label="Syncing" />
+      </>,
+    )
+    expect(screen.getByRole('progressbar', { name: 'Storage used' })).toHaveAccessibilityValue({
+      min: 0,
+      max: 100,
+      now: 40,
+    })
+    // The percentage is visible but hidden from screen readers, which get the value.
+    expect(screen.queryByText('40%')).toBeNull()
+    expect(screen.getByText('40%', { includeHiddenElements: true })).toBeOnTheScreen()
+    expect(screen.getByRole('progressbar', { name: 'Syncing' })).toBeBusy()
+  })
+
+  it('Collapsible hides its content until the trigger expands it', async () => {
+    await renderNative(
+      <Collapsible>
+        <Collapsible.Trigger>
+          <Button>Advanced options</Button>
+        </Collapsible.Trigger>
+        <Collapsible.Content>
+          <Text>URL slug</Text>
+        </Collapsible.Content>
+      </Collapsible>,
+    )
+    const trigger = screen.getByRole('button', { name: 'Advanced options' })
+    expect(trigger).not.toBeExpanded()
+    expect(screen.queryByText('URL slug')).toBeNull()
+    expect(screen.getByText('URL slug', { includeHiddenElements: true })).not.toBeVisible()
+    await fireEvent.press(trigger)
+    expect(trigger).toBeExpanded()
+    expect(screen.getByText('URL slug')).toBeVisible()
+  })
+
+  it('ButtonGroup joins its buttons and passes its variant down', async () => {
+    const onPress = jest.fn()
+    await renderNative(
+      <ButtonGroup aria-label="Actions" variant="outline">
+        <Button onPress={onPress}>Archive</Button>
+        <IconButton aria-label="More" icon={<PlusIcon />} />
+      </ButtonGroup>,
+    )
+    await fireEvent.press(screen.getByRole('button', { name: 'Archive' }))
+    expect(onPress).toHaveBeenCalledTimes(1)
+    const first = StyleSheet.flatten(screen.getByRole('button', { name: 'Archive' }).props.style)
+    const last = StyleSheet.flatten(screen.getByRole('button', { name: 'More' }).props.style)
+    expect(first.borderTopRightRadius).toBe(0)
+    expect(last.borderTopLeftRadius).toBe(0)
+    // Outline buttons share their 1px border.
+    expect(last.marginLeft).toBe(-1)
+  })
+
+  it('AspectRatio and ScrollArea use the native aspectRatio and ScrollView', async () => {
+    await renderNative(
+      <>
+        <AspectRatio ratio={2} testID="ratio" />
+        <ScrollArea orientation="horizontal" aria-label="Albums" testID="scroll">
+          <Text>Nightfall</Text>
+        </ScrollArea>
+      </>,
+    )
+    expect(StyleSheet.flatten(screen.getByTestId('ratio').props.style).aspectRatio).toBe(2)
+    const scroll = screen.getByTestId('scroll')
+    expect(scroll.props.horizontal).toBe(true)
+    expect(screen.getByText('Nightfall')).toBeOnTheScreen()
   })
 })

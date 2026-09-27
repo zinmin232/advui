@@ -6,6 +6,7 @@ a.is_Button { text-decoration: none; }
 .aui-spinner { animation: aui-spin 0.8s linear infinite; }
 @keyframes aui-pulse { 50% { opacity: 0.5; } }
 .aui-skeleton { animation: aui-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+.aui-scroll-area { scrollbar-width: thin; scrollbar-color: var(--borderStrong) transparent; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
