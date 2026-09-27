@@ -37,7 +37,16 @@ export function LoginScreen() {
   }
 
   return (
-    <VStack flex={1} alignItems="center" justifyContent="center" padding="$4" gap="$6" width="100%">
+    // flexGrow, not flex: flex={1} sets a 0px basis, which collapses the screen
+    // in containers without a fixed height (the docs' desktop frame).
+    <VStack
+      flexGrow={1}
+      alignItems="center"
+      justifyContent="center"
+      padding="$4"
+      gap="$6"
+      width="100%"
+    >
       <VStack alignItems="center" gap="$3">
         <LogoMark size={40} />
         <VStack alignItems="center" gap="$1">
