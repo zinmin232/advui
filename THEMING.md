@@ -42,6 +42,42 @@ near-white in dark mode).
 import { themePresetNames, themePresets } from '@advui/theme'
 ```
 
+## Material 3
+
+`material()` from `@advui/theme/material` gives every component Google's
+Material 3 look, with no component changes:
+
+```ts
+import { createUniversalConfig } from '@advui/theme'
+import { material } from '@advui/theme/material'
+
+export const config = createUniversalConfig({
+  ...material({ seed: '#6750A4' }), // any brand color
+  fontScale: 'default',
+})
+```
+
+- **Color:** all roles come from the seed through Google's
+  [material-color-utilities](https://github.com/material-foundation/material-color-utilities)
+  (the "tonal spot" scheme behind Android dynamic color). Material roles map
+  onto ours: `primaryContainer` → `primarySoft`, `secondaryContainer` →
+  `secondary` (the tonal button), `surfaceContainerLow` → `card`,
+  `surfaceContainerHigh` → `popover`, `outline` → `input`, `outlineVariant` →
+  `border`, `error` → `destructive`. Hover and press colors are Material state
+  layers (8% / 10%). Success, warning and info are custom colors harmonized
+  toward the seed; pass `colors: { success, warning, info }` to change them.
+- **Shape:** `materialShape` sets pill buttons, 4px fields, 8px menus, 12px
+  cards and 28px dialogs and sheets.
+- **Type:** Roboto on web (load it yourself, e.g. from Google Fonts); the
+  platform font on iOS and Android.
+- `createMaterialThemes({ seed })` returns just the light and dark themes, for
+  runtime swaps with `updateTheme`.
+- `material.test.ts` runs the same WCAG AA contrast checks as the presets, for
+  several seeds.
+
+It is a separate entry so apps that do not use it never ship the color
+library.
+
 ## Color inputs
 
 `colors` accepts these roles: `primary`, `secondary`, `accent`, `neutral`,
@@ -98,14 +134,14 @@ native header: `theme.background.val`.
 
 ## Tokens
 
-| Token     | Scale                                                                                                                    |
-| --------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `space`   | 4px grid: `$0.5`=2, `$1`=4, `$2`=8, `$3`=12, `$4`=16, `$6`=24, `$8`=32 … `$32`=128; negative keys (`$-2`) for margins    |
-| `size`    | Same steps as space, extended to large sizes (`$96` = 384) for widths and heights                                        |
-| `radius`  | `$xs` `$sm` `$md` `$lg` `$xl` `$2xl` `$3xl` `$full`, all derived from the `radius` option                                |
-| `zIndex`  | named layers: `dropdown` 1000, `sticky` 1100, `overlay` 1200, `modal` 1300, `popover` 1400, `toast` 1500, `tooltip` 1600 |
-| fonts     | `body`, `heading`, `mono`; sizes `$1`–`$10` (12 → 60px) multiplied by `fontScale`                                        |
-| `shadows` | `none`, `xs`, `sm`, `md`, `lg`: spread into styles; the colors come from the theme, and `elevation` is used on Android   |
+| Token     | Scale                                                                                                                          |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `space`   | 4px grid: `$0.5`=2, `$1`=4, `$2`=8, `$3`=12, `$4`=16, `$6`=24, `$8`=32 … `$32`=128; negative keys (`$-2`) for margins          |
+| `size`    | Same steps as space, extended to large sizes (`$96` = 384) for widths and heights                                              |
+| `radius`  | `$xs` `$sm` `$md` `$lg` `$xl` `$2xl` `$3xl` `$full` from the `radius` option, plus role tokens `$button` `$buttonLg` `$dialog` |
+| `zIndex`  | named layers: `dropdown` 1000, `sticky` 1100, `overlay` 1200, `modal` 1300, `popover` 1400, `toast` 1500, `tooltip` 1600       |
+| fonts     | `body`, `heading`, `mono`; sizes `$1`–`$10` (12 → 60px) multiplied by `fontScale`                                              |
+| `shadows` | `none`, `xs`, `sm`, `md`, `lg`: spread into styles; the colors come from the theme, and `elevation` is used on Android         |
 
 Media queries (mobile-first): `xs` 460, `sm` 640, `md` 768, `lg` 1024, `xl` 1280,
 `xxl` 1536, plus `max-*`, `touchable` and `hoverable`:
@@ -182,6 +218,9 @@ createUniversalConfig({
 
 - Never hard-code colors, spacing, radii or z-index values. ESLint rejects
   color literals in `packages/*`.
+- Buttons, icon buttons and toggles use `$button` (`$buttonLg` for the large
+  size); dialogs and sheets use `$dialog`. Design systems such as Material
+  reshape those without touching other controls.
 - Pick the role by meaning, not by looks. Don't use `$primary` as text; use
   `$primaryText`.
 - Pair every surface with its foreground (`$card` + `$cardForeground`,

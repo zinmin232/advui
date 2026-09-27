@@ -132,8 +132,15 @@ export function CommandPalette({ entries }: { entries: SearchEntry[] }) {
         title: `Theme preset: ${themePresets[name].label}`,
         icon: <PaletteIcon />,
         keywords: `change theme color preset ${name}`,
-        run: () => setTheme({ preset: name, primary: undefined }),
+        run: () => setTheme({ style: 'advui', preset: name, primary: undefined }),
       })),
+      {
+        id: 'preset-material',
+        title: 'Theme preset: Material 3',
+        icon: <PaletteIcon />,
+        keywords: 'change theme google material design m3 android',
+        run: () => setTheme({ style: 'material', primary: undefined }),
+      },
       {
         id: 'playground',
         title: 'Open playground',

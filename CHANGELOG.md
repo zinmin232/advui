@@ -9,6 +9,21 @@ one version.
 
 ### Added
 
+- **Material 3 theme** (`@advui/theme/material`): `material({ seed })` gives
+  every component Google's Material 3 look with no component changes. It
+  generates color roles from one seed color with Google's
+  `material-color-utilities` (the tonal-spot scheme behind Android dynamic
+  color), and adds Material's shapes (pill buttons, 4px fields, 12px cards,
+  28px dialogs and sheets) and Roboto. The same WCAG AA contrast checks as the
+  presets run for several seeds. It is a separate entry, so apps that don't
+  import it don't ship the color library. The docs customizer has a
+  **Style → Material 3** switch, and the Expo playground runs Material with
+  `EXPO_PUBLIC_ADVUI_STYLE=material`.
+- Theme: role radius tokens `$button`, `$buttonLg` and `$dialog` (buttons, icon
+  buttons and toggles; dialogs and sheets). They keep today's values in every
+  preset. `radius` also accepts exact values per token, and
+  `createUniversalConfig` accepts prebuilt `themes`. Components copied with
+  `advui add` need `@advui/theme` 0.2.0 or later for these tokens.
 - **Accordion** (beta): single or multiple open sections, `default` and `card`
   variants, disabled items. Triggers sit in headings (`level`, default 3) and
   follow the WAI-ARIA accordion keyboard pattern (arrows, Home, End).
@@ -49,6 +64,8 @@ one version.
 - Button, Badge, Tabs: children made of several text pieces (for example
   `Status ({count})`) crashed on iOS and Android with "Text strings must be
   rendered within a \<Text\> component". They are now wrapped in `Text`.
+- Popover, Select and Dropdown Menu: their phone bottom sheets now use the same
+  corner radius as Sheet (`$dialog`).
 - Dropdown Menu on iOS and Android: the closed menu's rows could be reached by
   screen readers, because the sheet stays mounted while closed. They are now
   hidden until it opens.

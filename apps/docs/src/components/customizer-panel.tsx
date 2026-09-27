@@ -9,11 +9,18 @@ import {
   themePresetNames,
   themePresets,
 } from '@advui/theme'
+import { MATERIAL_BASELINE_SEED } from '@advui/theme/material'
 import { isValidColor, toHex } from '@advui/utils'
 import { type ReactNode, useEffect, useId, useMemo, useRef } from 'react'
 import { View } from 'tamagui'
 import { useColorModeSetting } from '../lib/color-mode'
-import { type CustomTheme, themeColorsInput, themeToCode, useThemeStore } from '../lib/theme-store'
+import {
+  type CustomTheme,
+  type DesignStyle,
+  generateThemes,
+  themeToCode,
+  useThemeStore,
+} from '../lib/theme-store'
 
 const radii: Array<{ value: RadiusScale; label: string }> = [
   { value: 'none', label: 'None' },
@@ -111,14 +118,34 @@ function ColorField({
 export function CustomizerControls({ compact = false }: { compact?: boolean }) {
   const { theme, setTheme, reset, isDefault } = useThemeStore()
   const setting = useColorModeSetting()
-  const generated = useMemo(() => createThemeColors(themeColorsInput(theme)), [theme])
+  const generated = useMemo(() => generateThemes(theme), [theme])
+  const material = theme.style === 'material'
 
   const choosePreset = (preset: CustomTheme['preset']) =>
     setTheme({ preset, primary: undefined, secondary: undefined, accent: undefined })
 
   return (
     <VStack gap="$5">
-      <VStack gap="$2">
+      <Segmented<DesignStyle>
+        label="Style"
+        value={theme.style}
+        options={[
+          { value: 'advui', label: 'Adv UI' },
+          { value: 'material', label: 'Material 3' },
+        ]}
+        onChange={(style) =>
+          setTheme({ style, primary: undefined, secondary: undefined, accent: undefined })
+        }
+      />
+
+      {material ? (
+        <Text size="sm" tone="muted">
+          Google’s Material 3: every color role is generated from one seed color, with Material’s
+          shapes (pill buttons, 28px dialogs) and Roboto.
+        </Text>
+      ) : null}
+
+      <VStack gap="$2" display={material ? 'none' : 'flex'}>
         <Text size="sm" weight="medium" id="preset-label">
           Preset
         </Text>
@@ -154,31 +181,37 @@ export function CustomizerControls({ compact = false }: { compact?: boolean }) {
 
       <HStack gap="$3" flexWrap="wrap">
         <ColorField
-          label="Primary"
+          label={material ? 'Seed color' : 'Primary'}
           value={theme.primary}
-          fallback={generated.light.primary}
+          fallback={material ? MATERIAL_BASELINE_SEED : generated.light.primary}
           onChange={(primary) => setTheme({ primary })}
         />
-        <ColorField
-          label="Secondary"
-          value={theme.secondary}
-          fallback={generated.light.secondaryForeground}
-          onChange={(secondary) => setTheme({ secondary })}
-        />
-        <ColorField
-          label="Accent"
-          value={theme.accent}
-          fallback={generated.light.accentForeground}
-          onChange={(accent) => setTheme({ accent })}
-        />
+        {material ? null : (
+          <>
+            <ColorField
+              label="Secondary"
+              value={theme.secondary}
+              fallback={generated.light.secondaryForeground}
+              onChange={(secondary) => setTheme({ secondary })}
+            />
+            <ColorField
+              label="Accent"
+              value={theme.accent}
+              fallback={generated.light.accentForeground}
+              onChange={(accent) => setTheme({ accent })}
+            />
+          </>
+        )}
       </HStack>
 
-      <Segmented
-        label="Radius"
-        value={theme.radius}
-        options={radii}
-        onChange={(radius) => setTheme({ radius })}
-      />
+      {material ? null : (
+        <Segmented
+          label="Radius"
+          value={theme.radius}
+          options={radii}
+          onChange={(radius) => setTheme({ radius })}
+        />
+      )}
       <Segmented
         label="Font size"
         value={theme.fontScale}

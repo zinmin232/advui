@@ -18,6 +18,10 @@ export const config = createUniversalConfig({
 - space, size, radius and zIndex tokens; fonts; media queries; shadows;
   animations (CSS on web, React Native Animated on native)
 - `createThemeColors` for runtime theme swaps with Tamagui's `updateTheme`
+- `@advui/theme/material`: Material 3 colors from one seed color (Google's
+  material-color-utilities), shapes and fonts:
+  `createUniversalConfig(material({ seed: '#6750A4' }))`
 
 See [THEMING.md](../../THEMING.md). License: MIT. Color scales are based on
-Radix Colors (MIT).
+Radix Colors (MIT); Material color generation uses
+`@material/material-color-utilities` (Apache-2.0).

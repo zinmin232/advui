@@ -71,15 +71,28 @@ export const radiusScales = {
 
 export type RadiusScale = keyof typeof radiusScales
 
+export type RadiusToken =
+  'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'button' | 'buttonLg' | 'dialog'
+
+/** Exact values for some radius tokens, on top of a base (`md` if omitted). */
+export type RadiusOverrides = { base?: RadiusScale | number } & Partial<Record<RadiusToken, number>>
+
+export type RadiusInput = RadiusScale | number | RadiusOverrides
+
 /**
  * Radius tokens derived from a single base value so the whole library can be
  * made sharper or rounder at once. Components pick semantic steps:
- * controls `$md`, menus/popovers `$lg`, cards/dialogs `$xl`, pills `$full`.
+ * controls `$md`, menus/popovers `$lg`, cards `$xl`, pills `$full`, and role
+ * tokens a design system can reshape on their own: `$button` / `$buttonLg`
+ * (buttons, icon buttons, toggles) and `$dialog` (dialogs and sheets).
  */
-export function createRadius(scale: RadiusScale | number = 'md') {
+export function createRadius(input: RadiusInput = 'md') {
+  const overrides = typeof input === 'object' ? input : {}
+  const scale = typeof input === 'object' ? (input.base ?? 'md') : input
   const base = typeof scale === 'number' ? scale : radiusScales[scale]
   const r = (factor: number) => Math.round(base * factor)
-  return {
+  const { base: _base, ...exact } = overrides
+  const tokens = {
     0: 0,
     xs: r(0.25),
     sm: r(0.5),
@@ -89,8 +102,12 @@ export function createRadius(scale: RadiusScale | number = 'md') {
     '2xl': r(2),
     '3xl': r(3),
     full: 9999,
-    true: r(0.75),
+    button: r(0.75),
+    buttonLg: r(1),
+    dialog: r(1.5),
+    ...exact,
   }
+  return { ...tokens, true: tokens.md }
 }
 
 export const zIndex = {
@@ -112,7 +129,7 @@ export const colorTokens = {
   transparent: 'rgba(0, 0, 0, 0)',
 } as const
 
-export function createUniversalTokens({ radius = 'md' }: { radius?: RadiusScale | number } = {}) {
+export function createUniversalTokens({ radius = 'md' }: { radius?: RadiusInput } = {}) {
   return createTokens({
     space,
     size,

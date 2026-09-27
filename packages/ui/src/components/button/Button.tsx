@@ -47,7 +47,7 @@ export const ButtonFrame = styled(View, {
   gap: '$2',
   borderWidth: 1,
   borderColor: 'transparent',
-  borderRadius: '$md',
+  borderRadius: '$button',
   cursor: 'pointer',
   userSelect: 'none',
   transition: 'quick',
@@ -98,7 +98,7 @@ export const ButtonFrame = styled(View, {
     size: {
       sm: { height: '$8', paddingHorizontal: '$3', gap: '$1.5' },
       md: { height: '$10', paddingHorizontal: '$4' },
-      lg: { height: '$12', paddingHorizontal: '$6', borderRadius: '$lg' },
+      lg: { height: '$12', paddingHorizontal: '$6', borderRadius: '$buttonLg' },
       icon: { height: '$10', width: '$10', paddingHorizontal: 0 },
     },
 

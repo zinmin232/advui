@@ -108,6 +108,25 @@ test('theme customizer restyles the whole site live', async ({ page }) => {
   await expect(panel).toBeHidden()
 })
 
+test('customizer switches the site to Material 3', async ({ page }) => {
+  await page.goto('/docs/components/button')
+  await page.getByRole('button', { name: 'Customize theme' }).click()
+  const panel = page.getByRole('dialog', { name: 'Customize' })
+  await panel.getByRole('radio', { name: 'Material 3' }).click()
+  const cssVar = (name: string) =>
+    page.evaluate(
+      (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim(),
+      name,
+    )
+  // Material baseline seed → tonal-spot primary; pill buttons from the shape scale.
+  await expect.poll(() => cssVar('--primary')).toBe('#65558f')
+  await expect.poll(() => cssVar('--t-radius-button')).toBe('9999px')
+  await expect(panel.getByLabel('Seed color', { exact: true })).toBeVisible()
+  await expect(panel.getByText('Preset', { exact: true })).toBeHidden()
+  await panel.getByRole('radio', { name: 'Adv UI' }).click()
+  await expect.poll(() => cssVar('--t-radius-button')).not.toBe('9999px')
+})
+
 // The desktop frame has no fixed height, so a screen that sizes itself with
 // flex={1} collapses and is clipped (it happened to the login example).
 test('app examples are not clipped in the desktop frame', async ({ page }) => {

@@ -12,6 +12,12 @@ import {
   themePresets,
 } from '@advui/theme'
 import {
+  MATERIAL_BASELINE_SEED,
+  createMaterialThemes,
+  materialFonts,
+  materialShape,
+} from '@advui/theme/material'
+import {
   type ReactNode,
   createContext,
   useCallback,
@@ -22,7 +28,11 @@ import {
   useState,
 } from 'react'
 
+export type DesignStyle = 'advui' | 'material'
+
 export interface CustomTheme {
+  /** `material`: Material 3 roles from `primary` (the seed), shapes and fonts. */
+  style: DesignStyle
   preset: ThemePresetName
   primary?: string
   secondary?: string
@@ -32,6 +42,7 @@ export interface CustomTheme {
 }
 
 export const defaultCustomTheme: CustomTheme = {
+  style: 'advui',
   preset: 'indigo',
   radius: 'md',
   fontScale: 'default',
@@ -49,8 +60,25 @@ export function themeColorsInput(theme: CustomTheme): ThemeColorsInput {
   }
 }
 
+/** Light and dark themes for the current settings. */
+export function generateThemes(theme: CustomTheme) {
+  return theme.style === 'material'
+    ? createMaterialThemes({ seed: theme.primary ?? MATERIAL_BASELINE_SEED })
+    : createThemeColors(themeColorsInput(theme))
+}
+
 /** Code users can paste into their app to reproduce the current look. */
 export function themeToCode(theme: CustomTheme): string {
+  if (theme.style === 'material') {
+    return `import { createUniversalConfig } from '@advui/theme'
+import { material } from '@advui/theme/material'
+
+export const config = createUniversalConfig({
+  ...material({ seed: '${theme.primary ?? MATERIAL_BASELINE_SEED}' }),
+  fontScale: '${theme.fontScale}',
+})
+`
+  }
   const colors = [
     theme.primary && `primary: '${theme.primary}'`,
     theme.secondary && `secondary: '${theme.secondary}'`,
@@ -75,25 +103,30 @@ const toPx = (value: unknown) =>
 
 /** Radius and font tokens are CSS variables on web, so they can be swapped live. */
 function tokenCss(theme: CustomTheme) {
-  const radius = createRadius(theme.radius)
+  const material = theme.style === 'material'
+  const radius = createRadius(material ? materialShape : theme.radius)
   const radiusVars = Object.entries(radius)
     .map(([key, value]) => `--t-radius-${key}:${value}px`)
     .join(';')
-  const fonts = createUniversalFonts({ scale: theme.fontScale })
+  const fonts = createUniversalFonts({
+    scale: theme.fontScale,
+    families: material ? materialFonts : undefined,
+  })
   const fontRules = Object.entries(fonts)
     .map(([name, font]) => {
       const sizes = Object.entries(font.size ?? {}).map(([k, v]) => `--f-size-${k}:${toPx(v)}`)
       const lineHeights = Object.entries(font.lineHeight ?? {}).map(
         ([k, v]) => `--f-lineHeight-${k}:${toPx(v)}`,
       )
-      return `:root:root .font_${name}{${[...sizes, ...lineHeights].join(';')}}`
+      const family = font.family ? [`--f-family:${font.family}`] : []
+      return `:root:root .font_${name}{${[...family, ...sizes, ...lineHeights].join(';')}}`
     })
     .join('\n')
   return `:root:root{${radiusVars}}\n${fontRules}`
 }
 
 function applyTheme(theme: CustomTheme) {
-  const themes = createThemeColors(themeColorsInput(theme))
+  const themes = generateThemes(theme)
   updateTheme({ name: 'light', theme: themes.light })
   updateTheme({ name: 'dark', theme: themes.dark })
   let style = document.getElementById(STYLE_ID)

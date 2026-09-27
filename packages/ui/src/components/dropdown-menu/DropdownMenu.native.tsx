@@ -84,6 +84,8 @@ function DropdownMenuContent({ children }: DropdownMenuContentProps) {
       <Sheet.Handle backgroundColor="$borderStrong" />
       <Sheet.Frame
         backgroundColor="$popover"
+        borderTopLeftRadius="$dialog"
+        borderTopRightRadius="$dialog"
         paddingHorizontal="$2"
         paddingTop="$2"
         paddingBottom="$8"

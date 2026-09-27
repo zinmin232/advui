@@ -179,8 +179,8 @@ function SheetContent({
       <TamaguiSheet.Handle backgroundColor="$borderStrong" />
       <TamaguiSheet.Frame
         backgroundColor="$popover"
-        borderTopLeftRadius="$xl"
-        borderTopRightRadius="$xl"
+        borderTopLeftRadius="$dialog"
+        borderTopRightRadius="$dialog"
         padding="$6"
         paddingBottom="$8"
       >

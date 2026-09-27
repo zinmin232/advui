@@ -49,7 +49,8 @@ entry, search entry, Expo screen and registry item then appear automatically.
 ## Styling rules
 
 - **Tokens only.** Colors come from theme keys (`$primary`,
-  `$mutedForeground`), spacing and sizes from `$` tokens, radius from `$sm`…`$full`,
+  `$mutedForeground`), spacing and sizes from `$` tokens, radius from `$sm`…`$full`
+  (buttons and toggles `$button`, dialogs and sheets `$dialog`),
   z-index from `zIndex` in `@advui/theme`. The lint config rejects hex,
   rgb and hsl literals in library code.
 - **Pick the right color role.** `$primary` is a fill. Use `$primaryText` for

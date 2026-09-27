@@ -17,6 +17,7 @@ import { A, C, Callout, H2, LI, P, UL } from '../../components/prose'
 export const themeToc: TocItem[] = [
   { id: 'try-it', title: 'Try it' },
   { id: 'config', title: 'Config' },
+  { id: 'material', title: 'Material 3' },
   { id: 'tokens', title: 'Theme tokens' },
   { id: 'dark-mode', title: 'Dark mode' },
   { id: 'runtime', title: 'Runtime changes' },
@@ -53,6 +54,50 @@ export const config = createUniversalConfig({
         Custom colors become 12-step scales (in OKLCH) for light and dark mode. Foregrounds are
         chosen — and solid colors adjusted if needed — so text always meets WCAG AA.
       </P>
+      <H2 id="material">Material 3</H2>
+      <P>
+        Prefer Google’s Material Design? <C>material()</C> gives every component the Material 3 look
+        without changing any component code:
+      </P>
+      <Code
+        code={`import { createUniversalConfig } from '@advui/theme'
+import { material } from '@advui/theme/material'
+
+export const config = createUniversalConfig({
+  ...material({ seed: '#6750A4' }),   // any brand color
+  fontScale: 'default',
+})`}
+      />
+      <UL>
+        <LI>
+          <strong>Color:</strong> every role is generated from the seed with Google’s{' '}
+          <A href="https://github.com/material-foundation/material-color-utilities">
+            material-color-utilities
+          </A>{' '}
+          (the “tonal spot” scheme Android uses for dynamic color). Material roles map onto ours:{' '}
+          <C>primaryContainer</C> → <C>$primarySoft</C>, <C>secondaryContainer</C> →{' '}
+          <C>$secondary</C> (the tonal button), <C>outline</C> → <C>$input</C>. Success, warning and
+          info are harmonized toward the seed.
+        </LI>
+        <LI>
+          <strong>Shape:</strong> pill buttons and icon buttons, 4px fields, 12px cards and 28px
+          dialogs and sheets, through the <C>$button</C>, <C>$buttonLg</C> and <C>$dialog</C> radius
+          tokens.
+        </LI>
+        <LI>
+          <strong>Type:</strong> Roboto on web (load it in your app, e.g. from Google Fonts); the
+          platform font on iOS and Android.
+        </LI>
+        <LI>
+          <strong>Accessibility:</strong> the same WCAG AA contrast checks run on Material themes as
+          on every preset.
+        </LI>
+      </UL>
+      <Callout>
+        <C>@advui/theme/material</C> is a separate entry: apps that do not import it do not ship the
+        color library. Material and the Adv UI presets share one component API, so you can switch at
+        any time.
+      </Callout>
       <H2 id="tokens">Theme tokens</H2>
       <P>
         Components only reference semantic tokens, so a new palette never requires component
