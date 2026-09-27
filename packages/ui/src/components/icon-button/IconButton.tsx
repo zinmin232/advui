@@ -30,10 +30,11 @@ export const IconButton = forwardRef<TamaguiElement, IconButtonProps>(function I
   { icon, size: sizeProp, circular, variant: variantProp, ...props },
   ref,
 ) {
-  // Inside a ButtonGroup, take its size and variant unless set here.
+  // Inside a ButtonGroup, take its size and variant unless set here. Joined
+  // to Buttons, it matches their default variant, as in a split button.
   const group = useContext(ButtonGroupContext)
   const size = sizeProp ?? group?.size ?? 'md'
-  const variant = variantProp ?? group?.variant ?? 'ghost'
+  const variant = variantProp ?? group?.variant ?? (group?.attached ? 'default' : 'ghost')
   return (
     <Button
       ref={ref}
