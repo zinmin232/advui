@@ -10,7 +10,7 @@ export default function AspectRatioBasic() {
             uri: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=900&q=70',
           }}
           style={{ width: '100%', height: '100%' }}
-          accessibilityLabel="A road winding through a green valley"
+          accessibilityLabel="A desert road between red rock canyons"
         />
       </AspectRatio>
       <Text size="sm" tone="muted">
