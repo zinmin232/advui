@@ -75,7 +75,8 @@ export default defineMeta({
   platformNotes: {
     web: 'Pressable chips are native `<button>` elements.',
     ios: 'Touch targets are extended to 44pt with hit slop.',
-    android: 'Filter chips are announced as toggle buttons.',
+    android:
+      'Filter chips are announced as toggle buttons. With `androidRipple` (on in `material()`), presses show the native ripple.',
   },
   related: ['badge', 'toggle-group', 'button'],
 })

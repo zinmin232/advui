@@ -77,7 +77,8 @@ toast.success('Profile saved', { description: 'Your changes are live.' })`,
   platformNotes: {
     web: 'Stacked in the chosen corner; hover expands the stack.',
     ios: 'Rendered in-app with swipe-to-dismiss.',
-    android: 'Rendered in-app with swipe-to-dismiss.',
+    android:
+      'Rendered in-app with swipe-to-dismiss. With `androidRipple` (on in `material()`), presses show the native ripple.',
   },
   related: ['alert', 'snackbar'],
 })

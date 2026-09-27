@@ -159,7 +159,8 @@ export default defineMeta({
   platformNotes: {
     web: 'Floating menu next to the trigger with full keyboard support.',
     ios: 'Opens as a bottom sheet of large rows (native menus need a native module that Expo Go does not include). Shortcut hints are hidden.',
-    android: 'Same as iOS; the back gesture closes the sheet.',
+    android:
+      'Same as iOS; the back gesture closes the sheet. With `androidRipple` (on in `material()`), presses show the native ripple.',
   },
   related: ['popover', 'select', 'context-menu'],
 })

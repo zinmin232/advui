@@ -82,6 +82,13 @@ file: `pnpm --filter @advui/core exec vitest run src/components/button`.
   `defaultVariants`. Give props explicit defaults.
 - **Android `TextInput`** rejects animated styles, so fields must not have a
   `transition`.
+- **Platform files share an extension.** Pair `Foo.tsx` with
+  `Foo.native.tsx` (or `.ts` with `.native.ts`). Metro tries every platform
+  suffix for `.ts` before `.tsx`, so `Foo.ts` hides `Foo.native.tsx` on
+  Android and iOS, while Jest still finds the native file.
+- **Native portals drop React context.** Sheets (Select, Dropdown Menu) and
+  toasts render in portals that do not carry context on native. Read
+  app-wide settings from the Tamagui config (`getConfig()`) instead.
 - **Android zIndex** is 32-bit; keep portal z-indices at `zIndex.*` values
   (see `Toaster.tsx`).
 - **Tamagui `activeStyle`** is not applied on native; derive active styles from

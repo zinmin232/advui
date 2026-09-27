@@ -3,7 +3,7 @@
   "name": "hooks",
   "title": "Hooks",
   "type": "registry:lib",
-  "description": "Shared hooks: controllable state and reduced-motion detection.",
+  "description": "Shared hooks: controllable state, reduced-motion detection and the Android press ripple.",
   "files": [
     {
       "path": "hooks/useControllableState.ts",
@@ -19,12 +19,25 @@
       "path": "hooks/useReducedMotion.ts",
       "type": "registry:hook",
       "content": "import { useEffect, useState } from 'react'\n\nconst QUERY = '(prefers-reduced-motion: reduce)'\n\n/** `true` when the user asked the OS/browser to minimise motion. */\nexport function useReducedMotion(): boolean {\n  const [reduced, setReduced] = useState(false)\n\n  useEffect(() => {\n    if (typeof window === 'undefined' || !window.matchMedia) return\n    const query = window.matchMedia(QUERY)\n    const update = () => setReduced(query.matches)\n    update()\n    query.addEventListener('change', update)\n    return () => query.removeEventListener('change', update)\n  }, [])\n\n  return reduced\n}\n"
+    },
+    {
+      "path": "hooks/useRipple.native.tsx",
+      "type": "registry:hook",
+      "content": "import { getUniversalSettings } from '@advui/theme'\nimport { type ComponentRef, forwardRef, useMemo, useRef } from 'react'\nimport { Platform, StyleSheet, View, codegenNativeCommands, processColor } from 'react-native'\nimport { type ColorTokens, getConfig, useTheme } from 'tamagui'\nimport type { Ripple, RippleOptions } from './useRipple'\n\ntype Host = ComponentRef<typeof View>\n\ninterface ViewCommands {\n  hotspotUpdate: (view: Host, x: number, y: number) => void\n  setPressed: (view: Host, pressed: boolean) => void\n}\n\n// The view commands Pressable sends for `android_ripple`, created on first use.\nlet commands: ViewCommands | undefined\nconst viewCommands = () =>\n  (commands ??= codegenNativeCommands<ViewCommands>({\n    supportedCommands: ['hotspotUpdate', 'setPressed'],\n  }))\n\n// Material's pressed state layer is 10%. Android paints ripples below their\n// color's alpha, so Material Components and Compose pass double that; so do\n// we, to match native Material apps.\nconst RIPPLE_ALPHA = 0.2\n\ntype TouchEvent = {\n  nativeEvent?: { pageX?: number; pageY?: number; locationX?: number; locationY?: number }\n}\n\n// Where the ripple starts. `locationX/Y` are relative to the touched child\n// (such as the label), so measure from the ripple view when the host can.\nfunction hotspot(view: Host, event: unknown) {\n  const touch = (event as TouchEvent | undefined)?.nativeEvent\n  if (!touch) return null\n  const rect = (view as { getBoundingClientRect?: () => DOMRect }).getBoundingClientRect?.()\n  if (rect && touch.pageX !== undefined && touch.pageY !== undefined) {\n    return { x: touch.pageX - rect.left, y: touch.pageY - rect.top }\n  }\n  return { x: touch.locationX ?? 0, y: touch.locationY ?? 0 }\n}\n\nconst RippleHost = forwardRef<Host, { color: ColorTokens }>(function RippleHost({ color }, ref) {\n  const theme = useTheme()\n  const value = (theme[color.slice(1) as keyof typeof theme] as { val: string } | undefined)?.val\n  const background = useMemo(\n    () => ({\n      type: 'RippleAndroid',\n      color: processColor(value),\n      borderless: false,\n      // No rippleRadius key: Android reads it as a number when present.\n      alpha: RIPPLE_ALPHA,\n    }),\n    [value],\n  )\n  return (\n    <View\n      ref={ref}\n      pointerEvents=\"none\"\n      importantForAccessibility=\"no-hide-descendants\"\n      collapsable={false}\n      style={StyleSheet.absoluteFill}\n      // Not in View's public types: it is the prop Pressable's `android_ripple` sets.\n      {...{ nativeBackgroundAndroid: background }}\n    />\n  )\n})\n\nexport function useRipple({ color, disabled, onPressIn, onPressOut }: RippleOptions): Ripple {\n  // Read from the config rather than React context: sheets and toasts render\n  // through native portals that do not carry context.\n  const enabled =\n    Platform.OS === 'android' && !disabled && getUniversalSettings(getConfig()).androidRipple\n  const host = useRef<Host>(null)\n\n  if (!enabled) {\n    return {\n      active: false,\n      props: { ...(onPressIn && { onPressIn }), ...(onPressOut && { onPressOut }) },\n      element: null,\n    }\n  }\n\n  return {\n    active: true,\n    props: {\n      // Clips the ripple to the element's rounded corners. Android clips\n      // inside the border, so a transparent border leaves an unrippled ring.\n      overflow: 'hidden',\n      onPressIn: (event) => {\n        onPressIn?.(event)\n        const view = host.current\n        if (!view) return\n        const point = hotspot(view, event)\n        if (point) viewCommands().hotspotUpdate(view, point.x, point.y)\n        viewCommands().setPressed(view, true)\n      },\n      onPressOut: (event) => {\n        onPressOut?.(event)\n        if (host.current) viewCommands().setPressed(host.current, false)\n      },\n    },\n    element: <RippleHost ref={host} color={color} />,\n  }\n}\n"
+    },
+    {
+      "path": "hooks/useRipple.tsx",
+      "type": "registry:hook",
+      "content": "import type { ReactNode } from 'react'\nimport type { ColorTokens, GetProps, View } from 'tamagui'\n\ntype PressHandler = GetProps<typeof View>['onPressIn']\n\nexport interface RippleOptions {\n  /** Color of the content on the surface, e.g. `$primaryForeground`. */\n  color: ColorTokens\n  /** No ripple, e.g. while disabled or when the element is not pressable. */\n  disabled?: boolean\n  /** Your own handlers. They still run. */\n  onPressIn?: PressHandler\n  onPressOut?: PressHandler\n}\n\nexport interface Ripple {\n  /**\n   * The ripple replaces the pressed style, so drop your `pressStyle`\n   * background while this is true. It is clipped inside the border, so drop\n   * a transparent border too.\n   */\n  active: boolean\n  /** Spread on the pressable element, after its other props. */\n  props: { overflow?: 'hidden'; onPressIn?: PressHandler; onPressOut?: PressHandler }\n  /** Render as the first child of the pressable element. */\n  element: ReactNode\n}\n\n/**\n * The Android press ripple for your own pressables, drawn when the config has\n * `androidRipple` (as `material()` does). On web and iOS it does nothing.\n *\n * @example\n * const ripple = useRipple({ color: '$foreground', onPressIn, onPressOut })\n * <View onPress={open} {...ripple.props}>\n *   {ripple.element}\n *   <Text>Inbox</Text>\n * </View>\n */\nexport function useRipple({ onPressIn, onPressOut }: RippleOptions): Ripple {\n  return {\n    active: false,\n    props: { ...(onPressIn && { onPressIn }), ...(onPressOut && { onPressOut }) },\n    element: null,\n  }\n}\n"
     }
   ],
-  "dependencies": [],
+  "dependencies": [
+    "@advui/theme"
+  ],
   "peerDependencies": [
     "react",
-    "react-native"
+    "react-native",
+    "tamagui"
   ],
   "registryDependencies": [],
   "version": "0.1.0"

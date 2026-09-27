@@ -76,7 +76,8 @@ export default defineMeta({
   platformNotes: {
     web: 'Rendered in a portal above the page, like toasts.',
     ios: 'Rendered in a native portal; keep it above the home indicator by giving the app safe-area insets.',
-    android: 'Announced through a polite live region.',
+    android:
+      'Announced through a polite live region. With `androidRipple` (on in `material()`), presses show the native ripple.',
   },
   related: ['toast', 'alert', 'alert-dialog'],
 })

@@ -15,6 +15,7 @@ import {
   withStaticProperties,
 } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
+import { useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
 
 type TabsVariant = 'pills' | 'underline'
@@ -169,11 +170,17 @@ const activeStyles = {
 } as const
 
 const TabsTrigger = forwardRef<TamaguiElement, TabsTriggerProps>(function TabsTrigger(
-  { children, icon, ...props },
+  { children, icon, onPressIn, onPressOut, ...props },
   ref,
 ) {
   const { variant } = TabsStyleContext.useStyledContext()
   const active = useContext(ActiveValueContext) === props.value
+  const ripple = useRipple({
+    color: '$foreground',
+    disabled: props.disabled ?? false,
+    onPressIn,
+    onPressOut,
+  })
   return (
     // Active styles come from our own context: Tamagui's `activeStyle` is not
     // applied on native.
@@ -182,7 +189,9 @@ const TabsTrigger = forwardRef<TamaguiElement, TabsTriggerProps>(function TabsTr
       variant={variant}
       {...(active ? activeStyles[variant] : null)}
       {...props}
+      {...ripple.props}
     >
+      {ripple.element}
       <IconDefaults size={16} color={active ? '$foreground' : '$mutedForeground'}>
         {icon}
         {isTextContent(children) ? (

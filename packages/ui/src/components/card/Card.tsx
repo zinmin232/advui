@@ -1,6 +1,14 @@
 import { shadows } from '@advui/theme'
 import { forwardRef } from 'react'
-import { type GetProps, type TamaguiTextElement, View, styled, withStaticProperties } from 'tamagui'
+import {
+  type GetProps,
+  type TamaguiElement,
+  type TamaguiTextElement,
+  View,
+  styled,
+  withStaticProperties,
+} from 'tamagui'
+import { useRipple } from '../../hooks/useRipple'
 import { Text } from '../typography/Text'
 
 const CardFrame = styled(View, {
@@ -86,11 +94,39 @@ const CardFooter = styled(View, {
   $sm: { padding: '$6', paddingTop: '$0' },
 })
 
+const CardImpl = forwardRef<TamaguiElement, GetProps<typeof CardFrame>>(function Card(
+  { children, onPressIn, onPressOut, ...props },
+  ref,
+) {
+  const ripple = useRipple({
+    color: '$cardForeground',
+    disabled: !props.interactive || !props.onPress,
+    onPressIn,
+    onPressOut,
+  })
+  return (
+    <CardFrame
+      ref={ref}
+      {...(ripple.active && {
+        // The ripple is the press feedback, so the card does not also shrink.
+        pressStyle: { scale: 1, opacity: 1 },
+        // It is clipped inside the border: drop a transparent one.
+        ...((props.variant === 'filled' || props.variant === 'ghost') && { borderWidth: 0 }),
+      })}
+      {...props}
+      {...ripple.props}
+    >
+      {ripple.element}
+      {children}
+    </CardFrame>
+  )
+})
+
 /**
  * Groups related content. Compose with `Card.Header`, `Card.Title`,
  * `Card.Description`, `Card.Content` and `Card.Footer`.
  */
-export const Card = withStaticProperties(CardFrame, {
+export const Card = withStaticProperties(CardImpl, {
   Header: CardHeader,
   Title: CardTitle,
   Description: CardDescription,

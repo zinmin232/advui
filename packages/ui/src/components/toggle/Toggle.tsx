@@ -2,6 +2,7 @@ import { IconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
 import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
+import { type RippleOptions, useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
 
 export type ToggleVariant = 'default' | 'outline'
@@ -105,6 +106,21 @@ export function ToggleLabel({
   )
 }
 
+/** The Android ripple for toggles; the fill stays as it is while pressed. */
+export function useToggleRipple(
+  on: boolean,
+  variant: ToggleVariant,
+  options: Omit<RippleOptions, 'color'>,
+) {
+  const ripple = useRipple({ color: on ? '$primarySoftForeground' : '$foreground', ...options })
+  const style = {
+    pressStyle: { backgroundColor: on ? '$primarySoft' : 'transparent' },
+    // The ripple is clipped inside the border, so drop the transparent one.
+    ...(variant === 'default' && { borderWidth: 0 }),
+  } as const
+  return { ...ripple, style: ripple.active ? style : null }
+}
+
 type FrameProps = GetProps<typeof ToggleFrame>
 
 export interface ToggleProps extends Omit<FrameProps, 'variant' | 'size' | 'on' | 'children'> {
@@ -134,6 +150,8 @@ export const Toggle = forwardRef<TamaguiElement, ToggleProps>(function Toggle(
     icon,
     children,
     onPress,
+    onPressIn,
+    onPressOut,
     ...props
   },
   ref,
@@ -143,6 +161,7 @@ export const Toggle = forwardRef<TamaguiElement, ToggleProps>(function Toggle(
     defaultValue: defaultPressed,
     onChange: onPressedChange,
   })
+  const ripple = useToggleRipple(pressed, variant, { disabled, onPressIn, onPressOut })
 
   return (
     <ToggleFrame
@@ -165,8 +184,11 @@ export const Toggle = forwardRef<TamaguiElement, ToggleProps>(function Toggle(
         onPress?.(event)
         if (!disabled) setPressed(!pressed)
       }}
+      {...ripple.style}
       {...props}
+      {...ripple.props}
     >
+      {ripple.element}
       <ToggleLabel on={pressed} size={size} icon={icon}>
         {children}
       </ToggleLabel>

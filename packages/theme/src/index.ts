@@ -1,5 +1,11 @@
 export { animations } from './animations'
-export { createUniversalConfig, type UniversalConfig, type UniversalConfigOptions } from './config'
+export {
+  createUniversalConfig,
+  getUniversalSettings,
+  type UniversalConfig,
+  type UniversalConfigOptions,
+  type UniversalSettings,
+} from './config'
 export { createUniversalFonts, fontScales, type FontFamilies, type FontScale } from './fonts'
 export { breakpoints, media, mediaQueryDefaultActive } from './media'
 export {

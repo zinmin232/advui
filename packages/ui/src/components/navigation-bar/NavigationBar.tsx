@@ -9,6 +9,7 @@ import {
   withStaticProperties,
 } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
+import { useRipple } from '../../hooks/useRipple'
 
 type BarState = { value: string; select: (value: string) => void }
 
@@ -81,7 +82,18 @@ function badgeText(badge: number | boolean | undefined) {
 
 const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
   function NavigationBarItem(
-    { value, icon, label, badge, render, disabled = false, onPress, ...props },
+    {
+      value,
+      icon,
+      label,
+      badge,
+      render,
+      disabled = false,
+      onPress,
+      onPressIn,
+      onPressOut,
+      ...props
+    },
     ref,
   ) {
     const bar = useContext(BarContext)
@@ -89,6 +101,12 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
     const active = bar.value === value
     const count = badgeText(badge)
     const name = count === null ? label : count === '' ? `${label}, new` : `${label}, ${count} new`
+    const ripple = useRipple({
+      color: active ? '$secondaryForeground' : '$foreground',
+      disabled,
+      onPressIn,
+      onPressOut,
+    })
 
     const semantics = isWeb
       ? {
@@ -132,6 +150,7 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
           bar.select(value)
         }}
         {...props}
+        {...ripple.props}
       >
         <View
           width="$16"
@@ -155,6 +174,21 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
             opacity={active ? 1 : 0}
             hoverStyle={{ opacity: active ? 1 : 0.6 }}
           />
+          {/* Material draws the press ripple in the indicator's pill shape. */}
+          {ripple.element ? (
+            <View
+              aria-hidden
+              position="absolute"
+              top={0}
+              right={0}
+              bottom={0}
+              left={0}
+              borderRadius="$full"
+              overflow="hidden"
+            >
+              {ripple.element}
+            </View>
+          ) : null}
           <IconDefaults size={24} color={active ? '$secondaryForeground' : '$mutedForeground'}>
             {icon}
           </IconDefaults>

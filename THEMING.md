@@ -70,6 +70,14 @@ export const config = createUniversalConfig({
   cards and 28px dialogs and sheets.
 - **Type:** Roboto on web (load it yourself, e.g. from Google Fonts); the
   platform font on iOS and Android.
+- **Press ripple (Android):** buttons, icon buttons, toggles, chips, the FAB,
+  tabs, navigation bar items, accordion triggers, menu and select rows,
+  interactive cards and snackbar and toast actions show Android's native
+  ripple, starting where the finger lands. It replaces the pressed color, so
+  there is one press state, as in native Material apps. Web and iOS keep their
+  press colors. Turn it off with `material({ androidRipple: false })`, or on
+  for any theme with `createUniversalConfig({ androidRipple: true })`. For
+  your own pressables, use `useRipple()` from `@advui/core`.
 - `createMaterialThemes({ seed })` returns just the light and dark themes, for
   runtime swaps with `updateTheme`.
 - `material.test.ts` runs the same WCAG AA contrast checks as the presets, for

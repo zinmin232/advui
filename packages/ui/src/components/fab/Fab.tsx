@@ -2,6 +2,7 @@ import { IconDefaults } from '@advui/icons'
 import { shadows } from '@advui/theme'
 import { type ReactNode, forwardRef } from 'react'
 import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui'
+import { useRipple } from '../../hooks/useRipple'
 
 export type FabVariant = 'soft' | 'primary' | 'secondary' | 'surface'
 export type FabSize = 'sm' | 'md' | 'lg'
@@ -12,6 +13,14 @@ const foreground = {
   primary: '$primaryForeground',
   secondary: '$secondaryForeground',
   surface: '$primaryText',
+} as const satisfies Record<FabVariant, `$${string}`>
+
+// Resting fill per variant, kept while pressed when the Android ripple is on.
+const background = {
+  soft: '$primarySoft',
+  primary: '$primary',
+  secondary: '$secondary',
+  surface: '$card',
 } as const satisfies Record<FabVariant, `$${string}`>
 
 const iconSizes: Record<FabSize, number> = { sm: 20, md: 24, lg: 36 }
@@ -109,11 +118,22 @@ export interface FabProps extends Omit<
  * content. Use one per screen; add `label` when the icon alone is unclear.
  */
 export const Fab = forwardRef<TamaguiElement, FabProps>(function Fab(
-  { icon, label, variant = 'soft', size = 'md', placement, disabled = false, ...props },
+  {
+    icon,
+    label,
+    variant = 'soft',
+    size = 'md',
+    placement,
+    disabled = false,
+    onPressIn,
+    onPressOut,
+    ...props
+  },
   ref,
 ) {
   const color = foreground[variant]
   const extended = label !== undefined
+  const ripple = useRipple({ color, disabled, onPressIn, onPressOut })
   return (
     <FabFrame
       ref={ref}
@@ -124,8 +144,11 @@ export const Fab = forwardRef<TamaguiElement, FabProps>(function Fab(
       disabled={disabled}
       aria-disabled={disabled || undefined}
       {...(isWeb ? { type: 'button' } : null)}
+      {...(ripple.active && { pressStyle: { backgroundColor: background[variant] } })}
       {...props}
+      {...ripple.props}
     >
+      {ripple.element}
       <IconDefaults size={extended ? 24 : iconSizes[size]} color={color}>
         {icon}
         {extended ? (

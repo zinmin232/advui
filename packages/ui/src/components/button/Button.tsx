@@ -10,6 +10,7 @@ import {
   styled,
   withStaticProperties,
 } from 'tamagui'
+import { useRipple } from '../../hooks/useRipple'
 import { Spinner } from '../spinner'
 import { isTextContent } from '../../utils/isTextContent'
 
@@ -30,6 +31,16 @@ export const buttonForeground = {
   destructive: '$destructiveForeground',
   link: '$primaryText',
 } as const satisfies Record<ButtonVariant, `${string}`>
+
+// Resting fill per variant, kept while pressed when the Android ripple is on.
+const buttonBackground = {
+  default: '$primary',
+  secondary: '$secondary',
+  outline: '$background',
+  ghost: 'transparent',
+  destructive: '$destructive',
+  link: 'transparent',
+} as const satisfies Record<ButtonVariant, string>
 
 const iconSizes: Record<ButtonSize, number> = { sm: 14, md: 16, lg: 18, icon: 16 }
 
@@ -170,12 +181,21 @@ const ButtonImpl = forwardRef<TamaguiElement, ButtonProps>(function Button(
     icon,
     iconAfter,
     children,
+    onPressIn,
+    onPressOut,
     ...props
   },
   ref,
 ) {
   const inactive = disabled || loading
   const foreground = buttonForeground[variant]
+  // Material gives text links no ripple, so links keep their own press style.
+  const ripple = useRipple({
+    color: foreground,
+    disabled: inactive || variant === 'link',
+    onPressIn,
+    onPressOut,
+  })
   const content = isTextContent(children) ? <ButtonText>{children}</ButtonText> : children
 
   return (
@@ -188,8 +208,16 @@ const ButtonImpl = forwardRef<TamaguiElement, ButtonProps>(function Button(
       aria-busy={loading || undefined}
       hitSlop={isWeb ? undefined : nativeHitSlop[size]}
       {...(isWeb ? { type: 'button' } : null)}
+      {...(ripple.active && {
+        pressStyle: { backgroundColor: buttonBackground[variant] },
+        // The ripple is clipped inside the border: drop the transparent one
+        // so it reaches the edge. Outline buttons keep their visible border.
+        ...(variant !== 'outline' && { borderWidth: 0 }),
+      })}
       {...props}
+      {...ripple.props}
     >
+      {ripple.element}
       <IconDefaults size={iconSizes[size]} color={foreground}>
         {loading ? <Spinner size="sm" color={foreground} label="Loading" /> : icon}
         {content}

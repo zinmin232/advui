@@ -14,6 +14,7 @@ import {
   withStaticProperties,
 } from 'tamagui'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { useRipple } from '../../hooks/useRipple'
 import { Text } from '../typography/Text'
 import { isTextContent } from '../../utils/isTextContent'
 
@@ -88,10 +89,11 @@ export interface AccordionTriggerProps extends Omit<TamaguiAccordionTriggerProps
 }
 
 const AccordionTrigger = forwardRef<TamaguiElement, AccordionTriggerProps>(
-  function AccordionTrigger({ children, level = 3, ...props }, ref) {
+  function AccordionTrigger({ children, level = 3, onPressIn, onPressOut, ...props }, ref) {
     const { variant } = AccordionStyleContext.useStyledContext()
     const reducedMotion = useReducedMotion()
     const { disabled, contentId } = useContext(ItemContext)
+    const ripple = useRipple({ color: '$foreground', disabled, onPressIn, onPressOut })
 
     const trigger = (
       <TamaguiAccordion.Trigger
@@ -112,7 +114,7 @@ const AccordionTrigger = forwardRef<TamaguiElement, AccordionTriggerProps>(
         cursor={disabled ? 'not-allowed' : 'pointer'}
         opacity={disabled ? 0.5 : 1}
         hoverStyle={disabled ? undefined : { backgroundColor: '$muted' }}
-        pressStyle={disabled ? undefined : { backgroundColor: '$accent' }}
+        pressStyle={disabled || ripple.active ? undefined : { backgroundColor: '$accent' }}
         focusVisibleStyle={{
           outlineColor: '$ring',
           outlineStyle: 'solid',
@@ -122,9 +124,11 @@ const AccordionTrigger = forwardRef<TamaguiElement, AccordionTriggerProps>(
         // On web the trigger renders a <button>; native needs the role spelled out.
         {...(!isWeb && { role: 'button', accessible: true })}
         {...props}
+        {...ripple.props}
       >
         {({ open }: { open: boolean }) => (
           <>
+            {ripple.element}
             {isTextContent(children) ? (
               <Text size="sm" weight="medium" flex={1} textAlign="left">
                 {children}

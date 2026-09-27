@@ -4,6 +4,7 @@ import { type ReactNode, useEffect, useRef, useState } from 'react'
 import { AccessibilityInfo, Platform } from 'react-native'
 import { Portal, Text, View, isWeb } from 'tamagui'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { useRipple } from '../../hooks/useRipple'
 
 export interface SnackbarAction {
   label: string
@@ -46,6 +47,8 @@ export function Snackbar({
   const closable = showClose ?? timeout === null
   const close = useRef(onOpenChange)
   close.current = onOpenChange
+  const actionRipple = useRipple({ color: '$inversePrimary', disabled: !action })
+  const closeRipple = useRipple({ color: '$background', disabled: !closable })
 
   useEffect(() => {
     if (!open || paused || timeout === null) return
@@ -122,7 +125,7 @@ export function Snackbar({
                 borderRadius="$button"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.85 }}
-                pressStyle={{ opacity: 0.7 }}
+                pressStyle={actionRipple.active ? undefined : { opacity: 0.7 }}
                 focusVisibleStyle={{
                   outlineColor: '$inversePrimary',
                   outlineStyle: 'solid',
@@ -135,7 +138,9 @@ export function Snackbar({
                   action.onPress()
                   onOpenChange(false)
                 }}
+                {...actionRipple.props}
               >
+                {actionRipple.element}
                 <Text
                   fontFamily="$body"
                   fontSize="$2"
@@ -168,7 +173,9 @@ export function Snackbar({
                   ? { type: 'button', borderWidth: 0, backgroundColor: 'transparent' }
                   : { accessible: true, hitSlop: 6 })}
                 onPress={() => onOpenChange(false)}
+                {...closeRipple.props}
               >
+                {closeRipple.element}
                 <XIcon size={18} color="$background" />
               </View>
             ) : null}

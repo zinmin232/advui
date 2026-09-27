@@ -35,6 +35,8 @@ export interface MaterialOptions {
   colors?: { success?: string; warning?: string; info?: string }
   /** Escape hatch: override any generated value per mode. */
   overrides?: Partial<Record<ColorMode, Partial<ThemeValues>>>
+  /** Android: show the native ripple when something is pressed. Default: true. */
+  androidRipple?: boolean
 }
 
 const defaultStatus = { success: '#2e7d32', warning: '#b26a00', info: '#0061a4' }
@@ -247,7 +249,8 @@ export const materialFonts: FontFamilies = { body: roboto, heading: roboto }
 
 /**
  * Options for `createUniversalConfig` that give every component the Material 3
- * look: color roles from `seed`, Material's shapes and Roboto.
+ * look: color roles from `seed`, Material's shapes, Roboto and, on Android,
+ * the press ripple.
  *
  * @example
  * import { createUniversalConfig } from '@advui/theme'
@@ -256,5 +259,10 @@ export const materialFonts: FontFamilies = { body: roboto, heading: roboto }
  * export const config = createUniversalConfig(material({ seed: '#6750A4' }))
  */
 export function material(options: MaterialOptions = {}): UniversalConfigOptions {
-  return { themes: createMaterialThemes(options), radius: materialShape, fonts: materialFonts }
+  return {
+    themes: createMaterialThemes(options),
+    radius: materialShape,
+    fonts: materialFonts,
+    androidRipple: options.androidRipple ?? true,
+  }
 }

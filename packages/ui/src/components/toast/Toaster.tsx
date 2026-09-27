@@ -14,8 +14,9 @@ import {
   toast,
 } from '@tamagui/toast/v2'
 import type { ReactNode } from 'react'
-import { View } from 'tamagui'
+import { View, isWeb } from 'tamagui'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { useRipple } from '../../hooks/useRipple'
 import { Spinner } from '../spinner'
 import { Text } from '../typography/Text'
 
@@ -48,6 +49,11 @@ function ToastContent({ item, onClose }: { item: ToastT; onClose: () => void }) 
   const title = typeof item.title === 'function' ? item.title() : item.title
   const description = typeof item.description === 'function' ? item.description() : item.description
   const icon = item.icon ?? typeIcon[type]
+  const actionRipple = useRipple({ color: '$primaryForeground', disabled: !item.action })
+  const closeRipple = useRipple({
+    color: '$mutedForeground',
+    disabled: item.dismissible === false,
+  })
 
   return (
     <View flexDirection="row" alignItems="flex-start" gap="$3">
@@ -79,11 +85,15 @@ function ToastContent({ item, onClose }: { item: ToastT; onClose: () => void }) 
               justifyContent="center"
               cursor="pointer"
               hoverStyle={{ backgroundColor: '$primaryHover' }}
+              // Tamagui's action frame presses to a neutral gray; keep it primary.
+              pressStyle={{ backgroundColor: actionRipple.active ? '$primary' : '$primaryPress' }}
               onPress={(event) => {
                 item.action?.onClick?.(event as never)
                 onClose()
               }}
+              {...actionRipple.props}
             >
+              {actionRipple.element}
               <Text size="sm" weight="medium" color="$primaryForeground">
                 {item.action.label}
               </Text>
@@ -92,18 +102,30 @@ function ToastContent({ item, onClose }: { item: ToastT; onClose: () => void }) 
         ) : null}
       </View>
       {item.dismissible === false ? null : (
-        <Toast.Close
+        // A plain button rather than Toast.Close, which does not pass press
+        // handlers through (the Android ripple needs them).
+        <View
+          render="button"
+          role="button"
           aria-label="Dismiss notification"
           width="$6"
           height="$6"
-          borderWidth={0}
-          backgroundColor="transparent"
+          alignItems="center"
+          justifyContent="center"
           borderRadius="$sm"
           cursor="pointer"
           hoverStyle={{ backgroundColor: '$accent' }}
+          pressStyle={closeRipple.active ? undefined : { backgroundColor: '$accentHover' }}
+          focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
+          {...(isWeb
+            ? { type: 'button', padding: 0, borderWidth: 0, backgroundColor: 'transparent' }
+            : { accessible: true, hitSlop: 10 })}
+          onPress={onClose}
+          {...closeRipple.props}
         >
+          {closeRipple.element}
           <XIcon size={14} color="$mutedForeground" />
-        </Toast.Close>
+        </View>
       )}
     </View>
   )

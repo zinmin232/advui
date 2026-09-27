@@ -22,6 +22,7 @@ import {
   withStaticProperties,
 } from 'tamagui'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { useRipple } from '../../hooks/useRipple'
 import { fieldBoxStyle } from '../input/Input'
 
 const Trigger = styled(TamaguiSelect.Trigger, {
@@ -118,9 +119,29 @@ export interface SelectItemProps extends Omit<GetProps<typeof ItemFrame>, 'index
   index?: number
 }
 
-function SelectItem({ value, children, index = 0, ...props }: SelectItemProps) {
+function SelectItem({
+  value,
+  children,
+  index = 0,
+  onPressIn,
+  onPressOut,
+  ...props
+}: SelectItemProps) {
+  const ripple = useRipple({
+    color: '$popoverForeground',
+    disabled: props.disabled ?? false,
+    onPressIn,
+    onPressOut,
+  })
   return (
-    <ItemFrame value={value} index={index} {...props}>
+    <ItemFrame
+      value={value}
+      index={index}
+      {...(ripple.active && { pressStyle: { backgroundColor: 'transparent' } })}
+      {...props}
+      {...ripple.props}
+    >
+      {ripple.element}
       <ItemText>{children}</ItemText>
       <TamaguiSelect.ItemIndicator>
         <CheckIcon size={16} color="$primary" />

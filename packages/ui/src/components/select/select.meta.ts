@@ -94,7 +94,8 @@ export default defineMeta({
   platformNotes: {
     web: 'Server-renders a static trigger and mounts the interactive select after hydration (avoids SSR mismatches).',
     ios: 'Opens in a bottom sheet (Tamagui Sheet).',
-    android: 'Opens in a bottom sheet; back button closes it.',
+    android:
+      'Opens in a bottom sheet; back button closes it. With `androidRipple` (on in `material()`), presses show the native ripple.',
   },
   related: ['radio-group', 'combobox'],
 })

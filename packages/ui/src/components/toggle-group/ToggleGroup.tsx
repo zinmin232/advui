@@ -22,6 +22,7 @@ import {
   type ToggleSize,
   type ToggleVariant,
   toggleHitSlop,
+  useToggleRipple,
 } from '../toggle/Toggle'
 
 type GroupState = {
@@ -179,7 +180,7 @@ export interface ToggleGroupItemProps extends Omit<
 }
 
 const ToggleGroupItem = forwardRef<TamaguiElement, ToggleGroupItemProps>(function ToggleGroupItem(
-  { value, disabled: itemDisabled, icon, children, ...props },
+  { value, disabled: itemDisabled, icon, children, onPressIn, onPressOut, ...props },
   ref,
 ) {
   const group = useContext(GroupContext)
@@ -187,6 +188,7 @@ const ToggleGroupItem = forwardRef<TamaguiElement, ToggleGroupItemProps>(functio
   const on = group.values.includes(value)
   const disabled = group.disabled || !!itemDisabled
   const single = group.type === 'single'
+  const ripple = useToggleRipple(on, group.variant, { disabled, onPressIn, onPressOut })
 
   const semantics = isWeb
     ? single
@@ -221,8 +223,11 @@ const ToggleGroupItem = forwardRef<TamaguiElement, ToggleGroupItemProps>(functio
       onPress={() => {
         if (!disabled) group.press(value)
       }}
+      {...ripple.style}
       {...props}
+      {...ripple.props}
     >
+      {ripple.element}
       <ToggleLabel on={on} size={group.size} icon={icon}>
         {children}
       </ToggleLabel>
