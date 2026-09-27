@@ -1,6 +1,6 @@
 {
   "name": "advui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "CLI to add Adv UI components to your project (shadcn-style source installation).",
   "license": "MIT",
   "repository": {

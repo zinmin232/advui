@@ -7,6 +7,8 @@ one version.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-27
+
 ### Added
 
 - **Android press ripple**: with `androidRipple` in the config (on in
