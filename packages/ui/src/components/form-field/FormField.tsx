@@ -14,6 +14,7 @@ type ControlProps = {
   disabled?: boolean
   'aria-describedby'?: string
   'aria-required'?: boolean
+  'aria-label'?: string
   accessibilityHint?: string
 }
 
@@ -55,6 +56,10 @@ export const FormField = forwardRef<TamaguiElement, FormFieldProps>(function For
     ...(hasError && { invalid: true }),
     ...(disabled && { disabled: true }),
     ...(required && { 'aria-required': true }),
+    // Native: a Label's htmlFor only moves focus, so name the control directly.
+    ...(!isWeb &&
+      typeof label === 'string' &&
+      children.props['aria-label'] === undefined && { 'aria-label': label }),
     ...(describedBy &&
       (isWeb
         ? { 'aria-describedby': describedBy }

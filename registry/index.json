@@ -88,6 +88,24 @@
       "registryDependencies": []
     },
     {
+      "name": "autocomplete",
+      "title": "Autocomplete",
+      "type": "registry:component",
+      "description": "A text field with suggestions; any text is a valid value.",
+      "category": "forms",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons",
+        "@advui/theme",
+        "@tamagui/floating"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "input",
+        "typography"
+      ]
+    },
+    {
       "name": "avatar",
       "title": "Avatar",
       "type": "registry:component",
@@ -233,6 +251,25 @@
       "dependencies": [],
       "registryDependencies": [
         "hooks"
+      ]
+    },
+    {
+      "name": "combobox",
+      "title": "Combobox",
+      "type": "registry:component",
+      "description": "A select you can type in to filter long lists of options.",
+      "category": "forms",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons",
+        "@advui/theme",
+        "@tamagui/floating"
+      ],
+      "registryDependencies": [
+        "autocomplete",
+        "hooks",
+        "input",
+        "typography"
       ]
     },
     {
@@ -488,6 +525,27 @@
       "registryDependencies": [
         "hooks",
         "typography"
+      ]
+    },
+    {
+      "name": "multi-select",
+      "title": "Multi Select",
+      "type": "registry:component",
+      "description": "Pick several options from a searchable list; picks show as chips.",
+      "category": "forms",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons",
+        "@advui/theme",
+        "@tamagui/floating"
+      ],
+      "registryDependencies": [
+        "autocomplete",
+        "chip",
+        "hooks",
+        "input",
+        "typography",
+        "utils"
       ]
     },
     {

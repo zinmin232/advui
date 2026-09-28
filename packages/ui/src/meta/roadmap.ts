@@ -13,9 +13,6 @@ export interface RoadmapItem {
 }
 
 export const roadmap: RoadmapItem[] = [
-  { name: 'Multi Select', slug: 'multi-select', category: 'forms', phase: 3 },
-  { name: 'Combobox', slug: 'combobox', category: 'forms', phase: 3 },
-  { name: 'Autocomplete', slug: 'autocomplete', category: 'forms', phase: 3 },
 
   { name: 'Pagination', slug: 'pagination', category: 'navigation', phase: 4 },
   { name: 'Navigation Menu', slug: 'navigation-menu', category: 'navigation', phase: 4 },

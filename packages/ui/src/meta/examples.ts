@@ -7,6 +7,7 @@ import AlertDialogBasic from '../components/alert-dialog/examples/basic'
 import AlertDialogAsync from '../components/alert-dialog/examples/async'
 import AspectRatioBasic from '../components/aspect-ratio/examples/basic'
 import AspectRatioRatios from '../components/aspect-ratio/examples/ratios'
+import AutocompleteBasic from '../components/autocomplete/examples/basic'
 import AvatarBasic from '../components/avatar/examples/basic'
 import AvatarSizes from '../components/avatar/examples/sizes'
 import AvatarGroup from '../components/avatar/examples/group'
@@ -37,6 +38,7 @@ import CircularProgressBasic from '../components/circular-progress/examples/basi
 import CircularProgressSizes from '../components/circular-progress/examples/sizes'
 import CollapsibleBasic from '../components/collapsible/examples/basic'
 import CollapsibleSettings from '../components/collapsible/examples/settings'
+import ComboboxBasic from '../components/combobox/examples/basic'
 import ContainerContainer from '../components/layout/examples/container'
 import ContextMenuBasic from '../components/context-menu/examples/basic'
 import ContextMenuList from '../components/context-menu/examples/list'
@@ -66,6 +68,7 @@ import InputStates from '../components/input/examples/states'
 import LabelBasic from '../components/label/examples/basic'
 import MenuBasic from '../components/menu/examples/basic'
 import MenuActions from '../components/menu/examples/actions'
+import MultiSelectBasic from '../components/multi-select/examples/basic'
 import NavigationBarBasic from '../components/navigation-bar/examples/basic'
 import NumberInputBasic from '../components/number-input/examples/basic'
 import NumberInputDecimal from '../components/number-input/examples/decimal'
@@ -123,6 +126,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': AspectRatioBasic,
     'ratios': AspectRatioRatios,
   },
+  'autocomplete': {
+    'basic': AutocompleteBasic,
+  },
   'avatar': {
     'basic': AvatarBasic,
     'sizes': AvatarSizes,
@@ -174,6 +180,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'collapsible': {
     'basic': CollapsibleBasic,
     'settings': CollapsibleSettings,
+  },
+  'combobox': {
+    'basic': ComboboxBasic,
   },
   'container': {
     'container': ContainerContainer,
@@ -237,6 +246,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'menu': {
     'basic': MenuBasic,
     'actions': MenuActions,
+  },
+  'multi-select': {
+    'basic': MultiSelectBasic,
   },
   'navigation-bar': {
     'basic': NavigationBarBasic,
