@@ -79,7 +79,8 @@ Packages are versioned together.
 
 1. Move the _Unreleased_ entries to a version section in `CHANGELOG.md`.
 2. Bump `version` in the published packages (`core`, `theme`, `icons`, `utils`,
-   `cli`) and in `apps/docs/src/lib/site.ts`.
+   `cli`) and in `apps/docs/src/lib/site.ts`, then run `pnpm registry:build`:
+   every registry item records the version.
 3. Commit, then check what would be published: `pnpm release:check`. Each
    package rebuilds its `dist/` first (`prepack`), and `publishConfig` points
    the entry points there.
