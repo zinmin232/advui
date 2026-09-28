@@ -18,10 +18,14 @@ import { Checkbox } from './checkbox/Checkbox'
 import { Chip } from './chip/Chip'
 import { CircularProgress } from './circular-progress/CircularProgress'
 import { Collapsible } from './collapsible/Collapsible'
+import { ContextMenu } from './context-menu/ContextMenu'
+import { Drawer } from './drawer/Drawer'
 import { DropdownMenu } from './dropdown-menu/DropdownMenu'
 import { Fab } from './fab/Fab'
+import { HoverCard } from './hover-card/HoverCard'
 import { IconButton } from './icon-button/IconButton'
 import { Input } from './input/Input'
+import { Menu } from './menu/Menu'
 import { NavigationBar } from './navigation-bar/NavigationBar'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
@@ -270,6 +274,103 @@ describe('native rendering', () => {
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeOnTheScreen()
     await fireEvent.press(screen.getByRole('button', { name: 'Close' }))
     expect(onOpenChange).toHaveBeenLastCalledWith(false)
+  })
+
+  it('Menu items are accessible rows that select, including via the activate action', async () => {
+    const onValueChange = jest.fn()
+    const onArchive = jest.fn()
+    await renderNative(
+      <Menu aria-label="Mailboxes" defaultValue="inbox" onValueChange={onValueChange}>
+        <Menu.Group label="Mail">
+          <Menu.Item value="inbox">Inbox</Menu.Item>
+          <Menu.Item value="sent">Sent</Menu.Item>
+          <Menu.Item value="spam" disabled>
+            Spam
+          </Menu.Item>
+        </Menu.Group>
+        <Menu.Item onSelect={onArchive}>Archive all</Menu.Item>
+      </Menu>,
+    )
+    expect(screen.getByRole('heading', { name: 'Mail' })).toBeOnTheScreen()
+    expect(screen.getByRole('menuitem', { name: 'Inbox' })).toBeSelected()
+    await fireEvent.press(screen.getByRole('menuitem', { name: 'Sent' }))
+    expect(onValueChange).toHaveBeenLastCalledWith('sent')
+    expect(screen.getByRole('menuitem', { name: 'Sent' })).toBeSelected()
+    expect(screen.getByRole('menuitem', { name: 'Inbox' })).not.toBeSelected()
+    await fireEvent(screen.getByRole('menuitem', { name: 'Archive all' }), 'accessibilityAction', {
+      nativeEvent: { actionName: 'activate' },
+    })
+    expect(onArchive).toHaveBeenCalledTimes(1)
+    const spam = screen.getByRole('menuitem', { name: 'Spam' })
+    expect(spam).toBeDisabled()
+    await fireEvent.press(spam)
+    expect(onValueChange).not.toHaveBeenCalledWith('spam')
+  })
+
+  it('ContextMenu opens its sheet on long-press and from the accessibility action', async () => {
+    const onRename = jest.fn()
+    await renderNative(
+      <ContextMenu>
+        <ContextMenu.Trigger testID="row">
+          <Text>Report.pdf</Text>
+        </ContextMenu.Trigger>
+        <ContextMenu.Content>
+          <ContextMenu.Item onSelect={onRename}>Rename</ContextMenu.Item>
+        </ContextMenu.Content>
+      </ContextMenu>,
+    )
+    expect(screen.queryByRole('menuitem', { name: 'Rename' })).toBeNull()
+    const row = screen.getByTestId('row')
+    expect(row.props.accessibilityHint).toBe('Long press for options')
+    await fireEvent(row, 'longPress')
+    await fireEvent.press(screen.getByRole('menuitem', { name: 'Rename' }))
+    expect(onRename).toHaveBeenCalledTimes(1)
+    expect(screen.queryByRole('menuitem', { name: 'Rename' })).toBeNull()
+
+    // VoiceOver / TalkBack users reach it through the "long press" action.
+    await fireEvent(row, 'accessibilityAction', { nativeEvent: { actionName: 'longpress' } })
+    expect(screen.getByRole('menuitem', { name: 'Rename' })).toBeOnTheScreen()
+  })
+
+  it('Drawer opens a dialog from the trigger and closes from the × button', async () => {
+    const onOpenChange = jest.fn()
+    await renderNative(
+      <Drawer onOpenChange={onOpenChange}>
+        <Drawer.Trigger asChild>
+          <Button>Filters</Button>
+        </Drawer.Trigger>
+        <Drawer.Content side="left">
+          <Drawer.Title>Filter results</Drawer.Title>
+          <Drawer.Body>
+            <Text>Category</Text>
+          </Drawer.Body>
+        </Drawer.Content>
+      </Drawer>,
+    )
+    expect(screen.queryByText('Filter results')).toBeNull()
+    await fireEvent.press(screen.getByRole('button', { name: 'Filters' }))
+    let node: { props: { role?: string }; parent: unknown } | null =
+      await screen.findByText('Filter results')
+    while (node && node.props.role !== 'dialog') node = node.parent as typeof node
+    expect(node?.props.role).toBe('dialog')
+    expect(screen.getByText('Category')).toBeOnTheScreen()
+    await fireEvent.press(screen.getByRole('button', { name: 'Close' }))
+    expect(onOpenChange).toHaveBeenLastCalledWith(false)
+  })
+
+  it('HoverCard renders only its trigger (touch has no hover)', async () => {
+    await renderNative(
+      <HoverCard defaultOpen>
+        <HoverCard.Trigger>
+          <Text>@ada</Text>
+        </HoverCard.Trigger>
+        <HoverCard.Content>
+          <Text>Ada Lovelace</Text>
+        </HoverCard.Content>
+      </HoverCard>,
+    )
+    expect(screen.getByText('@ada')).toBeOnTheScreen()
+    expect(screen.queryByText('Ada Lovelace')).toBeNull()
   })
 
   it('Toggle and ToggleGroup report their checked state', async () => {

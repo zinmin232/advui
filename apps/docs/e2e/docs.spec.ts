@@ -182,6 +182,10 @@ for (const path of [
   '/docs/components/circular-progress',
   '/docs/components/aspect-ratio',
   '/docs/components/scroll-area',
+  '/docs/components/menu',
+  '/docs/components/context-menu',
+  '/docs/components/drawer',
+  '/docs/components/hover-card',
   '/examples/login',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {
@@ -266,6 +270,80 @@ test('sheet is hidden until opened, traps focus and returns it on Escape', async
   await expect(page.getByRole('dialog')).toHaveCount(0)
   await expect(trigger).toBeFocused()
   expect(errors).toEqual([])
+})
+
+test('context menu opens at the pointer and closes with Escape', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/context-menu')
+  await page.waitForLoadState('networkidle')
+  await page.getByText('Right-click here').first().click({ button: 'right' })
+  const menu = page.getByRole('menu')
+  await expect(menu).toBeVisible()
+  await expect(menu.getByRole('menuitemcheckbox', { name: 'Show bookmarks' })).toHaveAttribute(
+    'aria-checked',
+    'true',
+  )
+  expect(await seriousViolations(page)).toEqual([])
+  await page.keyboard.press('Escape')
+  await expect(menu).toBeHidden()
+  expect(errors).toEqual([])
+})
+
+test('drawer traps focus and returns it on Escape', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/drawer')
+  await page.waitForLoadState('networkidle')
+  const trigger = page.getByRole('button', { name: 'Open navigation' }).first()
+  await trigger.click()
+  const drawer = page.getByRole('dialog', { name: 'Acme Inc.' })
+  await expect(drawer).toBeVisible()
+  // Focus lands on the selected page in the drawer's Menu.
+  await expect(drawer.getByRole('menuitem', { name: 'Home' })).toBeFocused()
+  expect(await seriousViolations(page)).toEqual([])
+  await page.keyboard.press('Shift+Tab')
+  await expect.poll(() => drawer.evaluate((el) => el.contains(document.activeElement))).toBe(true)
+  await page.keyboard.press('Escape')
+  await expect(drawer).toBeHidden()
+  await expect(trigger).toBeFocused()
+  expect(errors).toEqual([])
+})
+
+test('hover card opens on hover and keyboard focus, and describes the link', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/hover-card')
+  await page.waitForLoadState('networkidle')
+  const link = page.getByRole('link', { name: '@ada' }).first()
+  await link.hover()
+  const card = page.getByRole('tooltip')
+  await expect(card).toBeVisible()
+  await expect(link).toHaveAccessibleDescription(/Ada Lovelace/)
+  expect(await seriousViolations(page)).toEqual([])
+  await page.mouse.move(0, 0)
+  await expect(card).toBeHidden()
+  await link.focus()
+  await expect(card).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(card).toBeHidden()
+  await expect(link).toBeFocused()
+  expect(errors).toEqual([])
+})
+
+test('menu is one Tab stop and arrow keys move between items', async ({ page }) => {
+  await page.goto('/docs/components/menu')
+  await page.waitForLoadState('networkidle')
+  const menu = page.getByRole('menu', { name: 'Mailboxes' }).first()
+  const inbox = menu.getByRole('menuitem', { name: /Inbox/ })
+  await expect(inbox).toHaveAttribute('aria-current', 'true')
+  await expect(inbox).toHaveAttribute('tabindex', '-1')
+  await menu.focus()
+  await expect(inbox).toBeFocused()
+  await page.keyboard.press('ArrowDown')
+  await expect(menu.getByRole('menuitem', { name: 'Starred' })).toBeFocused()
+  await page.keyboard.press('Enter')
+  await expect(menu.getByRole('menuitem', { name: 'Starred' })).toHaveAttribute(
+    'aria-current',
+    'true',
+  )
 })
 
 test('toggle group is one Tab stop and arrow keys choose', async ({ page }) => {

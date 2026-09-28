@@ -12,6 +12,8 @@ export default defineMeta({
   files: [
     'components/dropdown-menu/DropdownMenu.tsx',
     'components/dropdown-menu/DropdownMenu.native.tsx',
+    'components/dropdown-menu/menuParts.tsx',
+    'components/dropdown-menu/sheetMenu.tsx',
     'components/dropdown-menu/types.ts',
     'components/dropdown-menu/index.ts',
   ],
