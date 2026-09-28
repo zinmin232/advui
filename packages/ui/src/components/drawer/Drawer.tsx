@@ -15,6 +15,8 @@ import {
   useWindowDimensions,
   withStaticProperties,
 } from 'tamagui'
+import { useBackToClose } from '../../hooks/useBackToClose'
+import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { IconButton } from '../icon-button/IconButton'
 import {
@@ -92,8 +94,15 @@ export interface DrawerProps extends Omit<TamaguiDialogProps, 'modal'> {
   children?: ReactNode
 }
 
-function DrawerRoot(props: DrawerProps) {
-  return <TamaguiDialog modal {...props} />
+function DrawerRoot({ open: openProp, defaultOpen = false, onOpenChange, ...props }: DrawerProps) {
+  const [open, setOpen] = useControllableState({
+    value: openProp,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  })
+  // Android: the back button closes the drawer instead of leaving the screen.
+  useBackToClose(open, () => setOpen(false))
+  return <TamaguiDialog modal open={open} onOpenChange={setOpen} {...props} />
 }
 
 export interface DrawerContentProps extends Omit<TamaguiDialogContentProps, 'size'> {

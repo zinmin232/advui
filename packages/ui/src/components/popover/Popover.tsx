@@ -19,6 +19,8 @@ import {
   isWeb,
   withStaticProperties,
 } from 'tamagui'
+import { useBackToClose } from '../../hooks/useBackToClose'
+import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { Text } from '../typography/Text'
 
@@ -49,9 +51,20 @@ function PopoverRoot({
   side = 'bottom',
   align = 'center',
   offset = 8,
+  open: openProp,
+  defaultOpen = false,
+  onOpenChange,
   ...props
 }: PopoverProps) {
   const reducedMotion = useReducedMotion()
+  const [open, setOpen] = useControllableState({
+    value: openProp,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  })
+  // Android (where the popover is a bottom sheet): the back button closes it
+  // instead of leaving the screen.
+  useBackToClose(open, () => setOpen(false))
   const titleId = useId()
   const placement = (
     align === 'center' ? side : `${side}-${align}`
@@ -64,6 +77,8 @@ function PopoverRoot({
         allowFlip
         stayInFrame={{ padding: 8 }}
         zIndex={zIndex.popover}
+        open={open}
+        onOpenChange={(next) => setOpen(next)}
         {...props}
       >
         {children}

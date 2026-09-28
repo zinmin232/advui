@@ -10,6 +10,8 @@ import {
   styled,
   withStaticProperties,
 } from 'tamagui'
+import { useBackToClose } from '../../hooks/useBackToClose'
+import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { IconButton } from '../icon-button/IconButton'
 import { Text } from '../typography/Text'
@@ -97,8 +99,15 @@ const Close = forwardRef<TamaguiElement, DialogCloseProps>(function DialogClose(
   return <TamaguiDialog.Close ref={ref} aria-label={undefined} {...props} />
 })
 
-function DialogRoot(props: DialogProps) {
-  return <TamaguiDialog modal {...props} />
+function DialogRoot({ open: openProp, defaultOpen = false, onOpenChange, ...props }: DialogProps) {
+  const [open, setOpen] = useControllableState({
+    value: openProp,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  })
+  // Android: the back button closes the dialog instead of leaving the screen.
+  useBackToClose(open, () => setOpen(false))
+  return <TamaguiDialog modal open={open} onOpenChange={setOpen} {...props} />
 }
 
 /**

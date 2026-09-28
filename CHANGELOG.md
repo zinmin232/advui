@@ -35,7 +35,8 @@ one version.
   and screen readers reach it through the "long press" action.
 - **Drawer** (beta): a modal panel that slides in from any edge (`side`), with
   three widths, a scrolling `Drawer.Body`, and Dialog's focus trap, Escape and
-  labelling. On native its attached edges keep clear of the safe-area insets.
+  labelling. On native its attached edges keep clear of the safe-area insets,
+  and Android's back button closes it instead of leaving the screen.
 - **Hover Card** (beta): a preview card for a link that opens on hover and on
   keyboard focus, stays open while the pointer moves into it, and describes
   the link while open. Touch screens show only the link.
@@ -51,6 +52,12 @@ one version.
 - IconButton: square corners in every theme, because it passed
   `borderRadius={undefined}` to Button. It now uses the theme's button radius
   (`$button`), so icon buttons match buttons, including Material's pill shape.
+- Android back button: with a Dialog, Alert Dialog, Sheet, Popover, Select,
+  Dropdown Menu or Context Menu open, back left the screen and the overlay went
+  with it, although the docs said back closes it. Back now closes the open
+  overlay (Alert Dialog: cancels), innermost first, and the next press goes back
+  as usual. Tamagui's overlays have no back handling, so each root calls a new
+  internal hook, `useBackToClose`.
 
 ## [0.2.0] - 2026-09-27
 

@@ -3,8 +3,18 @@
   "name": "hooks",
   "title": "Hooks",
   "type": "registry:lib",
-  "description": "Shared hooks: controllable state, reduced-motion detection and the Android press ripple.",
+  "description": "Shared hooks: controllable state, reduced-motion detection, the Android press ripple and Android back-button handling for overlays.",
   "files": [
+    {
+      "path": "hooks/useBackToClose.native.ts",
+      "type": "registry:hook",
+      "content": "import { useEffect, useRef } from 'react'\nimport { BackHandler } from 'react-native'\n\n/**\n * Android: while `open`, the hardware back button (or back gesture) calls\n * `close` instead of going back in the app's navigation. Listeners run newest\n * first, so an open overlay handles the press before the router, and a nested\n * overlay before its parent. iOS has no back button, so there it never fires;\n * web uses useBackToClose.ts, which does nothing.\n *\n * Tamagui's Dialog, Sheet and Popover render in portals with no back handling\n * of their own, so every modal surface calls this from its root.\n */\nexport function useBackToClose(open: boolean, close: () => void) {\n  // Latest `close` without re-subscribing, which would reorder the listeners.\n  const closeRef = useRef(close)\n  useEffect(() => {\n    closeRef.current = close\n  })\n\n  useEffect(() => {\n    if (!open) return\n    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {\n      closeRef.current()\n      return true\n    })\n    return () => subscription.remove()\n  }, [open])\n}\n"
+    },
+    {
+      "path": "hooks/useBackToClose.ts",
+      "type": "registry:hook",
+      "content": "/**\n * Android: while `open`, the hardware back button (or back gesture) calls\n * `close` instead of going back in the app's navigation. See\n * useBackToClose.native.ts. Browsers have no back button to intercept here\n * (react-native-web's BackHandler only warns), so on web it does nothing.\n */\nexport function useBackToClose(_open: boolean, _close: () => void) {}\n"
+    },
     {
       "path": "hooks/useControllableState.ts",
       "type": "registry:hook",

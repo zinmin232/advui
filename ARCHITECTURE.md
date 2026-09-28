@@ -55,6 +55,8 @@ points to `dist/` for npm.
     reduced-motion CSS)
   - `hooks/useReducedMotion.native.ts`: `AccessibilityInfo` instead of
     `matchMedia`
+  - `hooks/useBackToClose.native.ts`: closes the open overlay on Android's back
+    button; the web file is a no-op
   - `hooks/useRipple.native.tsx`: Android's native ripple (the view commands
     Pressable's `android_ripple` uses); the web file is a no-op
   - `theme/animations.native.ts`: React Native Animated driver instead of CSS
@@ -155,6 +157,11 @@ The docs publish the registry at `/r/<name>.json`.
 - **Android zIndex** is a 32-bit int. Tamagui's toast portal defaults to
   `Number.MAX_SAFE_INTEGER`, which overflows and draws toasts under the screen.
   `Toaster` passes `zIndex.toast` instead, and a native test guards this.
+- **Android back button** is not handled by Tamagui's Dialog, Sheet, Popover or
+  Select, so it would leave the screen with an overlay open. Every overlay
+  root calls `useBackToClose(open, close)` (`hooks/useBackToClose.native.ts`;
+  the web file is a no-op, since react-native-web's BackHandler only warns); a
+  native test per overlay guards this.
 - **Tamagui `activeStyle`** is not applied on native. Tabs derive the active
   style from their own context.
 - **Tamagui `create*` factories** (Checkbox, Switch, RadioGroup) force

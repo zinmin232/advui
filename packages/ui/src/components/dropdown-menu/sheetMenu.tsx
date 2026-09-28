@@ -1,6 +1,7 @@
 import { CheckIcon, IconDefaults } from '@advui/icons'
 import { type ReactNode, createContext, useContext } from 'react'
 import { Sheet, View } from 'tamagui'
+import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
@@ -38,6 +39,8 @@ function Root({ children, open: openProp, defaultOpen = false, onOpenChange }: D
     defaultValue: defaultOpen,
     onChange: onOpenChange,
   })
+  // Android: the back button closes the sheet instead of leaving the screen.
+  useBackToClose(open, () => setOpen(false))
   return <MenuContext.Provider value={{ open, setOpen }}>{children}</MenuContext.Provider>
 }
 
