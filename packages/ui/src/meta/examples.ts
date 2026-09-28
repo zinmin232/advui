@@ -85,6 +85,7 @@ import MenuBasic from '../components/menu/examples/basic'
 import MenuActions from '../components/menu/examples/actions'
 import MultiSelectBasic from '../components/multi-select/examples/basic'
 import NavigationBarBasic from '../components/navigation-bar/examples/basic'
+import NavigationMenuBasic from '../components/navigation-menu/examples/basic'
 import NumberInputBasic from '../components/number-input/examples/basic'
 import NumberInputDecimal from '../components/number-input/examples/decimal'
 import OtpInputBasic from '../components/otp-input/examples/basic'
@@ -104,6 +105,8 @@ import SelectGroups from '../components/select/examples/groups'
 import SeparatorBasic from '../components/separator/examples/basic'
 import SheetBasic from '../components/sheet/examples/basic'
 import SheetScroll from '../components/sheet/examples/scroll'
+import SidebarBasic from '../components/sidebar/examples/basic'
+import SidebarDrawer from '../components/sidebar/examples/drawer'
 import SkeletonCard from '../components/skeleton/examples/card'
 import SliderBasic from '../components/slider/examples/basic'
 import SliderRange from '../components/slider/examples/range'
@@ -311,6 +314,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'navigation-bar': {
     'basic': NavigationBarBasic,
   },
+  'navigation-menu': {
+    'basic': NavigationMenuBasic,
+  },
   'number-input': {
     'basic': NumberInputBasic,
     'decimal': NumberInputDecimal,
@@ -351,6 +357,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'sheet': {
     'basic': SheetBasic,
     'scroll': SheetScroll,
+  },
+  'sidebar': {
+    'basic': SidebarBasic,
+    'drawer': SidebarDrawer,
   },
   'skeleton': {
     'card': SkeletonCard,

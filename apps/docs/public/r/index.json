@@ -661,6 +661,23 @@
       ]
     },
     {
+      "name": "navigation-menu",
+      "title": "Navigation Menu",
+      "type": "registry:component",
+      "description": "Site navigation with links and buttons that open panels of more links.",
+      "category": "navigation",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons",
+        "@advui/theme"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "typography",
+        "utils"
+      ]
+    },
+    {
       "name": "number-input",
       "title": "Number Input",
       "type": "registry:component",
@@ -811,6 +828,23 @@
         "hooks",
         "icon-button",
         "typography"
+      ]
+    },
+    {
+      "name": "sidebar",
+      "title": "Sidebar",
+      "type": "registry:component",
+      "description": "App navigation down the side of the screen, collapsible to an icon rail.",
+      "category": "navigation",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "icon-button",
+        "typography",
+        "utils"
       ]
     },
     {

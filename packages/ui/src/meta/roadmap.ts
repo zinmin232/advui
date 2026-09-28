@@ -13,9 +13,6 @@ export interface RoadmapItem {
 }
 
 export const roadmap: RoadmapItem[] = [
-  { name: 'Navigation Menu', slug: 'navigation-menu', category: 'navigation', phase: 4 },
-  { name: 'Sidebar', slug: 'sidebar', category: 'navigation', phase: 4 },
-
   { name: 'Image Gallery', slug: 'image-gallery', category: 'media', phase: 5 },
   { name: 'Video', slug: 'video', category: 'media', phase: 5 },
   { name: 'Audio Player', slug: 'audio-player', category: 'media', phase: 5 },

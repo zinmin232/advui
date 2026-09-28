@@ -211,6 +211,8 @@ for (const path of [
   '/docs/components/stepper',
   '/docs/components/data-table',
   '/docs/components/tree-view',
+  '/docs/components/navigation-menu',
+  '/docs/components/sidebar',
   '/examples/login',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {
