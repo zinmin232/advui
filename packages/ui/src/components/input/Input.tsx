@@ -29,6 +29,9 @@ export const inputBaseStyle = {
 const InputFrame = styled(TamaguiInput, {
   name: 'Input',
   ...inputBaseStyle,
+  // Android's TextInput adds its own vertical padding, which clips text in
+  // the fixed-height sizes (sm most visibly); the height already centers it.
+  paddingVertical: 0,
 
   variants: {
     size: {
