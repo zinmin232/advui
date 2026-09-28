@@ -11,6 +11,8 @@ import { AspectRatio } from './aspect-ratio/AspectRatio'
 import { Alert } from './alert/Alert'
 import { Avatar } from './avatar/Avatar'
 import { AreaChart } from './area-chart/AreaChart'
+import { AudioPlayer } from './audio-player/AudioPlayer'
+import { setAudioEngine } from './audio-player/engine'
 import { Badge } from './badge/Badge'
 import { BarChart } from './bar-chart/BarChart'
 import { Breadcrumb } from './breadcrumb/Breadcrumb'
@@ -24,6 +26,7 @@ import { CircularProgress } from './circular-progress/CircularProgress'
 import { Collapsible } from './collapsible/Collapsible'
 import { Combobox } from './combobox/Combobox'
 import { CommandPalette } from './command-palette/CommandPalette'
+import { DataGrid } from './data-grid/DataGrid'
 import { DataTable } from './data-table/DataTable'
 import { DatePicker } from './date-picker/DatePicker'
 import { ContextMenu } from './context-menu/ContextMenu'
@@ -57,6 +60,8 @@ import { PieChart } from './pie-chart/PieChart'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
 import { ScrollArea } from './scroll-area/ScrollArea'
+import { Resizable } from './resizable-panel/ResizablePanel'
+import { RichTextEditor } from './rich-text-editor/RichTextEditor'
 import { Search } from './search/Search'
 import { Select } from './select/Select'
 import { Sheet } from './sheet/Sheet'
@@ -73,6 +78,8 @@ import { Toggle } from './toggle/Toggle'
 import { TreeView } from './tree-view/TreeView'
 import { ToggleGroup } from './toggle-group/ToggleGroup'
 import { Heading } from './typography/Heading'
+import { Video } from './video/Video'
+import { setVideoView } from './video/shared'
 import { Text } from './typography/Text'
 
 // These run the React Native code path (react-native + Tamagui native builds,
@@ -1040,6 +1047,112 @@ describe('native rendering', () => {
     // The table view is a real button and table.
     await fireEvent.press(screen.getAllByRole('button', { name: 'Show table' })[0]!)
     expect(screen.getAllByRole('button', { name: 'Hide table' })).toHaveLength(1)
+  })
+
+  it('Resizable handles are adjustable and resize from the accessibility actions', async () => {
+    const onSizesChange = jest.fn()
+    await renderNative(
+      <Resizable onSizesChange={onSizesChange}>
+        <Resizable.Panel defaultSize={30} minSize={20} collapsible>
+          <Text>Filters</Text>
+        </Resizable.Panel>
+        <Resizable.Handle aria-label="Resize filters" />
+        <Resizable.Panel>
+          <Text>Results</Text>
+        </Resizable.Panel>
+      </Resizable>,
+    )
+    const handle = screen.getByRole('adjustable', { name: 'Resize filters' })
+    expect(handle).toHaveAccessibilityValue({ min: 0, max: 100, now: 30 })
+    await fireEvent(handle, 'accessibilityAction', { nativeEvent: { actionName: 'increment' } })
+    expect(onSizesChange).toHaveBeenLastCalledWith([35, 65])
+    await fireEvent(handle, 'accessibilityAction', { nativeEvent: { actionName: 'activate' } })
+    expect(onSizesChange).toHaveBeenLastCalledWith([0, 100])
+  })
+
+  it('DataGrid edits a cell from a tap and saves with the return key', async () => {
+    const onCellChange = jest.fn()
+    await renderNative(
+      <DataGrid
+        aria-label="Reach"
+        defaultData={[{ id: 'a', township: 'Hakha', reached: 4200 }]}
+        columns={[
+          { id: 'township', header: 'Township' },
+          { id: 'reached', header: 'Reached', type: 'number', editable: true },
+        ]}
+        onCellChange={onCellChange}
+      />,
+    )
+    expect(screen.getByLabelText('Township, Hakha: Hakha')).toBeOnTheScreen()
+    await fireEvent.press(screen.getByRole('button', { name: 'Reached, Hakha: 4200' }))
+    const field = screen.getByLabelText('Reached, Hakha')
+    await fireEvent.changeText(field, '4500')
+    await fireEvent(field, 'submitEditing')
+    expect(onCellChange).toHaveBeenCalledWith(expect.objectContaining({ value: 4500 }))
+    expect(screen.getByRole('button', { name: 'Reached, Hakha: 4500' })).toBeOnTheScreen()
+  })
+
+  it('Video uses the player from setVideoView, and says when there is none', async () => {
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {})
+    const { unmount } = await renderNative(<Video src="https://example.org/a.mp4" title="Clip" />)
+    expect(screen.getByText('This video can’t be played.')).toBeOnTheScreen()
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('setVideoView'))
+    warn.mockRestore()
+    const Player = jest.fn((_props: { accessibilityLabel: string }) => null)
+    setVideoView(Player)
+    await unmount()
+    await renderNative(<Video src="https://example.org/a.mp4" title="Clip" autoPlay />)
+    expect(Player).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        source: 'https://example.org/a.mp4',
+        accessibilityLabel: 'Clip',
+        autoPlay: true,
+        muted: true,
+      }),
+      undefined,
+    )
+    setVideoView(undefined)
+  })
+
+  it('AudioPlayer plays through the engine from setAudioEngine', async () => {
+    let report: (status: { playing?: boolean; duration?: number }) => void = () => {}
+    const engine = {
+      play: jest.fn(() => report({ playing: true })),
+      pause: jest.fn(),
+      seek: jest.fn(),
+      setRate: jest.fn(),
+      setLoop: jest.fn(),
+      release: jest.fn(),
+    }
+    setAudioEngine((_source, onStatus) => {
+      report = onStatus
+      return engine
+    })
+    await renderNative(<AudioPlayer src="https://example.org/a.mp3" title="Flood safety" />)
+    await act(() => report({ duration: 90 }))
+    await fireEvent.press(screen.getByRole('button', { name: 'Play' }))
+    expect(engine.play).toHaveBeenCalled()
+    expect(screen.getByRole('button', { name: 'Pause' })).toBeOnTheScreen()
+    await fireEvent.press(screen.getByRole('button', { name: 'Forward 10 seconds' }))
+    expect(engine.seek).toHaveBeenLastCalledWith(10)
+    setAudioEngine(undefined)
+  })
+
+  it('RichTextEditor formats the native selection from the toolbar', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <RichTextEditor
+        aria-label="Report"
+        defaultValue="clean water"
+        onValueChange={onValueChange}
+      />,
+    )
+    const field = screen.getByLabelText('Report')
+    await fireEvent(field, 'selectionChange', { nativeEvent: { selection: { start: 6, end: 11 } } })
+    await fireEvent.press(screen.getByRole('button', { name: 'Bold' }))
+    expect(onValueChange).toHaveBeenLastCalledWith('clean **water**')
+    await fireEvent.press(screen.getByRole('button', { name: 'Preview' }))
+    expect(screen.getByText('water')).toBeOnTheScreen()
   })
 
   it('Image is named by alt, hides a decorative image and falls back on error', async () => {

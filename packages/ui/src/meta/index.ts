@@ -4,6 +4,7 @@ import alertMeta from '../components/alert/alert.meta'
 import alertDialogMeta from '../components/alert-dialog/alert-dialog.meta'
 import areaChartMeta from '../components/area-chart/area-chart.meta'
 import aspectRatioMeta from '../components/aspect-ratio/aspect-ratio.meta'
+import audioPlayerMeta from '../components/audio-player/audio-player.meta'
 import autocompleteMeta from '../components/autocomplete/autocomplete.meta'
 import avatarMeta from '../components/avatar/avatar.meta'
 import badgeMeta from '../components/badge/badge.meta'
@@ -21,6 +22,7 @@ import comboboxMeta from '../components/combobox/combobox.meta'
 import commandPaletteMeta from '../components/command-palette/command-palette.meta'
 import containerMeta from '../components/layout/container.meta'
 import contextMenuMeta from '../components/context-menu/context-menu.meta'
+import dataGridMeta from '../components/data-grid/data-grid.meta'
 import dataTableMeta from '../components/data-table/data-table.meta'
 import datePickerMeta from '../components/date-picker/date-picker.meta'
 import dateRangePickerMeta from '../components/date-range-picker/date-range-picker.meta'
@@ -55,6 +57,8 @@ import pieChartMeta from '../components/pie-chart/pie-chart.meta'
 import popoverMeta from '../components/popover/popover.meta'
 import progressMeta from '../components/progress/progress.meta'
 import radioGroupMeta from '../components/radio-group/radio-group.meta'
+import resizablePanelMeta from '../components/resizable-panel/resizable-panel.meta'
+import richTextEditorMeta from '../components/rich-text-editor/rich-text-editor.meta'
 import scrollAreaMeta from '../components/scroll-area/scroll-area.meta'
 import searchMeta from '../components/search/search.meta'
 import selectMeta from '../components/select/select.meta'
@@ -80,6 +84,7 @@ import toggleGroupMeta from '../components/toggle-group/toggle-group.meta'
 import tooltipMeta from '../components/tooltip/tooltip.meta'
 import treeViewMeta from '../components/tree-view/tree-view.meta'
 import typographyMeta from '../components/typography/typography.meta'
+import videoMeta from '../components/video/video.meta'
 import type { ComponentMeta } from './types'
 
 export const components: ComponentMeta[] = [
@@ -88,6 +93,7 @@ export const components: ComponentMeta[] = [
   alertDialogMeta,
   areaChartMeta,
   aspectRatioMeta,
+  audioPlayerMeta,
   autocompleteMeta,
   avatarMeta,
   badgeMeta,
@@ -105,6 +111,7 @@ export const components: ComponentMeta[] = [
   commandPaletteMeta,
   containerMeta,
   contextMenuMeta,
+  dataGridMeta,
   dataTableMeta,
   datePickerMeta,
   dateRangePickerMeta,
@@ -139,6 +146,8 @@ export const components: ComponentMeta[] = [
   popoverMeta,
   progressMeta,
   radioGroupMeta,
+  resizablePanelMeta,
+  richTextEditorMeta,
   scrollAreaMeta,
   searchMeta,
   selectMeta,
@@ -164,6 +173,7 @@ export const components: ComponentMeta[] = [
   tooltipMeta,
   treeViewMeta,
   typographyMeta,
+  videoMeta,
 ]
 
 export function getComponent(slug: string): ComponentMeta | undefined {

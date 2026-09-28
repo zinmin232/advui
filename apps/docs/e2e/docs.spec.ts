@@ -220,6 +220,11 @@ for (const path of [
   '/docs/components/line-chart',
   '/docs/components/area-chart',
   '/docs/components/pie-chart',
+  '/docs/components/resizable-panel',
+  '/docs/components/data-grid',
+  '/docs/components/video',
+  '/docs/components/audio-player',
+  '/docs/components/rich-text-editor',
   '/examples/login',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {

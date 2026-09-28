@@ -3,6 +3,7 @@ import * as DocumentPicker from 'expo-document-picker'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { registerMedia } from '../media'
 import { config } from '../tamagui.config'
 
 // File Upload and File Dropzone use the app's picker on iOS and Android.
@@ -21,6 +22,9 @@ setFilePicker(async ({ multiple, accept }) => {
     uri: asset.uri,
   }))
 })
+
+// Video and Audio Player use expo-video and expo-audio on iOS and Android.
+registerMedia()
 
 /** Status bar icons follow the app's color mode (which may differ from the OS setting). */
 function ThemedStatusBar() {

@@ -114,6 +114,24 @@
       "registryDependencies": []
     },
     {
+      "name": "audio-player",
+      "title": "Audio Player",
+      "type": "registry:component",
+      "description": "Plays a sound with a play button, a seek bar, skip buttons and a speed control, the same on every platform.",
+      "category": "media",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "button",
+        "icon-button",
+        "slider",
+        "spinner",
+        "typography"
+      ]
+    },
+    {
       "name": "autocomplete",
       "title": "Autocomplete",
       "type": "registry:component",
@@ -336,6 +354,20 @@
       "dependencies": [],
       "registryDependencies": [
         "dropdown-menu"
+      ]
+    },
+    {
+      "name": "data-grid",
+      "title": "Data Grid",
+      "type": "registry:component",
+      "description": "A spreadsheet-like grid: move between cells with the arrow keys and edit values in place, with validation.",
+      "category": "advanced",
+      "status": "beta",
+      "dependencies": [],
+      "registryDependencies": [
+        "hooks",
+        "input",
+        "typography"
       ]
     },
     {
@@ -876,6 +908,39 @@
       ]
     },
     {
+      "name": "resizable-panel",
+      "title": "Resizable Panel",
+      "type": "registry:component",
+      "description": "Panels side by side or stacked, with handles to drag, or move with the arrow keys, to resize them.",
+      "category": "advanced",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks"
+      ]
+    },
+    {
+      "name": "rich-text-editor",
+      "title": "Rich Text Editor",
+      "type": "registry:component",
+      "description": "A Markdown editor with a formatting toolbar and a preview, plus Rich Text Content to show what was written.",
+      "category": "advanced",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "button",
+        "hooks",
+        "icon-button",
+        "input",
+        "textarea",
+        "typography"
+      ]
+    },
+    {
       "name": "scroll-area",
       "title": "Scroll Area",
       "type": "registry:component",
@@ -1209,6 +1274,20 @@
       "status": "stable",
       "dependencies": [],
       "registryDependencies": []
+    },
+    {
+      "name": "video",
+      "title": "Video",
+      "type": "registry:component",
+      "description": "A video with the platform’s own controls, a fixed aspect ratio, captions on web and an error state.",
+      "category": "media",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "typography"
+      ]
     }
   ]
 }

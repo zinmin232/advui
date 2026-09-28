@@ -9,6 +9,8 @@ import AreaChartBasic from '../components/area-chart/examples/basic'
 import AreaChartStacked from '../components/area-chart/examples/stacked'
 import AspectRatioBasic from '../components/aspect-ratio/examples/basic'
 import AspectRatioRatios from '../components/aspect-ratio/examples/ratios'
+import AudioPlayerBasic from '../components/audio-player/examples/basic'
+import AudioPlayerCompact from '../components/audio-player/examples/compact'
 import AutocompleteBasic from '../components/autocomplete/examples/basic'
 import AvatarBasic from '../components/avatar/examples/basic'
 import AvatarSizes from '../components/avatar/examples/sizes'
@@ -48,6 +50,8 @@ import CommandPaletteBasic from '../components/command-palette/examples/basic'
 import ContainerContainer from '../components/layout/examples/container'
 import ContextMenuBasic from '../components/context-menu/examples/basic'
 import ContextMenuList from '../components/context-menu/examples/list'
+import DataGridBasic from '../components/data-grid/examples/basic'
+import DataGridReadOnly from '../components/data-grid/examples/read-only'
 import DataTableBasic from '../components/data-table/examples/basic'
 import DataTableStates from '../components/data-table/examples/states'
 import DatePickerBasic from '../components/date-picker/examples/basic'
@@ -109,6 +113,12 @@ import PopoverBasic from '../components/popover/examples/basic'
 import PopoverFilter from '../components/popover/examples/filter'
 import ProgressBasic from '../components/progress/examples/basic'
 import RadioGroupBasic from '../components/radio-group/examples/basic'
+import ResizablePanelBasic from '../components/resizable-panel/examples/basic'
+import ResizablePanelVertical from '../components/resizable-panel/examples/vertical'
+import ResizablePanelCollapsible from '../components/resizable-panel/examples/collapsible'
+import RichTextEditorBasic from '../components/rich-text-editor/examples/basic'
+import RichTextEditorMinimal from '../components/rich-text-editor/examples/minimal'
+import RichTextEditorContent from '../components/rich-text-editor/examples/content'
 import ScrollAreaBasic from '../components/scroll-area/examples/basic'
 import ScrollAreaHorizontal from '../components/scroll-area/examples/horizontal'
 import SearchBasic from '../components/search/examples/basic'
@@ -156,6 +166,8 @@ import TreeViewBasic from '../components/tree-view/examples/basic'
 import TreeViewControlled from '../components/tree-view/examples/controlled'
 import TypographyScale from '../components/typography/examples/scale'
 import TypographyTones from '../components/typography/examples/tones'
+import VideoBasic from '../components/video/examples/basic'
+import VideoMutedLoop from '../components/video/examples/muted-loop'
 
 export const examples: Record<string, Record<string, ComponentType>> = {
   'accordion': {
@@ -176,6 +188,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'aspect-ratio': {
     'basic': AspectRatioBasic,
     'ratios': AspectRatioRatios,
+  },
+  'audio-player': {
+    'basic': AudioPlayerBasic,
+    'compact': AudioPlayerCompact,
   },
   'autocomplete': {
     'basic': AutocompleteBasic,
@@ -249,6 +265,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'context-menu': {
     'basic': ContextMenuBasic,
     'list': ContextMenuList,
+  },
+  'data-grid': {
+    'basic': DataGridBasic,
+    'read-only': DataGridReadOnly,
   },
   'data-table': {
     'basic': DataTableBasic,
@@ -379,6 +399,16 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'radio-group': {
     'basic': RadioGroupBasic,
   },
+  'resizable-panel': {
+    'basic': ResizablePanelBasic,
+    'vertical': ResizablePanelVertical,
+    'collapsible': ResizablePanelCollapsible,
+  },
+  'rich-text-editor': {
+    'basic': RichTextEditorBasic,
+    'minimal': RichTextEditorMinimal,
+    'content': RichTextEditorContent,
+  },
   'scroll-area': {
     'basic': ScrollAreaBasic,
     'horizontal': ScrollAreaHorizontal,
@@ -475,5 +505,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'typography': {
     'scale': TypographyScale,
     'tones': TypographyTones,
+  },
+  'video': {
+    'basic': VideoBasic,
+    'muted-loop': VideoMutedLoop,
   },
 }

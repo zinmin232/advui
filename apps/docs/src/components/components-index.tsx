@@ -36,10 +36,17 @@ export function ComponentsIndex({
     <DocPage>
       <PageHeader
         title="Components"
-        description={`${components.length} components available across web, iOS and Android — ${roadmap.length} more on the roadmap.`}
+        description={`${components.length} components available across web, iOS and Android${roadmap.length > 0 ? ` — ${roadmap.length} more on the roadmap` : ''}.`}
       >
         <HStack gap="$3" flexWrap="wrap">
-          {(['stable', 'beta', 'experimental', 'planned'] as const).map((s) => (
+          {(
+            [
+              'stable',
+              'beta',
+              'experimental',
+              ...(roadmap.length > 0 ? ['planned' as const] : []),
+            ] as const
+          ).map((s) => (
             <HStack key={s} gap="$1.5">
               <StatusDot status={s} />
               <Text size="sm" tone="muted">
