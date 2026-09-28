@@ -13,7 +13,6 @@ export interface RoadmapItem {
 }
 
 export const roadmap: RoadmapItem[] = [
-
   { name: 'Pagination', slug: 'pagination', category: 'navigation', phase: 4 },
   { name: 'Navigation Menu', slug: 'navigation-menu', category: 'navigation', phase: 4 },
   { name: 'Sidebar', slug: 'sidebar', category: 'navigation', phase: 4 },
@@ -21,12 +20,7 @@ export const roadmap: RoadmapItem[] = [
 
   { name: 'Table', slug: 'table', category: 'data-display', phase: 4 },
   { name: 'Data Table', slug: 'data-table', category: 'data-display', phase: 4 },
-  { name: 'List', slug: 'list', category: 'data-display', phase: 4 },
-  { name: 'Timeline', slug: 'timeline', category: 'data-display', phase: 4 },
-  { name: 'Stat', slug: 'stat', category: 'data-display', phase: 4 },
-  { name: 'KPI Card', slug: 'kpi-card', category: 'data-display', phase: 4 },
 
-  { name: 'Image', slug: 'image', category: 'media', phase: 4 },
   { name: 'Image Gallery', slug: 'image-gallery', category: 'media', phase: 5 },
   { name: 'Video', slug: 'video', category: 'media', phase: 5 },
   { name: 'Audio Player', slug: 'audio-player', category: 'media', phase: 5 },

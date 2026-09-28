@@ -30,7 +30,7 @@ The same file renders DOM elements in Next.js and native views in Expo.
 
 ## Highlights
 
-- **62 components**, each with tests, metadata, examples, docs and a registry entry:
+- **67 components**, each with tests, metadata, examples, docs and a registry entry:
   - **Forms:** Input, Textarea, Label, Form Field, Password Input, Number Input,
     OTP Input, Checkbox, Radio Group, Switch, Slider, Select, Combobox,
     Autocomplete, Multi Select, Date Picker, Date Range Picker, Time Picker
@@ -40,7 +40,9 @@ The same file renders DOM elements in Next.js and native views in Expo.
   - **Navigation:** Tabs, Breadcrumb, Navigation Bar, Menu, Dropdown Menu
   - **Feedback:** Alert, Alert Dialog, Toast, Snackbar, Progress, Circular
     Progress, Spinner, Empty State, Error State
-  - **Data display:** Card, Calendar, Accordion, Collapsible, Chip
+  - **Data display:** Card, Stat, KPI Card, List, Timeline, Calendar,
+    Accordion, Collapsible, Chip
+  - **Media:** Image
   - **Foundations and layout:** Typography, Avatar, Badge, Separator, Skeleton,
     Stack, Grid, Container, Aspect Ratio, Scroll Area
   - **Files:** File Upload, File Dropzone

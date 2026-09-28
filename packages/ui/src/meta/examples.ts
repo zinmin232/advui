@@ -65,10 +65,20 @@ import HoverCardBasic from '../components/hover-card/examples/basic'
 import IconButtonBasic from '../components/icon-button/examples/basic'
 import IconButtonVariants from '../components/icon-button/examples/variants'
 import IconButtonSizes from '../components/icon-button/examples/sizes'
+import ImageBasic from '../components/image/examples/basic'
+import ImageFit from '../components/image/examples/fit'
+import ImageFallback from '../components/image/examples/fallback'
 import InputBasic from '../components/input/examples/basic'
 import InputSizes from '../components/input/examples/sizes'
 import InputStates from '../components/input/examples/states'
+import KpiCardBasic from '../components/kpi-card/examples/basic'
+import KpiCardGrid from '../components/kpi-card/examples/grid'
+import KpiCardWithProgress from '../components/kpi-card/examples/with-progress'
+import KpiCardLoading from '../components/kpi-card/examples/loading'
 import LabelBasic from '../components/label/examples/basic'
+import ListBasic from '../components/list/examples/basic'
+import ListInteractive from '../components/list/examples/interactive'
+import ListWithAvatars from '../components/list/examples/with-avatars'
 import MenuBasic from '../components/menu/examples/basic'
 import MenuActions from '../components/menu/examples/actions'
 import MultiSelectBasic from '../components/multi-select/examples/basic'
@@ -97,12 +107,18 @@ import SnackbarPersistent from '../components/snackbar/examples/persistent'
 import SpinnerBasic from '../components/spinner/examples/basic'
 import StackBasic from '../components/layout/examples/basic'
 import StackResponsive from '../components/layout/examples/responsive'
+import StatBasic from '../components/stat/examples/basic'
+import StatTrends from '../components/stat/examples/trends'
+import StatSizes from '../components/stat/examples/sizes'
 import SwitchSettings from '../components/switch/examples/settings'
 import TabsBasic from '../components/tabs/examples/basic'
 import TabsUnderline from '../components/tabs/examples/underline'
 import TextareaBasic from '../components/textarea/examples/basic'
 import TimePickerBasic from '../components/time-picker/examples/basic'
 import TimePickerTwelveHour from '../components/time-picker/examples/twelve-hour'
+import TimelineBasic from '../components/timeline/examples/basic'
+import TimelineTones from '../components/timeline/examples/tones'
+import TimelineActivity from '../components/timeline/examples/activity'
 import ToastTypes from '../components/toast/examples/types'
 import ToastAction from '../components/toast/examples/action'
 import ToggleBasic from '../components/toggle/examples/basic'
@@ -245,13 +261,29 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'variants': IconButtonVariants,
     'sizes': IconButtonSizes,
   },
+  'image': {
+    'basic': ImageBasic,
+    'fit': ImageFit,
+    'fallback': ImageFallback,
+  },
   'input': {
     'basic': InputBasic,
     'sizes': InputSizes,
     'states': InputStates,
   },
+  'kpi-card': {
+    'basic': KpiCardBasic,
+    'grid': KpiCardGrid,
+    'with-progress': KpiCardWithProgress,
+    'loading': KpiCardLoading,
+  },
   'label': {
     'basic': LabelBasic,
+  },
+  'list': {
+    'basic': ListBasic,
+    'interactive': ListInteractive,
+    'with-avatars': ListWithAvatars,
   },
   'menu': {
     'basic': MenuBasic,
@@ -317,6 +349,11 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': StackBasic,
     'responsive': StackResponsive,
   },
+  'stat': {
+    'basic': StatBasic,
+    'trends': StatTrends,
+    'sizes': StatSizes,
+  },
   'switch': {
     'settings': SwitchSettings,
   },
@@ -330,6 +367,11 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'time-picker': {
     'basic': TimePickerBasic,
     'twelve-hour': TimePickerTwelveHour,
+  },
+  'timeline': {
+    'basic': TimelineBasic,
+    'tones': TimelineTones,
+    'activity': TimelineActivity,
   },
   'toast': {
     'types': ToastTypes,

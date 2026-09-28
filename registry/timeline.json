@@ -1,0 +1,56 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "timeline",
+  "title": "Timeline",
+  "type": "registry:component",
+  "description": "Events in order along a vertical line, such as an activity feed or order history.",
+  "category": "data-display",
+  "status": "beta",
+  "since": "0.6.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/timeline/Timeline.tsx",
+      "type": "registry:ui",
+      "content": "import { IconDefaults } from '@advui/icons'\nimport {\n  Children,\n  type ReactNode,\n  createContext,\n  forwardRef,\n  isValidElement,\n  useContext,\n} from 'react'\nimport {\n  type GetProps,\n  type TamaguiElement,\n  View,\n  XStack,\n  styled,\n  withStaticProperties,\n} from 'tamagui'\nimport { Text } from '../typography/Text'\n\nexport type TimelineTone = 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info'\n\n// The last item draws no line below its marker.\nconst ItemPosition = createContext({ last: true })\n\nconst TimelineFrame = styled(View, {\n  name: 'Timeline',\n  role: 'list',\n  flexDirection: 'column',\n})\n\nconst TimelineItemFrame = styled(View, {\n  name: 'TimelineItem',\n  role: 'listitem',\n  flexDirection: 'row',\n  gap: '$3',\n})\n\nconst TimelineConnector = styled(View, {\n  name: 'TimelineConnector',\n  flex: 1,\n  width: 2,\n  minHeight: '$4',\n  marginVertical: '$1',\n  borderRadius: '$full',\n  backgroundColor: '$border',\n})\n\nconst TimelineTitle = styled(Text, {\n  name: 'TimelineTitle',\n  size: 'sm',\n  weight: 'medium',\n})\n\nconst TimelineTime = styled(Text, {\n  name: 'TimelineTime',\n  size: 'xs',\n  tone: 'muted',\n})\n\nconst TimelineDescription = styled(Text, {\n  name: 'TimelineDescription',\n  size: 'sm',\n  tone: 'muted',\n})\n\nconst tones = {\n  default: { dot: '$borderStrong', soft: '$muted', icon: '$mutedForeground' },\n  primary: { dot: '$primary', soft: '$primarySoft', icon: '$primarySoftForeground' },\n  success: { dot: '$success', soft: '$successSoft', icon: '$successSoftForeground' },\n  warning: { dot: '$warning', soft: '$warningSoft', icon: '$warningSoftForeground' },\n  error: { dot: '$error', soft: '$errorSoft', icon: '$errorSoftForeground' },\n  info: { dot: '$info', soft: '$infoSoft', icon: '$infoSoftForeground' },\n} as const\n\nexport type TimelineProps = GetProps<typeof TimelineFrame>\n\nconst TimelineImpl = forwardRef<TamaguiElement, TimelineProps>(function Timeline(\n  { children, ...props },\n  ref,\n) {\n  const items = Children.toArray(children)\n  return (\n    <TimelineFrame ref={ref} {...props}>\n      {items.map((child, index) => (\n        <ItemPosition.Provider\n          key={isValidElement(child) && child.key != null ? child.key : index}\n          value={{ last: index === items.length - 1 }}\n        >\n          {child}\n        </ItemPosition.Provider>\n      ))}\n    </TimelineFrame>\n  )\n})\n\nexport interface TimelineItemProps extends Omit<\n  GetProps<typeof TimelineItemFrame>,\n  'children' | 'title'\n> {\n  /** What happened. */\n  title: ReactNode\n  /** When it happened, already formatted. */\n  time?: ReactNode\n  /** Details under the title. */\n  description?: ReactNode\n  /** Icon in the marker. Without one, the marker is a dot. */\n  icon?: ReactNode\n  /** Color of the marker. */\n  tone?: TimelineTone\n  /** Extra content under the description: a Card, a quote, attachments. */\n  children?: ReactNode\n}\n\n/** One event: a marker on the line, a title and time, and details. */\nconst TimelineItem = forwardRef<TamaguiElement, TimelineItemProps>(function TimelineItem(\n  { title, time, description, icon, tone = 'default', children, ...props },\n  ref,\n) {\n  const { last } = useContext(ItemPosition)\n  const colors = tones[tone]\n  return (\n    <TimelineItemFrame ref={ref} {...props}>\n      <View aria-hidden alignItems=\"center\" width=\"$6\">\n        <View height=\"$6\" width=\"$6\" alignItems=\"center\" justifyContent=\"center\">\n          {icon ? (\n            <View\n              width=\"$6\"\n              height=\"$6\"\n              borderRadius=\"$full\"\n              alignItems=\"center\"\n              justifyContent=\"center\"\n              backgroundColor={colors.soft}\n            >\n              <IconDefaults size={14} color={colors.icon}>\n                {icon}\n              </IconDefaults>\n            </View>\n          ) : (\n            <View width=\"$2.5\" height=\"$2.5\" borderRadius=\"$full\" backgroundColor={colors.dot} />\n          )}\n        </View>\n        {last ? null : <TimelineConnector />}\n      </View>\n      <View flex={1} minWidth={0} gap=\"$1\" paddingBottom={last ? '$0' : '$6'}>\n        <XStack\n          minHeight=\"$6\"\n          alignItems=\"center\"\n          justifyContent=\"space-between\"\n          flexWrap=\"wrap\"\n          columnGap=\"$2\"\n        >\n          <TimelineTitle>{title}</TimelineTitle>\n          {time != null ? <TimelineTime>{time}</TimelineTime> : null}\n        </XStack>\n        {description != null ? <TimelineDescription>{description}</TimelineDescription> : null}\n        {children}\n      </View>\n    </TimelineItemFrame>\n  )\n})\n\n/**\n * Events in order along a vertical line: an activity feed, an order's\n * progress, a project history. Compose with `Timeline.Item`.\n */\nexport const Timeline = withStaticProperties(TimelineImpl, {\n  Item: TimelineItem,\n})\n\nexport { TimelineFrame, TimelineItemFrame, TimelineTitle, TimelineTime, TimelineDescription }\n"
+    },
+    {
+      "path": "components/timeline/index.ts",
+      "type": "registry:ui",
+      "content": "export {\n  Timeline,\n  TimelineDescription,\n  TimelineFrame,\n  TimelineItemFrame,\n  TimelineTime,\n  TimelineTitle,\n  type TimelineItemProps,\n  type TimelineProps,\n  type TimelineTone,\n} from './Timeline'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { Timeline } from '@advui/core'\n\nexport default function TimelineBasic() {\n  return (\n    <Timeline width=\"100%\" maxWidth=\"$96\">\n      <Timeline.Item\n        title=\"Assessment published\"\n        time=\"Sep 24\"\n        description=\"Shared on the website and with the cluster leads.\"\n      />\n      <Timeline.Item\n        title=\"Data cleaned\"\n        time=\"Sep 18\"\n        description=\"Duplicates removed and place codes matched.\"\n      />\n      <Timeline.Item title=\"Survey closed\" time=\"Sep 10\" />\n    </Timeline>\n  )\n}\n"
+    },
+    {
+      "name": "tones",
+      "title": "Icons and tones",
+      "code": "import { Timeline } from '@advui/core'\nimport { CheckIcon, CircleIcon, PackageIcon, XIcon } from '@advui/icons'\n\nexport default function TimelineTones() {\n  return (\n    <Timeline width=\"100%\" maxWidth=\"$96\">\n      <Timeline.Item\n        tone=\"success\"\n        icon={<CheckIcon />}\n        title=\"Order placed\"\n        time=\"Mon, 09:12\"\n        description=\"Payment confirmed.\"\n      />\n      <Timeline.Item tone=\"success\" icon={<PackageIcon />} title=\"Packed\" time=\"Mon, 15:40\" />\n      <Timeline.Item\n        tone=\"error\"\n        icon={<XIcon />}\n        title=\"Delivery failed\"\n        time=\"Tue, 11:05\"\n        description=\"No one was at the address. We will try again tomorrow.\"\n      />\n      <Timeline.Item\n        tone=\"primary\"\n        icon={<CircleIcon />}\n        title=\"Out for delivery\"\n        time=\"Wed, 08:30\"\n        aria-current=\"step\"\n      />\n    </Timeline>\n  )\n}\n"
+    },
+    {
+      "name": "activity",
+      "title": "Activity feed",
+      "code": "import { Avatar, Card, HStack, Text, Timeline } from '@advui/core'\n\nexport default function TimelineActivity() {\n  return (\n    <Timeline width=\"100%\" maxWidth=\"$96\">\n      <Timeline.Item tone=\"primary\" title=\"Nwe Ni commented\" time=\"2 hours ago\">\n        <Card variant=\"filled\" marginTop=\"$1\">\n          <Card.Content padding=\"$3\">\n            <Text size=\"sm\">The township totals now match the baseline tables.</Text>\n          </Card.Content>\n        </Card>\n      </Timeline.Item>\n      <Timeline.Item title=\"Aung Kyaw assigned the review\" time=\"Yesterday\">\n        <HStack gap=\"$2\" alignItems=\"center\">\n          <Avatar size=\"xs\" alt=\"Hla Min\" />\n          <Text size=\"sm\" tone=\"muted\">\n            Hla Min\n          </Text>\n        </HStack>\n      </Timeline.Item>\n      <Timeline.Item title=\"Report created\" time=\"Sep 20\" />\n    </Timeline>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/timeline",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "typography"
+  ],
+  "version": "0.5.0"
+}

@@ -1,0 +1,63 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "kpi-card",
+  "title": "KPI Card",
+  "type": "registry:component",
+  "description": "A card for one key figure on a dashboard, with its change and an icon.",
+  "category": "data-display",
+  "status": "beta",
+  "since": "0.6.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/kpi-card/KpiCard.tsx",
+      "type": "registry:ui",
+      "content": "import { IconDefaults } from '@advui/icons'\nimport { type ReactNode, forwardRef } from 'react'\nimport { type TamaguiElement, View, XStack } from 'tamagui'\nimport { Card, type CardProps } from '../card/Card'\nimport { Skeleton } from '../skeleton/Skeleton'\nimport { Stat, type StatTone, type StatTrend } from '../stat/Stat'\n\nexport interface KpiCardProps extends Omit<CardProps, 'children'> {\n  /** What is measured, e.g. \"Total revenue\". */\n  label: ReactNode\n  /** The figure, already formatted. */\n  value: ReactNode\n  /** The change since the last period, e.g. `\"12.5%\"`. */\n  delta?: ReactNode\n  /** Direction of the change; picks the arrow. */\n  trend?: StatTrend\n  /** Good or bad news; picks the color. Defaults from `trend`. */\n  tone?: StatTone\n  /** Read by screen readers before the delta. Default: \"Increased by\" and so on. */\n  trendLabel?: string\n  /** Short note after the delta, e.g. \"from last month\". */\n  description?: ReactNode\n  /** Icon in the top corner. Decorative. */\n  icon?: ReactNode\n  /** Shows placeholders for the value and delta, and marks the card busy. */\n  loading?: boolean\n  /** Extra content below the figure: a Progress bar, a sparkline, a link. */\n  children?: ReactNode\n}\n\n/**\n * A card for one key figure on a dashboard: label, value, the change since\n * the last period and an optional icon. Built from `Card` and `Stat`.\n */\nexport const KpiCard = forwardRef<TamaguiElement, KpiCardProps>(function KpiCard(\n  {\n    label,\n    value,\n    delta,\n    trend = 'neutral',\n    tone,\n    trendLabel,\n    description,\n    icon,\n    loading = false,\n    children,\n    ...props\n  },\n  ref,\n) {\n  const footer = delta != null || description != null\n  return (\n    <Card ref={ref} aria-busy={loading || undefined} {...props}>\n      <Card.Content gap=\"$3\">\n        <Stat>\n          <XStack alignItems=\"flex-start\" justifyContent=\"space-between\" gap=\"$3\">\n            <Stat.Label flex={1}>{label}</Stat.Label>\n            {icon ? (\n              <View aria-hidden>\n                <IconDefaults size={16} color=\"$mutedForeground\">\n                  {icon}\n                </IconDefaults>\n              </View>\n            ) : null}\n          </XStack>\n          {loading ? (\n            <>\n              <Skeleton height=\"$9\" width=\"$32\" marginVertical=\"$0.5\" />\n              {footer ? <Skeleton height=\"$4\" width=\"$40\" /> : null}\n            </>\n          ) : (\n            <>\n              <Stat.Value>{value}</Stat.Value>\n              {footer ? (\n                <XStack alignItems=\"center\" gap=\"$1.5\" flexWrap=\"wrap\">\n                  {delta != null ? (\n                    <Stat.Delta trend={trend} tone={tone} trendLabel={trendLabel}>\n                      {delta}\n                    </Stat.Delta>\n                  ) : null}\n                  {description != null ? <Stat.HelpText>{description}</Stat.HelpText> : null}\n                </XStack>\n              ) : null}\n            </>\n          )}\n        </Stat>\n        {children}\n      </Card.Content>\n    </Card>\n  )\n})\n"
+    },
+    {
+      "path": "components/kpi-card/index.ts",
+      "type": "registry:ui",
+      "content": "export { KpiCard, type KpiCardProps } from './KpiCard'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { KpiCard } from '@advui/core'\nimport { CreditCardIcon } from '@advui/icons'\n\nexport default function KpiCardBasic() {\n  return (\n    <KpiCard\n      width=\"100%\"\n      maxWidth=\"$80\"\n      label=\"Total revenue\"\n      value=\"$45,231.89\"\n      delta=\"20.1%\"\n      trend=\"up\"\n      description=\"from last month\"\n      icon={<CreditCardIcon />}\n    />\n  )\n}\n"
+    },
+    {
+      "name": "grid",
+      "title": "Dashboard row",
+      "code": "import { Grid, KpiCard } from '@advui/core'\nimport { BarChartIcon, PackageIcon, ShoppingCartIcon, UsersIcon } from '@advui/icons'\n\nexport default function KpiCardGrid() {\n  return (\n    <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap=\"$4\" width=\"100%\">\n      <KpiCard\n        label=\"Subscriptions\"\n        value=\"2,350\"\n        delta=\"180.1%\"\n        trend=\"up\"\n        description=\"from last month\"\n        icon={<UsersIcon />}\n      />\n      <KpiCard\n        label=\"Orders\"\n        value=\"12,234\"\n        delta=\"4.3%\"\n        trend=\"down\"\n        description=\"from last month\"\n        icon={<ShoppingCartIcon />}\n      />\n      <KpiCard\n        label=\"Returns\"\n        value=\"312\"\n        delta=\"11%\"\n        trend=\"down\"\n        tone=\"positive\"\n        description=\"fewer than last month\"\n        icon={<PackageIcon />}\n      />\n      <KpiCard\n        label=\"Active now\"\n        value=\"573\"\n        delta=\"0%\"\n        description=\"since last hour\"\n        icon={<BarChartIcon />}\n      />\n    </Grid>\n  )\n}\n"
+    },
+    {
+      "name": "with-progress",
+      "title": "With a progress bar",
+      "code": "import { KpiCard, Progress, Text } from '@advui/core'\n\nexport default function KpiCardWithProgress() {\n  return (\n    <KpiCard\n      width=\"100%\"\n      maxWidth=\"$80\"\n      variant=\"elevated\"\n      label=\"Quarterly target\"\n      value=\"$182,400\"\n      description=\"of $250,000\"\n    >\n      <Progress value={73} label=\"Quarterly target reached\" />\n      <Text size=\"xs\" tone=\"muted\">\n        73% reached, 24 days left\n      </Text>\n    </KpiCard>\n  )\n}\n"
+    },
+    {
+      "name": "loading",
+      "title": "Loading",
+      "code": "import { KpiCard } from '@advui/core'\nimport { UsersIcon } from '@advui/icons'\n\nexport default function KpiCardLoading() {\n  return (\n    <KpiCard\n      width=\"100%\"\n      maxWidth=\"$80\"\n      loading\n      label=\"New customers\"\n      value=\"1,204\"\n      delta=\"6%\"\n      trend=\"up\"\n      description=\"from last week\"\n      icon={<UsersIcon />}\n    />\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/kpi-card",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "card",
+    "skeleton",
+    "stat"
+  ],
+  "version": "0.5.0"
+}

@@ -35,7 +35,10 @@ import { setFilePicker } from './file-upload/files'
 import { FormField } from './form-field/FormField'
 import { HoverCard } from './hover-card/HoverCard'
 import { IconButton } from './icon-button/IconButton'
+import { Image } from './image/Image'
 import { Input } from './input/Input'
+import { KpiCard } from './kpi-card/KpiCard'
+import { List } from './list/List'
 import { Menu } from './menu/Menu'
 import { MultiSelect } from './multi-select/MultiSelect'
 import { NavigationBar } from './navigation-bar/NavigationBar'
@@ -49,7 +52,9 @@ import { Select } from './select/Select'
 import { Sheet } from './sheet/Sheet'
 import { Slider } from './slider/Slider'
 import { Snackbar } from './snackbar/Snackbar'
+import { Stat } from './stat/Stat'
 import { Switch } from './switch/Switch'
+import { Timeline } from './timeline/Timeline'
 import { Toaster, toast } from './toast/Toaster'
 import { Toggle } from './toggle/Toggle'
 import { ToggleGroup } from './toggle-group/ToggleGroup'
@@ -732,6 +737,80 @@ describe('native rendering', () => {
     await fireEvent.press(screen.getByRole('button', { name: /Tap to choose files/ }))
     expect(pickFiles).toHaveBeenCalledTimes(2)
     setFilePicker(undefined)
+  })
+
+  it('Stat and KpiCard read the trend as words, since the arrow is hidden', async () => {
+    await renderNative(
+      <>
+        <Stat>
+          <Stat.Label>Refunds</Stat.Label>
+          <Stat.Value>$1,092</Stat.Value>
+          <Stat.Delta trend="down" tone="positive">
+            3.1%
+          </Stat.Delta>
+        </Stat>
+        <KpiCard label="Revenue" value="$48,210" delta="12.5%" trend="up" loading={false} />
+      </>,
+    )
+    expect(screen.getByLabelText('Decreased by 3.1%')).toBeOnTheScreen()
+    expect(screen.getByLabelText('Increased by 12.5%')).toBeOnTheScreen()
+    expect(screen.getByText('$48,210')).toBeOnTheScreen()
+  })
+
+  it('List: a pressable row is one button, and a disabled one says so', async () => {
+    const onPress = jest.fn()
+    await renderNative(
+      <List divided>
+        <List.Item title="Account" description="Name and email" onPress={onPress} />
+        <List.Item title="Security keys" disabled onPress={onPress} />
+        <List.Item title="Version" trailing="2.4.0" />
+      </List>,
+    )
+    await fireEvent.press(screen.getByRole('button', { name: /Account/ }))
+    expect(onPress).toHaveBeenCalledTimes(1)
+    const disabled = screen.getByRole('button', { name: 'Security keys' })
+    expect(disabled).toBeDisabled()
+    await fireEvent.press(disabled)
+    expect(onPress).toHaveBeenCalledTimes(1)
+    expect(screen.getByText('2.4.0')).toBeOnTheScreen()
+  })
+
+  it('Timeline renders its events with hidden markers', async () => {
+    await renderNative(
+      <Timeline>
+        <Timeline.Item title="Published" time="Sep 24" icon={<PlusIcon />} tone="success" />
+        <Timeline.Item title="Survey closed" description="All responses in." />
+      </Timeline>,
+    )
+    expect(screen.getByText('Published')).toBeOnTheScreen()
+    expect(screen.getByText('All responses in.')).toBeOnTheScreen()
+    // The markers (and the success icon in one) are decorative.
+    expect(screen.queryAllByRole('img')).toHaveLength(0)
+  })
+
+  it('Image is named by alt, hides a decorative image and falls back on error', async () => {
+    const onError = jest.fn()
+    await renderNative(
+      <>
+        <Image src="https://example.com/road.jpg" alt="A desert road" ratio={16 / 9} />
+        <Image src="https://example.com/pattern.png" alt="" ratio={1} testID="decorative" />
+        <Image
+          src="https://example.com/missing.jpg"
+          alt="Clinic entrance"
+          ratio={1}
+          onError={onError}
+          testID="broken"
+        />
+      </>,
+    )
+    expect(screen.getByLabelText('A desert road')).toBeOnTheScreen()
+    const broken = screen.getByLabelText('Clinic entrance')
+    await fireEvent(broken, 'error')
+    expect(onError).toHaveBeenCalledTimes(1)
+    // The fallback keeps the name, as an accessible image.
+    expect(screen.getByRole('img', { name: 'Clinic entrance' })).toBeOnTheScreen()
+    // The road and the fallback; the decorative image is hidden.
+    expect(screen.getAllByRole('img')).toHaveLength(2)
   })
 })
 

@@ -493,6 +493,18 @@
       ]
     },
     {
+      "name": "image",
+      "title": "Image",
+      "type": "registry:component",
+      "description": "A picture in a box of a set size or ratio, with a placeholder and a fallback.",
+      "category": "media",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": []
+    },
+    {
       "name": "input",
       "title": "Input",
       "type": "registry:component",
@@ -501,6 +513,22 @@
       "status": "stable",
       "dependencies": [],
       "registryDependencies": []
+    },
+    {
+      "name": "kpi-card",
+      "title": "KPI Card",
+      "type": "registry:component",
+      "description": "A card for one key figure on a dashboard, with its change and an icon.",
+      "category": "data-display",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "card",
+        "skeleton",
+        "stat"
+      ]
     },
     {
       "name": "label",
@@ -543,6 +571,22 @@
       "status": "stable",
       "dependencies": [],
       "registryDependencies": []
+    },
+    {
+      "name": "list",
+      "title": "List",
+      "type": "registry:component",
+      "description": "A vertical list of rows with a leading visual, text and trailing meta.",
+      "category": "data-display",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "typography",
+        "utils"
+      ]
     },
     {
       "name": "menu",
@@ -784,6 +828,21 @@
       "registryDependencies": []
     },
     {
+      "name": "stat",
+      "title": "Stat",
+      "type": "registry:component",
+      "description": "One figure with its label, how it changed and a short note.",
+      "category": "data-display",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "typography",
+        "utils"
+      ]
+    },
+    {
       "name": "switch",
       "title": "Switch",
       "type": "registry:component",
@@ -833,6 +892,20 @@
       "dependencies": [],
       "registryDependencies": [
         "select"
+      ]
+    },
+    {
+      "name": "timeline",
+      "title": "Timeline",
+      "type": "registry:component",
+      "description": "Events in order along a vertical line, such as an activity feed or order history.",
+      "category": "data-display",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "typography"
       ]
     },
     {
