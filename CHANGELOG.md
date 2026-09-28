@@ -7,6 +7,8 @@ one version.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-28
+
 ### Added
 
 - **Button Group** (beta): groups Buttons and IconButtons as a labelled
