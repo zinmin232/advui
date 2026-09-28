@@ -95,6 +95,7 @@ export const installationToc: TocItem[] = [
   { id: 'config', title: 'Create a config' },
   { id: 'nextjs', title: 'Next.js' },
   { id: 'expo', title: 'Expo' },
+  { id: 'file-picker', title: 'File picking (native)' },
   { id: 'first-component', title: 'Use a component' },
 ]
 
@@ -188,6 +189,33 @@ export default function RootLayout() {
         No custom native code is required: icons use react-native-svg (bundled with Expo) and
         animations use React Native Animated.
       </Callout>
+      <H2 id="file-picker">File picking (native)</H2>
+      <P>
+        File Upload and File Dropzone use the browser's dialog on web. Core ships no native file
+        picker, so on iOS and Android register your app's once, at start. With{' '}
+        <C>expo-document-picker</C> (it works in Expo Go):
+      </P>
+      <Code
+        title="app/_layout.tsx"
+        code={`import { setFilePicker } from '@advui/core'
+import * as DocumentPicker from 'expo-document-picker'
+
+setFilePicker(async ({ multiple, accept }) => {
+  // The picker filters by MIME type; extensions (".pdf") are checked after picking.
+  const mimeTypes = accept?.split(',').filter((rule) => rule.includes('/'))
+  const result = await DocumentPicker.getDocumentAsync({
+    multiple,
+    type: mimeTypes?.length ? mimeTypes.map((rule) => rule.trim()) : '*/*',
+  })
+  if (result.canceled) return null
+  return result.assets.map((asset) => ({
+    name: asset.name,
+    size: asset.size,
+    type: asset.mimeType,
+    uri: asset.uri,
+  }))
+})`}
+      />
       <H2 id="first-component">Use a component</H2>
       <Code
         code={`import { Button, Card, Input } from '@advui/core'

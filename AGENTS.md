@@ -95,6 +95,12 @@ file: `pnpm --filter @advui/core exec vitest run src/components/button`.
   app-wide settings from the Tamagui config (`getConfig()`) instead.
 - **Android zIndex** is 32-bit; keep portal z-indices at `zIndex.*` values
   (see `Toaster.tsx`).
+- **Labels on native**: a `Label`'s `htmlFor` only moves focus. Form Field
+  passes its label as `aria-label` on native, so field-shaped buttons must
+  expose their value with `accessibilityValue` (see `PickerTrigger`).
+- **Hidden inputs on Android** ignore a transparent text color; hide them with
+  `opacity: 0` (see OTP Input). On web, `outline-style: auto` ignores
+  `outline-width: 0`; use `outlineStyle: 'none'`.
 - **Tamagui `activeStyle`** is not applied on native; derive active styles from
   state.
 - **RNTL 14**: `render`, `fireEvent` and `act` are async, so always `await` them.

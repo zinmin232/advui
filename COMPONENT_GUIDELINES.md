@@ -62,7 +62,7 @@ entry, search entry, Expo screen and registry item then appear automatically.
 - **Motion is optional.** Use named animations (`quick`, `medium`…). On web,
   the provider's stylesheet removes transitions under
   `prefers-reduced-motion`. Components with enter/exit motion (Dialog, Select,
-  Tooltip, Toast, Popover, Dropdown Menu, Accordion, Alert Dialog, Sheet, Drawer, Context Menu, Hover Card) also read `useReducedMotion()` and drop their `transition`,
+  Tooltip, Toast, Popover, Dropdown Menu, Accordion, Alert Dialog, Sheet, Drawer, Context Menu, Hover Card, and the Combobox / Multi Select sheets) also read `useReducedMotion()` and drop their `transition`,
   which covers native. Never animate `TextInput` styles: Android rejects
   animated style objects there.
 - **Press feedback.** Pressables call `useRipple()`: spread `ripple.props`
@@ -79,7 +79,10 @@ entry, search entry, Expo screen and registry item then appear automatically.
 - Use the semantic element or role: `render="button"` or `role="button"`,
   `role="switch"` with `aria-checked`, `role="dialog"` with a title.
 - Every interactive element has an accessible name: visible text, a `Label`
-  with `htmlFor`/`id`, or `aria-label` (required on `IconButton`).
+  with `htmlFor`/`id`, or `aria-label` (required on `IconButton`). On native a
+  `Label`'s `htmlFor` only moves focus, so Form Field also passes its label as
+  `aria-label`. A field-shaped button (Date Picker, Combobox) then loses its
+  text as a name, so it exposes the value with `accessibilityValue`.
 - State is exposed: `aria-checked`, `aria-selected`, `aria-expanded`,
   `aria-disabled`, `aria-busy`, `aria-invalid` plus `aria-describedby` for
   errors.

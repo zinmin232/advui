@@ -30,12 +30,20 @@ The same file renders DOM elements in Next.js and native views in Expo.
 
 ## Highlights
 
-- **38 components** — Button, IconButton, Floating Action Button, Toggle,
-  Toggle Group, Input, Textarea, Label, Checkbox, Radio Group, Switch, Select,
-  Slider, Card, Badge, Chip, Avatar, Separator, Dialog, Alert Dialog, Sheet,
-  Popover, Dropdown Menu, Toast, Snackbar, Tabs, Breadcrumb, Navigation Bar,
-  Tooltip, Accordion, Alert, Progress, Spinner, Skeleton, Typography, Stack,
-  Grid, Container. Each one has tests, metadata, examples, docs and a registry entry.
+- **62 components**, each with tests, metadata, examples, docs and a registry entry:
+  - **Forms:** Input, Textarea, Label, Form Field, Password Input, Number Input,
+    OTP Input, Checkbox, Radio Group, Switch, Slider, Select, Combobox,
+    Autocomplete, Multi Select, Date Picker, Date Range Picker, Time Picker
+  - **Buttons:** Button, Icon Button, Button Group, Floating Action Button,
+    Toggle, Toggle Group
+  - **Overlays:** Dialog, Sheet, Drawer, Popover, Tooltip, Hover Card, Context Menu
+  - **Navigation:** Tabs, Breadcrumb, Navigation Bar, Menu, Dropdown Menu
+  - **Feedback:** Alert, Alert Dialog, Toast, Snackbar, Progress, Circular
+    Progress, Spinner, Empty State, Error State
+  - **Data display:** Card, Calendar, Accordion, Collapsible, Chip
+  - **Foundations and layout:** Typography, Avatar, Badge, Separator, Skeleton,
+    Stack, Grid, Container, Aspect Ratio, Scroll Area
+  - **Files:** File Upload, File Dropzone
 - **One theme config** — presets or any brand color. Light and dark palettes are
   generated and checked against WCAG AA contrast. Radius and type scale are
   global knobs.
@@ -159,8 +167,9 @@ What has been run on the development machine (Windows 11, Node 22, pnpm 12):
 | `pnpm test:e2e`: desktop and mobile flows, axe WCAG 2 AA (light and dark), visual baselines                    | ✅                                                                                          |
 | Next.js dev and production (`next start`)                                                                      | ✅                                                                                          |
 | Expo on Android emulator (API 35, Expo Go): components, examples, theme switching, Select sheet, Dialog, Toast | ✅ (manual)                                                                                 |
+| Expo on a physical Android phone (Expo Go over USB): the forms, pickers, combobox and file components          | ✅ (manual)                                                                                 |
 | Expo on iOS                                                                                                    | ⚠️ not run: needs macOS/Xcode. The iOS code path is covered only by jest-expo's iOS preset. |
-| Physical devices                                                                                               | ⚠️ not run                                                                                  |
+| Physical iOS devices                                                                                           | ⚠️ not run                                                                                  |
 | GitHub Actions on Ubuntu: `check` job (lint, typecheck, unit + native tests, build)                            | ✅                                                                                          |
 | GitHub Actions on Ubuntu: `e2e` job (desktop + mobile, axe, visual regression)                                 | ✅                                                                                          |
 
