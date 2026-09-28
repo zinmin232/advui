@@ -1,0 +1,80 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "file-upload",
+  "title": "File Upload",
+  "type": "registry:component",
+  "description": "A button that opens the file picker, with the picked files listed below.",
+  "category": "advanced",
+  "status": "beta",
+  "since": "0.5.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/file-upload/FileUpload.tsx",
+      "type": "registry:ui",
+      "content": "import { UploadIcon } from '@advui/icons'\nimport { forwardRef } from 'react'\nimport { type GetProps, type TamaguiElement, View, styled } from 'tamagui'\nimport { Button } from '../button/Button'\nimport { Text } from '../typography/Text'\nimport { FileList } from './FileList'\nimport { type FileSelectionProps, useFileSelection } from './useFileSelection'\n\nconst FileUploadFrame = styled(View, {\n  name: 'FileUpload',\n  gap: '$2',\n  alignItems: 'flex-start',\n})\n\nexport interface FileUploadProps\n  extends Omit<GetProps<typeof FileUploadFrame>, 'children' | 'defaultValue'>, FileSelectionProps {\n  /** Text of the button. */\n  buttonLabel?: string\n  /** Shown while no file is picked. */\n  emptyText?: string\n  /** Accessible name of each remove button. */\n  removeLabel?: (name: string) => string\n  size?: 'sm' | 'md' | 'lg'\n  disabled?: boolean\n  invalid?: boolean\n  'aria-describedby'?: string\n  'aria-required'?: boolean\n}\n\n/**\n * A button that opens the file picker, with the picked files listed below.\n * Web uses the browser's dialog; iOS and Android use the app's picker from\n * `setFilePicker` (or `pickFiles`).\n */\nexport const FileUpload = forwardRef<TamaguiElement, FileUploadProps>(function FileUpload(\n  {\n    value,\n    defaultValue,\n    onValueChange,\n    multiple = false,\n    accept,\n    maxSize,\n    maxFiles,\n    onReject,\n    pickFiles,\n    buttonLabel = multiple ? 'Choose files' : 'Choose file',\n    emptyText = multiple ? 'No files chosen' : 'No file chosen',\n    removeLabel = (name) => `Remove ${name}`,\n    size = 'md',\n    disabled = false,\n    invalid = false,\n    id,\n    'aria-label': ariaLabel,\n    'aria-describedby': describedBy,\n    'aria-required': required,\n    ...props\n  },\n  ref,\n) {\n  const { files, remove, open, canPick, inputElement } = useFileSelection({\n    value,\n    defaultValue,\n    onValueChange,\n    multiple,\n    accept,\n    maxSize,\n    maxFiles,\n    onReject,\n    pickFiles,\n  })\n\n  return (\n    <FileUploadFrame ref={ref} {...props}>\n      {inputElement}\n      <Button\n        id={id}\n        variant=\"outline\"\n        size={size}\n        icon={<UploadIcon />}\n        disabled={disabled || !canPick}\n        aria-label={ariaLabel}\n        aria-describedby={describedBy}\n        aria-invalid={invalid || undefined}\n        aria-required={required}\n        {...(invalid && { borderColor: '$error' })}\n        onPress={open}\n      >\n        {buttonLabel}\n      </Button>\n      {files.length ? (\n        <View alignSelf=\"stretch\">\n          <FileList files={files} onRemove={remove} removeLabel={removeLabel} disabled={disabled} />\n        </View>\n      ) : (\n        <Text size=\"sm\" tone=\"muted\">\n          {emptyText}\n        </Text>\n      )}\n    </FileUploadFrame>\n  )\n})\n"
+    },
+    {
+      "path": "components/file-upload/FileList.tsx",
+      "type": "registry:ui",
+      "content": "import { FileIcon, IconDefaults, XIcon } from '@advui/icons'\nimport { View, XStack } from 'tamagui'\nimport { IconButton } from '../icon-button/IconButton'\nimport { Text } from '../typography/Text'\nimport { type PickedFile, formatBytes } from './files'\n\n/** The picked files, each with its size and a named remove button. */\nexport function FileList({\n  files,\n  onRemove,\n  removeLabel,\n  disabled,\n}: {\n  files: PickedFile[]\n  onRemove: (index: number) => void\n  removeLabel: (name: string) => string\n  disabled?: boolean\n}) {\n  return (\n    <View role=\"list\" gap=\"$1.5\">\n      {files.map((file, index) => (\n        <XStack\n          key={`${file.name}-${index}`}\n          role=\"listitem\"\n          alignItems=\"center\"\n          gap=\"$2.5\"\n          paddingLeft=\"$3\"\n          paddingRight=\"$1\"\n          paddingVertical=\"$1\"\n          borderWidth={1}\n          borderColor=\"$border\"\n          borderRadius=\"$md\"\n          backgroundColor=\"$card\"\n        >\n          <IconDefaults size={16} color=\"$mutedForeground\">\n            <FileIcon />\n          </IconDefaults>\n          <View flex={1} minWidth={0}>\n            <Text size=\"sm\" numberOfLines={1}>\n              {file.name}\n            </Text>\n            {file.size != null ? (\n              <Text size=\"xs\" tone=\"muted\">\n                {formatBytes(file.size)}\n              </Text>\n            ) : null}\n          </View>\n          <IconButton\n            size=\"sm\"\n            icon={<XIcon />}\n            aria-label={removeLabel(file.name)}\n            disabled={disabled}\n            onPress={() => onRemove(index)}\n          />\n        </XStack>\n      ))}\n    </View>\n  )\n}\n"
+    },
+    {
+      "path": "components/file-upload/files.ts",
+      "type": "registry:ui",
+      "content": "/** A picked file, the same shape on every platform. */\nexport interface PickedFile {\n  name: string\n  /** Bytes, when the picker reports it. */\n  size?: number\n  /** MIME type, e.g. `image/png`. */\n  type?: string\n  /** Native: the file's URI (upload it with `fetch` / `FormData`). */\n  uri?: string\n  /** Web: the browser `File`. */\n  file?: File\n}\n\nexport interface PickFilesOptions {\n  multiple: boolean\n  /** The `accept` of the component, e.g. `image/*,.pdf`. */\n  accept?: string\n}\n\n/**\n * Opens the platform's file picker. Resolve with the picked files, or with an\n * empty array / null when the user cancels.\n */\nexport type PickFiles = (options: PickFilesOptions) => Promise<PickedFile[] | null | undefined>\n\nexport type FileRejectReason = 'type' | 'size' | 'count'\n\nexport interface FileRejection {\n  file: PickedFile\n  reason: FileRejectReason\n}\n\n// Set once at app start; a module value (not context) so it also reaches\n// uploads inside native portals (sheets, dialogs), which drop React context.\nlet appPicker: PickFiles | undefined\n\n/**\n * Registers the app's native file picker for every File Upload and File\n * Dropzone, e.g. with `expo-document-picker`. Web needs none: it uses the\n * browser's file dialog.\n */\nexport function setFilePicker(pickFiles: PickFiles | undefined) {\n  appPicker = pickFiles\n}\n\nexport function getFilePicker() {\n  return appPicker\n}\n\nexport function fromBrowserFiles(list: FileList | File[]): PickedFile[] {\n  return Array.from(list, (file) => ({ name: file.name, size: file.size, type: file.type, file }))\n}\n\n/** Whether a file matches an `accept` string (`image/*`, `.pdf`, `application/json`). */\nexport function matchesAccept(file: PickedFile, accept?: string) {\n  if (!accept) return true\n  const name = file.name.toLowerCase()\n  const type = (file.type ?? '').toLowerCase()\n  return accept\n    .split(',')\n    .map((part) => part.trim().toLowerCase())\n    .filter(Boolean)\n    .some((rule) =>\n      rule.startsWith('.')\n        ? name.endsWith(rule)\n        : rule.endsWith('/*')\n          ? type.startsWith(rule.slice(0, -1))\n          : type === rule,\n    )\n}\n\n/** \"12 KB\", \"3.4 MB\". */\nexport function formatBytes(bytes: number) {\n  if (bytes < 1024) return `${bytes} B`\n  const units = ['KB', 'MB', 'GB']\n  let value = bytes / 1024\n  let unit = 0\n  while (value >= 1024 && unit < units.length - 1) {\n    value /= 1024\n    unit++\n  }\n  return `${value < 10 ? value.toFixed(1) : Math.round(value)} ${units[unit]}`\n}\n"
+    },
+    {
+      "path": "components/file-upload/useFileSelection.ts",
+      "type": "registry:ui",
+      "content": "import { useEffect } from 'react'\nimport { isWeb } from 'tamagui'\nimport { useControllableState } from '../../hooks/useControllableState'\nimport {\n  type FileRejection,\n  type PickFiles,\n  type PickedFile,\n  getFilePicker,\n  matchesAccept,\n} from './files'\nimport { useBrowserFilePicker } from './useBrowserFilePicker'\n\nexport interface FileSelectionProps {\n  value?: PickedFile[]\n  defaultValue?: PickedFile[]\n  onValueChange?: (files: PickedFile[]) => void\n  /** Allow several files; otherwise a new pick replaces the file. */\n  multiple?: boolean\n  /** Allowed types, as in `<input accept>`: `image/*,.pdf`. Also checked on drop and on native. */\n  accept?: string\n  /** Largest allowed file in bytes. */\n  maxSize?: number\n  /** Most files kept when `multiple`. */\n  maxFiles?: number\n  /** Called with the files that were refused and why. */\n  onReject?: (rejections: FileRejection[]) => void\n  /** This component's picker. Defaults to the browser dialog on web and `setFilePicker` on native. */\n  pickFiles?: PickFiles\n}\n\nconst none: PickedFile[] = []\nlet warned = false\n\n/** Picked files, validation and the platform picker, shared by File Upload and File Dropzone. */\nexport function useFileSelection({\n  value,\n  defaultValue = none,\n  onValueChange,\n  multiple = false,\n  accept,\n  maxSize,\n  maxFiles,\n  onReject,\n  pickFiles,\n}: FileSelectionProps) {\n  const [files, setFiles] = useControllableState({\n    value,\n    defaultValue,\n    onChange: onValueChange,\n  })\n\n  const add = (incoming: PickedFile[]) => {\n    const rejections: FileRejection[] = []\n    const accepted: PickedFile[] = []\n    for (const file of incoming) {\n      if (!matchesAccept(file, accept)) rejections.push({ file, reason: 'type' })\n      else if (maxSize != null && file.size != null && file.size > maxSize) {\n        rejections.push({ file, reason: 'size' })\n      } else accepted.push(file)\n    }\n    const limit = multiple ? (maxFiles ?? Infinity) : 1\n    const combined = multiple ? [...files, ...accepted] : accepted\n    for (const file of combined.slice(limit)) rejections.push({ file, reason: 'count' })\n    if (accepted.length) setFiles(combined.slice(0, limit))\n    if (rejections.length) onReject?.(rejections)\n  }\n\n  const browser = useBrowserFilePicker({ accept, multiple, onFiles: add })\n  const picker = pickFiles ?? (isWeb ? undefined : getFilePicker())\n  const canPick = Boolean(picker || browser.open)\n  // A missing native picker is a setup mistake; say so once instead of silently disabling.\n  useEffect(() => {\n    if (canPick || warned) return\n    warned = true\n    console.warn(\n      'File Upload: no file picker on this platform. Call setFilePicker() at app start ' +\n        '(e.g. with expo-document-picker) or pass pickFiles.',\n    )\n  }, [canPick])\n\n  const open = async () => {\n    if (picker) {\n      const picked = await picker({ multiple, accept })\n      if (picked?.length) add(picked)\n    } else browser.open?.()\n  }\n\n  const remove = (index: number) => setFiles(files.filter((_, i) => i !== index))\n\n  return { files, add, remove, open, canPick, inputElement: browser.element }\n}\n"
+    },
+    {
+      "path": "components/file-upload/useBrowserFilePicker.tsx",
+      "type": "registry:ui",
+      "content": "import { useRef } from 'react'\nimport { type PickedFile, fromBrowserFiles } from './files'\n\n/**\n * Web: a hidden `<input type=\"file\">` that opens the browser's file dialog.\n * Render `element` anywhere in the component.\n */\nexport function useBrowserFilePicker({\n  accept,\n  multiple,\n  onFiles,\n}: {\n  accept?: string\n  multiple: boolean\n  onFiles: (files: PickedFile[]) => void\n}) {\n  const ref = useRef<HTMLInputElement>(null)\n  const element = (\n    <input\n      ref={ref}\n      type=\"file\"\n      hidden\n      aria-hidden\n      tabIndex={-1}\n      accept={accept}\n      multiple={multiple}\n      onChange={(event) => {\n        const { files } = event.currentTarget\n        if (files?.length) onFiles(fromBrowserFiles(files))\n        // Picking the same file again must fire another change.\n        event.currentTarget.value = ''\n      }}\n    />\n  )\n  return { element, open: () => ref.current?.click() }\n}\n"
+    },
+    {
+      "path": "components/file-upload/useBrowserFilePicker.native.tsx",
+      "type": "registry:ui",
+      "content": "import type { PickedFile } from './files'\n\n/** Native has no browser dialog; the app's picker (`setFilePicker`) is used instead. */\nexport function useBrowserFilePicker(_options: {\n  accept?: string\n  multiple: boolean\n  onFiles: (files: PickedFile[]) => void\n}): { element: null; open: undefined } {\n  return { element: null, open: undefined }\n}\n"
+    },
+    {
+      "path": "components/file-upload/index.ts",
+      "type": "registry:ui",
+      "content": "export { FileUpload, type FileUploadProps } from './FileUpload'\nexport {\n  type FileRejectReason,\n  type FileRejection,\n  type PickFiles,\n  type PickFilesOptions,\n  type PickedFile,\n  formatBytes,\n  setFilePicker,\n} from './files'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { FileUpload, FormField } from '@advui/core'\n\nexport default function FileUploadBasic() {\n  return (\n    <FormField label=\"Résumé\" description=\"PDF, up to 5 MB.\" width=\"100%\" maxWidth={360}>\n      <FileUpload accept=\".pdf\" maxSize={5_000_000} />\n    </FormField>\n  )\n}\n"
+    },
+    {
+      "name": "multiple",
+      "title": "Several images with limits",
+      "code": "import { FileUpload, FormField, type PickedFile } from '@advui/core'\nimport { useState } from 'react'\n\nconst photos: PickedFile[] = [\n  { name: 'kitchen.jpg', size: 1_840_000, type: 'image/jpeg' },\n  { name: 'living-room.png', size: 3_200_000, type: 'image/png' },\n]\n\nexport default function FileUploadMultiple() {\n  const [files, setFiles] = useState(photos)\n  const [error, setError] = useState<string>()\n  return (\n    <FormField\n      label=\"Photos\"\n      description=\"Up to 4 images, 5 MB each.\"\n      error={error}\n      width=\"100%\"\n      maxWidth={360}\n    >\n      <FileUpload\n        multiple\n        accept=\"image/*\"\n        maxSize={5_000_000}\n        maxFiles={4}\n        value={files}\n        onValueChange={(next) => {\n          setFiles(next)\n          setError(undefined)\n        }}\n        onReject={(rejections) =>\n          setError(\n            `${rejections.map((r) => r.file.name).join(', ')}: not added (${rejections[0]!.reason}).`,\n          )\n        }\n      />\n    </FormField>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/file-upload",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "button",
+    "file-dropzone",
+    "hooks",
+    "icon-button",
+    "typography"
+  ],
+  "version": "0.4.0"
+}

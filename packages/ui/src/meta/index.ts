@@ -25,6 +25,8 @@ import drawerMeta from '../components/drawer/drawer.meta'
 import dropdownMenuMeta from '../components/dropdown-menu/dropdown-menu.meta'
 import emptyStateMeta from '../components/empty-state/empty-state.meta'
 import errorStateMeta from '../components/error-state/error-state.meta'
+import fileDropzoneMeta from '../components/file-dropzone/file-dropzone.meta'
+import fileUploadMeta from '../components/file-upload/file-upload.meta'
 import fabMeta from '../components/fab/fab.meta'
 import formFieldMeta from '../components/form-field/form-field.meta'
 import gridMeta from '../components/layout/grid.meta'
@@ -88,6 +90,8 @@ export const components: ComponentMeta[] = [
   dropdownMenuMeta,
   emptyStateMeta,
   errorStateMeta,
+  fileDropzoneMeta,
+  fileUploadMeta,
   fabMeta,
   formFieldMeta,
   gridMeta,

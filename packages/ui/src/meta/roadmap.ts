@@ -34,8 +34,6 @@ export const roadmap: RoadmapItem[] = [
   { name: 'Command Palette', slug: 'command-palette', category: 'advanced', phase: 5 },
   { name: 'Search', slug: 'search', category: 'advanced', phase: 5 },
   { name: 'Rich Text Editor', slug: 'rich-text-editor', category: 'advanced', phase: 5 },
-  { name: 'File Upload', slug: 'file-upload', category: 'advanced', phase: 3 },
-  { name: 'File Dropzone', slug: 'file-dropzone', category: 'advanced', phase: 3 },
   { name: 'Resizable Panel', slug: 'resizable-panel', category: 'advanced', phase: 5 },
   { name: 'Tree View', slug: 'tree-view', category: 'advanced', phase: 4 },
   { name: 'Data Grid', slug: 'data-grid', category: 'advanced', phase: 5 },

@@ -53,6 +53,9 @@ import DropdownMenuOptions from '../components/dropdown-menu/examples/options'
 import EmptyStateBasic from '../components/empty-state/examples/basic'
 import EmptyStateSearch from '../components/empty-state/examples/search'
 import ErrorStateBasic from '../components/error-state/examples/basic'
+import FileDropzoneBasic from '../components/file-dropzone/examples/basic'
+import FileUploadBasic from '../components/file-upload/examples/basic'
+import FileUploadMultiple from '../components/file-upload/examples/multiple'
 import FabBasic from '../components/fab/examples/basic'
 import FabExtended from '../components/fab/examples/extended'
 import FormFieldBasic from '../components/form-field/examples/basic'
@@ -215,6 +218,13 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'error-state': {
     'basic': ErrorStateBasic,
+  },
+  'file-dropzone': {
+    'basic': FileDropzoneBasic,
+  },
+  'file-upload': {
+    'basic': FileUploadBasic,
+    'multiple': FileUploadMultiple,
   },
   'fab': {
     'basic': FabBasic,

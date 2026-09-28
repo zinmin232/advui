@@ -32,6 +32,15 @@ one version.
 - **Multi Select** (beta): picks several options into chips, from a listbox
   that stays open (`aria-multiselectable`) on web or a sheet of checkbox rows
   on phones. Chips have named remove buttons, and Backspace removes the last.
+- **File Upload** (beta): a button that opens the file picker, with the
+  picked files listed below (named remove buttons). `accept`, `maxSize` and
+  `maxFiles` are checked on every platform, and refused files are reported
+  through `onReject`.
+- **File Dropzone** (beta): a large area that takes dropped files on web and
+  is one labelled button everywhere (Enter / Space or tap opens the picker).
+- **`setFilePicker`**: registers the app's native file picker once (e.g.
+  with `expo-document-picker`); web uses the browser's dialog. Core adds no
+  file-picker dependency.
 
 ### Fixed
 

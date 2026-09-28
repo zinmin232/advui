@@ -419,6 +419,40 @@
       ]
     },
     {
+      "name": "file-dropzone",
+      "title": "File Dropzone",
+      "type": "registry:component",
+      "description": "A large area to drop files on (web) or tap to pick them, with the files listed below.",
+      "category": "advanced",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "icon-button",
+        "typography"
+      ]
+    },
+    {
+      "name": "file-upload",
+      "title": "File Upload",
+      "type": "registry:component",
+      "description": "A button that opens the file picker, with the picked files listed below.",
+      "category": "advanced",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "button",
+        "file-dropzone",
+        "hooks",
+        "icon-button",
+        "typography"
+      ]
+    },
+    {
       "name": "form-field",
       "title": "Form Field",
       "type": "registry:component",
