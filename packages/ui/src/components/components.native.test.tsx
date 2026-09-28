@@ -21,6 +21,7 @@ import { Chip } from './chip/Chip'
 import { CircularProgress } from './circular-progress/CircularProgress'
 import { Collapsible } from './collapsible/Collapsible'
 import { Combobox } from './combobox/Combobox'
+import { CommandPalette } from './command-palette/CommandPalette'
 import { DataTable } from './data-table/DataTable'
 import { DatePicker } from './date-picker/DatePicker'
 import { ContextMenu } from './context-menu/ContextMenu'
@@ -37,6 +38,7 @@ import { FormField } from './form-field/FormField'
 import { HoverCard } from './hover-card/HoverCard'
 import { IconButton } from './icon-button/IconButton'
 import { Image } from './image/Image'
+import { ImageGallery } from './image-gallery/ImageGallery'
 import { Input } from './input/Input'
 import { KpiCard } from './kpi-card/KpiCard'
 import { List } from './list/List'
@@ -51,6 +53,7 @@ import { PasswordInput } from './password-input/PasswordInput'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
 import { ScrollArea } from './scroll-area/ScrollArea'
+import { Search } from './search/Search'
 import { Select } from './select/Select'
 import { Sheet } from './sheet/Sheet'
 import { Sidebar } from './sidebar/Sidebar'
@@ -947,6 +950,53 @@ describe('native rendering', () => {
     await fireEvent.press(screen.getByRole('button', { name: 'Collapse sidebar' }))
     expect(screen.getByRole('button', { name: 'Expand sidebar' })).toBeCollapsed()
     expect(screen.getByRole('link', { name: 'Dashboard, current page' })).toBeOnTheScreen()
+  })
+
+  it('Search submits with the return key and clears with its button', async () => {
+    const onSearch = jest.fn()
+    await renderNative(<Search placeholder="Search places" onSearch={onSearch} />)
+    const field = screen.getByPlaceholderText('Search places')
+    await fireEvent.changeText(field, 'hakha')
+    await fireEvent(field, 'submitEditing')
+    expect(onSearch).toHaveBeenCalledWith('hakha')
+    await fireEvent.press(screen.getByRole('button', { name: 'Clear search' }))
+    expect(screen.queryByRole('button', { name: 'Clear search' })).toBeNull()
+  })
+
+  it('CommandPalette lists commands as buttons and runs one', async () => {
+    const onSelect = jest.fn()
+    await renderNative(
+      <CommandPalette
+        defaultOpen
+        commands={[
+          { id: 'reports', label: '5W reports', group: 'Go to', onSelect },
+          { id: 'export', label: 'Export to Excel', group: 'Actions', onSelect: () => {} },
+        ]}
+      />,
+    )
+    await fireEvent.changeText(screen.getByPlaceholderText('Type a command or search…'), '5w')
+    expect(screen.queryByRole('button', { name: 'Export to Excel' })).toBeNull()
+    await fireEvent.press(screen.getByRole('button', { name: '5W reports' }))
+    expect(onSelect).toHaveBeenCalledTimes(1)
+  })
+
+  it('ImageGallery opens the viewer from a named thumbnail', async () => {
+    const onIndexChange = jest.fn()
+    await renderNative(
+      <ImageGallery
+        onIndexChange={onIndexChange}
+        images={[
+          { src: 'https://example.com/1.jpg', alt: 'Road' },
+          { src: 'https://example.com/2.jpg', alt: 'Lake' },
+        ]}
+      />,
+    )
+    await fireEvent.press(screen.getByRole('button', { name: 'View Lake' }))
+    expect(onIndexChange).toHaveBeenLastCalledWith(1)
+    expect(await screen.findByText('2 of 2')).toBeOnTheScreen()
+    expect(screen.getByRole('button', { name: 'Next image' })).toBeDisabled()
+    await fireEvent.press(screen.getByRole('button', { name: 'Previous image' }))
+    expect(onIndexChange).toHaveBeenLastCalledWith(0)
   })
 
   it('Image is named by alt, hides a decorative image and falls back on error', async () => {

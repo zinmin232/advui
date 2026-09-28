@@ -16,6 +16,7 @@ import chipMeta from '../components/chip/chip.meta'
 import circularProgressMeta from '../components/circular-progress/circular-progress.meta'
 import collapsibleMeta from '../components/collapsible/collapsible.meta'
 import comboboxMeta from '../components/combobox/combobox.meta'
+import commandPaletteMeta from '../components/command-palette/command-palette.meta'
 import containerMeta from '../components/layout/container.meta'
 import contextMenuMeta from '../components/context-menu/context-menu.meta'
 import dataTableMeta from '../components/data-table/data-table.meta'
@@ -34,6 +35,7 @@ import gridMeta from '../components/layout/grid.meta'
 import hoverCardMeta from '../components/hover-card/hover-card.meta'
 import iconButtonMeta from '../components/icon-button/icon-button.meta'
 import imageMeta from '../components/image/image.meta'
+import imageGalleryMeta from '../components/image-gallery/image-gallery.meta'
 import inputMeta from '../components/input/input.meta'
 import kpiCardMeta from '../components/kpi-card/kpi-card.meta'
 import labelMeta from '../components/label/label.meta'
@@ -50,6 +52,7 @@ import popoverMeta from '../components/popover/popover.meta'
 import progressMeta from '../components/progress/progress.meta'
 import radioGroupMeta from '../components/radio-group/radio-group.meta'
 import scrollAreaMeta from '../components/scroll-area/scroll-area.meta'
+import searchMeta from '../components/search/search.meta'
 import selectMeta from '../components/select/select.meta'
 import separatorMeta from '../components/separator/separator.meta'
 import sheetMeta from '../components/sheet/sheet.meta'
@@ -93,6 +96,7 @@ export const components: ComponentMeta[] = [
   circularProgressMeta,
   collapsibleMeta,
   comboboxMeta,
+  commandPaletteMeta,
   containerMeta,
   contextMenuMeta,
   dataTableMeta,
@@ -111,6 +115,7 @@ export const components: ComponentMeta[] = [
   hoverCardMeta,
   iconButtonMeta,
   imageMeta,
+  imageGalleryMeta,
   inputMeta,
   kpiCardMeta,
   labelMeta,
@@ -127,6 +132,7 @@ export const components: ComponentMeta[] = [
   progressMeta,
   radioGroupMeta,
   scrollAreaMeta,
+  searchMeta,
   selectMeta,
   separatorMeta,
   sheetMeta,

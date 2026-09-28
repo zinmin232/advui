@@ -1,0 +1,54 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "search",
+  "title": "Search",
+  "type": "registry:component",
+  "description": "A search field with a magnifier, a clear button and a loading state.",
+  "category": "advanced",
+  "status": "beta",
+  "since": "0.6.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/search/Search.tsx",
+      "type": "registry:ui",
+      "content": "import { SearchIcon, XIcon } from '@advui/icons'\nimport { forwardRef, useRef } from 'react'\nimport { type TamaguiElement, View, isWeb } from 'tamagui'\nimport { useControllableState } from '../../hooks/useControllableState'\nimport { IconButton } from '../icon-button/IconButton'\nimport { Input, type InputProps } from '../input/Input'\nimport { Spinner } from '../spinner'\n\nconst sidePadding = { sm: '$8', md: '$9', lg: '$10' } as const\nconst iconSize = { sm: 14, md: 16, lg: 18 } as const\n\nexport interface SearchProps extends Omit<\n  InputProps,\n  'size' | 'value' | 'defaultValue' | 'onChangeText' | 'type'\n> {\n  size?: 'sm' | 'md' | 'lg'\n  /** The search text (controlled). */\n  value?: string\n  defaultValue?: string\n  onValueChange?: (value: string) => void\n  /** Enter (or the keyboard's search key) was pressed. */\n  onSearch?: (value: string) => void\n  /** Shows a spinner in place of the search icon, e.g. while results load. */\n  loading?: boolean\n  /** Name of the field. Default: \"Search\". */\n  'aria-label'?: string\n  /** Name of the clear button. Default: \"Clear search\". */\n  clearLabel?: string\n  /** Wraps the field in a `search` landmark (web), for a page's main search. */\n  landmark?: boolean\n}\n\n/**\n * A search field: a magnifier, the text, and a clear button once there is\n * text. Enter runs `onSearch`; Escape clears the text on web.\n */\nexport const Search = forwardRef<TamaguiElement, SearchProps>(function Search(\n  {\n    size = 'md',\n    value: valueProp,\n    defaultValue = '',\n    onValueChange,\n    onSearch,\n    loading = false,\n    'aria-label': ariaLabel = 'Search',\n    clearLabel = 'Clear search',\n    landmark = false,\n    placeholder = 'Search',\n    disabled = false,\n    ...props\n  },\n  ref,\n) {\n  const [value, setValue] = useControllableState({\n    value: valueProp,\n    defaultValue,\n    onChange: onValueChange,\n  })\n  const inputRef = useRef<HTMLInputElement | null>(null)\n\n  const clear = () => {\n    setValue('')\n    inputRef.current?.focus()\n  }\n\n  return (\n    <View\n      position=\"relative\"\n      justifyContent=\"center\"\n      // Tamagui's role type lacks 'search'; react-native-web passes it through.\n      {...((landmark && isWeb ? { role: 'search' } : {}) as object)}\n    >\n      <View\n        position=\"absolute\"\n        left=\"$3\"\n        zIndex={1}\n        pointerEvents=\"none\"\n        aria-hidden\n        {...(!isWeb && { accessible: false })}\n      >\n        {loading ? (\n          <Spinner size=\"sm\" />\n        ) : (\n          <SearchIcon size={iconSize[size]} color=\"$mutedForeground\" />\n        )}\n      </View>\n      <Input\n        ref={(node: TamaguiElement | null) => {\n          inputRef.current = node as unknown as HTMLInputElement | null\n          if (typeof ref === 'function') ref(node)\n          else if (ref) ref.current = node\n        }}\n        role=\"searchbox\"\n        aria-label={ariaLabel}\n        aria-busy={loading || undefined}\n        enterKeyHint=\"search\"\n        returnKeyType=\"search\"\n        autoCorrect={false}\n        autoCapitalize=\"none\"\n        size={size}\n        disabled={disabled}\n        placeholder={placeholder}\n        value={value}\n        onChangeText={setValue}\n        onSubmitEditing={() => onSearch?.(value)}\n        {...(isWeb && {\n          onKeyDown: (event: { key: string; preventDefault: () => void }) => {\n            if (event.key === 'Escape' && value) {\n              event.preventDefault()\n              setValue('')\n            }\n          },\n        })}\n        {...props}\n        // After the spread: text never runs under the icon or the clear button.\n        paddingLeft={sidePadding[size]}\n        {...(value && { paddingRight: sidePadding[size] })}\n      />\n      {value && !disabled ? (\n        <View position=\"absolute\" right=\"$1\" top={0} bottom={0} justifyContent=\"center\">\n          <IconButton size=\"sm\" icon={<XIcon />} aria-label={clearLabel} onPress={clear} />\n        </View>\n      ) : null}\n    </View>\n  )\n})\n"
+    },
+    {
+      "path": "components/search/index.ts",
+      "type": "registry:ui",
+      "content": "export { Search, type SearchProps } from './Search'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Search on Enter",
+      "code": "import { Search, Text, VStack } from '@advui/core'\nimport { useState } from 'react'\n\nexport default function SearchBasic() {\n  const [submitted, setSubmitted] = useState('')\n  return (\n    <VStack gap=\"$2\" width=\"100%\" maxWidth=\"$80\">\n      <Search placeholder=\"Search publications\" onSearch={setSubmitted} />\n      <Text size=\"sm\" tone=\"muted\">\n        {submitted ? `Searched for “${submitted}”` : 'Press Enter to search.'}\n      </Text>\n    </VStack>\n  )\n}\n"
+    },
+    {
+      "name": "live",
+      "title": "Live results",
+      "code": "import { Search, Text, VStack } from '@advui/core'\nimport { useEffect, useState } from 'react'\n\nconst townships = [\n  'Hlaing Tharyar',\n  'Hakha',\n  'Hpa-An',\n  'Mawlamyine',\n  'Myitkyina',\n  'Sittwe',\n  'Taunggyi',\n]\n\nexport default function SearchLive() {\n  const [query, setQuery] = useState('')\n  const [loading, setLoading] = useState(false)\n  const [results, setResults] = useState(townships)\n\n  // A pretend request: results arrive a moment after typing stops.\n  useEffect(() => {\n    setLoading(true)\n    const timer = setTimeout(() => {\n      setResults(townships.filter((t) => t.toLowerCase().includes(query.toLowerCase())))\n      setLoading(false)\n    }, 400)\n    return () => clearTimeout(timer)\n  }, [query])\n\n  return (\n    <VStack gap=\"$2\" width=\"100%\" maxWidth=\"$80\">\n      <Search\n        aria-label=\"Search townships\"\n        placeholder=\"Search townships\"\n        value={query}\n        onValueChange={setQuery}\n        loading={loading}\n        size=\"sm\"\n      />\n      <Text size=\"sm\" tone=\"muted\" aria-live=\"polite\">\n        {loading ? 'Searching…' : `${results.length} townships: ${results.join(', ') || 'none'}`}\n      </Text>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/search",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "hooks",
+    "icon-button",
+    "input",
+    "spinner"
+  ],
+  "version": "0.5.0"
+}

@@ -39,6 +39,7 @@ import CircularProgressSizes from '../components/circular-progress/examples/size
 import CollapsibleBasic from '../components/collapsible/examples/basic'
 import CollapsibleSettings from '../components/collapsible/examples/settings'
 import ComboboxBasic from '../components/combobox/examples/basic'
+import CommandPaletteBasic from '../components/command-palette/examples/basic'
 import ContainerContainer from '../components/layout/examples/container'
 import ContextMenuBasic from '../components/context-menu/examples/basic'
 import ContextMenuList from '../components/context-menu/examples/list'
@@ -70,6 +71,7 @@ import IconButtonSizes from '../components/icon-button/examples/sizes'
 import ImageBasic from '../components/image/examples/basic'
 import ImageFit from '../components/image/examples/fit'
 import ImageFallback from '../components/image/examples/fallback'
+import ImageGalleryBasic from '../components/image-gallery/examples/basic'
 import InputBasic from '../components/input/examples/basic'
 import InputSizes from '../components/input/examples/sizes'
 import InputStates from '../components/input/examples/states'
@@ -100,6 +102,8 @@ import ProgressBasic from '../components/progress/examples/basic'
 import RadioGroupBasic from '../components/radio-group/examples/basic'
 import ScrollAreaBasic from '../components/scroll-area/examples/basic'
 import ScrollAreaHorizontal from '../components/scroll-area/examples/horizontal'
+import SearchBasic from '../components/search/examples/basic'
+import SearchLive from '../components/search/examples/live'
 import SelectBasic from '../components/select/examples/basic'
 import SelectGroups from '../components/select/examples/groups'
 import SeparatorBasic from '../components/separator/examples/basic'
@@ -218,6 +222,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'combobox': {
     'basic': ComboboxBasic,
   },
+  'command-palette': {
+    'basic': CommandPaletteBasic,
+  },
   'container': {
     'container': ContainerContainer,
   },
@@ -285,6 +292,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'fit': ImageFit,
     'fallback': ImageFallback,
   },
+  'image-gallery': {
+    'basic': ImageGalleryBasic,
+  },
   'input': {
     'basic': InputBasic,
     'sizes': InputSizes,
@@ -346,6 +356,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'scroll-area': {
     'basic': ScrollAreaBasic,
     'horizontal': ScrollAreaHorizontal,
+  },
+  'search': {
+    'basic': SearchBasic,
+    'live': SearchLive,
   },
   'select': {
     'basic': SelectBasic,
