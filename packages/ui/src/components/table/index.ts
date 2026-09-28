@@ -1,0 +1,17 @@
+export {
+  Table,
+  TableCellFrame,
+  TableFrame,
+  TableHeadFrame,
+  TableRowFrame,
+  type TableAlign,
+  type TableBodyProps,
+  type TableCellProps,
+  type TableFooterProps,
+  type TableHeadProps,
+  type TableHeaderProps,
+  type TableProps,
+  type TableRowProps,
+  type TableSize,
+  type TableSortDirection,
+} from './Table'

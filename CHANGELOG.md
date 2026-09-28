@@ -26,6 +26,19 @@ one version.
   placeholder while loading and a fallback on error that keeps the `alt`
   name. `alt` is required; `alt=""` hides a decorative image on every
   platform.
+- **Table** (beta): rows and columns with ARIA table roles on every platform
+  (`Table.Header`, `Table.Body`, `Table.Footer`, `Table.Row`, `Table.Head`,
+  `Table.Cell`). Named by `caption` or `aria-label`; `striped`, `outline`,
+  two densities, `align` for numbers, and `minWidth` to scroll sideways on
+  phones. A header with `sortDirection` is a sort button with `aria-sort`.
+- **Pagination** (beta): previous and next buttons around the page numbers,
+  with gaps that keep the item count steady (`getPaginationItems`). The
+  current page has `aria-current="page"`; a `compact` variant reads
+  "Page 3 of 10". Fits a phone by shrinking below the `xs` breakpoint.
+- **Stepper** (beta): progress through a multi-step flow, horizontal or
+  vertical (with the current step's content). Each step reads its number,
+  title and status ("Step 1 of 3: Account, completed"); `onStepPress` makes
+  reached steps buttons, and `status="error"` marks a failed step.
 
 ## [0.5.0] - 2026-09-28
 

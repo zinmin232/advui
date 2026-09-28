@@ -670,6 +670,23 @@
       ]
     },
     {
+      "name": "pagination",
+      "title": "Pagination",
+      "type": "registry:component",
+      "description": "Previous and next buttons around the page numbers of a long list or table.",
+      "category": "navigation",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "button",
+        "hooks",
+        "icon-button",
+        "typography"
+      ]
+    },
+    {
       "name": "password-input",
       "title": "Password Input",
       "type": "registry:component",
@@ -843,6 +860,21 @@
       ]
     },
     {
+      "name": "stepper",
+      "title": "Stepper",
+      "type": "registry:component",
+      "description": "Progress through a multi-step flow, such as a form wizard or checkout.",
+      "category": "navigation",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "typography"
+      ]
+    },
+    {
       "name": "switch",
       "title": "Switch",
       "type": "registry:component",
@@ -853,6 +885,21 @@
         "@advui/theme"
       ],
       "registryDependencies": []
+    },
+    {
+      "name": "table",
+      "title": "Table",
+      "type": "registry:component",
+      "description": "Rows and columns of data, with sortable headers, stripes and sideways scrolling.",
+      "category": "data-display",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "typography",
+        "utils"
+      ]
     },
     {
       "name": "tabs",

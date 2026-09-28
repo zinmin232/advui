@@ -42,6 +42,7 @@ import multiSelectMeta from '../components/multi-select/multi-select.meta'
 import navigationBarMeta from '../components/navigation-bar/navigation-bar.meta'
 import numberInputMeta from '../components/number-input/number-input.meta'
 import otpInputMeta from '../components/otp-input/otp-input.meta'
+import paginationMeta from '../components/pagination/pagination.meta'
 import passwordInputMeta from '../components/password-input/password-input.meta'
 import popoverMeta from '../components/popover/popover.meta'
 import progressMeta from '../components/progress/progress.meta'
@@ -56,7 +57,9 @@ import snackbarMeta from '../components/snackbar/snackbar.meta'
 import spinnerMeta from '../components/spinner/spinner.meta'
 import stackMeta from '../components/layout/stack.meta'
 import statMeta from '../components/stat/stat.meta'
+import stepperMeta from '../components/stepper/stepper.meta'
 import switchMeta from '../components/switch/switch.meta'
+import tableMeta from '../components/table/table.meta'
 import tabsMeta from '../components/tabs/tabs.meta'
 import textareaMeta from '../components/textarea/textarea.meta'
 import timePickerMeta from '../components/time-picker/time-picker.meta'
@@ -112,6 +115,7 @@ export const components: ComponentMeta[] = [
   navigationBarMeta,
   numberInputMeta,
   otpInputMeta,
+  paginationMeta,
   passwordInputMeta,
   popoverMeta,
   progressMeta,
@@ -126,7 +130,9 @@ export const components: ComponentMeta[] = [
   spinnerMeta,
   stackMeta,
   statMeta,
+  stepperMeta,
   switchMeta,
+  tableMeta,
   tabsMeta,
   textareaMeta,
   timePickerMeta,

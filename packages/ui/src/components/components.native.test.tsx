@@ -44,6 +44,7 @@ import { MultiSelect } from './multi-select/MultiSelect'
 import { NavigationBar } from './navigation-bar/NavigationBar'
 import { NumberInput } from './number-input/NumberInput'
 import { OtpInput } from './otp-input/OtpInput'
+import { Pagination } from './pagination/Pagination'
 import { PasswordInput } from './password-input/PasswordInput'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
@@ -53,7 +54,9 @@ import { Sheet } from './sheet/Sheet'
 import { Slider } from './slider/Slider'
 import { Snackbar } from './snackbar/Snackbar'
 import { Stat } from './stat/Stat'
+import { Stepper } from './stepper/Stepper'
 import { Switch } from './switch/Switch'
+import { Table } from './table/Table'
 import { Timeline } from './timeline/Timeline'
 import { Toaster, toast } from './toast/Toaster'
 import { Toggle } from './toggle/Toggle'
@@ -786,6 +789,63 @@ describe('native rendering', () => {
     expect(screen.getByText('All responses in.')).toBeOnTheScreen()
     // The markers (and the success icon in one) are decorative.
     expect(screen.queryAllByRole('img')).toHaveLength(0)
+  })
+
+  it('Pagination pages with named buttons and marks the current page selected', async () => {
+    const onPageChange = jest.fn()
+    await renderNative(<Pagination count={10} defaultPage={6} onPageChange={onPageChange} />)
+    expect(screen.getByRole('button', { name: 'Page 6' })).toBeSelected()
+    await fireEvent.press(screen.getByRole('button', { name: 'Next page' }))
+    expect(onPageChange).toHaveBeenLastCalledWith(7)
+    await fireEvent.press(screen.getByRole('button', { name: 'Page 10' }))
+    expect(onPageChange).toHaveBeenLastCalledWith(10)
+    expect(screen.getByRole('button', { name: 'Next page' })).toBeDisabled()
+  })
+
+  it('Stepper names each step with its number and status', async () => {
+    const onStepPress = jest.fn()
+    await renderNative(
+      <Stepper activeStep={1} onStepPress={onStepPress}>
+        <Stepper.Step title="Organization" description="Name and type" />
+        <Stepper.Step title="Activities" />
+        <Stepper.Step title="Review" />
+      </Stepper>,
+    )
+    await fireEvent.press(
+      screen.getByRole('button', { name: 'Step 1 of 3: Organization, completed. Name and type' }),
+    )
+    expect(onStepPress).toHaveBeenCalledWith(0)
+    expect(
+      screen.getByRole('button', { name: 'Step 2 of 3: Activities, current' }),
+    ).toBeOnTheScreen()
+    // Not reached yet: plain text, not a button.
+    expect(screen.getByLabelText('Step 3 of 3: Review, not started')).toBeOnTheScreen()
+    expect(screen.queryByRole('button', { name: /Review/ })).toBeNull()
+  })
+
+  it('Table sorts from a header button that says how the column is sorted', async () => {
+    const onSort = jest.fn()
+    await renderNative(
+      <Table aria-label="Townships" minWidth={640}>
+        <Table.Header>
+          <Table.Row>
+            <Table.Head sortDirection="descending" onSort={onSort}>
+              Population
+            </Table.Head>
+            <Table.Head>Region</Table.Head>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell align="end">687,867</Table.Cell>
+            <Table.Cell>Yangon</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>,
+    )
+    await fireEvent.press(screen.getByRole('button', { name: 'Population, sorted descending' }))
+    expect(onSort).toHaveBeenCalledTimes(1)
+    expect(screen.getByText('687,867')).toBeOnTheScreen()
   })
 
   it('Image is named by alt, hides a decorative image and falls back on error', async () => {

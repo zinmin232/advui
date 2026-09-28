@@ -87,6 +87,9 @@ import NumberInputBasic from '../components/number-input/examples/basic'
 import NumberInputDecimal from '../components/number-input/examples/decimal'
 import OtpInputBasic from '../components/otp-input/examples/basic'
 import OtpInputGrouped from '../components/otp-input/examples/grouped'
+import PaginationBasic from '../components/pagination/examples/basic'
+import PaginationControlled from '../components/pagination/examples/controlled'
+import PaginationCompact from '../components/pagination/examples/compact'
 import PasswordInputBasic from '../components/password-input/examples/basic'
 import PopoverBasic from '../components/popover/examples/basic'
 import PopoverFilter from '../components/popover/examples/filter'
@@ -110,7 +113,12 @@ import StackResponsive from '../components/layout/examples/responsive'
 import StatBasic from '../components/stat/examples/basic'
 import StatTrends from '../components/stat/examples/trends'
 import StatSizes from '../components/stat/examples/sizes'
+import StepperBasic from '../components/stepper/examples/basic'
+import StepperVertical from '../components/stepper/examples/vertical'
 import SwitchSettings from '../components/switch/examples/settings'
+import TableBasic from '../components/table/examples/basic'
+import TableSortable from '../components/table/examples/sortable'
+import TableScroll from '../components/table/examples/scroll'
 import TabsBasic from '../components/tabs/examples/basic'
 import TabsUnderline from '../components/tabs/examples/underline'
 import TextareaBasic from '../components/textarea/examples/basic'
@@ -303,6 +311,11 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': OtpInputBasic,
     'grouped': OtpInputGrouped,
   },
+  'pagination': {
+    'basic': PaginationBasic,
+    'controlled': PaginationControlled,
+    'compact': PaginationCompact,
+  },
   'password-input': {
     'basic': PasswordInputBasic,
   },
@@ -354,8 +367,17 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'trends': StatTrends,
     'sizes': StatSizes,
   },
+  'stepper': {
+    'basic': StepperBasic,
+    'vertical': StepperVertical,
+  },
   'switch': {
     'settings': SwitchSettings,
+  },
+  'table': {
+    'basic': TableBasic,
+    'sortable': TableSortable,
+    'scroll': TableScroll,
   },
   'tabs': {
     'basic': TabsBasic,
