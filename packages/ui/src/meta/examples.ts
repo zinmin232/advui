@@ -44,8 +44,13 @@ import DrawerBasic from '../components/drawer/examples/basic'
 import DrawerFilters from '../components/drawer/examples/filters'
 import DropdownMenuBasic from '../components/dropdown-menu/examples/basic'
 import DropdownMenuOptions from '../components/dropdown-menu/examples/options'
+import EmptyStateBasic from '../components/empty-state/examples/basic'
+import EmptyStateSearch from '../components/empty-state/examples/search'
+import ErrorStateBasic from '../components/error-state/examples/basic'
 import FabBasic from '../components/fab/examples/basic'
 import FabExtended from '../components/fab/examples/extended'
+import FormFieldBasic from '../components/form-field/examples/basic'
+import FormFieldValidation from '../components/form-field/examples/validation'
 import GridGrid from '../components/layout/examples/grid'
 import HoverCardBasic from '../components/hover-card/examples/basic'
 import IconButtonBasic from '../components/icon-button/examples/basic'
@@ -58,6 +63,9 @@ import LabelBasic from '../components/label/examples/basic'
 import MenuBasic from '../components/menu/examples/basic'
 import MenuActions from '../components/menu/examples/actions'
 import NavigationBarBasic from '../components/navigation-bar/examples/basic'
+import NumberInputBasic from '../components/number-input/examples/basic'
+import NumberInputDecimal from '../components/number-input/examples/decimal'
+import PasswordInputBasic from '../components/password-input/examples/basic'
 import PopoverBasic from '../components/popover/examples/basic'
 import PopoverFilter from '../components/popover/examples/filter'
 import ProgressBasic from '../components/progress/examples/basic'
@@ -174,9 +182,20 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': DropdownMenuBasic,
     'options': DropdownMenuOptions,
   },
+  'empty-state': {
+    'basic': EmptyStateBasic,
+    'search': EmptyStateSearch,
+  },
+  'error-state': {
+    'basic': ErrorStateBasic,
+  },
   'fab': {
     'basic': FabBasic,
     'extended': FabExtended,
+  },
+  'form-field': {
+    'basic': FormFieldBasic,
+    'validation': FormFieldValidation,
   },
   'grid': {
     'grid': GridGrid,
@@ -203,6 +222,13 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'navigation-bar': {
     'basic': NavigationBarBasic,
+  },
+  'number-input': {
+    'basic': NumberInputBasic,
+    'decimal': NumberInputDecimal,
+  },
+  'password-input': {
+    'basic': PasswordInputBasic,
   },
   'popover': {
     'basic': PopoverBasic,

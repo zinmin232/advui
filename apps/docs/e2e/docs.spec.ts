@@ -186,6 +186,11 @@ for (const path of [
   '/docs/components/context-menu',
   '/docs/components/drawer',
   '/docs/components/hover-card',
+  '/docs/components/form-field',
+  '/docs/components/password-input',
+  '/docs/components/number-input',
+  '/docs/components/empty-state',
+  '/docs/components/error-state',
   '/examples/login',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {

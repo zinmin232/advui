@@ -1,0 +1,53 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "number-input",
+  "title": "Number Input",
+  "type": "registry:component",
+  "description": "A numeric field with − and + buttons, limits and a step.",
+  "category": "forms",
+  "status": "beta",
+  "since": "0.4.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/number-input/NumberInput.tsx",
+      "type": "registry:ui",
+      "content": "import { MinusIcon, PlusIcon } from '@advui/icons'\nimport { forwardRef, useState } from 'react'\nimport { type TamaguiElement, XStack, isWeb } from 'tamagui'\nimport { useControllableState } from '../../hooks/useControllableState'\nimport { IconButton } from '../icon-button/IconButton'\nimport { Input, type InputProps } from '../input/Input'\n\nexport interface NumberInputProps extends Omit<\n  InputProps,\n  'value' | 'defaultValue' | 'onChangeText' | 'type' | 'inputMode' | 'keyboardType' | 'size'\n> {\n  size?: 'sm' | 'md' | 'lg'\n  /** The number, or `null` when empty (controlled). */\n  value?: number | null\n  defaultValue?: number | null\n  onValueChange?: (value: number | null) => void\n  min?: number\n  max?: number\n  /** Amount added or removed by the buttons and arrow keys. */\n  step?: number\n  decrementLabel?: string\n  incrementLabel?: string\n}\n\nfunction decimals(n: number) {\n  return (String(n).split('.')[1] ?? '').length\n}\n\n/**\n * A numeric field with − and + buttons. It is a `spinbutton`: arrow keys step\n * on web, and screen readers get increment / decrement actions on native.\n * Typed values are clamped to `min` / `max` when the field loses focus.\n */\nexport const NumberInput = forwardRef<TamaguiElement, NumberInputProps>(function NumberInput(\n  {\n    value: valueProp,\n    defaultValue = null,\n    onValueChange,\n    min,\n    max,\n    step = 1,\n    decrementLabel = 'Decrease',\n    incrementLabel = 'Increase',\n    size = 'md',\n    disabled = false,\n    onBlur,\n    ...props\n  },\n  ref,\n) {\n  const [value, setValue] = useControllableState<number | null>({\n    value: valueProp,\n    defaultValue,\n    onChange: onValueChange,\n  })\n  // Text being typed; null shows the formatted value.\n  const [draft, setDraft] = useState<string | null>(null)\n\n  const clamp = (n: number) => Math.min(max ?? Infinity, Math.max(min ?? -Infinity, n))\n  const stepBy = (direction: 1 | -1) => {\n    const base = value ?? clamp(0)\n    const next = value == null ? base : base + direction * step\n    // Round away float noise (0.1 + 0.2) at the precision of the inputs.\n    setValue(clamp(Number(next.toFixed(Math.max(decimals(step), decimals(base))))))\n    setDraft(null)\n  }\n  const atMin = value != null && min != null && value <= min\n  const atMax = value != null && max != null && value >= max\n\n  return (\n    <XStack gap=\"$2\" alignItems=\"center\">\n      <IconButton\n        variant=\"outline\"\n        size={size}\n        icon={<MinusIcon />}\n        aria-label={decrementLabel}\n        disabled={disabled || atMin}\n        // Arrow keys step from the field, so the buttons stay out of the Tab order.\n        {...(isWeb && { tabIndex: -1 })}\n        onPress={() => stepBy(-1)}\n      />\n      <Input\n        ref={ref}\n        flex={1}\n        textAlign=\"center\"\n        role=\"spinbutton\"\n        inputMode=\"decimal\"\n        size={size}\n        disabled={disabled}\n        aria-valuenow={value ?? undefined}\n        aria-valuemin={min}\n        aria-valuemax={max}\n        value={draft ?? (value == null ? '' : String(value))}\n        onChangeText={(text) => {\n          setDraft(text)\n          if (text.trim() === '') setValue(null)\n          else if (Number.isFinite(Number(text))) setValue(Number(text))\n        }}\n        onBlur={(event) => {\n          if (value != null && clamp(value) !== value) setValue(clamp(value))\n          setDraft(null)\n          onBlur?.(event)\n        }}\n        {...(isWeb\n          ? {\n              onKeyDown: (event: { key: string; preventDefault: () => void }) => {\n                if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {\n                  event.preventDefault()\n                  stepBy(event.key === 'ArrowUp' ? 1 : -1)\n                } else if (event.key === 'Home' && min != null) {\n                  event.preventDefault()\n                  setValue(min)\n                  setDraft(null)\n                } else if (event.key === 'End' && max != null) {\n                  event.preventDefault()\n                  setValue(max)\n                  setDraft(null)\n                }\n              },\n            }\n          : {\n              accessibilityActions: [{ name: 'increment' }, { name: 'decrement' }],\n              onAccessibilityAction: (event: { nativeEvent: { actionName: string } }) =>\n                stepBy(event.nativeEvent.actionName === 'increment' ? 1 : -1),\n            })}\n        {...props}\n      />\n      <IconButton\n        variant=\"outline\"\n        size={size}\n        icon={<PlusIcon />}\n        aria-label={incrementLabel}\n        disabled={disabled || atMax}\n        {...(isWeb && { tabIndex: -1 })}\n        onPress={() => stepBy(1)}\n      />\n    </XStack>\n  )\n})\n"
+    },
+    {
+      "path": "components/number-input/index.ts",
+      "type": "registry:ui",
+      "content": "export { NumberInput, type NumberInputProps } from './NumberInput'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { FormField, NumberInput } from '@advui/core'\n\nexport default function NumberInputBasic() {\n  return (\n    <FormField label=\"Guests\" description=\"Up to 10 per booking.\" width=\"100%\" maxWidth={240}>\n      <NumberInput defaultValue={2} min={1} max={10} />\n    </FormField>\n  )\n}\n"
+    },
+    {
+      "name": "decimal",
+      "title": "Decimal step",
+      "code": "import { FormField, NumberInput, Text, VStack } from '@advui/core'\nimport { useState } from 'react'\n\nexport default function NumberInputDecimal() {\n  const [weight, setWeight] = useState<number | null>(1.5)\n  return (\n    <VStack gap=\"$2\" width=\"100%\" maxWidth={240}>\n      <FormField label=\"Weight (kg)\">\n        <NumberInput size=\"sm\" value={weight} onValueChange={setWeight} min={0} step={0.1} />\n      </FormField>\n      <Text size=\"sm\" tone=\"muted\">\n        Value: {weight ?? 'empty'}\n      </Text>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/number-input",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "hooks",
+    "icon-button",
+    "input"
+  ],
+  "version": "0.2.0"
+}

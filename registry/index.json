@@ -282,6 +282,36 @@
       ]
     },
     {
+      "name": "empty-state",
+      "title": "Empty State",
+      "type": "registry:component",
+      "description": "A placeholder for an empty list, search or page, with the action that fills it.",
+      "category": "feedback",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "typography"
+      ]
+    },
+    {
+      "name": "error-state",
+      "title": "Error State",
+      "type": "registry:component",
+      "description": "Shown in place of content that failed to load, with a retry button.",
+      "category": "feedback",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "button",
+        "empty-state",
+        "typography"
+      ]
+    },
+    {
       "name": "fab",
       "title": "Floating Action Button",
       "type": "registry:component",
@@ -294,6 +324,19 @@
       ],
       "registryDependencies": [
         "hooks"
+      ]
+    },
+    {
+      "name": "form-field",
+      "title": "Form Field",
+      "type": "registry:component",
+      "description": "A label, one control, help text and an error message, wired together.",
+      "category": "forms",
+      "status": "beta",
+      "dependencies": [],
+      "registryDependencies": [
+        "label",
+        "typography"
       ]
     },
     {
@@ -404,6 +447,38 @@
       ],
       "registryDependencies": [
         "hooks"
+      ]
+    },
+    {
+      "name": "number-input",
+      "title": "Number Input",
+      "type": "registry:component",
+      "description": "A numeric field with − and + buttons, limits and a step.",
+      "category": "forms",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "icon-button",
+        "input"
+      ]
+    },
+    {
+      "name": "password-input",
+      "title": "Password Input",
+      "type": "registry:component",
+      "description": "A password field with a button that shows and hides the text.",
+      "category": "forms",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "icon-button",
+        "input"
       ]
     },
     {

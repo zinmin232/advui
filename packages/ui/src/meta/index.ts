@@ -18,7 +18,10 @@ import contextMenuMeta from '../components/context-menu/context-menu.meta'
 import dialogMeta from '../components/dialog/dialog.meta'
 import drawerMeta from '../components/drawer/drawer.meta'
 import dropdownMenuMeta from '../components/dropdown-menu/dropdown-menu.meta'
+import emptyStateMeta from '../components/empty-state/empty-state.meta'
+import errorStateMeta from '../components/error-state/error-state.meta'
 import fabMeta from '../components/fab/fab.meta'
+import formFieldMeta from '../components/form-field/form-field.meta'
 import gridMeta from '../components/layout/grid.meta'
 import hoverCardMeta from '../components/hover-card/hover-card.meta'
 import iconButtonMeta from '../components/icon-button/icon-button.meta'
@@ -26,6 +29,8 @@ import inputMeta from '../components/input/input.meta'
 import labelMeta from '../components/label/label.meta'
 import menuMeta from '../components/menu/menu.meta'
 import navigationBarMeta from '../components/navigation-bar/navigation-bar.meta'
+import numberInputMeta from '../components/number-input/number-input.meta'
+import passwordInputMeta from '../components/password-input/password-input.meta'
 import popoverMeta from '../components/popover/popover.meta'
 import progressMeta from '../components/progress/progress.meta'
 import radioGroupMeta from '../components/radio-group/radio-group.meta'
@@ -68,7 +73,10 @@ export const components: ComponentMeta[] = [
   dialogMeta,
   drawerMeta,
   dropdownMenuMeta,
+  emptyStateMeta,
+  errorStateMeta,
   fabMeta,
+  formFieldMeta,
   gridMeta,
   hoverCardMeta,
   iconButtonMeta,
@@ -76,6 +84,8 @@ export const components: ComponentMeta[] = [
   labelMeta,
   menuMeta,
   navigationBarMeta,
+  numberInputMeta,
+  passwordInputMeta,
   popoverMeta,
   progressMeta,
   radioGroupMeta,
