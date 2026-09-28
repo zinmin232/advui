@@ -1,0 +1,51 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "image-gallery",
+  "title": "Image Gallery",
+  "type": "registry:component",
+  "description": "A grid of thumbnails that open a viewer with previous and next.",
+  "category": "media",
+  "status": "beta",
+  "since": "0.6.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/image-gallery/ImageGallery.tsx",
+      "type": "registry:ui",
+      "content": "import { ChevronLeftIcon, ChevronRightIcon, XIcon } from '@advui/icons'\nimport { useEffect, useRef } from 'react'\nimport { View, XStack, isWeb } from 'tamagui'\nimport { useControllableState } from '../../hooks/useControllableState'\nimport { useRipple } from '../../hooks/useRipple'\nimport { Dialog } from '../dialog/Dialog'\nimport { IconButton } from '../icon-button/IconButton'\nimport { Image } from '../image/Image'\nimport { Grid, type ResponsiveColumns } from '../layout/Grid'\nimport { Text } from '../typography/Text'\n\nexport interface GalleryImage {\n  /** Full-size image: URL or `require()`. */\n  src: string | number\n  /** What the image shows. Names the thumbnail button and the viewer. */\n  alt: string\n  caption?: string\n  /** Smaller image for the grid. Default: `src`. */\n  thumbnail?: string | number\n}\n\nexport interface ImageGalleryLabels {\n  /** Name of a thumbnail button. Default: \"View {alt}\". */\n  open: (image: GalleryImage, index: number) => string\n  previous: string\n  next: string\n  close: string\n  /** Position in the viewer. Default: \"3 of 12\". */\n  position: (index: number, count: number) => string\n}\n\nconst defaultLabels: ImageGalleryLabels = {\n  open: (image) => `View ${image.alt}`,\n  previous: 'Previous image',\n  next: 'Next image',\n  close: 'Close',\n  position: (index, count) => `${index + 1} of ${count}`,\n}\n\nexport interface ImageGalleryProps {\n  images: GalleryImage[]\n  /** Thumbnails per row, or a mobile-first map. Default: `{ base: 2, sm: 3 }`. */\n  columns?: ResponsiveColumns\n  /** Thumbnail shape, width / height. Default: 1 (square). */\n  ratio?: number\n  /** Open image in the viewer (controlled); `null` when closed. */\n  index?: number | null\n  defaultIndex?: number | null\n  onIndexChange?: (index: number | null) => void\n  /** Button names and the position text, for translation. */\n  labels?: Partial<ImageGalleryLabels>\n}\n\nfunction Thumbnail({\n  image,\n  label,\n  ratio,\n  onPress,\n}: {\n  image: GalleryImage\n  label: string\n  ratio: number\n  onPress: () => void\n}) {\n  const ripple = useRipple({ color: '$foreground' })\n  return (\n    <View\n      {...(isWeb\n        ? { render: 'button', type: 'button', padding: 0, borderWidth: 0 }\n        : { accessible: true, role: 'button' })}\n      aria-label={label}\n      borderRadius=\"$md\"\n      overflow=\"hidden\"\n      backgroundColor=\"transparent\"\n      cursor=\"pointer\"\n      hoverStyle={{ opacity: 0.9 }}\n      pressStyle={{ opacity: 0.8 }}\n      focusVisibleStyle={{\n        outlineColor: '$ring',\n        outlineStyle: 'solid',\n        outlineWidth: 2,\n        outlineOffset: 2,\n      }}\n      onPress={onPress}\n      {...ripple.props}\n    >\n      {ripple.element}\n      {/* The button carries the name; the picture itself is decoration here. */}\n      <Image src={image.thumbnail ?? image.src} alt=\"\" ratio={ratio} width=\"100%\" />\n    </View>\n  )\n}\n\n/**\n * A grid of thumbnails that open a full-screen viewer with previous and\n * next buttons (and the arrow keys on web).\n */\nexport function ImageGallery({\n  images,\n  columns = { base: 2, sm: 3 },\n  ratio = 1,\n  index: indexProp,\n  defaultIndex = null,\n  onIndexChange,\n  labels: labelsProp,\n}: ImageGalleryProps) {\n  const labels = { ...defaultLabels, ...labelsProp }\n  const [index, setIndex] = useControllableState<number | null>({\n    value: indexProp,\n    defaultValue: defaultIndex,\n    onChange: onIndexChange,\n  })\n  const count = images.length\n  const current = index != null && index >= 0 && index < count ? index : null\n  const image = current != null ? images[current] : undefined\n\n  const go = (step: 1 | -1) => {\n    if (current == null) return\n    const next = current + step\n    if (next >= 0 && next < count) setIndex(next)\n  }\n\n  // Web: the arrow keys page through the open viewer.\n  const goRef = useRef(go)\n  goRef.current = go\n  useEffect(() => {\n    if (!isWeb || current == null) return\n    const onKeyDown = (event: KeyboardEvent) => {\n      if (event.key === 'ArrowLeft') goRef.current(-1)\n      else if (event.key === 'ArrowRight') goRef.current(1)\n    }\n    window.addEventListener('keydown', onKeyDown)\n    return () => window.removeEventListener('keydown', onKeyDown)\n  }, [current])\n\n  return (\n    <>\n      <Grid columns={columns} gap=\"$2\" width=\"100%\">\n        {images.map((item, i) => (\n          <Thumbnail\n            key={`${String(item.src)}-${i}`}\n            image={item}\n            label={labels.open(item, i)}\n            ratio={ratio}\n            onPress={() => setIndex(i)}\n          />\n        ))}\n      </Grid>\n      <Dialog open={image != null} onOpenChange={(open) => !open && setIndex(null)}>\n        {image ? (\n          <Dialog.Content size=\"xl\" hideCloseButton gap=\"$3\">\n            <XStack alignItems=\"center\" gap=\"$2\">\n              <View flex={1} minWidth={0}>\n                <Dialog.Title fontSize=\"$3\" lineHeight=\"$3\" numberOfLines={1}>\n                  {image.alt}\n                </Dialog.Title>\n                <Text size=\"xs\" tone=\"muted\" aria-live=\"polite\">\n                  {labels.position(current!, count)}\n                </Text>\n              </View>\n              <Dialog.Close asChild>\n                <IconButton size=\"sm\" aria-label={labels.close} icon={<XIcon />} />\n              </Dialog.Close>\n            </XStack>\n            <Image\n              key={String(image.src)}\n              src={image.src}\n              alt={image.alt}\n              fit=\"contain\"\n              width=\"100%\"\n              // A set height keeps the caption and buttons on screen, whatever the photo's shape.\n              height=\"$96\"\n              $max-sm={{ height: '$64' }}\n              borderRadius=\"$md\"\n            />\n            {image.caption ? <Dialog.Description>{image.caption}</Dialog.Description> : null}\n            <XStack justifyContent=\"space-between\" alignItems=\"center\">\n              <IconButton\n                variant=\"outline\"\n                aria-label={labels.previous}\n                icon={<ChevronLeftIcon />}\n                disabled={current === 0}\n                onPress={() => go(-1)}\n              />\n              <IconButton\n                variant=\"outline\"\n                aria-label={labels.next}\n                icon={<ChevronRightIcon />}\n                disabled={current === count - 1}\n                onPress={() => go(1)}\n              />\n            </XStack>\n          </Dialog.Content>\n        ) : null}\n      </Dialog>\n    </>\n  )\n}\n"
+    },
+    {
+      "path": "components/image-gallery/index.ts",
+      "type": "registry:ui",
+      "content": "export {\n  ImageGallery,\n  type GalleryImage,\n  type ImageGalleryLabels,\n  type ImageGalleryProps,\n} from './ImageGallery'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { ImageGallery, VStack, type GalleryImage } from '@advui/core'\n\nconst photo = (id: string) => `https://images.unsplash.com/photo-${id}?w=1200&q=70`\nconst thumb = (id: string) => `https://images.unsplash.com/photo-${id}?w=400&q=60`\n\nconst ids = [\n  ['1500530855697-b586d89ba3ee', 'A desert road between red rock canyons', 'Road to the canyon'],\n  ['1506744038136-46273834b3fb', 'A lake below forested mountains', undefined],\n  ['1469474968028-56623f02e42e', 'Sunlight over a valley of green hills', 'Morning in the valley'],\n  ['1441974231531-c6227db76b6e', 'Sun rays through a tall forest', undefined],\n  ['1470071459604-3b5ec3a7fe05', 'Misty hills at dawn', undefined],\n  ['1426604966848-d7adac402bff', 'A mountain lake with a pine forest', 'Taken on the second day'],\n] as const\n\nconst images: GalleryImage[] = ids.map(([id, alt, caption]) => ({\n  src: photo(id),\n  thumbnail: thumb(id),\n  alt,\n  caption,\n}))\n\nexport default function ImageGalleryBasic() {\n  return (\n    <VStack width=\"100%\" maxWidth=\"$96\">\n      <ImageGallery images={images} columns={{ base: 2, sm: 4 }} />\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/image-gallery",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "dialog",
+    "grid",
+    "hooks",
+    "icon-button",
+    "image",
+    "typography"
+  ],
+  "version": "0.5.0"
+}

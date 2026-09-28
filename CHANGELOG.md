@@ -61,6 +61,16 @@ one version.
   (icon, badge, `aria-current="page"`) and a footer. It collapses to an icon
   rail that keeps every name for screen readers; on phones it goes in a
   Drawer. `useSidebar()` exposes the collapsed state.
+- **Search** (beta): a search field with a magnifier, a clear button, a
+  loading spinner (`aria-busy`) and an optional `search` landmark. Enter runs
+  `onSearch`; Escape clears on web.
+- **Command Palette** (beta): a searchable list of actions in a dialog,
+  opened with ⌘K / Ctrl+K on web (`hotkey`). Ranked, accent-insensitive
+  matching on labels and keywords, grouped results, and a WAI-ARIA combobox
+  with `aria-activedescendant` on web; buttons on native.
+- **Image Gallery** (beta): a grid of named thumbnail buttons that open a
+  viewer dialog with previous / next (and the arrow keys on web), a caption
+  and a live "3 of 12".
 
 ## [0.5.0] - 2026-09-28
 

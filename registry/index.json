@@ -273,6 +273,22 @@
       ]
     },
     {
+      "name": "command-palette",
+      "title": "Command Palette",
+      "type": "registry:component",
+      "description": "A searchable list of actions in a dialog, opened with ⌘K or Ctrl+K.",
+      "category": "advanced",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "dialog",
+        "hooks",
+        "typography"
+      ]
+    },
+    {
       "name": "context-menu",
       "title": "Context Menu",
       "type": "registry:component",
@@ -510,6 +526,25 @@
       "dependencies": [],
       "registryDependencies": [
         "button"
+      ]
+    },
+    {
+      "name": "image-gallery",
+      "title": "Image Gallery",
+      "type": "registry:component",
+      "description": "A grid of thumbnails that open a viewer with previous and next.",
+      "category": "media",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "dialog",
+        "grid",
+        "hooks",
+        "icon-button",
+        "image",
+        "typography"
       ]
     },
     {
@@ -785,6 +820,23 @@
       "status": "beta",
       "dependencies": [],
       "registryDependencies": []
+    },
+    {
+      "name": "search",
+      "title": "Search",
+      "type": "registry:component",
+      "description": "A search field with a magnifier, a clear button and a loading state.",
+      "category": "advanced",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "icon-button",
+        "input",
+        "spinner"
+      ]
     },
     {
       "name": "select",
