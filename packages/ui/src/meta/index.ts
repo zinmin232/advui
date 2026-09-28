@@ -2,10 +2,12 @@
 import accordionMeta from '../components/accordion/accordion.meta'
 import alertMeta from '../components/alert/alert.meta'
 import alertDialogMeta from '../components/alert-dialog/alert-dialog.meta'
+import areaChartMeta from '../components/area-chart/area-chart.meta'
 import aspectRatioMeta from '../components/aspect-ratio/aspect-ratio.meta'
 import autocompleteMeta from '../components/autocomplete/autocomplete.meta'
 import avatarMeta from '../components/avatar/avatar.meta'
 import badgeMeta from '../components/badge/badge.meta'
+import barChartMeta from '../components/bar-chart/bar-chart.meta'
 import breadcrumbMeta from '../components/breadcrumb/breadcrumb.meta'
 import buttonMeta from '../components/button/button.meta'
 import buttonGroupMeta from '../components/button-group/button-group.meta'
@@ -39,6 +41,7 @@ import imageGalleryMeta from '../components/image-gallery/image-gallery.meta'
 import inputMeta from '../components/input/input.meta'
 import kpiCardMeta from '../components/kpi-card/kpi-card.meta'
 import labelMeta from '../components/label/label.meta'
+import lineChartMeta from '../components/line-chart/line-chart.meta'
 import listMeta from '../components/list/list.meta'
 import menuMeta from '../components/menu/menu.meta'
 import multiSelectMeta from '../components/multi-select/multi-select.meta'
@@ -48,6 +51,7 @@ import numberInputMeta from '../components/number-input/number-input.meta'
 import otpInputMeta from '../components/otp-input/otp-input.meta'
 import paginationMeta from '../components/pagination/pagination.meta'
 import passwordInputMeta from '../components/password-input/password-input.meta'
+import pieChartMeta from '../components/pie-chart/pie-chart.meta'
 import popoverMeta from '../components/popover/popover.meta'
 import progressMeta from '../components/progress/progress.meta'
 import radioGroupMeta from '../components/radio-group/radio-group.meta'
@@ -82,10 +86,12 @@ export const components: ComponentMeta[] = [
   accordionMeta,
   alertMeta,
   alertDialogMeta,
+  areaChartMeta,
   aspectRatioMeta,
   autocompleteMeta,
   avatarMeta,
   badgeMeta,
+  barChartMeta,
   breadcrumbMeta,
   buttonMeta,
   buttonGroupMeta,
@@ -119,6 +125,7 @@ export const components: ComponentMeta[] = [
   inputMeta,
   kpiCardMeta,
   labelMeta,
+  lineChartMeta,
   listMeta,
   menuMeta,
   multiSelectMeta,
@@ -128,6 +135,7 @@ export const components: ComponentMeta[] = [
   otpInputMeta,
   paginationMeta,
   passwordInputMeta,
+  pieChartMeta,
   popoverMeta,
   progressMeta,
   radioGroupMeta,

@@ -5,6 +5,8 @@ import AccordionCard from '../components/accordion/examples/card'
 import AlertVariants from '../components/alert/examples/variants'
 import AlertDialogBasic from '../components/alert-dialog/examples/basic'
 import AlertDialogAsync from '../components/alert-dialog/examples/async'
+import AreaChartBasic from '../components/area-chart/examples/basic'
+import AreaChartStacked from '../components/area-chart/examples/stacked'
 import AspectRatioBasic from '../components/aspect-ratio/examples/basic'
 import AspectRatioRatios from '../components/aspect-ratio/examples/ratios'
 import AutocompleteBasic from '../components/autocomplete/examples/basic'
@@ -13,6 +15,9 @@ import AvatarSizes from '../components/avatar/examples/sizes'
 import AvatarGroup from '../components/avatar/examples/group'
 import BadgeVariants from '../components/badge/examples/variants'
 import BadgeWithIcon from '../components/badge/examples/with-icon'
+import BarChartBasic from '../components/bar-chart/examples/basic'
+import BarChartGrouped from '../components/bar-chart/examples/grouped'
+import BarChartStacked from '../components/bar-chart/examples/stacked'
 import BreadcrumbBasic from '../components/breadcrumb/examples/basic'
 import BreadcrumbCollapsed from '../components/breadcrumb/examples/collapsed'
 import ButtonBasic from '../components/button/examples/basic'
@@ -80,6 +85,8 @@ import KpiCardGrid from '../components/kpi-card/examples/grid'
 import KpiCardWithProgress from '../components/kpi-card/examples/with-progress'
 import KpiCardLoading from '../components/kpi-card/examples/loading'
 import LabelBasic from '../components/label/examples/basic'
+import LineChartBasic from '../components/line-chart/examples/basic'
+import LineChartMultiple from '../components/line-chart/examples/multiple'
 import ListBasic from '../components/list/examples/basic'
 import ListInteractive from '../components/list/examples/interactive'
 import ListWithAvatars from '../components/list/examples/with-avatars'
@@ -96,6 +103,8 @@ import PaginationBasic from '../components/pagination/examples/basic'
 import PaginationControlled from '../components/pagination/examples/controlled'
 import PaginationCompact from '../components/pagination/examples/compact'
 import PasswordInputBasic from '../components/password-input/examples/basic'
+import PieChartBasic from '../components/pie-chart/examples/basic'
+import PieChartOther from '../components/pie-chart/examples/other'
 import PopoverBasic from '../components/popover/examples/basic'
 import PopoverFilter from '../components/popover/examples/filter'
 import ProgressBasic from '../components/progress/examples/basic'
@@ -160,6 +169,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': AlertDialogBasic,
     'async': AlertDialogAsync,
   },
+  'area-chart': {
+    'basic': AreaChartBasic,
+    'stacked': AreaChartStacked,
+  },
   'aspect-ratio': {
     'basic': AspectRatioBasic,
     'ratios': AspectRatioRatios,
@@ -175,6 +188,11 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'badge': {
     'variants': BadgeVariants,
     'with-icon': BadgeWithIcon,
+  },
+  'bar-chart': {
+    'basic': BarChartBasic,
+    'grouped': BarChartGrouped,
+    'stacked': BarChartStacked,
   },
   'breadcrumb': {
     'basic': BreadcrumbBasic,
@@ -309,6 +327,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'label': {
     'basic': LabelBasic,
   },
+  'line-chart': {
+    'basic': LineChartBasic,
+    'multiple': LineChartMultiple,
+  },
   'list': {
     'basic': ListBasic,
     'interactive': ListInteractive,
@@ -342,6 +364,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'password-input': {
     'basic': PasswordInputBasic,
+  },
+  'pie-chart': {
+    'basic': PieChartBasic,
+    'other': PieChartOther,
   },
   'popover': {
     'basic': PopoverBasic,

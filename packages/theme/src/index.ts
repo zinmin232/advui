@@ -1,4 +1,5 @@
 export { animations } from './animations'
+export { chartColors, chartPalette } from './chart'
 export {
   createUniversalConfig,
   getUniversalSettings,

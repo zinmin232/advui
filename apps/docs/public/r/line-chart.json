@@ -1,0 +1,46 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "line-chart",
+  "title": "Line Chart",
+  "type": "registry:component",
+  "description": "Shows change over an ordered axis, such as months, as one or more lines.",
+  "category": "charts",
+  "status": "beta",
+  "since": "0.6.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/line-chart/LineChart.tsx",
+      "type": "registry:ui",
+      "content": "import { LinePlot, type LinePlotProps } from '../../charts'\n\nexport type LineChartProps = LinePlotProps\n\n/**\n * Shows change over an ordered axis (months, years) as 2px lines, with a\n * crosshair tooltip (hover, tap or arrow keys), a legend and a table view.\n */\nexport function LineChart(props: LineChartProps) {\n  return <LinePlot {...props} />\n}\n"
+    },
+    {
+      "path": "components/line-chart/index.ts",
+      "type": "registry:ui",
+      "content": "export { LineChart, type LineChartProps } from './LineChart'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "One series",
+      "code": "import { LineChart } from '@advui/core'\n\nconst data = [\n  { month: 'Jan', reports: 212 },\n  { month: 'Feb', reports: 238 },\n  { month: 'Mar', reports: 301 },\n  { month: 'Apr', reports: 276 },\n  { month: 'May', reports: 334 },\n  { month: 'Jun', reports: 362 },\n  { month: 'Jul', reports: 348 },\n  { month: 'Aug', reports: 391 },\n]\n\nexport default function LineChartBasic() {\n  return (\n    <LineChart\n      title=\"5W activity reports received\"\n      description=\"Per month, 2026\"\n      data={data}\n      index=\"month\"\n      indexLabel=\"Month\"\n      series={[{ key: 'reports', label: 'Reports' }]}\n    />\n  )\n}\n"
+    },
+    {
+      "name": "multiple",
+      "title": "Several series",
+      "code": "import { LineChart } from '@advui/core'\n\nconst data = [\n  { quarter: 'Q1 25', health: 61, wash: 48, education: 35 },\n  { quarter: 'Q2 25', health: 66, wash: 52, education: 33 },\n  { quarter: 'Q3 25', health: 72, wash: 57, education: 38 },\n  { quarter: 'Q4 25', health: 70, wash: 63, education: 44 },\n  { quarter: 'Q1 26', health: 78, wash: 66, education: 47 },\n  { quarter: 'Q2 26', health: 83, wash: 64, education: null },\n  { quarter: 'Q3 26', health: 88, wash: 71, education: 52 },\n]\n\nexport default function LineChartMultiple() {\n  return (\n    <LineChart\n      title=\"Townships covered, by sector\"\n      description=\"Education has no Q2 2026 report, so its line breaks there.\"\n      data={data}\n      index=\"quarter\"\n      indexLabel=\"Quarter\"\n      series={[\n        { key: 'health', label: 'Health' },\n        { key: 'wash', label: 'WASH' },\n        { key: 'education', label: 'Education' },\n      ]}\n    />\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/line-chart",
+  "dependencies": [],
+  "peerDependencies": [],
+  "registryDependencies": [
+    "charts"
+  ],
+  "version": "0.5.0"
+}

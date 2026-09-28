@@ -216,6 +216,10 @@ for (const path of [
   '/docs/components/search',
   '/docs/components/command-palette',
   '/docs/components/image-gallery',
+  '/docs/components/bar-chart',
+  '/docs/components/line-chart',
+  '/docs/components/area-chart',
+  '/docs/components/pie-chart',
   '/examples/login',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {

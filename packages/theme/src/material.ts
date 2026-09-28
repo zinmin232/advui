@@ -19,6 +19,7 @@ import {
 import { ensureContrast, parseColor, toHex, withAlpha } from '@advui/utils'
 import type { UniversalConfigOptions } from './config'
 import type { FontFamilies } from './fonts'
+import { chartColors } from './chart'
 import type { ColorMode, GeneratedThemes, ThemeValues } from './themes'
 import type { RadiusOverrides } from './tokens'
 
@@ -193,6 +194,8 @@ function buildMode(
     infoSoft: info.soft,
     infoSoftForeground: info.softForeground,
     infoBorder: info.border,
+
+    ...chartColors(mode),
   }
 }
 
