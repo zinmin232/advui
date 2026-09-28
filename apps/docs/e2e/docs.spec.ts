@@ -206,6 +206,9 @@ for (const path of [
   '/docs/components/list',
   '/docs/components/timeline',
   '/docs/components/image',
+  '/docs/components/table',
+  '/docs/components/pagination',
+  '/docs/components/stepper',
   '/examples/login',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {
