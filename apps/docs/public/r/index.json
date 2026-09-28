@@ -1,6 +1,6 @@
 {
   "name": "advui",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "items": [
     {
       "name": "hooks",
@@ -152,6 +152,22 @@
       ]
     },
     {
+      "name": "calendar",
+      "title": "Calendar",
+      "type": "registry:component",
+      "description": "A month grid for picking a day or a range, with limits and disabled days.",
+      "category": "data-display",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "icon-button",
+        "typography"
+      ]
+    },
+    {
       "name": "card",
       "title": "Card",
       "type": "registry:component",
@@ -229,6 +245,45 @@
       "dependencies": [],
       "registryDependencies": [
         "dropdown-menu"
+      ]
+    },
+    {
+      "name": "date-picker",
+      "title": "Date Picker",
+      "type": "registry:component",
+      "description": "A field that opens a calendar in a popover, or a bottom sheet on phones.",
+      "category": "forms",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "calendar",
+        "hooks",
+        "icon-button",
+        "input",
+        "popover",
+        "typography"
+      ]
+    },
+    {
+      "name": "date-range-picker",
+      "title": "Date Range Picker",
+      "type": "registry:component",
+      "description": "A field that opens a range calendar: pick a start, then an end.",
+      "category": "forms",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "calendar",
+        "date-picker",
+        "hooks",
+        "icon-button",
+        "input",
+        "popover",
+        "typography"
       ]
     },
     {
@@ -466,6 +521,19 @@
       ]
     },
     {
+      "name": "otp-input",
+      "title": "OTP Input",
+      "type": "registry:component",
+      "description": "A one-time-code field drawn as separate slots, with paste and SMS autofill.",
+      "category": "forms",
+      "status": "beta",
+      "dependencies": [],
+      "registryDependencies": [
+        "hooks",
+        "input"
+      ]
+    },
+    {
       "name": "password-input",
       "title": "Password Input",
       "type": "registry:component",
@@ -661,6 +729,18 @@
       "dependencies": [],
       "registryDependencies": [
         "input"
+      ]
+    },
+    {
+      "name": "time-picker",
+      "title": "Time Picker",
+      "type": "registry:component",
+      "description": "Hour, minute and optional AM/PM selects that produce an \"HH:mm\" time.",
+      "category": "forms",
+      "status": "beta",
+      "dependencies": [],
+      "registryDependencies": [
+        "select"
       ]
     },
     {
