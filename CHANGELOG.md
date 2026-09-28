@@ -7,6 +7,26 @@ one version.
 
 ## [Unreleased]
 
+### Added
+
+- **Stat** (beta): one figure with its label, change and a note
+  (`Stat.Label`, `Stat.Value`, `Stat.Delta`, `Stat.HelpText`). The delta's
+  arrow is hidden from screen readers and its direction is read as words
+  ("Increased by 12.5%", translatable with `trendLabel`); `tone` colors a
+  drop as good news when it is.
+- **KPI Card** (beta): a Card for one dashboard figure, with the change, a
+  note, a decorative icon, a `loading` state (placeholders and `aria-busy`)
+  and room for extra content such as a Progress bar.
+- **List** (beta): rows with a leading visual, title, description and
+  trailing meta, as a `list` of `listitem`s. With `onPress` a row is one
+  button (Enter / Space on web); `divided`, `outline` and two sizes.
+- **Timeline** (beta): events along a vertical line, with a dot or an icon
+  marker in six tones, a time, a description and any extra content.
+- **Image** (beta): a picture in a box of a set size or `ratio`, with a muted
+  placeholder while loading and a fallback on error that keeps the `alt`
+  name. `alt` is required; `alt=""` hides a decorative image on every
+  platform.
+
 ## [0.5.0] - 2026-09-28
 
 ### Added

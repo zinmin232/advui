@@ -1,0 +1,57 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "stat",
+  "title": "Stat",
+  "type": "registry:component",
+  "description": "One figure with its label, how it changed and a short note.",
+  "category": "data-display",
+  "status": "beta",
+  "since": "0.6.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/stat/Stat.tsx",
+      "type": "registry:ui",
+      "content": "import { IconDefaults, MinusIcon, TrendingUpIcon } from '@advui/icons'\nimport { type ReactNode, forwardRef } from 'react'\nimport {\n  type GetProps,\n  type TamaguiElement,\n  View,\n  VisuallyHidden,\n  createStyledContext,\n  isWeb,\n  styled,\n  withStaticProperties,\n} from 'tamagui'\nimport { isTextContent } from '../../utils/isTextContent'\nimport { Text } from '../typography/Text'\n\nexport type StatSize = 'sm' | 'md' | 'lg'\nexport type StatTrend = 'up' | 'down' | 'neutral'\nexport type StatTone = 'positive' | 'negative' | 'neutral'\n\nconst StatContext = createStyledContext<{ size: StatSize }>({ size: 'md' })\n\nconst StatFrame = styled(View, {\n  name: 'Stat',\n  context: StatContext,\n  flexDirection: 'column',\n  minWidth: 0,\n\n  variants: {\n    size: {\n      sm: { gap: '$0.5' },\n      md: { gap: '$1' },\n      lg: { gap: '$1.5' },\n    },\n  } as const,\n\n  defaultVariants: { size: 'md' },\n})\n\nconst StatLabel = styled(Text, {\n  name: 'StatLabel',\n  context: StatContext,\n  tone: 'muted',\n  weight: 'medium',\n\n  variants: {\n    size: {\n      sm: { fontSize: '$1', lineHeight: '$1' },\n      md: { fontSize: '$2', lineHeight: '$2' },\n      lg: { fontSize: '$3', lineHeight: '$3' },\n    },\n  } as const,\n})\n\nconst StatValue = styled(Text, {\n  name: 'StatValue',\n  context: StatContext,\n  fontFamily: '$heading',\n  fontWeight: '700',\n\n  variants: {\n    size: {\n      sm: { fontSize: '$5', lineHeight: '$5' },\n      md: { fontSize: '$7', lineHeight: '$7' },\n      lg: { fontSize: '$9', lineHeight: '$9' },\n    },\n  } as const,\n})\n\nconst StatHelpText = styled(Text, {\n  name: 'StatHelpText',\n  context: StatContext,\n  tone: 'muted',\n\n  variants: {\n    size: {\n      sm: { fontSize: '$1', lineHeight: '$1' },\n      md: { fontSize: '$1', lineHeight: '$1' },\n      lg: { fontSize: '$2', lineHeight: '$2' },\n    },\n  } as const,\n})\n\nconst StatDeltaFrame = styled(View, {\n  name: 'StatDelta',\n  flexDirection: 'row',\n  alignItems: 'center',\n  alignSelf: 'flex-start',\n  gap: '$1',\n\n  variants: {\n    variant: {\n      plain: {},\n      badge: { paddingHorizontal: '$2', paddingVertical: '$0.5', borderRadius: '$full' },\n    },\n  } as const,\n})\n\nconst tones = {\n  positive: { text: 'success', badge: '$successSoft', icon: '$successSoftForeground' },\n  negative: { text: 'error', badge: '$errorSoft', icon: '$errorSoftForeground' },\n  neutral: { text: 'muted', badge: '$muted', icon: '$mutedForeground' },\n} as const\n\nconst defaultTones: Record<StatTrend, StatTone> = {\n  up: 'positive',\n  down: 'negative',\n  neutral: 'neutral',\n}\n\nconst defaultTrendLabels: Record<StatTrend, string> = {\n  up: 'Increased by',\n  down: 'Decreased by',\n  neutral: 'No change:',\n}\n\nexport interface StatDeltaProps extends Omit<GetProps<typeof StatDeltaFrame>, 'children'> {\n  /** Direction of the change; picks the arrow. */\n  trend?: StatTrend\n  /**\n   * Whether the change is good or bad; picks the color. Defaults to\n   * `positive` for `up` and `negative` for `down`. Pass it when a drop is\n   * good news (costs, churn, response time).\n   */\n  tone?: StatTone\n  /**\n   * Read by screen readers before the value, since the arrow is hidden from\n   * them. Default: \"Increased by\", \"Decreased by\" or \"No change:\".\n   */\n  trendLabel?: string\n  /** The change, e.g. `12.5%` or `+320`. */\n  children: ReactNode\n}\n\n/** The change since the last period: an arrow, and a color for good or bad news. */\nconst StatDelta = forwardRef<TamaguiElement, StatDeltaProps>(function StatDelta(\n  { trend = 'neutral', tone, trendLabel, variant = 'plain', children, ...props },\n  ref,\n) {\n  const colors = tones[tone ?? defaultTones[trend]]\n  const label = trendLabel ?? defaultTrendLabels[trend]\n  return (\n    <StatDeltaFrame\n      ref={ref}\n      variant={variant}\n      {...(variant === 'badge' && { backgroundColor: colors.badge })}\n      {...props}\n    >\n      {/* A mirrored trending-up arrow is the trending-down one. */}\n      <View aria-hidden {...(trend === 'down' && { scaleY: -1 })}>\n        <IconDefaults size={14} color={colors.icon}>\n          {trend === 'neutral' ? <MinusIcon /> : <TrendingUpIcon />}\n        </IconDefaults>\n      </View>\n      {isWeb ? <VisuallyHidden>{`${label} `}</VisuallyHidden> : null}\n      <Text\n        size=\"sm\"\n        weight=\"medium\"\n        tone={colors.text}\n        // Native has no visually hidden text: the label joins the value's name.\n        {...(!isWeb &&\n          isTextContent(children) && { 'aria-label': `${label} ${[children].flat().join('')}` })}\n      >\n        {children}\n      </Text>\n    </StatDeltaFrame>\n  )\n})\n\nexport type StatProps = GetProps<typeof StatFrame>\n\nconst StatImpl = forwardRef<TamaguiElement, StatProps>(function Stat(\n  { size = 'md', ...props },\n  ref,\n) {\n  return <StatFrame ref={ref} size={size} {...props} />\n})\n\n/**\n * One figure with its label and how it changed. Compose with `Stat.Label`,\n * `Stat.Value`, `Stat.Delta` and `Stat.HelpText`.\n */\nexport const Stat = withStaticProperties(StatImpl, {\n  Label: StatLabel,\n  Value: StatValue,\n  Delta: StatDelta,\n  HelpText: StatHelpText,\n})\n\nexport { StatFrame, StatLabel, StatValue, StatHelpText }\nexport type StatLabelProps = GetProps<typeof StatLabel>\nexport type StatValueProps = GetProps<typeof StatValue>\nexport type StatHelpTextProps = GetProps<typeof StatHelpText>\n"
+    },
+    {
+      "path": "components/stat/index.ts",
+      "type": "registry:ui",
+      "content": "export {\n  Stat,\n  StatFrame,\n  StatHelpText,\n  StatLabel,\n  StatValue,\n  type StatDeltaProps,\n  type StatHelpTextProps,\n  type StatLabelProps,\n  type StatProps,\n  type StatSize,\n  type StatTone,\n  type StatTrend,\n  type StatValueProps,\n} from './Stat'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { HStack, Stat } from '@advui/core'\n\nexport default function StatBasic() {\n  return (\n    <Stat>\n      <Stat.Label>Monthly active users</Stat.Label>\n      <Stat.Value>12,480</Stat.Value>\n      <HStack gap=\"$1.5\" alignItems=\"center\">\n        <Stat.Delta trend=\"up\">8.2%</Stat.Delta>\n        <Stat.HelpText>vs. last month</Stat.HelpText>\n      </HStack>\n    </Stat>\n  )\n}\n"
+    },
+    {
+      "name": "trends",
+      "title": "Trends and tones",
+      "code": "import { Grid, Stat } from '@advui/core'\n\nexport default function StatTrends() {\n  return (\n    <Grid columns={{ base: 1, sm: 3 }} gap=\"$6\" width=\"100%\">\n      <Stat>\n        <Stat.Label>Revenue</Stat.Label>\n        <Stat.Value>$48,210</Stat.Value>\n        <Stat.Delta trend=\"up\" variant=\"badge\">\n          12.5%\n        </Stat.Delta>\n      </Stat>\n      <Stat>\n        <Stat.Label>Refunds</Stat.Label>\n        <Stat.Value>$1,092</Stat.Value>\n        {/* Fewer refunds is good news: keep the down arrow, color it positive. */}\n        <Stat.Delta trend=\"down\" tone=\"positive\" variant=\"badge\">\n          3.1%\n        </Stat.Delta>\n      </Stat>\n      <Stat>\n        <Stat.Label>Open tickets</Stat.Label>\n        <Stat.Value>37</Stat.Value>\n        <Stat.Delta trend=\"neutral\" variant=\"badge\">\n          0%\n        </Stat.Delta>\n      </Stat>\n    </Grid>\n  )\n}\n"
+    },
+    {
+      "name": "sizes",
+      "title": "Sizes",
+      "code": "import { HStack, Stat } from '@advui/core'\n\nconst sizes = ['sm', 'md', 'lg'] as const\n\nexport default function StatSizes() {\n  return (\n    <HStack gap=\"$8\" flexWrap=\"wrap\" alignItems=\"flex-end\">\n      {sizes.map((size) => (\n        <Stat key={size} size={size}>\n          <Stat.Label>Size {size}</Stat.Label>\n          <Stat.Value>2,350</Stat.Value>\n          <Stat.HelpText>Orders this week</Stat.HelpText>\n        </Stat>\n      ))}\n    </HStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/stat",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "typography",
+    "utils"
+  ],
+  "version": "0.5.0"
+}

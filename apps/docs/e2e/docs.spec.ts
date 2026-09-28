@@ -201,6 +201,11 @@ for (const path of [
   '/docs/components/multi-select',
   '/docs/components/file-upload',
   '/docs/components/file-dropzone',
+  '/docs/components/stat',
+  '/docs/components/kpi-card',
+  '/docs/components/list',
+  '/docs/components/timeline',
+  '/docs/components/image',
   '/examples/login',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {

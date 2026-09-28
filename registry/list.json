@@ -1,0 +1,58 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "list",
+  "title": "List",
+  "type": "registry:component",
+  "description": "A vertical list of rows with a leading visual, text and trailing meta.",
+  "category": "data-display",
+  "status": "beta",
+  "since": "0.6.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/list/List.tsx",
+      "type": "registry:ui",
+      "content": "import { IconDefaults } from '@advui/icons'\nimport {\n  Children,\n  type ReactNode,\n  createContext,\n  forwardRef,\n  isValidElement,\n  useContext,\n} from 'react'\nimport {\n  type GetProps,\n  type TamaguiElement,\n  View,\n  createStyledContext,\n  isWeb,\n  styled,\n  withStaticProperties,\n} from 'tamagui'\nimport { useRipple } from '../../hooks/useRipple'\nimport { isTextContent } from '../../utils/isTextContent'\nimport { Text } from '../typography/Text'\n\ntype ListSize = 'sm' | 'md'\n\nconst ListContext = createStyledContext<{ size: ListSize }>({ size: 'md' })\n\n// Where an item sits, so it can draw the divider above it (not above the first).\nconst ItemPosition = createContext({ index: 0, divided: false })\n\nconst ListFrame = styled(View, {\n  name: 'List',\n  context: ListContext,\n  role: 'list',\n  flexDirection: 'column',\n\n  variants: {\n    variant: {\n      plain: {},\n      outline: {\n        backgroundColor: '$card',\n        borderWidth: 1,\n        borderColor: '$border',\n        borderRadius: '$lg',\n        overflow: 'hidden',\n      },\n    },\n    size: {\n      sm: {},\n      md: {},\n    },\n  } as const,\n\n  defaultVariants: { variant: 'plain', size: 'md' },\n})\n\nconst ListItemFrame = styled(View, {\n  name: 'ListItem',\n  role: 'listitem',\n  flexDirection: 'column',\n\n  variants: {\n    divider: {\n      true: { borderTopWidth: 1, borderColor: '$border' },\n    },\n  } as const,\n})\n\nconst ListItemRow = styled(View, {\n  name: 'ListItemRow',\n  context: ListContext,\n  flexDirection: 'row',\n  alignItems: 'center',\n  gap: '$3',\n  width: '100%',\n\n  variants: {\n    size: {\n      sm: { paddingHorizontal: '$3', paddingVertical: '$2', minHeight: '$11' },\n      md: { paddingHorizontal: '$4', paddingVertical: '$3', minHeight: '$12' },\n    },\n    interactive: {\n      true: {\n        cursor: 'pointer',\n        backgroundColor: 'transparent',\n        borderWidth: 0,\n        hoverStyle: { backgroundColor: '$accent' },\n        pressStyle: { backgroundColor: '$accentHover' },\n        // Inset, so an outline List's clipping does not cut it off.\n        focusVisibleStyle: {\n          outlineColor: '$ring',\n          outlineStyle: 'solid',\n          outlineWidth: 2,\n          outlineOffset: -2,\n        },\n      },\n    },\n    disabled: {\n      true: { opacity: 0.5, cursor: 'not-allowed', hoverStyle: { backgroundColor: 'transparent' } },\n    },\n  } as const,\n})\n\nconst ListItemContent = styled(View, {\n  name: 'ListItemContent',\n  flex: 1,\n  minWidth: 0,\n  gap: '$0.5',\n})\n\nconst ListItemTitle = styled(Text, {\n  name: 'ListItemTitle',\n  context: ListContext,\n  weight: 'medium',\n\n  variants: {\n    size: {\n      sm: { fontSize: '$2', lineHeight: '$2' },\n      md: { fontSize: '$3', lineHeight: '$3' },\n    },\n  } as const,\n})\n\nconst ListItemDescription = styled(Text, {\n  name: 'ListItemDescription',\n  context: ListContext,\n  tone: 'muted',\n\n  variants: {\n    size: {\n      sm: { fontSize: '$1', lineHeight: '$1' },\n      md: { fontSize: '$2', lineHeight: '$2' },\n    },\n  } as const,\n})\n\nexport type ListProps = GetProps<typeof ListFrame> & {\n  /** Draws a line between items. */\n  divided?: boolean\n}\n\nconst ListImpl = forwardRef<TamaguiElement, ListProps>(function List(\n  { variant = 'plain', size = 'md', divided = false, children, ...props },\n  ref,\n) {\n  return (\n    <ListFrame ref={ref} variant={variant} size={size} {...props}>\n      {Children.toArray(children).map((child, index) => (\n        <ItemPosition.Provider\n          key={isValidElement(child) && child.key != null ? child.key : index}\n          value={{ index, divided }}\n        >\n          {child}\n        </ItemPosition.Provider>\n      ))}\n    </ListFrame>\n  )\n})\n\nexport interface ListItemProps extends Omit<\n  GetProps<typeof ListItemFrame>,\n  'children' | 'onPress' | 'title'\n> {\n  /** Main line. */\n  title?: ReactNode\n  /** Muted second line. */\n  description?: ReactNode\n  /** Icon, Avatar or image before the text. Icons get the muted color. */\n  leading?: ReactNode\n  /** Meta text, a Badge or a chevron after the text. Actions go here only when the item has no `onPress`. */\n  trailing?: ReactNode\n  /** Custom content in place of `title` and `description`. */\n  children?: ReactNode\n  /** Makes the whole row one button. */\n  onPress?: GetProps<typeof ListItemRow>['onPress']\n  disabled?: boolean\n}\n\n/** One row of a List: leading visual, title and description, trailing meta. */\nconst ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListItem(\n  {\n    title,\n    description,\n    leading,\n    trailing,\n    children,\n    onPress,\n    disabled = false,\n    onPressIn,\n    onPressOut,\n    ...props\n  },\n  ref,\n) {\n  const { index, divided } = useContext(ItemPosition)\n  const pressable = !!onPress\n  const ripple = useRipple({\n    color: '$foreground',\n    disabled: !pressable || disabled,\n    onPressIn,\n    onPressOut,\n  })\n\n  const content = (\n    <>\n      {leading ? (\n        <IconDefaults size={20} color=\"$mutedForeground\">\n          {leading}\n        </IconDefaults>\n      ) : null}\n      <ListItemContent>\n        {children ?? (\n          <>\n            {title != null ? <ListItemTitle>{title}</ListItemTitle> : null}\n            {description != null ? <ListItemDescription>{description}</ListItemDescription> : null}\n          </>\n        )}\n      </ListItemContent>\n      {trailing != null ? (\n        <IconDefaults size={16} color=\"$mutedForeground\">\n          {isTextContent(trailing) ? (\n            <Text size=\"sm\" tone=\"muted\">\n              {trailing}\n            </Text>\n          ) : (\n            trailing\n          )}\n        </IconDefaults>\n      ) : null}\n    </>\n  )\n\n  return (\n    <ListItemFrame\n      ref={ref}\n      divider={divided && index > 0}\n      {...(!pressable && { onPressIn, onPressOut })}\n      {...props}\n    >\n      {pressable ? (\n        <ListItemRow\n          interactive\n          disabled={disabled}\n          aria-disabled={disabled || undefined}\n          {...(isWeb\n            ? // A button centers its text by default.\n              { render: 'button', type: 'button', style: { textAlign: 'start' } }\n            : { accessible: true, role: 'button' })}\n          onPress={(event) => {\n            if (!disabled) onPress(event)\n          }}\n          {...(ripple.active && { pressStyle: { backgroundColor: 'transparent' } })}\n          {...ripple.props}\n        >\n          {ripple.element}\n          {content}\n        </ListItemRow>\n      ) : (\n        <ListItemRow>{content}</ListItemRow>\n      )}\n    </ListItemFrame>\n  )\n})\n\n/**\n * A vertical list of rows. Each `List.Item` has an optional leading visual,\n * a title and description, and trailing meta; with `onPress` the row is a\n * button.\n */\nexport const List = withStaticProperties(ListImpl, {\n  Item: ListItem,\n  ItemTitle: ListItemTitle,\n  ItemDescription: ListItemDescription,\n})\n\nexport { ListFrame, ListItemFrame, ListItemTitle, ListItemDescription }\nexport type ListItemTitleProps = GetProps<typeof ListItemTitle>\nexport type ListItemDescriptionProps = GetProps<typeof ListItemDescription>\n"
+    },
+    {
+      "path": "components/list/index.ts",
+      "type": "registry:ui",
+      "content": "export {\n  List,\n  ListFrame,\n  ListItemDescription,\n  ListItemFrame,\n  ListItemTitle,\n  type ListItemDescriptionProps,\n  type ListItemProps,\n  type ListItemTitleProps,\n  type ListProps,\n} from './List'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { List } from '@advui/core'\nimport { FileIcon, FolderIcon, ImageIcon } from '@advui/icons'\n\nexport default function ListBasic() {\n  return (\n    <List width=\"100%\" maxWidth=\"$96\">\n      <List.Item leading={<FolderIcon />} title=\"Field reports\" description=\"12 files\" />\n      <List.Item leading={<FileIcon />} title=\"Budget 2026.xlsx\" description=\"Edited yesterday\" />\n      <List.Item\n        leading={<ImageIcon />}\n        title=\"Site photo.jpg\"\n        description=\"2.4 MB\"\n        trailing=\"JPG\"\n      />\n    </List>\n  )\n}\n"
+    },
+    {
+      "name": "interactive",
+      "title": "Pressable rows",
+      "code": "import { List, toast } from '@advui/core'\nimport { BellIcon, ChevronRightIcon, LockIcon, UserIcon } from '@advui/icons'\n\nconst settings = [\n  { title: 'Account', description: 'Name, email and photo', icon: <UserIcon /> },\n  { title: 'Notifications', description: 'Email and push alerts', icon: <BellIcon /> },\n  { title: 'Privacy', description: 'Who can see your activity', icon: <LockIcon /> },\n]\n\nexport default function ListInteractive() {\n  return (\n    <List variant=\"outline\" divided width=\"100%\" maxWidth=\"$96\">\n      {settings.map((item) => (\n        <List.Item\n          key={item.title}\n          leading={item.icon}\n          title={item.title}\n          description={item.description}\n          trailing={<ChevronRightIcon />}\n          onPress={() => toast(`Opening ${item.title}…`)}\n        />\n      ))}\n      <List.Item\n        leading={<LockIcon />}\n        title=\"Security keys\"\n        description=\"Available on the Pro plan\"\n        disabled\n        onPress={() => {}}\n      />\n    </List>\n  )\n}\n"
+    },
+    {
+      "name": "with-avatars",
+      "title": "Avatars and actions",
+      "code": "import { Avatar, Badge, IconButton, List } from '@advui/core'\nimport { MailIcon } from '@advui/icons'\n\nconst team = [\n  { name: 'Aung Kyaw', role: 'Field coordinator', status: 'Online' },\n  { name: 'Nwe Ni', role: 'Data officer', status: 'Away' },\n  { name: 'Hla Min', role: 'Programme manager', status: 'Online' },\n]\n\nexport default function ListWithAvatars() {\n  return (\n    <List divided size=\"sm\" width=\"100%\" maxWidth=\"$96\">\n      {team.map((person) => (\n        <List.Item\n          key={person.name}\n          leading={<Avatar size=\"sm\" alt={person.name} />}\n          title={person.name}\n          description={person.role}\n          trailing={\n            <>\n              <Badge\n                size=\"sm\"\n                variant={person.status === 'Online' ? 'success' : 'secondary'}\n                alignSelf=\"center\"\n              >\n                {person.status}\n              </Badge>\n              <IconButton size=\"sm\" icon={<MailIcon />} aria-label={`Email ${person.name}`} />\n            </>\n          }\n        />\n      ))}\n    </List>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/list",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "hooks",
+    "typography",
+    "utils"
+  ],
+  "version": "0.5.0"
+}

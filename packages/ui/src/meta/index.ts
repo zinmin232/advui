@@ -32,8 +32,11 @@ import formFieldMeta from '../components/form-field/form-field.meta'
 import gridMeta from '../components/layout/grid.meta'
 import hoverCardMeta from '../components/hover-card/hover-card.meta'
 import iconButtonMeta from '../components/icon-button/icon-button.meta'
+import imageMeta from '../components/image/image.meta'
 import inputMeta from '../components/input/input.meta'
+import kpiCardMeta from '../components/kpi-card/kpi-card.meta'
 import labelMeta from '../components/label/label.meta'
+import listMeta from '../components/list/list.meta'
 import menuMeta from '../components/menu/menu.meta'
 import multiSelectMeta from '../components/multi-select/multi-select.meta'
 import navigationBarMeta from '../components/navigation-bar/navigation-bar.meta'
@@ -52,10 +55,12 @@ import sliderMeta from '../components/slider/slider.meta'
 import snackbarMeta from '../components/snackbar/snackbar.meta'
 import spinnerMeta from '../components/spinner/spinner.meta'
 import stackMeta from '../components/layout/stack.meta'
+import statMeta from '../components/stat/stat.meta'
 import switchMeta from '../components/switch/switch.meta'
 import tabsMeta from '../components/tabs/tabs.meta'
 import textareaMeta from '../components/textarea/textarea.meta'
 import timePickerMeta from '../components/time-picker/time-picker.meta'
+import timelineMeta from '../components/timeline/timeline.meta'
 import toastMeta from '../components/toast/toast.meta'
 import toggleMeta from '../components/toggle/toggle.meta'
 import toggleGroupMeta from '../components/toggle-group/toggle-group.meta'
@@ -97,8 +102,11 @@ export const components: ComponentMeta[] = [
   gridMeta,
   hoverCardMeta,
   iconButtonMeta,
+  imageMeta,
   inputMeta,
+  kpiCardMeta,
   labelMeta,
+  listMeta,
   menuMeta,
   multiSelectMeta,
   navigationBarMeta,
@@ -117,10 +125,12 @@ export const components: ComponentMeta[] = [
   snackbarMeta,
   spinnerMeta,
   stackMeta,
+  statMeta,
   switchMeta,
   tabsMeta,
   textareaMeta,
   timePickerMeta,
+  timelineMeta,
   toastMeta,
   toggleMeta,
   toggleGroupMeta,

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "image",
+  "title": "Image",
+  "type": "registry:component",
+  "description": "A picture in a box of a set size or ratio, with a placeholder and a fallback.",
+  "category": "media",
+  "status": "beta",
+  "since": "0.6.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/image/Image.tsx",
+      "type": "registry:ui",
+      "content": "import { IconDefaults, ImageIcon } from '@advui/icons'\nimport {\n  type ComponentProps,\n  type ComponentType,\n  type ReactNode,\n  type Ref,\n  forwardRef,\n  useEffect,\n  useRef,\n  useState,\n} from 'react'\nimport {\n  type GetProps,\n  Image as TamaguiImage,\n  type TamaguiElement,\n  View,\n  isWeb,\n  styled,\n  useEvent,\n} from 'tamagui'\n\ntype Status = 'loading' | 'loaded' | 'error'\n\n// Typed as a plain function component, but it forwards its ref (the <img> on web).\nconst ImageElement = TamaguiImage as unknown as ComponentType<\n  ComponentProps<typeof TamaguiImage> & { ref?: Ref<HTMLImageElement> }\n>\n\nconst ImageFrame = styled(View, {\n  name: 'Image',\n  position: 'relative',\n  overflow: 'hidden',\n  backgroundColor: '$muted',\n\n  variants: {\n    loaded: {\n      true: { backgroundColor: 'transparent' },\n    },\n  } as const,\n})\n\nexport interface ImageProps extends Omit<GetProps<typeof ImageFrame>, 'children' | 'loaded'> {\n  /** URL, or the result of `require()` for a bundled image on native. */\n  src: string | number\n  /**\n   * What the image shows, for screen readers. Pass `\"\"` when it is only\n   * decoration or the text next to it already says it.\n   */\n  alt: string\n  /** Width divided by height, e.g. `16 / 9`. Without it, give the image a height. */\n  ratio?: number\n  /** How the picture fills the box. */\n  fit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down'\n  /** Shown when the image fails to load. Default: an image icon on the muted surface. */\n  fallback?: ReactNode\n  /** Web: `lazy` waits until the image is near the viewport. */\n  loading?: 'lazy' | 'eager'\n  onLoad?: () => void\n  onError?: () => void\n}\n\n/**\n * A picture in a box of a set size or ratio. The box shows a muted\n * placeholder while the image loads and a fallback if it fails.\n */\nexport const Image = forwardRef<TamaguiElement, ImageProps>(function Image(\n  { src, alt, ratio, fit = 'cover', fallback, loading, onLoad, onError, ...props },\n  ref,\n) {\n  // Keyed by `src`, so a new source starts loading again without an effect.\n  const [state, setState] = useState<{ src: string | number; status: Status }>({\n    src,\n    status: 'loading',\n  })\n  const status = state.src === src ? state.status : 'loading'\n  // A cached image can report through both the element check below and its\n  // load event: settle each source once.\n  const settled = useRef<string | number | null>(null)\n  const settle = useEvent((next: Status) => {\n    if (settled.current === src) return\n    settled.current = src\n    setState({ src, status: next })\n    if (next === 'loaded') onLoad?.()\n    else onError?.()\n  })\n\n  // On web the image can finish (or fail) before hydration attaches its\n  // handlers, so read the result from the element once mounted.\n  const imageRef = useRef<HTMLImageElement>(null)\n  useEffect(() => {\n    const image = imageRef.current\n    if (!isWeb || !image?.complete || !image.src) return\n    settle(image.naturalWidth > 0 ? 'loaded' : 'error')\n  }, [src, settle])\n\n  const failed = status === 'error'\n  return (\n    <ImageFrame\n      ref={ref}\n      loaded={status === 'loaded'}\n      {...(ratio != null && { aspectRatio: ratio })}\n      {...props}\n    >\n      {failed ? (\n        <View\n          position=\"absolute\"\n          top={0}\n          right={0}\n          bottom={0}\n          left={0}\n          alignItems=\"center\"\n          justifyContent=\"center\"\n          {...(alt\n            ? { role: 'img', 'aria-label': alt, ...(!isWeb && { accessible: true }) }\n            : { 'aria-hidden': true })}\n        >\n          {fallback ?? (\n            <IconDefaults size={24} color=\"$mutedForeground\">\n              <ImageIcon />\n            </IconDefaults>\n          )}\n        </View>\n      ) : (\n        <ImageElement\n          // Remount for a new source, so its load state starts fresh.\n          key={String(src)}\n          ref={imageRef}\n          // A `require()` number is valid on native; the merged types only allow URLs.\n          src={src as string}\n          objectFit={fit}\n          position=\"absolute\"\n          top={0}\n          left={0}\n          width=\"100%\"\n          height=\"100%\"\n          {...(isWeb\n            ? { alt, loading }\n            : // React Native makes an image with any `alt` (even \"\") accessible.\n              alt\n              ? { alt, role: 'img' }\n              : { accessible: false, 'aria-hidden': true })}\n          onLoad={() => settle('loaded')}\n          onError={() => settle('error')}\n        />\n      )}\n    </ImageFrame>\n  )\n})\n"
+    },
+    {
+      "path": "components/image/index.ts",
+      "type": "registry:ui",
+      "content": "export { Image, type ImageProps } from './Image'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { Image } from '@advui/core'\n\nexport default function ImageBasic() {\n  return (\n    <Image\n      src=\"https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=900&q=70\"\n      alt=\"Sunlight over a valley of green hills\"\n      ratio={16 / 9}\n      borderRadius=\"$lg\"\n      width=\"100%\"\n      maxWidth=\"$96\"\n    />\n  )\n}\n"
+    },
+    {
+      "name": "fit",
+      "title": "Cover and contain",
+      "code": "import { Image, Text, VStack, HStack } from '@advui/core'\n\nconst fits = ['cover', 'contain'] as const\n\nexport default function ImageFit() {\n  return (\n    <HStack gap=\"$4\" flexWrap=\"wrap\">\n      {fits.map((fit) => (\n        <VStack key={fit} gap=\"$2\" alignItems=\"center\">\n          <Image\n            src=\"https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&q=70\"\n            alt=\"A lake below forested mountains\"\n            fit={fit}\n            width=\"$40\"\n            height=\"$40\"\n            borderRadius=\"$md\"\n            borderWidth={1}\n            borderColor=\"$border\"\n          />\n          <Text size=\"sm\" tone=\"muted\">\n            {fit}\n          </Text>\n        </VStack>\n      ))}\n    </HStack>\n  )\n}\n"
+    },
+    {
+      "name": "fallback",
+      "title": "Fallback",
+      "code": "import { Image, Text, HStack } from '@advui/core'\n\nexport default function ImageFallback() {\n  return (\n    <HStack gap=\"$4\" flexWrap=\"wrap\">\n      {/* This file does not exist, so the fallback shows. */}\n      <Image\n        src=\"/missing-photo.jpg\"\n        alt=\"Clinic entrance\"\n        width=\"$40\"\n        ratio={4 / 3}\n        borderRadius=\"$md\"\n      />\n      <Image\n        src=\"/missing-photo.jpg\"\n        alt=\"Team photo\"\n        width=\"$40\"\n        ratio={4 / 3}\n        borderRadius=\"$md\"\n        fallback={\n          <Text size=\"sm\" tone=\"muted\">\n            Photo unavailable\n          </Text>\n        }\n      />\n    </HStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/image",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.5.0"
+}
