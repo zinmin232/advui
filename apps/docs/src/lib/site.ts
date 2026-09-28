@@ -10,7 +10,7 @@ export const siteConfig = {
   npmScope: '@advui',
   corePackage: '@advui/core',
   cliName: 'advui',
-  version: '0.4.0',
+  version: '0.5.0',
 }
 
 /** Path prefix when the site is served from a sub-folder (GitHub Pages: `/advui`). */
