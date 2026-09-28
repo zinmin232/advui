@@ -7,8 +7,6 @@ one version.
 
 ## [Unreleased]
 
-## [0.3.0] - 2026-09-28
-
 ### Added
 
 - **Form Field** (beta): a label, one control, help text and an error message
@@ -25,6 +23,16 @@ one version.
 - **Error State** (beta): Empty State's layout for a failed load, with an
   error icon, a default title and a retry button (`onRetry`, `retrying`). It
   is an `alert` on web.
+
+### Fixed
+
+- Input: text at `size="sm"` was clipped on Android, where `TextInput` adds
+  its own vertical padding.
+
+## [0.3.0] - 2026-09-28
+
+### Added
+
 - **Button Group** (beta): groups Buttons and IconButtons as a labelled
   `group`, joined into one control (square inner corners, shared borders) or
   spaced apart with `attached={false}`, in a row or a column. Buttons take the
@@ -65,8 +73,6 @@ one version.
 
 ### Fixed
 
-- Input: text at `size="sm"` was clipped on Android, where `TextInput` adds
-  its own vertical padding.
 - IconButton: square corners in every theme, because it passed
   `borderRadius={undefined}` to Button. It now uses the theme's button radius
   (`$button`), so icon buttons match buttons, including Material's pill shape.
