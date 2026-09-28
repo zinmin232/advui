@@ -22,6 +22,22 @@ one version.
   the day or range is picked.
 - **Time Picker** (beta): hour, minute and optional AM/PM selects in a group,
   producing a 24-hour `"HH:mm"` value.
+- **Combobox** (beta): a select you can type in. The text filters the options
+  (ignoring case and accents), and only an option can be picked. On web it
+  is a WAI-ARIA combobox (focus stays in the text box, `aria-activedescendant`
+  follows the arrow keys) with a listbox that floats in a portal and flips
+  when there is no room; on phones it opens a searchable bottom sheet.
+- **Autocomplete** (beta): a text field with suggestions, where any text is a
+  valid value; picking a suggestion fills it in.
+- **Multi Select** (beta): picks several options into chips, from a listbox
+  that stays open (`aria-multiselectable`) on web or a sheet of checkbox rows
+  on phones. Chips have named remove buttons, and Backspace removes the last.
+
+### Fixed
+
+- Form Field: on iOS and Android its control had no accessible name, because
+  a Label's `htmlFor` only moves focus there. The field now names the control
+  with its label (when the label is text and the control has no `aria-label`).
 
 ## [0.4.0] - 2026-09-28
 

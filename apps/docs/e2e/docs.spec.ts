@@ -196,6 +196,9 @@ for (const path of [
   '/docs/components/date-picker',
   '/docs/components/date-range-picker',
   '/docs/components/time-picker',
+  '/docs/components/combobox',
+  '/docs/components/autocomplete',
+  '/docs/components/multi-select',
   '/examples/login',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {
@@ -422,6 +425,33 @@ test('date picker opens, moves by keyboard, picks and passes axe while open', as
   await page.keyboard.press('Enter')
   await expect(grid).toBeHidden()
   await expect(trigger).toContainText('Oct 15, 2026')
+  expect(errors).toEqual([])
+})
+
+test('combobox filters, picks by keyboard and passes axe while open', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/combobox')
+  await page.waitForLoadState('networkidle')
+  const input = page.getByRole('combobox', { name: 'Time zone' }).first()
+  await input.fill('')
+  await input.pressSequentially('o')
+  const listbox = page.getByRole('listbox')
+  await expect(listbox).toBeVisible()
+  // The list floats against the field: below it, or above when there is no room.
+  const field = (await input.boundingBox())!
+  const list = (await listbox.boundingBox())!
+  const gap = Math.min(
+    Math.abs(list.y - (field.y + field.height)),
+    Math.abs(field.y - (list.y + list.height)),
+  )
+  expect(gap).toBeLessThan(20)
+  expect(await seriousViolations(page)).toEqual([])
+  await page.keyboard.press('ArrowDown')
+  const active = await input.getAttribute('aria-activedescendant')
+  await expect(page.locator(`[id="${active}"]`)).toHaveText(/Bangkok/)
+  await page.keyboard.press('Enter')
+  await expect(listbox).toBeHidden()
+  await expect(input).toHaveValue('Bangkok')
   expect(errors).toEqual([])
 })
 

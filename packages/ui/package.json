@@ -56,6 +56,7 @@
   "dependencies": {
     "@tamagui/core": "2.7.7",
     "@tamagui/dismissable": "2.7.7",
+    "@tamagui/floating": "2.7.7",
     "@tamagui/focus-scope": "2.7.7",
     "@tamagui/roving-focus": "2.7.7",
     "@tamagui/toast": "2.7.7",

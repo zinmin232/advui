@@ -20,6 +20,7 @@ import { Checkbox } from './checkbox/Checkbox'
 import { Chip } from './chip/Chip'
 import { CircularProgress } from './circular-progress/CircularProgress'
 import { Collapsible } from './collapsible/Collapsible'
+import { Combobox } from './combobox/Combobox'
 import { DatePicker } from './date-picker/DatePicker'
 import { ContextMenu } from './context-menu/ContextMenu'
 import { Dialog } from './dialog/Dialog'
@@ -33,6 +34,7 @@ import { HoverCard } from './hover-card/HoverCard'
 import { IconButton } from './icon-button/IconButton'
 import { Input } from './input/Input'
 import { Menu } from './menu/Menu'
+import { MultiSelect } from './multi-select/MultiSelect'
 import { NavigationBar } from './navigation-bar/NavigationBar'
 import { NumberInput } from './number-input/NumberInput'
 import { OtpInput } from './otp-input/OtpInput'
@@ -615,6 +617,97 @@ describe('native rendering', () => {
     await fireEvent.press(await screen.findByRole('button', { name: /October 20, 2026/ }))
     expect(onValueChange).toHaveBeenCalledWith(new Date(2026, 9, 20))
   })
+
+  it('FormField names its control and reads help and error text as the hint', async () => {
+    await renderNative(
+      <FormField label="Email" description="Work email." error="Enter an email.">
+        <Input placeholder="you@example.com" />
+      </FormField>,
+    )
+    const input = screen.getByPlaceholderText('you@example.com')
+    // A Label's htmlFor only moves focus on native, so the field names the control.
+    expect(screen.getByLabelText('Email')).toBe(input)
+    expect(input.props.accessibilityHint).toBe('Enter an email. Work email.')
+    expect(input.props['aria-invalid'] ?? input.props.accessibilityState?.invalid).toBeTruthy()
+  })
+
+  it('PasswordInput toggles secure text entry from its toggle button', async () => {
+    await renderNative(<PasswordInput aria-label="Password" placeholder="Password" />)
+    const input = screen.getByPlaceholderText('Password')
+    expect(input.props.secureTextEntry).toBe(true)
+    await fireEvent.press(screen.getByRole('button', { name: 'Show password' }))
+    expect(screen.getByPlaceholderText('Password').props.secureTextEntry).toBe(false)
+  })
+
+  it('NumberInput steps from the buttons and the adjustable actions', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <NumberInput
+        aria-label="Guests"
+        placeholder="0"
+        defaultValue={1}
+        onValueChange={onValueChange}
+      />,
+    )
+    await fireEvent.press(screen.getByRole('button', { name: 'Increase' }))
+    expect(onValueChange).toHaveBeenLastCalledWith(2)
+    await fireEvent(screen.getByPlaceholderText('0'), 'accessibilityAction', {
+      nativeEvent: { actionName: 'decrement' },
+    })
+    expect(onValueChange).toHaveBeenLastCalledWith(1)
+  })
+
+  it('EmptyState and ErrorState render a heading and their actions', async () => {
+    const onRetry = jest.fn()
+    await renderNative(
+      <>
+        <EmptyState title="No projects" description="Create one." />
+        <ErrorState onRetry={onRetry} />
+      </>,
+    )
+    expect(screen.getByRole('heading', { name: 'No projects' })).toBeTruthy()
+    await fireEvent.press(screen.getByRole('button', { name: 'Try again' }))
+    expect(onRetry).toHaveBeenCalled()
+  })
+
+  it('Combobox opens a searchable sheet and picks a labelled row', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <Combobox
+        aria-label="Country"
+        placeholder="Search"
+        options={[
+          { value: 'mm', label: 'Myanmar' },
+          { value: 'th', label: 'Thailand' },
+        ]}
+        onValueChange={onValueChange}
+      />,
+    )
+    await fireEvent.press(screen.getByRole('button', { name: 'Country' }))
+    await fireEvent.changeText(screen.getByPlaceholderText('Search'), 'thai')
+    expect(screen.queryByRole('button', { name: 'Myanmar' })).toBeNull()
+    await fireEvent.press(screen.getByRole('button', { name: 'Thailand' }))
+    expect(onValueChange).toHaveBeenCalledWith('th')
+  })
+
+  it('MultiSelect rows are checkboxes and the sheet stays open between picks', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <MultiSelect
+        aria-label="Labels"
+        options={[
+          { value: 'bug', label: 'Bug' },
+          { value: 'docs', label: 'Docs' },
+        ]}
+        onValueChange={onValueChange}
+      />,
+    )
+    await fireEvent.press(screen.getByRole('button', { name: 'Labels' }))
+    await fireEvent.press(screen.getByRole('checkbox', { name: 'Bug' }))
+    await fireEvent.press(screen.getByRole('checkbox', { name: 'Docs' }))
+    expect(onValueChange).toHaveBeenLastCalledWith(['bug', 'docs'])
+    expect(screen.getByRole('checkbox', { name: 'Bug' })).toBeChecked()
+  })
 })
 
 // Android's back button: React Native calls the `hardwareBackPress` listeners
@@ -802,53 +895,16 @@ describe('Android back button', () => {
     back.restore()
   })
 
-  it('FormField gives its control an id and reads help and error text as the hint', async () => {
+  it('closes the Combobox sheet (shared by Autocomplete and Multi Select)', async () => {
+    const back = fakeBackHandler()
     await renderNative(
-      <FormField label="Email" description="Work email." error="Enter an email.">
-        <Input placeholder="you@example.com" />
-      </FormField>,
+      <Combobox aria-label="Country" options={[{ value: 'mm', label: 'Myanmar' }]} />,
     )
-    const input = screen.getByPlaceholderText('you@example.com')
-    expect(input.props.accessibilityHint).toBe('Enter an email. Work email.')
-    expect(input.props['aria-invalid'] ?? input.props.accessibilityState?.invalid).toBeTruthy()
-  })
-
-  it('PasswordInput toggles secure text entry from its toggle button', async () => {
-    await renderNative(<PasswordInput aria-label="Password" placeholder="Password" />)
-    const input = screen.getByPlaceholderText('Password')
-    expect(input.props.secureTextEntry).toBe(true)
-    await fireEvent.press(screen.getByRole('button', { name: 'Show password' }))
-    expect(screen.getByPlaceholderText('Password').props.secureTextEntry).toBe(false)
-  })
-
-  it('NumberInput steps from the buttons and the adjustable actions', async () => {
-    const onValueChange = jest.fn()
-    await renderNative(
-      <NumberInput
-        aria-label="Guests"
-        placeholder="0"
-        defaultValue={1}
-        onValueChange={onValueChange}
-      />,
-    )
-    await fireEvent.press(screen.getByRole('button', { name: 'Increase' }))
-    expect(onValueChange).toHaveBeenLastCalledWith(2)
-    await fireEvent(screen.getByPlaceholderText('0'), 'accessibilityAction', {
-      nativeEvent: { actionName: 'decrement' },
-    })
-    expect(onValueChange).toHaveBeenLastCalledWith(1)
-  })
-
-  it('EmptyState and ErrorState render a heading and their actions', async () => {
-    const onRetry = jest.fn()
-    await renderNative(
-      <>
-        <EmptyState title="No projects" description="Create one." />
-        <ErrorState onRetry={onRetry} />
-      </>,
-    )
-    expect(screen.getByRole('heading', { name: 'No projects' })).toBeTruthy()
-    await fireEvent.press(screen.getByRole('button', { name: 'Try again' }))
-    expect(onRetry).toHaveBeenCalled()
+    expect(back.listeners()).toBe(0)
+    await fireEvent.press(screen.getByRole('button', { name: 'Country' }))
+    expect(back.listeners()).toBe(1)
+    expect(await back.press()).toBe(true)
+    expect(back.listeners()).toBe(0)
+    back.restore()
   })
 })

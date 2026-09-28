@@ -3,6 +3,7 @@ import accordionMeta from '../components/accordion/accordion.meta'
 import alertMeta from '../components/alert/alert.meta'
 import alertDialogMeta from '../components/alert-dialog/alert-dialog.meta'
 import aspectRatioMeta from '../components/aspect-ratio/aspect-ratio.meta'
+import autocompleteMeta from '../components/autocomplete/autocomplete.meta'
 import avatarMeta from '../components/avatar/avatar.meta'
 import badgeMeta from '../components/badge/badge.meta'
 import breadcrumbMeta from '../components/breadcrumb/breadcrumb.meta'
@@ -14,6 +15,7 @@ import checkboxMeta from '../components/checkbox/checkbox.meta'
 import chipMeta from '../components/chip/chip.meta'
 import circularProgressMeta from '../components/circular-progress/circular-progress.meta'
 import collapsibleMeta from '../components/collapsible/collapsible.meta'
+import comboboxMeta from '../components/combobox/combobox.meta'
 import containerMeta from '../components/layout/container.meta'
 import contextMenuMeta from '../components/context-menu/context-menu.meta'
 import datePickerMeta from '../components/date-picker/date-picker.meta'
@@ -31,6 +33,7 @@ import iconButtonMeta from '../components/icon-button/icon-button.meta'
 import inputMeta from '../components/input/input.meta'
 import labelMeta from '../components/label/label.meta'
 import menuMeta from '../components/menu/menu.meta'
+import multiSelectMeta from '../components/multi-select/multi-select.meta'
 import navigationBarMeta from '../components/navigation-bar/navigation-bar.meta'
 import numberInputMeta from '../components/number-input/number-input.meta'
 import otpInputMeta from '../components/otp-input/otp-input.meta'
@@ -63,6 +66,7 @@ export const components: ComponentMeta[] = [
   alertMeta,
   alertDialogMeta,
   aspectRatioMeta,
+  autocompleteMeta,
   avatarMeta,
   badgeMeta,
   breadcrumbMeta,
@@ -74,6 +78,7 @@ export const components: ComponentMeta[] = [
   chipMeta,
   circularProgressMeta,
   collapsibleMeta,
+  comboboxMeta,
   containerMeta,
   contextMenuMeta,
   datePickerMeta,
@@ -91,6 +96,7 @@ export const components: ComponentMeta[] = [
   inputMeta,
   labelMeta,
   menuMeta,
+  multiSelectMeta,
   navigationBarMeta,
   numberInputMeta,
   otpInputMeta,
