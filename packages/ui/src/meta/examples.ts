@@ -24,6 +24,8 @@ import ButtonFullWidth from '../components/button/examples/full-width'
 import ButtonGroupBasic from '../components/button-group/examples/basic'
 import ButtonGroupSplit from '../components/button-group/examples/split'
 import ButtonGroupOrientation from '../components/button-group/examples/orientation'
+import CalendarBasic from '../components/calendar/examples/basic'
+import CalendarRange from '../components/calendar/examples/range'
 import CardBasic from '../components/card/examples/basic'
 import CardVariants from '../components/card/examples/variants'
 import CardInteractive from '../components/card/examples/interactive'
@@ -38,6 +40,8 @@ import CollapsibleSettings from '../components/collapsible/examples/settings'
 import ContainerContainer from '../components/layout/examples/container'
 import ContextMenuBasic from '../components/context-menu/examples/basic'
 import ContextMenuList from '../components/context-menu/examples/list'
+import DatePickerBasic from '../components/date-picker/examples/basic'
+import DateRangePickerBasic from '../components/date-range-picker/examples/basic'
 import DialogBasic from '../components/dialog/examples/basic'
 import DialogConfirm from '../components/dialog/examples/confirm'
 import DrawerBasic from '../components/drawer/examples/basic'
@@ -65,6 +69,8 @@ import MenuActions from '../components/menu/examples/actions'
 import NavigationBarBasic from '../components/navigation-bar/examples/basic'
 import NumberInputBasic from '../components/number-input/examples/basic'
 import NumberInputDecimal from '../components/number-input/examples/decimal'
+import OtpInputBasic from '../components/otp-input/examples/basic'
+import OtpInputGrouped from '../components/otp-input/examples/grouped'
 import PasswordInputBasic from '../components/password-input/examples/basic'
 import PopoverBasic from '../components/popover/examples/basic'
 import PopoverFilter from '../components/popover/examples/filter'
@@ -89,6 +95,8 @@ import SwitchSettings from '../components/switch/examples/settings'
 import TabsBasic from '../components/tabs/examples/basic'
 import TabsUnderline from '../components/tabs/examples/underline'
 import TextareaBasic from '../components/textarea/examples/basic'
+import TimePickerBasic from '../components/time-picker/examples/basic'
+import TimePickerTwelveHour from '../components/time-picker/examples/twelve-hour'
 import ToastTypes from '../components/toast/examples/types'
 import ToastAction from '../components/toast/examples/action'
 import ToggleBasic from '../components/toggle/examples/basic'
@@ -142,6 +150,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'split': ButtonGroupSplit,
     'orientation': ButtonGroupOrientation,
   },
+  'calendar': {
+    'basic': CalendarBasic,
+    'range': CalendarRange,
+  },
   'card': {
     'basic': CardBasic,
     'variants': CardVariants,
@@ -169,6 +181,12 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'context-menu': {
     'basic': ContextMenuBasic,
     'list': ContextMenuList,
+  },
+  'date-picker': {
+    'basic': DatePickerBasic,
+  },
+  'date-range-picker': {
+    'basic': DateRangePickerBasic,
   },
   'dialog': {
     'basic': DialogBasic,
@@ -227,6 +245,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': NumberInputBasic,
     'decimal': NumberInputDecimal,
   },
+  'otp-input': {
+    'basic': OtpInputBasic,
+    'grouped': OtpInputGrouped,
+  },
   'password-input': {
     'basic': PasswordInputBasic,
   },
@@ -282,6 +304,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'textarea': {
     'basic': TextareaBasic,
+  },
+  'time-picker': {
+    'basic': TimePickerBasic,
+    'twelve-hour': TimePickerTwelveHour,
   },
   'toast': {
     'types': ToastTypes,

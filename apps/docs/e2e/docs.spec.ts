@@ -191,6 +191,11 @@ for (const path of [
   '/docs/components/number-input',
   '/docs/components/empty-state',
   '/docs/components/error-state',
+  '/docs/components/otp-input',
+  '/docs/components/calendar',
+  '/docs/components/date-picker',
+  '/docs/components/date-range-picker',
+  '/docs/components/time-picker',
   '/examples/login',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {
@@ -397,6 +402,26 @@ test('collapsible opens from the keyboard and passes axe while open', async ({ p
   await expect(trigger).toHaveAttribute('aria-expanded', 'true')
   await expect(content.getByLabel('URL slug')).toBeVisible()
   expect(await seriousViolations(page)).toEqual([])
+  expect(errors).toEqual([])
+})
+
+test('date picker opens, moves by keyboard, picks and passes axe while open', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/date-picker')
+  await page.waitForLoadState('networkidle')
+  const trigger = page.getByRole('button', { name: 'Due date' }).first()
+  await trigger.focus()
+  await page.keyboard.press('Enter')
+  const grid = page.getByRole('grid', { name: 'October 2026' })
+  await expect(grid).toBeVisible()
+  expect(await seriousViolations(page)).toEqual([])
+  // Tab reaches the picked day; arrows move to the 15th, Enter picks it.
+  await grid.getByRole('gridcell', { name: /October 14, 2026/ }).focus()
+  await page.keyboard.press('ArrowRight')
+  await expect(grid.getByRole('gridcell', { name: /October 15, 2026/ })).toBeFocused()
+  await page.keyboard.press('Enter')
+  await expect(grid).toBeHidden()
+  await expect(trigger).toContainText('Oct 15, 2026')
   expect(errors).toEqual([])
 })
 

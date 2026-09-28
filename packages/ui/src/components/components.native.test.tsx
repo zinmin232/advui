@@ -13,12 +13,14 @@ import { Avatar } from './avatar/Avatar'
 import { Badge } from './badge/Badge'
 import { Breadcrumb } from './breadcrumb/Breadcrumb'
 import { Button } from './button/Button'
+import { Calendar } from './calendar/Calendar'
 import { ButtonGroup } from './button-group/ButtonGroup'
 import { Card } from './card/Card'
 import { Checkbox } from './checkbox/Checkbox'
 import { Chip } from './chip/Chip'
 import { CircularProgress } from './circular-progress/CircularProgress'
 import { Collapsible } from './collapsible/Collapsible'
+import { DatePicker } from './date-picker/DatePicker'
 import { ContextMenu } from './context-menu/ContextMenu'
 import { Dialog } from './dialog/Dialog'
 import { Drawer } from './drawer/Drawer'
@@ -33,6 +35,7 @@ import { Input } from './input/Input'
 import { Menu } from './menu/Menu'
 import { NavigationBar } from './navigation-bar/NavigationBar'
 import { NumberInput } from './number-input/NumberInput'
+import { OtpInput } from './otp-input/OtpInput'
 import { PasswordInput } from './password-input/PasswordInput'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
@@ -803,5 +806,45 @@ describe('Android back button', () => {
     expect(screen.getByRole('heading', { name: 'No projects' })).toBeTruthy()
     await fireEvent.press(screen.getByRole('button', { name: 'Try again' }))
     expect(onRetry).toHaveBeenCalled()
+  })
+
+  it('OtpInput is one text field that keeps digits and reports completion', async () => {
+    const onComplete = jest.fn()
+    await renderNative(
+      <OtpInput aria-label="Code" placeholder="code" length={4} onComplete={onComplete} />,
+    )
+    await fireEvent.changeText(screen.getByPlaceholderText('code'), '12a34')
+    expect(onComplete).toHaveBeenCalledWith('1234')
+  })
+
+  it('Calendar days are labelled buttons that report the picked day', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <Calendar
+        locale="en-US"
+        defaultMonth={new Date(2026, 2, 1)}
+        today={new Date(2026, 2, 1)}
+        onValueChange={onValueChange}
+      />,
+    )
+    const day = screen.getByRole('button', { name: /March 12, 2026/ })
+    await fireEvent.press(day)
+    expect(onValueChange).toHaveBeenCalledWith(new Date(2026, 2, 12))
+    expect(screen.getByRole('button', { name: /March 12, 2026/ })).toBeSelected()
+  })
+
+  it('DatePicker opens its calendar in a sheet and closes after a pick', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <DatePicker
+        aria-label="Due date"
+        locale="en-US"
+        defaultValue={new Date(2026, 9, 14)}
+        onValueChange={onValueChange}
+      />,
+    )
+    await fireEvent.press(screen.getByRole('button', { name: 'Due date' }))
+    await fireEvent.press(await screen.findByRole('button', { name: /October 20, 2026/ }))
+    expect(onValueChange).toHaveBeenCalledWith(new Date(2026, 9, 20))
   })
 })

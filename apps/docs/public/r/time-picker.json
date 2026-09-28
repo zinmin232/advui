@@ -1,0 +1,49 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "time-picker",
+  "title": "Time Picker",
+  "type": "registry:component",
+  "description": "Hour, minute and optional AM/PM selects that produce an \"HH:mm\" time.",
+  "category": "forms",
+  "status": "beta",
+  "since": "0.5.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/time-picker/TimePicker.tsx",
+      "type": "registry:ui",
+      "content": "import { forwardRef, useEffect, useState } from 'react'\nimport { type GetProps, type TamaguiElement, Text, XStack, styled } from 'tamagui'\nimport { Select } from '../select/Select'\n\nconst TimePickerFrame = styled(XStack, {\n  name: 'TimePicker',\n  role: 'group',\n  alignItems: 'center',\n  gap: '$2',\n})\n\ntype Parts = { hour: string | null; minute: string | null; period: 'AM' | 'PM' }\n\nconst pad = (n: number) => String(n).padStart(2, '0')\n\nfunction toParts(value: string | null | undefined, twelveHour: boolean): Parts {\n  const match = value ? /^(\\d{1,2}):(\\d{2})$/.exec(value) : null\n  if (!match) return { hour: null, minute: null, period: 'AM' }\n  const h = Number(match[1])\n  return {\n    hour: twelveHour ? String(h % 12 === 0 ? 12 : h % 12) : pad(h),\n    minute: match[2]!,\n    period: h >= 12 ? 'PM' : 'AM',\n  }\n}\n\nfunction toValue({ hour, minute, period }: Parts, twelveHour: boolean) {\n  if (hour == null || minute == null) return null\n  const h = twelveHour ? (Number(hour) % 12) + (period === 'PM' ? 12 : 0) : Number(hour)\n  return `${pad(h)}:${minute}`\n}\n\nexport interface TimePickerProps extends Omit<\n  GetProps<typeof TimePickerFrame>,\n  'children' | 'defaultValue'\n> {\n  /** 24-hour `\"HH:mm\"`, or null until an hour and a minute are picked. */\n  value?: string | null\n  defaultValue?: string | null\n  onValueChange?: (value: string | null) => void\n  /** 12 shows AM/PM. Default 24. */\n  hourCycle?: 12 | 24\n  /** Minutes between options. Default 5. */\n  minuteStep?: number\n  size?: 'sm' | 'md' | 'lg'\n  disabled?: boolean\n  invalid?: boolean\n  /** Put on the hour select, so a Form Field label targets it. */\n  id?: string\n  hourLabel?: string\n  minuteLabel?: string\n  periodLabel?: string\n}\n\n/**\n * Hour, minute and (for 12-hour time) AM/PM selects in a labelled group. Each\n * is a Select, so it is a listbox on web and a bottom sheet on phones.\n */\nexport const TimePicker = forwardRef<TamaguiElement, TimePickerProps>(function TimePicker(\n  {\n    value,\n    defaultValue = null,\n    onValueChange,\n    hourCycle = 24,\n    minuteStep = 5,\n    size = 'md',\n    disabled = false,\n    invalid = false,\n    id,\n    hourLabel = 'Hour',\n    minuteLabel = 'Minute',\n    periodLabel = 'AM or PM',\n    ...props\n  },\n  ref,\n) {\n  const twelveHour = hourCycle === 12\n  // Parts are kept apart from the value: an hour alone is not a time yet.\n  const [parts, setParts] = useState(() => toParts(value ?? defaultValue, twelveHour))\n  useEffect(() => {\n    if (value !== undefined && value !== toValue(parts, twelveHour)) {\n      setParts(toParts(value, twelveHour))\n    }\n    // Sync only when the controlled value changes, not on every part change.\n  }, [value])\n\n  const update = (patch: Partial<Parts>) => {\n    const next = { ...parts, ...patch }\n    setParts(next)\n    const nextValue = toValue(next, twelveHour)\n    if (nextValue !== toValue(parts, twelveHour)) onValueChange?.(nextValue)\n  }\n\n  const hours = twelveHour\n    ? Array.from({ length: 12 }, (_, i) => String(i === 0 ? 12 : i))\n    : Array.from({ length: 24 }, (_, i) => pad(i))\n  const minutes = Array.from({ length: Math.ceil(60 / minuteStep) }, (_, i) => pad(i * minuteStep))\n  const shared = { size, disabled, invalid, width: 'auto' as const }\n\n  return (\n    <TimePickerFrame ref={ref} {...props}>\n      <Select\n        {...shared}\n        id={id}\n        aria-label={hourLabel}\n        placeholder=\"--\"\n        value={parts.hour ?? ''}\n        onValueChange={(hour) => update({ hour })}\n      >\n        {hours.map((h) => (\n          <Select.Item key={h} value={h}>\n            {h}\n          </Select.Item>\n        ))}\n      </Select>\n      <Text aria-hidden color=\"$mutedForeground\" fontWeight=\"600\">\n        :\n      </Text>\n      <Select\n        {...shared}\n        aria-label={minuteLabel}\n        placeholder=\"--\"\n        value={parts.minute ?? ''}\n        onValueChange={(minute) => update({ minute })}\n      >\n        {minutes.map((m) => (\n          <Select.Item key={m} value={m}>\n            {m}\n          </Select.Item>\n        ))}\n      </Select>\n      {twelveHour ? (\n        <Select\n          {...shared}\n          aria-label={periodLabel}\n          value={parts.period}\n          onValueChange={(period) => update({ period: period as Parts['period'] })}\n        >\n          <Select.Item value=\"AM\">AM</Select.Item>\n          <Select.Item value=\"PM\">PM</Select.Item>\n        </Select>\n      ) : null}\n    </TimePickerFrame>\n  )\n})\n"
+    },
+    {
+      "path": "components/time-picker/index.ts",
+      "type": "registry:ui",
+      "content": "export { TimePicker, type TimePickerProps } from './TimePicker'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "24-hour",
+      "code": "import { FormField, TimePicker } from '@advui/core'\nimport { useState } from 'react'\n\nexport default function TimePickerBasic() {\n  const [time, setTime] = useState<string | null>('09:30')\n  return (\n    <FormField label=\"Start time\">\n      <TimePicker value={time} onValueChange={setTime} />\n    </FormField>\n  )\n}\n"
+    },
+    {
+      "name": "twelve-hour",
+      "title": "12-hour, 15-minute steps",
+      "code": "import { FormField, Text, TimePicker, VStack } from '@advui/core'\nimport { useState } from 'react'\n\nexport default function TimePickerTwelveHour() {\n  const [time, setTime] = useState<string | null>('14:45')\n  return (\n    <VStack gap=\"$2\">\n      <FormField label=\"Pickup\">\n        <TimePicker value={time} onValueChange={setTime} hourCycle={12} minuteStep={15} size=\"sm\" />\n      </FormField>\n      <Text size=\"sm\" tone=\"muted\">\n        Value: {time ?? 'none'}\n      </Text>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/time-picker",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "select"
+  ],
+  "version": "0.4.0"
+}

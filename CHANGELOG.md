@@ -7,6 +7,22 @@ one version.
 
 ## [Unreleased]
 
+### Added
+
+- **OTP Input** (beta): a one-time-code field drawn as separate slots. It is
+  one text box underneath, so pasting a code, SMS autofill (`one-time-code` /
+  `sms-otp`) and screen readers work. Numeric or alphanumeric, with optional
+  groups and `onComplete`.
+- **Calendar** (beta): a month grid for a day or a range, with `min` / `max`,
+  `isDateDisabled`, `weekStartsOn` and locale-aware names. On web it is a
+  WAI-ARIA grid (arrow keys, Home / End, Page Up / Page Down); on native every
+  day is a labelled button.
+- **Date Picker** and **Date Range Picker** (beta): field-shaped buttons that
+  open a Calendar in a popover, or a bottom sheet on phones, and close once
+  the day or range is picked.
+- **Time Picker** (beta): hour, minute and optional AM/PM selects in a group,
+  producing a 24-hour `"HH:mm"` value.
+
 ## [0.4.0] - 2026-09-28
 
 ### Added

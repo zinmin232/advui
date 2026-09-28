@@ -8,6 +8,7 @@ import badgeMeta from '../components/badge/badge.meta'
 import breadcrumbMeta from '../components/breadcrumb/breadcrumb.meta'
 import buttonMeta from '../components/button/button.meta'
 import buttonGroupMeta from '../components/button-group/button-group.meta'
+import calendarMeta from '../components/calendar/calendar.meta'
 import cardMeta from '../components/card/card.meta'
 import checkboxMeta from '../components/checkbox/checkbox.meta'
 import chipMeta from '../components/chip/chip.meta'
@@ -15,6 +16,8 @@ import circularProgressMeta from '../components/circular-progress/circular-progr
 import collapsibleMeta from '../components/collapsible/collapsible.meta'
 import containerMeta from '../components/layout/container.meta'
 import contextMenuMeta from '../components/context-menu/context-menu.meta'
+import datePickerMeta from '../components/date-picker/date-picker.meta'
+import dateRangePickerMeta from '../components/date-range-picker/date-range-picker.meta'
 import dialogMeta from '../components/dialog/dialog.meta'
 import drawerMeta from '../components/drawer/drawer.meta'
 import dropdownMenuMeta from '../components/dropdown-menu/dropdown-menu.meta'
@@ -30,6 +33,7 @@ import labelMeta from '../components/label/label.meta'
 import menuMeta from '../components/menu/menu.meta'
 import navigationBarMeta from '../components/navigation-bar/navigation-bar.meta'
 import numberInputMeta from '../components/number-input/number-input.meta'
+import otpInputMeta from '../components/otp-input/otp-input.meta'
 import passwordInputMeta from '../components/password-input/password-input.meta'
 import popoverMeta from '../components/popover/popover.meta'
 import progressMeta from '../components/progress/progress.meta'
@@ -46,6 +50,7 @@ import stackMeta from '../components/layout/stack.meta'
 import switchMeta from '../components/switch/switch.meta'
 import tabsMeta from '../components/tabs/tabs.meta'
 import textareaMeta from '../components/textarea/textarea.meta'
+import timePickerMeta from '../components/time-picker/time-picker.meta'
 import toastMeta from '../components/toast/toast.meta'
 import toggleMeta from '../components/toggle/toggle.meta'
 import toggleGroupMeta from '../components/toggle-group/toggle-group.meta'
@@ -63,6 +68,7 @@ export const components: ComponentMeta[] = [
   breadcrumbMeta,
   buttonMeta,
   buttonGroupMeta,
+  calendarMeta,
   cardMeta,
   checkboxMeta,
   chipMeta,
@@ -70,6 +76,8 @@ export const components: ComponentMeta[] = [
   collapsibleMeta,
   containerMeta,
   contextMenuMeta,
+  datePickerMeta,
+  dateRangePickerMeta,
   dialogMeta,
   drawerMeta,
   dropdownMenuMeta,
@@ -85,6 +93,7 @@ export const components: ComponentMeta[] = [
   menuMeta,
   navigationBarMeta,
   numberInputMeta,
+  otpInputMeta,
   passwordInputMeta,
   popoverMeta,
   progressMeta,
@@ -101,6 +110,7 @@ export const components: ComponentMeta[] = [
   switchMeta,
   tabsMeta,
   textareaMeta,
+  timePickerMeta,
   toastMeta,
   toggleMeta,
   toggleGroupMeta,

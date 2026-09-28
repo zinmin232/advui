@@ -16,10 +16,6 @@ export const roadmap: RoadmapItem[] = [
   { name: 'Multi Select', slug: 'multi-select', category: 'forms', phase: 3 },
   { name: 'Combobox', slug: 'combobox', category: 'forms', phase: 3 },
   { name: 'Autocomplete', slug: 'autocomplete', category: 'forms', phase: 3 },
-  { name: 'Date Picker', slug: 'date-picker', category: 'forms', phase: 3 },
-  { name: 'Date Range Picker', slug: 'date-range-picker', category: 'forms', phase: 3 },
-  { name: 'Time Picker', slug: 'time-picker', category: 'forms', phase: 3 },
-  { name: 'OTP Input', slug: 'otp-input', category: 'forms', phase: 3 },
 
   { name: 'Pagination', slug: 'pagination', category: 'navigation', phase: 4 },
   { name: 'Navigation Menu', slug: 'navigation-menu', category: 'navigation', phase: 4 },
@@ -30,7 +26,6 @@ export const roadmap: RoadmapItem[] = [
   { name: 'Data Table', slug: 'data-table', category: 'data-display', phase: 4 },
   { name: 'List', slug: 'list', category: 'data-display', phase: 4 },
   { name: 'Timeline', slug: 'timeline', category: 'data-display', phase: 4 },
-  { name: 'Calendar', slug: 'calendar', category: 'data-display', phase: 3 },
   { name: 'Stat', slug: 'stat', category: 'data-display', phase: 4 },
   { name: 'KPI Card', slug: 'kpi-card', category: 'data-display', phase: 4 },
 
