@@ -285,6 +285,26 @@
       ]
     },
     {
+      "name": "data-table",
+      "title": "Data Table",
+      "type": "registry:component",
+      "description": "A table driven by data and columns, with sorting, search, row selection and pagination.",
+      "category": "data-display",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "checkbox",
+        "hooks",
+        "input",
+        "pagination",
+        "skeleton",
+        "table",
+        "typography"
+      ]
+    },
+    {
       "name": "date-picker",
       "title": "Date Picker",
       "type": "registry:component",
@@ -1013,6 +1033,21 @@
       ],
       "registryDependencies": [
         "hooks"
+      ]
+    },
+    {
+      "name": "tree-view",
+      "title": "Tree View",
+      "type": "registry:component",
+      "description": "A hierarchy of items that open and close, such as folders or place codes.",
+      "category": "advanced",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "typography"
       ]
     },
     {

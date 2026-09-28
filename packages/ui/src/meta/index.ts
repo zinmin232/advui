@@ -18,6 +18,7 @@ import collapsibleMeta from '../components/collapsible/collapsible.meta'
 import comboboxMeta from '../components/combobox/combobox.meta'
 import containerMeta from '../components/layout/container.meta'
 import contextMenuMeta from '../components/context-menu/context-menu.meta'
+import dataTableMeta from '../components/data-table/data-table.meta'
 import datePickerMeta from '../components/date-picker/date-picker.meta'
 import dateRangePickerMeta from '../components/date-range-picker/date-range-picker.meta'
 import dialogMeta from '../components/dialog/dialog.meta'
@@ -68,6 +69,7 @@ import toastMeta from '../components/toast/toast.meta'
 import toggleMeta from '../components/toggle/toggle.meta'
 import toggleGroupMeta from '../components/toggle-group/toggle-group.meta'
 import tooltipMeta from '../components/tooltip/tooltip.meta'
+import treeViewMeta from '../components/tree-view/tree-view.meta'
 import typographyMeta from '../components/typography/typography.meta'
 import type { ComponentMeta } from './types'
 
@@ -91,6 +93,7 @@ export const components: ComponentMeta[] = [
   comboboxMeta,
   containerMeta,
   contextMenuMeta,
+  dataTableMeta,
   datePickerMeta,
   dateRangePickerMeta,
   dialogMeta,
@@ -141,6 +144,7 @@ export const components: ComponentMeta[] = [
   toggleMeta,
   toggleGroupMeta,
   tooltipMeta,
+  treeViewMeta,
   typographyMeta,
 ]
 
