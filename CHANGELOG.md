@@ -7,6 +7,8 @@ one version.
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-09-28
+
 ### Added
 
 - **OTP Input** (beta): a one-time-code field drawn as separate slots. It is
