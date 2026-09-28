@@ -571,6 +571,50 @@ describe('native rendering', () => {
     expect(scroll.props.horizontal).toBe(true)
     expect(screen.getByText('Nightfall')).toBeOnTheScreen()
   })
+
+  it('OtpInput is one text field that keeps digits and reports completion', async () => {
+    const onComplete = jest.fn()
+    await renderNative(
+      <OtpInput aria-label="Code" placeholder="code" length={4} onComplete={onComplete} />,
+    )
+    await fireEvent.changeText(screen.getByPlaceholderText('code'), '12a34')
+    expect(onComplete).toHaveBeenCalledWith('1234')
+  })
+
+  it('Calendar days are labelled buttons that report the picked day', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <Calendar
+        locale="en-US"
+        defaultMonth={new Date(2026, 2, 1)}
+        today={new Date(2026, 2, 1)}
+        onValueChange={onValueChange}
+      />,
+    )
+    const day = screen.getByRole('button', { name: /March 12, 2026/ })
+    await fireEvent.press(day)
+    expect(onValueChange).toHaveBeenCalledWith(new Date(2026, 2, 12))
+    expect(screen.getByRole('button', { name: /March 12, 2026/ })).toBeSelected()
+  })
+
+  it('DatePicker opens its calendar in a sheet and closes after a pick', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <DatePicker
+        aria-label="Due date"
+        locale="en-US"
+        defaultValue={new Date(2026, 9, 14)}
+        onValueChange={onValueChange}
+      />,
+    )
+    // The picked date is the field's value, read after its name.
+    expect(screen.getByRole('button', { name: 'Due date' })).toHaveAccessibilityValue({
+      text: 'Oct 14, 2026',
+    })
+    await fireEvent.press(screen.getByRole('button', { name: 'Due date' }))
+    await fireEvent.press(await screen.findByRole('button', { name: /October 20, 2026/ }))
+    expect(onValueChange).toHaveBeenCalledWith(new Date(2026, 9, 20))
+  })
 })
 
 // Android's back button: React Native calls the `hardwareBackPress` listeners
@@ -806,45 +850,5 @@ describe('Android back button', () => {
     expect(screen.getByRole('heading', { name: 'No projects' })).toBeTruthy()
     await fireEvent.press(screen.getByRole('button', { name: 'Try again' }))
     expect(onRetry).toHaveBeenCalled()
-  })
-
-  it('OtpInput is one text field that keeps digits and reports completion', async () => {
-    const onComplete = jest.fn()
-    await renderNative(
-      <OtpInput aria-label="Code" placeholder="code" length={4} onComplete={onComplete} />,
-    )
-    await fireEvent.changeText(screen.getByPlaceholderText('code'), '12a34')
-    expect(onComplete).toHaveBeenCalledWith('1234')
-  })
-
-  it('Calendar days are labelled buttons that report the picked day', async () => {
-    const onValueChange = jest.fn()
-    await renderNative(
-      <Calendar
-        locale="en-US"
-        defaultMonth={new Date(2026, 2, 1)}
-        today={new Date(2026, 2, 1)}
-        onValueChange={onValueChange}
-      />,
-    )
-    const day = screen.getByRole('button', { name: /March 12, 2026/ })
-    await fireEvent.press(day)
-    expect(onValueChange).toHaveBeenCalledWith(new Date(2026, 2, 12))
-    expect(screen.getByRole('button', { name: /March 12, 2026/ })).toBeSelected()
-  })
-
-  it('DatePicker opens its calendar in a sheet and closes after a pick', async () => {
-    const onValueChange = jest.fn()
-    await renderNative(
-      <DatePicker
-        aria-label="Due date"
-        locale="en-US"
-        defaultValue={new Date(2026, 9, 14)}
-        onValueChange={onValueChange}
-      />,
-    )
-    await fireEvent.press(screen.getByRole('button', { name: 'Due date' }))
-    await fireEvent.press(await screen.findByRole('button', { name: /October 20, 2026/ }))
-    expect(onValueChange).toHaveBeenCalledWith(new Date(2026, 9, 20))
   })
 })

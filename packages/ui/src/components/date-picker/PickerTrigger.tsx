@@ -68,7 +68,10 @@ export const PickerTrigger = forwardRef<TamaguiElement, PickerTriggerProps>(func
       aria-invalid={invalid || undefined}
       aria-disabled={disabled || undefined}
       aria-describedby={[valueId, describedBy].filter(Boolean).join(' ')}
-      {...(isWeb && { type: 'button' })}
+      {...(isWeb
+        ? { type: 'button' }
+        : // Native has no aria-describedby; expose the date as the value.
+          { accessibilityValue: { text: valueText ?? placeholder } })}
       {...props}
     >
       <Text
