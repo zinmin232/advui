@@ -65,6 +65,8 @@ one version.
 
 ### Fixed
 
+- Input: text at `size="sm"` was clipped on Android, where `TextInput` adds
+  its own vertical padding.
 - IconButton: square corners in every theme, because it passed
   `borderRadius={undefined}` to Button. It now uses the theme's button radius
   (`$button`), so icon buttons match buttons, including Material's pill shape.
