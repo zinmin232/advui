@@ -72,6 +72,19 @@ export const ICON_NAMES = [
   'users',
   'x',
   'x-circle',
+  'grip-horizontal',
+  'grip-vertical',
+  'heading',
+  'link',
+  'list-ordered',
+  'pause',
+  'play',
+  'quote',
+  'rotate-ccw',
+  'rotate-cw',
+  'strikethrough',
+  'volume',
+  'volume-off',
 ]
 
 // Lucide renamed a few icons over time; accept either spelling.
@@ -90,6 +103,8 @@ const ALIASES = {
   trash: ['Trash2', 'Trash'],
   'x-circle': ['CircleX', 'XCircle'],
   loader: ['LoaderCircle', 'Loader2', 'Loader'],
+  volume: ['Volume2'],
+  'volume-off': ['VolumeX', 'VolumeOff'],
 }
 
 const pascal = (name) =>

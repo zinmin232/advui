@@ -81,6 +81,29 @@ one version.
 - **Chart colors** in the theme: `$chart1`–`$chart8`, a categorical palette in
   a fixed order that keeps neighboring series apart for color-blind readers,
   with its own steps for dark mode (in `@advui/theme` as `chartPalette`).
+- **Resizable Panel** (beta): panels side by side or stacked (`Resizable`,
+  `Resizable.Panel`, `Resizable.Handle`) with sizes in percent, limits and
+  collapsible panels. Handles follow the WAI-ARIA window splitter (arrow
+  keys, Home / End, Enter to collapse) on web and are adjustable elements
+  on iOS and Android; drag with a mouse, pen or finger.
+- **Data Grid** (beta): a spreadsheet-like grid on the WAI-ARIA grid pattern.
+  Arrow keys, Home / End and Page Up / Down move between cells; Enter, F2
+  or typing edits in place; `validate` rejects a value with a message in a
+  live region. Number columns parse and right-align.
+- **Video** (beta): the platform's own player in a fixed-ratio frame, with
+  captions and a poster on web and an error message. On iOS and Android it
+  uses the player registered with `setVideoView` (the Expo playground uses
+  `expo-video`).
+- **Audio Player** (beta): play / pause, a seek slider that reads "1:05 of
+  3:20", skip buttons and a speed button, the same on every platform. Web
+  uses `HTMLAudioElement`; native uses the engine registered with
+  `setAudioEngine` (the Expo playground uses `expo-audio`).
+- **Rich Text Editor** (beta): a Markdown editor with a WAI-ARIA toolbar
+  (bold, italic, strikethrough, heading, lists, quote, link, code), ⌘B / ⌘I /
+  ⌘K, a preview and a character count. **Rich Text Content** shows the
+  Markdown with the same styles; only `http(s)` and `mailto` links are kept.
+- Icons: grip, heading, link, numbered list, pause, play, quote, rotate,
+  strikethrough and volume.
 
 ## [0.5.0] - 2026-09-28
 

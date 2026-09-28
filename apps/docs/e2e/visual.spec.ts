@@ -8,8 +8,8 @@ for (const mode of ['light', 'dark'] as const) {
     await page.goto('/visual')
     await page.waitForLoadState('networkidle')
     await expect(page.locator('html')).toHaveClass(new RegExp(`t_${mode}`))
-    // Photos are placeholders (see fixtures.ts); hide them so baselines only cover our UI.
-    await page.addStyleTag({ content: 'img { visibility: hidden !important }' })
+    // Photos and videos are placeholders (see fixtures.ts); hide them so baselines only cover our UI.
+    await page.addStyleTag({ content: 'img, video { visibility: hidden !important }' })
     const items = page.locator('[data-visual]')
     const count = await items.count()
     expect(count).toBeGreaterThan(40)

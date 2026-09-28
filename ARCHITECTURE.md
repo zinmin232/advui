@@ -34,7 +34,7 @@ folders.
 | `@advui/utils`    | —                                                                               | Color math: parse, OKLCH conversion with gamut mapping, WCAG contrast, `ensureContrast`, `accessibleSolid`. Event composition. Framework-free.                                                 |
 | `@advui/theme`    | utils, tamagui                                                                  | Tokens (space, size, radius, zIndex), fonts, media queries, animations, shadows, palettes, theme generation, presets, `createUniversalConfig`.                                                 |
 | `@advui/icons`    | tamagui, react-native-svg (native)                                              | Icons generated from Lucide by `scripts/generate-icons.mjs`. `SvgIcon.tsx` renders DOM SVG; `SvgIcon.native.tsx` renders react-native-svg. `IconDefaults` sets size and color through context. |
-| `@advui/core`     | theme, icons, utils, tamagui, @tamagui/toast, @tamagui/floating (web listboxes) | Components, `UniversalProvider`, color mode, hooks, metadata. No native file-picker dependency: apps register one with `setFilePicker`.                                                        |
+| `@advui/core`     | theme, icons, utils, tamagui, @tamagui/toast, @tamagui/floating (web listboxes) | Components, `UniversalProvider`, color mode, hooks, metadata. No native file-picker or media dependency: apps register them with `setFilePicker`, `setVideoView` and `setAudioEngine`.         |
 | `@advui/examples` | core                                                                            | Full app screens shared by the docs and Expo.                                                                                                                                                  |
 | `advui` (cli)     | —                                                                               | Reads the registry and copies source into a project.                                                                                                                                           |
 
@@ -55,6 +55,8 @@ points to `dist/` for npm.
     file draws DOM `<svg>`. Everything else in `src/charts/` (frame, legend,
     tooltip, table view, scales) is shared, and ships as the `charts` registry
     item.
+  - `video/Video.native.tsx`: renders the player registered with
+    `setVideoView`; the web file renders `<video>`
   - `provider/GlobalStyles.native.tsx`: no-op (web injects keyframes and
     reduced-motion CSS)
   - `hooks/useReducedMotion.native.ts`: `AccessibilityInfo` instead of

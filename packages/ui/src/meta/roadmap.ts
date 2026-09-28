@@ -12,11 +12,4 @@ export interface RoadmapItem {
   phase: 2 | 3 | 4 | 5
 }
 
-export const roadmap: RoadmapItem[] = [
-  { name: 'Video', slug: 'video', category: 'media', phase: 5 },
-  { name: 'Audio Player', slug: 'audio-player', category: 'media', phase: 5 },
-
-  { name: 'Rich Text Editor', slug: 'rich-text-editor', category: 'advanced', phase: 5 },
-  { name: 'Resizable Panel', slug: 'resizable-panel', category: 'advanced', phase: 5 },
-  { name: 'Data Grid', slug: 'data-grid', category: 'advanced', phase: 5 },
-]
+export const roadmap: RoadmapItem[] = []
