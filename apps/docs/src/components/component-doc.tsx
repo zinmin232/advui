@@ -71,7 +71,17 @@ function PropsTable({ part }: { part: PartDoc }) {
         </Text>
       ) : null}
       {part.props.length ? (
-        <View overflowX="auto" borderWidth={1} borderColor="$border" borderRadius="$lg">
+        <View
+          overflowX="auto"
+          borderWidth={1}
+          borderColor="$border"
+          borderRadius="$lg"
+          // Long types can overflow; a focusable region scrolls with the keyboard.
+          tabIndex={0}
+          role="region"
+          aria-label={`${part.name} props`}
+          focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
+        >
           <table className="props-table">
             <thead>
               <tr>
@@ -233,7 +243,16 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
           ))}
         </UL>
         {meta.keyboard?.length ? (
-          <View overflowX="auto" borderWidth={1} borderColor="$border" borderRadius="$lg">
+          <View
+            overflowX="auto"
+            borderWidth={1}
+            borderColor="$border"
+            borderRadius="$lg"
+            tabIndex={0}
+            role="region"
+            aria-label="Keyboard interactions"
+            focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
+          >
             <table className="props-table">
               <caption className="sr-only">Keyboard interactions</caption>
               <thead>

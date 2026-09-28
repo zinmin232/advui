@@ -21,6 +21,7 @@ import { Chip } from './chip/Chip'
 import { CircularProgress } from './circular-progress/CircularProgress'
 import { Collapsible } from './collapsible/Collapsible'
 import { Combobox } from './combobox/Combobox'
+import { DataTable } from './data-table/DataTable'
 import { DatePicker } from './date-picker/DatePicker'
 import { ContextMenu } from './context-menu/ContextMenu'
 import { Dialog } from './dialog/Dialog'
@@ -60,6 +61,7 @@ import { Table } from './table/Table'
 import { Timeline } from './timeline/Timeline'
 import { Toaster, toast } from './toast/Toaster'
 import { Toggle } from './toggle/Toggle'
+import { TreeView } from './tree-view/TreeView'
 import { ToggleGroup } from './toggle-group/ToggleGroup'
 import { Heading } from './typography/Heading'
 import { Text } from './typography/Text'
@@ -846,6 +848,54 @@ describe('native rendering', () => {
     await fireEvent.press(screen.getByRole('button', { name: 'Population, sorted descending' }))
     expect(onSort).toHaveBeenCalledTimes(1)
     expect(screen.getByText('687,867')).toBeOnTheScreen()
+  })
+
+  it('DataTable sorts, selects and pages on native', async () => {
+    const onSelectedIdsChange = jest.fn()
+    await renderNative(
+      <DataTable
+        aria-label="Regions"
+        data={[
+          { id: 'a', name: 'Bago' },
+          { id: 'b', name: 'Ayeyarwady' },
+          { id: 'c', name: 'Chin' },
+        ]}
+        columns={[{ id: 'name', header: 'Name', sortable: true }]}
+        pageSize={2}
+        selectable
+        getRowLabel={(row) => row.name}
+        onSelectedIdsChange={onSelectedIdsChange}
+      />,
+    )
+    await fireEvent.press(screen.getByRole('button', { name: 'Name' }))
+    expect(screen.getByRole('button', { name: 'Name, sorted ascending' })).toBeOnTheScreen()
+    await fireEvent.press(screen.getByRole('checkbox', { name: 'Select Ayeyarwady' }))
+    expect(onSelectedIdsChange).toHaveBeenLastCalledWith(['b'])
+    await fireEvent.press(screen.getByRole('button', { name: 'Page 2' }))
+    expect(screen.getByText('Chin')).toBeOnTheScreen()
+    expect(screen.queryByText('Bago')).toBeNull()
+  })
+
+  it('TreeView items are buttons that report expanded and selected', async () => {
+    const onSelectedChange = jest.fn()
+    await renderNative(
+      <TreeView
+        aria-label="Files"
+        data={[
+          { id: 'reports', label: 'Reports', children: [{ id: 'q3', label: 'Q3 summary' }] },
+          { id: 'readme', label: 'Readme' },
+        ]}
+        onSelectedChange={onSelectedChange}
+      />,
+    )
+    const reports = screen.getByRole('button', { name: 'Reports' })
+    expect(reports).toBeCollapsed()
+    expect(screen.queryByRole('button', { name: 'Q3 summary' })).toBeNull()
+    await fireEvent.press(reports)
+    expect(screen.getByRole('button', { name: 'Reports' })).toBeExpanded()
+    expect(screen.getByRole('button', { name: 'Reports' })).toBeSelected()
+    await fireEvent.press(screen.getByRole('button', { name: 'Q3 summary' }))
+    expect(onSelectedChange).toHaveBeenLastCalledWith('q3')
   })
 
   it('Image is named by alt, hides a decorative image and falls back on error', async () => {

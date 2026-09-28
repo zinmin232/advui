@@ -42,6 +42,8 @@ import ComboboxBasic from '../components/combobox/examples/basic'
 import ContainerContainer from '../components/layout/examples/container'
 import ContextMenuBasic from '../components/context-menu/examples/basic'
 import ContextMenuList from '../components/context-menu/examples/list'
+import DataTableBasic from '../components/data-table/examples/basic'
+import DataTableStates from '../components/data-table/examples/states'
 import DatePickerBasic from '../components/date-picker/examples/basic'
 import DateRangePickerBasic from '../components/date-range-picker/examples/basic'
 import DialogBasic from '../components/dialog/examples/basic'
@@ -134,6 +136,8 @@ import ToggleControlled from '../components/toggle/examples/controlled'
 import ToggleGroupBasic from '../components/toggle-group/examples/basic'
 import ToggleGroupMultiple from '../components/toggle-group/examples/multiple'
 import TooltipBasic from '../components/tooltip/examples/basic'
+import TreeViewBasic from '../components/tree-view/examples/basic'
+import TreeViewControlled from '../components/tree-view/examples/controlled'
 import TypographyScale from '../components/typography/examples/scale'
 import TypographyTones from '../components/typography/examples/tones'
 
@@ -217,6 +221,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'context-menu': {
     'basic': ContextMenuBasic,
     'list': ContextMenuList,
+  },
+  'data-table': {
+    'basic': DataTableBasic,
+    'states': DataTableStates,
   },
   'date-picker': {
     'basic': DatePickerBasic,
@@ -409,6 +417,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'tooltip': {
     'basic': TooltipBasic,
+  },
+  'tree-view': {
+    'basic': TreeViewBasic,
+    'controlled': TreeViewControlled,
   },
   'typography': {
     'scale': TypographyScale,

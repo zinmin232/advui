@@ -16,8 +16,6 @@ export const roadmap: RoadmapItem[] = [
   { name: 'Navigation Menu', slug: 'navigation-menu', category: 'navigation', phase: 4 },
   { name: 'Sidebar', slug: 'sidebar', category: 'navigation', phase: 4 },
 
-  { name: 'Data Table', slug: 'data-table', category: 'data-display', phase: 4 },
-
   { name: 'Image Gallery', slug: 'image-gallery', category: 'media', phase: 5 },
   { name: 'Video', slug: 'video', category: 'media', phase: 5 },
   { name: 'Audio Player', slug: 'audio-player', category: 'media', phase: 5 },
@@ -26,7 +24,6 @@ export const roadmap: RoadmapItem[] = [
   { name: 'Search', slug: 'search', category: 'advanced', phase: 5 },
   { name: 'Rich Text Editor', slug: 'rich-text-editor', category: 'advanced', phase: 5 },
   { name: 'Resizable Panel', slug: 'resizable-panel', category: 'advanced', phase: 5 },
-  { name: 'Tree View', slug: 'tree-view', category: 'advanced', phase: 4 },
   { name: 'Data Grid', slug: 'data-grid', category: 'advanced', phase: 5 },
 
   { name: 'Line Chart', slug: 'line-chart', category: 'charts', phase: 5 },

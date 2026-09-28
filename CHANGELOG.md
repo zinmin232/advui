@@ -7,6 +7,11 @@ one version.
 
 ## [Unreleased]
 
+### Fixed
+
+- Docs: props and keyboard tables that overflow sideways can now take focus,
+  so keyboard users can scroll them (axe `scrollable-region-focusable`).
+
 ### Added
 
 - **Stat** (beta): one figure with its label, change and a note
@@ -39,6 +44,14 @@ one version.
   vertical (with the current step's content). Each step reads its number,
   title and status ("Step 1 of 3: Account, completed"); `onStepPress` makes
   reached steps buttons, and `status="error"` marks a failed step.
+- **Data Table** (beta): a Table driven by `data` and `columns`, with
+  sorting (ascending, descending, none), a search field that ignores case and
+  accents, row selection with a page-wide checkbox, pagination, loading and
+  empty states, and a polite status line ("1 selected · 1–5 of 7"). Each
+  feature can be controlled for server-side data.
+- **Tree View** (beta): a hierarchy that opens and closes, following the
+  WAI-ARIA tree pattern (one Tab stop, arrow keys, Home / End, type-ahead).
+  On native each item is a button that reports expanded and selected.
 
 ## [0.5.0] - 2026-09-28
 
