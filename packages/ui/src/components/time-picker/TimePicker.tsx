@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useState } from 'react'
 import { type GetProps, type TamaguiElement, Text, XStack, styled } from 'tamagui'
 import { Select } from '../select/Select'
 
@@ -77,12 +77,15 @@ export const TimePicker = forwardRef<TamaguiElement, TimePickerProps>(function T
   const twelveHour = hourCycle === 12
   // Parts are kept apart from the value: an hour alone is not a time yet.
   const [parts, setParts] = useState(() => toParts(value ?? defaultValue, twelveHour))
-  useEffect(() => {
+  // When the controlled value changes from outside, take its parts (React's
+  // "adjust state when a prop changes" pattern: during render, not in an effect).
+  const [seenValue, setSeenValue] = useState(value)
+  if (value !== seenValue) {
+    setSeenValue(value)
     if (value !== undefined && value !== toValue(parts, twelveHour)) {
       setParts(toParts(value, twelveHour))
     }
-    // Sync only when the controlled value changes, not on every part change.
-  }, [value])
+  }
 
   const update = (patch: Partial<Parts>) => {
     const next = { ...parts, ...patch }
