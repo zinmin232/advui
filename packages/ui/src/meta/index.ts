@@ -41,6 +41,7 @@ import listMeta from '../components/list/list.meta'
 import menuMeta from '../components/menu/menu.meta'
 import multiSelectMeta from '../components/multi-select/multi-select.meta'
 import navigationBarMeta from '../components/navigation-bar/navigation-bar.meta'
+import navigationMenuMeta from '../components/navigation-menu/navigation-menu.meta'
 import numberInputMeta from '../components/number-input/number-input.meta'
 import otpInputMeta from '../components/otp-input/otp-input.meta'
 import paginationMeta from '../components/pagination/pagination.meta'
@@ -52,6 +53,7 @@ import scrollAreaMeta from '../components/scroll-area/scroll-area.meta'
 import selectMeta from '../components/select/select.meta'
 import separatorMeta from '../components/separator/separator.meta'
 import sheetMeta from '../components/sheet/sheet.meta'
+import sidebarMeta from '../components/sidebar/sidebar.meta'
 import skeletonMeta from '../components/skeleton/skeleton.meta'
 import sliderMeta from '../components/slider/slider.meta'
 import snackbarMeta from '../components/snackbar/snackbar.meta'
@@ -116,6 +118,7 @@ export const components: ComponentMeta[] = [
   menuMeta,
   multiSelectMeta,
   navigationBarMeta,
+  navigationMenuMeta,
   numberInputMeta,
   otpInputMeta,
   paginationMeta,
@@ -127,6 +130,7 @@ export const components: ComponentMeta[] = [
   selectMeta,
   separatorMeta,
   sheetMeta,
+  sidebarMeta,
   skeletonMeta,
   sliderMeta,
   snackbarMeta,

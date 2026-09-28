@@ -43,6 +43,7 @@ import { List } from './list/List'
 import { Menu } from './menu/Menu'
 import { MultiSelect } from './multi-select/MultiSelect'
 import { NavigationBar } from './navigation-bar/NavigationBar'
+import { NavigationMenu } from './navigation-menu/NavigationMenu'
 import { NumberInput } from './number-input/NumberInput'
 import { OtpInput } from './otp-input/OtpInput'
 import { Pagination } from './pagination/Pagination'
@@ -52,6 +53,7 @@ import { Progress } from './progress/Progress'
 import { ScrollArea } from './scroll-area/ScrollArea'
 import { Select } from './select/Select'
 import { Sheet } from './sheet/Sheet'
+import { Sidebar } from './sidebar/Sidebar'
 import { Slider } from './slider/Slider'
 import { Snackbar } from './snackbar/Snackbar'
 import { Stat } from './stat/Stat'
@@ -898,6 +900,55 @@ describe('native rendering', () => {
     expect(onSelectedChange).toHaveBeenLastCalledWith('q3')
   })
 
+  it('NavigationMenu shows the open panel under the bar', async () => {
+    const onPress = jest.fn()
+    await renderNative(
+      <NavigationMenu>
+        <NavigationMenu.Link active onPress={() => {}}>
+          Home
+        </NavigationMenu.Link>
+        <NavigationMenu.Item label="Data">
+          <NavigationMenu.Link onPress={onPress} description="Who does what">
+            5W dashboard
+          </NavigationMenu.Link>
+        </NavigationMenu.Item>
+      </NavigationMenu>,
+    )
+    expect(screen.getByRole('link', { name: 'Home, current page' })).toBeOnTheScreen()
+    const data = screen.getByRole('button', { name: 'Data' })
+    expect(data).toBeCollapsed()
+    await fireEvent.press(data)
+    expect(screen.getByRole('button', { name: 'Data' })).toBeExpanded()
+    await fireEvent.press(screen.getByRole('link', { name: /5W dashboard/ }))
+    expect(onPress).toHaveBeenCalledTimes(1)
+    // Following a link closes the panel.
+    expect(screen.queryByRole('link', { name: /5W dashboard/ })).toBeNull()
+  })
+
+  it('Sidebar items are links named with their badge and state, also when collapsed', async () => {
+    const onPress = jest.fn()
+    await renderNative(
+      <Sidebar aria-label="App">
+        <Sidebar.Header>
+          <Sidebar.Toggle />
+        </Sidebar.Header>
+        <Sidebar.Group label="Workspace">
+          <Sidebar.Item active onPress={onPress}>
+            Dashboard
+          </Sidebar.Item>
+          <Sidebar.Item badge="3" onPress={onPress}>
+            Reports
+          </Sidebar.Item>
+        </Sidebar.Group>
+      </Sidebar>,
+    )
+    await fireEvent.press(screen.getByRole('link', { name: 'Reports, 3' }))
+    expect(onPress).toHaveBeenCalledTimes(1)
+    await fireEvent.press(screen.getByRole('button', { name: 'Collapse sidebar' }))
+    expect(screen.getByRole('button', { name: 'Expand sidebar' })).toBeCollapsed()
+    expect(screen.getByRole('link', { name: 'Dashboard, current page' })).toBeOnTheScreen()
+  })
+
   it('Image is named by alt, hides a decorative image and falls back on error', async () => {
     const onError = jest.fn()
     await renderNative(
@@ -1018,6 +1069,16 @@ describe('Android back button', () => {
             <DropdownMenu.Item>Rename</DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu>
+      ),
+    ],
+    [
+      'NavigationMenu',
+      (onOpenChange) => (
+        <NavigationMenu defaultValue="Data" onValueChange={(value) => onOpenChange(value !== null)}>
+          <NavigationMenu.Item label="Data">
+            <NavigationMenu.Link onPress={() => {}}>5W dashboard</NavigationMenu.Link>
+          </NavigationMenu.Item>
+        </NavigationMenu>
       ),
     ],
     [

@@ -52,6 +52,15 @@ one version.
 - **Tree View** (beta): a hierarchy that opens and closes, following the
   WAI-ARIA tree pattern (one Tab stop, arrow keys, Home / End, type-ahead).
   On native each item is a button that reports expanded and selected.
+- **Navigation Menu** (beta): site navigation with links and buttons that
+  open panels of links (the WAI-ARIA disclosure pattern, so links stay normal
+  Tab stops). Escape, a press outside or following a link closes the panel.
+  On iOS and Android the open panel shows under the bar, and the back button
+  closes it.
+- **Sidebar** (beta): app navigation with a header, labelled groups of links
+  (icon, badge, `aria-current="page"`) and a footer. It collapses to an icon
+  rail that keeps every name for screen readers; on phones it goes in a
+  Drawer. `useSidebar()` exposes the collapsed state.
 
 ## [0.5.0] - 2026-09-28
 
