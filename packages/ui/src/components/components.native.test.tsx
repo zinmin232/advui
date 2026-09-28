@@ -22,13 +22,18 @@ import { Collapsible } from './collapsible/Collapsible'
 import { ContextMenu } from './context-menu/ContextMenu'
 import { Dialog } from './dialog/Dialog'
 import { Drawer } from './drawer/Drawer'
+import { EmptyState } from './empty-state/EmptyState'
+import { ErrorState } from './error-state/ErrorState'
 import { DropdownMenu } from './dropdown-menu/DropdownMenu'
 import { Fab } from './fab/Fab'
+import { FormField } from './form-field/FormField'
 import { HoverCard } from './hover-card/HoverCard'
 import { IconButton } from './icon-button/IconButton'
 import { Input } from './input/Input'
 import { Menu } from './menu/Menu'
 import { NavigationBar } from './navigation-bar/NavigationBar'
+import { NumberInput } from './number-input/NumberInput'
+import { PasswordInput } from './password-input/PasswordInput'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
 import { ScrollArea } from './scroll-area/ScrollArea'
@@ -748,5 +753,55 @@ describe('Android back button', () => {
     expect(await back.press()).toBe(true)
     expect(onDrawer).toHaveBeenLastCalledWith(false)
     back.restore()
+  })
+
+  it('FormField gives its control an id and reads help and error text as the hint', async () => {
+    await renderNative(
+      <FormField label="Email" description="Work email." error="Enter an email.">
+        <Input placeholder="you@example.com" />
+      </FormField>,
+    )
+    const input = screen.getByPlaceholderText('you@example.com')
+    expect(input.props.accessibilityHint).toBe('Enter an email. Work email.')
+    expect(input.props['aria-invalid'] ?? input.props.accessibilityState?.invalid).toBeTruthy()
+  })
+
+  it('PasswordInput toggles secure text entry from its toggle button', async () => {
+    await renderNative(<PasswordInput aria-label="Password" placeholder="Password" />)
+    const input = screen.getByPlaceholderText('Password')
+    expect(input.props.secureTextEntry).toBe(true)
+    await fireEvent.press(screen.getByRole('button', { name: 'Show password' }))
+    expect(screen.getByPlaceholderText('Password').props.secureTextEntry).toBe(false)
+  })
+
+  it('NumberInput steps from the buttons and the adjustable actions', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <NumberInput
+        aria-label="Guests"
+        placeholder="0"
+        defaultValue={1}
+        onValueChange={onValueChange}
+      />,
+    )
+    await fireEvent.press(screen.getByRole('button', { name: 'Increase' }))
+    expect(onValueChange).toHaveBeenLastCalledWith(2)
+    await fireEvent(screen.getByPlaceholderText('0'), 'accessibilityAction', {
+      nativeEvent: { actionName: 'decrement' },
+    })
+    expect(onValueChange).toHaveBeenLastCalledWith(1)
+  })
+
+  it('EmptyState and ErrorState render a heading and their actions', async () => {
+    const onRetry = jest.fn()
+    await renderNative(
+      <>
+        <EmptyState title="No projects" description="Create one." />
+        <ErrorState onRetry={onRetry} />
+      </>,
+    )
+    expect(screen.getByRole('heading', { name: 'No projects' })).toBeTruthy()
+    await fireEvent.press(screen.getByRole('button', { name: 'Try again' }))
+    expect(onRetry).toHaveBeenCalled()
   })
 })

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "empty-state",
+  "title": "Empty State",
+  "type": "registry:component",
+  "description": "A placeholder for an empty list, search or page, with the action that fills it.",
+  "category": "feedback",
+  "status": "beta",
+  "since": "0.4.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/empty-state/EmptyState.tsx",
+      "type": "registry:ui",
+      "content": "import { IconDefaults } from '@advui/icons'\nimport { type ReactNode, forwardRef } from 'react'\nimport { type GetProps, type TamaguiElement, View, XStack, styled } from 'tamagui'\nimport { Heading, type HeadingProps } from '../typography/Heading'\nimport { Text } from '../typography/Text'\n\nconst EmptyStateFrame = styled(View, {\n  name: 'EmptyState',\n  alignItems: 'center',\n  justifyContent: 'center',\n  gap: '$3',\n  paddingVertical: '$10',\n  paddingHorizontal: '$6',\n\n  variants: {\n    bordered: {\n      true: {\n        borderWidth: 1,\n        borderStyle: 'dashed',\n        borderColor: '$border',\n        borderRadius: '$lg',\n      },\n    },\n  } as const,\n})\n\nconst tones = {\n  default: { background: '$muted', icon: '$mutedForeground' },\n  error: { background: '$errorSoft', icon: '$errorSoftForeground' },\n} as const\n\nexport interface EmptyStateProps extends Omit<GetProps<typeof EmptyStateFrame>, 'children'> {\n  /** Icon shown in a circle above the title. */\n  icon?: ReactNode\n  title: ReactNode\n  description?: ReactNode\n  /** Heading level of the title (it is a heading on every platform). */\n  headingLevel?: HeadingProps['level']\n  /** Colors of the icon circle. Error State uses `error`. */\n  tone?: keyof typeof tones\n  /** Actions, usually one or two Buttons. */\n  children?: ReactNode\n}\n\n/**\n * A placeholder for an empty list, search or page: an icon, a title, a short\n * explanation and the actions that fill it.\n */\nexport const EmptyState = forwardRef<TamaguiElement, EmptyStateProps>(function EmptyState(\n  {\n    icon,\n    title,\n    description,\n    headingLevel = 3,\n    tone = 'default',\n    bordered = false,\n    children,\n    ...props\n  },\n  ref,\n) {\n  const colors = tones[tone]\n  return (\n    <EmptyStateFrame ref={ref} bordered={bordered} {...props}>\n      {icon ? (\n        <View\n          aria-hidden\n          backgroundColor={colors.background}\n          borderRadius=\"$full\"\n          padding=\"$3\"\n          marginBottom=\"$1\"\n        >\n          <IconDefaults size={24} color={colors.icon}>\n            {icon}\n          </IconDefaults>\n        </View>\n      ) : null}\n      <Heading level={headingLevel} size=\"lg\" textAlign=\"center\">\n        {title}\n      </Heading>\n      {description ? (\n        <Text size=\"sm\" tone=\"muted\" textAlign=\"center\" maxWidth={420}>\n          {description}\n        </Text>\n      ) : null}\n      {children ? (\n        <XStack gap=\"$2\" marginTop=\"$2\" flexWrap=\"wrap\" justifyContent=\"center\">\n          {children}\n        </XStack>\n      ) : null}\n    </EmptyStateFrame>\n  )\n})\n"
+    },
+    {
+      "path": "components/empty-state/index.ts",
+      "type": "registry:ui",
+      "content": "export { EmptyState, type EmptyStateProps } from './EmptyState'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { Button, EmptyState } from '@advui/core'\nimport { FolderIcon, PlusIcon } from '@advui/icons'\n\nexport default function EmptyStateBasic() {\n  return (\n    <EmptyState\n      icon={<FolderIcon />}\n      title=\"No projects yet\"\n      description=\"Projects keep your files and team in one place.\"\n      width=\"100%\"\n    >\n      <Button icon={<PlusIcon />}>New project</Button>\n      <Button variant=\"outline\">Import</Button>\n    </EmptyState>\n  )\n}\n"
+    },
+    {
+      "name": "search",
+      "title": "No search results",
+      "code": "import { Button, EmptyState } from '@advui/core'\nimport { SearchIcon } from '@advui/icons'\n\nexport default function EmptyStateSearch() {\n  return (\n    <EmptyState\n      bordered\n      icon={<SearchIcon />}\n      title=\"No results for “invoice 2024”\"\n      description=\"Check the spelling or try a shorter search.\"\n      width=\"100%\"\n    >\n      <Button variant=\"ghost\">Clear search</Button>\n    </EmptyState>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/empty-state",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "typography"
+  ],
+  "version": "0.2.0"
+}

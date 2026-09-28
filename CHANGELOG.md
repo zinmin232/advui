@@ -11,6 +11,20 @@ one version.
 
 ### Added
 
+- **Form Field** (beta): a label, one control, help text and an error message
+  wired together. The control gets the label's `id`, `invalid`, `disabled`
+  and `aria-required`; help and error text describe it (`aria-describedby` on
+  web, the accessibility hint on native).
+- **Password Input** (beta): a password field with a show/hide toggle button
+  (`aria-pressed`, fixed name), controlled or uncontrolled.
+- **Number Input** (beta): a `spinbutton` field with − and + buttons, `min`,
+  `max` and `step`. Arrow keys, Home and End step on web; screen readers get
+  increment / decrement actions on native. Typed values clamp on blur.
+- **Empty State** (beta): an icon, a heading, a short explanation and actions
+  for empty lists, searches and pages, optionally with a dashed border.
+- **Error State** (beta): Empty State's layout for a failed load, with an
+  error icon, a default title and a retry button (`onRetry`, `retrying`). It
+  is an `alert` on web.
 - **Button Group** (beta): groups Buttons and IconButtons as a labelled
   `group`, joined into one control (square inner corners, shared borders) or
   spaced apart with `attached={false}`, in a row or a column. Buttons take the

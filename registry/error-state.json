@@ -1,0 +1,53 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "error-state",
+  "title": "Error State",
+  "type": "registry:component",
+  "description": "Shown in place of content that failed to load, with a retry button.",
+  "category": "feedback",
+  "status": "beta",
+  "since": "0.4.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/error-state/ErrorState.tsx",
+      "type": "registry:ui",
+      "content": "import { AlertCircleIcon } from '@advui/icons'\nimport { type ReactNode, forwardRef } from 'react'\nimport { type TamaguiElement, isWeb } from 'tamagui'\nimport { Button } from '../button/Button'\nimport { EmptyState, type EmptyStateProps } from '../empty-state/EmptyState'\n\nexport interface ErrorStateProps extends Omit<EmptyStateProps, 'tone' | 'title'> {\n  title?: ReactNode\n  /** Shows a retry button that calls this. */\n  onRetry?: () => void\n  retryLabel?: string\n  /** Shows a spinner on the retry button while retrying. */\n  retrying?: boolean\n}\n\n/**\n * Empty State's layout for a failed load: an error icon, a title, what went\n * wrong and a retry button. On web it is an `alert`, so it is announced.\n */\nexport const ErrorState = forwardRef<TamaguiElement, ErrorStateProps>(function ErrorState(\n  {\n    title = 'Something went wrong',\n    icon = <AlertCircleIcon />,\n    onRetry,\n    retryLabel = 'Try again',\n    retrying = false,\n    children,\n    ...props\n  },\n  ref,\n) {\n  return (\n    <EmptyState\n      ref={ref}\n      tone=\"error\"\n      title={title}\n      icon={icon}\n      // Native: a role would need `accessible`, which hides the retry button.\n      {...(isWeb && { role: 'alert' })}\n      {...props}\n    >\n      {onRetry || children ? (\n        <>\n          {onRetry ? (\n            <Button variant=\"outline\" loading={retrying} onPress={onRetry}>\n              {retryLabel}\n            </Button>\n          ) : null}\n          {children}\n        </>\n      ) : null}\n    </EmptyState>\n  )\n})\n"
+    },
+    {
+      "path": "components/error-state/index.ts",
+      "type": "registry:ui",
+      "content": "export { ErrorState, type ErrorStateProps } from './ErrorState'\n"
+    },
+    {
+      "path": "components/empty-state/EmptyState.tsx",
+      "type": "registry:ui",
+      "content": "import { IconDefaults } from '@advui/icons'\nimport { type ReactNode, forwardRef } from 'react'\nimport { type GetProps, type TamaguiElement, View, XStack, styled } from 'tamagui'\nimport { Heading, type HeadingProps } from '../typography/Heading'\nimport { Text } from '../typography/Text'\n\nconst EmptyStateFrame = styled(View, {\n  name: 'EmptyState',\n  alignItems: 'center',\n  justifyContent: 'center',\n  gap: '$3',\n  paddingVertical: '$10',\n  paddingHorizontal: '$6',\n\n  variants: {\n    bordered: {\n      true: {\n        borderWidth: 1,\n        borderStyle: 'dashed',\n        borderColor: '$border',\n        borderRadius: '$lg',\n      },\n    },\n  } as const,\n})\n\nconst tones = {\n  default: { background: '$muted', icon: '$mutedForeground' },\n  error: { background: '$errorSoft', icon: '$errorSoftForeground' },\n} as const\n\nexport interface EmptyStateProps extends Omit<GetProps<typeof EmptyStateFrame>, 'children'> {\n  /** Icon shown in a circle above the title. */\n  icon?: ReactNode\n  title: ReactNode\n  description?: ReactNode\n  /** Heading level of the title (it is a heading on every platform). */\n  headingLevel?: HeadingProps['level']\n  /** Colors of the icon circle. Error State uses `error`. */\n  tone?: keyof typeof tones\n  /** Actions, usually one or two Buttons. */\n  children?: ReactNode\n}\n\n/**\n * A placeholder for an empty list, search or page: an icon, a title, a short\n * explanation and the actions that fill it.\n */\nexport const EmptyState = forwardRef<TamaguiElement, EmptyStateProps>(function EmptyState(\n  {\n    icon,\n    title,\n    description,\n    headingLevel = 3,\n    tone = 'default',\n    bordered = false,\n    children,\n    ...props\n  },\n  ref,\n) {\n  const colors = tones[tone]\n  return (\n    <EmptyStateFrame ref={ref} bordered={bordered} {...props}>\n      {icon ? (\n        <View\n          aria-hidden\n          backgroundColor={colors.background}\n          borderRadius=\"$full\"\n          padding=\"$3\"\n          marginBottom=\"$1\"\n        >\n          <IconDefaults size={24} color={colors.icon}>\n            {icon}\n          </IconDefaults>\n        </View>\n      ) : null}\n      <Heading level={headingLevel} size=\"lg\" textAlign=\"center\">\n        {title}\n      </Heading>\n      {description ? (\n        <Text size=\"sm\" tone=\"muted\" textAlign=\"center\" maxWidth={420}>\n          {description}\n        </Text>\n      ) : null}\n      {children ? (\n        <XStack gap=\"$2\" marginTop=\"$2\" flexWrap=\"wrap\" justifyContent=\"center\">\n          {children}\n        </XStack>\n      ) : null}\n    </EmptyStateFrame>\n  )\n})\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Retry",
+      "code": "import { Button, ErrorState } from '@advui/core'\nimport { useState } from 'react'\n\nexport default function ErrorStateBasic() {\n  const [retrying, setRetrying] = useState(false)\n  return (\n    <ErrorState\n      title=\"Couldn’t load invoices\"\n      description=\"Check your connection and try again.\"\n      retrying={retrying}\n      onRetry={() => {\n        setRetrying(true)\n        setTimeout(() => setRetrying(false), 1500)\n      }}\n      width=\"100%\"\n    >\n      <Button variant=\"ghost\">Contact support</Button>\n    </ErrorState>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/error-state",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "button",
+    "empty-state",
+    "typography"
+  ],
+  "version": "0.2.0"
+}
