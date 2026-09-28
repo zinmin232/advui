@@ -7,6 +7,8 @@ one version.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-09-28
+
 ### Added
 
 - **Form Field** (beta): a label, one control, help text and an error message
