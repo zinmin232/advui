@@ -71,6 +71,16 @@ one version.
 - **Image Gallery** (beta): a grid of named thumbnail buttons that open a
   viewer dialog with previous / next (and the arrow keys on web), a caption
   and a live "3 of 12".
+- **Bar Chart**, **Line Chart**, **Area Chart** and **Pie Chart** (beta),
+  drawn with SVG on web and react-native-svg on native. Each is a named
+  `figure` with a legend (for two or more series), a tooltip on hover, tap or
+  the arrow keys (read out by a live region on web, and as the plot's
+  accessibility value on native), and a "Show table" view of the same data.
+  Bars can be grouped, stacked or horizontal; lines break at missing values;
+  areas can stack; pies fold small slices into "Other".
+- **Chart colors** in the theme: `$chart1`–`$chart8`, a categorical palette in
+  a fixed order that keeps neighboring series apart for color-blind readers,
+  with its own steps for dark mode (in `@advui/theme` as `chartPalette`).
 
 ## [0.5.0] - 2026-09-28
 

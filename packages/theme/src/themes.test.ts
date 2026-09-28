@@ -97,3 +97,26 @@ describe('radius tokens', () => {
     expect(createRadius('sm').full).toBe(9999)
   })
 })
+
+describe('chart palette', () => {
+  it('gives every preset and mode eight distinct series colors, stepped per mode', () => {
+    for (const name of themePresetNames) {
+      const themes = createThemeColors(themePresets[name].colors)
+      const keys = [
+        'chart1',
+        'chart2',
+        'chart3',
+        'chart4',
+        'chart5',
+        'chart6',
+        'chart7',
+        'chart8',
+      ] as const
+      for (const mode of ['light', 'dark'] as const) {
+        expect(new Set(keys.map((key) => themes[mode][key])).size).toBe(8)
+      }
+      // Dark mode has its own steps rather than reusing the light ones.
+      expect(themes.dark.chart1).not.toBe(themes.light.chart1)
+    }
+  })
+})

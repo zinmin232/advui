@@ -63,6 +63,14 @@ const libItems = [
     files: listDir('utils'),
   },
   {
+    name: 'charts',
+    title: 'Chart internals',
+    type: 'registry:lib',
+    description:
+      'Shared by the charts: the frame (legend, tooltip, table view), scales, axes and the SVG layer for web and native.',
+    files: listDir('charts'),
+  },
+  {
     name: 'provider',
     title: 'UniversalProvider',
     type: 'registry:lib',

@@ -1,5 +1,6 @@
 import { accessibleSolid, adjustLightness, ensureContrast, withAlpha } from '@advui/utils'
 import { type ColorScale, type ColorSource, type ScaleSteps, resolveScale } from './palettes'
+import { chartColors } from './chart'
 
 export type ColorMode = 'light' | 'dark'
 
@@ -105,6 +106,16 @@ export type ThemeValues = {
   infoSoft: string
   infoSoftForeground: string
   infoBorder: string
+
+  // Chart series, in their fixed order (see chart.ts).
+  chart1: string
+  chart2: string
+  chart3: string
+  chart4: string
+  chart5: string
+  chart6: string
+  chart7: string
+  chart8: string
 }
 
 export type ThemeKey = keyof ThemeValues
@@ -283,6 +294,8 @@ function buildMode(mode: ColorMode, input: Required<Omit<ThemeColorsInput, 'over
     infoSoft: info.soft,
     infoSoftForeground: info.softForeground,
     infoBorder: info.border,
+
+    ...chartColors(mode),
   }
 
   return values

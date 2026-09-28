@@ -19,9 +19,4 @@ export const roadmap: RoadmapItem[] = [
   { name: 'Rich Text Editor', slug: 'rich-text-editor', category: 'advanced', phase: 5 },
   { name: 'Resizable Panel', slug: 'resizable-panel', category: 'advanced', phase: 5 },
   { name: 'Data Grid', slug: 'data-grid', category: 'advanced', phase: 5 },
-
-  { name: 'Line Chart', slug: 'line-chart', category: 'charts', phase: 5 },
-  { name: 'Bar Chart', slug: 'bar-chart', category: 'charts', phase: 5 },
-  { name: 'Area Chart', slug: 'area-chart', category: 'charts', phase: 5 },
-  { name: 'Pie Chart', slug: 'pie-chart', category: 'charts', phase: 5 },
 ]

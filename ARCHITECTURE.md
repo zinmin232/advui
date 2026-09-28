@@ -51,6 +51,10 @@ points to `dist/` for npm.
   up `.native.tsx`, and web bundlers use the base file:
   - `spinner/Spinner.native.tsx`: `ActivityIndicator` instead of an SVG arc
   - `icons/SvgIcon.native.tsx`: react-native-svg instead of DOM `<svg>`
+  - `charts/svg.native.tsx`: the charts' SVG layer on react-native-svg; the web
+    file draws DOM `<svg>`. Everything else in `src/charts/` (frame, legend,
+    tooltip, table view, scales) is shared, and ships as the `charts` registry
+    item.
   - `provider/GlobalStyles.native.tsx`: no-op (web injects keyframes and
     reduced-motion CSS)
   - `hooks/useReducedMotion.native.ts`: `AccessibilityInfo` instead of

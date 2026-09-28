@@ -21,6 +21,20 @@
       "registryDependencies": []
     },
     {
+      "name": "charts",
+      "title": "Chart internals",
+      "type": "registry:lib",
+      "description": "Shared by the charts: the frame (legend, tooltip, table view), scales, axes and the SVG layer for web and native.",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "button",
+        "table",
+        "typography"
+      ]
+    },
+    {
       "name": "provider",
       "title": "UniversalProvider",
       "type": "registry:lib",
@@ -78,6 +92,18 @@
       ]
     },
     {
+      "name": "area-chart",
+      "title": "Area Chart",
+      "type": "registry:component",
+      "description": "A line chart with a light wash under each line, for totals and stacked parts over time.",
+      "category": "charts",
+      "status": "beta",
+      "dependencies": [],
+      "registryDependencies": [
+        "charts"
+      ]
+    },
+    {
       "name": "aspect-ratio",
       "title": "Aspect Ratio",
       "type": "registry:component",
@@ -127,6 +153,18 @@
       ],
       "registryDependencies": [
         "utils"
+      ]
+    },
+    {
+      "name": "bar-chart",
+      "title": "Bar Chart",
+      "type": "registry:component",
+      "description": "Compares values across categories as columns or bars, grouped or stacked.",
+      "category": "charts",
+      "status": "beta",
+      "dependencies": [],
+      "registryDependencies": [
+        "charts"
       ]
     },
     {
@@ -628,6 +666,18 @@
       "registryDependencies": []
     },
     {
+      "name": "line-chart",
+      "title": "Line Chart",
+      "type": "registry:component",
+      "description": "Shows change over an ordered axis, such as months, as one or more lines.",
+      "category": "charts",
+      "status": "beta",
+      "dependencies": [],
+      "registryDependencies": [
+        "charts"
+      ]
+    },
+    {
       "name": "list",
       "title": "List",
       "type": "registry:component",
@@ -772,6 +822,20 @@
         "hooks",
         "icon-button",
         "input"
+      ]
+    },
+    {
+      "name": "pie-chart",
+      "title": "Pie Chart",
+      "type": "registry:component",
+      "description": "Part-to-whole at a glance, as a donut or pie with up to six slices.",
+      "category": "charts",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "charts"
       ]
     },
     {
