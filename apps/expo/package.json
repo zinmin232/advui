@@ -14,13 +14,14 @@
     "android:emulator": "node scripts/android-dev.mjs"
   },
   "dependencies": {
-    "@tamagui/theme": "2.7.7",
     "@advui/core": "workspace:*",
     "@advui/examples": "workspace:*",
     "@advui/icons": "workspace:*",
     "@advui/theme": "workspace:*",
+    "@tamagui/theme": "2.7.7",
     "expo": "~57.0.25",
     "expo-constants": "~57.0.19",
+    "expo-document-picker": "~57.0.2",
     "expo-linking": "~57.0.11",
     "expo-router": "~57.0.23",
     "expo-status-bar": "~57.0.1",
@@ -33,10 +34,10 @@
     "tamagui": "2.7.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.0",
-    "@types/react": "~19.2.2",
     "@advui/eslint-config": "workspace:*",
     "@advui/tsconfig": "workspace:*",
+    "@babel/core": "^7.28.0",
+    "@types/react": "~19.2.2",
     "typescript": "~6.0.3"
   }
 }

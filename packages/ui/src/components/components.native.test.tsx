@@ -29,6 +29,9 @@ import { EmptyState } from './empty-state/EmptyState'
 import { ErrorState } from './error-state/ErrorState'
 import { DropdownMenu } from './dropdown-menu/DropdownMenu'
 import { Fab } from './fab/Fab'
+import { FileDropzone } from './file-dropzone/FileDropzone'
+import { FileUpload } from './file-upload/FileUpload'
+import { setFilePicker } from './file-upload/files'
 import { FormField } from './form-field/FormField'
 import { HoverCard } from './hover-card/HoverCard'
 import { IconButton } from './icon-button/IconButton'
@@ -707,6 +710,28 @@ describe('native rendering', () => {
     await fireEvent.press(screen.getByRole('checkbox', { name: 'Docs' }))
     expect(onValueChange).toHaveBeenLastCalledWith(['bug', 'docs'])
     expect(screen.getByRole('checkbox', { name: 'Bug' })).toBeChecked()
+  })
+
+  it('FileUpload and FileDropzone use the picker from setFilePicker', async () => {
+    const pickFiles = jest.fn(async () => [
+      { name: 'scan.pdf', size: 2048, type: 'application/pdf', uri: 'file:///scan.pdf' },
+    ])
+    setFilePicker(pickFiles)
+    const onUpload = jest.fn()
+    await renderNative(
+      <>
+        <FileUpload accept=".pdf" onValueChange={onUpload} />
+        <FileDropzone />
+      </>,
+    )
+    await fireEvent.press(screen.getByRole('button', { name: 'Choose file' }))
+    expect(pickFiles).toHaveBeenCalledWith({ multiple: false, accept: '.pdf' })
+    expect(onUpload).toHaveBeenCalledWith([expect.objectContaining({ uri: 'file:///scan.pdf' })])
+    expect(await screen.findByRole('button', { name: 'Remove scan.pdf' })).toBeTruthy()
+    // The dropzone is one labelled button on native (no drag and drop).
+    await fireEvent.press(screen.getByRole('button', { name: /Tap to choose files/ }))
+    expect(pickFiles).toHaveBeenCalledTimes(2)
+    setFilePicker(undefined)
   })
 })
 
