@@ -9,6 +9,8 @@ import {
   styled,
   withStaticProperties,
 } from 'tamagui'
+import { useBackToClose } from '../../hooks/useBackToClose'
+import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import {
   contentSizes,
@@ -85,8 +87,20 @@ const Action = forwardRef<TamaguiElement, AlertDialogActionProps>(
   },
 )
 
-function AlertDialogRoot(props: AlertDialogProps) {
-  return <TamaguiAlertDialog {...props} />
+function AlertDialogRoot({
+  open: openProp,
+  defaultOpen = false,
+  onOpenChange,
+  ...props
+}: AlertDialogProps) {
+  const [open, setOpen] = useControllableState({
+    value: openProp,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  })
+  // Android: the back button cancels, like Escape, instead of leaving the screen.
+  useBackToClose(open, () => setOpen(false))
+  return <TamaguiAlertDialog open={open} onOpenChange={setOpen} {...props} />
 }
 
 /**

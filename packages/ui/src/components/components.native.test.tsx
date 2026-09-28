@@ -2,7 +2,8 @@ import { describe, expect, it, jest } from '@jest/globals'
 import { act, fireEvent, screen } from '@testing-library/react-native'
 import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
 import { zIndex } from '@advui/theme'
-import { StyleSheet } from 'react-native'
+import type { ReactElement } from 'react'
+import { BackHandler, StyleSheet } from 'react-native'
 import { renderNative } from '../../test/native-utils'
 import { Accordion } from './accordion/Accordion'
 import { AlertDialog } from './alert-dialog/AlertDialog'
@@ -19,6 +20,7 @@ import { Chip } from './chip/Chip'
 import { CircularProgress } from './circular-progress/CircularProgress'
 import { Collapsible } from './collapsible/Collapsible'
 import { ContextMenu } from './context-menu/ContextMenu'
+import { Dialog } from './dialog/Dialog'
 import { Drawer } from './drawer/Drawer'
 import { DropdownMenu } from './dropdown-menu/DropdownMenu'
 import { Fab } from './fab/Fab'
@@ -30,6 +32,7 @@ import { NavigationBar } from './navigation-bar/NavigationBar'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
 import { ScrollArea } from './scroll-area/ScrollArea'
+import { Select } from './select/Select'
 import { Sheet } from './sheet/Sheet'
 import { Slider } from './slider/Slider'
 import { Snackbar } from './snackbar/Snackbar'
@@ -559,5 +562,191 @@ describe('native rendering', () => {
     const scroll = screen.getByTestId('scroll')
     expect(scroll.props.horizontal).toBe(true)
     expect(screen.getByText('Nightfall')).toBeOnTheScreen()
+  })
+})
+
+// Android's back button: React Native calls the `hardwareBackPress` listeners
+// newest first and stops at the first that returns true; if none does, the
+// router goes back. The fake below does the same, without a device.
+function fakeBackHandler() {
+  const listeners = new Set<() => boolean | null | undefined>()
+  const spy = jest.spyOn(BackHandler, 'addEventListener').mockImplementation((_event, handler) => {
+    const listener = () => handler({ type: 'hardwareBackPress', timeStamp: Date.now() })
+    listeners.add(listener)
+    return { remove: () => void listeners.delete(listener) }
+  })
+  return {
+    listeners: () => listeners.size,
+    /** Presses back; `false` means nothing handled it and the screen would close. */
+    press: async () => {
+      let handled = false
+      await act(async () => {
+        handled = [...listeners].reverse().some((listener) => listener() === true)
+      })
+      return handled
+    },
+    restore: () => spy.mockRestore(),
+  }
+}
+
+describe('Android back button', () => {
+  // Each overlay starts open; back must close it instead of leaving the screen.
+  const overlays: [string, (onOpenChange: (open: boolean) => void) => ReactElement][] = [
+    [
+      'Dialog',
+      (onOpenChange) => (
+        <Dialog defaultOpen onOpenChange={onOpenChange}>
+          <Dialog.Content>
+            <Dialog.Title>Edit profile</Dialog.Title>
+          </Dialog.Content>
+        </Dialog>
+      ),
+    ],
+    [
+      'AlertDialog',
+      (onOpenChange) => (
+        <AlertDialog defaultOpen onOpenChange={onOpenChange}>
+          <AlertDialog.Content>
+            <AlertDialog.Title>Delete Atlas?</AlertDialog.Title>
+            <AlertDialog.Cancel asChild>
+              <Button>Cancel</Button>
+            </AlertDialog.Cancel>
+          </AlertDialog.Content>
+        </AlertDialog>
+      ),
+    ],
+    [
+      'Drawer',
+      (onOpenChange) => (
+        <Drawer defaultOpen onOpenChange={onOpenChange}>
+          <Drawer.Content>
+            <Drawer.Title>Filters</Drawer.Title>
+          </Drawer.Content>
+        </Drawer>
+      ),
+    ],
+    [
+      'Sheet',
+      (onOpenChange) => (
+        <Sheet defaultOpen onOpenChange={onOpenChange}>
+          <Sheet.Content>
+            <Sheet.Title>Profile</Sheet.Title>
+          </Sheet.Content>
+        </Sheet>
+      ),
+    ],
+    [
+      'Popover',
+      (onOpenChange) => (
+        <Popover defaultOpen onOpenChange={onOpenChange}>
+          <Popover.Trigger asChild>
+            <Button>Dimensions</Button>
+          </Popover.Trigger>
+          <Popover.Content>
+            <Popover.Title>Layer size</Popover.Title>
+          </Popover.Content>
+        </Popover>
+      ),
+    ],
+    [
+      'DropdownMenu',
+      (onOpenChange) => (
+        <DropdownMenu defaultOpen onOpenChange={onOpenChange}>
+          <DropdownMenu.Trigger>
+            <Button>Options</Button>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content>
+            <DropdownMenu.Item>Rename</DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu>
+      ),
+    ],
+    [
+      'Select',
+      (onOpenChange) => (
+        <Select open aria-label="Fruit" onOpenChange={onOpenChange}>
+          <Select.Item value="apple">Apple</Select.Item>
+        </Select>
+      ),
+    ],
+  ]
+
+  it.each(overlays)('closes an open %s', async (_name, render) => {
+    const back = fakeBackHandler()
+    const onOpenChange = jest.fn()
+    await renderNative(render(onOpenChange))
+    expect(back.listeners()).toBe(1)
+    expect(await back.press()).toBe(true)
+    expect(onOpenChange).toHaveBeenLastCalledWith(false)
+    back.restore()
+  })
+
+  it('leaves the back button to the router while overlays are closed', async () => {
+    const back = fakeBackHandler()
+    await renderNative(
+      <Dialog>
+        <Dialog.Trigger asChild>
+          <Button>Edit profile</Button>
+        </Dialog.Trigger>
+        <Dialog.Content>
+          <Dialog.Title>Edit profile</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>,
+    )
+    expect(back.listeners()).toBe(0)
+    await fireEvent.press(screen.getByRole('button', { name: 'Edit profile' }))
+    expect(back.listeners()).toBe(1)
+    expect(await back.press()).toBe(true)
+    // Closed again: the listener is gone, so the next press goes to the router.
+    expect(back.listeners()).toBe(0)
+    expect(await back.press()).toBe(false)
+    back.restore()
+  })
+
+  it('closes a Context Menu opened by long-press', async () => {
+    const back = fakeBackHandler()
+    const onOpenChange = jest.fn()
+    await renderNative(
+      <ContextMenu onOpenChange={onOpenChange}>
+        <ContextMenu.Trigger testID="row">
+          <Text>Report.pdf</Text>
+        </ContextMenu.Trigger>
+        <ContextMenu.Content>
+          <ContextMenu.Item>Rename</ContextMenu.Item>
+        </ContextMenu.Content>
+      </ContextMenu>,
+    )
+    await fireEvent(screen.getByTestId('row'), 'longPress')
+    expect(await back.press()).toBe(true)
+    expect(onOpenChange).toHaveBeenLastCalledWith(false)
+    back.restore()
+  })
+
+  it('closes the innermost overlay first', async () => {
+    const back = fakeBackHandler()
+    const onDrawer = jest.fn()
+    const onDialog = jest.fn()
+    await renderNative(
+      <Drawer defaultOpen onOpenChange={onDrawer}>
+        <Drawer.Content>
+          <Drawer.Title>Filters</Drawer.Title>
+          <Dialog onOpenChange={onDialog}>
+            <Dialog.Trigger asChild>
+              <Button>Save filter</Button>
+            </Dialog.Trigger>
+            <Dialog.Content>
+              <Dialog.Title>Name this filter</Dialog.Title>
+            </Dialog.Content>
+          </Dialog>
+        </Drawer.Content>
+      </Drawer>,
+    )
+    await fireEvent.press(screen.getByRole('button', { name: 'Save filter' }))
+    expect(await back.press()).toBe(true)
+    expect(onDialog).toHaveBeenLastCalledWith(false)
+    expect(onDrawer).not.toHaveBeenCalled()
+    expect(await back.press()).toBe(true)
+    expect(onDrawer).toHaveBeenLastCalledWith(false)
+    back.restore()
   })
 })

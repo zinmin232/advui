@@ -21,6 +21,8 @@ import {
   useDidFinishSSR,
   withStaticProperties,
 } from 'tamagui'
+import { useBackToClose } from '../../hooks/useBackToClose'
+import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 import { fieldBoxStyle } from '../input/Input'
@@ -244,9 +246,18 @@ function SelectRoot({
   children,
   id,
   'aria-label': ariaLabel,
+  open: openProp,
+  onOpenChange,
   ...props
 }: SelectProps) {
   const reducedMotion = useReducedMotion()
+  const [open, setOpen] = useControllableState({
+    value: openProp,
+    defaultValue: false,
+    onChange: onOpenChange,
+  })
+  // Android: the back button closes the list instead of leaving the screen.
+  useBackToClose(open, () => setOpen(false))
   const hydrated = useDidFinishSSR()
   const items = useMemo(() => indexItems(children), [children])
 
@@ -277,7 +288,14 @@ function SelectRoot({
   }
 
   return (
-    <TamaguiSelect id={id} zIndex={zIndex.popover} disablePreventBodyScroll {...props}>
+    <TamaguiSelect
+      id={id}
+      zIndex={zIndex.popover}
+      disablePreventBodyScroll
+      open={open}
+      onOpenChange={setOpen}
+      {...props}
+    >
       <Trigger
         size={size}
         width={width}

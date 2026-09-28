@@ -82,6 +82,10 @@ file: `pnpm --filter @advui/core exec vitest run src/components/button`.
   `defaultVariants`. Give props explicit defaults.
 - **Android `TextInput`** rejects animated styles, so fields must not have a
   `transition`.
+- **Android back button**: Tamagui overlays ignore it. A new overlay's root
+  must hold its `open` state (`useControllableState`) and call
+  `useBackToClose(open, close)`, then get a case in the native "Android back
+  button" tests.
 - **Platform files share an extension.** Pair `Foo.tsx` with
   `Foo.native.tsx` (or `.ts` with `.native.ts`). Metro tries every platform
   suffix for `.ts` before `.tsx`, so `Foo.ts` hides `Foo.native.tsx` on

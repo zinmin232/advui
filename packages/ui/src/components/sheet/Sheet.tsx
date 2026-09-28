@@ -17,6 +17,7 @@ import {
   styled,
   withStaticProperties,
 } from 'tamagui'
+import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { IconButton } from '../icon-button/IconButton'
@@ -50,6 +51,8 @@ function SheetRoot({ open: openProp, defaultOpen = false, onOpenChange, children
     defaultValue: defaultOpen,
     onChange: onOpenChange,
   })
+  // Android: the back button closes the sheet instead of leaving the screen.
+  useBackToClose(open, () => setOpen(false))
   const id = useId()
   return (
     <SheetContext.Provider

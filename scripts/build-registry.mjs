@@ -52,7 +52,7 @@ const libItems = [
     title: 'Hooks',
     type: 'registry:lib',
     description:
-      'Shared hooks: controllable state, reduced-motion detection and the Android press ripple.',
+      'Shared hooks: controllable state, reduced-motion detection, the Android press ripple and Android back-button handling for overlays.',
     files: listDir('hooks'),
   },
   {
