@@ -1,0 +1,59 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "context-menu",
+  "title": "Context Menu",
+  "type": "registry:component",
+  "description": "Actions for an area, opened with a right-click on desktop and a long-press on touch screens.",
+  "category": "overlay",
+  "status": "beta",
+  "since": "0.3.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/context-menu/ContextMenu.tsx",
+      "type": "registry:ui",
+      "content": "import { ContextMenu as TamaguiContextMenu, type Menu, withStaticProperties } from 'tamagui'\nimport { createMenuParts } from '../dropdown-menu/menuParts'\nimport type { ContextMenuProps, ContextMenuTriggerProps } from './types'\n\n// Web: Tamagui's context menu — the menu opens at the pointer on right-click\n// (or Shift+F10 / the Menu key) and after a long-press on touch screens.\n// iOS / Android: see ContextMenu.native.tsx (long-press opens a bottom sheet).\n\n// Same parts API as Menu, typed per primitive; the item styling is shared.\nconst parts = createMenuParts(TamaguiContextMenu as unknown as typeof Menu)\n\n// Tamagui already flips the menu and keeps it inside the viewport by default.\nfunction ContextMenuRoot({ children, onOpenChange }: ContextMenuProps) {\n  return (\n    <TamaguiContextMenu onOpenChange={(open: boolean) => onOpenChange?.(open)}>\n      {children}\n    </TamaguiContextMenu>\n  )\n}\n\nfunction ContextMenuTrigger({ children, disabled = false, ...props }: ContextMenuTriggerProps) {\n  return (\n    <TamaguiContextMenu.Trigger\n      disabled={disabled}\n      // Tamagui renders a span; lay it out like any other block.\n      display=\"flex\"\n      flexDirection=\"column\"\n      {...props}\n    >\n      {children}\n    </TamaguiContextMenu.Trigger>\n  )\n}\n\n/**\n * Actions for an area, opened with a right-click on desktop and a long-press\n * on touch screens. Offer the same actions somewhere visible too: context\n * menus are hidden until someone thinks to look for them.\n */\nexport const ContextMenu = withStaticProperties(ContextMenuRoot, {\n  Trigger: ContextMenuTrigger,\n  ...parts,\n})\n\nexport type {\n  ContextMenuCheckboxItemProps,\n  ContextMenuContentProps,\n  ContextMenuGroupProps,\n  ContextMenuItemProps,\n  ContextMenuLabelProps,\n  ContextMenuProps,\n  ContextMenuRadioGroupProps,\n  ContextMenuRadioItemProps,\n  ContextMenuTriggerProps,\n} from './types'\n"
+    },
+    {
+      "path": "components/context-menu/ContextMenu.native.tsx",
+      "type": "registry:ui",
+      "content": "import { View, withStaticProperties } from 'tamagui'\nimport { sheetMenu, useSheetMenu } from '../dropdown-menu/sheetMenu'\nimport type { ContextMenuProps, ContextMenuTriggerProps } from './types'\n\n// iOS / Android: a long-press on the area opens Dropdown Menu's bottom sheet.\n\nconst { Root, ...parts } = sheetMenu\n\nfunction ContextMenuRoot({ children, onOpenChange }: ContextMenuProps) {\n  return <Root onOpenChange={onOpenChange}>{children}</Root>\n}\n\nfunction ContextMenuTrigger({ children, disabled = false, ...props }: ContextMenuTriggerProps) {\n  const { setOpen } = useSheetMenu()\n  return (\n    <View\n      // Screen readers cannot long-press an area they don't focus, so the area\n      // is one element whose \"long press\" action (listed by VoiceOver and\n      // TalkBack) opens the menu.\n      accessible\n      accessibilityHint={disabled ? undefined : 'Long press for options'}\n      accessibilityActions={disabled ? undefined : [{ name: 'longpress', label: 'Options' }]}\n      onAccessibilityAction={(event: { nativeEvent: { actionName: string } }) => {\n        if (event.nativeEvent.actionName === 'longpress') setOpen(true)\n      }}\n      onLongPress={disabled ? undefined : () => setOpen(true)}\n      {...props}\n    >\n      {children}\n    </View>\n  )\n}\n\nexport const ContextMenu = withStaticProperties(ContextMenuRoot, {\n  Trigger: ContextMenuTrigger,\n  ...parts,\n})\n\nexport type {\n  ContextMenuCheckboxItemProps,\n  ContextMenuContentProps,\n  ContextMenuGroupProps,\n  ContextMenuItemProps,\n  ContextMenuLabelProps,\n  ContextMenuProps,\n  ContextMenuRadioGroupProps,\n  ContextMenuRadioItemProps,\n  ContextMenuTriggerProps,\n} from './types'\n"
+    },
+    {
+      "path": "components/context-menu/types.ts",
+      "type": "registry:ui",
+      "content": "import type { ReactNode } from 'react'\nimport type { GetProps, View } from 'tamagui'\nimport type {\n  DropdownMenuCheckboxItemProps,\n  DropdownMenuContentProps,\n  DropdownMenuGroupProps,\n  DropdownMenuItemProps,\n  DropdownMenuLabelProps,\n  DropdownMenuRadioGroupProps,\n  DropdownMenuRadioItemProps,\n} from '../dropdown-menu/types'\n\n// Shared by ContextMenu.tsx (web) and ContextMenu.native.tsx. The items are\n// Dropdown Menu's, so both menus look and behave the same once open.\n\nexport interface ContextMenuProps {\n  children: ReactNode\n  /** Called when the menu opens (right-click or long-press) or closes. */\n  onOpenChange?: (open: boolean) => void\n}\n\nexport interface ContextMenuTriggerProps extends Omit<GetProps<typeof View>, 'children'> {\n  /** The area that opens the menu: a card, a row, a canvas… */\n  children: ReactNode\n  /** Ignore right-click and long-press. */\n  disabled?: boolean\n}\n\nexport type ContextMenuContentProps = DropdownMenuContentProps\nexport type ContextMenuItemProps = DropdownMenuItemProps\nexport type ContextMenuCheckboxItemProps = DropdownMenuCheckboxItemProps\nexport type ContextMenuRadioGroupProps = DropdownMenuRadioGroupProps\nexport type ContextMenuRadioItemProps = DropdownMenuRadioItemProps\nexport type ContextMenuLabelProps = DropdownMenuLabelProps\nexport type ContextMenuGroupProps = DropdownMenuGroupProps\n"
+    },
+    {
+      "path": "components/context-menu/index.ts",
+      "type": "registry:ui",
+      "content": "export {\n  ContextMenu,\n  type ContextMenuCheckboxItemProps,\n  type ContextMenuContentProps,\n  type ContextMenuGroupProps,\n  type ContextMenuItemProps,\n  type ContextMenuLabelProps,\n  type ContextMenuProps,\n  type ContextMenuRadioGroupProps,\n  type ContextMenuRadioItemProps,\n  type ContextMenuTriggerProps,\n} from './ContextMenu'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Browser-style menu",
+      "code": "import { ContextMenu, Text, toast } from '@advui/core'\nimport { ArrowLeftIcon, ArrowRightIcon, CopyIcon } from '@advui/icons'\nimport { useState } from 'react'\n\nexport default function ContextMenuBasic() {\n  const [bookmarks, setBookmarks] = useState(true)\n  const [zoom, setZoom] = useState('100')\n  return (\n    <ContextMenu>\n      <ContextMenu.Trigger\n        width=\"100%\"\n        maxWidth=\"$96\"\n        height=\"$40\"\n        alignItems=\"center\"\n        justifyContent=\"center\"\n        borderWidth={1}\n        borderStyle=\"dashed\"\n        borderColor=\"$borderStrong\"\n        borderRadius=\"$lg\"\n      >\n        <Text size=\"sm\" tone=\"muted\">\n          Right-click here (long-press on touch)\n        </Text>\n      </ContextMenu.Trigger>\n      <ContextMenu.Content>\n        <ContextMenu.Item icon={<ArrowLeftIcon />} shortcut=\"Alt+←\" onSelect={() => toast('Back')}>\n          Back\n        </ContextMenu.Item>\n        <ContextMenu.Item icon={<ArrowRightIcon />} shortcut=\"Alt+→\" disabled>\n          Forward\n        </ContextMenu.Item>\n        <ContextMenu.Item icon={<CopyIcon />} shortcut=\"Ctrl+C\" onSelect={() => toast('Copied')}>\n          Copy link\n        </ContextMenu.Item>\n        <ContextMenu.Separator />\n        <ContextMenu.CheckboxItem checked={bookmarks} onCheckedChange={setBookmarks}>\n          Show bookmarks\n        </ContextMenu.CheckboxItem>\n        <ContextMenu.Separator />\n        <ContextMenu.Label>Zoom</ContextMenu.Label>\n        <ContextMenu.RadioGroup value={zoom} onValueChange={setZoom}>\n          <ContextMenu.RadioItem value=\"100\">100%</ContextMenu.RadioItem>\n          <ContextMenu.RadioItem value=\"125\">125%</ContextMenu.RadioItem>\n          <ContextMenu.RadioItem value=\"150\">150%</ContextMenu.RadioItem>\n        </ContextMenu.RadioGroup>\n      </ContextMenu.Content>\n    </ContextMenu>\n  )\n}\n"
+    },
+    {
+      "name": "list",
+      "title": "Rows in a list",
+      "code": "import { Card, ContextMenu, HStack, Text, VStack, toast } from '@advui/core'\nimport { CopyIcon, DownloadIcon, EditIcon, FileIcon, TrashIcon } from '@advui/icons'\n\nconst files = [\n  { name: 'Quarterly report.pdf', size: '2.4 MB' },\n  { name: 'Brand guidelines.pdf', size: '8.1 MB' },\n  { name: 'Invoice 0042.pdf', size: '120 KB' },\n]\n\nexport default function ContextMenuList() {\n  return (\n    <Card padding=\"$2\" gap=\"$1\" width=\"100%\" maxWidth=\"$96\">\n      {files.map((file) => (\n        <ContextMenu key={file.name}>\n          <ContextMenu.Trigger>\n            <HStack gap=\"$3\" alignItems=\"center\" padding=\"$2\" borderRadius=\"$md\">\n              <FileIcon size={18} color=\"$mutedForeground\" />\n              <VStack flex={1}>\n                <Text size=\"sm\">{file.name}</Text>\n                <Text size=\"xs\" tone=\"muted\">\n                  {file.size}\n                </Text>\n              </VStack>\n            </HStack>\n          </ContextMenu.Trigger>\n          <ContextMenu.Content>\n            <ContextMenu.Label>{file.name}</ContextMenu.Label>\n            <ContextMenu.Item icon={<EditIcon />} onSelect={() => toast('Rename')}>\n              Rename\n            </ContextMenu.Item>\n            <ContextMenu.Item icon={<CopyIcon />} onSelect={() => toast('Duplicated')}>\n              Duplicate\n            </ContextMenu.Item>\n            <ContextMenu.Item icon={<DownloadIcon />} onSelect={() => toast('Downloading…')}>\n              Download\n            </ContextMenu.Item>\n            <ContextMenu.Separator />\n            <ContextMenu.Item\n              icon={<TrashIcon />}\n              destructive\n              onSelect={() => toast.error(`Deleted ${file.name}`)}\n            >\n              Delete\n            </ContextMenu.Item>\n          </ContextMenu.Content>\n        </ContextMenu>\n      ))}\n    </Card>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/context-menu",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "dropdown-menu"
+  ],
+  "version": "0.2.0"
+}

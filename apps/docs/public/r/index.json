@@ -220,6 +220,18 @@
       ]
     },
     {
+      "name": "context-menu",
+      "title": "Context Menu",
+      "type": "registry:component",
+      "description": "Actions for an area, opened with a right-click on desktop and a long-press on touch screens.",
+      "category": "overlay",
+      "status": "beta",
+      "dependencies": [],
+      "registryDependencies": [
+        "dropdown-menu"
+      ]
+    },
+    {
       "name": "dialog",
       "title": "Dialog",
       "type": "registry:component",
@@ -234,6 +246,23 @@
         "hooks",
         "icon-button",
         "typography"
+      ]
+    },
+    {
+      "name": "drawer",
+      "title": "Drawer",
+      "type": "registry:component",
+      "description": "A modal panel that slides in from an edge of the screen, for navigation, filters or details.",
+      "category": "overlay",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons",
+        "@advui/theme"
+      ],
+      "registryDependencies": [
+        "dialog",
+        "hooks",
+        "icon-button"
       ]
     },
     {
@@ -262,6 +291,21 @@
       "dependencies": [
         "@advui/icons",
         "@advui/theme"
+      ],
+      "registryDependencies": [
+        "hooks"
+      ]
+    },
+    {
+      "name": "hover-card",
+      "title": "Hover Card",
+      "type": "registry:component",
+      "description": "A preview card that appears when a pointer rests on a link or keyboard focus reaches it.",
+      "category": "overlay",
+      "status": "beta",
+      "dependencies": [
+        "@advui/theme",
+        "@advui/utils"
       ],
       "registryDependencies": [
         "hooks"
@@ -330,6 +374,23 @@
       "status": "stable",
       "dependencies": [],
       "registryDependencies": []
+    },
+    {
+      "name": "menu",
+      "title": "Menu",
+      "type": "registry:component",
+      "description": "An always-visible list of actions or destinations, with icons, groups and a selected item.",
+      "category": "navigation",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons",
+        "@advui/utils",
+        "@tamagui/roving-focus"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "typography"
+      ]
     },
     {
       "name": "navigation-bar",

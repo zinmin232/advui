@@ -25,17 +25,12 @@ export const roadmap: RoadmapItem[] = [
   { name: 'Form Field', slug: 'form-field', category: 'forms', phase: 3 },
 
   { name: 'Pagination', slug: 'pagination', category: 'navigation', phase: 4 },
-  { name: 'Menu', slug: 'menu', category: 'navigation', phase: 2 },
   { name: 'Navigation Menu', slug: 'navigation-menu', category: 'navigation', phase: 4 },
   { name: 'Sidebar', slug: 'sidebar', category: 'navigation', phase: 4 },
   { name: 'Stepper', slug: 'stepper', category: 'navigation', phase: 4 },
 
   { name: 'Empty State', slug: 'empty-state', category: 'feedback', phase: 4 },
   { name: 'Error State', slug: 'error-state', category: 'feedback', phase: 4 },
-
-  { name: 'Drawer', slug: 'drawer', category: 'overlay', phase: 2 },
-  { name: 'Hover Card', slug: 'hover-card', category: 'overlay', phase: 2 },
-  { name: 'Context Menu', slug: 'context-menu', category: 'overlay', phase: 2 },
 
   { name: 'Table', slug: 'table', category: 'data-display', phase: 4 },
   { name: 'Data Table', slug: 'data-table', category: 'data-display', phase: 4 },

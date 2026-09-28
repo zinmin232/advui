@@ -14,13 +14,17 @@ import chipMeta from '../components/chip/chip.meta'
 import circularProgressMeta from '../components/circular-progress/circular-progress.meta'
 import collapsibleMeta from '../components/collapsible/collapsible.meta'
 import containerMeta from '../components/layout/container.meta'
+import contextMenuMeta from '../components/context-menu/context-menu.meta'
 import dialogMeta from '../components/dialog/dialog.meta'
+import drawerMeta from '../components/drawer/drawer.meta'
 import dropdownMenuMeta from '../components/dropdown-menu/dropdown-menu.meta'
 import fabMeta from '../components/fab/fab.meta'
 import gridMeta from '../components/layout/grid.meta'
+import hoverCardMeta from '../components/hover-card/hover-card.meta'
 import iconButtonMeta from '../components/icon-button/icon-button.meta'
 import inputMeta from '../components/input/input.meta'
 import labelMeta from '../components/label/label.meta'
+import menuMeta from '../components/menu/menu.meta'
 import navigationBarMeta from '../components/navigation-bar/navigation-bar.meta'
 import popoverMeta from '../components/popover/popover.meta'
 import progressMeta from '../components/progress/progress.meta'
@@ -60,13 +64,17 @@ export const components: ComponentMeta[] = [
   circularProgressMeta,
   collapsibleMeta,
   containerMeta,
+  contextMenuMeta,
   dialogMeta,
+  drawerMeta,
   dropdownMenuMeta,
   fabMeta,
   gridMeta,
+  hoverCardMeta,
   iconButtonMeta,
   inputMeta,
   labelMeta,
+  menuMeta,
   navigationBarMeta,
   popoverMeta,
   progressMeta,

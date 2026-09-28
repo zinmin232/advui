@@ -24,6 +24,27 @@ one version.
 - **Scroll Area** (beta): a box that scrolls within a set size, with thin
   scrollbars in theme colors on web. It takes keyboard focus, and becomes a
   named region with `aria-label`.
+- **Menu** (beta): an always-visible list of actions or destinations with
+  icons, groups, trailing counts and a selected item (`value` /
+  `onValueChange`). On web it is one Tab stop with arrow-key navigation; items
+  are buttons, or links with `href` / `render`, and the selected one has
+  `aria-current`.
+- **Context Menu** (beta): actions for an area, opened with a right-click (or
+  Shift+F10) on web and a long-press on touch screens. It has the same parts
+  as Dropdown Menu; on iOS and Android it opens Dropdown Menu's bottom sheet,
+  and screen readers reach it through the "long press" action.
+- **Drawer** (beta): a modal panel that slides in from any edge (`side`), with
+  three widths, a scrolling `Drawer.Body`, and Dialog's focus trap, Escape and
+  labelling. On native its attached edges keep clear of the safe-area insets.
+- **Hover Card** (beta): a preview card for a link that opens on hover and on
+  keyboard focus, stays open while the pointer moves into it, and describes
+  the link while open. Touch screens show only the link.
+
+### Changed
+
+- Dropdown Menu: its web items and its native bottom sheet moved into shared
+  modules (`menuParts.tsx`, `sheetMenu.tsx`) that Context Menu reuses. The API
+  and the rendered output are unchanged.
 
 ### Fixed
 

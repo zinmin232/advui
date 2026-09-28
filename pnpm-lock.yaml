@@ -529,6 +529,9 @@ importers:
       '@tamagui/focus-scope':
         specifier: 2.7.7
         version: 2.7.7(react@19.2.3)
+      '@tamagui/roving-focus':
+        specifier: 2.7.7
+        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@tamagui/toast':
         specifier: 2.7.7
         version: 2.7.7(patch_hash=37eca4a5edd77dfb74103f6fbbd4511a610e2c2a072b6ddb3afd503f46d0ebb2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)

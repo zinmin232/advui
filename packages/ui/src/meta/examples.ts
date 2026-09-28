@@ -36,13 +36,18 @@ import CircularProgressSizes from '../components/circular-progress/examples/size
 import CollapsibleBasic from '../components/collapsible/examples/basic'
 import CollapsibleSettings from '../components/collapsible/examples/settings'
 import ContainerContainer from '../components/layout/examples/container'
+import ContextMenuBasic from '../components/context-menu/examples/basic'
+import ContextMenuList from '../components/context-menu/examples/list'
 import DialogBasic from '../components/dialog/examples/basic'
 import DialogConfirm from '../components/dialog/examples/confirm'
+import DrawerBasic from '../components/drawer/examples/basic'
+import DrawerFilters from '../components/drawer/examples/filters'
 import DropdownMenuBasic from '../components/dropdown-menu/examples/basic'
 import DropdownMenuOptions from '../components/dropdown-menu/examples/options'
 import FabBasic from '../components/fab/examples/basic'
 import FabExtended from '../components/fab/examples/extended'
 import GridGrid from '../components/layout/examples/grid'
+import HoverCardBasic from '../components/hover-card/examples/basic'
 import IconButtonBasic from '../components/icon-button/examples/basic'
 import IconButtonVariants from '../components/icon-button/examples/variants'
 import IconButtonSizes from '../components/icon-button/examples/sizes'
@@ -50,6 +55,8 @@ import InputBasic from '../components/input/examples/basic'
 import InputSizes from '../components/input/examples/sizes'
 import InputStates from '../components/input/examples/states'
 import LabelBasic from '../components/label/examples/basic'
+import MenuBasic from '../components/menu/examples/basic'
+import MenuActions from '../components/menu/examples/actions'
 import NavigationBarBasic from '../components/navigation-bar/examples/basic'
 import PopoverBasic from '../components/popover/examples/basic'
 import PopoverFilter from '../components/popover/examples/filter'
@@ -151,9 +158,17 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'container': {
     'container': ContainerContainer,
   },
+  'context-menu': {
+    'basic': ContextMenuBasic,
+    'list': ContextMenuList,
+  },
   'dialog': {
     'basic': DialogBasic,
     'confirm': DialogConfirm,
+  },
+  'drawer': {
+    'basic': DrawerBasic,
+    'filters': DrawerFilters,
   },
   'dropdown-menu': {
     'basic': DropdownMenuBasic,
@@ -165,6 +180,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'grid': {
     'grid': GridGrid,
+  },
+  'hover-card': {
+    'basic': HoverCardBasic,
   },
   'icon-button': {
     'basic': IconButtonBasic,
@@ -178,6 +196,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'label': {
     'basic': LabelBasic,
+  },
+  'menu': {
+    'basic': MenuBasic,
+    'actions': MenuActions,
   },
   'navigation-bar': {
     'basic': NavigationBarBasic,

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "hover-card",
+  "title": "Hover Card",
+  "type": "registry:component",
+  "description": "A preview card that appears when a pointer rests on a link or keyboard focus reaches it.",
+  "category": "overlay",
+  "status": "beta",
+  "since": "0.3.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/hover-card/HoverCard.tsx",
+      "type": "registry:ui",
+      "content": "import { shadows, zIndex } from '@advui/theme'\nimport { composeEventHandlers } from '@advui/utils'\nimport {\n  type FocusEvent,\n  type KeyboardEvent,\n  type ReactElement,\n  cloneElement,\n  createContext,\n  forwardRef,\n  useContext,\n} from 'react'\nimport {\n  type GetProps,\n  type TamaguiElement,\n  Tooltip as TamaguiTooltip,\n  type TooltipProps as TamaguiTooltipProps,\n  withStaticProperties,\n} from 'tamagui'\nimport { useControllableState } from '../../hooks/useControllableState'\nimport { useReducedMotion } from '../../hooks/useReducedMotion'\nimport type { HoverCardProps, HoverCardTriggerProps } from './types'\n\n// Web: built on Tamagui's tooltip rather than its popover, because the trigger\n// is a link — a popover would announce it as a button that expands a dialog.\n// The card opens on hover (after `openDelay`) and on keyboard focus, stays open\n// while the pointer moves into it, never takes focus, and closes with Escape.\n// iOS / Android: see HoverCard.native.tsx (no hover on touch).\n\nconst OpenContext = createContext<(open: boolean) => void>(() => {})\n\nfunction HoverCardRoot({\n  children,\n  open: openProp,\n  defaultOpen = false,\n  onOpenChange,\n  openDelay = 700,\n  closeDelay = 300,\n  side = 'bottom',\n  align = 'center',\n}: HoverCardProps) {\n  const [open, setOpen] = useControllableState({\n    value: openProp,\n    defaultValue: defaultOpen,\n    onChange: onOpenChange,\n  })\n  const placement = (\n    align === 'center' ? side : `${side}-${align}`\n  ) as TamaguiTooltipProps['placement']\n  return (\n    <OpenContext.Provider value={setOpen}>\n      <TamaguiTooltip\n        open={open}\n        onOpenChange={(next) => setOpen(next)}\n        delay={{ open: openDelay, close: closeDelay }}\n        placement={placement}\n        offset={8}\n        zIndex={zIndex.popover}\n      >\n        {children}\n      </TamaguiTooltip>\n    </OpenContext.Provider>\n  )\n}\n\ntype TriggerChildProps = {\n  onFocus?: (event: FocusEvent) => void\n  onBlur?: (event: FocusEvent) => void\n  onKeyDown?: (event: KeyboardEvent) => void\n}\n\nfunction isFocusVisible(target: EventTarget | null) {\n  try {\n    return (target as Element | null)?.matches?.(':focus-visible') ?? true\n  } catch {\n    return true\n  }\n}\n\nfunction HoverCardTrigger({ children }: HoverCardTriggerProps) {\n  const setOpen = useContext(OpenContext)\n  const child = children as ReactElement<TriggerChildProps>\n  // Keyboard users get the card on focus too (WCAG 2.1.1 / 1.4.13).\n  const trigger = cloneElement(child, {\n    onFocus: composeEventHandlers(child.props.onFocus, (event: FocusEvent) => {\n      if (isFocusVisible(event.target)) setOpen(true)\n    }),\n    onBlur: composeEventHandlers(child.props.onBlur, () => setOpen(false)),\n    onKeyDown: composeEventHandlers(child.props.onKeyDown, (event: KeyboardEvent) => {\n      if (event.key === 'Escape') setOpen(false)\n    }),\n  })\n  return (\n    // The trigger stays a plain link: no expanded state to announce.\n    <TamaguiTooltip.Trigger asChild aria-expanded={undefined}>\n      {trigger}\n    </TamaguiTooltip.Trigger>\n  )\n}\n\nexport type HoverCardContentProps = GetProps<typeof TamaguiTooltip.Content>\n\nconst HoverCardContent = forwardRef<TamaguiElement, HoverCardContentProps>(\n  function HoverCardContent({ children, ...props }, ref) {\n    const reducedMotion = useReducedMotion()\n    return (\n      <TamaguiTooltip.Content\n        ref={ref as never}\n        // Unstyled also keeps pointer events on, so the pointer can move into\n        // the card to select text or follow a link inside it.\n        unstyled\n        backgroundColor=\"$popover\"\n        borderWidth={1}\n        borderColor=\"$border\"\n        borderRadius=\"$lg\"\n        padding=\"$4\"\n        gap=\"$3\"\n        width=\"$72\"\n        maxWidth=\"100%\"\n        {...shadows.md}\n        enterStyle={{ opacity: 0, scale: 0.96, y: -4 }}\n        exitStyle={{ opacity: 0, scale: 0.96, y: -4 }}\n        opacity={1}\n        scale={1}\n        y={0}\n        transition={reducedMotion ? null : 'quick'}\n        animateOnly={['transform', 'opacity']}\n        {...props}\n      >\n        {children}\n      </TamaguiTooltip.Content>\n    )\n  },\n)\n\n/**\n * A preview card that appears when a pointer rests on a link — a profile, a\n * page summary. The content is extra: everything in it must also be reachable\n * by following the link, since touch screens have no hover.\n */\nexport const HoverCard = withStaticProperties(HoverCardRoot, {\n  Trigger: HoverCardTrigger,\n  Content: HoverCardContent,\n})\n\nexport type { HoverCardProps, HoverCardTriggerProps } from './types'\n"
+    },
+    {
+      "path": "components/hover-card/HoverCard.native.tsx",
+      "type": "registry:ui",
+      "content": "import { type ReactNode, forwardRef } from 'react'\nimport { type GetProps, type TamaguiElement, type View, withStaticProperties } from 'tamagui'\nimport type { HoverCardProps, HoverCardTriggerProps } from './types'\n\n// iOS / Android: touch screens have no hover, and a press on the trigger\n// already follows its link, so only the trigger renders (like Tooltip).\n\nfunction HoverCardRoot({ children }: HoverCardProps) {\n  return <>{children}</>\n}\n\nfunction HoverCardTrigger({ children }: HoverCardTriggerProps) {\n  return children\n}\n\nexport type HoverCardContentProps = GetProps<typeof View> & { children?: ReactNode }\n\nconst HoverCardContent = forwardRef<TamaguiElement, HoverCardContentProps>(\n  function HoverCardContent() {\n    return null\n  },\n)\n\nexport const HoverCard = withStaticProperties(HoverCardRoot, {\n  Trigger: HoverCardTrigger,\n  Content: HoverCardContent,\n})\n\nexport type { HoverCardProps, HoverCardTriggerProps } from './types'\n"
+    },
+    {
+      "path": "components/hover-card/types.ts",
+      "type": "registry:ui",
+      "content": "import type { ReactElement, ReactNode } from 'react'\n\n// Shared by HoverCard.tsx (web) and HoverCard.native.tsx so both platforms\n// expose exactly the same API.\n\nexport interface HoverCardProps {\n  children: ReactNode\n  open?: boolean\n  defaultOpen?: boolean\n  onOpenChange?: (open: boolean) => void\n  /** Delay before opening on hover, in ms. Default 700. */\n  openDelay?: number\n  /** Delay before closing once the pointer leaves, in ms. Default 300. */\n  closeDelay?: number\n  /** Side of the trigger to open on. Default `bottom`. */\n  side?: 'top' | 'right' | 'bottom' | 'left'\n  /** Alignment along that side. Default `center`. */\n  align?: 'start' | 'center' | 'end'\n}\n\nexport interface HoverCardTriggerProps {\n  /** A single focusable element, usually a link to the full page. */\n  children: ReactElement\n}\n"
+    },
+    {
+      "path": "components/hover-card/index.ts",
+      "type": "registry:ui",
+      "content": "export {\n  HoverCard,\n  type HoverCardContentProps,\n  type HoverCardProps,\n  type HoverCardTriggerProps,\n} from './HoverCard'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Profile preview",
+      "code": "import { Avatar, HStack, HoverCard, Text, VStack } from '@advui/core'\nimport { CalendarIcon } from '@advui/icons'\n\nexport default function HoverCardBasic() {\n  return (\n    <Text size=\"sm\">\n      Reviewed by{' '}\n      <HoverCard>\n        <HoverCard.Trigger>\n          <Text\n            // A link on web (Text does not type `href`, so it is spread); in an\n            // app, navigate with your router in onPress.\n            render=\"a\"\n            {...{ href: '#ada' }}\n            size=\"sm\"\n            weight=\"semibold\"\n            tone=\"primary\"\n            textDecorationLine=\"underline\"\n          >\n            @ada\n          </Text>\n        </HoverCard.Trigger>\n        <HoverCard.Content>\n          <HStack gap=\"$3\">\n            <Avatar alt=\"Ada Lovelace\" />\n            <VStack gap=\"$1\" flex={1}>\n              <Text size=\"sm\" weight=\"semibold\">\n                Ada Lovelace\n              </Text>\n              <Text size=\"sm\">Writes the first algorithms meant for a machine.</Text>\n              <HStack gap=\"$1.5\" alignItems=\"center\" paddingTop=\"$1\">\n                <CalendarIcon size={14} color=\"$mutedForeground\" />\n                <Text size=\"xs\" tone=\"muted\">\n                  Joined December 1842\n                </Text>\n              </HStack>\n            </VStack>\n          </HStack>\n        </HoverCard.Content>\n      </HoverCard>{' '}\n      — hover or focus the name for a preview.\n    </Text>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/hover-card",
+  "dependencies": [
+    "@advui/theme",
+    "@advui/utils"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "hooks"
+  ],
+  "version": "0.2.0"
+}
