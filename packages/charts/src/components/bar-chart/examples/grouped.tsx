@@ -1,4 +1,4 @@
-import { BarChart } from '@advui/core'
+import { BarChart } from '@advui/charts'
 
 const data = [
   { sector: 'Health', planned: 420, reached: 388 },

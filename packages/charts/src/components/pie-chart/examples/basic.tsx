@@ -1,4 +1,4 @@
-import { PieChart } from '@advui/core'
+import { PieChart } from '@advui/charts'
 
 export default function PieChartBasic() {
   return (

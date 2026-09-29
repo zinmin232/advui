@@ -1,4 +1,4 @@
-import { defineMeta } from '../../meta/types'
+import { defineMeta } from '@advui/core/meta'
 
 export default defineMeta({
   name: 'Line Chart',
@@ -11,7 +11,7 @@ export default defineMeta({
   exports: ['LineChart', 'LineChartProps'],
   files: ['components/line-chart/LineChart.tsx', 'components/line-chart/index.ts'],
   keywords: ['line chart', 'trend', 'time series', 'over time', 'graph'],
-  usage: `import { LineChart } from '@advui/core'
+  usage: `import { LineChart } from '@advui/charts'
 
 <LineChart
   title="Reports received"

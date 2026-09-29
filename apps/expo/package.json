@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@advui/catalog": "workspace:*",
+    "@advui/charts": "workspace:*",
     "@advui/core": "workspace:*",
     "@advui/examples": "workspace:*",
     "@advui/icons": "workspace:*",

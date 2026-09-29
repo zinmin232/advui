@@ -1,4 +1,4 @@
-import { BarChart } from '@advui/core'
+import { BarChart } from '@advui/charts'
 
 const data = [
   { township: 'Hlaing Tharyar', un: 12, ingo: 18, ngo: 26 },

@@ -29,6 +29,7 @@ import {
   componentPackages,
   corePackage,
   loadCatalog,
+  packageByName,
   repoRoot,
   validateCatalog,
 } from './lib/catalog.mjs'
@@ -75,8 +76,8 @@ const libItems = [
     type: 'registry:lib',
     description:
       'Shared by the charts: the frame (legend, tooltip, table view), scales, axes and the SVG layer for web and native.',
-    pkg: corePackage,
-    files: listDir(corePackage, 'charts'),
+    pkg: packageByName('@advui/charts'),
+    files: listDir(packageByName('@advui/charts'), 'charts'),
   },
   {
     name: 'provider',

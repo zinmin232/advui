@@ -1,4 +1,4 @@
-import { LineChart } from '@advui/core'
+import { LineChart } from '@advui/charts'
 
 const data = [
   { month: 'Jan', reports: 212 },

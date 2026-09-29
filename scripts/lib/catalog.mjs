@@ -16,7 +16,7 @@ export const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '
  * import the ones before it. Every package keeps its components in
  * `src/components/<slug>/`; the catalog, registry and generator read them all.
  */
-export const PACKAGE_DIRS = ['packages/ui']
+export const PACKAGE_DIRS = ['packages/ui', 'packages/charts']
 
 export const componentPackages = PACKAGE_DIRS.map((dir) => {
   const root = join(repoRoot, dir)

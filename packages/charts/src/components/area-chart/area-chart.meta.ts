@@ -1,27 +1,29 @@
-import { defineMeta } from '../../meta/types'
+import { defineMeta } from '@advui/core/meta'
 
 export default defineMeta({
-  name: 'Bar Chart',
-  slug: 'bar-chart',
+  name: 'Area Chart',
+  slug: 'area-chart',
   category: 'charts',
-  description: 'Compares values across categories as columns or bars, grouped or stacked.',
+  description:
+    'A line chart with a light wash under each line, for totals and stacked parts over time.',
   status: 'beta',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
-  exports: ['BarChart', 'BarChartProps'],
-  files: ['components/bar-chart/BarChart.tsx', 'components/bar-chart/index.ts'],
-  keywords: ['bar chart', 'column chart', 'histogram', 'stacked bar', 'grouped bar', 'compare'],
-  usage: `import { BarChart } from '@advui/core'
+  exports: ['AreaChart', 'AreaChartProps'],
+  files: ['components/area-chart/AreaChart.tsx', 'components/area-chart/index.ts'],
+  keywords: ['area chart', 'stacked area', 'trend', 'volume', 'over time'],
+  usage: `import { AreaChart } from '@advui/charts'
 
-<BarChart
-  title="People reached by state"
-  data={[{ state: 'Kachin', reached: 182000 }, { state: 'Shan', reached: 246000 }]}
-  index="state"
-  series={[{ key: 'reached', label: 'People reached' }]}
+<AreaChart
+  title="People displaced"
+  data={[{ month: 'Mar', displaced: 1.21 }, { month: 'Apr', displaced: 1.34 }]}
+  index="month"
+  series={[{ key: 'displaced', label: 'Displaced (millions)' }]}
 />`,
   parts: [
     {
-      name: 'BarChart',
+      name: 'AreaChart',
+      description: 'Takes every Line Chart prop, plus:',
       props: [
         {
           name: 'title',
@@ -60,16 +62,11 @@ export default defineMeta({
             'Numeric fields to plot. Colors follow this order (`$chart1`…`$chart8`), never the values.',
         },
         {
-          name: 'layout',
-          type: "'vertical' | 'horizontal'",
-          default: "'vertical'",
-          description: '`horizontal` bars suit long category names.',
-        },
-        {
           name: 'stacked',
           type: 'boolean',
           default: 'false',
-          description: 'One bar per category, split by series (part-to-whole).',
+          description:
+            'Stacks the series, so the top edge is their total. The tooltip and table keep each series’ own value.',
         },
         {
           name: 'valueFormatter',
@@ -97,8 +94,7 @@ export default defineMeta({
   ],
   examples: [
     { name: 'basic', title: 'One series' },
-    { name: 'grouped', title: 'Grouped' },
-    { name: 'stacked', title: 'Stacked, horizontal' },
+    { name: 'stacked', title: 'Stacked' },
   ],
   accessibility: [
     'The chart is a `figure` named by its title. The plot is one focusable image whose name gives the title, description and a hint; the arrow keys (Home / End too) step through the values, which a polite live region reads out.',
@@ -111,12 +107,11 @@ export default defineMeta({
     { keys: 'Arrow keys / Home / End', action: 'Move between values and read them.' },
     { keys: 'Escape', action: 'Hides the tooltip.' },
   ],
-  responsive:
-    'Fills its container; category labels thin out when they would overlap. Use `horizontal` for long names on phones.',
+  responsive: 'Fills its container; x labels thin out when they would overlap.',
   platformNotes: {
     web: 'SVG in the page. Hover shows the tooltip; the arrow keys work once the plot has focus.',
     ios: 'Drawn with react-native-svg. Tap the plot to show the tooltip for that point.',
     android: 'Same as iOS.',
   },
-  related: ['line-chart', 'pie-chart', 'table', 'kpi-card'],
+  related: ['line-chart', 'bar-chart', 'table'],
 })

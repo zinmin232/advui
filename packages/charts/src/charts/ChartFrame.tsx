@@ -1,9 +1,7 @@
 import { useIconColor } from '@advui/icons'
 import { type ReactNode, useId, useRef, useState } from 'react'
 import { type GetProps, View, VisuallyHidden, XStack, isWeb } from 'tamagui'
-import { Button } from '../components/button/Button'
-import { Table } from '../components/table/Table'
-import { Text } from '../components/typography/Text'
+import { Button, Table, Text } from '@advui/core'
 
 /** One series (a line, a set of bars): the data field it reads and its name. */
 export interface ChartSeries {

@@ -12,7 +12,7 @@
     "ios",
     "android"
   ],
-  "package": "@advui/core",
+  "package": "@advui/charts",
   "files": [
     {
       "path": "components/bar-chart/BarChart.tsx",
@@ -29,17 +29,17 @@
     {
       "name": "basic",
       "title": "One series",
-      "code": "import { BarChart } from '@advui/core'\n\nconst data = [\n  { state: 'Kachin', reached: 182000 },\n  { state: 'Shan', reached: 246000 },\n  { state: 'Rakhine', reached: 311000 },\n  { state: 'Chin', reached: 94000 },\n  { state: 'Kayah', reached: 57000 },\n  { state: 'Sagaing', reached: 268000 },\n]\n\nexport default function BarChartBasic() {\n  return (\n    <BarChart\n      title=\"People reached by state\"\n      description=\"Q3 2026, all sectors\"\n      data={data}\n      index=\"state\"\n      indexLabel=\"State\"\n      series={[{ key: 'reached', label: 'People reached' }]}\n    />\n  )\n}\n"
+      "code": "import { BarChart } from '@advui/charts'\n\nconst data = [\n  { state: 'Kachin', reached: 182000 },\n  { state: 'Shan', reached: 246000 },\n  { state: 'Rakhine', reached: 311000 },\n  { state: 'Chin', reached: 94000 },\n  { state: 'Kayah', reached: 57000 },\n  { state: 'Sagaing', reached: 268000 },\n]\n\nexport default function BarChartBasic() {\n  return (\n    <BarChart\n      title=\"People reached by state\"\n      description=\"Q3 2026, all sectors\"\n      data={data}\n      index=\"state\"\n      indexLabel=\"State\"\n      series={[{ key: 'reached', label: 'People reached' }]}\n    />\n  )\n}\n"
     },
     {
       "name": "grouped",
       "title": "Grouped",
-      "code": "import { BarChart } from '@advui/core'\n\nconst data = [\n  { sector: 'Health', planned: 420, reached: 388 },\n  { sector: 'WASH', planned: 310, reached: 332 },\n  { sector: 'Education', planned: 260, reached: 191 },\n  { sector: 'Protection', planned: 180, reached: 142 },\n  { sector: 'Food', planned: 390, reached: 351 },\n]\n\nexport default function BarChartGrouped() {\n  return (\n    <BarChart\n      title=\"Planned vs reached, by sector\"\n      description=\"Thousands of people, 2026\"\n      data={data}\n      index=\"sector\"\n      indexLabel=\"Sector\"\n      series={[\n        { key: 'planned', label: 'Planned' },\n        { key: 'reached', label: 'Reached' },\n      ]}\n      valueFormatter={(v) => `${v}K`}\n    />\n  )\n}\n"
+      "code": "import { BarChart } from '@advui/charts'\n\nconst data = [\n  { sector: 'Health', planned: 420, reached: 388 },\n  { sector: 'WASH', planned: 310, reached: 332 },\n  { sector: 'Education', planned: 260, reached: 191 },\n  { sector: 'Protection', planned: 180, reached: 142 },\n  { sector: 'Food', planned: 390, reached: 351 },\n]\n\nexport default function BarChartGrouped() {\n  return (\n    <BarChart\n      title=\"Planned vs reached, by sector\"\n      description=\"Thousands of people, 2026\"\n      data={data}\n      index=\"sector\"\n      indexLabel=\"Sector\"\n      series={[\n        { key: 'planned', label: 'Planned' },\n        { key: 'reached', label: 'Reached' },\n      ]}\n      valueFormatter={(v) => `${v}K`}\n    />\n  )\n}\n"
     },
     {
       "name": "stacked",
       "title": "Stacked, horizontal",
-      "code": "import { BarChart } from '@advui/core'\n\nconst data = [\n  { township: 'Hlaing Tharyar', un: 12, ingo: 18, ngo: 26 },\n  { township: 'Sittwe', un: 21, ingo: 15, ngo: 9 },\n  { township: 'Myitkyina', un: 8, ingo: 14, ngo: 22 },\n  { township: 'Hakha', un: 4, ingo: 9, ngo: 11 },\n]\n\nexport default function BarChartStacked() {\n  return (\n    <BarChart\n      title=\"Active organizations by township\"\n      description=\"By organization type\"\n      data={data}\n      index=\"township\"\n      indexLabel=\"Township\"\n      layout=\"horizontal\"\n      stacked\n      series={[\n        { key: 'un', label: 'UN' },\n        { key: 'ingo', label: 'INGO' },\n        { key: 'ngo', label: 'NGO' },\n      ]}\n    />\n  )\n}\n"
+      "code": "import { BarChart } from '@advui/charts'\n\nconst data = [\n  { township: 'Hlaing Tharyar', un: 12, ingo: 18, ngo: 26 },\n  { township: 'Sittwe', un: 21, ingo: 15, ngo: 9 },\n  { township: 'Myitkyina', un: 8, ingo: 14, ngo: 22 },\n  { township: 'Hakha', un: 4, ingo: 9, ngo: 11 },\n]\n\nexport default function BarChartStacked() {\n  return (\n    <BarChart\n      title=\"Active organizations by township\"\n      description=\"By organization type\"\n      data={data}\n      index=\"township\"\n      indexLabel=\"Township\"\n      layout=\"horizontal\"\n      stacked\n      series={[\n        { key: 'un', label: 'UN' },\n        { key: 'ingo', label: 'INGO' },\n        { key: 'ngo', label: 'NGO' },\n      ]}\n    />\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/bar-chart",

@@ -1,4 +1,4 @@
-import { AreaChart } from '@advui/core'
+import { AreaChart } from '@advui/charts'
 
 const data = [
   { year: '2021', cash: 22, inKind: 41, services: 18 },

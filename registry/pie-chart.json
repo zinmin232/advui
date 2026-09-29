@@ -12,7 +12,7 @@
     "ios",
     "android"
   ],
-  "package": "@advui/core",
+  "package": "@advui/charts",
   "files": [
     {
       "path": "components/pie-chart/PieChart.tsx",
@@ -29,12 +29,12 @@
     {
       "name": "basic",
       "title": "Donut",
-      "code": "import { PieChart } from '@advui/core'\n\nexport default function PieChartBasic() {\n  return (\n    <PieChart\n      title=\"Projects by sector\"\n      description=\"Active projects, September 2026\"\n      data={[\n        { label: 'Health', value: 412 },\n        { label: 'WASH', value: 298 },\n        { label: 'Education', value: 187 },\n        { label: 'Protection', value: 164 },\n        { label: 'Food security', value: 121 },\n      ]}\n    />\n  )\n}\n"
+      "code": "import { PieChart } from '@advui/charts'\n\nexport default function PieChartBasic() {\n  return (\n    <PieChart\n      title=\"Projects by sector\"\n      description=\"Active projects, September 2026\"\n      data={[\n        { label: 'Health', value: 412 },\n        { label: 'WASH', value: 298 },\n        { label: 'Education', value: 187 },\n        { label: 'Protection', value: 164 },\n        { label: 'Food security', value: 121 },\n      ]}\n    />\n  )\n}\n"
     },
     {
       "name": "other",
       "title": "Pie, folding into Other",
-      "code": "import { PieChart } from '@advui/core'\n\n// Eight parts is too many to tell apart: the smallest fold into \"Other\".\nexport default function PieChartOther() {\n  return (\n    <PieChart\n      title=\"Funding by donor\"\n      description=\"Share of 2026 contributions\"\n      variant=\"pie\"\n      maxSlices={5}\n      valueFormatter={(v) => `$${v}M`}\n      data={[\n        { label: 'Donor A', value: 48 },\n        { label: 'Donor B', value: 31 },\n        { label: 'Donor C', value: 22 },\n        { label: 'Donor D', value: 14 },\n        { label: 'Donor E', value: 6 },\n        { label: 'Donor F', value: 4 },\n        { label: 'Donor G', value: 3 },\n        { label: 'Donor H', value: 2 },\n      ]}\n    />\n  )\n}\n"
+      "code": "import { PieChart } from '@advui/charts'\n\n// Eight parts is too many to tell apart: the smallest fold into \"Other\".\nexport default function PieChartOther() {\n  return (\n    <PieChart\n      title=\"Funding by donor\"\n      description=\"Share of 2026 contributions\"\n      variant=\"pie\"\n      maxSlices={5}\n      valueFormatter={(v) => `$${v}M`}\n      data={[\n        { label: 'Donor A', value: 48 },\n        { label: 'Donor B', value: 31 },\n        { label: 'Donor C', value: 22 },\n        { label: 'Donor D', value: 14 },\n        { label: 'Donor E', value: 6 },\n        { label: 'Donor F', value: 4 },\n        { label: 'Donor G', value: 3 },\n        { label: 'Donor H', value: 2 },\n      ]}\n    />\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/pie-chart",

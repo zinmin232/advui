@@ -72,4 +72,37 @@ export const library = tseslint.config(...base, {
   },
 })
 
+/**
+ * Keeps the component packages layered: core ← data ← charts, core ← editor.
+ * `forbidden` lists the workspace packages this one may not import (anything
+ * that depends on it, or would make a cycle). Other packages are imported by
+ * name only, never by a path into their files.
+ */
+export function packageBoundaries(forbidden) {
+  return {
+    files: ['src/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            ...forbidden.map((name) => ({
+              group: [name, `${name}/*`],
+              message: `This package may not depend on ${name} (see ARCHITECTURE.md, Packages).`,
+            })),
+            {
+              group: ['@advui/*/src', '@advui/*/src/*', '@advui/*/dist', '@advui/*/dist/*'],
+              message: 'Import other packages through their public entry point.',
+            },
+            {
+              regex: '^(\\.\\./)+(ui|data|charts|editor|catalog)/src/',
+              message: 'Import other packages by name, not by a relative path.',
+            },
+          ],
+        },
+      ],
+    },
+  }
+}
+
 export default base

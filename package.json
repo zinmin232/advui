@@ -37,6 +37,7 @@
     "clean": "turbo run clean && node -e \"require('fs').rmSync('node_modules',{recursive:true,force:true})\""
   },
   "devDependencies": {
+    "@advui/charts": "workspace:*",
     "@advui/core": "workspace:*",
     "@advui/eslint-config": "workspace:*",
     "@advui/tsconfig": "workspace:*",

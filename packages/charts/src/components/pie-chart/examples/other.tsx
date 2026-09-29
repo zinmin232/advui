@@ -1,4 +1,4 @@
-import { PieChart } from '@advui/core'
+import { PieChart } from '@advui/charts'
 
 // Eight parts is too many to tell apart: the smallest fold into "Other".
 export default function PieChartOther() {

@@ -2,13 +2,13 @@
 import accordionMeta from '../../ui/src/components/accordion/accordion.meta'
 import alertMeta from '../../ui/src/components/alert/alert.meta'
 import alertDialogMeta from '../../ui/src/components/alert-dialog/alert-dialog.meta'
-import areaChartMeta from '../../ui/src/components/area-chart/area-chart.meta'
+import areaChartMeta from '../../charts/src/components/area-chart/area-chart.meta'
 import aspectRatioMeta from '../../ui/src/components/aspect-ratio/aspect-ratio.meta'
 import audioPlayerMeta from '../../ui/src/components/audio-player/audio-player.meta'
 import autocompleteMeta from '../../ui/src/components/autocomplete/autocomplete.meta'
 import avatarMeta from '../../ui/src/components/avatar/avatar.meta'
 import badgeMeta from '../../ui/src/components/badge/badge.meta'
-import barChartMeta from '../../ui/src/components/bar-chart/bar-chart.meta'
+import barChartMeta from '../../charts/src/components/bar-chart/bar-chart.meta'
 import breadcrumbMeta from '../../ui/src/components/breadcrumb/breadcrumb.meta'
 import buttonMeta from '../../ui/src/components/button/button.meta'
 import buttonGroupMeta from '../../ui/src/components/button-group/button-group.meta'
@@ -44,7 +44,7 @@ import imageGalleryMeta from '../../ui/src/components/image-gallery/image-galler
 import inputMeta from '../../ui/src/components/input/input.meta'
 import kpiCardMeta from '../../ui/src/components/kpi-card/kpi-card.meta'
 import labelMeta from '../../ui/src/components/label/label.meta'
-import lineChartMeta from '../../ui/src/components/line-chart/line-chart.meta'
+import lineChartMeta from '../../charts/src/components/line-chart/line-chart.meta'
 import listMeta from '../../ui/src/components/list/list.meta'
 import loadingButtonMeta from '../../ui/src/components/loading-button/loading-button.meta'
 import menuMeta from '../../ui/src/components/menu/menu.meta'
@@ -55,7 +55,7 @@ import numberInputMeta from '../../ui/src/components/number-input/number-input.m
 import otpInputMeta from '../../ui/src/components/otp-input/otp-input.meta'
 import paginationMeta from '../../ui/src/components/pagination/pagination.meta'
 import passwordInputMeta from '../../ui/src/components/password-input/password-input.meta'
-import pieChartMeta from '../../ui/src/components/pie-chart/pie-chart.meta'
+import pieChartMeta from '../../charts/src/components/pie-chart/pie-chart.meta'
 import popoverMeta from '../../ui/src/components/popover/popover.meta'
 import progressMeta from '../../ui/src/components/progress/progress.meta'
 import radioGroupMeta from '../../ui/src/components/radio-group/radio-group.meta'
@@ -92,19 +92,20 @@ import type { CatalogComponent, ComponentPackage } from './types'
 /** Published component packages, in dependency order. */
 export const packages: ComponentPackage[] = [
   { name: '@advui/core', title: 'Core', description: 'Cross-platform React / React Native component library built on Tamagui.' },
+  { name: '@advui/charts', title: 'Charts', description: 'Bar, line, area and pie charts for Adv UI: SVG on web, react-native-svg on iOS and Android, with a legend, tooltips and a table view.' },
 ]
 
 export const components: CatalogComponent[] = [
   { ...accordionMeta, package: '@advui/core' },
   { ...alertMeta, package: '@advui/core' },
   { ...alertDialogMeta, package: '@advui/core' },
-  { ...areaChartMeta, package: '@advui/core' },
+  { ...areaChartMeta, package: '@advui/charts' },
   { ...aspectRatioMeta, package: '@advui/core' },
   { ...audioPlayerMeta, package: '@advui/core' },
   { ...autocompleteMeta, package: '@advui/core' },
   { ...avatarMeta, package: '@advui/core' },
   { ...badgeMeta, package: '@advui/core' },
-  { ...barChartMeta, package: '@advui/core' },
+  { ...barChartMeta, package: '@advui/charts' },
   { ...breadcrumbMeta, package: '@advui/core' },
   { ...buttonMeta, package: '@advui/core' },
   { ...buttonGroupMeta, package: '@advui/core' },
@@ -140,7 +141,7 @@ export const components: CatalogComponent[] = [
   { ...inputMeta, package: '@advui/core' },
   { ...kpiCardMeta, package: '@advui/core' },
   { ...labelMeta, package: '@advui/core' },
-  { ...lineChartMeta, package: '@advui/core' },
+  { ...lineChartMeta, package: '@advui/charts' },
   { ...listMeta, package: '@advui/core' },
   { ...loadingButtonMeta, package: '@advui/core' },
   { ...menuMeta, package: '@advui/core' },
@@ -151,7 +152,7 @@ export const components: CatalogComponent[] = [
   { ...otpInputMeta, package: '@advui/core' },
   { ...paginationMeta, package: '@advui/core' },
   { ...passwordInputMeta, package: '@advui/core' },
-  { ...pieChartMeta, package: '@advui/core' },
+  { ...pieChartMeta, package: '@advui/charts' },
   { ...popoverMeta, package: '@advui/core' },
   { ...progressMeta, package: '@advui/core' },
   { ...radioGroupMeta, package: '@advui/core' },

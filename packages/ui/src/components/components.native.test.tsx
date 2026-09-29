@@ -10,11 +10,9 @@ import { AlertDialog } from './alert-dialog/AlertDialog'
 import { AspectRatio } from './aspect-ratio/AspectRatio'
 import { Alert } from './alert/Alert'
 import { Avatar } from './avatar/Avatar'
-import { AreaChart } from './area-chart/AreaChart'
 import { AudioPlayer } from './audio-player/AudioPlayer'
 import { setAudioEngine } from './audio-player/engine'
 import { Badge } from './badge/Badge'
-import { BarChart } from './bar-chart/BarChart'
 import { Breadcrumb } from './breadcrumb/Breadcrumb'
 import { Button } from './button/Button'
 import { Calendar } from './calendar/Calendar'
@@ -46,7 +44,6 @@ import { IconButton } from './icon-button/IconButton'
 import { Image } from './image/Image'
 import { ImageGallery } from './image-gallery/ImageGallery'
 import { Input } from './input/Input'
-import { LineChart } from './line-chart/LineChart'
 import { KpiCard } from './kpi-card/KpiCard'
 import { List } from './list/List'
 import { LoadingButton } from './loading-button/LoadingButton'
@@ -58,7 +55,6 @@ import { NumberInput } from './number-input/NumberInput'
 import { OtpInput } from './otp-input/OtpInput'
 import { Pagination } from './pagination/Pagination'
 import { PasswordInput } from './password-input/PasswordInput'
-import { PieChart } from './pie-chart/PieChart'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
 import { ScrollArea } from './scroll-area/ScrollArea'
@@ -1045,45 +1041,6 @@ describe('native rendering', () => {
     expect(screen.getByRole('button', { name: 'Next image' })).toBeDisabled()
     await fireEvent.press(screen.getByRole('button', { name: 'Previous image' }))
     expect(onIndexChange).toHaveBeenLastCalledWith(0)
-  })
-
-  it('Charts draw with react-native-svg and show a tooltip on tap', async () => {
-    const data = [
-      { month: 'Jan', planned: 10, reached: 8 },
-      { month: 'Feb', planned: 12, reached: 11 },
-    ]
-    const series = [
-      { key: 'planned', label: 'Planned' },
-      { key: 'reached', label: 'Reached' },
-    ]
-    await renderNative(
-      <>
-        <BarChart title="Bars" data={data} index="month" series={series} width={300} />
-        <LineChart title="Lines" data={data} index="month" series={series} width={300} />
-        <AreaChart title="Areas" data={data} index="month" series={series} stacked width={300} />
-        <PieChart
-          title="Slices"
-          data={[
-            { label: 'Health', value: 3 },
-            { label: 'WASH', value: 1 },
-          ]}
-          width={300}
-        />
-      </>,
-    )
-    // Each plot is one accessible image named by its title.
-    const bars = screen.getByRole('img', { name: /^Bars\./ })
-    expect(screen.getByRole('img', { name: /^Slices\./ })).toBeOnTheScreen()
-    expect(screen.getByText('Health · 75%')).toBeOnTheScreen()
-    // Tapping the right half of the bar plot shows February.
-    await fireEvent.press(bars, { nativeEvent: { locationX: 280, locationY: 100 } })
-    // The reading becomes the plot's accessibility value for screen readers.
-    expect(screen.getByRole('img', { name: /^Bars\./ })).toHaveAccessibilityValue({
-      text: 'Feb: Planned 12, Reached 11',
-    })
-    // The table view is a real button and table.
-    await fireEvent.press(screen.getAllByRole('button', { name: 'Show table' })[0]!)
-    expect(screen.getAllByRole('button', { name: 'Hide table' })).toHaveLength(1)
   })
 
   it('LoadingButton blocks presses and reports busy while loading', async () => {

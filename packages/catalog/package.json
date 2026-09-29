@@ -15,6 +15,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@advui/charts": "workspace:*",
     "@advui/core": "workspace:*"
   },
   "peerDependencies": {
