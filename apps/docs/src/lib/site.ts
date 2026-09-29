@@ -9,6 +9,11 @@ export const siteConfig = {
   githubBranch: 'main',
   npmScope: '@advui',
   corePackage: '@advui/core',
+  /**
+   * Component packages that are not on npm yet. Their pages say so and point to
+   * the CLI. Remove a package once it is published (ROADMAP.md, Phase 6).
+   */
+  unpublishedPackages: ['@advui/data', '@advui/charts', '@advui/editor'] as string[],
   cliName: 'advui',
   version: '0.5.0',
 }

@@ -51,9 +51,24 @@ export async function Introduction() {
         <LI>Web through react-native-web; iOS and Android natively</LI>
       </UL>
       <H2 id="packages">Packages</H2>
+      <P>
+        Install only what you use. Every component package builds on <C>@advui/core</C> and needs no
+        other third-party libraries.
+      </P>
       <UL>
         <LI>
-          <C>@advui/core</C> — components and <C>UniversalProvider</C>
+          <C>@advui/core</C> — general-purpose components (buttons, forms, overlays, navigation,
+          feedback, layout, media) and <C>UniversalProvider</C>
+        </LI>
+        <LI>
+          <C>@advui/data</C> — Table, Data Table, Data Grid, Tree View, Timeline, Stat and KPI Card
+        </LI>
+        <LI>
+          <C>@advui/charts</C> — Bar, Line, Area and Pie Chart (uses <C>@advui/data</C> for its
+          table view)
+        </LI>
+        <LI>
+          <C>@advui/editor</C> — Rich Text Editor and Rich Text Content
         </LI>
         <LI>
           <C>@advui/theme</C> — tokens, color presets and <C>createUniversalConfig()</C>
@@ -68,6 +83,12 @@ export async function Introduction() {
           <C>{siteConfig.cliName}</C> — CLI for copying component source
         </LI>
       </UL>
+      {siteConfig.unpublishedPackages.length ? (
+        <Callout title="Not on npm yet">
+          <C>{siteConfig.unpublishedPackages.join(', ')}</C> will be published with the next
+          release. Until then, add their components with the CLI.
+        </Callout>
+      ) : null}
       <H2 id="principles">Principles</H2>
       <UL>
         <LI>
@@ -108,6 +129,16 @@ export async function Installation() {
         installed automatically by pnpm and npm 7+.
       </P>
       <Code lang="bash" code={`pnpm add @advui/core @advui/theme @advui/icons tamagui`} />
+      <P>
+        Add the packages for the components you need. Each component page says which package it is
+        in:
+      </P>
+      <Code
+        lang="bash"
+        code={`pnpm add @advui/data     # tables, data grid, tree view, timeline, stats
+pnpm add @advui/charts   # bar, line, area and pie charts (installs @advui/data too)
+pnpm add @advui/editor   # rich text editor`}
+      />
       <P>Or let the CLI detect your framework and do it for you:</P>
       <Code lang="bash" code={`npx ${siteConfig.cliName} init`} />
       <H2 id="config">Create a config</H2>
@@ -132,6 +163,7 @@ export default config`}
         code={`import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  // Add @advui/data, @advui/charts and @advui/editor when you use them.
   transpilePackages: ['@advui/core', '@advui/theme', '@advui/icons', '@advui/utils', 'react-native-web'],
   turbopack: {
     resolveAlias: { 'react-native': 'react-native-web' },

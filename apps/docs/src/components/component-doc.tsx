@@ -10,7 +10,7 @@ import { CodeBlock } from './code-block'
 import { ComponentPreview } from './component-preview'
 import { Breadcrumbs, DocPage, PrevNext, type TocItem } from './docs-shell'
 import { Playground } from './playground'
-import { C, H2, LI, P, PageHeader, UL } from './prose'
+import { C, Callout, H2, LI, P, PageHeader, UL } from './prose'
 import { statusMeta } from './sidebar'
 
 export interface HighlightedCode {
@@ -21,6 +21,8 @@ export interface HighlightedCode {
 export interface ComponentDocData {
   meta: ComponentMeta
   categoryLabel: string
+  /** The npm package that exports the component. */
+  package: { name: string; published: boolean }
   usage: HighlightedCode
   install: { pnpm: HighlightedCode; npm: HighlightedCode; cli: HighlightedCode }
   examples: Array<{ name: string; title: string; description?: string } & HighlightedCode>
@@ -160,6 +162,9 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
             {statusMeta[meta.status].label}
           </Badge>
           <PlatformBadges platforms={meta.platforms} />
+          <Badge variant="outline" size="sm" aria-label={`Package: ${data.package.name}`}>
+            {data.package.name}
+          </Badge>
           <Button
             size="sm"
             variant="ghost"
@@ -187,7 +192,13 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
 
       <SectionAnchor id="installation">
         <H2 id="installation-heading">Installation</H2>
-        <Tabs defaultValue="package">
+        {data.package.published ? null : (
+          <Callout title="Not on npm yet">
+            <C>{data.package.name}</C> will be published with the next release. Until then, copy the
+            component into your project with the CLI.
+          </Callout>
+        )}
+        <Tabs defaultValue={data.package.published ? 'package' : 'cli'}>
           <Tabs.List aria-label="Installation method">
             <Tabs.Trigger value="package">Package</Tabs.Trigger>
             <Tabs.Trigger value="cli">CLI (copy source)</Tabs.Trigger>

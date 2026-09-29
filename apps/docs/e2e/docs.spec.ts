@@ -33,6 +33,17 @@ test('sidebar is generated from metadata and marks the current page', async ({ p
   await expect(page.getByRole('heading', { level: 1, name: 'Switch' })).toBeVisible()
 })
 
+test('component pages install the package the component ships in', async ({ page }) => {
+  await page.goto('/docs/components/data-table')
+  await expect(page.getByLabel('Package: @advui/data')).toBeVisible()
+  await page.getByRole('tab', { name: 'Package' }).click()
+  await expect(page.getByText('pnpm add @advui/data')).toBeVisible()
+  // The sidebar groups the components of each feature package under its name.
+  const nav = page.getByRole('navigation', { name: 'Documentation' })
+  for (const name of ['@advui/data', '@advui/charts', '@advui/editor'])
+    await expect(nav.getByText(name, { exact: true })).toBeVisible()
+})
+
 test('component page contains every documentation section', async ({ page }) => {
   await page.goto('/docs/components/button')
   for (const heading of [

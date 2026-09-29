@@ -1,4 +1,11 @@
-import { type ComponentStatus, categories, components, roadmap } from '@advui/catalog'
+import {
+  type CatalogComponent,
+  type ComponentStatus,
+  categories,
+  components,
+  packages,
+  roadmap,
+} from '@advui/catalog'
 import { guides } from './guides'
 
 export interface NavItem {
@@ -36,16 +43,27 @@ const guideLinks = (section: keyof typeof guideSectionTitles): NavItem[] =>
     .filter((g) => g.section === section)
     .map((g) => ({ title: g.title, href: `/docs/${g.slug}` }))
 
+const byTitle = (a: NavItem, b: NavItem) => a.title.localeCompare(b.title)
+const componentLink = (c: CatalogComponent): NavItem => ({
+  title: c.name,
+  href: `/docs/components/${c.slug}`,
+  status: c.status,
+})
+
 /**
  * The sidebar is generated from component metadata + the roadmap, so adding a
- * `*.meta.ts` file is enough to make a component appear here.
+ * `*.meta.ts` file is enough to make a component appear here. Core components
+ * are grouped by category; each other package (`@advui/data`…) gets one group
+ * named after it, so it is clear what to install.
  */
 export function buildNavigation(): NavSection[] {
-  const componentCategories: NavCategory[] = categories
+  const [core, ...featurePackages] = packages
+  const coreCategories: NavCategory[] = categories
     .map((category) => {
       const implemented: NavItem[] = components
-        .filter((c) => c.category === category.id)
-        .map((c) => ({ title: c.name, href: `/docs/components/${c.slug}`, status: c.status }))
+        .filter((c) => c.package === core?.name && c.category === category.id)
+        .map(componentLink)
+      // Planned items have no package yet; they are listed with core's categories.
       const planned: NavItem[] = roadmap
         .filter((r) => r.category === category.id)
         .map((r) => ({
@@ -54,10 +72,21 @@ export function buildNavigation(): NavSection[] {
           status: 'planned',
           planned: true,
         }))
-      const items = [...implemented, ...planned].sort((a, b) => a.title.localeCompare(b.title))
+      const items = [...implemented, ...planned].sort(byTitle)
       return { id: category.id, title: category.label, items }
     })
     .filter((category) => category.items.length > 0)
+  const packageCategories: NavCategory[] = featurePackages
+    .map((pkg) => ({
+      id: `package-${pkg.title.toLowerCase()}`,
+      title: pkg.name,
+      items: components
+        .filter((c) => c.package === pkg.name)
+        .map(componentLink)
+        .sort(byTitle),
+    }))
+    .filter((category) => category.items.length > 0)
+  const componentCategories = [...coreCategories, ...packageCategories]
 
   return [
     {

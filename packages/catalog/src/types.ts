@@ -7,6 +7,8 @@ export interface ComponentPackage {
   /** Short label for navigation, e.g. "Data". */
   title: string
   description: string
+  /** Folder in the repository, e.g. `packages/data`. */
+  dir: string
 }
 
 /** Component metadata plus the package it ships in (added by the generator). */
