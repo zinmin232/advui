@@ -56,7 +56,6 @@ import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
 import { ScrollArea } from './scroll-area/ScrollArea'
 import { Resizable } from './resizable-panel/ResizablePanel'
-import { RichTextEditor } from './rich-text-editor/RichTextEditor'
 import { Search } from './search/Search'
 import { Select } from './select/Select'
 import { Sheet } from './sheet/Sheet'
@@ -1016,23 +1015,6 @@ describe('native rendering', () => {
     await fireEvent.press(screen.getByRole('button', { name: 'Forward 10 seconds' }))
     expect(engine.seek).toHaveBeenLastCalledWith(10)
     setAudioEngine(undefined)
-  })
-
-  it('RichTextEditor formats the native selection from the toolbar', async () => {
-    const onValueChange = jest.fn()
-    await renderNative(
-      <RichTextEditor
-        aria-label="Report"
-        defaultValue="clean water"
-        onValueChange={onValueChange}
-      />,
-    )
-    const field = screen.getByLabelText('Report')
-    await fireEvent(field, 'selectionChange', { nativeEvent: { selection: { start: 6, end: 11 } } })
-    await fireEvent.press(screen.getByRole('button', { name: 'Bold' }))
-    expect(onValueChange).toHaveBeenLastCalledWith('clean **water**')
-    await fireEvent.press(screen.getByRole('button', { name: 'Preview' }))
-    expect(screen.getByText('water')).toBeOnTheScreen()
   })
 
   it('Image is named by alt, hides a decorative image and falls back on error', async () => {

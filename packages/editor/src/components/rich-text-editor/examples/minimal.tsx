@@ -1,4 +1,4 @@
-import { RichTextEditor } from '@advui/core'
+import { RichTextEditor } from '@advui/editor'
 
 export default function RichTextEditorMinimal() {
   return (

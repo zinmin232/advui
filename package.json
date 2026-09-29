@@ -40,6 +40,7 @@
     "@advui/charts": "workspace:*",
     "@advui/core": "workspace:*",
     "@advui/data": "workspace:*",
+    "@advui/editor": "workspace:*",
     "@advui/eslint-config": "workspace:*",
     "@advui/tsconfig": "workspace:*",
     "eslint": "^10.11.0",

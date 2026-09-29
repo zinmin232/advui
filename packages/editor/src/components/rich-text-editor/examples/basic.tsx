@@ -1,4 +1,5 @@
-import { FormField, RichTextEditor, VStack } from '@advui/core'
+import { FormField, VStack } from '@advui/core'
+import { RichTextEditor } from '@advui/editor'
 import { useState } from 'react'
 
 const initial = `## Situation update

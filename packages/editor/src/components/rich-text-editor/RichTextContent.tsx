@@ -1,7 +1,7 @@
 import { Fragment, type ReactNode } from 'react'
 import { Linking } from 'react-native'
 import { type GetProps, View, XStack, isWeb } from 'tamagui'
-import { Text, type TextSize } from '../typography/Text'
+import { Text, type TextSize } from '@advui/core'
 import { type BlockNode, type InlineNode, parseMarkdown } from './markdown'
 
 const headingSizes = { 1: 'xl', 2: 'lg', 3: 'base' } as const

@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
     '@advui/charts',
     '@advui/core',
     '@advui/data',
+    '@advui/editor',
     '@advui/theme',
     '@advui/icons',
     '@advui/utils',
