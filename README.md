@@ -30,9 +30,9 @@ The same file renders DOM elements in Next.js and native views in Expo.
 
 ## Highlights
 
-- **87 components**, each with tests, metadata, examples, docs and a registry entry:
-  - **Forms:** Input, Textarea, Label, Form Field, Password Input, Number Input,
-    OTP Input, Checkbox, Radio Group, Switch, Slider, Select, Combobox,
+- **88 components**, each with tests, metadata, examples, docs and a registry entry:
+  - **Forms:** Form, Input, Textarea, Label, Form Field, Password Input, Number
+    Input, OTP Input, Checkbox, Radio Group, Switch, Slider, Select, Combobox,
     Autocomplete, Multi Select, Date Picker, Date Range Picker, Time Picker
   - **Buttons:** Button, Loading Button, Icon Button, Button Group, Floating
     Action Button, Toggle, Toggle Group

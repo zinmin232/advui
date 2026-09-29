@@ -39,6 +39,7 @@ import { Fab } from './fab/Fab'
 import { FileDropzone } from './file-dropzone/FileDropzone'
 import { FileUpload } from './file-upload/FileUpload'
 import { setFilePicker } from './file-upload/files'
+import { Form } from './form/Form'
 import { FormField } from './form-field/FormField'
 import { HoverCard } from './hover-card/HoverCard'
 import { IconButton } from './icon-button/IconButton'
@@ -659,6 +660,41 @@ describe('native rendering', () => {
     expect(screen.getByLabelText('Email')).toBe(input)
     expect(input.props.accessibilityHint).toBe('Enter an email. Work email.')
     expect(input.props['aria-invalid'] ?? input.props.accessibilityState?.invalid).toBeTruthy()
+  })
+
+  it('Form submits from Form.Submit and blocks it while loading or disabled', async () => {
+    const onSubmit = jest.fn<() => void>()
+    const form = (state: { loading?: boolean; disabled?: boolean }) => (
+      <Form
+        title="Create account"
+        onSubmit={onSubmit}
+        loadingText="Saving…"
+        footer={<Form.Submit>Save</Form.Submit>}
+        {...state}
+      >
+        <FormField label="Email">
+          <Input placeholder="you@example.com" />
+        </FormField>
+      </Form>
+    )
+    const { unmount } = await renderNative(form({}))
+    expect(screen.getByRole('heading', { name: 'Create account' })).toBeOnTheScreen()
+    // No form element on native: the press calls onSubmit itself.
+    await fireEvent.press(screen.getByRole('button', { name: 'Save' }))
+    expect(onSubmit).toHaveBeenCalledTimes(1)
+    await unmount()
+
+    const { unmount: unmountLoading } = await renderNative(form({ loading: true }))
+    const busy = screen.getByRole('button', { name: 'Saving…' })
+    expect(busy).toBeBusy()
+    expect(busy).toBeDisabled()
+    await fireEvent.press(busy)
+    expect(onSubmit).toHaveBeenCalledTimes(1)
+    await unmountLoading()
+
+    await renderNative(form({ disabled: true }))
+    expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
+    expect(screen.getByPlaceholderText('you@example.com')).toBeDisabled()
   })
 
   it('PasswordInput toggles secure text entry from its toggle button', async () => {

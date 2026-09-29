@@ -39,7 +39,8 @@ export default defineMeta({
           name: 'disabled',
           type: 'boolean',
           default: 'false',
-          description: 'Dims the label and disables the control.',
+          description:
+            'Dims the label and disables the control. Also on while the surrounding Form is `disabled`.',
         },
         {
           name: 'children',
@@ -63,5 +64,5 @@ export default defineMeta({
     ios: 'Only string help and error text become the VoiceOver hint.',
     android: 'Only string help and error text become the TalkBack hint.',
   },
-  related: ['input', 'label', 'password-input', 'number-input'],
+  related: ['form', 'input', 'label', 'password-input', 'number-input'],
 })

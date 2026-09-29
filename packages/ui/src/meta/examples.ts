@@ -70,6 +70,14 @@ import FileUploadBasic from '../components/file-upload/examples/basic'
 import FileUploadMultiple from '../components/file-upload/examples/multiple'
 import FabBasic from '../components/fab/examples/basic'
 import FabExtended from '../components/fab/examples/extended'
+import FormBasic from '../components/form/examples/basic'
+import FormTitleDescription from '../components/form/examples/title-description'
+import FormFooter from '../components/form/examples/footer'
+import FormLoading from '../components/form/examples/loading'
+import FormHorizontal from '../components/form/examples/horizontal'
+import FormDisabled from '../components/form/examples/disabled'
+import FormValidation from '../components/form/examples/validation'
+import FormCustomStyling from '../components/form/examples/custom-styling'
 import FormFieldBasic from '../components/form-field/examples/basic'
 import FormFieldValidation from '../components/form-field/examples/validation'
 import GridGrid from '../components/layout/examples/grid'
@@ -314,6 +322,16 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'fab': {
     'basic': FabBasic,
     'extended': FabExtended,
+  },
+  'form': {
+    'basic': FormBasic,
+    'title-description': FormTitleDescription,
+    'footer': FormFooter,
+    'loading': FormLoading,
+    'horizontal': FormHorizontal,
+    'disabled': FormDisabled,
+    'validation': FormValidation,
+    'custom-styling': FormCustomStyling,
   },
   'form-field': {
     'basic': FormFieldBasic,

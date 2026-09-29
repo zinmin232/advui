@@ -109,6 +109,14 @@ one version.
   in place of that side's icon, can swap the label for `loadingText`, sets
   `aria-busy` and ignores presses, clicks and keys, so an action cannot be
   submitted twice. The parent owns the `loading` state.
+- **Form** (beta): lays out a form (optional title and description, the
+  fields with a consistent `gap`, and a `footer` for actions), vertical or
+  `horizontal`, and wires up submit: a `<form>` on web, where Enter in a field
+  submits, and `Form.Submit` on every platform. `loading`, `loadingText` and
+  `disabled` flow to `Form.Submit` and Form Field through context
+  (`useFormStatus()` for your own controls); children are never cloned.
+  Field state and validation stay with the app or a form library.
+- Form Field is also disabled while the surrounding Form is `disabled`.
 
 ## [0.5.0] - 2026-09-28
 

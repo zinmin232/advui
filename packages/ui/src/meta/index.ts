@@ -34,6 +34,7 @@ import errorStateMeta from '../components/error-state/error-state.meta'
 import fileDropzoneMeta from '../components/file-dropzone/file-dropzone.meta'
 import fileUploadMeta from '../components/file-upload/file-upload.meta'
 import fabMeta from '../components/fab/fab.meta'
+import formMeta from '../components/form/form.meta'
 import formFieldMeta from '../components/form-field/form-field.meta'
 import gridMeta from '../components/layout/grid.meta'
 import hoverCardMeta from '../components/hover-card/hover-card.meta'
@@ -124,6 +125,7 @@ export const components: ComponentMeta[] = [
   fileDropzoneMeta,
   fileUploadMeta,
   fabMeta,
+  formMeta,
   formFieldMeta,
   gridMeta,
   hoverCardMeta,
