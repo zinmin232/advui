@@ -51,6 +51,8 @@
     "test:native": "jest --config jest.native.config.js"
   },
   "dependencies": {
+    "@tamagui/core": "2.7.7",
+    "@tamagui/web": "2.7.7",
     "@advui/icons": "workspace:*"
   },
   "peerDependencies": {

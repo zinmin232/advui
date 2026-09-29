@@ -551,6 +551,12 @@ importers:
       '@advui/icons':
         specifier: workspace:*
         version: link:../icons
+      '@tamagui/core':
+        specifier: 2.7.7
+        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@tamagui/web':
+        specifier: 2.7.7
+        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
     devDependencies:
       '@advui/core':
         specifier: workspace:*
