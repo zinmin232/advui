@@ -1,27 +1,44 @@
 # Component guidelines
 
-These rules apply to every component in `packages/ui`. A component is **done**
-only when every item in the checklist at the end is true.
+These rules apply to every component, in every component package. A component
+is **done** only when every item in the checklist at the end is true.
+
+## Pick the package
+
+| Package         | Folder            | For                                                                     |
+| --------------- | ----------------- | ----------------------------------------------------------------------- |
+| `@advui/core`   | `packages/ui`     | General-purpose UI: inputs, buttons, overlays, navigation, feedback…    |
+| `@advui/data`   | `packages/data`   | Showing, organizing and analyzing structured data (tables, trees, KPIs) |
+| `@advui/charts` | `packages/charts` | Charts (they share `src/charts/`)                                       |
+| `@advui/editor` | `packages/editor` | Rich editing                                                            |
+
+Decide by the component's main purpose, not by whether it shows data: a Card
+or a List stays in core. Core may not import the other packages; they import
+core (and charts import data) by package name. If a component needs something
+from core that is not exported, export it from core rather than reaching into
+its files. A component that needs a heavy third-party library goes in a
+package of its own, so apps that do not use it never install the library.
 
 ## Start with the generator
 
 ```bash
-pnpm create-component <slug> [--category forms] [--name "Display Name"]
+pnpm create-component <slug> [--category forms] [--name "Display Name"] [--package data]
 ```
 
-The generator creates `packages/ui/src/components/<slug>/`:
+The generator creates `src/components/<slug>/` in the package (core by
+default):
 
 ```
 <slug>/
 ├── <Name>.tsx          component (+ <Name>.native.tsx only if platforms truly differ)
 ├── <Name>.test.tsx     web tests (Vitest + Testing Library)
 ├── <slug>.meta.ts      documentation metadata — pure data, no React imports
-├── examples/basic.tsx  default export, imports from '@advui/core'
+├── examples/basic.tsx  default export, imports from the package ('@advui/core'…)
 └── index.ts            public exports
 ```
 
-It also exports the component from `src/index.ts`, removes the slug from
-`src/meta/roadmap.ts` and regenerates the catalog. The docs page, sidebar
+It also exports the component from the package's `src/index.ts`, removes the
+slug from `packages/catalog/src/roadmap.ts` and regenerates the catalog. The docs page, sidebar
 entry, search entry, Expo screen and registry item then appear automatically.
 
 ## API design
@@ -121,7 +138,8 @@ which returns a configured `user` (user-event). They cover:
 - disabled and loading behavior.
 
 The e2e suite runs axe on every docs page in light and dark mode. Native smoke
-tests live in `src/components/components.native.test.tsx`. Add a case when a
+tests live in `src/components/components.native.test.tsx` in core and in
+`src/<package>.native.test.tsx` in data, charts and editor. Add a case when a
 component has native-specific code or behavior.
 
 ## Metadata (`<slug>.meta.ts`)
@@ -163,6 +181,7 @@ related slugs and files that don't exist.
       platform code exists
 - [ ] Metadata complete, examples render in docs and Expo, and `pnpm catalog`
       passes
-- [ ] Exported from `src/index.ts`; registry rebuilt (`pnpm registry:build`)
+- [ ] In the right package, exported from its `src/index.ts` (and its
+      public-API test updated); registry rebuilt (`pnpm registry:build`)
 - [ ] Visual baselines updated if the look changed
 - [ ] CHANGELOG entry under _Unreleased_

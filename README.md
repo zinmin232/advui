@@ -30,26 +30,31 @@ The same file renders DOM elements in Next.js and native views in Expo.
 
 ## Highlights
 
-- **88 components**, each with tests, metadata, examples, docs and a registry entry:
-  - **Forms:** Form, Input, Textarea, Label, Form Field, Password Input, Number
-    Input, OTP Input, Checkbox, Radio Group, Switch, Slider, Select, Combobox,
-    Autocomplete, Multi Select, Date Picker, Date Range Picker, Time Picker
-  - **Buttons:** Button, Loading Button, Icon Button, Button Group, Floating
-    Action Button, Toggle, Toggle Group
-  - **Overlays:** Dialog, Sheet, Drawer, Popover, Tooltip, Hover Card, Context Menu
-  - **Navigation:** Tabs, Breadcrumb, Navigation Bar, Navigation Menu, Sidebar,
-    Menu, Dropdown Menu, Pagination, Stepper
-  - **Feedback:** Alert, Alert Dialog, Toast, Snackbar, Progress, Circular
-    Progress, Spinner, Empty State, Error State
-  - **Data display:** Card, Table, Data Table, Stat, KPI Card, List, Timeline,
-    Calendar, Accordion, Collapsible, Chip
-  - **Media:** Image, Image Gallery, Video, Audio Player
-  - **Advanced:** Tree View, Search, Command Palette, Data Grid, Resizable Panel,
-    Rich Text Editor
-  - **Charts:** Bar Chart, Line Chart, Area Chart, Pie Chart
-  - **Foundations and layout:** Typography, Avatar, Badge, Separator, Skeleton,
-    Stack, Grid, Container, Aspect Ratio, Scroll Area
-  - **Files:** File Upload, File Dropzone
+- **88 components** in four packages, each with tests, metadata, examples, docs
+  and a registry entry. Install only the packages you use:
+  - **`@advui/core`** (76), general-purpose components:
+    - **Forms:** Form, Input, Textarea, Label, Form Field, Password Input,
+      Number Input, OTP Input, Checkbox, Radio Group, Switch, Slider, Select,
+      Combobox, Autocomplete, Multi Select, Date Picker, Date Range Picker, Time
+      Picker
+    - **Buttons:** Button, Loading Button, Icon Button, Button Group, Floating
+      Action Button, Toggle, Toggle Group
+    - **Overlays:** Dialog, Sheet, Drawer, Popover, Tooltip, Hover Card, Context
+      Menu
+    - **Navigation:** Tabs, Breadcrumb, Navigation Bar, Navigation Menu, Sidebar,
+      Menu, Dropdown Menu, Pagination, Stepper
+    - **Feedback:** Alert, Alert Dialog, Toast, Snackbar, Progress, Circular
+      Progress, Spinner, Empty State, Error State
+    - **Data display:** Card, List, Calendar, Accordion, Collapsible, Chip
+    - **Media:** Image, Image Gallery, Video, Audio Player
+    - **Advanced:** Search, Command Palette, Resizable Panel
+    - **Foundations and layout:** Typography, Avatar, Badge, Separator,
+      Skeleton, Stack, Grid, Container, Aspect Ratio, Scroll Area
+    - **Files:** File Upload, File Dropzone
+  - **`@advui/data`** (7): Table, Data Table, Data Grid, Tree View, Timeline,
+    Stat, KPI Card
+  - **`@advui/charts`** (4): Bar Chart, Line Chart, Area Chart, Pie Chart
+  - **`@advui/editor`** (1): Rich Text Editor, with Rich Text Content
 - **One theme config** — presets or any brand color. Light and dark palettes are
   generated and checked against WCAG AA contrast. Radius and type scale are
   global knobs.
@@ -68,7 +73,11 @@ The same file renders DOM elements in Next.js and native views in Expo.
 
 | Path                     | What it is                                                                     |
 | ------------------------ | ------------------------------------------------------------------------------ |
-| `packages/ui`            | `@advui/core`: components, provider, hooks, component metadata                 |
+| `packages/ui`            | `@advui/core`: general-purpose components, provider, hooks                     |
+| `packages/data`          | `@advui/data`: Table, Data Table, Data Grid, Tree View, Timeline, Stat, KPI    |
+| `packages/charts`        | `@advui/charts`: bar, line, area and pie charts                                |
+| `packages/editor`        | `@advui/editor`: Rich Text Editor and Rich Text Content                        |
+| `packages/catalog`       | Private: generated metadata and examples of every component, for docs/Expo     |
 | `packages/theme`         | `@advui/theme`: tokens, palettes, theme generation, `createUniversalConfig`    |
 | `packages/icons`         | `@advui/icons`: Lucide-based icons for web (SVG) and native (react-native-svg) |
 | `packages/utils`         | `@advui/utils`: color math (OKLCH, contrast), event helpers                    |
@@ -138,7 +147,16 @@ app in Expo Go.
 
 ```bash
 pnpm add @advui/core @advui/theme @advui/icons tamagui
+# add the packages you need:
+pnpm add @advui/data      # tables, data grid, tree view, timeline, stats
+pnpm add @advui/charts    # charts (also installs @advui/data)
+pnpm add @advui/editor    # rich text editor
 ```
+
+`@advui/data`, `@advui/charts` and `@advui/editor` are **not on npm yet**:
+they will be published with the next release (0.6.0). Until then, add their
+components with the CLI (below). `@advui/core`, `@advui/theme`,
+`@advui/icons`, `@advui/utils` and the `advui` CLI are published.
 
 ```ts
 // tamagui.config.ts
@@ -148,8 +166,10 @@ export const config = createUniversalConfig({ preset: 'indigo', radius: 'md' })
 export default config
 ```
 
-Wrap your app in `<UniversalProvider config={config}>`. Next.js also needs
-`transpilePackages` and a `react-native` → `react-native-web` alias. The
+Wrap your app in `<UniversalProvider config={config}>`. The other component
+packages render inside it, so there is one provider for all of them. Next.js
+also needs `transpilePackages` (with each `@advui/*` package you use) and a
+`react-native` → `react-native-web` alias. The
 Installation page of the docs site (`/docs/installation`) has the full Next.js
 and Expo setup. [THEMING.md](THEMING.md) covers colors, radius, fonts and
 runtime themes.

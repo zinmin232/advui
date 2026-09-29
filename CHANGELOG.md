@@ -7,6 +7,27 @@ one version.
 
 ## [Unreleased]
 
+### Changed
+
+- **Components ship in four packages**, so apps install only what they use:
+  - `@advui/core`: general-purpose components, `UniversalProvider` and hooks
+  - `@advui/data` (new): Table, Data Table, Data Grid, Tree View, Timeline,
+    Stat and KPI Card
+  - `@advui/charts` (new): Bar, Line, Area and Pie Chart
+  - `@advui/editor` (new): Rich Text Editor and Rich Text Content
+
+  Import these from their package (`import { DataTable } from '@advui/data'`).
+  They were all added after 0.5.0, so no import from a published
+  `@advui/core` changes. The new packages take `@advui/core` as a peer
+  dependency (charts also take `@advui/data`, for the table view) and add no
+  other libraries. CLI items (`advui add data-table`) keep their names, files
+  and dependencies.
+
+- `@advui/core` exports `isTextContent`, for components built on core.
+- Repository: the docs catalog moved from `@advui/core/meta` to the private
+  `@advui/catalog` package; `@advui/core/meta` (never published) keeps the
+  metadata types and `defineMeta`.
+
 ### Fixed
 
 - Docs: props and keyboard tables that overflow sideways can now take focus,

@@ -6,7 +6,9 @@ read [CONTRIBUTING.md](CONTRIBUTING.md) first; the rules are the same.
 ## What this is
 
 A cross-platform React component library built on Tamagui 2, plus its docs
-(Next.js 16) and an Expo playground. It is a pnpm 12 + Turborepo monorepo on
+(Next.js 16) and an Expo playground. Components ship in four packages:
+`@advui/core` (general-purpose), `@advui/data`, `@advui/charts` and
+`@advui/editor`. It is a pnpm 12 + Turborepo monorepo on
 TypeScript 6 (strict) and React 19. Read [ARCHITECTURE.md](ARCHITECTURE.md)
 before large changes.
 
@@ -17,13 +19,13 @@ pnpm install
 pnpm dev                     # docs → http://localhost:3000
 pnpm lint                    # ESLint, all packages
 pnpm typecheck               # tsc --noEmit, all packages
-pnpm test                    # Vitest (web): utils, theme, icons, core, cli
-pnpm test:native             # jest-expo + RNTL: core on the React Native renderer
+pnpm test                    # Vitest (web): utils, theme, icons, core, data, charts, editor, cli
+pnpm test:native             # jest-expo + RNTL: core, data, charts, editor on the React Native renderer
 pnpm test:e2e                # Playwright on a production build of the docs
 pnpm build                   # all packages + docs production build
 pnpm catalog                 # regenerate + validate component metadata
 pnpm registry:build          # regenerate registry JSON
-pnpm create-component <slug> # scaffold a component
+pnpm create-component <slug> [--package data|charts|editor] # scaffold a component (core by default)
 ```
 
 Run a single package: `pnpm --filter @advui/core test`. Run one test
@@ -31,9 +33,11 @@ file: `pnpm --filter @advui/core exec vitest run src/components/button`.
 
 ## Where things live
 
-- Components: `packages/ui/src/components/<slug>/`, with the component, test,
-  `<slug>.meta.ts`, `examples/` and `index.ts`
-- Public exports: `packages/ui/src/index.ts`
+- Components: `packages/<dir>/src/components/<slug>/`, with the component,
+  test, `<slug>.meta.ts`, `examples/` and `index.ts`. `<dir>` is `ui`
+  (`@advui/core`), `data`, `charts` or `editor`
+- Public exports: each package's `src/index.ts`
+- Generated catalog for the docs and Expo: `packages/catalog` (private)
 - Theme generation, tokens and presets: `packages/theme/src/`
 - Docs routes: `apps/docs/src/app/`. Docs UI: `apps/docs/src/components/`.
   Guides: `apps/docs/src/content/guides/`
@@ -55,13 +59,20 @@ file: `pnpm --filter @advui/core exec vitest run src/components/button`.
    primitive differs, and keep the API identical.
 5. **SSR-safe.** No `window` in render, and no markup that depends on `useMedia()`
    during the first render.
-6. **Metadata is data.** `*.meta.ts` files must not import React or components;
+6. **Metadata is data.** `*.meta.ts` files import only `defineMeta` (from
+   `../../meta/types` in core, `@advui/core/meta` in the other packages) and
+   must not import React or components;
    Server Components and Node scripts read them.
-7. **Generated files are not edited by hand**: `src/meta/index.ts`,
-   `src/meta/examples.ts`, `registry/*`, `apps/docs/public/r/*` and
+7. **Generated files are not edited by hand**: `packages/catalog/src/index.ts`,
+   `packages/catalog/src/examples.ts`, `registry/*`, `apps/docs/public/r/*` and
    `packages/icons/src/generated.ts`.
 8. **Match the surrounding code**: naming, comment density (comments explain
    why), file layout.
+9. **Packages are layered**: core ← data ← charts, core ← editor. A package
+   imports the ones below it by name (`@advui/core`), never by a path into
+   their files, and core imports none of the others. `pnpm lint` enforces it
+   (`packageBoundaries` in `@advui/eslint-config`). If a new component needs a
+   core internal, export it from core instead.
 
 ## Definition of done for a change
 

@@ -1,12 +1,13 @@
 # Architecture
 
-Adv UI is a pnpm + Turborepo monorepo. Everything a component needs —
-source, tests, examples, docs metadata — lives in one folder. Every other
-surface (docs site, Expo app, search, registry, CLI) is generated from those
-folders.
+Adv UI is a pnpm + Turborepo monorepo. Components ship in four packages
+(`@advui/core`, `@advui/data`, `@advui/charts`, `@advui/editor`). Everything a
+component needs — source, tests, examples, docs metadata — lives in one folder
+of its package. Every other surface (docs site, Expo app, search, registry,
+CLI) is generated from those folders.
 
 ```
-                        packages/ui/src/components/<slug>/
+          packages/{ui,data,charts,editor}/src/components/<slug>/
                         ├── Component.tsx        (+ .native.tsx when needed)
                         ├── Component.test.tsx
                         ├── <slug>.meta.ts       (pure data)
@@ -17,9 +18,10 @@ folders.
                                    │
           ┌────────────────────────┼─────────────────────────┐
           ▼                        ▼                         ▼
- src/meta/index.ts         src/meta/examples.ts     scripts/build-registry.mjs
- (catalog: all metas       (example name →                   │
-  + roadmap)                React component)                 ▼
+  @advui/catalog (private, generated)               scripts/build-registry.mjs
+ src/index.ts              src/examples.ts                   │
+ (all metas, their         (example name →                   ▼
+  package, roadmap)         React component)                 │
           │                        │              registry/*.json
           │                        │              apps/docs/public/r/*.json
           ▼                        ▼                         │
@@ -29,14 +31,45 @@ folders.
 
 ## Packages
 
-| Package           | Depends on                                                                      | Notes                                                                                                                                                                                          |
-| ----------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@advui/utils`    | —                                                                               | Color math: parse, OKLCH conversion with gamut mapping, WCAG contrast, `ensureContrast`, `accessibleSolid`. Event composition. Framework-free.                                                 |
-| `@advui/theme`    | utils, tamagui                                                                  | Tokens (space, size, radius, zIndex), fonts, media queries, animations, shadows, palettes, theme generation, presets, `createUniversalConfig`.                                                 |
-| `@advui/icons`    | tamagui, react-native-svg (native)                                              | Icons generated from Lucide by `scripts/generate-icons.mjs`. `SvgIcon.tsx` renders DOM SVG; `SvgIcon.native.tsx` renders react-native-svg. `IconDefaults` sets size and color through context. |
-| `@advui/core`     | theme, icons, utils, tamagui, @tamagui/toast, @tamagui/floating (web listboxes) | Components, `UniversalProvider`, color mode, hooks, metadata. No native file-picker or media dependency: apps register them with `setFilePicker`, `setVideoView` and `setAudioEngine`.         |
-| `@advui/examples` | core                                                                            | Full app screens shared by the docs and Expo.                                                                                                                                                  |
-| `advui` (cli)     | —                                                                               | Reads the registry and copies source into a project.                                                                                                                                           |
+The component packages are layered, and imports only go down:
+
+```
+@advui/utils, @advui/theme, @advui/icons
+                 ▲
+            @advui/core ◀──────────── @advui/editor
+                 ▲
+            @advui/data ◀── @advui/charts (the table view uses Table)
+```
+
+- `@advui/core` is the base: general-purpose components, `UniversalProvider`,
+  hooks. It may not import the packages above it.
+- `@advui/data`, `@advui/charts` and `@advui/editor` take `@advui/core` (and
+  charts take `@advui/data`) as **peer dependencies**, so an app has one copy
+  of core, its contexts and its Tamagui config. They import core only through
+  its public entry point; `isTextContent`, `useControllableState` and
+  `useRipple` are exported for them.
+- None of them adds a third-party library: charts draw SVG (react-native-svg
+  on native, already an optional peer of core) and the editor is a Markdown
+  editor on core's Textarea. The split keeps their code out of apps that only
+  use core.
+- `packageBoundaries()` in `@advui/eslint-config` enforces the layering in
+  `pnpm lint`, and each package has a test that pins its public exports.
+- `@advui/catalog` is private. It imports every package's metadata and
+  examples for the docs and the Expo app, which no published package may do.
+- The `packages/ui` folder keeps its name; its package is `@advui/core`.
+
+| Package           | Depends on                                                                      | Notes                                                                                                                                                                                                        |
+| ----------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `@advui/utils`    | —                                                                               | Color math: parse, OKLCH conversion with gamut mapping, WCAG contrast, `ensureContrast`, `accessibleSolid`. Event composition. Framework-free.                                                               |
+| `@advui/theme`    | utils, tamagui                                                                  | Tokens (space, size, radius, zIndex), fonts, media queries, animations, shadows, palettes, theme generation, presets, `createUniversalConfig`.                                                               |
+| `@advui/icons`    | tamagui, react-native-svg (native)                                              | Icons generated from Lucide by `scripts/generate-icons.mjs`. `SvgIcon.tsx` renders DOM SVG; `SvgIcon.native.tsx` renders react-native-svg. `IconDefaults` sets size and color through context.               |
+| `@advui/core`     | theme, icons, utils, tamagui, @tamagui/toast, @tamagui/floating (web listboxes) | General-purpose components, `UniversalProvider`, color mode, hooks, metadata types. No native file-picker or media dependency: apps register them with `setFilePicker`, `setVideoView` and `setAudioEngine`. |
+| `@advui/data`     | core (peer), icons                                                              | Table, Data Table, Data Grid, Tree View, Timeline, Stat, KPI Card.                                                                                                                                           |
+| `@advui/charts`   | core and data (peers), icons, react-native-svg (optional peer)                  | Bar, Line, Area and Pie Chart. The shared frame, legend, tooltip, table view, scales and SVG layer live in `src/charts/` and are not exported.                                                               |
+| `@advui/editor`   | core (peer), icons                                                              | Rich Text Editor, Rich Text Content and their Markdown helpers.                                                                                                                                              |
+| `@advui/catalog`  | every component package (private)                                               | Generated catalog: all metadata with its package, and the examples map, for the docs and Expo.                                                                                                               |
+| `@advui/examples` | core                                                                            | Full app screens shared by the docs and Expo.                                                                                                                                                                |
+| `advui` (cli)     | —                                                                               | Reads the registry and copies source into a project.                                                                                                                                                         |
 
 Inside the repo, packages resolve to their TypeScript source (`main: src/index.ts`),
 so apps pick up changes without a build step. `publishConfig` switches the entry
@@ -51,10 +84,10 @@ points to `dist/` for npm.
   up `.native.tsx`, and web bundlers use the base file:
   - `spinner/Spinner.native.tsx`: `ActivityIndicator` instead of an SVG arc
   - `icons/SvgIcon.native.tsx`: react-native-svg instead of DOM `<svg>`
-  - `charts/svg.native.tsx`: the charts' SVG layer on react-native-svg; the web
-    file draws DOM `<svg>`. Everything else in `src/charts/` (frame, legend,
-    tooltip, table view, scales) is shared, and ships as the `charts` registry
-    item.
+  - `charts/svg.native.tsx` (in `@advui/charts`): the charts' SVG layer on
+    react-native-svg; the web file draws DOM `<svg>`. Everything else in
+    `src/charts/` (frame, legend, tooltip, table view, scales) is shared, and
+    ships as the `charts` registry item.
   - `video/Video.native.tsx`: renders the player registered with
     `setVideoView`; the web file renders `<video>`
   - `provider/GlobalStyles.native.tsx`: no-op (web injects keyframes and
@@ -108,8 +141,10 @@ no flash of the wrong theme.
 
 - Next.js 16 App Router with Turbopack. `react-native` is aliased to
   `react-native-web`, and workspace packages are listed in `transpilePackages`.
-- Pages are Server Components that read the catalog (pure data, so it is safe
-  in RSC). Interactive parts are client components: previews, the playground,
+- Pages are Server Components that read the catalog, `@advui/catalog` (pure
+  data, so it is safe in RSC). Each component page installs the package the
+  component ships in; `siteConfig.unpublishedPackages` marks packages that are
+  not on npm yet, whose pages point to the CLI instead. Interactive parts are client components: previews, the playground,
   the customizer and the command palette.
 - Code samples are highlighted at build time with Shiki (fine-grained bundle,
   JavaScript regex engine) from the real example files.
@@ -137,7 +172,15 @@ no flash of the wrong theme.
 `scripts/build-registry.mjs` writes one JSON file per component with file
 contents and dependencies. Dependencies are derived from imports: bare imports
 become npm dependencies, and relative imports into another component folder
-become registry dependencies. The CLI (`packages/cli`):
+become registry dependencies.
+
+Components live in several packages, but the CLI copies every item into one
+folder. So file paths are relative to each package's `src` (one shared layout:
+`components/<slug>/…`, `hooks/…`, `charts/…`), and an import of a component
+package (`import { Input } from '@advui/core'`) is rewritten to the file that
+declares the name (`'../input/Input'`). Copied source therefore has the same
+imports as before the packages were split. Each item also records its
+`package`. The CLI (`packages/cli`):
 
 - `init` detects the framework and package manager, then writes
   `advui.json` and `tamagui.config.ts`.
@@ -148,13 +191,13 @@ The docs publish the registry at `/r/<name>.json`.
 
 ## Testing layers
 
-| Layer             | Tooling                                                                    | Where                                             |
-| ----------------- | -------------------------------------------------------------------------- | ------------------------------------------------- |
-| Unit              | Vitest                                                                     | `packages/{utils,theme,cli}`                      |
-| Component, web    | Vitest + happy-dom + Testing Library + user-event                          | `packages/ui/src/**/*.test.tsx`, `packages/icons` |
-| Component, native | jest-expo (iOS preset) + React Native Testing Library                      | `packages/ui/src/**/*.native.test.tsx`            |
-| E2E               | Playwright (Chrome): desktop and Pixel 7 viewports, `@axe-core/playwright` | `apps/docs/e2e`                                   |
-| Visual            | Playwright screenshots of `/visual`, light and dark                        | `apps/docs/e2e/visual.spec.ts`                    |
+| Layer             | Tooling                                                                    | Where                                                                  |
+| ----------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Unit              | Vitest                                                                     | `packages/{utils,theme,cli}`                                           |
+| Component, web    | Vitest + happy-dom + Testing Library + user-event                          | `packages/{ui,data,charts,editor}/src/**/*.test.tsx`, `packages/icons` |
+| Component, native | jest-expo (iOS preset) + React Native Testing Library                      | `packages/{ui,data,charts,editor}/src/**/*.native.test.tsx`            |
+| E2E               | Playwright (Chrome): desktop and Pixel 7 viewports, `@axe-core/playwright` | `apps/docs/e2e`                                                        |
+| Visual            | Playwright screenshots of `/visual`, light and dark                        | `apps/docs/e2e/visual.spec.ts`                                         |
 
 ## Known platform quirks (and where they are handled)
 

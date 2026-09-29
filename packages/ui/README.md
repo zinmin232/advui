@@ -25,13 +25,20 @@ On web, alias `react-native` to `react-native-web` and transpile the
 `@advui/*` packages (see the Installation guide). Expo needs no extra
 setup.
 
+More components ship in packages built on this one, so apps install only what
+they use: `@advui/data` (Table, Data Table, Data Grid, Tree View, Timeline,
+Stat, KPI Card), `@advui/charts` (Bar, Line, Area and Pie Chart) and
+`@advui/editor` (Rich Text Editor). They render inside the same
+`UniversalProvider`.
+
 **Exports:** Accordion, Alert, AlertDialog, Avatar, Badge, Breadcrumb, Button,
 Card, Checkbox, Chip, Container, Dialog, DropdownMenu, Fab, Grid, IconButton,
 Input, Label, NavigationBar, Popover, Progress, RadioGroup, Select, Separator,
 Sheet, Skeleton, Slider, Snackbar, Spinner, Stack (Box, HStack, VStack, Center, Spacer), Switch, Tabs, Text,
 Heading, Kbd, Textarea, Toaster, `toast`, Toggle, ToggleGroup, Tooltip,
 UniversalProvider,
-`useColorMode`, `useControllableState`, `useReducedMotion`, `useRipple`, plus re-exports of
+`useColorMode`, `useControllableState`, `useFormStatus`, `useReducedMotion`, `useRipple`,
+`isTextContent`, plus re-exports of
 `createUniversalConfig`, `Icon`, `IconDefaults`, `createIcon`, `Theme`, `useTheme` and `useMedia`.
 
 Docs: component pages, playground and theme customizer in `apps/docs`. License: MIT.
