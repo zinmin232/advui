@@ -37,7 +37,16 @@ export function buildSearchIndex(): SearchEntry[] {
       title: c.name,
       subtitle: c.description,
       href,
-      text: [c.name, c.slug, c.description, c.category, ...(c.keywords ?? []), ...c.exports]
+      // The package name makes "@advui/data" or "charts" find a package's components.
+      text: [
+        c.name,
+        c.slug,
+        c.description,
+        c.category,
+        c.package,
+        ...(c.keywords ?? []),
+        ...c.exports,
+      ]
         .join(' ')
         .toLowerCase(),
     })

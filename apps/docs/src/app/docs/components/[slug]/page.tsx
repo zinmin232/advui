@@ -1,4 +1,4 @@
-import { categories, components, roadmap } from '@advui/catalog'
+import { categories, components, packages, roadmap } from '@advui/catalog'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { Metadata } from 'next'
@@ -59,6 +59,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
   }
 
   const folder = componentFolder(meta.files)
+  const packageDir = packages.find((p) => p.name === meta.package)?.dir ?? 'packages/ui'
   const registryItem = readRegistry().find((item) => item.name === meta.slug)
   const pages = flatPages()
   const index = pages.findIndex((p) => p.href === `/docs/components/${slug}`)
@@ -70,16 +71,20 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
   const data: ComponentDocData = {
     meta,
     categoryLabel: categories.find((c) => c.id === meta.category)?.label ?? meta.category,
+    package: {
+      name: meta.package,
+      published: !siteConfig.unpublishedPackages.includes(meta.package),
+    },
     usage: await code(meta.usage),
     install: {
-      pnpm: await code(`pnpm add ${siteConfig.corePackage}`, 'bash'),
-      npm: await code(`npm install ${siteConfig.corePackage}`, 'bash'),
+      pnpm: await code(`pnpm add ${meta.package}`, 'bash'),
+      npm: await code(`npm install ${meta.package}`, 'bash'),
       cli: await code(`npx ${siteConfig.cliName} add ${meta.slug}`, 'bash'),
     },
     examples: await Promise.all(
       meta.examples.map(async (example) => ({
         ...example,
-        ...(await code(readExampleSource(folder, example.name))),
+        ...(await code(readExampleSource(packageDir, folder, example.name))),
       })),
     ),
     registryDependencies: registryItem?.registryDependencies ?? [],
@@ -87,9 +92,9 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
     related: (meta.related ?? [])
       .filter((r) => known.has(r))
       .map((r) => ({ slug: r, name: known.get(r)!.name, planned: known.get(r)!.planned })),
-    lastUpdated: lastUpdated(folder, meta.files),
-    editUrl: editUrl(`packages/ui/src/components/${folder}/${meta.slug}.meta.ts`),
-    sourceUrl: `${siteConfig.github}/tree/${siteConfig.githubBranch}/packages/ui/src/${meta.files[0]}`,
+    lastUpdated: lastUpdated(packageDir, folder, meta.files),
+    editUrl: editUrl(`${packageDir}/src/components/${folder}/${meta.slug}.meta.ts`),
+    sourceUrl: `${siteConfig.github}/tree/${siteConfig.githubBranch}/${packageDir}/src/${meta.files[0]}`,
     prev: index > 0 ? pages[index - 1] : undefined,
     next: index >= 0 && index < pages.length - 1 ? pages[index + 1] : undefined,
   }

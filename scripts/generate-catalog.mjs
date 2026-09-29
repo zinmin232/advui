@@ -29,7 +29,7 @@ const sorted = [...entries].sort((a, b) => a.meta.name.localeCompare(b.meta.name
 const metaImports = sorted.map(
   ({ meta, file }) => `import ${camel(meta.slug)}Meta from '${importPath(file)}'`,
 )
-const packageList = componentPackages.map(({ name, description }) => ({
+const packageList = componentPackages.map(({ name, description, dir }) => ({
   name,
   // `@advui/data` → "Data"
   title: name
@@ -37,6 +37,7 @@ const packageList = componentPackages.map(({ name, description }) => ({
     .pop()
     .replace(/^./, (c) => c.toUpperCase()),
   description,
+  dir,
 }))
 
 const metaIndex = `${header}${metaImports.join('\n')}
@@ -44,7 +45,15 @@ import type { CatalogComponent, ComponentPackage } from './types'
 
 /** Published component packages, in dependency order. */
 export const packages: ComponentPackage[] = [
-${packageList.map((p) => `  { name: ${quote(p.name)}, title: ${quote(p.title)}, description: ${quote(p.description)} },`).join('\n')}
+${packageList
+  .map((p) =>
+    [
+      '  {',
+      ...Object.entries(p).map(([key, value]) => `    ${key}: ${quote(value)},`),
+      '  },',
+    ].join('\n'),
+  )
+  .join('\n')}
 ]
 
 export const components: CatalogComponent[] = [

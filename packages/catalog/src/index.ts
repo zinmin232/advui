@@ -91,10 +91,30 @@ import type { CatalogComponent, ComponentPackage } from './types'
 
 /** Published component packages, in dependency order. */
 export const packages: ComponentPackage[] = [
-  { name: '@advui/core', title: 'Core', description: 'Cross-platform React / React Native component library built on Tamagui.' },
-  { name: '@advui/data', title: 'Data', description: 'Data components for Adv UI: Table, Data Table, Data Grid, Tree View, Timeline, Stat and KPI Card, on web, iOS and Android.' },
-  { name: '@advui/charts', title: 'Charts', description: 'Bar, line, area and pie charts for Adv UI: SVG on web, react-native-svg on iOS and Android, with a legend, tooltips and a table view.' },
-  { name: '@advui/editor', title: 'Editor', description: 'Rich text editing for Adv UI: a Markdown editor with a formatting toolbar, shortcuts and a preview, and a viewer for the same Markdown, on web, iOS and Android.' },
+  {
+    name: '@advui/core',
+    title: 'Core',
+    description: 'Cross-platform React / React Native components built on Tamagui: buttons, forms, overlays, navigation, feedback, layout and media. Data, chart and editor components ship in @advui/data, @advui/charts and @advui/editor.',
+    dir: 'packages/ui',
+  },
+  {
+    name: '@advui/data',
+    title: 'Data',
+    description: 'Data components for Adv UI: Table, Data Table, Data Grid, Tree View, Timeline, Stat and KPI Card, on web, iOS and Android.',
+    dir: 'packages/data',
+  },
+  {
+    name: '@advui/charts',
+    title: 'Charts',
+    description: 'Bar, line, area and pie charts for Adv UI: SVG on web, react-native-svg on iOS and Android, with a legend, tooltips and a table view.',
+    dir: 'packages/charts',
+  },
+  {
+    name: '@advui/editor',
+    title: 'Editor',
+    description: 'Rich text editing for Adv UI: a Markdown editor with a formatting toolbar, shortcuts and a preview, and a viewer for the same Markdown, on web, iOS and Android.',
+    dir: 'packages/editor',
+  },
 ]
 
 export const components: CatalogComponent[] = [
