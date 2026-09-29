@@ -1,7 +1,7 @@
 'use client'
 
 import * as UI from '@advui/core'
-import type { PlaygroundControl, PlaygroundSpec } from '@advui/core/meta'
+import type { PlaygroundControl, PlaygroundSpec } from '@advui/catalog'
 import { Button, HStack, Input, Label, Switch, Text, VStack, toast } from '@advui/core'
 import { CopyIcon, ExternalLinkIcon, SettingsIcon } from '@advui/icons'
 import { type ReactNode, useMemo, useState } from 'react'

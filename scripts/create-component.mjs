@@ -1,30 +1,53 @@
 #!/usr/bin/env node
 // Scaffolds a new component that follows COMPONENT_GUIDELINES.md.
 //
-//   pnpm create-component <slug> [--category forms] [--name "Display Name"]
+//   pnpm create-component <slug> [--category forms] [--name "Display Name"] [--package data]
 //
-// Creates packages/ui/src/components/<slug>/ with the component, a test,
-// metadata, an example and an index; exports it from the package; removes it
-// from the roadmap; and regenerates the catalog.
+// Creates src/components/<slug>/ in the package (core by default; data, charts
+// or editor) with the component, a test, metadata, an example and an index;
+// exports it from the package; removes it from the roadmap; and regenerates
+// the catalog.
 import { execFileSync } from 'node:child_process'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { parseArgs } from 'node:util'
-import { CATEGORY_IDS, componentsDir, pascal, repoRoot, uiSrc } from './lib/catalog.mjs'
+import {
+  CATEGORY_IDS,
+  catalogSrc,
+  componentPackages,
+  corePackage,
+  packageByName,
+  pascal,
+  repoRoot,
+} from './lib/catalog.mjs'
 
 const { values, positionals } = parseArgs({
   allowPositionals: true,
-  options: { category: { type: 'string' }, name: { type: 'string' } },
+  options: {
+    category: { type: 'string' },
+    name: { type: 'string' },
+    package: { type: 'string', default: 'core' },
+  },
 })
 const slug = positionals[0]
 if (!slug || !/^[a-z][a-z0-9-]*$/.test(slug)) {
   console.error(
-    'Usage: pnpm create-component <kebab-case-slug> [--category <id>] [--name "Display Name"]',
+    'Usage: pnpm create-component <kebab-case-slug> [--category <id>] [--name "Display Name"] [--package core|data|charts|editor]',
   )
   process.exit(1)
 }
+const scope = corePackage.name.split('/')[0]
+let pkg
+try {
+  pkg = packageByName(values.package.includes('/') ? values.package : `${scope}/${values.package}`)
+} catch (error) {
+  console.error(error.message)
+  process.exit(1)
+}
+const isCore = pkg === corePackage
+const componentsDir = pkg.componentsDir
 
-const roadmapFile = join(uiSrc, 'meta', 'roadmap.ts')
+const roadmapFile = join(catalogSrc, 'roadmap.ts')
 const roadmapSource = readFileSync(roadmapFile, 'utf8')
 const roadmapLine = roadmapSource.split('\n').find((line) => line.includes(`slug: '${slug}'`))
 const roadmapCategory = roadmapLine?.match(/category: '([^']+)'/)?.[1]
@@ -44,8 +67,9 @@ const title =
     .map((w) => w[0].toUpperCase() + w.slice(1))
     .join(' ')
 const dir = join(componentsDir, slug)
-if (existsSync(dir)) {
-  console.error(`packages/ui/src/components/${slug} already exists.`)
+const existing = componentPackages.find((p) => existsSync(join(p.componentsDir, slug)))
+if (existing) {
+  console.error(`${existing.dir}/src/components/${slug} already exists.`)
   process.exit(1)
 }
 
@@ -84,7 +108,7 @@ export const ${Name} = forwardRef<TamaguiElement, ${Name}Props>(function ${Name}
 `,
   [`${Name}.test.tsx`]: `import { describe, expect, it } from 'vitest'
 import { renderWithProvider, screen } from '../../../test/utils'
-import { Text } from '../typography/Text'
+${isCore ? `import { Text } from '../typography/Text'` : `import { Text } from '${corePackage.name}'`}
 import { ${Name} } from './${Name}'
 
 describe('${Name}', () => {
@@ -100,7 +124,7 @@ describe('${Name}', () => {
   // TODO: test roles, keyboard interaction and states — not implementation details.
 })
 `,
-  [`${slug}.meta.ts`]: `import { defineMeta } from '../../meta/types'
+  [`${slug}.meta.ts`]: `import { defineMeta } from '${isCore ? '../../meta/types' : `${corePackage.name}/meta`}'
 
 export default defineMeta({
   name: '${title}',
@@ -113,7 +137,7 @@ export default defineMeta({
   exports: ['${Name}'],
   files: ['components/${slug}/${Name}.tsx', 'components/${slug}/index.ts'],
   keywords: [],
-  usage: \`import { ${Name} } from '@advui/core'
+  usage: \`import { ${Name} } from '${pkg.name}'
 
 <${Name}>…</${Name}>\`,
   parts: [
@@ -129,7 +153,7 @@ export default defineMeta({
 })
 `,
   'index.ts': `export { ${Name}, type ${Name}Props } from './${Name}'\n`,
-  'examples/basic.tsx': `import { ${Name}, Text } from '@advui/core'
+  'examples/basic.tsx': `${isCore ? `import { ${Name}, Text } from '${pkg.name}'` : `import { Text } from '${corePackage.name}'\nimport { ${Name} } from '${pkg.name}'`}
 
 export default function ${Name}Basic() {
   return (
@@ -145,7 +169,7 @@ mkdirSync(join(dir, 'examples'), { recursive: true })
 for (const [file, content] of Object.entries(files)) writeFileSync(join(dir, file), content)
 
 // Export from the package entry (kept alphabetical).
-const indexFile = join(uiSrc, 'index.ts')
+const indexFile = join(pkg.src, 'index.ts')
 const index = readFileSync(indexFile, 'utf8')
 const exportLine = `export * from './components/${slug}'`
 if (!index.includes(exportLine)) {
@@ -165,7 +189,7 @@ execFileSync(process.execPath, [join(repoRoot, 'scripts', 'generate-catalog.mjs'
   stdio: 'inherit',
 })
 console.log(`
-Created packages/ui/src/components/${slug}/
+Created ${pkg.dir}/src/components/${slug}/ (${pkg.name})
 Next steps (see COMPONENT_GUIDELINES.md):
   1. Implement ${Name}.tsx using theme tokens only
   2. Fill in ${slug}.meta.ts (description, props, accessibility, platform notes)

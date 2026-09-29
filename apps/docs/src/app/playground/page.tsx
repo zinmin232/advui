@@ -1,4 +1,4 @@
-import { components } from '@advui/core/meta'
+import { components } from '@advui/catalog'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { PlaygroundPage } from '../../components/playground-page'

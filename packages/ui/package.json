@@ -18,8 +18,7 @@
   "react-native": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./meta": "./src/meta/index.ts",
-    "./examples": "./src/meta/examples.ts",
+    "./meta": "./src/meta/types.ts",
     "./package.json": "./package.json"
   },
   "files": [

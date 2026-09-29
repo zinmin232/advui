@@ -14,6 +14,7 @@
     "android:emulator": "node scripts/android-dev.mjs"
   },
   "dependencies": {
+    "@advui/catalog": "workspace:*",
     "@advui/core": "workspace:*",
     "@advui/examples": "workspace:*",
     "@advui/icons": "workspace:*",

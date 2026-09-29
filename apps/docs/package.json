@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@tamagui/theme": "2.7.7",
+    "@advui/catalog": "workspace:*",
     "@advui/core": "workspace:*",
     "@advui/examples": "workspace:*",
     "@advui/icons": "workspace:*",

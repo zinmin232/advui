@@ -12,6 +12,7 @@
     "ios",
     "android"
   ],
+  "package": "@advui/core",
   "files": [
     {
       "path": "components/context-menu/ContextMenu.tsx",
