@@ -64,16 +64,20 @@ cannot do them. Tick them off here as they are done.
 - [ ] **Promote to stable.** When a component passes the phone check, change
       its `status` from `beta` to `stable` in its `*.meta.ts` and run
       `pnpm catalog`.
-- [ ] **Release 0.6.0.** Bump the package versions and date the CHANGELOG's
-      Unreleased section (see [CONTRIBUTING.md](CONTRIBUTING.md)).
-- [ ] **Publish the new packages.** 0.6.0 is the first release of
+- [ ] **Release 0.6.0.** The release commit (versions, dated CHANGELOG,
+      registry, docs) is on `main`. The first `pnpm release` ran before it, so
+      publish again from that commit (see [CONTRIBUTING.md](CONTRIBUTING.md)):
+  - Move the tag to the release commit: `git pull`, then
+    `git tag -f v0.6.0 && git push -f origin v0.6.0`.
+  - `pnpm release:check` must list all eight public packages at 0.6.0, with
+    `@advui/core` as a `^0.6.0` peer dependency of data, charts and editor.
+    Then run `pnpm release`.
+- [ ] **Publish the new packages.** 0.6.0 is the first working release of
       `@advui/data`, `@advui/charts` and `@advui/editor`:
-  - Make sure your npm account can publish new packages under the `@advui`
-    scope, then check that `pnpm release:check` lists all eight public
-    packages with `@advui/core` as a `^0.6.0` peer dependency.
-  - After `pnpm release`, try the install in a fresh app:
+  - Deprecate their 0.5.0, published by mistake before the version bump (it
+    needs core and icons 0.6.0):
+    `npm deprecate @advui/data@0.5.0 "Does not work: use 0.6.0 or later"`,
+    and the same for `@advui/charts` and `@advui/editor`.
+  - Try the install in a fresh app:
     `pnpm add @advui/core @advui/data @advui/charts @advui/editor @advui/theme @advui/icons tamagui`,
     then import `DataTable`, `BarChart` and `RichTextEditor`.
-  - Empty `unpublishedPackages` in `apps/docs/src/lib/site.ts`, and remove the
-    "Not on npm yet" notes from `README.md` and the READMEs of the three
-    packages.
