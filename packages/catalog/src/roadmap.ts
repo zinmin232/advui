@@ -1,4 +1,4 @@
-import type { CategoryId } from './types'
+import type { CategoryId } from '@advui/core/meta'
 
 /**
  * Components on the roadmap that are not implemented yet. They appear in the

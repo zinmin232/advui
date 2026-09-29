@@ -10,8 +10,37 @@ const require = createRequire(import.meta.url)
 const ts = require('typescript')
 
 export const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..')
-export const uiSrc = join(repoRoot, 'packages', 'ui', 'src')
-export const componentsDir = join(uiSrc, 'components')
+
+/**
+ * Folders of the published component packages, in dependency order: each may
+ * import the ones before it. Every package keeps its components in
+ * `src/components/<slug>/`; the catalog, registry and generator read them all.
+ */
+export const PACKAGE_DIRS = ['packages/ui']
+
+export const componentPackages = PACKAGE_DIRS.map((dir) => {
+  const root = join(repoRoot, dir)
+  const { name, description } = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
+  const src = join(root, 'src')
+  return { dir, name, description, src, componentsDir: join(src, 'components') }
+})
+
+/** `@advui/core`: owns the shared hooks, utils and provider. */
+export const corePackage = componentPackages[0]
+export const uiSrc = corePackage.src
+export const componentsDir = corePackage.componentsDir
+
+/** The private package that holds the generated catalog for the docs and Expo. */
+export const catalogSrc = join(repoRoot, 'packages', 'catalog', 'src')
+
+export function packageByName(name) {
+  const pkg = componentPackages.find((candidate) => candidate.name === name)
+  if (!pkg) {
+    const names = componentPackages.map((candidate) => candidate.name).join(', ')
+    throw new Error(`Unknown package "${name}". Use one of: ${names}`)
+  }
+  return pkg
+}
 
 export const toPosix = (p) => p.split(sep).join('/')
 
@@ -23,28 +52,35 @@ export function loadMetaFile(file) {
   })
   const module = { exports: {} }
   const localRequire = (id) => {
-    if (id.endsWith('meta/types')) return { defineMeta: (meta) => meta, categories: [] }
-    throw new Error(`${file}: metadata files may only import ../../meta/types (found "${id}")`)
+    // Core's metadata imports its own types; the other packages import core's.
+    if (id.endsWith('meta/types') || id === `${corePackage.name}/meta`)
+      return { defineMeta: (meta) => meta, categories: [] }
+    throw new Error(
+      `${file}: metadata files may only import defineMeta from ${corePackage.name}/meta (found "${id}")`,
+    )
   }
   new Function('module', 'exports', 'require', outputText)(module, module.exports, localRequire)
   return module.exports.default
 }
 
-/** Every component metadata file with its folder. */
+/** Every component metadata file with its package and folder. */
 export function findMetaFiles() {
   const result = []
-  for (const dir of readdirSync(componentsDir)) {
-    const full = join(componentsDir, dir)
-    if (!statSync(full).isDirectory()) continue
-    for (const file of readdirSync(full)) {
-      if (file.endsWith('.meta.ts')) result.push({ dir, file: join(full, file) })
+  for (const pkg of componentPackages) {
+    if (!existsSync(pkg.componentsDir)) continue
+    for (const dir of readdirSync(pkg.componentsDir)) {
+      const full = join(pkg.componentsDir, dir)
+      if (!statSync(full).isDirectory()) continue
+      for (const file of readdirSync(full)) {
+        if (file.endsWith('.meta.ts')) result.push({ pkg, dir, file: join(full, file) })
+      }
     }
   }
   return result.sort((a, b) => a.file.localeCompare(b.file))
 }
 
 export function loadCatalog() {
-  return findMetaFiles().map(({ dir, file }) => ({ dir, file, meta: loadMetaFile(file) }))
+  return findMetaFiles().map(({ pkg, dir, file }) => ({ pkg, dir, file, meta: loadMetaFile(file) }))
 }
 
 export const CATEGORY_IDS = [
@@ -65,7 +101,7 @@ export const STATUSES = ['stable', 'beta', 'experimental', 'deprecated', 'planne
 
 /** Reads roadmap slugs without evaluating TS (simple, stable format). */
 export function roadmapSlugs() {
-  const source = readFileSync(join(uiSrc, 'meta', 'roadmap.ts'), 'utf8')
+  const source = readFileSync(join(catalogSrc, 'roadmap.ts'), 'utf8')
   return [...source.matchAll(/slug: '([^']+)'/g)].map((m) => m[1])
 }
 
@@ -74,7 +110,7 @@ export function validateCatalog(entries) {
   const problems = []
   const slugs = new Set()
   const planned = new Set(roadmapSlugs())
-  for (const { dir, file, meta } of entries) {
+  for (const { pkg, dir, file, meta } of entries) {
     const where = toPosix(relative(repoRoot, file))
     if (!meta || typeof meta !== 'object') {
       problems.push(`${where}: no default export`)
@@ -93,10 +129,11 @@ export function validateCatalog(entries) {
     if (!meta.platforms?.length) problems.push(`${where}: "platforms" is empty`)
     if (!meta.accessibility?.length) problems.push(`${where}: document an accessibility strategy`)
     for (const f of meta.files ?? []) {
-      if (!existsSync(join(uiSrc, f))) problems.push(`${where}: listed file "${f}" does not exist`)
+      if (!existsSync(join(pkg.src, f)))
+        problems.push(`${where}: listed file "${f}" does not exist`)
     }
     for (const example of meta.examples ?? []) {
-      const exampleFile = join(componentsDir, dir, 'examples', `${example.name}.tsx`)
+      const exampleFile = join(pkg.componentsDir, dir, 'examples', `${example.name}.tsx`)
       if (!existsSync(exampleFile)) problems.push(`${where}: example "${example.name}" has no file`)
     }
   }
@@ -109,18 +146,20 @@ export function validateCatalog(entries) {
   }
   // Every example file must be referenced by a meta in the same folder.
   const byDir = new Map()
-  for (const { dir, meta } of entries) {
-    const names = byDir.get(dir) ?? new Set()
+  for (const { pkg, dir, meta } of entries) {
+    const key = join(pkg.componentsDir, dir)
+    const names = byDir.get(key) ?? new Set()
     for (const e of meta?.examples ?? []) names.add(e.name)
-    byDir.set(dir, names)
+    byDir.set(key, names)
   }
-  for (const [dir, names] of byDir) {
-    const exDir = join(componentsDir, dir, 'examples')
+  for (const [folder, names] of byDir) {
+    const exDir = join(folder, 'examples')
     if (!existsSync(exDir)) continue
     for (const f of readdirSync(exDir)) {
       const name = f.replace(/\.tsx$/, '')
       if (f.endsWith('.tsx') && !names.has(name)) {
-        problems.push(`components/${dir}/examples/${f}: not listed in any ${dir} metadata file`)
+        const where = toPosix(relative(repoRoot, join(exDir, f)))
+        problems.push(`${where}: not listed in any metadata file in its folder`)
       }
     }
   }

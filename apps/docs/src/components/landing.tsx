@@ -18,7 +18,7 @@ import {
   VStack,
   toast,
 } from '@advui/core'
-import { components } from '@advui/core/meta'
+import { components } from '@advui/catalog'
 import {
   ArrowRightIcon,
   CheckCircleIcon,

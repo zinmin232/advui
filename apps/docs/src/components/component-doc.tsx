@@ -1,6 +1,6 @@
 'use client'
 
-import type { ComponentMeta, Platform, PartDoc } from '@advui/core/meta'
+import type { ComponentMeta, Platform, PartDoc } from '@advui/catalog'
 import { Badge, Button, Card, Grid, HStack, Tabs, Text, VStack } from '@advui/core'
 import { ExternalLinkIcon, GlobeIcon, SmartphoneIcon } from '@advui/icons'
 import Link from 'next/link'

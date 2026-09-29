@@ -10,6 +10,7 @@
   "platforms": [
     "web"
   ],
+  "package": "@advui/core",
   "files": [
     {
       "path": "components/tooltip/Tooltip.tsx",

@@ -10,8 +10,8 @@ apps/docs/public/r
 playwright-report
 test-results
 # generated
-packages/ui/src/meta/index.ts
-packages/ui/src/meta/examples.ts
+packages/catalog/src/index.ts
+packages/catalog/src/examples.ts
 packages/icons/src/generated.ts
 packages/icons/src/icons.ts
 apps/docs/e2e/*-snapshots

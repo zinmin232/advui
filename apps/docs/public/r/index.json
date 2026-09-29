@@ -55,6 +55,7 @@
       "description": "Vertically stacked sections that expand to reveal their content, such as FAQs or grouped settings.",
       "category": "data-display",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -71,6 +72,7 @@
       "description": "Interrupts the user to confirm an important or destructive action before it happens.",
       "category": "feedback",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
         "dialog",
@@ -84,6 +86,7 @@
       "description": "An inline message that draws attention without interrupting the task.",
       "category": "feedback",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -98,6 +101,7 @@
       "description": "A line chart with a light wash under each line, for totals and stacked parts over time.",
       "category": "charts",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
         "charts"
@@ -110,6 +114,7 @@
       "description": "Keeps content at a fixed width-to-height ratio as the width changes, for images, video and maps.",
       "category": "layout",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": []
     },
@@ -120,6 +125,7 @@
       "description": "Plays a sound with a play button, a seek bar, skip buttons and a speed control, the same on every platform.",
       "category": "media",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -138,6 +144,7 @@
       "description": "A text field with suggestions; any text is a valid value.",
       "category": "forms",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
         "@advui/theme",
@@ -156,6 +163,7 @@
       "description": "A profile image with an automatic initials fallback.",
       "category": "foundations",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": []
     },
@@ -166,6 +174,7 @@
       "description": "A small label for status, counts or categories.",
       "category": "foundations",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -180,6 +189,7 @@
       "description": "Compares values across categories as columns or bars, grouped or stacked.",
       "category": "charts",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
         "charts"
@@ -192,6 +202,7 @@
       "description": "Shows where the current page sits in the hierarchy, with links back up to each level.",
       "category": "navigation",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -204,6 +215,7 @@
       "description": "Groups related buttons, joined into one control or spaced apart, such as a split button or a set of actions.",
       "category": "buttons",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
         "button"
@@ -216,6 +228,7 @@
       "description": "Triggers an action or event, such as submitting a form or opening a dialog.",
       "category": "buttons",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -232,6 +245,7 @@
       "description": "A month grid for picking a day or a range, with limits and disabled days.",
       "category": "data-display",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -248,6 +262,7 @@
       "description": "A surface that groups related content and actions.",
       "category": "data-display",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/theme"
       ],
@@ -263,6 +278,7 @@
       "description": "Lets users select one or more options, or toggle a single setting before submitting.",
       "category": "forms",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -275,6 +291,7 @@
       "description": "A compact element for a filter, an entered value such as a recipient, or a suggested action.",
       "category": "data-display",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -290,6 +307,7 @@
       "description": "A ring that fills as a task completes, for tight spaces and dashboards. Without a value it spins.",
       "category": "feedback",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -304,6 +322,7 @@
       "description": "Shows and hides a section with one trigger, such as \"Show 3 more\" or \"Advanced options\".",
       "category": "data-display",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
         "hooks"
@@ -316,6 +335,7 @@
       "description": "A select you can type in to filter long lists of options.",
       "category": "forms",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
         "@advui/theme",
@@ -335,6 +355,7 @@
       "description": "A searchable list of actions in a dialog, opened with ⌘K or Ctrl+K.",
       "category": "advanced",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -351,6 +372,7 @@
       "description": "Actions for an area, opened with a right-click on desktop and a long-press on touch screens.",
       "category": "overlay",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
         "dropdown-menu"
@@ -363,6 +385,7 @@
       "description": "A spreadsheet-like grid: move between cells with the arrow keys and edit values in place, with validation.",
       "category": "advanced",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
         "hooks",
@@ -377,6 +400,7 @@
       "description": "A table driven by data and columns, with sorting, search, row selection and pagination.",
       "category": "data-display",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -397,6 +421,7 @@
       "description": "A field that opens a calendar in a popover, or a bottom sheet on phones.",
       "category": "forms",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -416,6 +441,7 @@
       "description": "A field that opens a range calendar: pick a start, then an end.",
       "category": "forms",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -436,6 +462,7 @@
       "description": "A modal window for focused tasks that require the user’s attention.",
       "category": "overlay",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
         "@advui/theme"
@@ -453,6 +480,7 @@
       "description": "A modal panel that slides in from an edge of the screen, for navigation, filters or details.",
       "category": "overlay",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
         "@advui/theme"
@@ -470,6 +498,7 @@
       "description": "A list of actions or options that opens from a button.",
       "category": "navigation",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
         "@advui/theme"
@@ -486,6 +515,7 @@
       "description": "A placeholder for an empty list, search or page, with the action that fills it.",
       "category": "feedback",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -500,6 +530,7 @@
       "description": "Shown in place of content that failed to load, with a retry button.",
       "category": "feedback",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -516,6 +547,7 @@
       "description": "The primary action of a screen, such as Compose or New, floating above the content.",
       "category": "buttons",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
         "@advui/theme"
@@ -531,6 +563,7 @@
       "description": "A large area to drop files on (web) or tap to pick them, with the files listed below.",
       "category": "advanced",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -547,6 +580,7 @@
       "description": "A button that opens the file picker, with the picked files listed below.",
       "category": "advanced",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -565,6 +599,7 @@
       "description": "A label, one control, help text and an error message, wired together.",
       "category": "forms",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
         "hooks",
@@ -579,6 +614,7 @@
       "description": "Lays out a form, with an optional title, description and footer, and wires up submit, loading and disabled states. Field state and validation stay with your app or form library.",
       "category": "forms",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/utils"
       ],
@@ -596,6 +632,7 @@
       "description": "A preview card that appears when a pointer rests on a link or keyboard focus reaches it.",
       "category": "overlay",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/theme",
         "@advui/utils"
@@ -611,6 +648,7 @@
       "description": "A square, icon-only button for compact toolbars and headers.",
       "category": "buttons",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
         "button"
@@ -623,6 +661,7 @@
       "description": "A grid of thumbnails that open a viewer with previous and next.",
       "category": "media",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -642,6 +681,7 @@
       "description": "A picture in a box of a set size or ratio, with a placeholder and a fallback.",
       "category": "media",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -654,6 +694,7 @@
       "description": "A single-line text field.",
       "category": "forms",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": []
     },
@@ -664,6 +705,7 @@
       "description": "A card for one key figure on a dashboard, with its change and an icon.",
       "category": "data-display",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -680,6 +722,7 @@
       "description": "An accessible label linked to a form control.",
       "category": "forms",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": []
     },
@@ -690,6 +733,7 @@
       "description": "Centers page content with a max width and responsive side padding.",
       "category": "layout",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/theme"
       ],
@@ -702,6 +746,7 @@
       "description": "Equal-width responsive columns that work identically on web and native.",
       "category": "layout",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": []
     },
@@ -712,6 +757,7 @@
       "description": "Flexbox primitives: Box, Stack, HStack, VStack, Center and Spacer.",
       "category": "layout",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": []
     },
@@ -722,6 +768,7 @@
       "description": "Shows change over an ordered axis, such as months, as one or more lines.",
       "category": "charts",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
         "charts"
@@ -734,6 +781,7 @@
       "description": "A vertical list of rows with a leading visual, text and trailing meta.",
       "category": "data-display",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -750,6 +798,7 @@
       "description": "A button that displays a loading indicator and prevents interaction while an asynchronous action is in progress.",
       "category": "buttons",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -765,6 +814,7 @@
       "description": "An always-visible list of actions or destinations, with icons, groups and a selected item.",
       "category": "navigation",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
         "@advui/utils",
@@ -782,6 +832,7 @@
       "description": "Pick several options from a searchable list; picks show as chips.",
       "category": "forms",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
         "@advui/theme",
@@ -803,6 +854,7 @@
       "description": "Switches between three to five top-level destinations of an app, at the bottom of the screen on phones.",
       "category": "navigation",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -817,6 +869,7 @@
       "description": "Site navigation with links and buttons that open panels of more links.",
       "category": "navigation",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
         "@advui/theme"
@@ -834,6 +887,7 @@
       "description": "A numeric field with − and + buttons, limits and a step.",
       "category": "forms",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -850,6 +904,7 @@
       "description": "A one-time-code field drawn as separate slots, with paste and SMS autofill.",
       "category": "forms",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
         "hooks",
@@ -863,6 +918,7 @@
       "description": "Previous and next buttons around the page numbers of a long list or table.",
       "category": "navigation",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -880,6 +936,7 @@
       "description": "A password field with a button that shows and hides the text.",
       "category": "forms",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -896,6 +953,7 @@
       "description": "Part-to-whole at a glance, as a donut or pie with up to six slices.",
       "category": "charts",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -910,6 +968,7 @@
       "description": "Rich, interactive content anchored to a trigger, such as quick settings, filters or a short form.",
       "category": "overlay",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/theme"
       ],
@@ -925,6 +984,7 @@
       "description": "Shows how much of a task is complete.",
       "category": "feedback",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": []
     },
@@ -935,6 +995,7 @@
       "description": "A set of mutually exclusive options where exactly one can be selected.",
       "category": "forms",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
         "hooks"
@@ -947,6 +1008,7 @@
       "description": "Panels side by side or stacked, with handles to drag, or move with the arrow keys, to resize them.",
       "category": "advanced",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -961,6 +1023,7 @@
       "description": "A Markdown editor with a formatting toolbar and a preview, plus Rich Text Content to show what was written.",
       "category": "advanced",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -980,6 +1043,7 @@
       "description": "A box that scrolls its content within a set height or width. On web its scrollbars are thin and in the theme colors.",
       "category": "layout",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": []
     },
@@ -990,6 +1054,7 @@
       "description": "A search field with a magnifier, a clear button and a loading state.",
       "category": "advanced",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -1007,6 +1072,7 @@
       "description": "Choose one option from a list — a dropdown on desktop, a bottom sheet on touch devices.",
       "category": "forms",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
         "@advui/theme"
@@ -1023,6 +1089,7 @@
       "description": "A thin line that divides content horizontally or vertically.",
       "category": "foundations",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": []
     },
@@ -1033,6 +1100,7 @@
       "description": "A panel that slides up from the bottom of the screen for extra actions, details or a short form.",
       "category": "overlay",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
         "@tamagui/dismissable",
@@ -1051,6 +1119,7 @@
       "description": "App navigation down the side of the screen, collapsible to an icon rail.",
       "category": "navigation",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -1068,6 +1137,7 @@
       "description": "A pulsing placeholder that previews the shape of loading content.",
       "category": "foundations",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": []
     },
@@ -1078,6 +1148,7 @@
       "description": "Pick a number, or a range, by dragging a thumb along a track.",
       "category": "forms",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/theme"
       ],
@@ -1092,6 +1163,7 @@
       "description": "A brief message at the bottom of the screen about something the app did, with an optional action like Undo.",
       "category": "feedback",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
         "@advui/theme"
@@ -1107,6 +1179,7 @@
       "description": "An indeterminate loading indicator.",
       "category": "feedback",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -1119,6 +1192,7 @@
       "description": "One figure with its label, how it changed and a short note.",
       "category": "data-display",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -1134,6 +1208,7 @@
       "description": "Progress through a multi-step flow, such as a form wizard or checkout.",
       "category": "navigation",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -1149,6 +1224,7 @@
       "description": "An on/off toggle for settings that take effect immediately.",
       "category": "forms",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/theme"
       ],
@@ -1161,6 +1237,7 @@
       "description": "Rows and columns of data, with sortable headers, stripes and sideways scrolling.",
       "category": "data-display",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -1176,6 +1253,7 @@
       "description": "Switch between related panels of content within the same view.",
       "category": "navigation",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
         "@advui/theme"
@@ -1192,6 +1270,7 @@
       "description": "A multi-line text field for longer input.",
       "category": "forms",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
         "input"
@@ -1204,6 +1283,7 @@
       "description": "Hour, minute and optional AM/PM selects that produce an \"HH:mm\" time.",
       "category": "forms",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
         "select"
@@ -1216,6 +1296,7 @@
       "description": "Events in order along a vertical line, such as an activity feed or order history.",
       "category": "data-display",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -1230,6 +1311,7 @@
       "description": "Brief, non-blocking notifications triggered imperatively with `toast()`.",
       "category": "feedback",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
         "@advui/theme",
@@ -1248,6 +1330,7 @@
       "description": "A set of toggle buttons: pick one, like text alignment, or turn on several, like bold and italic.",
       "category": "buttons",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
         "hooks",
@@ -1261,6 +1344,7 @@
       "description": "A button that stays on or off, such as Bold in a text toolbar.",
       "category": "buttons",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -1276,6 +1360,7 @@
       "description": "A short hint shown when an element is hovered or focused.",
       "category": "overlay",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/utils"
       ],
@@ -1290,6 +1375,7 @@
       "description": "A hierarchy of items that open and close, such as folders or place codes.",
       "category": "advanced",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
@@ -1305,6 +1391,7 @@
       "description": "Text, Heading and Kbd components built on the type scale and semantic colors.",
       "category": "foundations",
       "status": "stable",
+      "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": []
     },
@@ -1315,6 +1402,7 @@
       "description": "A video with the platform’s own controls, a fixed aspect ratio, captions on web and an error state.",
       "category": "media",
       "status": "beta",
+      "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],

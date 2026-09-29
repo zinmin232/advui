@@ -1,6 +1,6 @@
 'use client'
 
-import type { ComponentMeta } from '@advui/core/meta'
+import type { ComponentMeta } from '@advui/catalog'
 import { Card, HStack, Text, VStack } from '@advui/core'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { View } from 'tamagui'

@@ -1,7 +1,7 @@
 'use client'
 
 import { Button, HStack, Tabs, Text, Tooltip, VStack } from '@advui/core'
-import { examples } from '@advui/core/examples'
+import { examples } from '@advui/catalog/examples'
 import { MonitorIcon, SmartphoneIcon } from '@advui/icons'
 import { useState } from 'react'
 import { View } from 'tamagui'

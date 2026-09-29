@@ -198,6 +198,9 @@ importers:
 
   apps/docs:
     dependencies:
+      '@advui/catalog':
+        specifier: workspace:*
+        version: link:../../packages/catalog
       '@advui/core':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -262,6 +265,9 @@ importers:
 
   apps/expo:
     dependencies:
+      '@advui/catalog':
+        specifier: workspace:*
+        version: link:../../packages/catalog
       '@advui/core':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -357,6 +363,31 @@ importers:
       '@advui/tsconfig':
         specifier: workspace:*
         version: link:../packages/tsconfig
+      '@types/react':
+        specifier: ~19.2.2
+        version: 19.2.18
+      react:
+        specifier: 19.2.3
+        version: 19.2.3
+      react-native:
+        specifier: 0.86.3
+        version: 0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1)
+      tamagui:
+        specifier: 2.7.7
+        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+
+  packages/catalog:
+    dependencies:
+      '@advui/core':
+        specifier: workspace:*
+        version: link:../ui
+    devDependencies:
+      '@advui/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@advui/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       '@types/react':
         specifier: ~19.2.2
         version: 19.2.18

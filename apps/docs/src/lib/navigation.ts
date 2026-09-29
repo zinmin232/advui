@@ -1,4 +1,4 @@
-import { type ComponentStatus, categories, components, roadmap } from '@advui/core/meta'
+import { type ComponentStatus, categories, components, roadmap } from '@advui/catalog'
 import { guides } from './guides'
 
 export interface NavItem {

@@ -1,4 +1,4 @@
-import { components, roadmap } from '@advui/core/meta'
+import { components, roadmap } from '@advui/catalog'
 import { appExamples } from '@advui/examples/meta'
 import { guides } from './guides'
 

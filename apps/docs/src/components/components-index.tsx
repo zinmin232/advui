@@ -1,6 +1,6 @@
 'use client'
 
-import type { CategoryMeta, ComponentMeta, RoadmapItem } from '@advui/core/meta'
+import type { CategoryMeta, ComponentMeta, RoadmapItem } from '@advui/catalog'
 import { Badge, Card, Grid, HStack, Input, Text, VStack } from '@advui/core'
 import { SearchIcon } from '@advui/icons'
 import Link from 'next/link'

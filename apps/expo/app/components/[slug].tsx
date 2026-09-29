@@ -1,6 +1,6 @@
 import { Badge, Card, HStack, Text, VStack } from '@advui/core'
-import { examples } from '@advui/core/examples'
-import { getComponent } from '@advui/core/meta'
+import { examples } from '@advui/catalog/examples'
+import { getComponent } from '@advui/catalog'
 import { Stack, useLocalSearchParams } from 'expo-router'
 import { ScrollView } from 'react-native'
 

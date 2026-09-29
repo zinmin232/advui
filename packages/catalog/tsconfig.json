@@ -1,0 +1,5 @@
+{
+  "extends": "@advui/tsconfig/base.json",
+  "compilerOptions": { "noEmit": true },
+  "include": ["src"]
+}

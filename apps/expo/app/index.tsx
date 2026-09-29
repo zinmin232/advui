@@ -1,5 +1,5 @@
 import { Badge, Card, HStack, Text, VStack } from '@advui/core'
-import { categories, components } from '@advui/core/meta'
+import { categories, components } from '@advui/catalog'
 import { appExamples } from '@advui/examples/meta'
 import { ChevronRightIcon, PaletteIcon, SmartphoneIcon } from '@advui/icons'
 import { Link, Stack } from 'expo-router'

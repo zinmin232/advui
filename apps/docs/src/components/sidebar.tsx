@@ -1,6 +1,6 @@
 'use client'
 
-import type { ComponentStatus } from '@advui/core/meta'
+import type { ComponentStatus } from '@advui/catalog'
 import { HStack, Text, VStack } from '@advui/core'
 import { ChevronRightIcon } from '@advui/icons'
 import Link from 'next/link'
