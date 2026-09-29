@@ -94,6 +94,11 @@ import LineChartMultiple from '../components/line-chart/examples/multiple'
 import ListBasic from '../components/list/examples/basic'
 import ListInteractive from '../components/list/examples/interactive'
 import ListWithAvatars from '../components/list/examples/with-avatars'
+import LoadingButtonBasic from '../components/loading-button/examples/basic'
+import LoadingButtonLoadingText from '../components/loading-button/examples/loading-text'
+import LoadingButtonCustomSpinner from '../components/loading-button/examples/custom-spinner'
+import LoadingButtonSpinnerPosition from '../components/loading-button/examples/spinner-position'
+import LoadingButtonAsync from '../components/loading-button/examples/async'
 import MenuBasic from '../components/menu/examples/basic'
 import MenuActions from '../components/menu/examples/actions'
 import MultiSelectBasic from '../components/multi-select/examples/basic'
@@ -355,6 +360,13 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': ListBasic,
     'interactive': ListInteractive,
     'with-avatars': ListWithAvatars,
+  },
+  'loading-button': {
+    'basic': LoadingButtonBasic,
+    'loading-text': LoadingButtonLoadingText,
+    'custom-spinner': LoadingButtonCustomSpinner,
+    'spinner-position': LoadingButtonSpinnerPosition,
+    'async': LoadingButtonAsync,
   },
   'menu': {
     'basic': MenuBasic,

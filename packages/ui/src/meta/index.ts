@@ -45,6 +45,7 @@ import kpiCardMeta from '../components/kpi-card/kpi-card.meta'
 import labelMeta from '../components/label/label.meta'
 import lineChartMeta from '../components/line-chart/line-chart.meta'
 import listMeta from '../components/list/list.meta'
+import loadingButtonMeta from '../components/loading-button/loading-button.meta'
 import menuMeta from '../components/menu/menu.meta'
 import multiSelectMeta from '../components/multi-select/multi-select.meta'
 import navigationBarMeta from '../components/navigation-bar/navigation-bar.meta'
@@ -134,6 +135,7 @@ export const components: ComponentMeta[] = [
   labelMeta,
   lineChartMeta,
   listMeta,
+  loadingButtonMeta,
   menuMeta,
   multiSelectMeta,
   navigationBarMeta,
