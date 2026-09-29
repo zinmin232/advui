@@ -1,0 +1,67 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "loading-button",
+  "title": "Loading Button",
+  "type": "registry:component",
+  "description": "A button that displays a loading indicator and prevents interaction while an asynchronous action is in progress.",
+  "category": "buttons",
+  "status": "beta",
+  "since": "0.6.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "files": [
+    {
+      "path": "components/loading-button/LoadingButton.tsx",
+      "type": "registry:ui",
+      "content": "import { useIconDefaults } from '@advui/icons'\nimport { type ReactNode, forwardRef } from 'react'\nimport { type TamaguiElement, View } from 'tamagui'\nimport { Button, type ButtonProps } from '../button/Button'\nimport { Spinner } from '../spinner'\n\nexport type SpinnerPosition = 'left' | 'right'\n\nexport interface LoadingButtonProps extends ButtonProps {\n  /** Shows the spinner, sets `aria-busy` and blocks presses. The parent owns this state. */\n  loading?: boolean\n  /** Replaces the label while loading, e.g. \"Saving…\". Default: the label stays. */\n  loadingText?: ReactNode\n  /** Replaces the default spinner. Pass an element, not text. */\n  spinner?: ReactNode\n  /**\n   * Where the spinner goes; it takes the place of the icon on that side.\n   * Default: `left`, or `right` when the button has only `iconAfter`.\n   */\n  spinnerPosition?: SpinnerPosition\n}\n\n/** The Button's spinner in the label color, which Button provides to icons. */\nfunction ButtonSpinner() {\n  const { color } = useIconDefaults()\n  // Decorative: the button reports busy itself. Without its own label and\n  // role it cannot leak \"Loading\" into the button's name on native either.\n  return <Spinner size=\"sm\" color={color} accessible={false} role=\"none\" aria-label={undefined} />\n}\n\n/**\n * A Button for asynchronous actions. While `loading` it shows a spinner,\n * optionally swaps the label for `loadingText`, and ignores presses, clicks\n * and keys, so an action cannot be submitted twice.\n *\n * @example\n * <LoadingButton loading={saving} loadingText=\"Saving…\" onPress={save}>Save</LoadingButton>\n */\nexport const LoadingButton = forwardRef<TamaguiElement, LoadingButtonProps>(function LoadingButton(\n  {\n    loading = false,\n    loadingText,\n    spinner,\n    spinnerPosition,\n    disabled = false,\n    icon,\n    iconAfter,\n    children,\n    ...props\n  },\n  ref,\n) {\n  if (!loading) {\n    return (\n      <Button ref={ref} disabled={disabled} icon={icon} iconAfter={iconAfter} {...props}>\n        {children}\n      </Button>\n    )\n  }\n\n  const position = spinnerPosition ?? (iconAfter != null && icon == null ? 'right' : 'left')\n  // Hidden from assistive technology: the button itself reports busy, and a\n  // named progressbar inside it would be read as part of its name.\n  const indicator = <View aria-hidden>{spinner ?? <ButtonSpinner />}</View>\n\n  return (\n    <Button\n      ref={ref}\n      {...props}\n      // Button's own `loading` always draws its spinner on the left, so the\n      // state is set here: `disabled` blocks presses on every platform.\n      disabled\n      aria-busy\n      icon={position === 'left' ? indicator : icon}\n      iconAfter={position === 'right' ? indicator : iconAfter}\n    >\n      {loadingText ?? children}\n    </Button>\n  )\n})\n"
+    },
+    {
+      "path": "components/loading-button/index.ts",
+      "type": "registry:ui",
+      "content": "export { LoadingButton, type LoadingButtonProps, type SpinnerPosition } from './LoadingButton'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { HStack, LoadingButton } from '@advui/core'\n\nexport default function LoadingButtonBasic() {\n  return (\n    <HStack gap=\"$2\" flexWrap=\"wrap\">\n      <LoadingButton>Save</LoadingButton>\n      <LoadingButton loading>Save</LoadingButton>\n    </HStack>\n  )\n}\n"
+    },
+    {
+      "name": "loading-text",
+      "title": "Loading text",
+      "code": "import { HStack, LoadingButton } from '@advui/core'\n\nexport default function LoadingButtonLoadingText() {\n  return (\n    <HStack gap=\"$2\" flexWrap=\"wrap\">\n      <LoadingButton loading loadingText=\"Saving…\">\n        Save\n      </LoadingButton>\n      <LoadingButton variant=\"outline\" loading loadingText=\"Uploading 5W data…\">\n        Upload\n      </LoadingButton>\n    </HStack>\n  )\n}\n"
+    },
+    {
+      "name": "custom-spinner",
+      "title": "Custom spinner",
+      "code": "import { HStack, LoadingButton } from '@advui/core'\nimport { LoaderIcon } from '@advui/icons'\n\nexport default function LoadingButtonCustomSpinner() {\n  return (\n    <HStack gap=\"$2\" flexWrap=\"wrap\">\n      {/* Icons inside the button take its size and label color. */}\n      <LoadingButton variant=\"secondary\" loading spinner={<LoaderIcon />}>\n        Sync partners\n      </LoadingButton>\n    </HStack>\n  )\n}\n"
+    },
+    {
+      "name": "spinner-position",
+      "title": "Spinner position",
+      "code": "import { HStack, LoadingButton } from '@advui/core'\nimport { ArrowRightIcon, DownloadIcon } from '@advui/icons'\n\nexport default function LoadingButtonSpinnerPosition() {\n  return (\n    <HStack gap=\"$2\" flexWrap=\"wrap\">\n      {/* The spinner takes the icon's place on its side. */}\n      <LoadingButton variant=\"outline\" loading icon={<DownloadIcon />}>\n        Export\n      </LoadingButton>\n      <LoadingButton loading spinnerPosition=\"right\" iconAfter={<ArrowRightIcon />}>\n        Continue\n      </LoadingButton>\n    </HStack>\n  )\n}\n"
+    },
+    {
+      "name": "async",
+      "title": "Async operation",
+      "code": "import { LoadingButton, Text, VStack } from '@advui/core'\nimport { useState } from 'react'\n\n// Stands in for a real request, e.g. saving a 5W activity.\nconst saveActivity = () => new Promise((resolve) => setTimeout(resolve, 1500))\n\nexport default function LoadingButtonAsync() {\n  const [loading, setLoading] = useState(false)\n  const [saved, setSaved] = useState(0)\n\n  const handleSave = async () => {\n    setLoading(true)\n    try {\n      await saveActivity()\n      setSaved((count) => count + 1)\n    } finally {\n      setLoading(false)\n    }\n  }\n\n  return (\n    <VStack gap=\"$2\" alignItems=\"flex-start\">\n      <LoadingButton loading={loading} loadingText=\"Saving…\" onPress={handleSave}>\n        Save activity\n      </LoadingButton>\n      {/* Presses while saving are ignored, so this counts each save once. */}\n      <Text size=\"sm\" tone=\"muted\" aria-live=\"polite\">\n        {saved === 0 ? 'Not saved yet.' : `Saved ${saved} time${saved === 1 ? '' : 's'}.`}\n      </Text>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/loading-button",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "button",
+    "spinner"
+  ],
+  "version": "0.5.0"
+}

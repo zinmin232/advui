@@ -726,6 +726,21 @@
       ]
     },
     {
+      "name": "loading-button",
+      "title": "Loading Button",
+      "type": "registry:component",
+      "description": "A button that displays a loading indicator and prevents interaction while an asynchronous action is in progress.",
+      "category": "buttons",
+      "status": "beta",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "button",
+        "spinner"
+      ]
+    },
+    {
       "name": "menu",
       "title": "Menu",
       "type": "registry:component",

@@ -104,6 +104,11 @@ one version.
   Markdown with the same styles; only `http(s)` and `mailto` links are kept.
 - Icons: grip, heading, link, numbered list, pause, play, quote, rotate,
   strikethrough and volume.
+- **Loading Button** (beta): a Button for asynchronous actions. While
+  `loading` it shows a spinner (or your own `spinner`) on the left or right
+  in place of that side's icon, can swap the label for `loadingText`, sets
+  `aria-busy` and ignores presses, clicks and keys, so an action cannot be
+  submitted twice. The parent owns the `loading` state.
 
 ## [0.5.0] - 2026-09-28
 

@@ -48,6 +48,7 @@ import { Input } from './input/Input'
 import { LineChart } from './line-chart/LineChart'
 import { KpiCard } from './kpi-card/KpiCard'
 import { List } from './list/List'
+import { LoadingButton } from './loading-button/LoadingButton'
 import { Menu } from './menu/Menu'
 import { MultiSelect } from './multi-select/MultiSelect'
 import { NavigationBar } from './navigation-bar/NavigationBar'
@@ -1047,6 +1048,25 @@ describe('native rendering', () => {
     // The table view is a real button and table.
     await fireEvent.press(screen.getAllByRole('button', { name: 'Show table' })[0]!)
     expect(screen.getAllByRole('button', { name: 'Hide table' })).toHaveLength(1)
+  })
+
+  it('LoadingButton blocks presses and reports busy while loading', async () => {
+    const onPress = jest.fn()
+    const { unmount } = await renderNative(<LoadingButton onPress={onPress}>Save</LoadingButton>)
+    await fireEvent.press(screen.getByRole('button', { name: 'Save' }))
+    expect(onPress).toHaveBeenCalledTimes(1)
+    await unmount()
+    await renderNative(
+      <LoadingButton loading loadingText="Saving…" onPress={onPress}>
+        Save
+      </LoadingButton>,
+    )
+    // The spinner stays out of the name.
+    const busy = screen.getByRole('button', { name: 'Saving…' })
+    expect(busy).toBeDisabled()
+    expect(busy).toBeBusy()
+    await fireEvent.press(busy)
+    expect(onPress).toHaveBeenCalledTimes(1)
   })
 
   it('Resizable handles are adjustable and resize from the accessibility actions', async () => {
