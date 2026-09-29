@@ -7,10 +7,6 @@ keyboard shortcuts, a preview and a character count. `RichTextContent` shows
 the same Markdown with the same styles; only `http(s)` and `mailto` links are
 kept.
 
-> Not on npm yet: `@advui/editor` will be published with the next release.
-> Until then, copy the editor into your app with the CLI:
-> `npx advui add rich-text-editor`.
-
 ```bash
 pnpm add @advui/editor @advui/core @advui/theme @advui/icons tamagui
 ```

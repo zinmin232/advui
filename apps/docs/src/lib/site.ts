@@ -11,11 +11,11 @@ export const siteConfig = {
   corePackage: '@advui/core',
   /**
    * Component packages that are not on npm yet. Their pages say so and point to
-   * the CLI. Remove a package once it is published (ROADMAP.md, Phase 6).
+   * the CLI. Remove a package once it is published.
    */
-  unpublishedPackages: ['@advui/data', '@advui/charts', '@advui/editor'] as string[],
+  unpublishedPackages: [] as string[],
   cliName: 'advui',
-  version: '0.5.0',
+  version: '0.6.0',
 }
 
 /** Path prefix when the site is served from a sub-folder (GitHub Pages: `/advui`). */

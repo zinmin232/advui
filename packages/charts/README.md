@@ -5,10 +5,6 @@ on web, iOS and Android. Charts draw SVG on web and use `react-native-svg` on
 iOS and Android. Each chart has a legend, tooltips (tap on touch screens), a
 screen-reader summary and a table view of its data.
 
-> Not on npm yet: `@advui/charts` will be published with the next release.
-> Until then, copy the charts into your app with the CLI:
-> `npx advui add bar-chart`.
-
 ```bash
 pnpm add @advui/charts @advui/data @advui/core @advui/theme @advui/icons tamagui
 # iOS and Android also need react-native-svg (Expo: npx expo install react-native-svg)

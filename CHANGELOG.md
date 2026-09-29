@@ -7,6 +7,12 @@ one version.
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-09-29
+
+`@advui/data`, `@advui/charts` and `@advui/editor` 0.5.0 were published by
+mistake before this release. They need `@advui/core` and `@advui/icons` 0.6.0
+and do not work; use 0.6.0 or later.
+
 ### Changed
 
 - **Components ship in four packages**, so apps install only what they use:

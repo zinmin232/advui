@@ -5,10 +5,6 @@ Components for showing and working with structured data in
 Table, Data Table (sorting, selection, pagination), Data Grid (editable cells),
 Tree View, Timeline, Stat and KPI Card.
 
-> Not on npm yet: `@advui/data` will be published with the next release.
-> Until then, copy the components into your app with the CLI:
-> `npx advui add data-table`.
-
 ```bash
 pnpm add @advui/data @advui/core @advui/theme @advui/icons tamagui
 ```

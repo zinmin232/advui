@@ -153,11 +153,6 @@ pnpm add @advui/charts    # charts (also installs @advui/data)
 pnpm add @advui/editor    # rich text editor
 ```
 
-`@advui/data`, `@advui/charts` and `@advui/editor` are **not on npm yet**:
-they will be published with the next release (0.6.0). Until then, add their
-components with the CLI (below). `@advui/core`, `@advui/theme`,
-`@advui/icons`, `@advui/utils` and the `advui` CLI are published.
-
 ```ts
 // tamagui.config.ts
 import { createUniversalConfig } from '@advui/theme'
