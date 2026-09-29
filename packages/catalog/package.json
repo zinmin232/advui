@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "@advui/charts": "workspace:*",
-    "@advui/core": "workspace:*"
+    "@advui/core": "workspace:*",
+    "@advui/data": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=19",

@@ -103,6 +103,122 @@
       ]
     },
     {
+      "name": "data-grid",
+      "title": "Data Grid",
+      "type": "registry:component",
+      "description": "A spreadsheet-like grid: move between cells with the arrow keys and edit values in place, with validation.",
+      "category": "advanced",
+      "status": "beta",
+      "package": "@advui/data",
+      "dependencies": [],
+      "registryDependencies": [
+        "hooks",
+        "input",
+        "typography"
+      ]
+    },
+    {
+      "name": "data-table",
+      "title": "Data Table",
+      "type": "registry:component",
+      "description": "A table driven by data and columns, with sorting, search, row selection and pagination.",
+      "category": "data-display",
+      "status": "beta",
+      "package": "@advui/data",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "checkbox",
+        "hooks",
+        "input",
+        "pagination",
+        "skeleton",
+        "table",
+        "typography"
+      ]
+    },
+    {
+      "name": "kpi-card",
+      "title": "KPI Card",
+      "type": "registry:component",
+      "description": "A card for one key figure on a dashboard, with its change and an icon.",
+      "category": "data-display",
+      "status": "beta",
+      "package": "@advui/data",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "card",
+        "skeleton",
+        "stat"
+      ]
+    },
+    {
+      "name": "stat",
+      "title": "Stat",
+      "type": "registry:component",
+      "description": "One figure with its label, how it changed and a short note.",
+      "category": "data-display",
+      "status": "beta",
+      "package": "@advui/data",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "typography",
+        "utils"
+      ]
+    },
+    {
+      "name": "table",
+      "title": "Table",
+      "type": "registry:component",
+      "description": "Rows and columns of data, with sortable headers, stripes and sideways scrolling.",
+      "category": "data-display",
+      "status": "beta",
+      "package": "@advui/data",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "typography",
+        "utils"
+      ]
+    },
+    {
+      "name": "timeline",
+      "title": "Timeline",
+      "type": "registry:component",
+      "description": "Events in order along a vertical line, such as an activity feed or order history.",
+      "category": "data-display",
+      "status": "beta",
+      "package": "@advui/data",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "typography"
+      ]
+    },
+    {
+      "name": "tree-view",
+      "title": "Tree View",
+      "type": "registry:component",
+      "description": "A hierarchy of items that open and close, such as folders or place codes.",
+      "category": "advanced",
+      "status": "beta",
+      "package": "@advui/data",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "typography"
+      ]
+    },
+    {
       "name": "accordion",
       "title": "Accordion",
       "type": "registry:component",
@@ -407,42 +523,6 @@
       ]
     },
     {
-      "name": "data-grid",
-      "title": "Data Grid",
-      "type": "registry:component",
-      "description": "A spreadsheet-like grid: move between cells with the arrow keys and edit values in place, with validation.",
-      "category": "advanced",
-      "status": "beta",
-      "package": "@advui/core",
-      "dependencies": [],
-      "registryDependencies": [
-        "hooks",
-        "input",
-        "typography"
-      ]
-    },
-    {
-      "name": "data-table",
-      "title": "Data Table",
-      "type": "registry:component",
-      "description": "A table driven by data and columns, with sorting, search, row selection and pagination.",
-      "category": "data-display",
-      "status": "beta",
-      "package": "@advui/core",
-      "dependencies": [
-        "@advui/icons"
-      ],
-      "registryDependencies": [
-        "checkbox",
-        "hooks",
-        "input",
-        "pagination",
-        "skeleton",
-        "table",
-        "typography"
-      ]
-    },
-    {
       "name": "date-picker",
       "title": "Date Picker",
       "type": "registry:component",
@@ -725,23 +805,6 @@
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": []
-    },
-    {
-      "name": "kpi-card",
-      "title": "KPI Card",
-      "type": "registry:component",
-      "description": "A card for one key figure on a dashboard, with its change and an icon.",
-      "category": "data-display",
-      "status": "beta",
-      "package": "@advui/core",
-      "dependencies": [
-        "@advui/icons"
-      ],
-      "registryDependencies": [
-        "card",
-        "skeleton",
-        "stat"
-      ]
     },
     {
       "name": "label",
@@ -1186,22 +1249,6 @@
       "registryDependencies": []
     },
     {
-      "name": "stat",
-      "title": "Stat",
-      "type": "registry:component",
-      "description": "One figure with its label, how it changed and a short note.",
-      "category": "data-display",
-      "status": "beta",
-      "package": "@advui/core",
-      "dependencies": [
-        "@advui/icons"
-      ],
-      "registryDependencies": [
-        "typography",
-        "utils"
-      ]
-    },
-    {
       "name": "stepper",
       "title": "Stepper",
       "type": "registry:component",
@@ -1229,22 +1276,6 @@
         "@advui/theme"
       ],
       "registryDependencies": []
-    },
-    {
-      "name": "table",
-      "title": "Table",
-      "type": "registry:component",
-      "description": "Rows and columns of data, with sortable headers, stripes and sideways scrolling.",
-      "category": "data-display",
-      "status": "beta",
-      "package": "@advui/core",
-      "dependencies": [
-        "@advui/icons"
-      ],
-      "registryDependencies": [
-        "typography",
-        "utils"
-      ]
     },
     {
       "name": "tabs",
@@ -1287,21 +1318,6 @@
       "dependencies": [],
       "registryDependencies": [
         "select"
-      ]
-    },
-    {
-      "name": "timeline",
-      "title": "Timeline",
-      "type": "registry:component",
-      "description": "Events in order along a vertical line, such as an activity feed or order history.",
-      "category": "data-display",
-      "status": "beta",
-      "package": "@advui/core",
-      "dependencies": [
-        "@advui/icons"
-      ],
-      "registryDependencies": [
-        "typography"
       ]
     },
     {
@@ -1366,22 +1382,6 @@
       ],
       "registryDependencies": [
         "hooks"
-      ]
-    },
-    {
-      "name": "tree-view",
-      "title": "Tree View",
-      "type": "registry:component",
-      "description": "A hierarchy of items that open and close, such as folders or place codes.",
-      "category": "advanced",
-      "status": "beta",
-      "package": "@advui/core",
-      "dependencies": [
-        "@advui/icons"
-      ],
-      "registryDependencies": [
-        "hooks",
-        "typography"
       ]
     },
     {

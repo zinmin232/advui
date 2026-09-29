@@ -55,6 +55,7 @@
   },
   "peerDependencies": {
     "@advui/core": "workspace:^",
+    "@advui/data": "workspace:^",
     "react": ">=19",
     "react-native": "*",
     "react-native-svg": ">=15",
@@ -74,6 +75,7 @@
     "@types/node": "^22.15.0",
     "@types/react": "~19.2.2",
     "@types/react-dom": "~19.2.2",
+    "@advui/data": "workspace:*",
     "@advui/eslint-config": "workspace:*",
     "@advui/tsconfig": "workspace:*",
     "@vitejs/plugin-react": "^6.1.1",

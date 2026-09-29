@@ -12,7 +12,7 @@
     "ios",
     "android"
   ],
-  "package": "@advui/core",
+  "package": "@advui/data",
   "files": [
     {
       "path": "components/kpi-card/KpiCard.tsx",
@@ -29,22 +29,22 @@
     {
       "name": "basic",
       "title": "Basic",
-      "code": "import { KpiCard } from '@advui/core'\nimport { CreditCardIcon } from '@advui/icons'\n\nexport default function KpiCardBasic() {\n  return (\n    <KpiCard\n      width=\"100%\"\n      maxWidth=\"$80\"\n      label=\"Total revenue\"\n      value=\"$45,231.89\"\n      delta=\"20.1%\"\n      trend=\"up\"\n      description=\"from last month\"\n      icon={<CreditCardIcon />}\n    />\n  )\n}\n"
+      "code": "import { KpiCard } from '@advui/data'\nimport { CreditCardIcon } from '@advui/icons'\n\nexport default function KpiCardBasic() {\n  return (\n    <KpiCard\n      width=\"100%\"\n      maxWidth=\"$80\"\n      label=\"Total revenue\"\n      value=\"$45,231.89\"\n      delta=\"20.1%\"\n      trend=\"up\"\n      description=\"from last month\"\n      icon={<CreditCardIcon />}\n    />\n  )\n}\n"
     },
     {
       "name": "grid",
       "title": "Dashboard row",
-      "code": "import { Grid, KpiCard } from '@advui/core'\nimport { BarChartIcon, PackageIcon, ShoppingCartIcon, UsersIcon } from '@advui/icons'\n\nexport default function KpiCardGrid() {\n  return (\n    <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap=\"$4\" width=\"100%\">\n      <KpiCard\n        label=\"Subscriptions\"\n        value=\"2,350\"\n        delta=\"180.1%\"\n        trend=\"up\"\n        description=\"from last month\"\n        icon={<UsersIcon />}\n      />\n      <KpiCard\n        label=\"Orders\"\n        value=\"12,234\"\n        delta=\"4.3%\"\n        trend=\"down\"\n        description=\"from last month\"\n        icon={<ShoppingCartIcon />}\n      />\n      <KpiCard\n        label=\"Returns\"\n        value=\"312\"\n        delta=\"11%\"\n        trend=\"down\"\n        tone=\"positive\"\n        description=\"fewer than last month\"\n        icon={<PackageIcon />}\n      />\n      <KpiCard\n        label=\"Active now\"\n        value=\"573\"\n        delta=\"0%\"\n        description=\"since last hour\"\n        icon={<BarChartIcon />}\n      />\n    </Grid>\n  )\n}\n"
+      "code": "import { Grid } from '@advui/core'\nimport { KpiCard } from '@advui/data'\nimport { BarChartIcon, PackageIcon, ShoppingCartIcon, UsersIcon } from '@advui/icons'\n\nexport default function KpiCardGrid() {\n  return (\n    <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap=\"$4\" width=\"100%\">\n      <KpiCard\n        label=\"Subscriptions\"\n        value=\"2,350\"\n        delta=\"180.1%\"\n        trend=\"up\"\n        description=\"from last month\"\n        icon={<UsersIcon />}\n      />\n      <KpiCard\n        label=\"Orders\"\n        value=\"12,234\"\n        delta=\"4.3%\"\n        trend=\"down\"\n        description=\"from last month\"\n        icon={<ShoppingCartIcon />}\n      />\n      <KpiCard\n        label=\"Returns\"\n        value=\"312\"\n        delta=\"11%\"\n        trend=\"down\"\n        tone=\"positive\"\n        description=\"fewer than last month\"\n        icon={<PackageIcon />}\n      />\n      <KpiCard\n        label=\"Active now\"\n        value=\"573\"\n        delta=\"0%\"\n        description=\"since last hour\"\n        icon={<BarChartIcon />}\n      />\n    </Grid>\n  )\n}\n"
     },
     {
       "name": "with-progress",
       "title": "With a progress bar",
-      "code": "import { KpiCard, Progress, Text } from '@advui/core'\n\nexport default function KpiCardWithProgress() {\n  return (\n    <KpiCard\n      width=\"100%\"\n      maxWidth=\"$80\"\n      variant=\"elevated\"\n      label=\"Quarterly target\"\n      value=\"$182,400\"\n      description=\"of $250,000\"\n    >\n      <Progress value={73} label=\"Quarterly target reached\" />\n      <Text size=\"xs\" tone=\"muted\">\n        73% reached, 24 days left\n      </Text>\n    </KpiCard>\n  )\n}\n"
+      "code": "import { Progress, Text } from '@advui/core'\nimport { KpiCard } from '@advui/data'\n\nexport default function KpiCardWithProgress() {\n  return (\n    <KpiCard\n      width=\"100%\"\n      maxWidth=\"$80\"\n      variant=\"elevated\"\n      label=\"Quarterly target\"\n      value=\"$182,400\"\n      description=\"of $250,000\"\n    >\n      <Progress value={73} label=\"Quarterly target reached\" />\n      <Text size=\"xs\" tone=\"muted\">\n        73% reached, 24 days left\n      </Text>\n    </KpiCard>\n  )\n}\n"
     },
     {
       "name": "loading",
       "title": "Loading",
-      "code": "import { KpiCard } from '@advui/core'\nimport { UsersIcon } from '@advui/icons'\n\nexport default function KpiCardLoading() {\n  return (\n    <KpiCard\n      width=\"100%\"\n      maxWidth=\"$80\"\n      loading\n      label=\"New customers\"\n      value=\"1,204\"\n      delta=\"6%\"\n      trend=\"up\"\n      description=\"from last week\"\n      icon={<UsersIcon />}\n    />\n  )\n}\n"
+      "code": "import { KpiCard } from '@advui/data'\nimport { UsersIcon } from '@advui/icons'\n\nexport default function KpiCardLoading() {\n  return (\n    <KpiCard\n      width=\"100%\"\n      maxWidth=\"$80\"\n      loading\n      label=\"New customers\"\n      value=\"1,204\"\n      delta=\"6%\"\n      trend=\"up\"\n      description=\"from last week\"\n      icon={<UsersIcon />}\n    />\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/kpi-card",

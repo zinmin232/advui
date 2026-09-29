@@ -17,6 +17,7 @@
     "@advui/catalog": "workspace:*",
     "@advui/charts": "workspace:*",
     "@advui/core": "workspace:*",
+    "@advui/data": "workspace:*",
     "@advui/examples": "workspace:*",
     "@advui/icons": "workspace:*",
     "@advui/theme": "workspace:*",

@@ -12,7 +12,7 @@
     "ios",
     "android"
   ],
-  "package": "@advui/core",
+  "package": "@advui/data",
   "files": [
     {
       "path": "components/timeline/Timeline.tsx",
@@ -29,17 +29,17 @@
     {
       "name": "basic",
       "title": "Basic",
-      "code": "import { Timeline } from '@advui/core'\n\nexport default function TimelineBasic() {\n  return (\n    <Timeline width=\"100%\" maxWidth=\"$96\">\n      <Timeline.Item\n        title=\"Assessment published\"\n        time=\"Sep 24\"\n        description=\"Shared on the website and with the cluster leads.\"\n      />\n      <Timeline.Item\n        title=\"Data cleaned\"\n        time=\"Sep 18\"\n        description=\"Duplicates removed and place codes matched.\"\n      />\n      <Timeline.Item title=\"Survey closed\" time=\"Sep 10\" />\n    </Timeline>\n  )\n}\n"
+      "code": "import { Timeline } from '@advui/data'\n\nexport default function TimelineBasic() {\n  return (\n    <Timeline width=\"100%\" maxWidth=\"$96\">\n      <Timeline.Item\n        title=\"Assessment published\"\n        time=\"Sep 24\"\n        description=\"Shared on the website and with the cluster leads.\"\n      />\n      <Timeline.Item\n        title=\"Data cleaned\"\n        time=\"Sep 18\"\n        description=\"Duplicates removed and place codes matched.\"\n      />\n      <Timeline.Item title=\"Survey closed\" time=\"Sep 10\" />\n    </Timeline>\n  )\n}\n"
     },
     {
       "name": "tones",
       "title": "Icons and tones",
-      "code": "import { Timeline } from '@advui/core'\nimport { CheckIcon, CircleIcon, PackageIcon, XIcon } from '@advui/icons'\n\nexport default function TimelineTones() {\n  return (\n    <Timeline width=\"100%\" maxWidth=\"$96\">\n      <Timeline.Item\n        tone=\"success\"\n        icon={<CheckIcon />}\n        title=\"Order placed\"\n        time=\"Mon, 09:12\"\n        description=\"Payment confirmed.\"\n      />\n      <Timeline.Item tone=\"success\" icon={<PackageIcon />} title=\"Packed\" time=\"Mon, 15:40\" />\n      <Timeline.Item\n        tone=\"error\"\n        icon={<XIcon />}\n        title=\"Delivery failed\"\n        time=\"Tue, 11:05\"\n        description=\"No one was at the address. We will try again tomorrow.\"\n      />\n      <Timeline.Item\n        tone=\"primary\"\n        icon={<CircleIcon />}\n        title=\"Out for delivery\"\n        time=\"Wed, 08:30\"\n        aria-current=\"step\"\n      />\n    </Timeline>\n  )\n}\n"
+      "code": "import { Timeline } from '@advui/data'\nimport { CheckIcon, CircleIcon, PackageIcon, XIcon } from '@advui/icons'\n\nexport default function TimelineTones() {\n  return (\n    <Timeline width=\"100%\" maxWidth=\"$96\">\n      <Timeline.Item\n        tone=\"success\"\n        icon={<CheckIcon />}\n        title=\"Order placed\"\n        time=\"Mon, 09:12\"\n        description=\"Payment confirmed.\"\n      />\n      <Timeline.Item tone=\"success\" icon={<PackageIcon />} title=\"Packed\" time=\"Mon, 15:40\" />\n      <Timeline.Item\n        tone=\"error\"\n        icon={<XIcon />}\n        title=\"Delivery failed\"\n        time=\"Tue, 11:05\"\n        description=\"No one was at the address. We will try again tomorrow.\"\n      />\n      <Timeline.Item\n        tone=\"primary\"\n        icon={<CircleIcon />}\n        title=\"Out for delivery\"\n        time=\"Wed, 08:30\"\n        aria-current=\"step\"\n      />\n    </Timeline>\n  )\n}\n"
     },
     {
       "name": "activity",
       "title": "Activity feed",
-      "code": "import { Avatar, Card, HStack, Text, Timeline } from '@advui/core'\n\nexport default function TimelineActivity() {\n  return (\n    <Timeline width=\"100%\" maxWidth=\"$96\">\n      <Timeline.Item tone=\"primary\" title=\"Nwe Ni commented\" time=\"2 hours ago\">\n        <Card variant=\"filled\" marginTop=\"$1\">\n          <Card.Content padding=\"$3\">\n            <Text size=\"sm\">The township totals now match the baseline tables.</Text>\n          </Card.Content>\n        </Card>\n      </Timeline.Item>\n      <Timeline.Item title=\"Aung Kyaw assigned the review\" time=\"Yesterday\">\n        <HStack gap=\"$2\" alignItems=\"center\">\n          <Avatar size=\"xs\" alt=\"Hla Min\" />\n          <Text size=\"sm\" tone=\"muted\">\n            Hla Min\n          </Text>\n        </HStack>\n      </Timeline.Item>\n      <Timeline.Item title=\"Report created\" time=\"Sep 20\" />\n    </Timeline>\n  )\n}\n"
+      "code": "import { Avatar, Card, HStack, Text } from '@advui/core'\nimport { Timeline } from '@advui/data'\n\nexport default function TimelineActivity() {\n  return (\n    <Timeline width=\"100%\" maxWidth=\"$96\">\n      <Timeline.Item tone=\"primary\" title=\"Nwe Ni commented\" time=\"2 hours ago\">\n        <Card variant=\"filled\" marginTop=\"$1\">\n          <Card.Content padding=\"$3\">\n            <Text size=\"sm\">The township totals now match the baseline tables.</Text>\n          </Card.Content>\n        </Card>\n      </Timeline.Item>\n      <Timeline.Item title=\"Aung Kyaw assigned the review\" time=\"Yesterday\">\n        <HStack gap=\"$2\" alignItems=\"center\">\n          <Avatar size=\"xs\" alt=\"Hla Min\" />\n          <Text size=\"sm\" tone=\"muted\">\n            Hla Min\n          </Text>\n        </HStack>\n      </Timeline.Item>\n      <Timeline.Item title=\"Report created\" time=\"Sep 20\" />\n    </Timeline>\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/timeline",

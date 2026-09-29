@@ -1,0 +1,6 @@
+{
+  "extends": "@advui/tsconfig/library.json",
+  "compilerOptions": { "outDir": "dist", "rootDir": "src" },
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/**/examples/**", "src/**/*.meta.ts"]
+}

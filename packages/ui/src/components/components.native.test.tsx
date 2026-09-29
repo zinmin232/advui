@@ -24,8 +24,6 @@ import { CircularProgress } from './circular-progress/CircularProgress'
 import { Collapsible } from './collapsible/Collapsible'
 import { Combobox } from './combobox/Combobox'
 import { CommandPalette } from './command-palette/CommandPalette'
-import { DataGrid } from './data-grid/DataGrid'
-import { DataTable } from './data-table/DataTable'
 import { DatePicker } from './date-picker/DatePicker'
 import { ContextMenu } from './context-menu/ContextMenu'
 import { Dialog } from './dialog/Dialog'
@@ -44,7 +42,6 @@ import { IconButton } from './icon-button/IconButton'
 import { Image } from './image/Image'
 import { ImageGallery } from './image-gallery/ImageGallery'
 import { Input } from './input/Input'
-import { KpiCard } from './kpi-card/KpiCard'
 import { List } from './list/List'
 import { LoadingButton } from './loading-button/LoadingButton'
 import { Menu } from './menu/Menu'
@@ -66,14 +63,10 @@ import { Sheet } from './sheet/Sheet'
 import { Sidebar } from './sidebar/Sidebar'
 import { Slider } from './slider/Slider'
 import { Snackbar } from './snackbar/Snackbar'
-import { Stat } from './stat/Stat'
 import { Stepper } from './stepper/Stepper'
 import { Switch } from './switch/Switch'
-import { Table } from './table/Table'
-import { Timeline } from './timeline/Timeline'
 import { Toaster, toast } from './toast/Toaster'
 import { Toggle } from './toggle/Toggle'
-import { TreeView } from './tree-view/TreeView'
 import { ToggleGroup } from './toggle-group/ToggleGroup'
 import { Heading } from './typography/Heading'
 import { Video } from './video/Video'
@@ -793,24 +786,6 @@ describe('native rendering', () => {
     setFilePicker(undefined)
   })
 
-  it('Stat and KpiCard read the trend as words, since the arrow is hidden', async () => {
-    await renderNative(
-      <>
-        <Stat>
-          <Stat.Label>Refunds</Stat.Label>
-          <Stat.Value>$1,092</Stat.Value>
-          <Stat.Delta trend="down" tone="positive">
-            3.1%
-          </Stat.Delta>
-        </Stat>
-        <KpiCard label="Revenue" value="$48,210" delta="12.5%" trend="up" loading={false} />
-      </>,
-    )
-    expect(screen.getByLabelText('Decreased by 3.1%')).toBeOnTheScreen()
-    expect(screen.getByLabelText('Increased by 12.5%')).toBeOnTheScreen()
-    expect(screen.getByText('$48,210')).toBeOnTheScreen()
-  })
-
   it('List: a pressable row is one button, and a disabled one says so', async () => {
     const onPress = jest.fn()
     await renderNative(
@@ -827,19 +802,6 @@ describe('native rendering', () => {
     await fireEvent.press(disabled)
     expect(onPress).toHaveBeenCalledTimes(1)
     expect(screen.getByText('2.4.0')).toBeOnTheScreen()
-  })
-
-  it('Timeline renders its events with hidden markers', async () => {
-    await renderNative(
-      <Timeline>
-        <Timeline.Item title="Published" time="Sep 24" icon={<PlusIcon />} tone="success" />
-        <Timeline.Item title="Survey closed" description="All responses in." />
-      </Timeline>,
-    )
-    expect(screen.getByText('Published')).toBeOnTheScreen()
-    expect(screen.getByText('All responses in.')).toBeOnTheScreen()
-    // The markers (and the success icon in one) are decorative.
-    expect(screen.queryAllByRole('img')).toHaveLength(0)
   })
 
   it('Pagination pages with named buttons and marks the current page selected', async () => {
@@ -872,79 +834,6 @@ describe('native rendering', () => {
     // Not reached yet: plain text, not a button.
     expect(screen.getByLabelText('Step 3 of 3: Review, not started')).toBeOnTheScreen()
     expect(screen.queryByRole('button', { name: /Review/ })).toBeNull()
-  })
-
-  it('Table sorts from a header button that says how the column is sorted', async () => {
-    const onSort = jest.fn()
-    await renderNative(
-      <Table aria-label="Townships" minWidth={640}>
-        <Table.Header>
-          <Table.Row>
-            <Table.Head sortDirection="descending" onSort={onSort}>
-              Population
-            </Table.Head>
-            <Table.Head>Region</Table.Head>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell align="end">687,867</Table.Cell>
-            <Table.Cell>Yangon</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>,
-    )
-    await fireEvent.press(screen.getByRole('button', { name: 'Population, sorted descending' }))
-    expect(onSort).toHaveBeenCalledTimes(1)
-    expect(screen.getByText('687,867')).toBeOnTheScreen()
-  })
-
-  it('DataTable sorts, selects and pages on native', async () => {
-    const onSelectedIdsChange = jest.fn()
-    await renderNative(
-      <DataTable
-        aria-label="Regions"
-        data={[
-          { id: 'a', name: 'Bago' },
-          { id: 'b', name: 'Ayeyarwady' },
-          { id: 'c', name: 'Chin' },
-        ]}
-        columns={[{ id: 'name', header: 'Name', sortable: true }]}
-        pageSize={2}
-        selectable
-        getRowLabel={(row) => row.name}
-        onSelectedIdsChange={onSelectedIdsChange}
-      />,
-    )
-    await fireEvent.press(screen.getByRole('button', { name: 'Name' }))
-    expect(screen.getByRole('button', { name: 'Name, sorted ascending' })).toBeOnTheScreen()
-    await fireEvent.press(screen.getByRole('checkbox', { name: 'Select Ayeyarwady' }))
-    expect(onSelectedIdsChange).toHaveBeenLastCalledWith(['b'])
-    await fireEvent.press(screen.getByRole('button', { name: 'Page 2' }))
-    expect(screen.getByText('Chin')).toBeOnTheScreen()
-    expect(screen.queryByText('Bago')).toBeNull()
-  })
-
-  it('TreeView items are buttons that report expanded and selected', async () => {
-    const onSelectedChange = jest.fn()
-    await renderNative(
-      <TreeView
-        aria-label="Files"
-        data={[
-          { id: 'reports', label: 'Reports', children: [{ id: 'q3', label: 'Q3 summary' }] },
-          { id: 'readme', label: 'Readme' },
-        ]}
-        onSelectedChange={onSelectedChange}
-      />,
-    )
-    const reports = screen.getByRole('button', { name: 'Reports' })
-    expect(reports).toBeCollapsed()
-    expect(screen.queryByRole('button', { name: 'Q3 summary' })).toBeNull()
-    await fireEvent.press(reports)
-    expect(screen.getByRole('button', { name: 'Reports' })).toBeExpanded()
-    expect(screen.getByRole('button', { name: 'Reports' })).toBeSelected()
-    await fireEvent.press(screen.getByRole('button', { name: 'Q3 summary' }))
-    expect(onSelectedChange).toHaveBeenLastCalledWith('q3')
   })
 
   it('NavigationMenu shows the open panel under the bar', async () => {
@@ -1081,28 +970,6 @@ describe('native rendering', () => {
     expect(onSizesChange).toHaveBeenLastCalledWith([35, 65])
     await fireEvent(handle, 'accessibilityAction', { nativeEvent: { actionName: 'activate' } })
     expect(onSizesChange).toHaveBeenLastCalledWith([0, 100])
-  })
-
-  it('DataGrid edits a cell from a tap and saves with the return key', async () => {
-    const onCellChange = jest.fn()
-    await renderNative(
-      <DataGrid
-        aria-label="Reach"
-        defaultData={[{ id: 'a', township: 'Hakha', reached: 4200 }]}
-        columns={[
-          { id: 'township', header: 'Township' },
-          { id: 'reached', header: 'Reached', type: 'number', editable: true },
-        ]}
-        onCellChange={onCellChange}
-      />,
-    )
-    expect(screen.getByLabelText('Township, Hakha: Hakha')).toBeOnTheScreen()
-    await fireEvent.press(screen.getByRole('button', { name: 'Reached, Hakha: 4200' }))
-    const field = screen.getByLabelText('Reached, Hakha')
-    await fireEvent.changeText(field, '4500')
-    await fireEvent(field, 'submitEditing')
-    expect(onCellChange).toHaveBeenCalledWith(expect.objectContaining({ value: 4500 }))
-    expect(screen.getByRole('button', { name: 'Reached, Hakha: 4500' })).toBeOnTheScreen()
   })
 
   it('Video uses the player from setVideoView, and says when there is none', async () => {

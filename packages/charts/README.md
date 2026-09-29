@@ -10,7 +10,7 @@ screen-reader summary and a table view of its data.
 > `npx advui add bar-chart`.
 
 ```bash
-pnpm add @advui/charts @advui/core @advui/theme @advui/icons tamagui
+pnpm add @advui/charts @advui/data @advui/core @advui/theme @advui/icons tamagui
 # iOS and Android also need react-native-svg (Expo: npx expo install react-native-svg)
 ```
 
@@ -32,8 +32,9 @@ import { BarChart } from '@advui/charts'
 ```
 
 Charts render inside the app's `UniversalProvider` from `@advui/core`, which
-is a peer dependency, as are `react`, `react-native`, `tamagui` and (on iOS and
-Android) `react-native-svg`. No charting library is added.
+is a peer dependency, as are `@advui/data` (the table view uses its Table),
+`react`, `react-native`, `tamagui` and (on iOS and Android) `react-native-svg`.
+No charting library is added.
 
 **Exports:** AreaChart, BarChart, LineChart, PieChart and their prop types.
 

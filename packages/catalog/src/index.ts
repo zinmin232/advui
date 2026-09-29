@@ -22,8 +22,8 @@ import comboboxMeta from '../../ui/src/components/combobox/combobox.meta'
 import commandPaletteMeta from '../../ui/src/components/command-palette/command-palette.meta'
 import containerMeta from '../../ui/src/components/layout/container.meta'
 import contextMenuMeta from '../../ui/src/components/context-menu/context-menu.meta'
-import dataGridMeta from '../../ui/src/components/data-grid/data-grid.meta'
-import dataTableMeta from '../../ui/src/components/data-table/data-table.meta'
+import dataGridMeta from '../../data/src/components/data-grid/data-grid.meta'
+import dataTableMeta from '../../data/src/components/data-table/data-table.meta'
 import datePickerMeta from '../../ui/src/components/date-picker/date-picker.meta'
 import dateRangePickerMeta from '../../ui/src/components/date-range-picker/date-range-picker.meta'
 import dialogMeta from '../../ui/src/components/dialog/dialog.meta'
@@ -42,7 +42,7 @@ import iconButtonMeta from '../../ui/src/components/icon-button/icon-button.meta
 import imageMeta from '../../ui/src/components/image/image.meta'
 import imageGalleryMeta from '../../ui/src/components/image-gallery/image-gallery.meta'
 import inputMeta from '../../ui/src/components/input/input.meta'
-import kpiCardMeta from '../../ui/src/components/kpi-card/kpi-card.meta'
+import kpiCardMeta from '../../data/src/components/kpi-card/kpi-card.meta'
 import labelMeta from '../../ui/src/components/label/label.meta'
 import lineChartMeta from '../../charts/src/components/line-chart/line-chart.meta'
 import listMeta from '../../ui/src/components/list/list.meta'
@@ -72,19 +72,19 @@ import sliderMeta from '../../ui/src/components/slider/slider.meta'
 import snackbarMeta from '../../ui/src/components/snackbar/snackbar.meta'
 import spinnerMeta from '../../ui/src/components/spinner/spinner.meta'
 import stackMeta from '../../ui/src/components/layout/stack.meta'
-import statMeta from '../../ui/src/components/stat/stat.meta'
+import statMeta from '../../data/src/components/stat/stat.meta'
 import stepperMeta from '../../ui/src/components/stepper/stepper.meta'
 import switchMeta from '../../ui/src/components/switch/switch.meta'
-import tableMeta from '../../ui/src/components/table/table.meta'
+import tableMeta from '../../data/src/components/table/table.meta'
 import tabsMeta from '../../ui/src/components/tabs/tabs.meta'
 import textareaMeta from '../../ui/src/components/textarea/textarea.meta'
 import timePickerMeta from '../../ui/src/components/time-picker/time-picker.meta'
-import timelineMeta from '../../ui/src/components/timeline/timeline.meta'
+import timelineMeta from '../../data/src/components/timeline/timeline.meta'
 import toastMeta from '../../ui/src/components/toast/toast.meta'
 import toggleMeta from '../../ui/src/components/toggle/toggle.meta'
 import toggleGroupMeta from '../../ui/src/components/toggle-group/toggle-group.meta'
 import tooltipMeta from '../../ui/src/components/tooltip/tooltip.meta'
-import treeViewMeta from '../../ui/src/components/tree-view/tree-view.meta'
+import treeViewMeta from '../../data/src/components/tree-view/tree-view.meta'
 import typographyMeta from '../../ui/src/components/typography/typography.meta'
 import videoMeta from '../../ui/src/components/video/video.meta'
 import type { CatalogComponent, ComponentPackage } from './types'
@@ -92,6 +92,7 @@ import type { CatalogComponent, ComponentPackage } from './types'
 /** Published component packages, in dependency order. */
 export const packages: ComponentPackage[] = [
   { name: '@advui/core', title: 'Core', description: 'Cross-platform React / React Native component library built on Tamagui.' },
+  { name: '@advui/data', title: 'Data', description: 'Data components for Adv UI: Table, Data Table, Data Grid, Tree View, Timeline, Stat and KPI Card, on web, iOS and Android.' },
   { name: '@advui/charts', title: 'Charts', description: 'Bar, line, area and pie charts for Adv UI: SVG on web, react-native-svg on iOS and Android, with a legend, tooltips and a table view.' },
 ]
 
@@ -119,8 +120,8 @@ export const components: CatalogComponent[] = [
   { ...commandPaletteMeta, package: '@advui/core' },
   { ...containerMeta, package: '@advui/core' },
   { ...contextMenuMeta, package: '@advui/core' },
-  { ...dataGridMeta, package: '@advui/core' },
-  { ...dataTableMeta, package: '@advui/core' },
+  { ...dataGridMeta, package: '@advui/data' },
+  { ...dataTableMeta, package: '@advui/data' },
   { ...datePickerMeta, package: '@advui/core' },
   { ...dateRangePickerMeta, package: '@advui/core' },
   { ...dialogMeta, package: '@advui/core' },
@@ -139,7 +140,7 @@ export const components: CatalogComponent[] = [
   { ...imageMeta, package: '@advui/core' },
   { ...imageGalleryMeta, package: '@advui/core' },
   { ...inputMeta, package: '@advui/core' },
-  { ...kpiCardMeta, package: '@advui/core' },
+  { ...kpiCardMeta, package: '@advui/data' },
   { ...labelMeta, package: '@advui/core' },
   { ...lineChartMeta, package: '@advui/charts' },
   { ...listMeta, package: '@advui/core' },
@@ -169,19 +170,19 @@ export const components: CatalogComponent[] = [
   { ...snackbarMeta, package: '@advui/core' },
   { ...spinnerMeta, package: '@advui/core' },
   { ...stackMeta, package: '@advui/core' },
-  { ...statMeta, package: '@advui/core' },
+  { ...statMeta, package: '@advui/data' },
   { ...stepperMeta, package: '@advui/core' },
   { ...switchMeta, package: '@advui/core' },
-  { ...tableMeta, package: '@advui/core' },
+  { ...tableMeta, package: '@advui/data' },
   { ...tabsMeta, package: '@advui/core' },
   { ...textareaMeta, package: '@advui/core' },
   { ...timePickerMeta, package: '@advui/core' },
-  { ...timelineMeta, package: '@advui/core' },
+  { ...timelineMeta, package: '@advui/data' },
   { ...toastMeta, package: '@advui/core' },
   { ...toggleMeta, package: '@advui/core' },
   { ...toggleGroupMeta, package: '@advui/core' },
   { ...tooltipMeta, package: '@advui/core' },
-  { ...treeViewMeta, package: '@advui/core' },
+  { ...treeViewMeta, package: '@advui/data' },
   { ...typographyMeta, package: '@advui/core' },
   { ...videoMeta, package: '@advui/core' },
 ]
