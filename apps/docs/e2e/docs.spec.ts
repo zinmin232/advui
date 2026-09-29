@@ -226,6 +226,7 @@ for (const path of [
   '/docs/components/audio-player',
   '/docs/components/rich-text-editor',
   '/docs/components/loading-button',
+  '/docs/components/form',
   '/examples/login',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {

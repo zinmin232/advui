@@ -3,7 +3,7 @@
   "name": "hooks",
   "title": "Hooks",
   "type": "registry:lib",
-  "description": "Shared hooks: controllable state, reduced-motion detection, the Android press ripple and Android back-button handling for overlays.",
+  "description": "Shared hooks: controllable state, reduced-motion detection, the Android press ripple, Android back-button handling for overlays and the surrounding Form’s status.",
   "files": [
     {
       "path": "hooks/useBackToClose.native.ts",
@@ -19,6 +19,11 @@
       "path": "hooks/useControllableState.ts",
       "type": "registry:hook",
       "content": "import { useCallback, useState } from 'react'\n\n/**\n * State that can be either controlled (`value` + `onChange`) or uncontrolled\n * (`defaultValue`). Every stateful component uses this so both styles work.\n */\nexport function useControllableState<T>({\n  value,\n  defaultValue,\n  onChange,\n}: {\n  value?: T\n  defaultValue: T\n  onChange?: (next: T) => void\n}): [T, (next: T | ((prev: T) => T)) => void] {\n  const [internal, setInternal] = useState(defaultValue)\n  const isControlled = value !== undefined\n  const current = isControlled ? value : internal\n\n  const setValue = useCallback(\n    (next: T | ((prev: T) => T)) => {\n      const resolved = typeof next === 'function' ? (next as (prev: T) => T)(current) : next\n      if (Object.is(resolved, current)) return\n      if (!isControlled) setInternal(resolved)\n      onChange?.(resolved)\n    },\n    [current, isControlled, onChange],\n  )\n\n  return [current, setValue]\n}\n"
+    },
+    {
+      "path": "hooks/useFormStatus.ts",
+      "type": "registry:hook",
+      "content": "import { type ReactNode, createContext, useContext } from 'react'\n\nexport interface FormStatus {\n  /** The form does not accept input. Form Field and Form.Submit follow it. */\n  disabled: boolean\n  /** The app is submitting the form. The app owns this state; the form only shows it. */\n  loading: boolean\n  /** What the form says while loading, e.g. \"Saving…\". */\n  loadingText?: ReactNode\n  /** Calls the form's `onSubmit`, unless it is disabled or loading. Does nothing outside a Form. */\n  submit: () => void\n}\n\nconst outsideForm: FormStatus = { disabled: false, loading: false, submit: () => {} }\n\n/** Set by Form; read by the controls inside it. */\nexport const FormStatusContext = createContext<FormStatus>(outsideForm)\n\n/**\n * The status of the surrounding Form, for your own fields and actions: a\n * custom submit button calls `submit`, a custom control follows `disabled`.\n */\nexport function useFormStatus(): FormStatus {\n  return useContext(FormStatusContext)\n}\n"
     },
     {
       "path": "hooks/useReducedMotion.native.ts",

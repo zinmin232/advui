@@ -1,5 +1,6 @@
 import { type ReactElement, type ReactNode, cloneElement, forwardRef, useId } from 'react'
 import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
+import { useFormStatus } from '../../hooks/useFormStatus'
 import { Label } from '../label/Label'
 import { Text } from '../typography/Text'
 
@@ -27,7 +28,7 @@ export interface FormFieldProps extends Omit<GetProps<typeof FormFieldFrame>, 'c
   error?: ReactNode
   /** Adds a required marker to the label and `aria-required` to the control. */
   required?: boolean
-  /** Dims the label and disables the control. */
+  /** Dims the label and disables the control. Also on while the surrounding Form is disabled. */
   disabled?: boolean
   /** One control: Input, Textarea, Password Input, Number Input… */
   children: ReactElement<ControlProps>
@@ -38,9 +39,19 @@ export interface FormFieldProps extends Omit<GetProps<typeof FormFieldFrame>, 'c
  * targets the control, and the help and error text describe it.
  */
 export const FormField = forwardRef<TamaguiElement, FormFieldProps>(function FormField(
-  { label, description, error, required = false, disabled = false, children, ...props },
+  {
+    label,
+    description,
+    error,
+    required = false,
+    disabled: disabledProp = false,
+    children,
+    ...props
+  },
   ref,
 ) {
+  const form = useFormStatus()
+  const disabled = disabledProp || form.disabled
   const generatedId = useId()
   const id = children.props.id ?? generatedId
   const descriptionId = `${id}-description`
