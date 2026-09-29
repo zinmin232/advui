@@ -60,7 +60,7 @@ import popoverMeta from '../../ui/src/components/popover/popover.meta'
 import progressMeta from '../../ui/src/components/progress/progress.meta'
 import radioGroupMeta from '../../ui/src/components/radio-group/radio-group.meta'
 import resizablePanelMeta from '../../ui/src/components/resizable-panel/resizable-panel.meta'
-import richTextEditorMeta from '../../ui/src/components/rich-text-editor/rich-text-editor.meta'
+import richTextEditorMeta from '../../editor/src/components/rich-text-editor/rich-text-editor.meta'
 import scrollAreaMeta from '../../ui/src/components/scroll-area/scroll-area.meta'
 import searchMeta from '../../ui/src/components/search/search.meta'
 import selectMeta from '../../ui/src/components/select/select.meta'
@@ -94,6 +94,7 @@ export const packages: ComponentPackage[] = [
   { name: '@advui/core', title: 'Core', description: 'Cross-platform React / React Native component library built on Tamagui.' },
   { name: '@advui/data', title: 'Data', description: 'Data components for Adv UI: Table, Data Table, Data Grid, Tree View, Timeline, Stat and KPI Card, on web, iOS and Android.' },
   { name: '@advui/charts', title: 'Charts', description: 'Bar, line, area and pie charts for Adv UI: SVG on web, react-native-svg on iOS and Android, with a legend, tooltips and a table view.' },
+  { name: '@advui/editor', title: 'Editor', description: 'Rich text editing for Adv UI: a Markdown editor with a formatting toolbar, shortcuts and a preview, and a viewer for the same Markdown, on web, iOS and Android.' },
 ]
 
 export const components: CatalogComponent[] = [
@@ -158,7 +159,7 @@ export const components: CatalogComponent[] = [
   { ...progressMeta, package: '@advui/core' },
   { ...radioGroupMeta, package: '@advui/core' },
   { ...resizablePanelMeta, package: '@advui/core' },
-  { ...richTextEditorMeta, package: '@advui/core' },
+  { ...richTextEditorMeta, package: '@advui/editor' },
   { ...scrollAreaMeta, package: '@advui/core' },
   { ...searchMeta, package: '@advui/core' },
   { ...selectMeta, package: '@advui/core' },

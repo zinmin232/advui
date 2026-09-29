@@ -11,12 +11,14 @@ import {
 } from '@advui/icons'
 import { type ReactElement, useId, useLayoutEffect, useRef, useState } from 'react'
 import { type GetProps, type TamaguiElement, View, XStack, isWeb } from 'tamagui'
-import { useControllableState } from '../../hooks/useControllableState'
-import { Button } from '../button/Button'
-import { IconButton } from '../icon-button/IconButton'
-import { fieldBoxStyle } from '../input/Input'
-import { Textarea } from '../textarea/Textarea'
-import { Text } from '../typography/Text'
+import {
+  Button,
+  IconButton,
+  Text,
+  Textarea,
+  fieldBoxStyle,
+  useControllableState,
+} from '@advui/core'
 import { RichTextContent } from './RichTextContent'
 import { type RichTextTool, type TextSelection, applyFormat, shortcuts } from './markdown'
 

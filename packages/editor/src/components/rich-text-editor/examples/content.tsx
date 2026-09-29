@@ -1,4 +1,4 @@
-import { RichTextContent } from '@advui/core'
+import { RichTextContent } from '@advui/editor'
 
 const note = `### Distribution plan
 

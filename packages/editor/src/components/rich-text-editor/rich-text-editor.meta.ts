@@ -1,4 +1,4 @@
-import { defineMeta } from '../../meta/types'
+import { defineMeta } from '@advui/core/meta'
 
 export default defineMeta({
   name: 'Rich Text Editor',
@@ -29,7 +29,7 @@ export default defineMeta({
     'components/rich-text-editor/index.ts',
   ],
   keywords: ['rich text', 'editor', 'markdown', 'wysiwyg', 'formatting', 'toolbar', 'comment'],
-  usage: `import { RichTextContent, RichTextEditor } from '@advui/core'
+  usage: `import { RichTextContent, RichTextEditor } from '@advui/editor'
 
 <RichTextEditor aria-label="Report" value={markdown} onValueChange={setMarkdown} />
 

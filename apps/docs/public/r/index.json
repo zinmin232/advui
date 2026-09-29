@@ -219,6 +219,26 @@
       ]
     },
     {
+      "name": "rich-text-editor",
+      "title": "Rich Text Editor",
+      "type": "registry:component",
+      "description": "A Markdown editor with a formatting toolbar and a preview, plus Rich Text Content to show what was written.",
+      "category": "advanced",
+      "status": "beta",
+      "package": "@advui/editor",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "button",
+        "hooks",
+        "icon-button",
+        "input",
+        "textarea",
+        "typography"
+      ]
+    },
+    {
       "name": "accordion",
       "title": "Accordion",
       "type": "registry:component",
@@ -1077,26 +1097,6 @@
       ],
       "registryDependencies": [
         "hooks"
-      ]
-    },
-    {
-      "name": "rich-text-editor",
-      "title": "Rich Text Editor",
-      "type": "registry:component",
-      "description": "A Markdown editor with a formatting toolbar and a preview, plus Rich Text Content to show what was written.",
-      "category": "advanced",
-      "status": "beta",
-      "package": "@advui/core",
-      "dependencies": [
-        "@advui/icons"
-      ],
-      "registryDependencies": [
-        "button",
-        "hooks",
-        "icon-button",
-        "input",
-        "textarea",
-        "typography"
       ]
     },
     {

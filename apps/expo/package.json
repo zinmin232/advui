@@ -18,6 +18,7 @@
     "@advui/charts": "workspace:*",
     "@advui/core": "workspace:*",
     "@advui/data": "workspace:*",
+    "@advui/editor": "workspace:*",
     "@advui/examples": "workspace:*",
     "@advui/icons": "workspace:*",
     "@advui/theme": "workspace:*",

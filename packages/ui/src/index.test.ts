@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import * as core from './index'
 
 describe('@advui/core public API', () => {
-  it('leaves data and chart components to their own packages', () => {
+  it('leaves data, chart and editor components to their own packages', () => {
     for (const name of [
       'Table',
       'DataTable',
@@ -15,6 +15,8 @@ describe('@advui/core public API', () => {
       'LineChart',
       'AreaChart',
       'PieChart',
+      'RichTextEditor',
+      'RichTextContent',
     ])
       expect(core).not.toHaveProperty(name)
   })
