@@ -37,15 +37,24 @@ cannot do them. Tick them off here as they are done.
   - Loading Button: press Save twice quickly in the Async example; it must
     save once, and TalkBack / VoiceOver should read "Saving…" and report the
     button as busy and unavailable.
-  - Form: in the Loading example press Save activity; it must save once,
-    TalkBack / VoiceOver should read "Saving…" on the busy button, and the
-    Disabled example's fields must not be editable.
+  - Form: in the Loading example press Save activity twice quickly; it must
+    save once, and TalkBack / VoiceOver should read "Saving…" on the busy
+    button. The title should be read as a heading, the Disabled example's
+    fields must not be editable, and the Horizontal example's field and
+    Search button must fit the screen.
   - Video and Audio Player: sound plays, seeking works, the speed button
     changes the speed.
 - [ ] **Rich Text Editor: decide.** It is a Markdown editor (toolbar,
       shortcuts, preview), the same on every platform with no extra
       dependencies. Keep it, or ask for a WYSIWYG editor, which needs new
       libraries (TipTap on web, a WebView-based editor on iOS and Android).
+- [ ] **Form: decide.** Three API choices to settle before Form is `stable`:
+  - A disabled Form disables controls inside Form Field and `Form.Submit`
+    only. Keep that, or also make plain Input, Textarea, Select, Checkbox,
+    Switch and Radio Group follow it through `useFormStatus()`.
+  - Keep the hook name `useFormStatus`, or rename it: React DOM has a hook with
+    the same name for Server Actions, which could confuse Next.js users.
+  - Add a Form playground to the docs page, or keep the eight examples only.
 - [ ] **Demo media.** The Video and Audio Player examples use MDN's public CC0
       samples. Swap in your own if you prefer, and add a captions `.vtt` file for
       any video with speech.
