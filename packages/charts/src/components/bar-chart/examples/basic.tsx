@@ -1,4 +1,4 @@
-import { BarChart } from '@advui/core'
+import { BarChart } from '@advui/charts'
 
 const data = [
   { state: 'Kachin', reached: 182000 },

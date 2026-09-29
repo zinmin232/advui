@@ -12,7 +12,7 @@
     "ios",
     "android"
   ],
-  "package": "@advui/core",
+  "package": "@advui/charts",
   "files": [
     {
       "path": "components/area-chart/AreaChart.tsx",
@@ -29,12 +29,12 @@
     {
       "name": "basic",
       "title": "One series",
-      "code": "import { AreaChart } from '@advui/core'\n\nconst data = [\n  { month: 'Mar', displaced: 1.21 },\n  { month: 'Apr', displaced: 1.34 },\n  { month: 'May', displaced: 1.52 },\n  { month: 'Jun', displaced: 1.61 },\n  { month: 'Jul', displaced: 1.74 },\n  { month: 'Aug', displaced: 1.79 },\n  { month: 'Sep', displaced: 1.86 },\n]\n\nexport default function AreaChartBasic() {\n  return (\n    <AreaChart\n      title=\"People displaced\"\n      description=\"Millions, estimated\"\n      data={data}\n      index=\"month\"\n      indexLabel=\"Month\"\n      series={[{ key: 'displaced', label: 'Displaced (millions)' }]}\n    />\n  )\n}\n"
+      "code": "import { AreaChart } from '@advui/charts'\n\nconst data = [\n  { month: 'Mar', displaced: 1.21 },\n  { month: 'Apr', displaced: 1.34 },\n  { month: 'May', displaced: 1.52 },\n  { month: 'Jun', displaced: 1.61 },\n  { month: 'Jul', displaced: 1.74 },\n  { month: 'Aug', displaced: 1.79 },\n  { month: 'Sep', displaced: 1.86 },\n]\n\nexport default function AreaChartBasic() {\n  return (\n    <AreaChart\n      title=\"People displaced\"\n      description=\"Millions, estimated\"\n      data={data}\n      index=\"month\"\n      indexLabel=\"Month\"\n      series={[{ key: 'displaced', label: 'Displaced (millions)' }]}\n    />\n  )\n}\n"
     },
     {
       "name": "stacked",
       "title": "Stacked",
-      "code": "import { AreaChart } from '@advui/core'\n\nconst data = [\n  { year: '2021', cash: 22, inKind: 41, services: 18 },\n  { year: '2022', cash: 31, inKind: 38, services: 21 },\n  { year: '2023', cash: 44, inKind: 35, services: 24 },\n  { year: '2024', cash: 52, inKind: 30, services: 29 },\n  { year: '2025', cash: 61, inKind: 27, services: 31 },\n  { year: '2026', cash: 67, inKind: 25, services: 34 },\n]\n\nexport default function AreaChartStacked() {\n  return (\n    <AreaChart\n      title=\"Assistance by modality\"\n      description=\"Millions of USD; the top edge is the total.\"\n      data={data}\n      index=\"year\"\n      indexLabel=\"Year\"\n      stacked\n      series={[\n        { key: 'cash', label: 'Cash' },\n        { key: 'inKind', label: 'In kind' },\n        { key: 'services', label: 'Services' },\n      ]}\n    />\n  )\n}\n"
+      "code": "import { AreaChart } from '@advui/charts'\n\nconst data = [\n  { year: '2021', cash: 22, inKind: 41, services: 18 },\n  { year: '2022', cash: 31, inKind: 38, services: 21 },\n  { year: '2023', cash: 44, inKind: 35, services: 24 },\n  { year: '2024', cash: 52, inKind: 30, services: 29 },\n  { year: '2025', cash: 61, inKind: 27, services: 31 },\n  { year: '2026', cash: 67, inKind: 25, services: 34 },\n]\n\nexport default function AreaChartStacked() {\n  return (\n    <AreaChart\n      title=\"Assistance by modality\"\n      description=\"Millions of USD; the top edge is the total.\"\n      data={data}\n      index=\"year\"\n      indexLabel=\"Year\"\n      stacked\n      series={[\n        { key: 'cash', label: 'Cash' },\n        { key: 'inKind', label: 'In kind' },\n        { key: 'services', label: 'Services' },\n      ]}\n    />\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/area-chart",

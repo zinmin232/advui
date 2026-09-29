@@ -49,6 +49,60 @@
       ]
     },
     {
+      "name": "area-chart",
+      "title": "Area Chart",
+      "type": "registry:component",
+      "description": "A line chart with a light wash under each line, for totals and stacked parts over time.",
+      "category": "charts",
+      "status": "beta",
+      "package": "@advui/charts",
+      "dependencies": [],
+      "registryDependencies": [
+        "charts"
+      ]
+    },
+    {
+      "name": "bar-chart",
+      "title": "Bar Chart",
+      "type": "registry:component",
+      "description": "Compares values across categories as columns or bars, grouped or stacked.",
+      "category": "charts",
+      "status": "beta",
+      "package": "@advui/charts",
+      "dependencies": [],
+      "registryDependencies": [
+        "charts"
+      ]
+    },
+    {
+      "name": "line-chart",
+      "title": "Line Chart",
+      "type": "registry:component",
+      "description": "Shows change over an ordered axis, such as months, as one or more lines.",
+      "category": "charts",
+      "status": "beta",
+      "package": "@advui/charts",
+      "dependencies": [],
+      "registryDependencies": [
+        "charts"
+      ]
+    },
+    {
+      "name": "pie-chart",
+      "title": "Pie Chart",
+      "type": "registry:component",
+      "description": "Part-to-whole at a glance, as a donut or pie with up to six slices.",
+      "category": "charts",
+      "status": "beta",
+      "package": "@advui/charts",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "charts"
+      ]
+    },
+    {
       "name": "accordion",
       "title": "Accordion",
       "type": "registry:component",
@@ -92,19 +146,6 @@
       ],
       "registryDependencies": [
         "typography"
-      ]
-    },
-    {
-      "name": "area-chart",
-      "title": "Area Chart",
-      "type": "registry:component",
-      "description": "A line chart with a light wash under each line, for totals and stacked parts over time.",
-      "category": "charts",
-      "status": "beta",
-      "package": "@advui/core",
-      "dependencies": [],
-      "registryDependencies": [
-        "charts"
       ]
     },
     {
@@ -180,19 +221,6 @@
       ],
       "registryDependencies": [
         "utils"
-      ]
-    },
-    {
-      "name": "bar-chart",
-      "title": "Bar Chart",
-      "type": "registry:component",
-      "description": "Compares values across categories as columns or bars, grouped or stacked.",
-      "category": "charts",
-      "status": "beta",
-      "package": "@advui/core",
-      "dependencies": [],
-      "registryDependencies": [
-        "charts"
       ]
     },
     {
@@ -762,19 +790,6 @@
       "registryDependencies": []
     },
     {
-      "name": "line-chart",
-      "title": "Line Chart",
-      "type": "registry:component",
-      "description": "Shows change over an ordered axis, such as months, as one or more lines.",
-      "category": "charts",
-      "status": "beta",
-      "package": "@advui/core",
-      "dependencies": [],
-      "registryDependencies": [
-        "charts"
-      ]
-    },
-    {
       "name": "list",
       "title": "List",
       "type": "registry:component",
@@ -944,21 +959,6 @@
         "hooks",
         "icon-button",
         "input"
-      ]
-    },
-    {
-      "name": "pie-chart",
-      "title": "Pie Chart",
-      "type": "registry:component",
-      "description": "Part-to-whole at a glance, as a donut or pie with up to six slices.",
-      "category": "charts",
-      "status": "beta",
-      "package": "@advui/core",
-      "dependencies": [
-        "@advui/icons"
-      ],
-      "registryDependencies": [
-        "charts"
       ]
     },
     {

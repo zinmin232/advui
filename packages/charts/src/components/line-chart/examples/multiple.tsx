@@ -1,4 +1,4 @@
-import { LineChart } from '@advui/core'
+import { LineChart } from '@advui/charts'
 
 const data = [
   { quarter: 'Q1 25', health: 61, wash: 48, education: 35 },

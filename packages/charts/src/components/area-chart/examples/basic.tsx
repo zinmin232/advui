@@ -1,4 +1,4 @@
-import { AreaChart } from '@advui/core'
+import { AreaChart } from '@advui/charts'
 
 const data = [
   { month: 'Mar', displaced: 1.21 },
