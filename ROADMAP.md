@@ -1,7 +1,7 @@
 # Roadmap
 
 Components still to be built are listed in
-[`packages/ui/src/meta/roadmap.ts`](packages/ui/src/meta/roadmap.ts); the docs
+[`packages/catalog/src/roadmap.ts`](packages/catalog/src/roadmap.ts); the docs
 show them as "Planned". That list is empty now: phases 1 to 5 are built.
 
 ## Phases 1–5 (built)
@@ -44,6 +44,9 @@ cannot do them. Tick them off here as they are done.
     Search button must fit the screen.
   - Video and Audio Player: sound plays, seeking works, the speed button
     changes the speed.
+  - The components that moved to `@advui/data`, `@advui/charts` and
+    `@advui/editor` still open in the Expo app (it now loads them from those
+    packages).
 - [ ] **Rich Text Editor: decide.** It is a Markdown editor (toolbar,
       shortcuts, preview), the same on every platform with no extra
       dependencies. Keep it, or ask for a WYSIWYG editor, which needs new
@@ -63,3 +66,14 @@ cannot do them. Tick them off here as they are done.
       `pnpm catalog`.
 - [ ] **Release 0.6.0.** Bump the package versions and date the CHANGELOG's
       Unreleased section (see [CONTRIBUTING.md](CONTRIBUTING.md)).
+- [ ] **Publish the new packages.** 0.6.0 is the first release of
+      `@advui/data`, `@advui/charts` and `@advui/editor`:
+  - Make sure your npm account can publish new packages under the `@advui`
+    scope, then check that `pnpm release:check` lists all eight public
+    packages with `@advui/core` as a `^0.6.0` peer dependency.
+  - After `pnpm release`, try the install in a fresh app:
+    `pnpm add @advui/core @advui/data @advui/charts @advui/editor @advui/theme @advui/icons tamagui`,
+    then import `DataTable`, `BarChart` and `RichTextEditor`.
+  - Empty `unpublishedPackages` in `apps/docs/src/lib/site.ts`, and remove the
+    "Not on npm yet" notes from `README.md` and the READMEs of the three
+    packages.
