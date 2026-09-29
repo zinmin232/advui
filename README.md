@@ -191,6 +191,8 @@ how to update them.
   for a component
 - [THEMING.md](THEMING.md): tokens, semantic colors, presets, runtime themes
 - [CONTRIBUTING.md](CONTRIBUTING.md): workflow, commits, releases
+- [ROADMAP.md](ROADMAP.md): what is built, and the Phase 6 checks left for
+  maintainers
 - [CHANGELOG.md](CHANGELOG.md)
 
 ## License
