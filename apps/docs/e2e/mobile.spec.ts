@@ -1,4 +1,4 @@
-import { expect, test } from './fixtures'
+import { expect, gridCells, test } from './fixtures'
 
 test('sidebar becomes a drawer on phones', async ({ page }) => {
   await page.goto('/docs/components/button')
@@ -19,4 +19,12 @@ test('pages do not overflow horizontally on a phone', async ({ page }) => {
     )
     expect(overflow, path).toBeLessThanOrEqual(1)
   }
+})
+
+test('grid stacks an 8 / 4 layout below md', async ({ page }) => {
+  await page.goto('/preview/grid/two-column-8-4')
+  const [main, side] = await gridCells(page, ['Sprint progress', 'Details'])
+  expect(side!.y).toBeGreaterThan(main!.y)
+  expect(side!.x).toBeCloseTo(main!.x, 0)
+  expect(side!.width).toBeCloseTo(main!.width, 0)
 })

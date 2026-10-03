@@ -858,7 +858,7 @@
       "name": "grid",
       "title": "Grid",
       "type": "registry:component",
-      "description": "Equal-width responsive columns that work identically on web and native.",
+      "description": "Responsive columns with spans and offsets, such as 12-column 8 / 4 layouts, identical on web and native.",
       "category": "layout",
       "status": "stable",
       "package": "@advui/core",

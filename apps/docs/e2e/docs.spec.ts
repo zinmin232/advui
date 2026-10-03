@@ -1,7 +1,7 @@
 import { appExamples } from '@advui/examples/meta'
 import AxeBuilder from '@axe-core/playwright'
 import type { Page } from '@playwright/test'
-import { expect, test } from './fixtures'
+import { expect, gridCells, test } from './fixtures'
 
 function trackErrors(page: Page) {
   const errors: string[] = []
@@ -71,6 +71,38 @@ test('playground updates the preview and generated JSX', async ({ page }) => {
   await expect(page.getByLabel('Generated JSX')).toHaveText(
     '<Button variant="outline" size="lg">Get started</Button>',
   )
+})
+
+test('grid splits 8 / 4 from md', async ({ page }) => {
+  await page.goto('/preview/grid/two-column-8-4')
+  const [main, side] = await gridCells(page, ['Sprint progress', 'Details'])
+  expect(side!.y).toBeCloseTo(main!.y, 0)
+  expect(main!.width).toBeCloseTo(2 * side!.width, 0)
+  expect(side!.x).toBeCloseTo(main!.x + main!.width, 0)
+})
+
+test('grid playground changes the column count', async ({ page }) => {
+  await page.goto('/docs/components/grid')
+  await page.getByLabel('columns', { exact: true }).fill('3')
+  await expect(page.getByLabel('Generated JSX')).toContainText('<Grid columns={3}>')
+  const [full, two, one, ...rest] = await gridCells(page, [
+    'span full',
+    'span 2',
+    '1',
+    '2',
+    '3',
+    '4',
+  ])
+  // Rows: the full item, then "span 2" with "1", then "2", "3" and "4".
+  expect(two!.y).toBeGreaterThan(full!.y)
+  expect(one!.y).toBeCloseTo(two!.y, 0)
+  expect(two!.width).toBeCloseTo(2 * one!.width, 0)
+  expect(full!.width).toBeCloseTo(3 * one!.width, 0)
+  for (const cell of rest) {
+    expect(cell.y).toBeGreaterThan(one!.y)
+    expect(cell.y).toBeCloseTo(rest[0]!.y, 0)
+    expect(cell.width).toBeCloseTo(one!.width, 0)
+  }
 })
 
 test('command palette searches and navigates with the keyboard', async ({ page }) => {
@@ -238,6 +270,7 @@ for (const path of [
   '/docs/components/rich-text-editor',
   '/docs/components/loading-button',
   '/docs/components/form',
+  '/docs/components/grid',
   '/examples/login',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {
