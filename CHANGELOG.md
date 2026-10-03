@@ -7,6 +7,8 @@ one version.
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-10-03
+
 ### Changed
 
 - **Form Field is now Field** (`import { Field } from '@advui/core'`), and it

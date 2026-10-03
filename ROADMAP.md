@@ -22,7 +22,8 @@ cannot do them. Tick them off here as they are done.
 
 - [ ] **Windows screenshots.** Run `pnpm install`, then
       `pnpm --filter @advui/docs test:visual:update` on Windows and commit the
-      new `-win32.png` files (78 examples added in phases 4 and 5, plus 8 for Form).
+      new `-win32.png` files (78 examples added in phases 4 and 5, 8 for Form
+      and 4 for Grid).
 - [ ] **Real phones.** Run `pnpm install` (the Expo playground uses `expo-video`
       and `expo-audio`; Expo Go SDK 57 includes both, a development build needs
       rebuilding), start `pnpm --filter @advui/expo-playground android:emulator`
@@ -44,6 +45,10 @@ cannot do them. Tick them off here as they are done.
     Search button must fit the screen.
   - Video and Audio Player: sound plays, seeking works, the speed button
     changes the speed.
+  - Grid (0.7.0 spans): on a tablet, or a phone in landscape at 768pt or
+    wider, Two columns splits 8 / 4 and Sidebar 3 / 9; in portrait on a
+    phone both stack. In Offset the first row is centered from md. Rotating
+    the device switches between the two.
   - The components that moved to `@advui/data`, `@advui/charts` and
     `@advui/editor` still open in the Expo app (it now loads them from those
     packages).
@@ -72,6 +77,14 @@ cannot do them. Tick them off here as they are done.
   - `pnpm release:check` must list all eight public packages at 0.6.0, with
     `@advui/core` as a `^0.6.0` peer dependency of data, charts and editor.
     Then run `pnpm release`.
+- [ ] **Release 0.7.0** (Grid spans, Field). The release commit is tagged
+      `v0.7.0`; the AdvUI Builder reads component metadata from that tag, so
+      publish exactly that commit:
+  - If the pull request is squashed or rebased into `main`, move the tag to
+    the commit on `main`: `git pull`, then
+    `git tag -f v0.7.0 <commit> && git push -f origin v0.7.0`.
+  - `pnpm release:check` must list all eight public packages at 0.7.0. Then
+    run `pnpm release`.
 - [ ] **Publish the new packages.** 0.6.0 is the first working release of
       `@advui/data`, `@advui/charts` and `@advui/editor`:
   - Deprecate their 0.5.0, published by mistake before the version bump (it
