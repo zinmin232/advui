@@ -1,5 +1,5 @@
 import { type ReactNode, forwardRef, isValidElement, useId, useMemo } from 'react'
-import { type GetProps, type TamaguiElement, View, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
 import { FieldContext, type FieldState } from '../../hooks/useFieldControl'
 import { useFormStatus } from '../../hooks/useFormStatus'
 import { Label } from '../label/Label'
@@ -71,6 +71,17 @@ export interface FieldProps extends Omit<FrameProps, 'children' | 'id' | 'gap' |
 
 const hasContent = (node: ReactNode) => node != null && node !== false && node !== ''
 
+// The text inside a node, like a browser's accessible name: native has no
+// aria-labelledby or aria-describedby, so the field passes text instead.
+function textOf(node: ReactNode): string {
+  if (typeof node === 'string' || typeof node === 'number') return String(node)
+  if (Array.isArray(node)) return node.map(textOf).join('')
+  if (isValidElement<{ children?: ReactNode }>(node)) return textOf(node.props.children)
+  return ''
+}
+
+const plainText = (node: ReactNode) => textOf(node).replace(/\s+/g, ' ').trim()
+
 /**
  * Label, control, help text and error message wired together. The field tells
  * the control inside it (through context, at any depth) its id, its invalid,
@@ -116,16 +127,14 @@ export const Field = forwardRef<TamaguiElement, FieldProps>(function Field(
     const describedBy = [hasError ? errorId : '', hasDescription ? descriptionId : '']
       .filter(Boolean)
       .join(' ')
-    const hint = [error, description].filter((text) => typeof text === 'string').join(' ')
+    const labelText = plainText(label)
+    const hint = [hasError ? plainText(error) : '', plainText(description)]
+      .filter(Boolean)
+      .join(' ')
     return {
       id,
       labelId: hasLabel ? labelId : undefined,
-      label:
-        typeof label === 'string' && label
-          ? showOptional
-            ? `${label} ${optionalText}`
-            : label
-          : undefined,
+      label: labelText ? (showOptional ? `${labelText} ${optionalText}` : labelText) : undefined,
       describedBy: describedBy || undefined,
       hint: hint || undefined,
       invalid: hasError,
@@ -150,7 +159,15 @@ export const Field = forwardRef<TamaguiElement, FieldProps>(function Field(
   ])
 
   const labelNode = hasLabel ? (
-    <Label id={labelId} htmlFor={id} required={required} disabled={disabled}>
+    <Label
+      id={labelId}
+      htmlFor={id}
+      required={required}
+      disabled={disabled}
+      // Native: the control already carries a text label as its name. Read
+      // again, Android splits it into stray buttons ("Email", "*", "(optional)").
+      aria-hidden={(!isWeb && state.label !== undefined) || undefined}
+    >
       {label}
       {showOptional ? (
         <>

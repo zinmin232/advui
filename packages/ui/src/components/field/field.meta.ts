@@ -154,12 +154,12 @@ export default defineMeta({
         {
           name: 'aria-label',
           type: 'string',
-          description: 'Native: the label, when it is text. The control’s own wins.',
+          description: 'Native: the text of the label. The control’s own wins.',
         },
         {
           name: 'accessibilityHint',
           type: 'string',
-          description: 'Native: the error and help text, when they are text.',
+          description: 'Native: the text of the error and help text.',
         },
       ],
     },
@@ -185,7 +185,7 @@ export default defineMeta({
   ],
   accessibility: [
     'The label targets the control (`htmlFor` ↔ `id`), so clicking it focuses the control. A Radio Group is named with `aria-labelledby` instead.',
-    'Help and error text are linked with `aria-describedby` on web (error first) and read as the hint on native.',
+    'Help and error text are linked with `aria-describedby` on web (error first). On native, the text of the label names the control, the help and error text become its hint, and the visible label is hidden from screen readers so it is not read twice.',
     'An error sets `aria-invalid` on the control; the message is text, not just a red border.',
     '`required` sets `aria-required` on the control, so screen readers say "required"; the asterisk itself is hidden from them. "(optional)" is part of the label.',
     'A disabled field disables its control, so it leaves the Tab order and is announced as dimmed.',
@@ -193,9 +193,9 @@ export default defineMeta({
   responsive:
     '`orientation` is a plain prop, not a style, so the markup never depends on the screen size. Use `vertical` (the default) on narrow screens.',
   platformNotes: {
-    ios: 'The label (when it is text) names the control, and string help and error text become the VoiceOver hint. iOS has no required or invalid state for screen readers, so put it in the error text.',
+    ios: 'The text of the label names the control, and the help and error text become the VoiceOver hint. iOS has no required or invalid state for screen readers, so put it in the error text.',
     android:
-      'The label (when it is text) names the control, and string help and error text become the TalkBack hint. Android has no required or invalid state for screen readers, so put it in the error text.',
+      'The text of the label names the control, and the help and error text become the TalkBack hint. Android has no required or invalid state for screen readers, so put it in the error text.',
   },
   related: ['form', 'input', 'label', 'select', 'checkbox', 'password-input'],
 })

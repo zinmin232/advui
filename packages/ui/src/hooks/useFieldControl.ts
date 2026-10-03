@@ -7,11 +7,11 @@ export interface FieldState {
   id: string
   /** The label's id, for controls a `<label for>` cannot name, such as a radio group. */
   labelId?: string
-  /** The label when it is text: the control's name on native. */
+  /** The label's text: the control's name on native. */
   label?: string
   /** Ids of the error and help text (web). */
   describedBy?: string
-  /** The error and help text that are text: the control's hint on native. */
+  /** The text of the error and help text: the control's hint on native. */
   hint?: string
   invalid: boolean
   required: boolean

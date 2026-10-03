@@ -29,6 +29,15 @@ one version.
   receive as props.
 - `error=""` no longer marks a field invalid, like `undefined`, `null` and
   `false`.
+- Field on iOS and Android: a label, help or error given as elements now
+  names and describes the control too (only plain strings did), and the
+  visible label is hidden from screen readers, which read the control's name
+  instead. TalkBack used to read the label again, split into stray buttons
+  such as "Email" and "*".
+
+### Fixed
+
+- Textarea: `disabled` did not stop typing on iOS and Android.
 
 ### Added
 
