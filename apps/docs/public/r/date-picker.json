@@ -44,7 +44,7 @@
     {
       "name": "basic",
       "title": "Basic",
-      "code": "import { DatePicker, Field } from '@advui/core'\nimport { useState } from 'react'\n\nexport default function DatePickerBasic() {\n  const [due, setDue] = useState<Date | null>(new Date(2026, 9, 14))\n  return (\n    <Field\n      label=\"Due date\"\n      description=\"We remind you a day before.\"\n      width=\"100%\"\n      maxWidth={280}\n    >\n      <DatePicker value={due} onValueChange={setDue} />\n    </Field>\n  )\n}\n"
+      "code": "import { DatePicker, Field } from '@advui/core'\nimport { useState } from 'react'\n\nexport default function DatePickerBasic() {\n  const [due, setDue] = useState<Date | null>(new Date(2026, 9, 14))\n  return (\n    <Field label=\"Due date\" description=\"We remind you a day before.\" width=\"100%\" maxWidth={280}>\n      <DatePicker value={due} onValueChange={setDue} />\n    </Field>\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/date-picker",

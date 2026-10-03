@@ -65,6 +65,7 @@ import { Slider } from './slider/Slider'
 import { Snackbar } from './snackbar/Snackbar'
 import { Stepper } from './stepper/Stepper'
 import { Switch } from './switch/Switch'
+import { Textarea } from './textarea/Textarea'
 import { Toaster, toast } from './toast/Toaster'
 import { Toggle } from './toggle/Toggle'
 import { ToggleGroup } from './toggle-group/ToggleGroup'
@@ -672,6 +673,47 @@ describe('native rendering', () => {
     expect(input).toBeDisabled()
     // Only form controls read the field; the button keeps its own props.
     expect(screen.getByRole('button', { name: 'Random' })).not.toBeDisabled()
+  })
+
+  it('Field names its control from element text and hides the repeated label', async () => {
+    await renderNative(
+      <Field
+        label={
+          <>
+            API <Text weight="bold">key</Text> <PlusIcon />
+          </>
+        }
+        description={<Text>Starts with sk_.</Text>}
+        error={
+          <>
+            Revoked. <Text weight="semibold">Make a new one.</Text>
+          </>
+        }
+      >
+        <Input placeholder="key" />
+      </Field>,
+    )
+    const input = screen.getByPlaceholderText('key')
+    expect(screen.getByLabelText('API key')).toBe(input)
+    expect(input.props.accessibilityHint).toBe('Revoked. Make a new one. Starts with sk_.')
+    // The control already says it; the visible label is hidden from screen readers.
+    expect(screen.queryByText('API', { exact: false })).toBeNull()
+  })
+
+  it('Field disables its Input and Textarea so they cannot be edited', async () => {
+    await renderNative(
+      <>
+        <Field label="Title" disabled>
+          <Input placeholder="title" />
+        </Field>
+        <Field label="Notes" disabled>
+          <Textarea placeholder="notes" />
+        </Field>
+      </>,
+    )
+    expect(screen.getByPlaceholderText('title').props.editable).toBe(false)
+    expect(screen.getByPlaceholderText('notes').props.editable).toBe(false)
+    expect(screen.getByPlaceholderText('notes')).toBeDisabled()
   })
 
   it('Field names a Combobox but not the search box in its sheet', async () => {
