@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import { type GetProps, Input as TamaguiInput, type TamaguiElement, styled } from 'tamagui'
+import { useFieldControl } from '../../hooks/useFieldControl'
 
 /** Box styles shared by text fields and field-like triggers (Select). */
 export const fieldBoxStyle = {
@@ -61,10 +62,8 @@ export type InputProps = GetProps<typeof InputFrame>
  * Single-line text field (`<input>` on web, `TextInput` on native).
  * Set `invalid` to mark errors — it sets `aria-invalid` and the error color.
  */
-export const Input = forwardRef<TamaguiElement, InputProps>(function Input(
-  { invalid, disabled, ...props },
-  ref,
-) {
+export const Input = forwardRef<TamaguiElement, InputProps>(function Input(inputProps, ref) {
+  const { invalid, disabled, ...props } = useFieldControl(inputProps)
   return (
     <InputFrame
       ref={ref}

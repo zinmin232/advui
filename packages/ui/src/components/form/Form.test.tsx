@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { useFormStatus } from '../../hooks/useFormStatus'
 import { renderWithProvider, screen, within } from '../../../test/utils'
 import { Button } from '../button/Button'
-import { FormField } from '../form-field/FormField'
+import { Field } from '../field/Field'
 import { Input } from '../input/Input'
 import { Heading } from '../typography/Heading'
 import { Text } from '../typography/Text'
@@ -226,13 +226,13 @@ describe('Form', () => {
     expect(screen.getByRole('button', { name: 'Save' })).toHaveAttribute('aria-busy', 'true')
   })
 
-  it('when disabled, disables Form Field controls and Form.Submit and blocks submits', async () => {
+  it('when disabled, disables Field controls and Form.Submit and blocks submits', async () => {
     const onSubmit = vi.fn()
     const { user } = renderWithProvider(
       <Form disabled onSubmit={onSubmit} footer={<Form.Submit>Save</Form.Submit>}>
-        <FormField label="Email">
+        <Field label="Email">
           <Input />
-        </FormField>
+        </Field>
       </Form>,
     )
     const email = screen.getByRole('textbox', { name: 'Email' })
@@ -287,12 +287,12 @@ describe('Form', () => {
       }
       return (
         <Form onSubmit={handleSubmit(onValid)} footer={<Form.Submit>Save</Form.Submit>}>
-          <FormField label="Email" error={error}>
+          <Field label="Email" error={error}>
             <Input
               value={values.email}
               onChangeText={(email) => setValues((v) => ({ ...v, email }))}
             />
-          </FormField>
+          </Field>
         </Form>
       )
     }

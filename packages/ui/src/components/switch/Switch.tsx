@@ -8,6 +8,7 @@ import {
   createSwitch,
   styled,
 } from 'tamagui'
+import { type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
 
 // Visual styles live in the `unstyled: false` variant so they override the
 // defaults Tamagui's createSwitch applies through the same variant.
@@ -77,16 +78,20 @@ export interface SwitchProps extends Omit<TamaguiSwitchProps, 'size'> {
  * On/off toggle for settings that apply immediately. Exposes the `switch` role
  * with checked state; Space/Enter toggle it on web.
  */
-export const Switch = forwardRef<TamaguiElement, SwitchProps>(function Switch(
-  { size = 'md', ...props },
-  ref,
-) {
+export const Switch = forwardRef<TamaguiElement, SwitchProps>(function Switch(switchProps, ref) {
+  // `invalid` only comes from a Field; a switch has no error style of its own.
+  const {
+    size = 'md',
+    invalid,
+    ...props
+  } = useFieldControl<SwitchProps & FieldControlProps>(switchProps)
   return (
     <BaseSwitch
       ref={ref}
       role="switch"
       size={size as never}
       activeStyle={{ backgroundColor: '$primary' }}
+      aria-invalid={invalid || undefined}
       {...props}
     >
       <BaseSwitch.Thumb size={size as never} />

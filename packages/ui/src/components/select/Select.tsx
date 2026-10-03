@@ -23,6 +23,7 @@ import {
 } from 'tamagui'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
+import { useFieldControl } from '../../hooks/useFieldControl'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 import { fieldBoxStyle } from '../input/Input'
@@ -228,6 +229,10 @@ export interface SelectProps {
   id?: string
   /** Accessible name when there is no visible label. */
   'aria-label'?: string
+  'aria-describedby'?: string
+  'aria-required'?: boolean
+  /** Read after the name on native (a Field puts its help and error text here). */
+  accessibilityHint?: string
   name?: string
   size?: 'sm' | 'md' | 'lg'
   disabled?: boolean
@@ -237,19 +242,23 @@ export interface SelectProps {
   children: ReactNode
 }
 
-function SelectRoot({
-  placeholder = 'Select…',
-  size = 'md',
-  disabled,
-  invalid,
-  width = '100%',
-  children,
-  id,
-  'aria-label': ariaLabel,
-  open: openProp,
-  onOpenChange,
-  ...props
-}: SelectProps) {
+function SelectRoot(selectProps: SelectProps) {
+  const {
+    placeholder = 'Select…',
+    size = 'md',
+    disabled,
+    invalid,
+    width = '100%',
+    children,
+    id,
+    'aria-label': ariaLabel,
+    'aria-describedby': describedBy,
+    'aria-required': required,
+    accessibilityHint,
+    open: openProp,
+    onOpenChange,
+    ...props
+  } = useFieldControl(selectProps)
   const reducedMotion = useReducedMotion()
   const [open, setOpen] = useControllableState({
     value: openProp,
@@ -270,6 +279,8 @@ function SelectRoot({
         role="combobox"
         aria-expanded={false}
         aria-label={ariaLabel}
+        aria-describedby={describedBy}
+        aria-required={required}
         id={id}
         opacity={disabled ? 0.5 : 1}
         {...(invalid ? { borderColor: '$error' as const } : null)}
@@ -303,6 +314,9 @@ function SelectRoot({
         invalid={invalid}
         aria-label={ariaLabel}
         aria-invalid={invalid || undefined}
+        aria-describedby={describedBy}
+        aria-required={required}
+        accessibilityHint={accessibilityHint}
         iconAfter={<ChevronDownIcon size={16} color="$mutedForeground" />}
       >
         <ValueText placeholder={placeholder} />

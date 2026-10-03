@@ -1,4 +1,4 @@
-import { type DateRange, DateRangePicker, FormField } from '@advui/core'
+import { type DateRange, DateRangePicker, Field } from '@advui/core'
 import { useState } from 'react'
 
 export default function DateRangePickerBasic() {
@@ -7,8 +7,8 @@ export default function DateRangePickerBasic() {
     end: new Date(2026, 11, 29),
   })
   return (
-    <FormField label="Stay" width="100%" maxWidth={320}>
+    <Field label="Stay" width="100%" maxWidth={320}>
       <DateRangePicker value={stay} onValueChange={setStay} />
-    </FormField>
+    </Field>
   )
 }

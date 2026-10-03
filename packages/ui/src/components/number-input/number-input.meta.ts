@@ -11,11 +11,11 @@ export default defineMeta({
   exports: ['NumberInput'],
   files: ['components/number-input/NumberInput.tsx', 'components/number-input/index.ts'],
   keywords: ['number', 'stepper', 'spinbutton', 'quantity', 'counter'],
-  usage: `import { FormField, NumberInput } from '@advui/core'
+  usage: `import { Field, NumberInput } from '@advui/core'
 
-<FormField label="Guests">
+<Field label="Guests">
   <NumberInput defaultValue={2} min={1} max={10} />
-</FormField>`,
+</Field>`,
   parts: [
     {
       name: 'NumberInput',
@@ -66,5 +66,5 @@ export default defineMeta({
     ios: 'VoiceOver swipe up / down steps the value (increment / decrement actions).',
     android: 'TalkBack volume keys or swipes step the value (increment / decrement actions).',
   },
-  related: ['input', 'slider', 'form-field'],
+  related: ['input', 'slider', 'field'],
 })

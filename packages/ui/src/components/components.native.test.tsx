@@ -4,6 +4,7 @@ import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
 import { zIndex } from '@advui/theme'
 import type { ReactElement } from 'react'
 import { BackHandler, StyleSheet } from 'react-native'
+import { XStack } from 'tamagui'
 import { renderNative } from '../../test/native-utils'
 import { Accordion } from './accordion/Accordion'
 import { AlertDialog } from './alert-dialog/AlertDialog'
@@ -36,7 +37,7 @@ import { FileDropzone } from './file-dropzone/FileDropzone'
 import { FileUpload } from './file-upload/FileUpload'
 import { setFilePicker } from './file-upload/files'
 import { Form } from './form/Form'
-import { FormField } from './form-field/FormField'
+import { Field } from './field/Field'
 import { HoverCard } from './hover-card/HoverCard'
 import { IconButton } from './icon-button/IconButton'
 import { Image } from './image/Image'
@@ -637,17 +638,52 @@ describe('native rendering', () => {
     expect(onValueChange).toHaveBeenCalledWith(new Date(2026, 9, 20))
   })
 
-  it('FormField names its control and reads help and error text as the hint', async () => {
+  it('Field names its control and reads help and error text as the hint', async () => {
     await renderNative(
-      <FormField label="Email" description="Work email." error="Enter an email.">
+      <Field label="Email" description="Work email." error="Enter an email.">
         <Input placeholder="you@example.com" />
-      </FormField>,
+      </Field>,
     )
     const input = screen.getByPlaceholderText('you@example.com')
     // A Label's htmlFor only moves focus on native, so the field names the control.
     expect(screen.getByLabelText('Email')).toBe(input)
     expect(input.props.accessibilityHint).toBe('Enter an email. Work email.')
     expect(input.props['aria-invalid'] ?? input.props.accessibilityState?.invalid).toBeTruthy()
+  })
+
+  it('Field wires a control inside a layout and adds "(optional)" to its name', async () => {
+    await renderNative(
+      <Field
+        label="Nickname"
+        optional
+        description="Shown to friends."
+        orientation="horizontal"
+        disabled
+      >
+        <XStack>
+          <Input placeholder="nick" />
+          <Button>Random</Button>
+        </XStack>
+      </Field>,
+    )
+    const input = screen.getByPlaceholderText('nick')
+    expect(screen.getByLabelText('Nickname (optional)')).toBe(input)
+    expect(input.props.accessibilityHint).toBe('Shown to friends.')
+    expect(input).toBeDisabled()
+    // Only form controls read the field; the button keeps its own props.
+    expect(screen.getByRole('button', { name: 'Random' })).not.toBeDisabled()
+  })
+
+  it('Field names a Combobox but not the search box in its sheet', async () => {
+    await renderNative(
+      <Field label="Country" description="Where you live.">
+        <Combobox placeholder="Search" options={[{ value: 'mm', label: 'Myanmar' }]} />
+      </Field>,
+    )
+    const field = screen.getByRole('button', { name: 'Country' })
+    expect(field.props.accessibilityHint).toBe('Where you live.')
+    await fireEvent.press(field)
+    expect(screen.getByPlaceholderText('Search').props.accessibilityHint).toBeUndefined()
   })
 
   it('Form submits from Form.Submit and blocks it while loading or disabled', async () => {
@@ -660,9 +696,9 @@ describe('native rendering', () => {
         footer={<Form.Submit>Save</Form.Submit>}
         {...state}
       >
-        <FormField label="Email">
+        <Field label="Email">
           <Input placeholder="you@example.com" />
-        </FormField>
+        </Field>
       </Form>
     )
     const { unmount } = await renderNative(form({}))

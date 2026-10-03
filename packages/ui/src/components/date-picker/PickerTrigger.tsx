@@ -1,6 +1,7 @@
 import { CalendarIcon, IconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef, useId } from 'react'
 import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
+import { useFieldControl } from '../../hooks/useFieldControl'
 import { fieldBoxStyle } from '../input/Input'
 import { Text } from '../typography/Text'
 
@@ -43,49 +44,49 @@ export interface PickerTriggerProps extends Omit<GetProps<typeof TriggerFrame>, 
 
 /**
  * The field-shaped button of Date Picker and Date Range Picker. Its value text
- * is linked with `aria-describedby`, so a label from Form Field (which names
+ * is linked with `aria-describedby`, so a label from a Field (which names
  * the button) and the value are both announced.
  */
-export const PickerTrigger = forwardRef<TamaguiElement, PickerTriggerProps>(function PickerTrigger(
-  {
-    valueText,
-    placeholder,
-    icon = <CalendarIcon />,
-    invalid = false,
-    disabled = false,
-    'aria-describedby': describedBy,
-    ...props
-  },
-  ref,
-) {
-  const valueId = useId()
-  return (
-    <TriggerFrame
-      ref={ref}
-      invalid={invalid}
-      disabled={disabled}
-      aria-haspopup="dialog"
-      aria-invalid={invalid || undefined}
-      aria-disabled={disabled || undefined}
-      aria-describedby={[valueId, describedBy].filter(Boolean).join(' ')}
-      {...(isWeb
-        ? { type: 'button' }
-        : // Native has no aria-describedby; expose the date as the value.
-          { accessibilityValue: { text: valueText ?? placeholder } })}
-      {...props}
-    >
-      <Text
-        id={valueId}
-        size="sm"
-        numberOfLines={1}
-        flexShrink={1}
-        color={valueText ? '$foreground' : '$placeholderColor'}
+export const PickerTrigger = forwardRef<TamaguiElement, PickerTriggerProps>(
+  function PickerTrigger(triggerProps, ref) {
+    const {
+      valueText,
+      placeholder,
+      icon = <CalendarIcon />,
+      invalid = false,
+      disabled = false,
+      'aria-describedby': describedBy,
+      ...props
+    } = useFieldControl(triggerProps)
+    const valueId = useId()
+    return (
+      <TriggerFrame
+        ref={ref}
+        invalid={invalid}
+        disabled={disabled}
+        aria-haspopup="dialog"
+        aria-invalid={invalid || undefined}
+        aria-disabled={disabled || undefined}
+        aria-describedby={[valueId, describedBy].filter(Boolean).join(' ')}
+        {...(isWeb
+          ? { type: 'button' }
+          : // Native has no aria-describedby; expose the date as the value.
+            { accessibilityValue: { text: valueText ?? placeholder } })}
+        {...props}
       >
-        {valueText ?? placeholder}
-      </Text>
-      <IconDefaults size={16} color="$mutedForeground">
-        {icon}
-      </IconDefaults>
-    </TriggerFrame>
-  )
-})
+        <Text
+          id={valueId}
+          size="sm"
+          numberOfLines={1}
+          flexShrink={1}
+          color={valueText ? '$foreground' : '$placeholderColor'}
+        >
+          {valueText ?? placeholder}
+        </Text>
+        <IconDefaults size={16} color="$mutedForeground">
+          {icon}
+        </IconDefaults>
+      </TriggerFrame>
+    )
+  },
+)

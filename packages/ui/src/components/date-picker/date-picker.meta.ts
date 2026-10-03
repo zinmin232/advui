@@ -17,11 +17,11 @@ export default defineMeta({
     'components/calendar/dates.ts',
   ],
   keywords: ['date', 'date picker', 'calendar', 'birthday', 'due date'],
-  usage: `import { DatePicker, FormField } from '@advui/core'
+  usage: `import { DatePicker, Field } from '@advui/core'
 
-<FormField label="Due date">
+<Field label="Due date">
   <DatePicker value={due} onValueChange={setDue} min={new Date()} />
-</FormField>`,
+</Field>`,
   parts: [
     {
       name: 'DatePicker',
@@ -64,7 +64,7 @@ export default defineMeta({
   ],
   examples: [{ name: 'basic', title: 'Basic' }],
   accessibility: [
-    'The field is a button with `aria-haspopup="dialog"`; Form Field’s label names it, and the picked date is linked as its description.',
+    'The field is a button with `aria-haspopup="dialog"`; a Field’s label names it, and the picked date is linked as its description.',
     'The panel is a dialog named by its title. Focus moves into it and returns to the field when it closes.',
     'The calendar inside follows the WAI-ARIA grid pattern (see Calendar).',
   ],
@@ -76,5 +76,5 @@ export default defineMeta({
     ios: 'Opens as a bottom sheet.',
     android: 'Opens as a bottom sheet; the back button closes it.',
   },
-  related: ['calendar', 'date-range-picker', 'time-picker', 'form-field'],
+  related: ['calendar', 'date-range-picker', 'time-picker', 'field'],
 })

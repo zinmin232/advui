@@ -11,11 +11,11 @@ export default defineMeta({
   exports: ['TimePicker'],
   files: ['components/time-picker/TimePicker.tsx', 'components/time-picker/index.ts'],
   keywords: ['time', 'clock', 'hour', 'minute', 'appointment'],
-  usage: `import { FormField, TimePicker } from '@advui/core'
+  usage: `import { Field, TimePicker } from '@advui/core'
 
-<FormField label="Start time">
+<Field label="Start time">
   <TimePicker value={time} onValueChange={setTime} hourCycle={12} minuteStep={15} />
-</FormField>`,
+</Field>`,
   parts: [
     {
       name: 'TimePicker',
@@ -45,7 +45,7 @@ export default defineMeta({
         {
           name: 'id',
           type: 'string',
-          description: 'Goes on the hour select, so a Form Field label targets it.',
+          description: 'Goes on the hour select, so a Field’s label targets it.',
         },
         {
           name: 'hourLabel / minuteLabel / periodLabel',
@@ -68,12 +68,12 @@ export default defineMeta({
     { name: 'twelve-hour', title: '12-hour, 15-minute steps' },
   ],
   accessibility: [
-    'A `group` of Selects, each with its own name (Hour, Minute, AM or PM). Name the group with `aria-label` when it has no Form Field.',
+    'A `group` of Selects, each with its own name (Hour, Minute, AM or PM). Name the group with `aria-label` when it is not in a Field.',
     'Each Select is a listbox on web and an accessible bottom sheet on phones.',
   ],
   platformNotes: {
     ios: 'Each part opens as a bottom sheet.',
     android: 'Each part opens as a bottom sheet; the back button closes it.',
   },
-  related: ['date-picker', 'select', 'form-field'],
+  related: ['date-picker', 'select', 'field'],
 })

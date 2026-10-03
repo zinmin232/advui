@@ -65,6 +65,15 @@ import DropdownMenuOptions from '../../ui/src/components/dropdown-menu/examples/
 import EmptyStateBasic from '../../ui/src/components/empty-state/examples/basic'
 import EmptyStateSearch from '../../ui/src/components/empty-state/examples/search'
 import ErrorStateBasic from '../../ui/src/components/error-state/examples/basic'
+import FieldBasic from '../../ui/src/components/field/examples/basic'
+import FieldDescription from '../../ui/src/components/field/examples/description'
+import FieldRequiredOptional from '../../ui/src/components/field/examples/required-optional'
+import FieldValidation from '../../ui/src/components/field/examples/validation'
+import FieldDisabled from '../../ui/src/components/field/examples/disabled'
+import FieldHorizontal from '../../ui/src/components/field/examples/horizontal'
+import FieldCompound from '../../ui/src/components/field/examples/compound'
+import FieldRichContent from '../../ui/src/components/field/examples/rich-content'
+import FieldForm from '../../ui/src/components/field/examples/form'
 import FileDropzoneBasic from '../../ui/src/components/file-dropzone/examples/basic'
 import FileUploadBasic from '../../ui/src/components/file-upload/examples/basic'
 import FileUploadMultiple from '../../ui/src/components/file-upload/examples/multiple'
@@ -78,8 +87,6 @@ import FormHorizontal from '../../ui/src/components/form/examples/horizontal'
 import FormDisabled from '../../ui/src/components/form/examples/disabled'
 import FormValidation from '../../ui/src/components/form/examples/validation'
 import FormCustomStyling from '../../ui/src/components/form/examples/custom-styling'
-import FormFieldBasic from '../../ui/src/components/form-field/examples/basic'
-import FormFieldValidation from '../../ui/src/components/form-field/examples/validation'
 import GridGrid from '../../ui/src/components/layout/examples/grid'
 import HoverCardBasic from '../../ui/src/components/hover-card/examples/basic'
 import IconButtonBasic from '../../ui/src/components/icon-button/examples/basic'
@@ -312,6 +319,17 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'error-state': {
     'basic': ErrorStateBasic,
   },
+  'field': {
+    'basic': FieldBasic,
+    'description': FieldDescription,
+    'required-optional': FieldRequiredOptional,
+    'validation': FieldValidation,
+    'disabled': FieldDisabled,
+    'horizontal': FieldHorizontal,
+    'compound': FieldCompound,
+    'rich-content': FieldRichContent,
+    'form': FieldForm,
+  },
   'file-dropzone': {
     'basic': FileDropzoneBasic,
   },
@@ -332,10 +350,6 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'disabled': FormDisabled,
     'validation': FormValidation,
     'custom-styling': FormCustomStyling,
-  },
-  'form-field': {
-    'basic': FormFieldBasic,
-    'validation': FormFieldValidation,
   },
   'grid': {
     'grid': GridGrid,

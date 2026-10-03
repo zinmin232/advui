@@ -1,4 +1,4 @@
-import { Autocomplete, FormField } from '@advui/core'
+import { Autocomplete, Field } from '@advui/core'
 import { useState } from 'react'
 
 const cities = ['Mandalay', 'Naypyidaw', 'Bago', 'Mawlamyine', 'Taunggyi', 'Pathein', 'Myitkyina']
@@ -6,7 +6,7 @@ const cities = ['Mandalay', 'Naypyidaw', 'Bago', 'Mawlamyine', 'Taunggyi', 'Path
 export default function AutocompleteBasic() {
   const [city, setCity] = useState('')
   return (
-    <FormField
+    <Field
       label="City"
       description="Pick a suggestion or type any city."
       width="100%"
@@ -19,6 +19,6 @@ export default function AutocompleteBasic() {
         placeholder="Start typing…"
         title="City"
       />
-    </FormField>
+    </Field>
   )
 }

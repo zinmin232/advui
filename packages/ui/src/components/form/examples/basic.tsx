@@ -1,14 +1,14 @@
-import { Form, FormField, Input } from '@advui/core'
+import { Form, Field, Input } from '@advui/core'
 
 export default function FormBasic() {
   return (
     <Form width="100%" maxWidth={400}>
-      <FormField label="Name">
+      <Field label="Name">
         <Input placeholder="Ma Hla" autoComplete="name" />
-      </FormField>
-      <FormField label="Email">
+      </Field>
+      <Field label="Email">
         <Input placeholder="you@example.org" inputMode="email" autoComplete="email" />
-      </FormField>
+      </Field>
       <Form.Submit>Submit</Form.Submit>
     </Form>
   )

@@ -1,4 +1,4 @@
-import { Button, Form, FormField, Input, Textarea } from '@advui/core'
+import { Button, Form, Field, Input, Textarea } from '@advui/core'
 
 export default function FormFooter() {
   return (
@@ -13,12 +13,12 @@ export default function FormFooter() {
         </>
       }
     >
-      <FormField label="Project title">
+      <Field label="Project title">
         <Input defaultValue="Community water points" />
-      </FormField>
-      <FormField label="Summary" description="One or two sentences.">
+      </Field>
+      <Field label="Summary" description="One or two sentences.">
         <Textarea placeholder="What the project does and for whom" />
-      </FormField>
+      </Field>
     </Form>
   )
 }

@@ -11,6 +11,7 @@ import {
   styled,
 } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
+import { useFieldControl } from '../../hooks/useFieldControl'
 import type { InputProps } from '../input/Input'
 
 const slotSizes = {
@@ -84,8 +85,8 @@ export interface OtpInputProps extends Omit<
  * A one-time-code field drawn as separate slots. It is one text box
  * underneath, so pasting a code, SMS autofill and screen readers just work.
  */
-export const OtpInput = forwardRef<TamaguiElement, OtpInputProps>(function OtpInput(
-  {
+export const OtpInput = forwardRef<TamaguiElement, OtpInputProps>(function OtpInput(otpProps, ref) {
+  const {
     length = 6,
     value: valueProp,
     defaultValue = '',
@@ -99,9 +100,7 @@ export const OtpInput = forwardRef<TamaguiElement, OtpInputProps>(function OtpIn
     onFocus,
     onBlur,
     ...props
-  },
-  ref,
-) {
+  } = useFieldControl(otpProps)
   const [value, setValue] = useControllableState({
     value: valueProp,
     defaultValue,

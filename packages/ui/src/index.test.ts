@@ -27,6 +27,8 @@ describe('@advui/core public API', () => {
       'LoadingButton',
       'Input',
       'Form',
+      'Field',
+      // Deprecated alias of Field, kept for apps on 0.6.
       'FormField',
       'DatePicker',
       'Combobox',
@@ -35,6 +37,7 @@ describe('@advui/core public API', () => {
       'UniversalProvider',
       'isTextContent',
       'useControllableState',
+      'useFieldControl',
       'useRipple',
     ])
       expect(core).toHaveProperty(name)

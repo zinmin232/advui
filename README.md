@@ -33,7 +33,7 @@ The same file renders DOM elements in Next.js and native views in Expo.
 - **88 components** in four packages, each with tests, metadata, examples, docs
   and a registry entry. Install only the packages you use:
   - **`@advui/core`** (76), general-purpose components:
-    - **Forms:** Form, Input, Textarea, Label, Form Field, Password Input,
+    - **Forms:** Form, Input, Textarea, Label, Field, Password Input,
       Number Input, OTP Input, Checkbox, Radio Group, Switch, Slider, Select,
       Combobox, Autocomplete, Multi Select, Date Picker, Date Range Picker, Time
       Picker

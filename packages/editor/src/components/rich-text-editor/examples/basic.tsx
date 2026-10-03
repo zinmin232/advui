@@ -1,4 +1,4 @@
-import { FormField, VStack } from '@advui/core'
+import { Field, VStack } from '@advui/core'
 import { RichTextEditor } from '@advui/editor'
 import { useState } from 'react'
 
@@ -16,9 +16,9 @@ export default function RichTextEditorBasic() {
   const [value, setValue] = useState(initial)
   return (
     <VStack width="100%" maxWidth="$144">
-      <FormField label="Report" description="Markdown is supported. Use Preview to check it.">
+      <Field label="Report" description="Markdown is supported. Use Preview to check it.">
         <RichTextEditor value={value} onValueChange={setValue} maxLength={1000} />
-      </FormField>
+      </Field>
     </VStack>
   )
 }

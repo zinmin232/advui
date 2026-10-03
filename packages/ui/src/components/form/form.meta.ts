@@ -21,7 +21,7 @@ export default defineMeta({
     'search form',
     'filters',
   ],
-  usage: `import { Button, Form, FormField, Input } from '@advui/core'
+  usage: `import { Button, Form, Field, Input } from '@advui/core'
 
 const [saving, setSaving] = useState(false)
 
@@ -47,12 +47,12 @@ const save = async () => {
     </>
   }
 >
-  <FormField label="Name">
+  <Field label="Name">
     <Input />
-  </FormField>
-  <FormField label="Email">
+  </Field>
+  <Field label="Email">
     <Input inputMode="email" />
-  </FormField>
+  </Field>
 </Form>`,
   parts: [
     {
@@ -63,7 +63,7 @@ const save = async () => {
         {
           name: 'children',
           type: 'ReactNode',
-          description: 'The fields: Form Field, inputs, checkboxes, your own components…',
+          description: 'The fields: Field, inputs, checkboxes, your own components…',
         },
         {
           name: 'gap',
@@ -112,7 +112,7 @@ const save = async () => {
           type: 'boolean',
           default: 'false',
           description:
-            'Disables every Form Field control and `Form.Submit`, and blocks `onSubmit`. Other children keep their own `disabled`.',
+            'Disables every Field control and `Form.Submit`, and blocks `onSubmit`. Other children keep their own `disabled`.',
         },
         {
           name: 'direction',
@@ -196,7 +196,7 @@ const save = async () => {
       name: 'validation',
       title: 'With your own validation',
       description:
-        'The app (or React Hook Form, Formik…) owns values and errors; Form Field shows them.',
+        'The app (or React Hook Form, Formik…) owns values and errors; Field shows them.',
     },
     {
       name: 'custom-styling',
@@ -209,8 +209,8 @@ const save = async () => {
     'A text `title` is a heading (level 2, `header` role on iOS and Android); pass your own Heading for another level.',
     'Enter in a field submits on web, as in any HTML form with a submit button. On native, call `submit` from `useFormStatus()` in `onSubmitEditing` if Return should submit.',
     'While loading, `Form.Submit` is busy (`aria-busy`) and disabled, and `loadingText` is read once from a polite status region on web. The form itself is not marked busy, so its fields stay readable.',
-    'While disabled, Form Field controls are disabled (`aria-disabled` and not editable) and their labels are dimmed. Form never clones other children: pass `disabled` to them, or read `useFormStatus()`.',
-    'Browser validation is off (`noValidate`) so errors come from your app, the same on every platform: show them with Form Field’s `error`.',
+    'While disabled, Field controls are disabled (`aria-disabled` and not editable) and their labels are dimmed. Form never clones other children: pass `disabled` to them, or read `useFormStatus()`.',
+    'Browser validation is off (`noValidate`) so errors come from your app, the same on every platform: show them with a Field’s `error`.',
   ],
   keyboard: [
     { keys: 'Enter', action: 'In a field: submits the form (web).' },
@@ -227,5 +227,5 @@ const save = async () => {
     ios: 'No form element: `Form.Submit` calls `onSubmit` on press. The loading status is read from the busy button.',
     android: 'Same as iOS.',
   },
-  related: ['form-field', 'loading-button', 'input', 'button'],
+  related: ['field', 'loading-button', 'input', 'button'],
 })

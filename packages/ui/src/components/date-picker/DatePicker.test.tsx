@@ -1,14 +1,14 @@
 import { describe, expect, it, vi } from 'vitest'
 import { renderWithProvider, screen } from '../../../test/utils'
-import { FormField } from '../form-field/FormField'
+import { Field } from '../field/Field'
 import { DatePicker } from './DatePicker'
 
 describe('DatePicker', () => {
   it('is a labelled button described by its value', () => {
     renderWithProvider(
-      <FormField label="Due date">
+      <Field label="Due date">
         <DatePicker locale="en-US" defaultValue={new Date(2026, 9, 14)} />
-      </FormField>,
+      </Field>,
     )
     const trigger = screen.getByRole('button', { name: 'Due date' })
     expect(trigger).toHaveAttribute('aria-haspopup', 'dialog')

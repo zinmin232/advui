@@ -11,11 +11,11 @@ export default defineMeta({
   exports: ['PasswordInput'],
   files: ['components/password-input/PasswordInput.tsx', 'components/password-input/index.ts'],
   keywords: ['password', 'secret', 'show password', 'reveal', 'login'],
-  usage: `import { FormField, PasswordInput } from '@advui/core'
+  usage: `import { Field, PasswordInput } from '@advui/core'
 
-<FormField label="Password">
+<Field label="Password">
   <PasswordInput />
-</FormField>`,
+</Field>`,
   parts: [
     {
       name: 'PasswordInput',
@@ -62,5 +62,5 @@ export default defineMeta({
     ios: 'Uses `secureTextEntry`; iOS may clear the field when typing resumes after hiding.',
     android: 'Uses `secureTextEntry`.',
   },
-  related: ['input', 'form-field'],
+  related: ['input', 'field'],
 })

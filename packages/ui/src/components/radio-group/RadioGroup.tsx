@@ -12,6 +12,7 @@ import {
   withStaticProperties,
 } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
+import { FieldContext, type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
 
 const SelectedValueContext = createContext<string | undefined>(undefined)
 
@@ -97,21 +98,38 @@ const RadioGroupItem = forwardRef<TamaguiElement, RadioGroupItemProps>(function 
   )
 })
 
-const RadioGroupRoot = forwardRef<TamaguiElement, RadioGroupProps>(function RadioGroup(
-  { value: valueProp, defaultValue, onValueChange, ...props },
-  ref,
-) {
-  const [value, setValue] = useControllableState({
-    value: valueProp,
-    defaultValue: defaultValue ?? '',
-    onChange: onValueChange,
-  })
-  return (
-    <SelectedValueContext.Provider value={value}>
-      <BaseRadioGroup ref={ref} value={value} onValueChange={setValue} {...props} />
-    </SelectedValueContext.Provider>
-  )
-})
+const RadioGroupRoot = forwardRef<TamaguiElement, RadioGroupProps>(
+  function RadioGroup(groupProps, ref) {
+    const field = useContext(FieldContext)
+    const {
+      value: valueProp,
+      defaultValue,
+      onValueChange,
+      invalid,
+      ...props
+    } = useFieldControl<RadioGroupProps & FieldControlProps>(groupProps)
+    const [value, setValue] = useControllableState({
+      value: valueProp,
+      defaultValue: defaultValue ?? '',
+      onChange: onValueChange,
+    })
+    return (
+      <SelectedValueContext.Provider value={value}>
+        <BaseRadioGroup
+          ref={ref}
+          value={value}
+          onValueChange={setValue}
+          aria-invalid={invalid || undefined}
+          // A <label for> cannot name a group, so a Field's label is linked by id.
+          {...(isWeb &&
+            field?.labelId &&
+            props['aria-label'] === undefined && { 'aria-labelledby': field.labelId })}
+          {...props}
+        />
+      </SelectedValueContext.Provider>
+    )
+  },
+)
 
 /**
  * A set of mutually exclusive options. Arrow keys move between items (roving

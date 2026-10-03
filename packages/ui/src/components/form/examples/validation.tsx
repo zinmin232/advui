@@ -1,4 +1,4 @@
-import { Form, FormField, Input } from '@advui/core'
+import { Form, Field, Input } from '@advui/core'
 import { useState } from 'react'
 
 // Values and errors live in the app (or React Hook Form, Formik…); Form lays
@@ -20,9 +20,9 @@ export default function FormValidation() {
       onSubmit={handleSubmit}
       footer={<Form.Submit>Subscribe</Form.Submit>}
     >
-      <FormField label="Email" required error={error}>
+      <Field label="Email" required error={error}>
         <Input value={email} onChangeText={setEmail} inputMode="email" autoComplete="email" />
-      </FormField>
+      </Field>
     </Form>
   )
 }

@@ -17,11 +17,11 @@ export default defineMeta({
     'components/combobox/index.ts',
   ],
   keywords: ['combobox', 'searchable select', 'filter', 'typeahead', 'picker'],
-  usage: `import { Combobox, FormField } from '@advui/core'
+  usage: `import { Combobox, Field } from '@advui/core'
 
-<FormField label="Country">
+<Field label="Country">
   <Combobox options={countries} value={country} onValueChange={setCountry} />
-</FormField>`,
+</Field>`,
   parts: [
     {
       name: 'Combobox',
