@@ -1,4 +1,4 @@
-import { test as base } from '@playwright/test'
+import { type Page, test as base } from '@playwright/test'
 
 // Demo content uses remote photos (pravatar, Unsplash). Serve deterministic
 // local placeholders so tests never depend on third-party hosts being reachable.
@@ -48,5 +48,26 @@ export const test = base.extend({
     await provide(page)
   },
 })
+
+/**
+ * Boxes of the Grid cells that hold these texts: the nearest ancestor whose
+ * parent is the wrapping row. Checks layout in a real browser, which unit
+ * tests cannot.
+ */
+export function gridCells(page: Page, texts: string[]) {
+  return page.evaluate((labels) => {
+    return labels.map((label) => {
+      const text = [...document.querySelectorAll('body *')].find(
+        (el) => el.children.length === 0 && el.textContent === label,
+      )
+      let cell = text
+      while (cell?.parentElement && getComputedStyle(cell.parentElement).flexWrap !== 'wrap')
+        cell = cell.parentElement
+      if (!cell) throw new Error(`No grid cell holds "${label}"`)
+      const { x, y, width } = cell.getBoundingClientRect()
+      return { x, y, width }
+    })
+  }, texts)
+}
 
 export { expect } from '@playwright/test'

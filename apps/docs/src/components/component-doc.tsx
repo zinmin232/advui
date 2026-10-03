@@ -1,6 +1,6 @@
 'use client'
 
-import type { ComponentMeta, Platform, PartDoc } from '@advui/catalog'
+import type { ComponentMeta, DocTable, Platform, PartDoc } from '@advui/catalog'
 import { Badge, Button, Card, Grid, HStack, Tabs, Text, VStack } from '@advui/core'
 import { ExternalLinkIcon, GlobeIcon, SmartphoneIcon } from '@advui/icons'
 import Link from 'next/link'
@@ -115,6 +115,46 @@ function PropsTable({ part }: { part: PartDoc }) {
   )
 }
 
+function ReferenceTable({ table }: { table: DocTable }) {
+  return (
+    <SectionAnchor id={table.id}>
+      <H2 id={`${table.id}-heading`}>{table.title}</H2>
+      {table.description ? <P>{renderInlineCode(table.description)}</P> : null}
+      <View
+        overflowX="auto"
+        borderWidth={1}
+        borderColor="$border"
+        borderRadius="$lg"
+        tabIndex={0}
+        role="region"
+        aria-label={table.title}
+        focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
+      >
+        <table className="props-table">
+          <thead>
+            <tr>
+              {table.columns.map((column) => (
+                <th key={column} scope="col">
+                  {column}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {table.rows.map((row) => (
+              <tr key={row.join('|')}>
+                {row.map((cell, i) => (
+                  <td key={i}>{renderInlineCode(cell)}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </View>
+    </SectionAnchor>
+  )
+}
+
 function SectionAnchor({ id, children }: { id: string; children: ReactNode }) {
   return (
     <VStack id={id} gap="$4">
@@ -133,6 +173,7 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
     { id: 'examples', title: 'Examples' },
     ...data.examples.map((e) => ({ id: `example-${e.name}`, title: e.title, level: 3 as const })),
     { id: 'api', title: 'API reference' },
+    ...(meta.tables ?? []).map((t) => ({ id: t.id, title: t.title })),
     { id: 'accessibility', title: 'Accessibility' },
     ...(meta.responsive ? [{ id: 'responsive', title: 'Responsive behavior' }] : []),
     ...(meta.platformNotes && Object.keys(meta.platformNotes).length
@@ -245,6 +286,10 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
           ))}
         </VStack>
       </SectionAnchor>
+
+      {(meta.tables ?? []).map((table) => (
+        <ReferenceTable key={table.id} table={table} />
+      ))}
 
       <SectionAnchor id="accessibility">
         <H2 id="accessibility-heading">Accessibility</H2>

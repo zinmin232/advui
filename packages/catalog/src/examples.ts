@@ -87,6 +87,10 @@ import FormHorizontal from '../../ui/src/components/form/examples/horizontal'
 import FormDisabled from '../../ui/src/components/form/examples/disabled'
 import FormValidation from '../../ui/src/components/form/examples/validation'
 import FormCustomStyling from '../../ui/src/components/form/examples/custom-styling'
+import GridTwoColumn84 from '../../ui/src/components/layout/examples/two-column-8-4'
+import GridSidebar39 from '../../ui/src/components/layout/examples/sidebar-3-9'
+import GridResponsiveCards from '../../ui/src/components/layout/examples/responsive-cards'
+import GridOffset from '../../ui/src/components/layout/examples/offset'
 import GridGrid from '../../ui/src/components/layout/examples/grid'
 import HoverCardBasic from '../../ui/src/components/hover-card/examples/basic'
 import IconButtonBasic from '../../ui/src/components/icon-button/examples/basic'
@@ -352,6 +356,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'custom-styling': FormCustomStyling,
   },
   'grid': {
+    'two-column-8-4': GridTwoColumn84,
+    'sidebar-3-9': GridSidebar39,
+    'responsive-cards': GridResponsiveCards,
+    'offset': GridOffset,
     'grid': GridGrid,
   },
   'hover-card': {

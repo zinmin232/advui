@@ -1,9 +1,9 @@
-import { describe, expect, it, jest } from '@jest/globals'
+import { afterEach, describe, expect, it, jest } from '@jest/globals'
 import { act, fireEvent, screen } from '@testing-library/react-native'
 import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
 import { zIndex } from '@advui/theme'
 import type { ReactElement } from 'react'
-import { BackHandler, StyleSheet } from 'react-native'
+import { BackHandler, Dimensions, StyleSheet } from 'react-native'
 import { XStack } from 'tamagui'
 import { renderNative } from '../../test/native-utils'
 import { Accordion } from './accordion/Accordion'
@@ -43,6 +43,7 @@ import { IconButton } from './icon-button/IconButton'
 import { Image } from './image/Image'
 import { ImageGallery } from './image-gallery/ImageGallery'
 import { Input } from './input/Input'
+import { Grid } from './layout/Grid'
 import { List } from './list/List'
 import { LoadingButton } from './loading-button/LoadingButton'
 import { Menu } from './menu/Menu'
@@ -1118,6 +1119,63 @@ describe('native rendering', () => {
     expect(screen.getByRole('img', { name: 'Clinic entrance' })).toBeOnTheScreen()
     // The road and the fallback; the decorative image is hidden.
     expect(screen.getAllByRole('img')).toHaveLength(2)
+  })
+})
+
+// Grid widths come from media props; on native Tamagui re-reads them from the
+// window size, so these resize the (mocked) window like a rotation would.
+describe('Grid layout', () => {
+  const phone = Dimensions.get('window')
+  const resize = async (width: number) => {
+    await act(async () => {
+      Dimensions.set({ window: { ...phone, width }, screen: { ...phone, width } })
+    })
+  }
+  const style = (testID: string) => StyleSheet.flatten(screen.getByTestId(testID).props.style)
+  const layout = () => (
+    <Grid columns={12} gap="$4" testID="grid">
+      <Grid.Item span={{ base: 12, md: 8 }} testID="main">
+        <Text>Main</Text>
+      </Grid.Item>
+      <Grid.Item span={{ base: 12, md: 4 }} offset={{ lg: 0 }} testID="side">
+        <Text>Side</Text>
+      </Grid.Item>
+      <Grid.Item span={6} offset={3} testID="offset">
+        <Text>Offset</Text>
+      </Grid.Item>
+      <Text testID="plain">Plain</Text>
+    </Grid>
+  )
+
+  afterEach(async () => {
+    await resize(phone.width)
+  })
+
+  it('stacks 8 / 4 below md (the mocked phone is 750 wide)', async () => {
+    expect(phone.width).toBeLessThan(768)
+    await renderNative(layout())
+    expect(style('main').width).toBe('100%')
+    expect(style('side').width).toBe('100%')
+    // A plain child keeps its one-column cell.
+    expect(StyleSheet.flatten(screen.getByTestId('plain').parent?.props.style).width).toBe(
+      `${100 / 12}%`,
+    )
+  })
+
+  it('splits 8 / 4 from md, with no extra wrapper around an item', async () => {
+    await resize(1024)
+    await renderNative(layout())
+    expect(style('main').width).toBe('66.66666666666667%')
+    expect(style('side').width).toBe('33.333333333333336%')
+    expect(screen.getByTestId('main').parent).toBe(screen.getByTestId('grid'))
+    // Half the $4 gap (16) on each side of the cell, and pulled back on the grid.
+    expect(style('main')).toMatchObject({ paddingLeft: 8, paddingRight: 8 })
+    expect(style('grid')).toMatchObject({ marginLeft: -8, marginRight: -8, rowGap: 16 })
+  })
+
+  it('offsets with marginStart, which React Native mirrors in RTL', async () => {
+    await renderNative(layout())
+    expect(style('offset')).toMatchObject({ width: '50%', marginStart: '25%' })
   })
 })
 

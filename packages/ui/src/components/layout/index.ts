@@ -1,5 +1,15 @@
 export { Container, type ContainerProps } from './Container'
-export { Grid, type GridProps, type ResponsiveColumns } from './Grid'
+export {
+  Grid,
+  GridItem,
+  type GridItemProps,
+  type GridProps,
+  type GridSpan,
+  type ResponsiveColumns,
+  type ResponsiveGridValue,
+  type ResponsiveOffset,
+  type ResponsiveSpan,
+} from './Grid'
 export {
   Box,
   Center,

@@ -7,6 +7,8 @@ one version.
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-10-03
+
 ### Changed
 
 - **Form Field is now Field** (`import { Field } from '@advui/core'`), and it
@@ -34,6 +36,8 @@ one version.
   visible label is hidden from screen readers, which read the control's name
   instead. TalkBack used to read the label again, split into stray buttons
   such as "Email" and "*".
+- Grid: `columnGap` is now the space between columns. It used to reach the
+  row as CSS `column-gap`, which pushed cells onto new rows.
 
 ### Fixed
 
@@ -41,6 +45,19 @@ one version.
 
 ### Added
 
+- **Grid spans and offsets**: `Grid.Item` (also exported as `GridItem`)
+  covers `span` columns of the grid and leaves `offset` empty columns before
+  it, each a number or a mobile-first map such as `{ base: 12, md: 8 }`. So a
+  12-column Grid lays out 8 / 4 or 3 / 9 from a breakpoint and stacks on
+  phones. `span="full"` covers every column, `span="auto"` sizes to the
+  content; spans and offsets are clamped to the column count, and offsets
+  mirror in right-to-left layouts. Grid also takes `rowGap`, `columnGap` and
+  `alignItems`. It stays flex-wrap with percentage widths (not CSS grid), so
+  web, iOS and Android lay out the same, and plain children keep their
+  one-column cells: existing grids render the same markup.
+- Docs: the Grid page has a playground, four new examples and a "From
+  Bootstrap" table (`col-md-8` → `span={{ base: 12, md: 8 }}`). Component
+  metadata can carry reference `tables`.
 - `useFieldControl`, for custom controls inside a Field.
 - Select takes `aria-describedby`, `aria-required` and `accessibilityHint`, so
   a Field's help and error text describe it. A Radio Group in a Field is named

@@ -58,6 +58,17 @@ export interface PlaygroundSpec {
   staticProps?: Record<string, string | number | boolean>
 }
 
+/** A reference table on the docs page, such as a mapping from another library. */
+export interface DocTable {
+  /** Anchor on the docs page, e.g. `from-bootstrap`. */
+  id: string
+  title: string
+  description?: string
+  columns: string[]
+  /** One cell per column; text in backticks renders as code. */
+  rows: string[][]
+}
+
 export interface KeyboardDoc {
   keys: string
   action: string
@@ -84,6 +95,8 @@ export interface ComponentMeta {
   accessibility: string[]
   keyboard?: KeyboardDoc[]
   responsive?: string
+  /** Reference tables shown after the API reference. */
+  tables?: DocTable[]
   platformNotes?: Partial<Record<Platform, string>>
   related?: string[]
 }

@@ -132,6 +132,13 @@ export function validateCatalog(entries) {
       if (!existsSync(join(pkg.src, f)))
         problems.push(`${where}: listed file "${f}" does not exist`)
     }
+    for (const table of meta.tables ?? []) {
+      if (!table.id || !table.title) problems.push(`${where}: a table needs "id" and "title"`)
+      for (const row of table.rows ?? []) {
+        if (row.length !== table.columns?.length)
+          problems.push(`${where}: table "${table.id}" has a row without one cell per column`)
+      }
+    }
     for (const example of meta.examples ?? []) {
       const exampleFile = join(pkg.componentsDir, dir, 'examples', `${example.name}.tsx`)
       if (!existsSync(exampleFile)) problems.push(`${where}: example "${example.name}" has no file`)

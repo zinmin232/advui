@@ -13,6 +13,16 @@ import { withBasePath } from '../lib/site'
 
 type Values = Record<string, string | number | boolean>
 
+function GridCell({ label }: { label: string }) {
+  return (
+    <UI.Box flexGrow={1} padding="$3" borderRadius="$md" backgroundColor="$muted">
+      <UI.Text size="sm" weight="medium">
+        {label}
+      </UI.Text>
+    </UI.Box>
+  )
+}
+
 /** Children for components whose content is structural rather than a text label. */
 const structuralChildren: Record<string, { element: ReactNode; code: string }> = {
   Card: {
@@ -42,6 +52,25 @@ const structuralChildren: Record<string, { element: ReactNode; code: string }> =
   <Card.Footer>
     <Button fullWidth>Upgrade</Button>
   </Card.Footer>`,
+  },
+  // A full-row item, a two-column item and plain cells show how spans clamp and wrap.
+  // An array, not a fragment: Grid makes a cell of each child.
+  Grid: {
+    element: [
+      <UI.Grid.Item key="full" span="full">
+        <GridCell label="span full" />
+      </UI.Grid.Item>,
+      <UI.Grid.Item key="two" span={2}>
+        <GridCell label="span 2" />
+      </UI.Grid.Item>,
+      ...['1', '2', '3', '4'].map((label) => <GridCell key={label} label={label} />),
+    ],
+    code: `  <Grid.Item span="full">…</Grid.Item>
+  <Grid.Item span={2}>…</Grid.Item>
+  <Box>1</Box>
+  <Box>2</Box>
+  <Box>3</Box>
+  <Box>4</Box>`,
   },
 }
 
@@ -159,6 +188,7 @@ export function Playground({
       {...(iconFor[spec.component] ? { icon: iconFor[spec.component] } : null)}
       {...values}
       {...(spec.component === 'Card' ? { width: '100%', maxWidth: '$80' } : null)}
+      {...(spec.component === 'Grid' ? { width: '100%' } : null)}
     >
       {structural ? structural.element : spec.children}
     </Component>
