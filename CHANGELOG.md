@@ -7,6 +7,36 @@ one version.
 
 ## [Unreleased]
 
+### Changed
+
+- **Form Field is now Field** (`import { Field } from '@advui/core'`), and it
+  does more:
+  - `optional` adds "(optional)" to the label (`optionalText` translates it);
+    `required` wins when both are set.
+  - `orientation="horizontal"` puts the label beside the control, with the
+    help and error text under the control.
+  - `fullWidth`, `gap`, and `id` for the control's id.
+  - `label` is optional, and the label, help and error text take elements.
+  - The control can sit inside a layout, such as an Input next to a Button.
+
+  `FormField` and `FormFieldProps` still work as deprecated aliases. The docs
+  page moved to `/docs/components/field`, and the CLI item is now
+  `advui add field`.
+
+- Field reaches its control through context instead of cloning its only
+  child. Every core form control reads it; **a custom control** now calls the
+  new `useFieldControl(props)` to get the id, state and descriptions it used to
+  receive as props.
+- `error=""` no longer marks a field invalid, like `undefined`, `null` and
+  `false`.
+
+### Added
+
+- `useFieldControl`, for custom controls inside a Field.
+- Select takes `aria-describedby`, `aria-required` and `accessibilityHint`, so
+  a Field's help and error text describe it. A Radio Group in a Field is named
+  by the label (`aria-labelledby`), and a Switch reports `aria-invalid`.
+
 ## [0.6.0] - 2026-09-29
 
 `@advui/data`, `@advui/charts` and `@advui/editor` 0.5.0 were published by

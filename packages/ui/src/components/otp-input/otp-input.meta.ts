@@ -11,11 +11,11 @@ export default defineMeta({
   exports: ['OtpInput'],
   files: ['components/otp-input/OtpInput.tsx', 'components/otp-input/index.ts'],
   keywords: ['otp', 'one-time code', 'verification code', 'pin', '2fa', 'sms code'],
-  usage: `import { FormField, OtpInput } from '@advui/core'
+  usage: `import { Field, OtpInput } from '@advui/core'
 
-<FormField label="Verification code">
+<Field label="Verification code">
   <OtpInput onComplete={verify} />
-</FormField>`,
+</Field>`,
   parts: [
     {
       name: 'OtpInput',
@@ -55,7 +55,7 @@ export default defineMeta({
   ],
   accessibility: [
     'It is one text box, so screen readers announce one field and its whole value, not six.',
-    'Give it a label with Form Field or `aria-label`; the slots are hidden from assistive technology.',
+    'Give it a label with a Field or `aria-label`; the slots are hidden from assistive technology.',
     'Pasting a full code, or picking it from the SMS suggestion, fills every slot at once.',
   ],
   keyboard: [
@@ -67,5 +67,5 @@ export default defineMeta({
     ios: '`textContentType="oneTimeCode"` shows the code from Messages above the keyboard.',
     android: '`autoComplete="sms-otp"` lets autofill offer the code from SMS.',
   },
-  related: ['input', 'form-field'],
+  related: ['input', 'field'],
 })

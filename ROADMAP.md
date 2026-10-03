@@ -52,7 +52,7 @@ cannot do them. Tick them off here as they are done.
       dependencies. Keep it, or ask for a WYSIWYG editor, which needs new
       libraries (TipTap on web, a WebView-based editor on iOS and Android).
 - [ ] **Form: decide.** Three API choices to settle before Form is `stable`:
-  - A disabled Form disables controls inside Form Field and `Form.Submit`
+  - A disabled Form disables controls inside a Field and `Form.Submit`
     only. Keep that, or also make plain Input, Textarea, Select, Checkbox,
     Switch and Radio Group follow it through `useFormStatus()`.
   - Keep the hook name `useFormStatus`, or rename it: React DOM has a hook with

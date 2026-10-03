@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { renderWithProvider, screen } from '../../../test/utils'
-import { FormField } from '../form-field/FormField'
+import { Field } from '../field/Field'
 import { FileUpload } from './FileUpload'
 import { formatBytes, matchesAccept } from './files'
 
@@ -11,9 +11,9 @@ describe('FileUpload', () => {
   it('is a labelled button; picked files are listed with remove buttons', async () => {
     const onValueChange = vi.fn()
     const { user, container } = renderWithProvider(
-      <FormField label="Résumé">
+      <Field label="Résumé">
         <FileUpload accept=".pdf" onValueChange={onValueChange} />
-      </FormField>,
+      </Field>,
     )
     expect(screen.getByRole('button', { name: 'Résumé' })).toBeInTheDocument()
     expect(screen.getByText('No file chosen')).toBeInTheDocument()

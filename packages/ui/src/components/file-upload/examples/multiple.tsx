@@ -1,4 +1,4 @@
-import { FileUpload, FormField, type PickedFile } from '@advui/core'
+import { FileUpload, Field, type PickedFile } from '@advui/core'
 import { useState } from 'react'
 
 const photos: PickedFile[] = [
@@ -10,7 +10,7 @@ export default function FileUploadMultiple() {
   const [files, setFiles] = useState(photos)
   const [error, setError] = useState<string>()
   return (
-    <FormField
+    <Field
       label="Photos"
       description="Up to 4 images, 5 MB each."
       error={error}
@@ -33,6 +33,6 @@ export default function FileUploadMultiple() {
           )
         }
       />
-    </FormField>
+    </Field>
   )
 }

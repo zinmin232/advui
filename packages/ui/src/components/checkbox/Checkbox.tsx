@@ -9,6 +9,7 @@ import {
   createCheckbox,
   styled,
 } from 'tamagui'
+import { useFieldControl } from '../../hooks/useFieldControl'
 
 // Visual styles live in the `unstyled: false` variant so they override the
 // defaults Tamagui's createCheckbox applies through the same variant.
@@ -79,28 +80,28 @@ const checkedStyle = { backgroundColor: '$primary', borderColor: '$primary' } as
  * Binary (or indeterminate) choice. Pair with `<Label htmlFor>` using the same `id`.
  * Space toggles it on web; it exposes the `checkbox` role and checked state on every platform.
  */
-export const Checkbox = forwardRef<TamaguiElement, CheckboxProps>(function Checkbox(
-  { size = 'md', invalid, ...props },
-  ref,
-) {
-  const iconSize = size === 'sm' ? 12 : 14
-  return (
-    <BaseCheckbox
-      ref={ref}
-      size={size as never}
-      {...nativeAccessible}
-      aria-invalid={invalid || undefined}
-      {...(invalid ? { borderColor: '$error' as const } : null)}
-      activeStyle={checkedStyle}
-      {...(props as TamaguiCheckboxProps)}
-    >
-      <BaseCheckbox.Indicator>
-        {props.checked === 'indeterminate' ? (
-          <MinusIcon size={iconSize} color="$primaryForeground" strokeWidth={3} />
-        ) : (
-          <CheckIcon size={iconSize} color="$primaryForeground" strokeWidth={3} />
-        )}
-      </BaseCheckbox.Indicator>
-    </BaseCheckbox>
-  )
-})
+export const Checkbox = forwardRef<TamaguiElement, CheckboxProps>(
+  function Checkbox(checkboxProps, ref) {
+    const { size = 'md', invalid, ...props } = useFieldControl(checkboxProps)
+    const iconSize = size === 'sm' ? 12 : 14
+    return (
+      <BaseCheckbox
+        ref={ref}
+        size={size as never}
+        {...nativeAccessible}
+        aria-invalid={invalid || undefined}
+        {...(invalid ? { borderColor: '$error' as const } : null)}
+        activeStyle={checkedStyle}
+        {...(props as TamaguiCheckboxProps)}
+      >
+        <BaseCheckbox.Indicator>
+          {props.checked === 'indeterminate' ? (
+            <MinusIcon size={iconSize} color="$primaryForeground" strokeWidth={3} />
+          ) : (
+            <CheckIcon size={iconSize} color="$primaryForeground" strokeWidth={3} />
+          )}
+        </BaseCheckbox.Indicator>
+      </BaseCheckbox>
+    )
+  },
+)

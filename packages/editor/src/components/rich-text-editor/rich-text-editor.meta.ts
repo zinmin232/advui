@@ -62,7 +62,7 @@ export default defineMeta({
         {
           name: 'aria-label / id / aria-describedby',
           type: 'string',
-          description: 'Name and help. Form Field sets these for you.',
+          description: 'Name and help. A Field sets these for you.',
         },
         {
           name: 'labels',
@@ -91,7 +91,7 @@ export default defineMeta({
     { name: 'content', title: 'Showing saved text' },
   ],
   accessibility: [
-    'The text area is a normal multi-line field, named by `aria-label` or Form Field.',
+    'The text area is a normal multi-line field, named by `aria-label` or a Field.',
     'The toolbar is a WAI-ARIA `toolbar` with one tab stop; each tool is a named button (with its shortcut in the tooltip).',
     'After a tool is used, focus returns to the text with the new text selected, so you can keep typing.',
     'Preview is a toggle button (`aria-pressed`); the preview is a named region with real headings and lists.',
@@ -110,5 +110,5 @@ export default defineMeta({
     ios: 'The same editor on a native text field; tools act on the selection.',
     android: 'Same as iOS.',
   },
-  related: ['textarea', 'form-field'],
+  related: ['textarea', 'field'],
 })

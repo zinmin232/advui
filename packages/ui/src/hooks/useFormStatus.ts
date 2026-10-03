@@ -1,7 +1,7 @@
 import { type ReactNode, createContext, useContext } from 'react'
 
 export interface FormStatus {
-  /** The form does not accept input. Form Field and Form.Submit follow it. */
+  /** The form does not accept input. Field and Form.Submit follow it. */
   disabled: boolean
   /** The app is submitting the form. The app owns this state; the form only shows it. */
   loading: boolean

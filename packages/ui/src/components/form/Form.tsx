@@ -85,7 +85,7 @@ export interface FormProps extends Omit<
    * `disabled` or `loading`. A returned Promise is not awaited: set `loading` yourself.
    */
   onSubmit?: () => void | Promise<unknown>
-  /** Disables Form Field controls and `Form.Submit`, and blocks `onSubmit`. */
+  /** Disables Field controls and `Form.Submit`, and blocks `onSubmit`. */
   disabled?: boolean
   /** The app is submitting: `Form.Submit` shows a spinner and `onSubmit` is blocked. */
   loading?: boolean
@@ -220,7 +220,7 @@ const FormSubmit = forwardRef<TamaguiElement, FormSubmitProps>(function FormSubm
  *
  * @example
  * <Form title="Create account" onSubmit={save} loading={saving} footer={<Form.Submit>Save</Form.Submit>}>
- *   <FormField label="Email"><Input /></FormField>
+ *   <Field label="Email"><Input /></Field>
  * </Form>
  */
 export const Form = withStaticProperties(FormImpl, {

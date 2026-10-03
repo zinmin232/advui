@@ -28,7 +28,7 @@ export default defineMeta({
     'components/file-upload/index.ts',
   ],
   keywords: ['file', 'upload', 'attachment', 'document', 'picker', 'input file'],
-  usage: `import { FileUpload, FormField, setFilePicker } from '@advui/core'
+  usage: `import { FileUpload, Field, setFilePicker } from '@advui/core'
 import * as DocumentPicker from 'expo-document-picker'
 
 // Once, at app start (iOS / Android; web uses the browser's dialog):
@@ -42,9 +42,9 @@ setFilePicker(async ({ multiple, accept }) => {
     : result.assets.map((a) => ({ name: a.name, size: a.size, type: a.mimeType, uri: a.uri }))
 })
 
-<FormField label="Résumé" description="PDF, up to 5 MB.">
+<Field label="Résumé" description="PDF, up to 5 MB.">
   <FileUpload accept=".pdf" maxSize={5_000_000} onValueChange={setFiles} />
-</FormField>`,
+</Field>`,
   parts: [
     {
       name: 'FileUpload',
@@ -75,7 +75,7 @@ setFilePicker(async ({ multiple, accept }) => {
         {
           name: 'onReject',
           type: "({ file, reason: 'type' | 'size' | 'count' })[] => void",
-          description: 'Files that were refused; show the reason with Form Field’s `error`.',
+          description: 'Files that were refused; show the reason with a Field’s `error`.',
         },
         {
           name: 'pickFiles',
@@ -99,7 +99,7 @@ setFilePicker(async ({ multiple, accept }) => {
     { name: 'multiple', title: 'Several images with limits' },
   ],
   accessibility: [
-    'The control is a real button; Form Field’s label names it, and help or error text describes it.',
+    'The control is a real button; a Field’s label names it, and help or error text describes it.',
     'The picked files are a list; each has a remove button named "Remove {file name}".',
     'Refused files are reported through `onReject`, so the reason can be shown as text.',
   ],
@@ -109,5 +109,5 @@ setFilePicker(async ({ multiple, accept }) => {
     ios: 'Uses the picker from `setFilePicker` (e.g. `expo-document-picker`); without one the button is disabled and a warning is logged in development.',
     android: 'Uses the picker from `setFilePicker` (e.g. `expo-document-picker`).',
   },
-  related: ['file-dropzone', 'form-field'],
+  related: ['file-dropzone', 'field'],
 })

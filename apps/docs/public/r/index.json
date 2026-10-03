@@ -446,7 +446,9 @@
       "dependencies": [
         "@advui/icons"
       ],
-      "registryDependencies": []
+      "registryDependencies": [
+        "hooks"
+      ]
     },
     {
       "name": "chip",
@@ -685,6 +687,21 @@
       ]
     },
     {
+      "name": "field",
+      "title": "Field",
+      "type": "registry:component",
+      "description": "A label, a control, help text and an error message, wired together for screen readers. Validation stays with your app or form library.",
+      "category": "forms",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": [
+        "hooks",
+        "label",
+        "typography"
+      ]
+    },
+    {
       "name": "file-dropzone",
       "title": "File Dropzone",
       "type": "registry:component",
@@ -717,21 +734,6 @@
         "file-dropzone",
         "hooks",
         "icon-button",
-        "typography"
-      ]
-    },
-    {
-      "name": "form-field",
-      "title": "Form Field",
-      "type": "registry:component",
-      "description": "A label, one control, help text and an error message, wired together.",
-      "category": "forms",
-      "status": "beta",
-      "package": "@advui/core",
-      "dependencies": [],
-      "registryDependencies": [
-        "hooks",
-        "label",
         "typography"
       ]
     },
@@ -824,7 +826,9 @@
       "status": "stable",
       "package": "@advui/core",
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [
+        "hooks"
+      ]
     },
     {
       "name": "label",
@@ -1275,7 +1279,9 @@
       "dependencies": [
         "@advui/theme"
       ],
-      "registryDependencies": []
+      "registryDependencies": [
+        "hooks"
+      ]
     },
     {
       "name": "tabs",
@@ -1304,6 +1310,7 @@
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
+        "hooks",
         "input"
       ]
     },
@@ -1317,6 +1324,7 @@
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
+        "hooks",
         "select"
       ]
     },

@@ -17,7 +17,7 @@
     {
       "path": "components/textarea/Textarea.tsx",
       "type": "registry:ui",
-      "content": "import { forwardRef } from 'react'\nimport { type GetProps, type TamaguiElement, TextArea, styled } from 'tamagui'\nimport { inputBaseStyle } from '../input/Input'\n\nconst TextareaFrame = styled(TextArea, {\n  name: 'Textarea',\n  ...inputBaseStyle,\n  minHeight: '$20',\n  paddingHorizontal: '$3',\n  paddingVertical: '$2',\n  fontSize: '$2',\n  lineHeight: '$2',\n  textAlignVertical: 'top',\n\n  variants: {\n    invalid: {\n      true: {\n        borderColor: '$error',\n        hoverStyle: { borderColor: '$error' },\n        focusStyle: { borderColor: '$error' },\n        focusVisibleStyle: { outlineColor: '$error' },\n      },\n    },\n    disabled: {\n      true: { opacity: 0.5, cursor: 'not-allowed' },\n    },\n    resize: {\n      none: { resize: 'none' },\n      vertical: { resize: 'vertical' },\n    },\n  } as const,\n\n  defaultVariants: { resize: 'vertical' },\n})\n\nexport type TextareaProps = GetProps<typeof TextareaFrame>\n\n/** Multi-line text field. Grows with `rows`/`minHeight`; set `invalid` for errors. */\nexport const Textarea = forwardRef<TamaguiElement, TextareaProps>(function Textarea(\n  { invalid, disabled, ...props },\n  ref,\n) {\n  return (\n    <TextareaFrame\n      ref={ref}\n      invalid={invalid}\n      disabled={disabled}\n      aria-invalid={invalid || undefined}\n      multiline\n      {...props}\n    />\n  )\n})\n"
+      "content": "import { forwardRef } from 'react'\nimport { type GetProps, type TamaguiElement, TextArea, styled } from 'tamagui'\nimport { useFieldControl } from '../../hooks/useFieldControl'\nimport { inputBaseStyle } from '../input/Input'\n\nconst TextareaFrame = styled(TextArea, {\n  name: 'Textarea',\n  ...inputBaseStyle,\n  minHeight: '$20',\n  paddingHorizontal: '$3',\n  paddingVertical: '$2',\n  fontSize: '$2',\n  lineHeight: '$2',\n  textAlignVertical: 'top',\n\n  variants: {\n    invalid: {\n      true: {\n        borderColor: '$error',\n        hoverStyle: { borderColor: '$error' },\n        focusStyle: { borderColor: '$error' },\n        focusVisibleStyle: { outlineColor: '$error' },\n      },\n    },\n    disabled: {\n      true: { opacity: 0.5, cursor: 'not-allowed' },\n    },\n    resize: {\n      none: { resize: 'none' },\n      vertical: { resize: 'vertical' },\n    },\n  } as const,\n\n  defaultVariants: { resize: 'vertical' },\n})\n\nexport type TextareaProps = GetProps<typeof TextareaFrame>\n\n/** Multi-line text field. Grows with `rows`/`minHeight`; set `invalid` for errors. */\nexport const Textarea = forwardRef<TamaguiElement, TextareaProps>(\n  function Textarea(textareaProps, ref) {\n    const { invalid, disabled, ...props } = useFieldControl(textareaProps)\n    return (\n      <TextareaFrame\n        ref={ref}\n        invalid={invalid}\n        disabled={disabled}\n        aria-invalid={invalid || undefined}\n        multiline\n        {...props}\n      />\n    )\n  },\n)\n"
     },
     {
       "path": "components/textarea/index.ts",
@@ -39,6 +39,7 @@
     "tamagui"
   ],
   "registryDependencies": [
+    "hooks",
     "input"
   ],
   "version": "0.6.0"

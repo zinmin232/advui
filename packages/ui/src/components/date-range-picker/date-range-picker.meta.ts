@@ -17,11 +17,11 @@ export default defineMeta({
     'components/calendar/dates.ts',
   ],
   keywords: ['date range', 'from to', 'check-in', 'booking', 'period'],
-  usage: `import { DateRangePicker, FormField } from '@advui/core'
+  usage: `import { DateRangePicker, Field } from '@advui/core'
 
-<FormField label="Stay">
+<Field label="Stay">
   <DateRangePicker value={stay} onValueChange={setStay} min={new Date()} />
-</FormField>`,
+</Field>`,
   parts: [
     {
       name: 'DateRangePicker',

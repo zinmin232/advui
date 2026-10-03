@@ -1,4 +1,4 @@
-import { Form, FormField, Input } from '@advui/core'
+import { Form, Field, Input } from '@advui/core'
 
 export default function FormTitleDescription() {
   return (
@@ -8,12 +8,12 @@ export default function FormTitleDescription() {
       width="100%"
       maxWidth={400}
     >
-      <FormField label="Organization">
+      <Field label="Organization">
         <Input placeholder="Organization name" />
-      </FormField>
-      <FormField label="Email">
+      </Field>
+      <Field label="Email">
         <Input placeholder="you@example.org" inputMode="email" autoComplete="email" />
-      </FormField>
+      </Field>
       <Form.Submit>Create account</Form.Submit>
     </Form>
   )

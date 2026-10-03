@@ -18,11 +18,11 @@ export default defineMeta({
     'components/chip/Chip.tsx',
   ],
   keywords: ['multi select', 'tags', 'multiple', 'chips', 'labels', 'filter'],
-  usage: `import { FormField, MultiSelect } from '@advui/core'
+  usage: `import { Field, MultiSelect } from '@advui/core'
 
-<FormField label="Labels">
+<Field label="Labels">
   <MultiSelect options={labels} value={picked} onValueChange={setPicked} />
-</FormField>`,
+</Field>`,
   parts: [
     {
       name: 'MultiSelect',

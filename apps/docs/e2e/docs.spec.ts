@@ -197,7 +197,7 @@ for (const path of [
   '/docs/components/context-menu',
   '/docs/components/drawer',
   '/docs/components/hover-card',
-  '/docs/components/form-field',
+  '/docs/components/field',
   '/docs/components/password-input',
   '/docs/components/number-input',
   '/docs/components/empty-state',

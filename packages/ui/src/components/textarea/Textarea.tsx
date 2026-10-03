@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import { type GetProps, type TamaguiElement, TextArea, styled } from 'tamagui'
+import { useFieldControl } from '../../hooks/useFieldControl'
 import { inputBaseStyle } from '../input/Input'
 
 const TextareaFrame = styled(TextArea, {
@@ -36,18 +37,18 @@ const TextareaFrame = styled(TextArea, {
 export type TextareaProps = GetProps<typeof TextareaFrame>
 
 /** Multi-line text field. Grows with `rows`/`minHeight`; set `invalid` for errors. */
-export const Textarea = forwardRef<TamaguiElement, TextareaProps>(function Textarea(
-  { invalid, disabled, ...props },
-  ref,
-) {
-  return (
-    <TextareaFrame
-      ref={ref}
-      invalid={invalid}
-      disabled={disabled}
-      aria-invalid={invalid || undefined}
-      multiline
-      {...props}
-    />
-  )
-})
+export const Textarea = forwardRef<TamaguiElement, TextareaProps>(
+  function Textarea(textareaProps, ref) {
+    const { invalid, disabled, ...props } = useFieldControl(textareaProps)
+    return (
+      <TextareaFrame
+        ref={ref}
+        invalid={invalid}
+        disabled={disabled}
+        aria-invalid={invalid || undefined}
+        multiline
+        {...props}
+      />
+    )
+  },
+)

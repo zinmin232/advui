@@ -18,6 +18,7 @@ import {
   Textarea,
   fieldBoxStyle,
   useControllableState,
+  useFieldControl,
 } from '@advui/core'
 import { RichTextContent } from './RichTextContent'
 import { type RichTextTool, type TextSelection, applyFormat, shortcuts } from './markdown'
@@ -94,7 +95,7 @@ export interface RichTextEditorProps {
   'aria-labelledby'?: string
   'aria-describedby'?: string
   'aria-required'?: boolean
-  /** Native: help read after the name (Form Field sets it). */
+  /** Native: help read after the name (a Field sets it). */
   accessibilityHint?: string
   /** Toolbar, tool and preview names, for translation. */
   labels?: Partial<Omit<RichTextEditorLabels, 'tools'>> & {
@@ -115,24 +116,25 @@ type Editable = TamaguiElement & {
  * Markdown, so the text is safe to save and shows the same on every platform
  * with Rich Text Content.
  */
-export function RichTextEditor({
-  value: valueProp,
-  defaultValue = '',
-  onValueChange,
-  placeholder,
-  tools = defaultRichTextTools,
-  minHeight = '$32',
-  maxLength,
-  disabled = false,
-  invalid = false,
-  id,
-  'aria-label': ariaLabel,
-  'aria-labelledby': ariaLabelledBy,
-  'aria-describedby': ariaDescribedBy,
-  'aria-required': ariaRequired,
-  accessibilityHint,
-  labels: labelsProp,
-}: RichTextEditorProps) {
+export function RichTextEditor(editorProps: RichTextEditorProps) {
+  const {
+    value: valueProp,
+    defaultValue = '',
+    onValueChange,
+    placeholder,
+    tools = defaultRichTextTools,
+    minHeight = '$32',
+    maxLength,
+    disabled = false,
+    invalid = false,
+    id,
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy,
+    'aria-required': ariaRequired,
+    accessibilityHint,
+    labels: labelsProp,
+  } = useFieldControl(editorProps)
   const labels = {
     ...defaultLabels,
     ...labelsProp,

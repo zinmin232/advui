@@ -1,4 +1,4 @@
-import { Form, FormField, Input, Text } from '@advui/core'
+import { Form, Field, Input, Text } from '@advui/core'
 import { useState } from 'react'
 
 // Stands in for a real request, e.g. saving a 5W activity.
@@ -28,12 +28,12 @@ export default function FormLoading() {
       loadingText="Saving…"
       footer={<Form.Submit>Save activity</Form.Submit>}
     >
-      <FormField label="Activity">
+      <Field label="Activity">
         <Input defaultValue="Hygiene kit distribution" />
-      </FormField>
-      <FormField label="Township">
+      </Field>
+      <Field label="Township">
         <Input defaultValue="Hlaingthaya" />
-      </FormField>
+      </Field>
       <Text size="sm" tone="muted" aria-live="polite">
         {saved ? 'Activity saved.' : 'Not saved yet.'}
       </Text>

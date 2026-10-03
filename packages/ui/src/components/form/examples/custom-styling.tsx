@@ -1,4 +1,4 @@
-import { Button, Form, FormField, Input, PasswordInput } from '@advui/core'
+import { Button, Form, Field, Input, PasswordInput } from '@advui/core'
 
 export default function FormCustomStyling() {
   return (
@@ -20,12 +20,12 @@ export default function FormCustomStyling() {
         </>
       }
     >
-      <FormField label="Email">
+      <Field label="Email">
         <Input placeholder="you@example.org" inputMode="email" autoComplete="email" />
-      </FormField>
-      <FormField label="Password">
+      </Field>
+      <Field label="Password">
         <PasswordInput autoComplete="current-password" />
-      </FormField>
+      </Field>
     </Form>
   )
 }

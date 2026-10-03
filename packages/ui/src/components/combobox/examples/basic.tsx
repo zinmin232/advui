@@ -1,4 +1,4 @@
-import { Combobox, type ComboboxOption, FormField } from '@advui/core'
+import { Combobox, type ComboboxOption, Field } from '@advui/core'
 import { useState } from 'react'
 
 const timezones: ComboboxOption[] = [
@@ -15,7 +15,7 @@ const timezones: ComboboxOption[] = [
 export default function ComboboxBasic() {
   const [zone, setZone] = useState<string | null>('Asia/Yangon')
   return (
-    <FormField label="Time zone" width="100%" maxWidth={320}>
+    <Field label="Time zone" width="100%" maxWidth={320}>
       <Combobox
         options={timezones}
         value={zone}
@@ -23,6 +23,6 @@ export default function ComboboxBasic() {
         placeholder="Search cities…"
         title="Time zone"
       />
-    </FormField>
+    </Field>
   )
 }

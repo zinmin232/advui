@@ -17,11 +17,11 @@ export default defineMeta({
     'components/combobox/options.ts',
   ],
   keywords: ['autocomplete', 'suggestions', 'typeahead', 'search box', 'address'],
-  usage: `import { Autocomplete, FormField } from '@advui/core'
+  usage: `import { Autocomplete, Field } from '@advui/core'
 
-<FormField label="City">
+<Field label="City">
   <Autocomplete options={suggestions} value={city} onValueChange={setCity} />
-</FormField>`,
+</Field>`,
   parts: [
     {
       name: 'Autocomplete',

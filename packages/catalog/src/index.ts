@@ -31,11 +31,11 @@ import drawerMeta from '../../ui/src/components/drawer/drawer.meta'
 import dropdownMenuMeta from '../../ui/src/components/dropdown-menu/dropdown-menu.meta'
 import emptyStateMeta from '../../ui/src/components/empty-state/empty-state.meta'
 import errorStateMeta from '../../ui/src/components/error-state/error-state.meta'
+import fieldMeta from '../../ui/src/components/field/field.meta'
 import fileDropzoneMeta from '../../ui/src/components/file-dropzone/file-dropzone.meta'
 import fileUploadMeta from '../../ui/src/components/file-upload/file-upload.meta'
 import fabMeta from '../../ui/src/components/fab/fab.meta'
 import formMeta from '../../ui/src/components/form/form.meta'
-import formFieldMeta from '../../ui/src/components/form-field/form-field.meta'
 import gridMeta from '../../ui/src/components/layout/grid.meta'
 import hoverCardMeta from '../../ui/src/components/hover-card/hover-card.meta'
 import iconButtonMeta from '../../ui/src/components/icon-button/icon-button.meta'
@@ -150,11 +150,11 @@ export const components: CatalogComponent[] = [
   { ...dropdownMenuMeta, package: '@advui/core' },
   { ...emptyStateMeta, package: '@advui/core' },
   { ...errorStateMeta, package: '@advui/core' },
+  { ...fieldMeta, package: '@advui/core' },
   { ...fileDropzoneMeta, package: '@advui/core' },
   { ...fileUploadMeta, package: '@advui/core' },
   { ...fabMeta, package: '@advui/core' },
   { ...formMeta, package: '@advui/core' },
-  { ...formFieldMeta, package: '@advui/core' },
   { ...gridMeta, package: '@advui/core' },
   { ...hoverCardMeta, package: '@advui/core' },
   { ...iconButtonMeta, package: '@advui/core' },

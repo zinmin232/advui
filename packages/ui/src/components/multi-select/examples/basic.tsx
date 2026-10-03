@@ -1,4 +1,4 @@
-import { FormField, MultiSelect } from '@advui/core'
+import { Field, MultiSelect } from '@advui/core'
 import { useState } from 'react'
 
 const labels = [
@@ -13,7 +13,7 @@ const labels = [
 export default function MultiSelectBasic() {
   const [picked, setPicked] = useState(['bug', 'a11y'])
   return (
-    <FormField label="Labels" width="100%" maxWidth={360}>
+    <Field label="Labels" width="100%" maxWidth={360}>
       <MultiSelect
         options={labels}
         value={picked}
@@ -21,6 +21,6 @@ export default function MultiSelectBasic() {
         placeholder="Add labels…"
         title="Labels"
       />
-    </FormField>
+    </Field>
   )
 }
