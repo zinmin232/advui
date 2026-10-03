@@ -4,6 +4,9 @@ import { expect, test } from './fixtures'
 // Baselines live next to this file; refresh with `pnpm --filter @advui/docs test:visual:update`.
 for (const mode of ['light', 'dark'] as const) {
   test(`component examples — ${mode}`, async ({ page }) => {
+    // One test screenshots every example, so it outgrows the default timeout,
+    // most of all when writing a full set of baselines.
+    test.setTimeout(5 * 60_000)
     await page.addInitScript((m) => window.localStorage.setItem('aui-color-mode', m), mode)
     await page.goto('/visual')
     await page.waitForLoadState('networkidle')
