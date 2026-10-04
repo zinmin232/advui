@@ -88,32 +88,17 @@ cannot do them. Tick them off here as they are done.
   - `pnpm release:check` must list all eight public packages at 0.6.0, with
     `@advui/core` as a `^0.6.0` peer dependency of data, charts and editor.
     Then run `pnpm release`.
-- [ ] **Release 0.7.0** (Grid spans, Field). The AdvUI Builder reads
-      component metadata from the `v0.7.0` tag, so tag the last commit of the
-      0.7.0 pull request as it lands on `main`, and publish exactly that commit:
-  - `git pull`, then `git tag v0.7.0 <commit> && git push origin v0.7.0`.
-  - `pnpm release:check` must list all eight public packages at 0.7.0. Then
-    run `pnpm release`.
-- [ ] **Release 0.8.0** (metadata for the AdvUI Builder; no component changes
-      at run time). The Builder reads component metadata from the `v0.8.0`
-      tag, so tag the last commit of the 0.8.0 pull request as it lands on
-      `main`, and publish exactly that commit:
-  - `git pull`, then `git tag v0.8.0 <commit> && git push origin v0.8.0`.
-  - `pnpm release:check` must list all eight public packages at 0.8.0. Then
-    run `pnpm release`.
-- [ ] **Release 0.9.0** (responsive Stack props, Wrap, Container gutter,
-      labelled Separator). Tag the last commit of the 0.9.0 pull request as it
-      lands on `main` (after 0.8.0), and publish exactly that commit:
-  - `git pull`, then `git tag v0.9.0 <commit> && git push origin v0.9.0`.
-  - `pnpm release:check` must list all eight public packages at 0.9.0. Then
-    run `pnpm release`.
-- [ ] **Release 0.10.0** (Show / Hide and the breakpoint hooks, Section,
-      Sticky, primary and inverse sub-themes). Tag the last commit of the
-      0.10.0 pull request as it lands on `main` (after 0.9.0), and publish
-      exactly that commit:
-  - `git pull`, then `git tag v0.10.0 <commit> && git push origin v0.10.0`.
-  - `pnpm release:check` must list all eight public packages at 0.10.0. Then
-    run `pnpm release`.
+- [x] **Release 0.7.0** (Grid spans, Field): tagged `v0.7.0` and published.
+- [x] **Releases 0.8.0, 0.9.0 and 0.10.0** (Builder metadata; responsive
+      Stack props, Wrap, Container gutter, labelled Separator; Show / Hide,
+      Section, Sticky and the sub-themes), merged on 2026-10-04 with merge
+      commits so the stacked pull requests kept their commits. Tags `v0.8.0`,
+      `v0.9.0` and `v0.10.0` point at the merge commits on `main`, for the
+      AdvUI Builder. Only 0.10.0 was published to npm (after 0.7.0); 0.8.0 and
+      0.9.0 are git tags only.
+- [ ] **Release 0.11.0** (AppShell, AutoGrid): tag the last commit of the
+      pull request as it lands on `main`, check `pnpm release:check` lists
+      all eight public packages at 0.11.0, then run `pnpm release`.
 - [ ] **Publish the new packages.** 0.6.0 is the first working release of
       `@advui/data`, `@advui/charts` and `@advui/editor`:
   - Deprecate their 0.5.0, published by mistake before the version bump (it
