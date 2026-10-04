@@ -78,8 +78,8 @@ export const config = createUniversalConfig({
   press colors. Turn it off with `material({ androidRipple: false })`, or on
   for any theme with `createUniversalConfig({ androidRipple: true })`. For
   your own pressables, use `useRipple()` from `@advui/core`.
-- `createMaterialThemes({ seed })` returns just the light and dark themes, for
-  runtime swaps with `updateTheme`.
+- `createMaterialThemes({ seed })` returns just the themes (light, dark and
+  their sub-themes), for runtime swaps with `updateTheme`.
 - `material.test.ts` runs the same WCAG AA contrast checks as the presets, for
   several seeds.
 
@@ -185,8 +185,8 @@ import { updateTheme } from '@tamagui/theme'
 import { createThemeColors, themePresets } from '@advui/theme'
 
 const themes = createThemeColors({ ...themePresets.emerald.colors, primary: '#10b981' })
-updateTheme({ name: 'light', theme: themes.light })
-updateTheme({ name: 'dark', theme: themes.dark })
+// light, dark and their sub-themes (light_primary, dark_inverse…)
+for (const [name, theme] of Object.entries(themes)) updateTheme({ name, theme })
 ```
 
 The Expo app's Theme screen (`apps/expo/app/theme.tsx`) and the docs
@@ -195,6 +195,24 @@ customizer (`apps/docs/src/lib/theme-store.tsx`) both do this.
 `radius` and `fontScale` are **tokens**, compiled into the config. To change
 them for an app, change the config. The docs customizer previews them live by
 overriding the token CSS variables, which only works on web.
+
+## Sub-themes
+
+Every config has two sub-themes of light and dark, for surfaces that need
+other text colors (since 0.10.0):
+
+- `primary` (`light_primary`, `dark_primary`): content on a `$primary`
+  surface. Its `$background` is `primary`, its text `primaryForeground`;
+  muted text, cards and borders are mixed toward that text color, and a primary
+  button inverts. `primarySurfaceTheme()` builds it from any theme.
+- `inverse` (`light_inverse`, `dark_inverse`): the other mode, so a band is
+  dark in light mode and light in dark mode.
+
+`createThemeColors`, `createMaterialThemes` and `createUniversalConfig` add
+them (`withSubThemes()` for hand-made light and dark themes). Section uses
+them for `background="primary"` and `"inverse"`, and `themes.test.ts` checks
+their text at WCAG AA for every preset. Use them like any Tamagui sub-theme:
+`<Theme name="primary">…</Theme>`.
 
 ## Scoped themes
 

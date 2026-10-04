@@ -4,7 +4,8 @@ import { type FontFamilies, type FontScale, createUniversalFonts } from './fonts
 import { media, mediaQueryDefaultActive } from './media'
 import { type ThemePresetName, themePresets } from './presets'
 import { shorthands } from './shorthands'
-import { type GeneratedThemes, type ThemeColorsInput, createThemeColors } from './themes'
+import { type ModeThemes, type SubThemes, withSubThemes } from './subThemes'
+import { type ThemeColorsInput, createThemeColors } from './themes'
 import { type RadiusInput, createUniversalTokens } from './tokens'
 
 export interface UniversalConfigOptions {
@@ -24,7 +25,7 @@ export interface UniversalConfigOptions {
    * Complete light and dark themes, e.g. from `material()` in
    * `@advui/theme/material`. Replaces `preset` and `colors`.
    */
-  themes?: GeneratedThemes
+  themes?: ModeThemes & Partial<SubThemes>
   /**
    * Android only: pressing a button, chip, tab or list row shows the native
    * ripple instead of darkening it. `material()` turns it on. Default: false.
@@ -53,7 +54,10 @@ export function getUniversalSettings(config: object): UniversalSettings {
  */
 export function createUniversalConfig(options: UniversalConfigOptions = {}) {
   const { preset = 'indigo', colors, radius = 'md', fontScale = 'default', fonts } = options
-  const themes = options.themes ?? createThemeColors({ ...themePresets[preset].colors, ...colors })
+  // Hand-made light and dark themes get the primary and inverse sub-themes too.
+  const themes = options.themes
+    ? withSubThemes(options.themes)
+    : createThemeColors({ ...themePresets[preset].colors, ...colors })
 
   const config = createTamagui({
     tokens: createUniversalTokens({ radius }),

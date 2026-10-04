@@ -147,9 +147,9 @@ export const config = createUniversalConfig({
         code={`import { updateTheme } from '@tamagui/theme'
 import { createThemeColors } from '@advui/theme'
 
+// light, dark and the primary and inverse sub-themes (light_primary…)
 const themes = createThemeColors({ primary: '#e11d48' })
-updateTheme({ name: 'light', theme: themes.light })
-updateTheme({ name: 'dark', theme: themes.dark })`}
+for (const [name, theme] of Object.entries(themes)) updateTheme({ name, theme })`}
       />
     </>
   )

@@ -22,7 +22,7 @@
     {
       "path": "components/scroll-area/ScrollArea.native.tsx",
       "type": "registry:ui",
-      "content": "import { forwardRef } from 'react'\nimport { ScrollView, type TamaguiElement } from 'tamagui'\nimport type { ScrollAreaProps } from './ScrollArea'\n\n/** Native: a React Native ScrollView with the platform's scroll indicators. */\nexport const ScrollArea = forwardRef<TamaguiElement, ScrollAreaProps>(function ScrollArea(\n  { orientation = 'vertical', 'aria-label': label, children, ...props },\n  ref,\n) {\n  const horizontal = orientation === 'horizontal'\n  return (\n    <ScrollView\n      ref={ref as never}\n      horizontal={horizontal}\n      showsHorizontalScrollIndicator={horizontal}\n      showsVerticalScrollIndicator={!horizontal}\n      aria-label={label}\n      {...(props as object)}\n    >\n      {children}\n    </ScrollView>\n  )\n})\n\nexport type { ScrollAreaOrientation, ScrollAreaProps } from './ScrollArea'\n"
+      "content": "import { shorthands } from '@advui/theme'\nimport {\n  Children,\n  Fragment,\n  type ReactElement,\n  type ReactNode,\n  cloneElement,\n  forwardRef,\n  isValidElement,\n} from 'react'\nimport { ScrollView, type TamaguiElement, validStyles } from 'tamagui'\nimport { Sticky, type StickyProps } from '../sticky/Sticky'\nimport type { ScrollAreaProps } from './ScrollArea'\n\ntype ContentElement = ReactElement<{ children?: ReactNode } & Record<string, unknown>> & {\n  type: { staticConfig?: { defaultProps?: Record<string, unknown> } }\n}\n\n/** The style props of the content element (its own and its component's defaults), in longhand. */\nfunction contentStyle(content: ContentElement) {\n  const style: Record<string, unknown> = {}\n  const props = { ...content.type.staticConfig?.defaultProps, ...content.props }\n  for (const [key, value] of Object.entries(props)) {\n    const longhand: string = shorthands[key as keyof typeof shorthands] ?? key\n    if (longhand in validStyles) style[longhand] = value\n  }\n  return style\n}\n\n/** The children, with fragments opened, such as one fragment per list group. */\nfunction flatChildren(nodes: ReactNode, prefix = ''): ReactNode[] {\n  return Children.toArray(nodes).flatMap((child) => {\n    if (!isValidElement<{ children?: ReactNode }>(child)) return [child]\n    if (child.type === Fragment) return flatChildren(child.props.children, `${prefix}${child.key}`)\n    // Keys stay unique once several fragments' children share one list.\n    return prefix ? [cloneElement(child, { key: `${prefix}${child.key}` })] : [child]\n  })\n}\n\n/**\n * React Native pins only direct children of the scroll content\n * (`stickyHeaderIndices`), but a ScrollArea's content is one element, such as\n * a VStack. When that element's own children (fragments opened) include a top Sticky, they\n * become the ScrollView's children instead, and the element's style props\n * (padding, gap…) style the scroll content, so the Sticky can be pinned.\n */\nfunction pinStickyChildren(children: ReactNode, horizontal: boolean) {\n  const items = Children.toArray(children)\n  const content = items[0]\n  if (horizontal || items.length !== 1 || !isValidElement(content)) return null\n  const element = content as ContentElement\n  const inner = flatChildren(element.props.children)\n  const indices = inner.flatMap((child, index) =>\n    isValidElement<StickyProps>(child) && child.type === Sticky && child.props.edge !== 'bottom'\n      ? [index]\n      : [],\n  )\n  return indices.length ? { inner, indices, style: contentStyle(element) } : null\n}\n\n/** Native: a React Native ScrollView with the platform's scroll indicators. */\nexport const ScrollArea = forwardRef<TamaguiElement, ScrollAreaProps>(function ScrollArea(\n  { orientation = 'vertical', 'aria-label': label, children, ...props },\n  ref,\n) {\n  const horizontal = orientation === 'horizontal'\n  const pinned = pinStickyChildren(children, horizontal)\n  return (\n    <ScrollView\n      ref={ref as never}\n      horizontal={horizontal}\n      showsHorizontalScrollIndicator={horizontal}\n      showsVerticalScrollIndicator={!horizontal}\n      // Android: without it, a ScrollArea inside a scrolling screen never\n      // scrolls; the screen takes every vertical drag.\n      nestedScrollEnabled\n      aria-label={label}\n      {...(pinned && {\n        stickyHeaderIndices: pinned.indices,\n        contentContainerStyle: pinned.style,\n      })}\n      {...(props as object)}\n    >\n      {pinned ? pinned.inner : children}\n    </ScrollView>\n  )\n})\n\nexport type { ScrollAreaOrientation, ScrollAreaProps } from './ScrollArea'\n"
     },
     {
       "path": "components/scroll-area/index.ts",
@@ -43,11 +43,15 @@
     }
   ],
   "docs": "/docs/components/scroll-area",
-  "dependencies": [],
+  "dependencies": [
+    "@advui/theme"
+  ],
   "peerDependencies": [
     "react",
     "tamagui"
   ],
-  "registryDependencies": [],
+  "registryDependencies": [
+    "sticky"
+  ],
   "version": "0.9.0"
 }

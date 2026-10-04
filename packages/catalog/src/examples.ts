@@ -148,12 +148,17 @@ import ScrollAreaBasic from '../../ui/src/components/scroll-area/examples/basic'
 import ScrollAreaHorizontal from '../../ui/src/components/scroll-area/examples/horizontal'
 import SearchBasic from '../../ui/src/components/search/examples/basic'
 import SearchLive from '../../ui/src/components/search/examples/live'
+import SectionHero from '../../ui/src/components/section/examples/hero'
+import SectionFeatures from '../../ui/src/components/section/examples/features'
+import SectionCallToAction from '../../ui/src/components/section/examples/call-to-action'
 import SelectBasic from '../../ui/src/components/select/examples/basic'
 import SelectGroups from '../../ui/src/components/select/examples/groups'
 import SeparatorBasic from '../../ui/src/components/separator/examples/basic'
 import SeparatorLogin from '../../ui/src/components/separator/examples/login'
 import SheetBasic from '../../ui/src/components/sheet/examples/basic'
 import SheetScroll from '../../ui/src/components/sheet/examples/scroll'
+import ShowHideNavigation from '../../ui/src/components/show-hide/examples/navigation'
+import ShowHideBreakpointValue from '../../ui/src/components/show-hide/examples/breakpoint-value'
 import SidebarBasic from '../../ui/src/components/sidebar/examples/basic'
 import SidebarDrawer from '../../ui/src/components/sidebar/examples/drawer'
 import SkeletonCard from '../../ui/src/components/skeleton/examples/card'
@@ -172,6 +177,8 @@ import StatTrends from '../../data/src/components/stat/examples/trends'
 import StatSizes from '../../data/src/components/stat/examples/sizes'
 import StepperBasic from '../../ui/src/components/stepper/examples/basic'
 import StepperVertical from '../../ui/src/components/stepper/examples/vertical'
+import StickyPageHeader from '../../ui/src/components/sticky/examples/page-header'
+import StickyListHeaders from '../../ui/src/components/sticky/examples/list-headers'
 import SwitchSettings from '../../ui/src/components/switch/examples/settings'
 import TableBasic from '../../data/src/components/table/examples/basic'
 import TableSortable from '../../data/src/components/table/examples/sortable'
@@ -476,6 +483,11 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': SearchBasic,
     'live': SearchLive,
   },
+  'section': {
+    'hero': SectionHero,
+    'features': SectionFeatures,
+    'call-to-action': SectionCallToAction,
+  },
   'select': {
     'basic': SelectBasic,
     'groups': SelectGroups,
@@ -487,6 +499,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'sheet': {
     'basic': SheetBasic,
     'scroll': SheetScroll,
+  },
+  'show-hide': {
+    'navigation': ShowHideNavigation,
+    'breakpoint-value': ShowHideBreakpointValue,
   },
   'sidebar': {
     'basic': SidebarBasic,
@@ -521,6 +537,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'stepper': {
     'basic': StepperBasic,
     'vertical': StepperVertical,
+  },
+  'sticky': {
+    'page-header': StickyPageHeader,
+    'list-headers': StickyListHeaders,
   },
   'switch': {
     'settings': SwitchSettings,

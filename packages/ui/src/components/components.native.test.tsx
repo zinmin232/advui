@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, jest } from '@jest/globals'
 import { act, fireEvent, screen } from '@testing-library/react-native'
 import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
-import { zIndex } from '@advui/theme'
-import type { ReactElement } from 'react'
+import { createThemeColors, themePresets, zIndex } from '@advui/theme'
+import { Fragment, type ReactElement } from 'react'
 import { BackHandler, Dimensions, StyleSheet } from 'react-native'
 import { XStack } from 'tamagui'
 import { renderNative } from '../../test/native-utils'
@@ -45,7 +45,7 @@ import { ImageGallery } from './image-gallery/ImageGallery'
 import { Input } from './input/Input'
 import { Container } from './layout/Container'
 import { Grid } from './layout/Grid'
-import { HStack, Stack, Wrap } from './layout/Stack'
+import { HStack, Stack, VStack, Wrap } from './layout/Stack'
 import { List } from './list/List'
 import { LoadingButton } from './loading-button/LoadingButton'
 import { Menu } from './menu/Menu'
@@ -59,7 +59,10 @@ import { PasswordInput } from './password-input/PasswordInput'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
 import { ScrollArea } from './scroll-area/ScrollArea'
+import { Section } from './section/Section'
 import { Separator } from './separator/Separator'
+import { Hide, Show } from './show-hide/ShowHide'
+import { Sticky } from './sticky/Sticky'
 import { Resizable } from './resizable-panel/ResizablePanel'
 import { Search } from './search/Search'
 import { Select } from './select/Select'
@@ -77,6 +80,7 @@ import { Heading } from './typography/Heading'
 import { Video } from './video/Video'
 import { setVideoView } from './video/shared'
 import { Text } from './typography/Text'
+import { useBreakpoint } from '../hooks/useBreakpoint'
 
 // These run the React Native code path (react-native + Tamagui native builds,
 // `.native.tsx` platform files) — the same code Expo ships to iOS and Android.
@@ -1269,6 +1273,115 @@ describe('responsive layout props', () => {
     const named = screen.getByTestId('named')
     expect(named.props.accessible).toBe(true)
     expect(named.props['aria-label'] ?? named.props.accessibilityLabel).toBe('Continue with')
+  })
+})
+
+// Show / Hide read the window size on native and leave hidden content out.
+describe('Show, Hide, Section and Sticky on native', () => {
+  const phone = Dimensions.get('window')
+  const resize = async (width: number) => {
+    await act(async () => {
+      Dimensions.set({ window: { ...phone, width }, screen: { ...phone, width } })
+    })
+  }
+  function Probe() {
+    return <Text>{`at ${useBreakpoint()}`}</Text>
+  }
+  const layout = () => (
+    <>
+      <Show above="md">
+        <Text>desktop nav</Text>
+      </Show>
+      <Show below="md">
+        <Text>menu button</Text>
+      </Show>
+      <Hide below="sm">
+        <Text>search</Text>
+      </Hide>
+      <Probe />
+    </>
+  )
+
+  afterEach(async () => {
+    await resize(phone.width)
+  })
+
+  it('renders only what fits a phone (the mocked one is 750 wide)', async () => {
+    await renderNative(layout())
+    expect(screen.queryByText('desktop nav')).toBeNull()
+    expect(screen.getByText('menu button')).toBeTruthy()
+    expect(screen.getByText('search')).toBeTruthy()
+    expect(screen.getByText('at sm')).toBeTruthy()
+  })
+
+  it('unmounts the phone content and mounts the desktop content from md', async () => {
+    await resize(1024)
+    await renderNative(layout())
+    expect(screen.getByText('desktop nav')).toBeTruthy()
+    expect(screen.queryByText('menu button')).toBeNull()
+    expect(screen.getByText('at lg')).toBeTruthy()
+  })
+
+  it('hides content below sm on a narrow phone', async () => {
+    await resize(400)
+    await renderNative(layout())
+    expect(screen.queryByText('search')).toBeNull()
+    expect(screen.getByText('at base')).toBeTruthy()
+  })
+
+  it('reads text on a primary Section in the sub-theme colors', async () => {
+    const theme = createThemeColors(themePresets.indigo.colors).light_primary
+    await renderNative(
+      <Section background="primary" aria-label="Newsletter" testID="band">
+        <Text>Subscribe</Text>
+      </Section>,
+    )
+    const style = StyleSheet.flatten(screen.getByText('Subscribe').props.style)
+    expect(String(style.color).toLowerCase()).toBe(theme.foreground.toLowerCase())
+    expect(
+      String(
+        StyleSheet.flatten(screen.getByTestId('band').props.style).backgroundColor,
+      ).toLowerCase(),
+    ).toBe(theme.background.toLowerCase())
+  })
+
+  it('pins top Stickys in a ScrollArea, looking through fragments', async () => {
+    await renderNative(
+      <ScrollArea aria-label="Townships" height={300}>
+        <VStack padding="$4" gap="$2">
+          {['Kachin', 'Shan'].map((region) => (
+            <Fragment key={region}>
+              <Sticky>
+                <Text>{region}</Text>
+              </Sticky>
+              <Text>{`${region} township`}</Text>
+            </Fragment>
+          ))}
+        </VStack>
+      </ScrollArea>,
+    )
+    const scroll = screen.getByLabelText('Townships')
+    expect(scroll.props.stickyHeaderIndices).toEqual([0, 2])
+    // The VStack's padding and gap now style the scroll content.
+    expect(StyleSheet.flatten(scroll.props.contentContainerStyle)).toMatchObject({
+      paddingTop: 16,
+      gap: 8,
+    })
+    expect(screen.getByText('Shan township')).toBeTruthy()
+  })
+
+  it('leaves a ScrollArea without Stickys as it was', async () => {
+    await renderNative(
+      <ScrollArea aria-label="Plain" height={300}>
+        <VStack padding="$4">
+          <Text>Row</Text>
+        </VStack>
+      </ScrollArea>,
+    )
+    const plain = screen.getByLabelText('Plain')
+    expect(plain.props.stickyHeaderIndices).toBeUndefined()
+    // Android: it scrolls inside a scrolling screen.
+    expect(plain.props.nestedScrollEnabled).toBe(true)
   })
 })
 

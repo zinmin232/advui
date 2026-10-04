@@ -23,8 +23,10 @@ export default function ThemeScreen() {
   const applyPreset = (name: ThemePresetName | 'material') => {
     const themes =
       name === 'material' ? createMaterialThemes() : createThemeColors(themePresets[name].colors)
-    updateTheme({ name: 'light', theme: themes.light })
-    updateTheme({ name: 'dark', theme: themes.dark })
+    // Light, dark and their primary and inverse sub-themes.
+    for (const [themeName, values] of Object.entries(themes)) {
+      updateTheme({ name: themeName, theme: values })
+    }
     setPreset(name)
   }
 

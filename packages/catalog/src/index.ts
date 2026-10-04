@@ -63,9 +63,11 @@ import resizablePanelMeta from '../../ui/src/components/resizable-panel/resizabl
 import richTextEditorMeta from '../../editor/src/components/rich-text-editor/rich-text-editor.meta'
 import scrollAreaMeta from '../../ui/src/components/scroll-area/scroll-area.meta'
 import searchMeta from '../../ui/src/components/search/search.meta'
+import sectionMeta from '../../ui/src/components/section/section.meta'
 import selectMeta from '../../ui/src/components/select/select.meta'
 import separatorMeta from '../../ui/src/components/separator/separator.meta'
 import sheetMeta from '../../ui/src/components/sheet/sheet.meta'
+import showHideMeta from '../../ui/src/components/show-hide/show-hide.meta'
 import sidebarMeta from '../../ui/src/components/sidebar/sidebar.meta'
 import skeletonMeta from '../../ui/src/components/skeleton/skeleton.meta'
 import sliderMeta from '../../ui/src/components/slider/slider.meta'
@@ -74,6 +76,7 @@ import spinnerMeta from '../../ui/src/components/spinner/spinner.meta'
 import stackMeta from '../../ui/src/components/layout/stack.meta'
 import statMeta from '../../data/src/components/stat/stat.meta'
 import stepperMeta from '../../ui/src/components/stepper/stepper.meta'
+import stickyMeta from '../../ui/src/components/sticky/sticky.meta'
 import switchMeta from '../../ui/src/components/switch/switch.meta'
 import tableMeta from '../../data/src/components/table/table.meta'
 import tabsMeta from '../../ui/src/components/tabs/tabs.meta'
@@ -183,9 +186,11 @@ export const components: CatalogComponent[] = [
   { ...richTextEditorMeta, package: '@advui/editor' },
   { ...scrollAreaMeta, package: '@advui/core' },
   { ...searchMeta, package: '@advui/core' },
+  { ...sectionMeta, package: '@advui/core' },
   { ...selectMeta, package: '@advui/core' },
   { ...separatorMeta, package: '@advui/core' },
   { ...sheetMeta, package: '@advui/core' },
+  { ...showHideMeta, package: '@advui/core' },
   { ...sidebarMeta, package: '@advui/core' },
   { ...skeletonMeta, package: '@advui/core' },
   { ...sliderMeta, package: '@advui/core' },
@@ -194,6 +199,7 @@ export const components: CatalogComponent[] = [
   { ...stackMeta, package: '@advui/core' },
   { ...statMeta, package: '@advui/data' },
   { ...stepperMeta, package: '@advui/core' },
+  { ...stickyMeta, package: '@advui/core' },
   { ...switchMeta, package: '@advui/core' },
   { ...tableMeta, package: '@advui/data' },
   { ...tabsMeta, package: '@advui/core' },
