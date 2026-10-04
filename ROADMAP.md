@@ -83,6 +83,13 @@ cannot do them. Tick them off here as they are done.
   - `git pull`, then `git tag v0.7.0 <commit> && git push origin v0.7.0`.
   - `pnpm release:check` must list all eight public packages at 0.7.0. Then
     run `pnpm release`.
+- [ ] **Release 0.8.0** (metadata for the AdvUI Builder; no component changes
+      at run time). The Builder reads component metadata from the `v0.8.0`
+      tag, so tag the last commit of the 0.8.0 pull request as it lands on
+      `main`, and publish exactly that commit:
+  - `git pull`, then `git tag v0.8.0 <commit> && git push origin v0.8.0`.
+  - `pnpm release:check` must list all eight public packages at 0.8.0. Then
+    run `pnpm release`.
 - [ ] **Publish the new packages.** 0.6.0 is the first working release of
       `@advui/data`, `@advui/charts` and `@advui/editor`:
   - Deprecate their 0.5.0, published by mistake before the version bump (it

@@ -7,6 +7,8 @@ one version.
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-10-04
+
 No component changes at run time: this release is about the metadata that
 tools read.
 
