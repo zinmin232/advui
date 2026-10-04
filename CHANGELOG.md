@@ -7,6 +7,8 @@ one version.
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-10-04
+
 ### Added
 
 - **Responsive Stack props**: `direction`, `wrap`, `align` and `distribute`
