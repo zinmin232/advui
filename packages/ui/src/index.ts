@@ -10,6 +10,13 @@ export { useReducedMotion } from './hooks/useReducedMotion'
 export { useRipple, type Ripple, type RippleOptions } from './hooks/useRipple'
 // For components built on core (the other @advui packages, or your own).
 export { isTextContent } from './utils/isTextContent'
+export {
+  responsiveStyle,
+  type Breakpoint,
+  type Responsive,
+  type ResponsiveMap,
+  type ResponsiveStyle,
+} from './utils/responsive'
 export type { ColorModePreference, ResolvedColorMode } from './types'
 
 // Components

@@ -43,7 +43,9 @@ import { IconButton } from './icon-button/IconButton'
 import { Image } from './image/Image'
 import { ImageGallery } from './image-gallery/ImageGallery'
 import { Input } from './input/Input'
+import { Container } from './layout/Container'
 import { Grid } from './layout/Grid'
+import { HStack, Stack, Wrap } from './layout/Stack'
 import { List } from './list/List'
 import { LoadingButton } from './loading-button/LoadingButton'
 import { Menu } from './menu/Menu'
@@ -57,6 +59,7 @@ import { PasswordInput } from './password-input/PasswordInput'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
 import { ScrollArea } from './scroll-area/ScrollArea'
+import { Separator } from './separator/Separator'
 import { Resizable } from './resizable-panel/ResizablePanel'
 import { Search } from './search/Search'
 import { Select } from './select/Select'
@@ -1176,6 +1179,96 @@ describe('Grid layout', () => {
   it('offsets with marginStart, which React Native mirrors in RTL', async () => {
     await renderNative(layout())
     expect(style('offset')).toMatchObject({ width: '50%', marginStart: '25%' })
+  })
+})
+
+// The responsive layout props are media props underneath, so on native they
+// follow the window size like Grid's spans.
+describe('responsive layout props', () => {
+  const phone = Dimensions.get('window')
+  const resize = async (width: number) => {
+    await act(async () => {
+      Dimensions.set({ window: { ...phone, width }, screen: { ...phone, width } })
+    })
+  }
+  const style = (testID: string) => StyleSheet.flatten(screen.getByTestId(testID).props.style)
+
+  afterEach(async () => {
+    await resize(phone.width)
+  })
+
+  const responsiveStack = (
+    <Stack testID="stack" direction={{ base: 'column', md: 'row' }} align="center" />
+  )
+
+  it('lays a Stack out as a column below md', async () => {
+    await renderNative(responsiveStack)
+    expect(style('stack')).toMatchObject({ flexDirection: 'column', alignItems: 'center' })
+  })
+
+  it('lays the same Stack out as a row from md', async () => {
+    await resize(1024)
+    await renderNative(responsiveStack)
+    expect(style('stack')).toMatchObject({ flexDirection: 'row', alignItems: 'center' })
+  })
+
+  it('lets raw style props win over the responsive ones, in either order', async () => {
+    await resize(1024)
+    await renderNative(
+      <>
+        <Stack testID="before" flexDirection="column-reverse" direction="row" />
+        <Stack testID="after" direction="row" flexDirection="column-reverse" />
+        <Stack
+          testID="media"
+          direction={{ base: 'column', md: 'row' }}
+          $md={{ flexDirection: 'row-reverse' }}
+        />
+        <HStack testID="hstack" direction="column" distribute="between" />
+      </>,
+    )
+    expect(style('before').flexDirection).toBe('column-reverse')
+    expect(style('after').flexDirection).toBe('column-reverse')
+    expect(style('media').flexDirection).toBe('row-reverse')
+    expect(style('hstack')).toMatchObject({
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+    })
+  })
+
+  it('wraps a Wrap row of chips', async () => {
+    await renderNative(<Wrap testID="wrap" distribute="center" />)
+    expect(style('wrap')).toMatchObject({
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 8,
+    })
+  })
+
+  it('pads a Container by its gutter, and by default as before', async () => {
+    await resize(1024)
+    await renderNative(
+      <>
+        <Container testID="default" />
+        <Container testID="flush" gutter="$0" centerContent />
+      </>,
+    )
+    expect(style('default')).toMatchObject({ paddingLeft: 32, paddingRight: 32 })
+    expect(style('flush')).toMatchObject({ paddingLeft: 0, paddingRight: 0, alignItems: 'center' })
+  })
+
+  it('reads a labelled separator as its label', async () => {
+    await renderNative(
+      <>
+        <Separator label="or" />
+        <Separator label="Continue with" decorative={false} testID="named" />
+      </>,
+    )
+    expect(screen.getByText('or')).toBeTruthy()
+    const named = screen.getByTestId('named')
+    expect(named.props.accessible).toBe(true)
+    expect(named.props['aria-label'] ?? named.props.accessibilityLabel).toBe('Continue with')
   })
 })
 

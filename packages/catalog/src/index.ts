@@ -87,6 +87,7 @@ import tooltipMeta from '../../ui/src/components/tooltip/tooltip.meta'
 import treeViewMeta from '../../data/src/components/tree-view/tree-view.meta'
 import typographyMeta from '../../ui/src/components/typography/typography.meta'
 import videoMeta from '../../ui/src/components/video/video.meta'
+import wrapMeta from '../../ui/src/components/layout/wrap.meta'
 import type { CatalogComponent, ComponentPackage } from './types'
 
 /** Published component packages, in dependency order. */
@@ -206,6 +207,7 @@ export const components: CatalogComponent[] = [
   { ...treeViewMeta, package: '@advui/data' },
   { ...typographyMeta, package: '@advui/core' },
   { ...videoMeta, package: '@advui/core' },
+  { ...wrapMeta, package: '@advui/core' },
 ]
 
 export function getComponent(slug: string): CatalogComponent | undefined {

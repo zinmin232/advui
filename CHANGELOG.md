@@ -7,6 +7,42 @@ one version.
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-10-04
+
+### Added
+
+- **Responsive Stack props**: `direction`, `wrap`, `align` and `distribute`
+  on Stack, HStack and VStack, each a value or a mobile-first map:
+  `<Stack direction={{ base: 'column', md: 'row' }} align="center" distribute="between">`.
+  `align` and `distribute` take short values (`start`, `end`, `between`,
+  `around`, `evenly`). They are media props underneath, so on web they are
+  CSS media queries (no flash during SSR) and they work in
+  `styled(Stack, …)`. The raw style props still work and win when both set
+  the same style: `flexDirection` over `direction`, `$md={{ flexDirection }}`
+  over `direction`'s md value, in either order. On a stack, `direction` is now
+  the layout prop. It replaces React Native's text-direction style of the
+  same name in the types; `direction="rtl"` still sets the text direction at
+  run time, so existing code keeps working.
+- **Wrap** (beta): a row that wraps, for chips and tags: centered items and a
+  `$2` gap, with the Stack props.
+- **Container**: `gutter` sets the side padding with a token or a map
+  (`gutter="$0"` removes it; the default stays 16 / 24 / 32px),
+  `centerContent` centers the children, and `size="xxl"` (1536px). There is
+  no `fluid` prop: `size="full"` is Bootstrap's `container-fluid`.
+- **Labelled Separator**: `<Separator label="or" />`, with
+  `labelPosition="start" | "center" | "end"` and `children` for richer
+  content. Horizontal only. A decorative one hides its lines and leaves the
+  label as text; with `decorative={false}` it is a `separator` named by the
+  label.
+- `Responsive<T>` and `responsiveStyle(prop, value, map?)`, the helper behind
+  these props, for your own components. Grid uses it too, and
+  `ResponsiveColumns` is now `Responsive<number>`.
+
+### Changed
+
+- Container's default side padding comes from its `gutter` variant instead
+  of base styles. The CSS is the same.
+
 ## [0.8.0] - 2026-10-04
 
 No component changes at run time: this release is about the metadata that

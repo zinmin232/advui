@@ -48,6 +48,7 @@ import CollapsibleSettings from '../../ui/src/components/collapsible/examples/se
 import ComboboxBasic from '../../ui/src/components/combobox/examples/basic'
 import CommandPaletteBasic from '../../ui/src/components/command-palette/examples/basic'
 import ContainerContainer from '../../ui/src/components/layout/examples/container'
+import ContainerGutter from '../../ui/src/components/layout/examples/gutter'
 import ContextMenuBasic from '../../ui/src/components/context-menu/examples/basic'
 import ContextMenuList from '../../ui/src/components/context-menu/examples/list'
 import DataGridBasic from '../../data/src/components/data-grid/examples/basic'
@@ -150,6 +151,7 @@ import SearchLive from '../../ui/src/components/search/examples/live'
 import SelectBasic from '../../ui/src/components/select/examples/basic'
 import SelectGroups from '../../ui/src/components/select/examples/groups'
 import SeparatorBasic from '../../ui/src/components/separator/examples/basic'
+import SeparatorLogin from '../../ui/src/components/separator/examples/login'
 import SheetBasic from '../../ui/src/components/sheet/examples/basic'
 import SheetScroll from '../../ui/src/components/sheet/examples/scroll'
 import SidebarBasic from '../../ui/src/components/sidebar/examples/basic'
@@ -161,6 +163,9 @@ import SnackbarBasic from '../../ui/src/components/snackbar/examples/basic'
 import SnackbarPersistent from '../../ui/src/components/snackbar/examples/persistent'
 import SpinnerBasic from '../../ui/src/components/spinner/examples/basic'
 import StackBasic from '../../ui/src/components/layout/examples/basic'
+import StackResponsiveDirection from '../../ui/src/components/layout/examples/responsive-direction'
+import StackToolbar from '../../ui/src/components/layout/examples/toolbar'
+import StackWrap from '../../ui/src/components/layout/examples/wrap'
 import StackResponsive from '../../ui/src/components/layout/examples/responsive'
 import StatBasic from '../../data/src/components/stat/examples/basic'
 import StatTrends from '../../data/src/components/stat/examples/trends'
@@ -192,6 +197,7 @@ import TypographyScale from '../../ui/src/components/typography/examples/scale'
 import TypographyTones from '../../ui/src/components/typography/examples/tones'
 import VideoBasic from '../../ui/src/components/video/examples/basic'
 import VideoMutedLoop from '../../ui/src/components/video/examples/muted-loop'
+import WrapTags from '../../ui/src/components/layout/examples/tags'
 
 export const examples: Record<string, Record<string, ComponentType>> = {
   'accordion': {
@@ -285,6 +291,7 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'container': {
     'container': ContainerContainer,
+    'gutter': ContainerGutter,
   },
   'context-menu': {
     'basic': ContextMenuBasic,
@@ -475,6 +482,7 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'separator': {
     'basic': SeparatorBasic,
+    'login': SeparatorLogin,
   },
   'sheet': {
     'basic': SheetBasic,
@@ -500,6 +508,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'stack': {
     'basic': StackBasic,
+    'responsive-direction': StackResponsiveDirection,
+    'toolbar': StackToolbar,
+    'wrap': StackWrap,
     'responsive': StackResponsive,
   },
   'stat': {
@@ -561,5 +572,8 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'video': {
     'basic': VideoBasic,
     'muted-loop': VideoMutedLoop,
+  },
+  'wrap': {
+    'tags': WrapTags,
   },
 }

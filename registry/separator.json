@@ -3,7 +3,7 @@
   "name": "separator",
   "title": "Separator",
   "type": "registry:component",
-  "description": "A thin line that divides content horizontally or vertically.",
+  "description": "A thin line that divides content horizontally or vertically, with an optional label.",
   "category": "foundations",
   "status": "stable",
   "since": "0.1.0",
@@ -17,12 +17,12 @@
     {
       "path": "components/separator/Separator.tsx",
       "type": "registry:ui",
-      "content": "import { type GetProps, View, styled } from 'tamagui'\n\nconst SeparatorFrame = styled(View, {\n  name: 'Separator',\n  backgroundColor: '$border',\n  flexShrink: 0,\n\n  variants: {\n    orientation: {\n      horizontal: { height: 1, width: '100%' },\n      vertical: { width: 1, alignSelf: 'stretch' },\n    },\n  } as const,\n\n  defaultVariants: { orientation: 'horizontal' },\n})\n\nexport type SeparatorProps = GetProps<typeof SeparatorFrame> & {\n  /**\n   * Purely visual separators are hidden from assistive technology (default).\n   * Set `false` when the line separates meaningful sections.\n   */\n  decorative?: boolean\n}\n\n/** A thin line that visually (and optionally semantically) divides content. */\nexport function Separator({\n  decorative = true,\n  orientation = 'horizontal',\n  ...props\n}: SeparatorProps) {\n  return (\n    <SeparatorFrame\n      orientation={orientation}\n      {...(decorative\n        ? { 'aria-hidden': true, role: 'none' as const }\n        : { role: 'separator' as const, 'aria-orientation': orientation ?? 'horizontal' })}\n      {...props}\n    />\n  )\n}\n"
+      "content": "import type { ReactNode } from 'react'\nimport { type GetProps, View, isWeb, styled } from 'tamagui'\nimport { isTextContent } from '../../utils/isTextContent'\nimport { Text } from '../typography/Text'\n\nconst SeparatorFrame = styled(View, {\n  name: 'Separator',\n  backgroundColor: '$border',\n  flexShrink: 0,\n\n  variants: {\n    orientation: {\n      horizontal: { height: 1, width: '100%' },\n      vertical: { width: 1, alignSelf: 'stretch' },\n    },\n  } as const,\n\n  defaultVariants: { orientation: 'horizontal' },\n})\n\n/** The row that holds the two lines and the label. */\nconst LabelledFrame = styled(View, {\n  name: 'SeparatorLabelled',\n  flexDirection: 'row',\n  alignItems: 'center',\n  gap: '$3',\n  width: '100%',\n})\n\n/** One line of a labelled separator; `short` is the 16px end at the start or end. */\nconst Line = styled(View, {\n  name: 'SeparatorLine',\n  height: 1,\n  backgroundColor: '$border',\n\n  variants: {\n    short: {\n      true: { width: '$4', flexShrink: 0 },\n      false: { flexGrow: 1, flexBasis: 0 },\n    },\n  } as const,\n\n  defaultVariants: { short: false },\n})\n\nexport type SeparatorLabelPosition = 'start' | 'center' | 'end'\n\nexport type SeparatorProps = Omit<GetProps<typeof SeparatorFrame>, 'children'> & {\n  /**\n   * Purely visual separators are hidden from assistive technology (default).\n   * Set `false` when the line separates meaningful sections.\n   */\n  decorative?: boolean\n  /** Text between two lines, such as \"or\". Horizontal separators only. */\n  label?: string\n  /** Where the label sits. Default `center`. */\n  labelPosition?: SeparatorLabelPosition\n  /** Richer content in place of `label`. Text is styled like the label. */\n  children?: ReactNode\n}\n\n// Bundlers replace `process.env.NODE_ENV`; this types it for apps without Node's types.\ndeclare const process: { env: { NODE_ENV?: string } }\n\nlet warnedVertical = false\n\n/** A thin line that visually (and optionally semantically) divides content. */\nexport function Separator({\n  decorative = true,\n  orientation = 'horizontal',\n  label,\n  labelPosition = 'center',\n  children,\n  ...props\n}: SeparatorProps) {\n  const content = children ?? label\n  const hasContent = content !== undefined && content !== null && content !== ''\n\n  if (hasContent && orientation === 'vertical') {\n    if (process.env.NODE_ENV !== 'production' && !warnedVertical) {\n      warnedVertical = true\n      console.warn('Separator: a label needs orientation=\"horizontal\"; it is ignored here.')\n    }\n  }\n\n  if (!hasContent || orientation === 'vertical') {\n    return (\n      <SeparatorFrame\n        orientation={orientation}\n        {...(decorative\n          ? { 'aria-hidden': true, role: 'none' as const }\n          : { role: 'separator' as const, 'aria-orientation': orientation ?? 'horizontal' })}\n        {...props}\n      />\n    )\n  }\n\n  // The lines are decoration either way. A decorative separator leaves its\n  // label as plain text; a semantic one is a named separator, read once.\n  const name = label ?? (isTextContent(content) ? [content].flat().join('') : undefined)\n  return (\n    <LabelledFrame\n      {...(decorative\n        ? null\n        : {\n            role: 'separator' as const,\n            'aria-orientation': 'horizontal' as const,\n            'aria-label': name,\n            // Native: one element named by the label, not three.\n            ...(isWeb ? null : { accessible: true }),\n          })}\n      {...props}\n    >\n      <Line short={labelPosition === 'start'} aria-hidden />\n      {isTextContent(content) ? (\n        <Text size=\"sm\" tone=\"muted\" flexShrink={1} textAlign=\"center\">\n          {content}\n        </Text>\n      ) : (\n        content\n      )}\n      <Line short={labelPosition === 'end'} aria-hidden />\n    </LabelledFrame>\n  )\n}\n"
     },
     {
       "path": "components/separator/index.ts",
       "type": "registry:ui",
-      "content": "export { Separator, type SeparatorProps } from './Separator'\n"
+      "content": "export { Separator, type SeparatorLabelPosition, type SeparatorProps } from './Separator'\n"
     }
   ],
   "examples": [
@@ -30,13 +30,22 @@
       "name": "basic",
       "title": "Horizontal and vertical",
       "code": "import { HStack, Separator, Text, VStack } from '@advui/core'\n\nexport default function SeparatorBasic() {\n  return (\n    <VStack gap=\"$3\" maxWidth=\"$80\" width=\"100%\">\n      <VStack gap=\"$1\">\n        <Text weight=\"medium\">Adv UI</Text>\n        <Text size=\"sm\" tone=\"muted\">\n          Cross-platform components.\n        </Text>\n      </VStack>\n      <Separator />\n      <HStack gap=\"$3\" height=\"$5\">\n        <Text size=\"sm\">Docs</Text>\n        <Separator orientation=\"vertical\" />\n        <Text size=\"sm\">Components</Text>\n        <Separator orientation=\"vertical\" />\n        <Text size=\"sm\">Themes</Text>\n      </HStack>\n    </VStack>\n  )\n}\n"
+    },
+    {
+      "name": "login",
+      "title": "Labelled",
+      "code": "import { Button, Field, Input, Separator, Text, VStack } from '@advui/core'\n\nexport default function SeparatorLogin() {\n  return (\n    <VStack gap=\"$4\" width=\"100%\" maxWidth=\"$80\">\n      <Button variant=\"outline\" fullWidth>\n        Continue with Google\n      </Button>\n      <Separator label=\"or\" />\n      <Field label=\"Email\">\n        <Input inputMode=\"email\" autoComplete=\"email\" placeholder=\"you@example.org\" />\n      </Field>\n      <Button fullWidth>Send a sign-in link</Button>\n      <Separator label=\"New here?\" labelPosition=\"start\" />\n      <Text size=\"sm\" tone=\"muted\">\n        Ask your team admin for an invitation.\n      </Text>\n    </VStack>\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/separator",
   "dependencies": [],
   "peerDependencies": [
+    "react",
     "tamagui"
   ],
-  "registryDependencies": [],
-  "version": "0.8.0"
+  "registryDependencies": [
+    "typography",
+    "utils"
+  ],
+  "version": "0.9.0"
 }

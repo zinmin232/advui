@@ -7,11 +7,17 @@ import {
   getTokenValue,
   withStaticProperties,
 } from 'tamagui'
+import {
+  type Breakpoint,
+  type Responsive,
+  breakpointKeys,
+  isResponsiveMap,
+  responsiveValue,
+} from '../../utils/responsive'
 
-type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
-/** A value, or a mobile-first map such as `{ base: 12, md: 8 }`. */
-export type ResponsiveGridValue<T> = T | ({ base?: T } & Partial<Record<Breakpoint, T>>)
-export type ResponsiveColumns = ResponsiveGridValue<number>
+/** A value, or a mobile-first map such as `{ base: 12, md: 8 }`. Same as `Responsive<T>`. */
+export type ResponsiveGridValue<T> = Responsive<T>
+export type ResponsiveColumns = Responsive<number>
 /** Columns a cell covers: a count, every column (`'full'`) or its content's width (`'auto'`). */
 export type GridSpan = number | 'full' | 'auto'
 export type ResponsiveSpan = ResponsiveGridValue<GridSpan>
@@ -52,13 +58,6 @@ export interface GridCellStyle {
 
 export type GridCellLayout = GridCellStyle & Partial<Record<`$${Breakpoint}`, GridCellStyle>>
 
-const breakpoints: Breakpoint[] = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl']
-
-function pick<T>(value: ResponsiveGridValue<T>, key: 'base' | Breakpoint): T | undefined {
-  if (typeof value === 'object' && value !== null) return (value as Record<string, T>)[key]
-  return key === 'base' ? value : undefined
-}
-
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 const whole = (value: number, fallback: number) =>
   Number.isFinite(value) ? Math.round(value) : fallback
@@ -77,16 +76,16 @@ export function gridCellLayout(
 ): GridCellLayout {
   const layout: GridCellLayout = {}
   let count = 1
-  let cover: GridSpan = typeof span === 'object' && span !== null ? 'full' : 1
+  let cover: GridSpan = isResponsiveMap(span) ? 'full' : 1
   let skip = 0
   let width: string | undefined
   let margin: Percent | 0 = 0
   let capped = false
 
-  for (const key of ['base', ...breakpoints] as const) {
-    count = pick(columns, key) ?? count
-    cover = pick(span, key) ?? cover
-    skip = pick(offset, key) ?? skip
+  for (const key of ['base', ...breakpointKeys] as const) {
+    count = responsiveValue(columns, key) ?? count
+    cover = responsiveValue(span, key) ?? cover
+    skip = responsiveValue(offset, key) ?? skip
 
     // Not rounded, so a fractional count keeps the 0.6 width, `100 / count`.
     const total = Number.isFinite(count) ? Math.max(1, count) : 1

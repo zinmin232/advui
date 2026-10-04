@@ -1,6 +1,6 @@
 {
   "name": "advui",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "items": [
     {
       "name": "hooks",
@@ -17,7 +17,9 @@
       "title": "Utilities",
       "type": "registry:lib",
       "description": "Small shared helpers used by several components.",
-      "dependencies": [],
+      "dependencies": [
+        "@advui/theme"
+      ],
       "registryDependencies": []
     },
     {
@@ -852,7 +854,9 @@
       "dependencies": [
         "@advui/theme"
       ],
-      "registryDependencies": []
+      "registryDependencies": [
+        "utils"
+      ]
     },
     {
       "name": "grid",
@@ -863,18 +867,39 @@
       "status": "stable",
       "package": "@advui/core",
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [
+        "utils"
+      ]
     },
     {
       "name": "stack",
       "title": "Stack",
       "type": "registry:component",
-      "description": "Flexbox primitives: Box, Stack, HStack, VStack, Center and Spacer.",
+      "description": "Flexbox primitives: Box, Stack, HStack, VStack, Center and Spacer, with responsive direction and alignment.",
       "category": "layout",
       "status": "stable",
       "package": "@advui/core",
-      "dependencies": [],
-      "registryDependencies": []
+      "dependencies": [
+        "@advui/theme"
+      ],
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "wrap",
+      "title": "Wrap",
+      "type": "registry:component",
+      "description": "A row that wraps onto new lines, for chips, tags and badges.",
+      "category": "layout",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [
+        "@advui/theme"
+      ],
+      "registryDependencies": [
+        "utils"
+      ]
     },
     {
       "name": "list",
@@ -1153,12 +1178,15 @@
       "name": "separator",
       "title": "Separator",
       "type": "registry:component",
-      "description": "A thin line that divides content horizontally or vertically.",
+      "description": "A thin line that divides content horizontally or vertically, with an optional label.",
       "category": "foundations",
       "status": "stable",
       "package": "@advui/core",
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [
+        "typography",
+        "utils"
+      ]
     },
     {
       "name": "sheet",

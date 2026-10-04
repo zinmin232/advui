@@ -1,0 +1,41 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "wrap",
+  "title": "Wrap",
+  "type": "registry:component",
+  "description": "A row that wraps onto new lines, for chips, tags and badges.",
+  "category": "layout",
+  "status": "beta",
+  "since": "0.9.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/layout/Stack.tsx",
+      "type": "registry:ui",
+      "content": "import { shorthands } from '@advui/theme'\nimport { type GetProps, type TamaguiComponent, View, styled } from 'tamagui'\nimport { type Responsive, breakpointKeys, responsiveStyle } from '../../utils/responsive'\n\n/** The base layout primitive — a `View` that accepts every style prop and token. */\nexport const Box = styled(View, {\n  name: 'Box',\n})\n\nexport type StackDirection = 'row' | 'column' | 'row-reverse' | 'column-reverse'\nexport type StackWrap = 'nowrap' | 'wrap' | 'wrap-reverse'\nexport type StackAlign = 'start' | 'center' | 'end' | 'stretch' | 'baseline'\nexport type StackDistribute = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'\n\ntype FlexKey = 'flexDirection' | 'flexWrap' | 'alignItems' | 'justifyContent'\ntype FlexDefaults = Partial<Record<FlexKey, string>>\ntype StyleProps = Record<string, unknown>\n\nconst alignValues = { start: 'flex-start', end: 'flex-end' } as const\n// Before 0.9.0 `direction` was React Native's text-direction style; those\n// values still set it, so existing `direction=\"rtl\"` keeps working.\nconst textDirections = new Set(['ltr', 'rtl', 'inherit'])\nconst distributeValues = {\n  start: 'flex-start',\n  end: 'flex-end',\n  between: 'space-between',\n  around: 'space-around',\n  evenly: 'space-evenly',\n} as const\n\n/** Every prop name that sets a flex key: the key and its shorthands, such as `items`. */\nconst propNames = (key: FlexKey) => [\n  key,\n  ...Object.entries(shorthands)\n    .filter(([, longhand]) => longhand === key)\n    .map(([shorthand]) => shorthand),\n]\n\n/**\n * The style for one responsive flex prop, minus what the raw style props set:\n * `flexDirection` (or its shorthand) wins at the base, and `$md={{ … }}` wins\n * at md. A variant can't tell a raw prop from the component's own default\n * (both are in `props`), so a raw value equal to that default doesn't count.\n * Dropping the overlap, rather than relying on prop order, keeps web and\n * native the same: a repeated media style wins last on web but first on native.\n */\nfunction flexStyle<T extends string>(\n  key: FlexKey,\n  value: Responsive<T> | undefined,\n  props: StyleProps,\n  defaults: FlexDefaults,\n  map?: Partial<Record<T, string>>,\n) {\n  const style: StyleProps = responsiveStyle(key, value, map)\n  const names = propNames(key)\n  const raw = names.map((name) => props[name]).find((v) => v !== undefined)\n  if (raw !== undefined && raw !== defaults[key]) delete style[key]\n  for (const breakpoint of breakpointKeys) {\n    const media = props[`$${breakpoint}`] as StyleProps | undefined\n    if (media && names.some((name) => media[name] !== undefined)) delete style[`$${breakpoint}`]\n  }\n  return style\n}\n\n/**\n * `direction`, `wrap`, `align` and `distribute`, each a value or a mobile-first\n * map. Function variants keep `styled(Stack, …)` working and compile media\n * props to CSS media queries on web. `defaults` are the component's own base\n * styles, so its default is not mistaken for a raw prop.\n */\nfunction flexVariants(defaults: FlexDefaults) {\n  return {\n    direction: (value: Responsive<StackDirection>, { props }: { props: StyleProps }) =>\n      textDirections.has(value as string)\n        ? { direction: value }\n        : flexStyle('flexDirection', value, props, defaults),\n    wrap: (value: Responsive<StackWrap>, { props }: { props: StyleProps }) =>\n      flexStyle('flexWrap', value, props, defaults),\n    align: (value: Responsive<StackAlign>, { props }: { props: StyleProps }) =>\n      flexStyle('alignItems', value, props, defaults, alignValues),\n    distribute: (value: Responsive<StackDistribute>, { props }: { props: StyleProps }) =>\n      flexStyle('justifyContent', value, props, defaults, distributeValues),\n  } as const\n}\n\n/**\n * React Native's `direction` style (ltr / rtl) has the same name as the\n * `direction` prop, so its type would intersect with the prop's. The prop\n * replaces it, as in Chakra; right-to-left layout comes from the app's\n * `I18nManager` or the page's `dir`, not from a style.\n */\ntype WithoutDirectionStyle<C> = C extends {\n  __tama: [infer P, infer R, infer N, infer B extends object, infer V, infer S]\n}\n  ? TamaguiComponent<P, R, N, Omit<B, 'direction'>, V, S>\n  : never\n\nconst StackFrame = styled(View, {\n  name: 'Stack',\n  flexDirection: 'column',\n  variants: flexVariants({ flexDirection: 'column' }),\n})\n\n/**\n * Flex container (column by default). Lay it out with `direction`, `wrap`,\n * `align` and `distribute`, each a value or a map such as\n * `{ base: 'column', md: 'row' }`, or with the regular style props\n * (`flexDirection`, `alignItems`, `$md={{ … }}`, `items`…), which win when both\n * set the same style.\n */\nexport const Stack = StackFrame as WithoutDirectionStyle<typeof StackFrame>\n\n/** Horizontal stack. Use `gap=\"$2\"` for spacing. */\nexport const HStack = styled(Stack, {\n  name: 'HStack',\n  flexDirection: 'row',\n  alignItems: 'center',\n  variants: flexVariants({ flexDirection: 'row', alignItems: 'center' }),\n})\n\n/** Vertical stack. Use `gap=\"$2\"` for spacing. */\nexport const VStack = styled(Stack, {\n  name: 'VStack',\n  flexDirection: 'column',\n})\n\n/** A row that wraps onto new lines, for chips, tags and badges. */\nexport const Wrap = styled(Stack, {\n  name: 'Wrap',\n  flexDirection: 'row',\n  flexWrap: 'wrap',\n  alignItems: 'center',\n  gap: '$2',\n  variants: flexVariants({ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center' }),\n})\n\n/** Centers its children on both axes. */\nexport const Center = styled(View, {\n  name: 'Center',\n  alignItems: 'center',\n  justifyContent: 'center',\n})\n\n/** Flexible space that pushes siblings apart inside a stack. */\nexport const Spacer = styled(View, {\n  name: 'Spacer',\n  flex: 1,\n  alignSelf: 'stretch',\n  'aria-hidden': true,\n})\n\nexport type BoxProps = GetProps<typeof Box>\nexport type StackProps = GetProps<typeof Stack>\nexport type HStackProps = GetProps<typeof HStack>\nexport type VStackProps = GetProps<typeof VStack>\nexport type WrapProps = GetProps<typeof Wrap>\nexport type CenterProps = GetProps<typeof Center>\nexport type SpacerProps = GetProps<typeof Spacer>\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "tags",
+      "title": "Chips and badges",
+      "code": "import { Badge, Chip, Text, VStack, Wrap } from '@advui/core'\nimport { useState } from 'react'\n\nconst topics = ['Health', 'Education', 'Shelter', 'Water and sanitation', 'Nutrition', 'Protection']\n\nexport default function WrapTags() {\n  const [picked, setPicked] = useState<string[]>(['Health', 'Shelter'])\n  const toggle = (topic: string, on: boolean) =>\n    setPicked((prev) => (on ? [...prev, topic] : prev.filter((t) => t !== topic)))\n\n  return (\n    <VStack gap=\"$4\" maxWidth=\"$96\" width=\"100%\">\n      <Wrap role=\"group\" aria-label=\"Topics\">\n        {topics.map((topic) => (\n          <Chip\n            key={topic}\n            selected={picked.includes(topic)}\n            onSelectedChange={(on) => toggle(topic, on)}\n          >\n            {topic}\n          </Chip>\n        ))}\n      </Wrap>\n      <VStack gap=\"$2\">\n        <Text size=\"sm\" tone=\"muted\">\n          Shown on the report\n        </Text>\n        <Wrap gap=\"$1.5\">\n          {picked.length ? (\n            picked.map((topic) => (\n              <Badge key={topic} variant=\"secondary\">\n                {topic}\n              </Badge>\n            ))\n          ) : (\n            <Text size=\"sm\">No topics yet</Text>\n          )}\n        </Wrap>\n      </VStack>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/wrap",
+  "dependencies": [
+    "@advui/theme"
+  ],
+  "peerDependencies": [
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "version": "0.9.0"
+}

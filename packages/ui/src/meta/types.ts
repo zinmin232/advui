@@ -21,7 +21,7 @@ export type CategoryId =
   | 'charts'
 
 /** Min-width breakpoints from `@advui/theme`, smallest first. */
-export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
+export type { Breakpoint } from '../utils/responsive'
 
 /**
  * One prop. `type` is what the docs show; the optional fields after
