@@ -12,12 +12,21 @@ describe('component metadata', () => {
     const stack = components.find((c) => c.slug === 'stack')?.parts.find((p) => p.name === 'Stack')
     const rows = Object.fromEntries((stack?.props ?? []).map((prop) => [prop.name, prop]))
     expect(Object.keys(rows)).toEqual([
+      'direction',
+      'wrap',
+      'align',
+      'distribute',
+      'gap',
+      'rowGap',
+      'columnGap',
       'flexDirection',
       'alignItems',
       'justifyContent',
       'flexWrap',
-      'gap',
     ])
+    for (const name of ['direction', 'wrap', 'align', 'distribute'])
+      expect(rows[name]).toMatchObject({ responsive: true, options: expect.any(Array) })
+    expect(rows.direction?.default).toBe("'column'")
     expect(rows.flexDirection?.options).toEqual(['row', 'column', 'row-reverse', 'column-reverse'])
     expect(rows.alignItems?.options).toContain('baseline')
     expect(rows.justifyContent?.options).toContain('space-between')

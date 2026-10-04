@@ -238,6 +238,13 @@ export async function SpacingGuide() {
         Mobile-first media props: <C>{'<Stack $md={{ flexDirection: "row" }} />'}</C>. On web they
         compile to CSS media queries, so SSR output is stable.
       </P>
+      <P>
+        Layout props such as Stack’s <C>direction</C>, Grid’s <C>columns</C> and Container’s{' '}
+        <C>gutter</C> also take a map, from phones up:{' '}
+        <C>{"<Stack direction={{ base: 'column', md: 'row' }} />"}</C>. A breakpoint you leave out
+        keeps the value below it. For your own components, <C>responsiveStyle</C> turns such a map
+        into media props.
+      </P>
       <BreakpointsTable />
       <H2 id="z-index">Z-index</H2>
       <ZIndexTable />

@@ -125,6 +125,11 @@ entry, search entry, Expo screen and registry item then appear automatically.
 - Stay SSR-safe: no `window` access during render, and no `useMedia()`
   branching that changes markup between server and client. Prefer media props
   (`$sm={{ … }}`).
+- A prop that takes a breakpoint map is typed `Responsive<T>` and becomes
+  media props through `responsiveStyle(prop, value, map?)` (`utils/responsive.ts`),
+  usually in a function variant, as Stack's `direction` and Container's
+  `gutter` do. Don't emit a media style that a default or a raw prop also sets
+  at the same breakpoint: the later one wins on web but the first on native.
 - Document real platform differences in `platformNotes`.
 
 ## Tests

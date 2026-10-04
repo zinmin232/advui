@@ -36,6 +36,8 @@ describe('@advui/core public API', () => {
       'Card',
       'UniversalProvider',
       'isTextContent',
+      'responsiveStyle',
+      'Wrap',
       'useControllableState',
       'useFieldControl',
       'useRipple',

@@ -1,12 +1,12 @@
 {
   "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
-  "name": "stack",
-  "title": "Stack",
+  "name": "wrap",
+  "title": "Wrap",
   "type": "registry:component",
-  "description": "Flexbox primitives: Box, Stack, HStack, VStack, Center and Spacer, with responsive direction and alignment.",
+  "description": "A row that wraps onto new lines, for chips, tags and badges.",
   "category": "layout",
-  "status": "stable",
-  "since": "0.1.0",
+  "status": "beta",
+  "since": "0.9.0",
   "platforms": [
     "web",
     "ios",
@@ -22,32 +22,12 @@
   ],
   "examples": [
     {
-      "name": "basic",
-      "title": "Stacks and spacer",
-      "code": "import { Avatar, Badge, Button, HStack, Spacer, Text, VStack } from '@advui/core'\n\nexport default function StackBasic() {\n  return (\n    <VStack gap=\"$3\" width=\"100%\" maxWidth=\"$96\">\n      {['Maya Chen', 'Jordan Lee'].map((name) => (\n        <HStack\n          key={name}\n          gap=\"$3\"\n          padding=\"$3\"\n          borderWidth={1}\n          borderColor=\"$border\"\n          borderRadius=\"$lg\"\n        >\n          <Avatar alt={name} size=\"sm\" />\n          <VStack>\n            <Text weight=\"medium\">{name}</Text>\n            <Text size=\"sm\" tone=\"muted\">\n              Product designer\n            </Text>\n          </VStack>\n          <Spacer />\n          <Badge variant=\"secondary\" size=\"sm\">\n            Admin\n          </Badge>\n          <Button size=\"sm\" variant=\"ghost\">\n            Edit\n          </Button>\n        </HStack>\n      ))}\n    </VStack>\n  )\n}\n"
-    },
-    {
-      "name": "responsive-direction",
-      "title": "Responsive direction",
-      "code": "import { Box, Stack, Text } from '@advui/core'\n\nexport default function StackResponsiveDirection() {\n  return (\n    <Stack direction={{ base: 'column', md: 'row' }} align=\"stretch\" gap=\"$3\" width=\"100%\">\n      {['Plan', 'Build', 'Ship'].map((step, index) => (\n        <Box key={step} $md={{ flex: 1 }} padding=\"$4\" backgroundColor=\"$muted\" borderRadius=\"$lg\">\n          <Text size=\"sm\" tone=\"muted\">\n            Step {index + 1}\n          </Text>\n          <Text weight=\"medium\">{step}</Text>\n        </Box>\n      ))}\n    </Stack>\n  )\n}\n"
-    },
-    {
-      "name": "toolbar",
-      "title": "Toolbar",
-      "code": "import { Button, HStack, Heading, Stack } from '@advui/core'\nimport { PlusIcon } from '@advui/icons'\n\nexport default function StackToolbar() {\n  return (\n    <Stack\n      direction={{ base: 'column', sm: 'row' }}\n      align={{ base: 'stretch', sm: 'center' }}\n      distribute=\"between\"\n      gap=\"$3\"\n      width=\"100%\"\n      padding=\"$3\"\n      borderWidth={1}\n      borderColor=\"$border\"\n      borderRadius=\"$lg\"\n    >\n      <Heading level={3} size=\"lg\">\n        Projects\n      </Heading>\n      <HStack gap=\"$2\" distribute=\"end\">\n        <Button variant=\"outline\" size=\"sm\">\n          Import\n        </Button>\n        <Button size=\"sm\" icon={<PlusIcon />}>\n          New project\n        </Button>\n      </HStack>\n    </Stack>\n  )\n}\n"
-    },
-    {
-      "name": "wrap",
-      "title": "Wrapping row",
-      "code": "import { Box, Stack, Text } from '@advui/core'\n\nconst sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL']\n\nexport default function StackWrap() {\n  return (\n    <Stack direction=\"row\" wrap=\"wrap\" gap=\"$2\" maxWidth=\"$64\" aria-label=\"Sizes\" role=\"list\">\n      {sizes.map((size) => (\n        <Box\n          key={size}\n          role=\"listitem\"\n          width=\"$12\"\n          paddingVertical=\"$2\"\n          alignItems=\"center\"\n          borderWidth={1}\n          borderColor=\"$border\"\n          borderRadius=\"$md\"\n        >\n          <Text size=\"sm\">{size}</Text>\n        </Box>\n      ))}\n    </Stack>\n  )\n}\n"
-    },
-    {
-      "name": "responsive",
-      "title": "Media props",
-      "code": "import { Box, Stack, Text } from '@advui/core'\n\nexport default function StackResponsive() {\n  return (\n    <Stack gap=\"$3\" width=\"100%\" $md={{ flexDirection: 'row' }}>\n      {['One', 'Two', 'Three'].map((label) => (\n        <Box key={label} $md={{ flex: 1 }} padding=\"$4\" backgroundColor=\"$muted\" borderRadius=\"$lg\">\n          <Text weight=\"medium\">{label}</Text>\n          <Text size=\"sm\" tone=\"muted\">\n            Column on phones, row from md.\n          </Text>\n        </Box>\n      ))}\n    </Stack>\n  )\n}\n"
+      "name": "tags",
+      "title": "Chips and badges",
+      "code": "import { Badge, Chip, Text, VStack, Wrap } from '@advui/core'\nimport { useState } from 'react'\n\nconst topics = ['Health', 'Education', 'Shelter', 'Water and sanitation', 'Nutrition', 'Protection']\n\nexport default function WrapTags() {\n  const [picked, setPicked] = useState<string[]>(['Health', 'Shelter'])\n  const toggle = (topic: string, on: boolean) =>\n    setPicked((prev) => (on ? [...prev, topic] : prev.filter((t) => t !== topic)))\n\n  return (\n    <VStack gap=\"$4\" maxWidth=\"$96\" width=\"100%\">\n      <Wrap role=\"group\" aria-label=\"Topics\">\n        {topics.map((topic) => (\n          <Chip\n            key={topic}\n            selected={picked.includes(topic)}\n            onSelectedChange={(on) => toggle(topic, on)}\n          >\n            {topic}\n          </Chip>\n        ))}\n      </Wrap>\n      <VStack gap=\"$2\">\n        <Text size=\"sm\" tone=\"muted\">\n          Shown on the report\n        </Text>\n        <Wrap gap=\"$1.5\">\n          {picked.length ? (\n            picked.map((topic) => (\n              <Badge key={topic} variant=\"secondary\">\n                {topic}\n              </Badge>\n            ))\n          ) : (\n            <Text size=\"sm\">No topics yet</Text>\n          )}\n        </Wrap>\n      </VStack>\n    </VStack>\n  )\n}\n"
     }
   ],
-  "docs": "/docs/components/stack",
+  "docs": "/docs/components/wrap",
   "dependencies": [
     "@advui/theme"
   ],
