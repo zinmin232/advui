@@ -6,7 +6,7 @@
       "name": "hooks",
       "title": "Hooks",
       "type": "registry:lib",
-      "description": "Shared hooks: controllable state, reduced-motion detection, the Android press ripple, Android back-button handling for overlays and the surrounding Form’s status.",
+      "description": "Shared hooks: controllable state, reduced-motion detection, the Android press ripple, Android back-button handling for overlays, the surrounding Form’s status, the window’s breakpoint and the AppShell drawer state.",
       "dependencies": [
         "@advui/theme"
       ],
@@ -286,6 +286,24 @@
       ],
       "registryDependencies": [
         "typography"
+      ]
+    },
+    {
+      "name": "app-shell",
+      "title": "App Shell",
+      "type": "registry:component",
+      "description": "The frame of an app screen: header, sidebar, main content and footer. It fills the screen, Main scrolls between the bars, and the sidebar becomes a drawer on phones.",
+      "category": "layout",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "drawer",
+        "hooks",
+        "icon-button",
+        "show-hide"
       ]
     },
     {
@@ -841,6 +859,17 @@
       "description": "An accessible label linked to a form control.",
       "category": "forms",
       "status": "stable",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "auto-grid",
+      "title": "Auto Grid",
+      "type": "registry:component",
+      "description": "Equal-width cells that pick their column count from the available width: as many as fit at a minimum width, with no breakpoints.",
+      "category": "layout",
+      "status": "beta",
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": []

@@ -1,4 +1,4 @@
-import { expect, gridCells, test } from './fixtures'
+import { autoGridCells, expect, gridCells, test } from './fixtures'
 
 test('sidebar becomes a drawer on phones', async ({ page }) => {
   await page.goto('/docs/components/button')
@@ -9,6 +9,43 @@ test('sidebar becomes a drawer on phones', async ({ page }) => {
   await drawer.getByRole('link', { name: /^Checkbox/ }).click()
   await expect(page).toHaveURL(/\/docs\/components\/checkbox$/)
   await expect(drawer).toBeHidden()
+})
+
+test('app shell moves its sidebar into a drawer on phones', async ({ page }) => {
+  await page.goto('/preview/app-shell/dashboard')
+  const sidebar = page.getByRole('navigation', { name: 'Main' })
+  await expect(sidebar).toBeHidden()
+  const trigger = page.getByRole('button', { name: 'Open navigation' })
+  await trigger.click()
+  const drawer = page.getByRole('dialog', { name: 'Main' })
+  await expect(drawer).toBeVisible()
+  await drawer.getByRole('link', { name: /^Reports/ }).click()
+  await expect(drawer).toBeHidden()
+  // The preview page is a <main> too; the shell's own is inside it.
+  await expect(page.locator('main main').getByText('Reports', { exact: true })).toBeVisible()
+
+  // Keyboard: Enter opens it, Escape closes it and focus goes back to the trigger.
+  await trigger.focus()
+  await page.keyboard.press('Enter')
+  await expect(drawer).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(drawer).toBeHidden()
+  await expect(trigger).toBeFocused()
+
+  // A drawer left open closes once the window is past the breakpoint.
+  await trigger.click()
+  await expect(drawer).toBeVisible()
+  await page.setViewportSize({ width: 1024, height: 800 })
+  await expect(drawer).toBeHidden()
+  await expect(sidebar).toBeVisible()
+  await expect(trigger).toBeHidden()
+})
+
+test('auto grid is one column on a phone', async ({ page }) => {
+  await page.goto('/preview/auto-grid/card-gallery')
+  const [atlas, beacon] = await autoGridCells(page, ['Atlas', 'Beacon'])
+  expect(beacon!.y).toBeGreaterThan(atlas!.y)
+  expect(beacon!.x).toBeCloseTo(atlas!.x, 0)
 })
 
 test('pages do not overflow horizontally on a phone', async ({ page }) => {

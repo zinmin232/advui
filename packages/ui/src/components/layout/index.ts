@@ -1,3 +1,5 @@
+export { AutoGrid, type AutoGridProps } from './AutoGrid'
+export { autoGridColumns } from './autoGridColumns'
 export { Container, type ContainerProps } from './Container'
 export {
   Grid,

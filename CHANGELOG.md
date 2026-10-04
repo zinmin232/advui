@@ -7,6 +7,37 @@ one version.
 
 ## [Unreleased]
 
+### Added
+
+- **AppShell** (beta): the frame of an app screen, with `AppShell.Header`,
+  `AppShell.Sidebar`, `AppShell.Main` and `AppShell.Footer`. It fills the
+  screen (`100dvh` on web, `flex: 1` on iOS and Android) and only Main
+  scrolls, between the header and footer. `layout="header-full"` (default)
+  or `"sidebar-full"` chooses which spans its edge. Below
+  `sidebarBreakpoint` (default `md`) the sidebar's children move into a
+  Drawer from the left, `drawerWidth` wide (default 280), opened by
+  `AppShell.SidebarTrigger`; a drawer left open closes when the window
+  widens past the breakpoint. `sidebarOpen` / `defaultSidebarOpen` /
+  `onSidebarOpenChange` control it, and `useAppShell()` reads it.
+  `stickyHeader={false}` lets the header scroll away with Main. Web
+  landmarks: banner, navigation (named by the sidebar's `aria-label`),
+  main and contentinfo. On iOS and Android the bars pad the safe areas and
+  the back button closes the drawer.
+- **AutoGrid** (beta): equal-width cells, as many columns as fit at
+  `minChildWidth` (default 240), up to `maxColumns`, with no breakpoints:
+  `<AutoGrid minChildWidth={240} gap="$4" maxColumns={4}>`. On web it is CSS
+  grid (`repeat(auto-fill, minmax(…))`), so server-rendered HTML has the
+  right columns; on iOS and Android it measures its width and picks the same
+  count. **`autoGridColumns(width, minChildWidth, gap, maxColumns)`** returns
+  that count.
+
+### Changed
+
+- Sidebar inside `AppShell.Sidebar` drops its own navigation landmark, since
+  the area is one. In the AppShell's phone drawer it fills the drawer, does
+  not collapse (Sidebar.Toggle renders nothing there), and pressing an item
+  closes the drawer. Sidebars elsewhere are unchanged.
+
 ## [0.10.0] - 2026-10-04
 
 ### Added

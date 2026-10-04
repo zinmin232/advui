@@ -7,6 +7,7 @@ import { BackHandler, Dimensions, StyleSheet } from 'react-native'
 import { XStack } from 'tamagui'
 import { renderNative } from '../../test/native-utils'
 import { Accordion } from './accordion/Accordion'
+import { AppShell } from './app-shell/AppShell'
 import { AlertDialog } from './alert-dialog/AlertDialog'
 import { AspectRatio } from './aspect-ratio/AspectRatio'
 import { Alert } from './alert/Alert'
@@ -43,6 +44,8 @@ import { IconButton } from './icon-button/IconButton'
 import { Image } from './image/Image'
 import { ImageGallery } from './image-gallery/ImageGallery'
 import { Input } from './input/Input'
+import { AutoGrid } from './layout/AutoGrid'
+import { autoGridColumns } from './layout/autoGridColumns'
 import { Container } from './layout/Container'
 import { Grid } from './layout/Grid'
 import { HStack, Stack, VStack, Wrap } from './layout/Stack'
@@ -1409,9 +1412,99 @@ function fakeBackHandler() {
   }
 }
 
+describe('AppShell and AutoGrid on native', () => {
+  const phone = Dimensions.get('window')
+  const resize = async (width: number) => {
+    await act(async () => {
+      Dimensions.set({ window: { ...phone, width }, screen: { ...phone, width } })
+    })
+  }
+  const shell = (props: { onSidebarOpenChange?: (open: boolean) => void; onPage?: () => void }) => (
+    <AppShell onSidebarOpenChange={props.onSidebarOpenChange}>
+      <AppShell.Header>
+        <AppShell.SidebarTrigger />
+        <Text>Adv Data</Text>
+      </AppShell.Header>
+      <AppShell.Sidebar aria-label="Main">
+        <Sidebar>
+          <Sidebar.Group label="Workspace">
+            <Sidebar.Item onPress={props.onPage}>Reports</Sidebar.Item>
+          </Sidebar.Group>
+        </Sidebar>
+      </AppShell.Sidebar>
+      <AppShell.Main>
+        <Text>Overview</Text>
+      </AppShell.Main>
+    </AppShell>
+  )
+
+  afterEach(async () => {
+    await resize(phone.width)
+  })
+
+  it('opens the sidebar in a drawer on a phone, and an item closes it', async () => {
+    const onSidebarOpenChange = jest.fn()
+    const onPage = jest.fn()
+    await renderNative(shell({ onSidebarOpenChange, onPage }))
+    expect(screen.getByText('Overview')).toBeOnTheScreen()
+    // Below md (the mocked phone is 750 wide) the side area is not mounted.
+    expect(screen.queryByText('Reports')).toBeNull()
+    await fireEvent.press(screen.getByRole('button', { name: 'Open navigation' }))
+    expect(onSidebarOpenChange).toHaveBeenLastCalledWith(true)
+    await fireEvent.press(await screen.findByRole('link', { name: 'Reports' }))
+    expect(onPage).toHaveBeenCalledTimes(1)
+    expect(onSidebarOpenChange).toHaveBeenLastCalledWith(false)
+  })
+
+  it('shows the sidebar beside Main from md, with no trigger', async () => {
+    await resize(1024)
+    await renderNative(shell({}))
+    expect(screen.getByRole('link', { name: 'Reports' })).toBeOnTheScreen()
+    expect(screen.queryByRole('button', { name: 'Open navigation' })).toBeNull()
+  })
+
+  it('AutoGrid shows one column until it is measured, then the same count as web', async () => {
+    await renderNative(
+      <AutoGrid testID="grid" minChildWidth={240} gap="$4">
+        {['A', 'B', 'C', 'D'].map((name) => (
+          <Text key={name} testID={name}>
+            {name}
+          </Text>
+        ))}
+      </AutoGrid>,
+    )
+    const cell = () => StyleSheet.flatten(screen.getByTestId('A').parent?.props.style)
+    expect(cell().width).toBe('100%')
+    await fireEvent(screen.getByTestId('grid'), 'layout', {
+      nativeEvent: { layout: { width: 1000, height: 400, x: 0, y: 0 } },
+    })
+    // 3 columns of (1000 - 2 × 16) / 3, as web's CSS grid would pick.
+    expect(autoGridColumns(1000, 240, 16)).toBe(3)
+    expect(cell().width).toBe(322)
+    expect(StyleSheet.flatten(screen.getByTestId('grid').props.style)).toMatchObject({
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 16,
+    })
+  })
+})
+
 describe('Android back button', () => {
   // Each overlay starts open; back must close it instead of leaving the screen.
   const overlays: [string, (onOpenChange: (open: boolean) => void) => ReactElement][] = [
+    [
+      'AppShell drawer',
+      (onOpenChange) => (
+        <AppShell defaultSidebarOpen onSidebarOpenChange={onOpenChange}>
+          <AppShell.Sidebar aria-label="Main">
+            <Text>Reports</Text>
+          </AppShell.Sidebar>
+          <AppShell.Main>
+            <Text>Overview</Text>
+          </AppShell.Main>
+        </AppShell>
+      ),
+    ],
     [
       'Dialog',
       (onOpenChange) => (

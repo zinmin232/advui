@@ -2,9 +2,11 @@
 import accordionMeta from '../../ui/src/components/accordion/accordion.meta'
 import alertMeta from '../../ui/src/components/alert/alert.meta'
 import alertDialogMeta from '../../ui/src/components/alert-dialog/alert-dialog.meta'
+import appShellMeta from '../../ui/src/components/app-shell/app-shell.meta'
 import areaChartMeta from '../../charts/src/components/area-chart/area-chart.meta'
 import aspectRatioMeta from '../../ui/src/components/aspect-ratio/aspect-ratio.meta'
 import audioPlayerMeta from '../../ui/src/components/audio-player/audio-player.meta'
+import autoGridMeta from '../../ui/src/components/layout/auto-grid.meta'
 import autocompleteMeta from '../../ui/src/components/autocomplete/autocomplete.meta'
 import avatarMeta from '../../ui/src/components/avatar/avatar.meta'
 import badgeMeta from '../../ui/src/components/badge/badge.meta'
@@ -125,9 +127,11 @@ export const components: CatalogComponent[] = [
   { ...accordionMeta, package: '@advui/core' },
   { ...alertMeta, package: '@advui/core' },
   { ...alertDialogMeta, package: '@advui/core' },
+  { ...appShellMeta, package: '@advui/core' },
   { ...areaChartMeta, package: '@advui/charts' },
   { ...aspectRatioMeta, package: '@advui/core' },
   { ...audioPlayerMeta, package: '@advui/core' },
+  { ...autoGridMeta, package: '@advui/core' },
   { ...autocompleteMeta, package: '@advui/core' },
   { ...avatarMeta, package: '@advui/core' },
   { ...badgeMeta, package: '@advui/core' },

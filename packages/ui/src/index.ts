@@ -22,6 +22,7 @@ export type { ColorModePreference, ResolvedColorMode } from './types'
 
 // Components
 export * from './components/accordion'
+export * from './components/app-shell'
 export * from './components/alert-dialog'
 export * from './components/alert'
 export * from './components/aspect-ratio'
