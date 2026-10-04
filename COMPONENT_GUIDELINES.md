@@ -130,6 +130,9 @@ entry, search entry, Expo screen and registry item then appear automatically.
   usually in a function variant, as Stack's `direction` and Container's
   `gutter` do. Don't emit a media style that a default or a raw prop also sets
   at the same breakpoint: the later one wins on web but the first on native.
+- For width-dependent markup, use Show / Hide (CSS on web). `useBreakpoint()`
+  and `useBreakpointValue()` see a phone on the first server render, so keep
+  them for behavior (how many items to load), not for layout.
 - Document real platform differences in `platformNotes`.
 
 ## Tests

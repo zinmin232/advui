@@ -1,6 +1,6 @@
 {
   "name": "advui",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "items": [
     {
       "name": "hooks",
@@ -10,7 +10,9 @@
       "dependencies": [
         "@advui/theme"
       ],
-      "registryDependencies": []
+      "registryDependencies": [
+        "utils"
+      ]
     },
     {
       "name": "utils",
@@ -1136,8 +1138,12 @@
       "category": "layout",
       "status": "beta",
       "package": "@advui/core",
-      "dependencies": [],
-      "registryDependencies": []
+      "dependencies": [
+        "@advui/theme"
+      ],
+      "registryDependencies": [
+        "sticky"
+      ]
     },
     {
       "name": "search",
@@ -1155,6 +1161,20 @@
         "icon-button",
         "input",
         "spinner"
+      ]
+    },
+    {
+      "name": "section",
+      "title": "Section",
+      "type": "registry:component",
+      "description": "A band of a page: a `<section>` with vertical spacing, a surface and a Container, for heroes, feature lists and calls to action.",
+      "category": "layout",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": [
+        "container",
+        "utils"
       ]
     },
     {
@@ -1205,6 +1225,19 @@
         "hooks",
         "icon-button",
         "typography"
+      ]
+    },
+    {
+      "name": "show-hide",
+      "title": "Show / Hide",
+      "type": "registry:component",
+      "description": "Show or hide content by screen width, with CSS on web (no flash during SSR), plus useBreakpoint and useBreakpointValue.",
+      "category": "layout",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
       ]
     },
     {
@@ -1295,6 +1328,17 @@
         "hooks",
         "typography"
       ]
+    },
+    {
+      "name": "sticky",
+      "title": "Sticky",
+      "type": "registry:component",
+      "description": "Keeps a header or a list heading in view while its container scrolls: CSS sticky on web, a pinned ScrollArea header on iOS and Android.",
+      "category": "layout",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": []
     },
     {
       "name": "switch",

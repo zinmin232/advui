@@ -64,8 +64,9 @@ export default defineMeta({
   ],
   platformNotes: {
     web: 'A scrolling box with CSS `scrollbar-width: thin` and theme colors (browsers without support show their default scrollbar).',
-    ios: 'A ScrollView with the platform scroll indicator.',
-    android: 'Same as iOS.',
+    ios: 'A ScrollView with the platform scroll indicator. Top Sticky children of the content element are pinned as sticky headers (since 0.10.0); the content element’s children then become the ScrollView’s own, and its style props style the scroll content.',
+    android:
+      'Same as iOS, with nested scrolling on, so a ScrollArea inside a scrolling screen scrolls itself (since 0.10.0; before, the screen took every vertical drag).',
   },
-  related: ['sheet', 'separator'],
+  related: ['sheet', 'separator', 'sticky'],
 })

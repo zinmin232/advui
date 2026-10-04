@@ -1,0 +1,65 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "show-hide",
+  "title": "Show / Hide",
+  "type": "registry:component",
+  "description": "Show or hide content by screen width, with CSS on web (no flash during SSR), plus useBreakpoint and useBreakpointValue.",
+  "category": "layout",
+  "status": "beta",
+  "since": "0.10.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/show-hide/ShowHide.tsx",
+      "type": "registry:ui",
+      "content": "import { View, type ViewProps, styled } from 'tamagui'\nimport {\n  type BreakpointRange,\n  type HideProps,\n  type ShowProps,\n  isEmptyRange,\n  rangeSteps,\n} from './range'\n\n// Web: CSS media queries hide the content, so the server renders the right\n// thing for every width (no flash, no hydration mismatch) and the content\n// stays mounted. `display: contents` keeps the wrapper out of the layout:\n// its children lay out as if they were the parent's own.\nconst Frame = styled(View, { name: 'ShowHide', display: 'contents' })\n\n// Bundlers replace `process.env.NODE_ENV`; this types it for apps without Node's types.\ndeclare const process: { env: { NODE_ENV?: string } }\n\nlet warned = false\n\nfunction displayStyle(range: BreakpointRange, show: boolean): ViewProps {\n  if (isEmptyRange(range)) {\n    if (process.env.NODE_ENV !== 'production' && !warned) {\n      warned = true\n      console.warn('Show / Hide: `below` must be a larger breakpoint than `above`.')\n    }\n    return { display: show ? 'none' : 'contents' }\n  }\n  const style: Record<string, unknown> = {}\n  for (const [key, inRange] of Object.entries(rangeSteps(range))) {\n    const display = inRange === show ? 'contents' : 'none'\n    if (key === 'base') style.display = display\n    else style[`$${key}`] = { display }\n  }\n  return style as ViewProps\n}\n\n/** Renders its children only while the window is in the range: `above=\"md\"` is md and up. */\nexport function Show({ children, ...range }: ShowProps) {\n  return <Frame {...displayStyle(range as BreakpointRange, true)}>{children}</Frame>\n}\n\n/** Renders its children except while the window is in the range: `below=\"sm\"` hides on phones. */\nexport function Hide({ children, ...range }: HideProps) {\n  return <Frame {...displayStyle(range as BreakpointRange, false)}>{children}</Frame>\n}\n\nexport type { BreakpointRange, HideProps, ShowProps } from './range'\n"
+    },
+    {
+      "path": "components/show-hide/ShowHide.native.tsx",
+      "type": "registry:ui",
+      "content": "import { useMedia } from 'tamagui'\nimport { type BreakpointRange, type HideProps, type ShowProps, isEmptyRange } from './range'\n\n// Native has no CSS: read the window size and leave the hidden content out,\n// so it is unmounted (and its state reset) while hidden.\nfunction useInRange({ above, below }: BreakpointRange) {\n  const media = useMedia()\n  if (isEmptyRange({ above, below } as BreakpointRange)) return false\n  return (!above || media[above]) && (!below || !media[below])\n}\n\n/** Renders its children only while the window is in the range: `above=\"md\"` is md and up. */\nexport function Show({ children, ...range }: ShowProps) {\n  return useInRange(range as BreakpointRange) ? <>{children}</> : null\n}\n\n/** Renders its children except while the window is in the range: `below=\"sm\"` hides on phones. */\nexport function Hide({ children, ...range }: HideProps) {\n  return useInRange(range as BreakpointRange) ? null : <>{children}</>\n}\n\nexport type { BreakpointRange, HideProps, ShowProps } from './range'\n"
+    },
+    {
+      "path": "components/show-hide/range.ts",
+      "type": "registry:ui",
+      "content": "import type { ReactNode } from 'react'\nimport { type Breakpoint, breakpointKeys } from '../../utils/responsive'\n\n/** A width range: from `above` (inclusive) to `below` (exclusive). Give at least one. */\nexport type BreakpointRange =\n  { above: Breakpoint; below?: Breakpoint } | { above?: Breakpoint; below: Breakpoint }\n\nexport type ShowProps = BreakpointRange & { children?: ReactNode }\nexport type HideProps = ShowProps\n\n/**\n * Whether the window is in the range at each breakpoint it changes at:\n * `above=\"sm\" below=\"lg\"` is `{ base: false, sm: true, lg: false }`. Out of\n * range below `above`, in range from it, and out of range again from `below`.\n */\nexport function rangeSteps({ above, below }: BreakpointRange) {\n  const steps: Partial<Record<'base' | Breakpoint, boolean>> = { base: !above }\n  if (above) steps[above] = true\n  if (below) steps[below] = false\n  return steps\n}\n\n/** True when `below` is not above `above`, so nothing is ever in range. */\nexport function isEmptyRange({ above, below }: BreakpointRange) {\n  return (\n    above !== undefined &&\n    below !== undefined &&\n    breakpointKeys.indexOf(below) <= breakpointKeys.indexOf(above)\n  )\n}\n"
+    },
+    {
+      "path": "components/show-hide/index.ts",
+      "type": "registry:ui",
+      "content": "export { Hide, Show, type BreakpointRange, type HideProps, type ShowProps } from './ShowHide'\n"
+    },
+    {
+      "path": "hooks/useBreakpoint.ts",
+      "type": "registry:hook",
+      "content": "import { getConfig, useDidFinishSSR, useMedia } from 'tamagui'\nimport {\n  type Breakpoint,\n  type Responsive,\n  breakpointKeys,\n  resolveResponsive,\n} from '../utils/responsive'\n\n/**\n * The largest min-width breakpoint the window matches, or `'base'` below `xs`.\n * It re-renders when that changes.\n *\n * The server can't know the width, so it renders for a phone (the config's\n * `mediaQueryDefaultActive`, `xs` here). Until hydration finishes the client\n * returns the same, so the markup matches and React logs no hydration error,\n * then it re-renders with the real breakpoint. Lay pages out with Show / Hide\n * or responsive props, which are CSS on web, and keep this for behavior.\n */\nexport function useBreakpoint(): 'base' | Breakpoint {\n  const media = useMedia()\n  const hydrated = useDidFinishSSR()\n  const active: Record<string, boolean | undefined> = hydrated\n    ? media\n    : (getConfig().settings.mediaQueryDefaultActive ?? {})\n  let current: 'base' | Breakpoint = 'base'\n  for (const key of breakpointKeys) if (active[key]) current = key\n  return current\n}\n\n/**\n * The value of a responsive prop at the current breakpoint, with the same\n * mobile-first cascade as the layout props: `{ base: 1, md: 3 }` is 1 below md\n * and 3 from md. `undefined` below the first breakpoint of a map without `base`.\n */\nexport function useBreakpointValue<T>(value: Responsive<T>): T | undefined {\n  return resolveResponsive(value, useBreakpoint())\n}\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "navigation",
+      "title": "Navigation",
+      "code": "import { Button, HStack, Hide, IconButton, Show, Text } from '@advui/core'\nimport { MenuIcon, SearchIcon } from '@advui/icons'\n\nexport default function ShowHideNavigation() {\n  return (\n    <HStack\n      width=\"100%\"\n      gap=\"$3\"\n      padding=\"$3\"\n      borderWidth={1}\n      borderColor=\"$border\"\n      borderRadius=\"$lg\"\n      distribute=\"between\"\n    >\n      <Text weight=\"semibold\">Field reports</Text>\n      {/* Links from md, a menu button below it. */}\n      <Show above=\"md\">\n        <HStack gap=\"$1\">\n          <Button variant=\"ghost\" size=\"sm\">\n            Projects\n          </Button>\n          <Button variant=\"ghost\" size=\"sm\">\n            Reports\n          </Button>\n          <Button variant=\"ghost\" size=\"sm\">\n            Partners\n          </Button>\n        </HStack>\n      </Show>\n      <HStack gap=\"$1\">\n        <Hide below=\"sm\">\n          <IconButton aria-label=\"Search\" icon={<SearchIcon />} />\n        </Hide>\n        <Show below=\"md\">\n          <IconButton aria-label=\"Open menu\" icon={<MenuIcon />} />\n        </Show>\n      </HStack>\n    </HStack>\n  )\n}\n"
+    },
+    {
+      "name": "breakpoint-value",
+      "title": "useBreakpoint and useBreakpointValue",
+      "code": "import {\n  Badge,\n  Card,\n  Grid,\n  HStack,\n  Text,\n  VStack,\n  useBreakpoint,\n  useBreakpointValue,\n} from '@advui/core'\n\nconst states = ['Kachin', 'Shan', 'Rakhine', 'Chin', 'Sagaing', 'Magway']\n\nexport default function ShowHideBreakpointValue() {\n  const breakpoint = useBreakpoint()\n  // For behavior: how many rows to preview. Layout itself uses responsive props.\n  const preview = useBreakpointValue({ base: 2, md: 4, lg: 6 }) ?? 2\n\n  return (\n    <VStack gap=\"$3\" width=\"100%\">\n      <HStack gap=\"$2\" wrap=\"wrap\">\n        <Text size=\"sm\" tone=\"muted\">\n          Breakpoint\n        </Text>\n        <Badge variant=\"secondary\">{breakpoint}</Badge>\n        <Text size=\"sm\" tone=\"muted\">\n          Showing {preview} of {states.length}\n        </Text>\n      </HStack>\n      <Grid columns={{ base: 1, sm: 2, lg: 3 }} gap=\"$3\">\n        {states.slice(0, preview).map((state) => (\n          <Card key={state} padding=\"$3\">\n            <Text weight=\"medium\">{state}</Text>\n          </Card>\n        ))}\n      </Grid>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/show-hide",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "version": "0.10.0"
+}

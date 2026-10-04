@@ -1,6 +1,6 @@
 {
   "name": "@advui/charts",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Bar, line, area and pie charts for Adv UI: SVG on web, react-native-svg on iOS and Android, with a legend, tooltips and a table view.",
   "license": "MIT",
   "repository": {

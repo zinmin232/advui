@@ -16,6 +16,11 @@
       "content": "/**\n * Android: while `open`, the hardware back button (or back gesture) calls\n * `close` instead of going back in the app's navigation. See\n * useBackToClose.native.ts. Browsers have no back button to intercept here\n * (react-native-web's BackHandler only warns), so on web it does nothing.\n */\nexport function useBackToClose(_open: boolean, _close: () => void) {}\n"
     },
     {
+      "path": "hooks/useBreakpoint.ts",
+      "type": "registry:hook",
+      "content": "import { getConfig, useDidFinishSSR, useMedia } from 'tamagui'\nimport {\n  type Breakpoint,\n  type Responsive,\n  breakpointKeys,\n  resolveResponsive,\n} from '../utils/responsive'\n\n/**\n * The largest min-width breakpoint the window matches, or `'base'` below `xs`.\n * It re-renders when that changes.\n *\n * The server can't know the width, so it renders for a phone (the config's\n * `mediaQueryDefaultActive`, `xs` here). Until hydration finishes the client\n * returns the same, so the markup matches and React logs no hydration error,\n * then it re-renders with the real breakpoint. Lay pages out with Show / Hide\n * or responsive props, which are CSS on web, and keep this for behavior.\n */\nexport function useBreakpoint(): 'base' | Breakpoint {\n  const media = useMedia()\n  const hydrated = useDidFinishSSR()\n  const active: Record<string, boolean | undefined> = hydrated\n    ? media\n    : (getConfig().settings.mediaQueryDefaultActive ?? {})\n  let current: 'base' | Breakpoint = 'base'\n  for (const key of breakpointKeys) if (active[key]) current = key\n  return current\n}\n\n/**\n * The value of a responsive prop at the current breakpoint, with the same\n * mobile-first cascade as the layout props: `{ base: 1, md: 3 }` is 1 below md\n * and 3 from md. `undefined` below the first breakpoint of a map without `base`.\n */\nexport function useBreakpointValue<T>(value: Responsive<T>): T | undefined {\n  return resolveResponsive(value, useBreakpoint())\n}\n"
+    },
+    {
       "path": "hooks/useControllableState.ts",
       "type": "registry:hook",
       "content": "import { useCallback, useState } from 'react'\n\n/**\n * State that can be either controlled (`value` + `onChange`) or uncontrolled\n * (`defaultValue`). Every stateful component uses this so both styles work.\n */\nexport function useControllableState<T>({\n  value,\n  defaultValue,\n  onChange,\n}: {\n  value?: T\n  defaultValue: T\n  onChange?: (next: T) => void\n}): [T, (next: T | ((prev: T) => T)) => void] {\n  const [internal, setInternal] = useState(defaultValue)\n  const isControlled = value !== undefined\n  const current = isControlled ? value : internal\n\n  const setValue = useCallback(\n    (next: T | ((prev: T) => T)) => {\n      const resolved = typeof next === 'function' ? (next as (prev: T) => T)(current) : next\n      if (Object.is(resolved, current)) return\n      if (!isControlled) setInternal(resolved)\n      onChange?.(resolved)\n    },\n    [current, isControlled, onChange],\n  )\n\n  return [current, setValue]\n}\n"
@@ -59,6 +64,8 @@
     "react-native",
     "tamagui"
   ],
-  "registryDependencies": [],
-  "version": "0.9.0"
+  "registryDependencies": [
+    "utils"
+  ],
+  "version": "0.10.0"
 }

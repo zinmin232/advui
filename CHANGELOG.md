@@ -7,6 +7,50 @@ one version.
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-10-04
+
+### Added
+
+- **Show and Hide** (beta): `<Show above="md">`, `<Show below="md">`,
+  `<Show above="sm" below="lg">` and `<Hide below="sm">`. On web they are
+  CSS media queries around a `display: contents` wrapper, so the server
+  renders the right content for every width (no flash, no hydration
+  mismatch) and hidden content stays mounted. On iOS and Android they read
+  the window size and leave hidden content out.
+- **`useBreakpoint()`** (the largest matching breakpoint, or `'base'`) and
+  **`useBreakpointValue(map)`** (the value of a responsive map now, with the
+  same cascade as the layout props). They see a phone on the first server
+  render, so use them for behavior and Show / Hide or responsive props for
+  layout.
+- **Section** (beta): a `<section>` band with `spacing` (`none` … `xl`,
+  larger from md, or a map), `background` (`muted`, `card`, `primarySoft`,
+  `primary`, `inverse`…) and a `container` size. It passes `id`,
+  `aria-label` and `aria-labelledby` through, so a named Section is a region
+  landmark and `#features` links jump to it.
+- **Sticky** (beta): keeps a header in view while its container scrolls,
+  with `edge`, `offset` and `zIndex` (default `$sticky`). On web it is
+  `position: sticky`. On iOS and Android a ScrollArea pins a top Sticky that
+  is a direct child of its content element, with `stickyHeaderIndices`.
+- **Primary and inverse sub-themes** in `@advui/theme`: `light_primary`,
+  `dark_primary`, `light_inverse` and `dark_inverse`, for content on a
+  primary or other-mode surface (`<Theme name="primary">`). Their text meets
+  WCAG AA in every preset. `primarySurfaceTheme()` and `withSubThemes()`
+  build them for your own themes.
+
+### Changed
+
+- `createThemeColors` and `createMaterialThemes` return the sub-themes too.
+  If you swap themes at runtime, update every entry
+  (`for (const [name, theme] of Object.entries(themes)) updateTheme({ name, theme })`),
+  not only `light` and `dark`. `createUniversalConfig({ themes })` adds
+  them to hand-made light and dark themes.
+- ScrollArea on Android scrolls inside a scrolling screen: it turns on
+  `nestedScrollEnabled`. Before, the screen took every vertical drag.
+- ScrollArea on iOS and Android: when the content element's children
+  include a top Sticky, they become the ScrollView's own children and the
+  element's style props style the scroll content, so the Sticky can be
+  pinned. Other ScrollAreas are unchanged.
+
 ## [0.9.0] - 2026-10-04
 
 ### Added

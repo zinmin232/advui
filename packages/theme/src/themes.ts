@@ -1,6 +1,7 @@
 import { accessibleSolid, adjustLightness, ensureContrast, withAlpha } from '@advui/utils'
 import { type ColorScale, type ColorSource, type ScaleSteps, resolveScale } from './palettes'
 import { chartColors } from './chart'
+import { type ModeThemes, type SubThemes, withSubThemes } from './subThemes'
 
 export type ColorMode = 'light' | 'dark'
 
@@ -143,10 +144,8 @@ export interface ThemeColorsInput {
   overrides?: Partial<Record<ColorMode, Partial<ThemeValues>>>
 }
 
-export type GeneratedThemes = {
-  light: ThemeValues
-  dark: ThemeValues
-}
+/** Light and dark themes, plus the primary and inverse sub-themes (see `withSubThemes`). */
+export type GeneratedThemes = ModeThemes & SubThemes
 
 const WHITE = '#ffffff'
 
@@ -315,8 +314,9 @@ export const defaultThemeColors: Required<Omit<ThemeColorsInput, 'overrides'>> =
 }
 
 /**
- * Generates the light and dark theme objects. Missing `secondary`/`accent`
- * fall back to the neutral scale so a single `primary` is enough to brand an app.
+ * Generates the light and dark theme objects, with their primary and inverse
+ * sub-themes. Missing `secondary`/`accent` fall back to the neutral scale so a
+ * single `primary` is enough to brand an app.
  */
 export function createThemeColors(input: ThemeColorsInput = {}): GeneratedThemes {
   const neutral = input.neutral ?? defaultThemeColors.neutral
@@ -328,10 +328,10 @@ export function createThemeColors(input: ThemeColorsInput = {}): GeneratedThemes
     neutral,
   } as Required<Omit<ThemeColorsInput, 'overrides'>>
 
-  return {
+  return withSubThemes({
     light: { ...buildMode('light', resolved), ...input.overrides?.light },
     dark: { ...buildMode('dark', resolved), ...input.overrides?.dark },
-  }
+  })
 }
 
 function stripUndefined<T extends object>(value: T): Partial<T> {

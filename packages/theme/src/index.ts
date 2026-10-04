@@ -23,6 +23,7 @@ export {
 export { themePresetNames, themePresets, type ThemePreset, type ThemePresetName } from './presets'
 export { shadows, type ShadowName } from './shadows'
 export { shorthands } from './shorthands'
+export { primarySurfaceTheme, withSubThemes, type ModeThemes, type SubThemes } from './subThemes'
 export {
   createThemeColors,
   defaultThemeColors,

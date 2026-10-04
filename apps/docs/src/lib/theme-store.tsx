@@ -126,9 +126,10 @@ function tokenCss(theme: CustomTheme) {
 }
 
 function applyTheme(theme: CustomTheme) {
-  const themes = generateThemes(theme)
-  updateTheme({ name: 'light', theme: themes.light })
-  updateTheme({ name: 'dark', theme: themes.dark })
+  // Light, dark and their primary and inverse sub-themes.
+  for (const [name, values] of Object.entries(generateThemes(theme))) {
+    updateTheme({ name, theme: values })
+  }
   let style = document.getElementById(STYLE_ID)
   if (!style) {
     style = document.createElement('style')

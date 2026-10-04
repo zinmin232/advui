@@ -55,6 +55,11 @@ cannot do them. Tick them off here as they are done.
     wider, where Responsive direction becomes a row and Toolbar a single line.
     With TalkBack / VoiceOver on, a labelled Separator with
     `decorative={false}` is read once, as its label.
+  - Show / Hide, Section and Sticky (0.10.0): the Android phone was checked
+    on 2026-10-04 (Show / Hide at phone width, inverse and primary Sections,
+    Sticky headers pinned and pushed in a ScrollArea). Still to check: an
+    iPhone; Show / Hide and the Section spacing from md on a tablet or a
+    landscape phone; TalkBack / VoiceOver reading a named Section.
   - The components that moved to `@advui/data`, `@advui/charts` and
     `@advui/editor` still open in the Expo app (it now loads them from those
     packages).
@@ -101,6 +106,13 @@ cannot do them. Tick them off here as they are done.
       lands on `main` (after 0.8.0), and publish exactly that commit:
   - `git pull`, then `git tag v0.9.0 <commit> && git push origin v0.9.0`.
   - `pnpm release:check` must list all eight public packages at 0.9.0. Then
+    run `pnpm release`.
+- [ ] **Release 0.10.0** (Show / Hide and the breakpoint hooks, Section,
+      Sticky, primary and inverse sub-themes). Tag the last commit of the
+      0.10.0 pull request as it lands on `main` (after 0.9.0), and publish
+      exactly that commit:
+  - `git pull`, then `git tag v0.10.0 <commit> && git push origin v0.10.0`.
+  - `pnpm release:check` must list all eight public packages at 0.10.0. Then
     run `pnpm release`.
 - [ ] **Publish the new packages.** 0.6.0 is the first working release of
       `@advui/data`, `@advui/charts` and `@advui/editor`:
