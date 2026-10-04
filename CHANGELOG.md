@@ -7,6 +7,8 @@ one version.
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-10-04
+
 ### Added
 
 - **Show and Hide** (beta): `<Show above="md">`, `<Show below="md">`,
