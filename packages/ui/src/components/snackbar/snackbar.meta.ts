@@ -51,6 +51,7 @@ export default defineMeta({
           description: 'Show a close (×) button.',
         },
       ],
+      children: { accepts: 'text' },
     },
   ],
   examples: [

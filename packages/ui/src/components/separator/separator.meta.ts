@@ -21,6 +21,7 @@ export default defineMeta({
         {
           name: 'orientation',
           type: "'horizontal' | 'vertical'",
+          options: ['horizontal', 'vertical'],
           default: "'horizontal'",
           description: 'Direction of the line.',
         },
@@ -31,6 +32,7 @@ export default defineMeta({
           description: 'When false, exposes `role="separator"` to assistive technology.',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [{ name: 'basic', title: 'Horizontal and vertical' }],

@@ -1,4 +1,51 @@
-import { defineMeta } from '../../meta/types'
+import { type PropDoc, defineMeta } from '../../meta/types'
+
+/** The flex props every stack takes, with that stack's defaults. */
+function flexProps(direction: string, align: string, justify = "'flex-start'"): PropDoc[] {
+  return [
+    {
+      name: 'flexDirection',
+      type: "'row' | 'column' | 'row-reverse' | 'column-reverse'",
+      options: ['row', 'column', 'row-reverse', 'column-reverse'],
+      default: direction,
+      description: 'Main axis.',
+    },
+    {
+      name: 'alignItems',
+      type: "'flex-start' | 'center' | 'flex-end' | 'stretch' | 'baseline'",
+      options: ['flex-start', 'center', 'flex-end', 'stretch', 'baseline'],
+      default: align,
+      description: 'Alignment on the cross axis (shorthand `items`).',
+    },
+    {
+      name: 'justifyContent',
+      type: "'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around' | 'space-evenly'",
+      options: [
+        'flex-start',
+        'center',
+        'flex-end',
+        'space-between',
+        'space-around',
+        'space-evenly',
+      ],
+      default: justify,
+      description: 'Distribution on the main axis (shorthand `justify`).',
+    },
+    {
+      name: 'flexWrap',
+      type: "'nowrap' | 'wrap' | 'wrap-reverse'",
+      options: ['nowrap', 'wrap', 'wrap-reverse'],
+      default: "'nowrap'",
+      description: 'Whether children wrap onto new lines.',
+    },
+    {
+      name: 'gap',
+      type: 'SpaceTokens',
+      token: 'space',
+      description: 'Space between children, e.g. `$2`.',
+    },
+  ]
+}
 
 export default defineMeta({
   name: 'Stack',
@@ -32,36 +79,43 @@ export default defineMeta({
   </HStack>
 </VStack>`,
   parts: [
-    { name: 'Box', description: 'A `View` with every style prop and token.', props: [] },
+    {
+      name: 'Box',
+      description: 'A `View` with every style prop and token.',
+      props: [],
+      children: { accepts: 'any' },
+    },
     {
       name: 'Stack',
-      description: 'Flex column. Style it with standard props — no custom API to learn.',
-      props: [
-        {
-          name: 'flexDirection',
-          type: "'row' | 'column' | …",
-          default: "'column'",
-          description: 'Main axis.',
-        },
-        {
-          name: 'alignItems / justifyContent',
-          type: 'FlexAlign',
-          description: 'Alignment (shorthands: `items`, `justify`).',
-        },
-        { name: 'gap', type: 'SpaceTokens', description: 'Space between children, e.g. `$2`.' },
-        {
-          name: '$sm / $md / $lg …',
-          type: 'style object',
-          description: 'Responsive overrides per breakpoint.',
-        },
-      ],
+      description:
+        'Flex column. Style it with standard props — no custom API to learn. Every style prop also takes media props for responsive changes: `$md={{ flexDirection: "row" }}`.',
+      props: flexProps("'column'", "'stretch'"),
+      children: { accepts: 'any' },
     },
     {
-      name: 'HStack / VStack',
-      description: 'Row (centered) / column presets of Stack.',
-      props: [],
+      name: 'HStack',
+      description: 'A Stack laid out as a row, with its children centered on the cross axis.',
+      props: flexProps("'row'", "'center'"),
+      children: { accepts: 'any' },
     },
-    { name: 'Center / Spacer', description: 'Center children; push siblings apart.', props: [] },
+    {
+      name: 'VStack',
+      description: 'A Stack laid out as a column.',
+      props: flexProps("'column'", "'stretch'"),
+      children: { accepts: 'any' },
+    },
+    {
+      name: 'Center',
+      description: 'Centers its children on both axes.',
+      props: [],
+      children: { accepts: 'any' },
+    },
+    {
+      name: 'Spacer',
+      description: 'Flexible empty space that pushes its siblings apart inside a stack.',
+      props: [],
+      children: { accepts: 'none' },
+    },
   ],
   examples: [
     { name: 'basic', title: 'Stacks and spacer' },

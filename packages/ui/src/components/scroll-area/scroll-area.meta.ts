@@ -29,6 +29,7 @@ export default defineMeta({
         {
           name: 'orientation',
           type: "'vertical' | 'horizontal'",
+          options: ['vertical', 'horizontal'],
           default: "'vertical'",
           description: 'Which way it scrolls.',
         },
@@ -45,6 +46,7 @@ export default defineMeta({
             'One child that holds the content, such as a VStack (an HStack when horizontal).',
         },
       ],
+      children: { accepts: 'any', min: 1, max: 1 },
     },
   ],
   examples: [

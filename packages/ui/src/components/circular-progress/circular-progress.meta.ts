@@ -34,12 +34,14 @@ export default defineMeta({
         {
           name: 'size',
           type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
           default: "'md'",
           description: '24, 40 or 64px across.',
         },
         {
           name: 'tone',
           type: "'primary' | 'success' | 'warning' | 'error'",
+          options: ['primary', 'success', 'warning', 'error'],
           default: "'primary'",
           description: 'Ring color.',
         },
@@ -50,6 +52,7 @@ export default defineMeta({
           description: 'Show the percentage in the middle (`md` and `lg`).',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [

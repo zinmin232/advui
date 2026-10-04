@@ -28,7 +28,12 @@ export default defineMeta({
   <Timeline.Item title="Survey closed" time="Sep 10" />
 </Timeline>`,
   parts: [
-    { name: 'Timeline', description: 'The list of events, newest or oldest first.', props: [] },
+    {
+      name: 'Timeline',
+      description: 'The list of events, newest or oldest first.',
+      props: [],
+      children: { accepts: ['Timeline.Item'] },
+    },
     {
       name: 'Timeline.Item',
       props: [
@@ -43,6 +48,7 @@ export default defineMeta({
         {
           name: 'tone',
           type: "'default' | 'primary' | 'success' | 'warning' | 'error' | 'info'",
+          options: ['default', 'primary', 'success', 'warning', 'error', 'info'],
           default: "'default'",
           description: 'Color of the marker.',
         },
@@ -52,6 +58,8 @@ export default defineMeta({
           description: 'Extra content under the description.',
         },
       ],
+      children: { accepts: 'any' },
+      parents: ['Timeline'],
     },
   ],
   examples: [

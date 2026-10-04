@@ -20,19 +20,67 @@ export type CategoryId =
   | 'advanced'
   | 'charts'
 
+/** Min-width breakpoints from `@advui/theme`, smallest first. */
+export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
+
+/**
+ * One prop. `type` is what the docs show; the optional fields after
+ * `description` are for tools such as the AdvUI Builder, which builds an
+ * editor for each prop from them.
+ */
 export interface PropDoc {
+  /** One prop per row: `value`, not `value / defaultValue`. */
   name: string
   type: string
+  /** A literal as written in code (`'column'`, `true`, `12`), or a note such as "from `trend`". */
   default?: string
   required?: boolean
   description: string
+  /**
+   * Closed list of allowed values, in display order, written without quotes:
+   * `"'sm' | 'md'"` → `['sm', 'md']`, `1 | 2` → `['1', '2']`.
+   */
+  options?: string[]
+  /** Also accepts a mobile-first map `{ base?, xs?, sm?, md?, lg?, xl?, xxl? }` of the same value. */
+  responsive?: boolean
+  /** The value is a theme token of this scale, such as `$4` for `space`. */
+  token?: 'space' | 'size' | 'color' | 'radius' | 'zIndex'
+  /** Numbers only. */
+  min?: number
+  max?: number
+  step?: number
+  /** Only when the prop works on some platforms, not all. */
+  platforms?: Platform[]
+}
+
+/** What may go inside a part. */
+export interface ChildRules {
+  /**
+   * `'any'`: any elements; `'text'`: strings and numbers only; `'none'`: no
+   * children; a list: only these parts, e.g. `['Tabs.Trigger']`.
+   */
+  accepts: 'any' | 'text' | 'none' | string[]
+  min?: number
+  max?: number
 }
 
 export interface PartDoc {
-  /** Component or sub-component name, e.g. `Card.Header`. */
+  /** Component or sub-component name, e.g. `Card.Header`. One part per entry. */
   name: string
+  /**
+   * What the part is. Defaults to `'component'`. Hooks, functions and types
+   * are documented here too, but are never placed in a tree, so they have no
+   * child rules.
+   */
+  kind?: 'component' | 'hook' | 'function' | 'type'
   description?: string
   props: PropDoc[]
+  /** What may go inside this part. Every component part has them. */
+  children?: ChildRules
+  /** This part must be a direct child of one of these parts. */
+  parents?: string[]
+  /** This part must sit somewhere inside this component or part, because it reads its context. */
+  within?: string
 }
 
 export interface ExampleMeta {

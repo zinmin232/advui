@@ -29,18 +29,21 @@ import { SearchIcon } from '@advui/icons'
         },
         {
           name: 'variant',
-          type: 'ButtonVariant',
+          type: "'default' | 'secondary' | 'outline' | 'ghost' | 'destructive' | 'link'",
+          options: ['default', 'secondary', 'outline', 'ghost', 'destructive', 'link'],
           default: "'ghost'",
           description: 'Same variants as Button.',
         },
         {
           name: 'size',
           type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
           default: "'md'",
           description: '32, 40 or 48px square.',
         },
         { name: 'circular', type: 'boolean', default: 'false', description: 'Fully rounded.' },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [

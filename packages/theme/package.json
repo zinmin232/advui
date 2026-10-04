@@ -1,6 +1,6 @@
 {
   "name": "@advui/theme",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Design tokens, color presets and the Tamagui config factory for Adv UI.",
   "license": "MIT",
   "repository": {

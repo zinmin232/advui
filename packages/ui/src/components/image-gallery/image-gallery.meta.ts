@@ -28,8 +28,11 @@ export default defineMeta({
         },
         {
           name: 'columns',
-          type: 'number | { base, sm, md… }',
+          type: 'number',
+          responsive: true,
           default: '{ base: 2, sm: 3 }',
+          min: 1,
+          step: 1,
           description: 'Thumbnails per row, mobile first.',
         },
         {
@@ -39,9 +42,19 @@ export default defineMeta({
           description: 'Thumbnail shape (width / height).',
         },
         {
-          name: 'index / defaultIndex / onIndexChange',
+          name: 'index',
           type: 'number | null',
           description: 'The image open in the viewer; `null` when closed.',
+        },
+        {
+          name: 'defaultIndex',
+          type: 'number | null',
+          description: 'Starting `index` when uncontrolled.',
+        },
+        {
+          name: 'onIndexChange',
+          type: '(index: number | null) => void',
+          description: 'Called with the new `index`.',
         },
         {
           name: 'labels',
@@ -49,6 +62,7 @@ export default defineMeta({
           description: 'Button names and "3 of 12", for translation.',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [{ name: 'basic', title: 'Basic' }],

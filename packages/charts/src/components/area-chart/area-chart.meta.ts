@@ -77,6 +77,7 @@ export default defineMeta({
           name: 'height',
           type: 'number',
           default: '240',
+          min: 0,
           description: 'Pixels, including the axes.',
         },
         {
@@ -90,6 +91,7 @@ export default defineMeta({
           description: '"Show table", "Hide table" and the keyboard hint, for translation.',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [

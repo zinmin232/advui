@@ -24,10 +24,11 @@ import { BellIcon, HomeIcon, SearchIcon } from '@advui/icons'
     {
       name: 'NavigationBar',
       props: [
+        { name: 'value', type: 'string', description: 'The current destination.' },
         {
-          name: 'value / defaultValue',
+          name: 'defaultValue',
           type: 'string',
-          description: 'The current destination.',
+          description: 'Starting `value` when uncontrolled.',
         },
         {
           name: 'onValueChange',
@@ -40,6 +41,7 @@ import { BellIcon, HomeIcon, SearchIcon } from '@advui/icons'
           description: 'Names the navigation landmark, e.g. “Main”.',
         },
       ],
+      children: { accepts: ['NavigationBar.Item'] },
     },
     {
       name: 'NavigationBar.Item',
@@ -59,6 +61,8 @@ import { BellIcon, HomeIcon, SearchIcon } from '@advui/icons'
         },
         { name: 'disabled', type: 'boolean', default: 'false', description: 'Not selectable.' },
       ],
+      children: { accepts: 'none' },
+      within: 'NavigationBar',
     },
   ],
   examples: [{ name: 'basic', title: 'Four destinations with badges' }],

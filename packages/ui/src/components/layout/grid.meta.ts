@@ -43,31 +43,44 @@ export default defineMeta({
       props: [
         {
           name: 'columns',
-          type: 'number | { base?, xs?, sm?, md?, lg?, xl?, xxl? }',
+          type: 'number',
+          responsive: true,
           default: '1',
+          min: 1,
+          step: 1,
           description:
             'Column count, optionally per breakpoint (mobile-first: a missing breakpoint inherits the nearest smaller one).',
         },
-        { name: 'gap', type: 'SpaceTokens', default: "'$4'", description: 'Gap between cells.' },
+        {
+          name: 'gap',
+          type: 'SpaceTokens',
+          token: 'space',
+          default: "'$4'",
+          description: 'Gap between cells.',
+        },
         {
           name: 'rowGap',
           type: 'SpaceTokens',
+          token: 'space',
           description: 'Gap between rows. Defaults to `gap`.',
         },
         {
           name: 'columnGap',
           type: 'SpaceTokens',
+          token: 'space',
           description:
             'Gap between columns. Defaults to `gap`. It is padding inside each cell, so it never changes a cell’s share of the row.',
         },
         {
           name: 'alignItems',
           type: "'stretch' | 'flex-start' | 'center' | 'flex-end' | 'baseline'",
+          options: ['stretch', 'flex-start', 'center', 'flex-end', 'baseline'],
           default: "'stretch'",
           description:
             'Cross-axis alignment of the cells in a row. `stretch` makes cells in a row the same height.',
         },
       ],
+      children: { accepts: 'any' },
     },
     {
       name: 'Grid.Item',
@@ -76,19 +89,27 @@ export default defineMeta({
       props: [
         {
           name: 'span',
-          type: "number | 'full' | 'auto' | { base?, xs?, sm?, md?, lg?, xl?, xxl? }",
+          type: "number | 'full' | 'auto'",
+          responsive: true,
           default: '1',
+          min: 1,
+          step: 1,
           description:
             "Columns to cover, optionally per breakpoint (mobile-first). A map without `base` covers the full row below its first breakpoint, like Bootstrap: `{ md: 8 }` stacks on phones. `'full'` covers every column at that breakpoint, `'auto'` sizes to the content (capped at the row). Clamped to 1 – `columns`.",
         },
         {
           name: 'offset',
-          type: 'number | { base?, xs?, sm?, md?, lg?, xl?, xxl? }',
+          type: 'number',
+          responsive: true,
           default: '0',
+          min: 0,
+          step: 1,
           description:
             'Empty columns before the cell, optionally per breakpoint. Applied as `marginInlineStart`, so it mirrors in right-to-left layouts. Clamped so the cell still fits its row.',
         },
       ],
+      children: { accepts: 'any' },
+      parents: ['Grid'],
     },
   ],
   examples: [

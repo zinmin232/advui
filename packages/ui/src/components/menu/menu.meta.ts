@@ -27,9 +27,14 @@ export default defineMeta({
       name: 'Menu',
       props: [
         {
-          name: 'value / defaultValue',
+          name: 'value',
           type: 'string',
           description: 'The selected item’s `value` (the current page or view).',
+        },
+        {
+          name: 'defaultValue',
+          type: 'string',
+          description: 'Starting `value` when uncontrolled.',
         },
         {
           name: 'onValueChange',
@@ -41,8 +46,8 @@ export default defineMeta({
           type: 'string',
           description: 'Names the menu for screen readers, e.g. "Mailboxes".',
         },
-        { name: '…ViewProps', type: 'StackProps', description: 'Size and style the list.' },
       ],
+      children: { accepts: ['Menu.Item', 'Menu.Group', 'Menu.Separator'] },
     },
     {
       name: 'Menu.Item',
@@ -75,14 +80,18 @@ export default defineMeta({
         {
           name: 'href',
           type: 'string',
-          description: 'Web: render a link. On iOS/Android navigate in `onSelect`.',
+          platforms: ['web'],
+          description: 'Render a link. On iOS and Android, navigate in `onSelect`.',
         },
         {
           name: 'render',
           type: 'ReactElement | string',
-          description: 'Web: your router’s link, e.g. `render={<Link href="/inbox" />}`.',
+          platforms: ['web'],
+          description: 'Your router’s link, e.g. `render={<Link href="/inbox" />}`.',
         },
       ],
+      children: { accepts: 'text' },
+      within: 'Menu',
     },
     {
       name: 'Menu.Group',
@@ -93,8 +102,10 @@ export default defineMeta({
           description: 'Visible heading that also names the group for screen readers.',
         },
       ],
+      children: { accepts: ['Menu.Item', 'Menu.Separator'] },
+      within: 'Menu',
     },
-    { name: 'Menu.Separator', props: [] },
+    { name: 'Menu.Separator', props: [], children: { accepts: 'none' }, within: 'Menu' },
   ],
   examples: [
     {

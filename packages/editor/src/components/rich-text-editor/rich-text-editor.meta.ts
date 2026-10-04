@@ -39,10 +39,16 @@ export default defineMeta({
     {
       name: 'RichTextEditor',
       props: [
+        { name: 'value', type: 'string', description: 'The text, as Markdown.' },
         {
-          name: 'value / defaultValue / onValueChange',
+          name: 'defaultValue',
           type: 'string',
-          description: 'The text, as Markdown.',
+          description: 'Starting `value` when uncontrolled.',
+        },
+        {
+          name: 'onValueChange',
+          type: '(value: string) => void',
+          description: 'Called with the new `value`.',
         },
         { name: 'placeholder', type: 'string', description: 'Shown while empty.' },
         {
@@ -52,17 +58,34 @@ export default defineMeta({
           description:
             "Toolbar buttons, in order: 'bold', 'italic', 'strikethrough', 'heading', 'bulletList', 'orderedList', 'quote', 'link', 'code'.",
         },
-        { name: 'minHeight', type: 'number | token', default: "'$32'", description: 'Height.' },
+        {
+          name: 'minHeight',
+          type: 'number | SizeTokens',
+          token: 'size',
+          default: "'$32'",
+          description: 'Height of the text area before it grows.',
+        },
         {
           name: 'maxLength',
           type: 'number',
           description: 'Limit, with a character count read as the field’s description.',
         },
-        { name: 'disabled / invalid', type: 'boolean', description: 'States, as on Textarea.' },
+        { name: 'invalid', type: 'boolean', description: 'Error styling and `aria-invalid`.' },
+        { name: 'disabled', type: 'boolean', description: 'Not focusable or editable.' },
         {
-          name: 'aria-label / id / aria-describedby',
+          name: 'aria-label',
           type: 'string',
-          description: 'Name and help. A Field sets these for you.',
+          description: 'Names the editor when there is no visible label. A Field sets it for you.',
+        },
+        {
+          name: 'id',
+          type: 'string',
+          description: 'Links the text area to a Label’s `htmlFor`. A Field sets it for you.',
+        },
+        {
+          name: 'aria-describedby',
+          type: 'string',
+          description: 'Ids of help or error text. A Field sets it for you.',
         },
         {
           name: 'labels',
@@ -70,6 +93,7 @@ export default defineMeta({
           description: 'Toolbar, tool, preview and count text, for translation.',
         },
       ],
+      children: { accepts: 'none' },
     },
     {
       name: 'RichTextContent',
@@ -80,9 +104,13 @@ export default defineMeta({
           name: 'headingOffset',
           type: 'number',
           default: '1',
+          min: 0,
+          max: 5,
+          step: 1,
           description: 'Added to heading levels, so `#` is an h2 under the page’s h1.',
         },
       ],
+      children: { accepts: 'text' },
     },
   ],
   examples: [

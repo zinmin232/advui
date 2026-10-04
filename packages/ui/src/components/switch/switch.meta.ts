@@ -21,19 +21,27 @@ export default defineMeta({
     {
       name: 'Switch',
       props: [
+        { name: 'checked', type: 'boolean', description: 'On or off, when you control it.' },
         {
-          name: 'checked / defaultChecked',
+          name: 'defaultChecked',
           type: 'boolean',
-          description: 'Controlled / uncontrolled state.',
+          description: 'Starting `checked` when uncontrolled.',
         },
         {
           name: 'onCheckedChange',
           type: '(checked: boolean) => void',
           description: 'Called when toggled.',
         },
-        { name: 'size', type: "'sm' | 'md'", default: "'md'", description: '36×20 or 44×24.' },
+        {
+          name: 'size',
+          type: "'sm' | 'md'",
+          options: ['sm', 'md'],
+          default: "'md'",
+          description: '36×20 or 44×24.',
+        },
         { name: 'disabled', type: 'boolean', default: 'false', description: 'Prevents toggling.' },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [{ name: 'settings', title: 'Settings list' }],

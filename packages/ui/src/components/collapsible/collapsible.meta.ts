@@ -40,6 +40,7 @@ export default defineMeta({
           description: 'The trigger does nothing and is announced as unavailable.',
         },
       ],
+      children: { accepts: 'any' },
     },
     {
       name: 'Collapsible.Trigger',
@@ -48,11 +49,15 @@ export default defineMeta({
       props: [
         { name: 'children', type: 'ReactElement', required: true, description: 'The pressable.' },
       ],
+      children: { accepts: 'any', min: 1, max: 1 },
+      within: 'Collapsible',
     },
     {
       name: 'Collapsible.Content',
       description: 'The section. It stays mounted while closed, so text typed inside survives.',
       props: [],
+      children: { accepts: 'any' },
+      within: 'Collapsible',
     },
   ],
   examples: [

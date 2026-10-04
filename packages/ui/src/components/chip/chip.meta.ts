@@ -24,9 +24,15 @@ export default defineMeta({
         { name: 'children', type: 'ReactNode', required: true, description: 'The label.' },
         { name: 'icon', type: 'ReactNode', description: 'Leading icon or avatar.' },
         {
-          name: 'selected / defaultSelected',
+          name: 'selected',
           type: 'boolean',
-          description: 'Makes it a filter chip that turns on and off; shows a check when on.',
+          description:
+            'Makes it a filter chip that turns on and off; shows a check when on. Set it when you control the state.',
+        },
+        {
+          name: 'defaultSelected',
+          type: 'boolean',
+          description: 'A filter chip that manages its own state, and whether it starts on.',
         },
         {
           name: 'onSelectedChange',
@@ -51,6 +57,7 @@ export default defineMeta({
         },
         { name: 'disabled', type: 'boolean', default: 'false', description: 'Not interactive.' },
       ],
+      children: { accepts: 'text' },
     },
   ],
   examples: [

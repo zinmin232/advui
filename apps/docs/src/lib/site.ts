@@ -15,7 +15,7 @@ export const siteConfig = {
    */
   unpublishedPackages: [] as string[],
   cliName: 'advui',
-  version: '0.7.0',
+  version: '0.8.0',
 }
 
 /** Path prefix when the site is served from a sub-folder (GitHub Pages: `/advui`). */

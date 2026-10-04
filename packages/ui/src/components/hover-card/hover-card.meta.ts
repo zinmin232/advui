@@ -31,7 +31,8 @@ export default defineMeta({
     {
       name: 'HoverCard',
       props: [
-        { name: 'open / defaultOpen', type: 'boolean', description: 'Open state.' },
+        { name: 'open', type: 'boolean', description: 'Open state.' },
+        { name: 'defaultOpen', type: 'boolean', description: 'Starting `open` when uncontrolled.' },
         {
           name: 'onOpenChange',
           type: '(open: boolean) => void',
@@ -52,16 +53,19 @@ export default defineMeta({
         {
           name: 'side',
           type: "'top' | 'right' | 'bottom' | 'left'",
+          options: ['top', 'right', 'bottom', 'left'],
           default: "'bottom'",
           description: 'Side of the trigger to open on.',
         },
         {
           name: 'align',
           type: "'start' | 'center' | 'end'",
+          options: ['start', 'center', 'end'],
           default: "'center'",
           description: 'Alignment along that side.',
         },
       ],
+      children: { accepts: ['HoverCard.Trigger', 'HoverCard.Content'], max: 2 },
     },
     {
       name: 'HoverCard.Trigger',
@@ -73,16 +77,15 @@ export default defineMeta({
           description: 'One focusable element, usually a link to the full page.',
         },
       ],
+      children: { accepts: 'any', min: 1, max: 1 },
+      within: 'HoverCard',
     },
     {
       name: 'HoverCard.Content',
-      props: [
-        {
-          name: '…ViewProps',
-          type: 'StackProps',
-          description: 'Style the card (width defaults to $72).',
-        },
-      ],
+      description: 'Takes View props to style the card; its width defaults to `$72`.',
+      props: [],
+      children: { accepts: 'any' },
+      within: 'HoverCard',
     },
   ],
   examples: [{ name: 'basic', title: 'Profile preview' }],

@@ -17,6 +17,7 @@ toast.success('Profile saved', { description: 'Your changes are live.' })`,
   parts: [
     {
       name: 'toast(title, options?)',
+      kind: 'function',
       description: 'Also `toast.success / error / warning / info / loading / promise / dismiss`.',
       props: [
         { name: 'description', type: 'ReactNode', description: 'Secondary text.' },
@@ -47,6 +48,14 @@ toast.success('Profile saved', { description: 'Your changes are live.' })`,
         {
           name: 'position',
           type: "'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'",
+          options: [
+            'top-left',
+            'top-center',
+            'top-right',
+            'bottom-left',
+            'bottom-center',
+            'bottom-right',
+          ],
           default: "'bottom-right'",
           description: 'Screen corner.',
         },
@@ -58,6 +67,7 @@ toast.success('Profile saved', { description: 'Your changes are live.' })`,
           description: 'Maximum stacked toasts.',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [

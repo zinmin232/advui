@@ -68,6 +68,7 @@ const save = async () => {
         {
           name: 'gap',
           type: 'SpaceTokens | number',
+          token: 'space',
           default: "'$4'",
           description: 'Space between the fields.',
         },
@@ -117,6 +118,7 @@ const save = async () => {
         {
           name: 'direction',
           type: "'vertical' | 'horizontal'",
+          options: ['vertical', 'horizontal'],
           default: "'vertical'",
           description:
             '`horizontal` puts the fields in a wrapping, bottom-aligned row: for search bars and filters.',
@@ -129,6 +131,7 @@ const save = async () => {
             'The form fills its container, and footer actions stack at full width. Fields fill the width in either case.',
         },
       ],
+      children: { accepts: 'any' },
     },
     {
       name: 'Form.Submit',
@@ -154,9 +157,12 @@ const save = async () => {
           description: 'Also disabled while the form is.',
         },
       ],
+      children: { accepts: 'text' },
+      within: 'Form',
     },
     {
       name: 'useFormStatus',
+      kind: 'hook',
       description:
         'Reads the surrounding Form, for your own fields and actions. Outside a Form it returns the defaults, and `submit` does nothing.',
       props: [

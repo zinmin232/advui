@@ -29,7 +29,12 @@ export default defineMeta({
       description:
         'Takes Combobox’s `options`, `filter`, `placeholder`, `title`, `size` and states.',
       props: [
-        { name: 'value / defaultValue', type: 'string[]', description: 'Picked values, in order.' },
+        { name: 'value', type: 'string[]', description: 'Picked values, in order.' },
+        {
+          name: 'defaultValue',
+          type: 'string[]',
+          description: 'Starting `value` when uncontrolled.',
+        },
         {
           name: 'onValueChange',
           type: '(value: string[]) => void',
@@ -42,6 +47,7 @@ export default defineMeta({
           description: 'Accessible name of each chip’s remove button (web).',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [{ name: 'basic', title: 'Basic' }],

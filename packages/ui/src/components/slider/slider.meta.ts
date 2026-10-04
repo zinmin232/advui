@@ -20,9 +20,14 @@ export default defineMeta({
       name: 'Slider',
       props: [
         {
-          name: 'value / defaultValue',
+          name: 'value',
           type: 'number | number[]',
           description: 'A number for one thumb, or an array for a range.',
+        },
+        {
+          name: 'defaultValue',
+          type: 'number | number[]',
+          description: 'Starting `value` when uncontrolled.',
         },
         {
           name: 'onValueChange',
@@ -40,20 +45,27 @@ export default defineMeta({
         {
           name: 'size',
           type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
           default: "'md'",
           description: 'Thumb and track size.',
         },
         {
           name: 'orientation',
           type: "'horizontal' | 'vertical'",
+          options: ['horizontal', 'vertical'],
           default: "'horizontal'",
           description: 'Direction of the track.',
         },
         { name: 'disabled', type: 'boolean', description: 'Prevent interaction.' },
         {
-          name: 'aria-label / aria-labelledby',
+          name: 'aria-label',
           type: 'string',
           description: 'Accessible name. Required when there is no visible label.',
+        },
+        {
+          name: 'aria-labelledby',
+          type: 'string',
+          description: 'The id of a visible label that names the slider.',
         },
         {
           name: 'getValueText',
@@ -66,6 +78,7 @@ export default defineMeta({
           description: 'Names for range thumbs. Default: “Minimum” / “Maximum”.',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [

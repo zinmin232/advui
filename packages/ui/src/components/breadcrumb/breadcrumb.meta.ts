@@ -28,6 +28,8 @@ import Link from 'next/link'
         {
           name: 'maxItems',
           type: 'number',
+          min: 2,
+          step: 1,
           description:
             'Show at most this many items: the first and the last ones stay, the rest collapse behind a “Show more” button.',
         },
@@ -44,6 +46,7 @@ import Link from 'next/link'
           description: 'Names the navigation landmark.',
         },
       ],
+      children: { accepts: ['Breadcrumb.Item'] },
     },
     {
       name: 'Breadcrumb.Item',
@@ -52,12 +55,14 @@ import Link from 'next/link'
         {
           name: 'href',
           type: 'string',
+          platforms: ['web'],
           description:
             'Link target on web. Ignored on iOS/Android, where apps navigate with `onPress`.',
         },
         {
           name: 'render',
           type: 'ReactElement',
+          platforms: ['web'],
           description: 'Your router’s link on web, e.g. `<Link href="/projects" />`.',
         },
         {
@@ -72,6 +77,8 @@ import Link from 'next/link'
           description: 'Marks the current page; it is shown as plain text, not a link.',
         },
       ],
+      children: { accepts: 'text' },
+      parents: ['Breadcrumb'],
     },
   ],
   examples: [

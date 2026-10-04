@@ -50,9 +50,14 @@ setFilePicker(async ({ multiple, accept }) => {
       name: 'FileUpload',
       props: [
         {
-          name: 'value / defaultValue',
+          name: 'value',
           type: 'PickedFile[]',
           description: '`{ name, size?, type?, uri? (native), file? (web File) }`.',
+        },
+        {
+          name: 'defaultValue',
+          type: 'PickedFile[]',
+          description: 'Starting `value` when uncontrolled.',
         },
         {
           name: 'onValueChange',
@@ -84,14 +89,38 @@ setFilePicker(async ({ multiple, accept }) => {
             'This upload’s picker. Defaults to the browser on web and `setFilePicker` on native.',
         },
         {
-          name: 'buttonLabel / emptyText',
+          name: 'buttonLabel',
           type: 'string',
-          default: "'Choose file' / 'No file chosen'",
-          description: 'Texts (plural with `multiple`).',
+          default: "'Choose file'",
+          description: 'The button text (“Choose files” with `multiple`).',
         },
-        { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Button size.' },
-        { name: 'invalid / disabled', type: 'boolean', default: 'false', description: 'States.' },
+        {
+          name: 'emptyText',
+          type: 'string',
+          default: "'No file chosen'",
+          description: 'Shown while no file is chosen (“No files chosen” with `multiple`).',
+        },
+        {
+          name: 'size',
+          type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
+          default: "'md'",
+          description: 'Button size.',
+        },
+        {
+          name: 'invalid',
+          type: 'boolean',
+          default: 'false',
+          description: 'Error styling and `aria-invalid`.',
+        },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          default: 'false',
+          description: 'Not focusable or editable.',
+        },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [
