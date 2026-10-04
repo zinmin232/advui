@@ -77,12 +77,10 @@ cannot do them. Tick them off here as they are done.
   - `pnpm release:check` must list all eight public packages at 0.6.0, with
     `@advui/core` as a `^0.6.0` peer dependency of data, charts and editor.
     Then run `pnpm release`.
-- [ ] **Release 0.7.0** (Grid spans, Field). The release commit is tagged
-      `v0.7.0`; the AdvUI Builder reads component metadata from that tag, so
-      publish exactly that commit:
-  - If the pull request is squashed or rebased into `main`, move the tag to
-    the commit on `main`: `git pull`, then
-    `git tag -f v0.7.0 <commit> && git push -f origin v0.7.0`.
+- [ ] **Release 0.7.0** (Grid spans, Field). The AdvUI Builder reads
+      component metadata from the `v0.7.0` tag, so tag the last commit of the
+      0.7.0 pull request as it lands on `main`, and publish exactly that commit:
+  - `git pull`, then `git tag v0.7.0 <commit> && git push origin v0.7.0`.
   - `pnpm release:check` must list all eight public packages at 0.7.0. Then
     run `pnpm release`.
 - [ ] **Publish the new packages.** 0.6.0 is the first working release of

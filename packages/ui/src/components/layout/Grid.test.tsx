@@ -21,8 +21,16 @@ describe('gridCellLayout', () => {
       width: '100%',
       $md: { width: twoThirds },
     })
-    // A missing base takes the default span of 1.
-    expect(gridCellLayout(12, { md: 6 })).toEqual({ width: `${100 / 12}%`, $md: { width: '50%' } })
+    // A map without base is the full row below its first breakpoint, like Bootstrap's col-md-6.
+    expect(gridCellLayout(12, { md: 6 })).toEqual({ width: '100%', $md: { width: '50%' } })
+    expect(gridCellLayout(12, { sm: 6, lg: 4 })).toEqual({
+      width: '100%',
+      $sm: { width: '50%' },
+      $lg: { width: third },
+    })
+    // A number, or no span at all, is the same at every breakpoint.
+    expect(gridCellLayout(12, 6)).toEqual({ width: '50%' })
+    expect(gridCellLayout(12)).toEqual({ width: `${100 / 12}%` })
     // sm repeats base and xl repeats lg, so neither is emitted.
     expect(gridCellLayout(12, { base: 12, sm: 12, lg: 3, xl: 3 })).toEqual({
       width: '100%',
@@ -215,6 +223,25 @@ describe('Grid', () => {
     const cells = Array.from(screen.getByTestId('grid').children)
     expect(cells).toHaveLength(3)
     for (const cell of cells) expect(cssFor(cell)['']).toMatchObject({ width: third })
+  })
+
+  it('stacks Bootstrap-style spans without base below their breakpoint', () => {
+    renderWithProvider(
+      <Grid columns={12}>
+        <Grid.Item span={{ md: 8 }} testID="main">
+          <Text>Main</Text>
+        </Grid.Item>
+        <Grid.Item span={{ md: 4 }} offset={{ md: 0 }} testID="side">
+          <Text>Side</Text>
+        </Grid.Item>
+      </Grid>,
+    )
+    const main = cssFor(screen.getByTestId('main'))
+    const side = cssFor(screen.getByTestId('side'))
+    expect(main['']).toMatchObject({ width: '100%' })
+    expect(side['']).toMatchObject({ width: '100%' })
+    expect(main[md]).toEqual({ width: '66.66666666666667%' })
+    expect(side[md]).toEqual({ width: '33.333333333333336%' })
   })
 
   it('splits 8 / 4 from md and stacks below md', () => {

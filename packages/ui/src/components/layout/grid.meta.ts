@@ -79,7 +79,7 @@ export default defineMeta({
           type: "number | 'full' | 'auto' | { base?, xs?, sm?, md?, lg?, xl?, xxl? }",
           default: '1',
           description:
-            "Columns to cover, optionally per breakpoint (mobile-first). `'full'` covers every column at that breakpoint, `'auto'` sizes to the content (capped at the row). Clamped to 1 – `columns`.",
+            "Columns to cover, optionally per breakpoint (mobile-first). A map without `base` covers the full row below its first breakpoint, like Bootstrap: `{ md: 8 }` stacks on phones. `'full'` covers every column at that breakpoint, `'auto'` sizes to the content (capped at the row). Clamped to 1 – `columns`.",
         },
         {
           name: 'offset',
@@ -132,23 +132,23 @@ export default defineMeta({
     'Reading order follows source order on every platform. Offsets only add space, and there is no `order` prop, so what you see matches what screen readers read.',
   ],
   responsive:
-    '`columns`, `span` and `offset` take a number or a mobile-first map `{ base, xs, sm, md, lg, xl, xxl }` (from 460, 640, 768, 1024, 1280 and 1536 px). A missing breakpoint inherits the nearest smaller one; `base` defaults to the prop’s default. At each breakpoint a cell is `min(span, columns) / columns` of the row, and only the breakpoints where that changes are emitted. They compile to CSS media queries on web (SSR-safe) and to window-size checks on native.',
+    '`columns`, `span` and `offset` take a number or a mobile-first map `{ base, xs, sm, md, lg, xl, xxl }` (from 460, 640, 768, 1024, 1280 and 1536 px). A missing breakpoint inherits the nearest smaller one. A missing `base` is the prop’s default (`columns` 1, `offset` 0), except in a `span` map, where it is the full row, as in Bootstrap. At each breakpoint a cell is `min(span, columns) / columns` of the row, and only the breakpoints where that changes are emitted. They compile to CSS media queries on web (SSR-safe) and to window-size checks on native.',
   tables: [
     {
       id: 'from-bootstrap',
       title: 'From Bootstrap',
       description:
-        "Bootstrap’s 12-column grid maps to `<Grid columns={12}>`. One difference: a Bootstrap column is full width below its breakpoint, while a Grid.Item without `base` spans 1 column there, so add `base: 12` (or `base: 'full'`).",
+        'Bootstrap’s 12-column grid maps to `<Grid columns={12}>`, and a `span` map without `base` is full width below its first breakpoint, as a Bootstrap column is.',
       columns: ['Bootstrap', 'Adv UI', 'Notes'],
       rows: [
         ['`.row`', '`<Grid columns={12}>`', 'A Grid has 1 column unless you set `columns`.'],
         ['`.col-8`', '`<Grid.Item span={8}>`', 'At every width.'],
+        ['`.col-md-8`', '`<Grid.Item span={{ md: 8 }}>`', 'Full width below md.'],
         [
-          '`.col-md-8`',
-          '`<Grid.Item span={{ base: 12, md: 8 }}>`',
-          'Or `span={{ md: 8 }}` in a `<Grid columns={{ base: 1, md: 12 }}>`.',
+          '`.col-6 .col-md-8 .col-lg-6`',
+          '`span={{ base: 6, md: 8, lg: 6 }}`',
+          'Mobile-first; set `base` for phones.',
         ],
-        ['`.col-12 .col-md-8 .col-lg-6`', '`span={{ base: 12, md: 8, lg: 6 }}`', 'Mobile-first.'],
         ['`.col-auto`', '`span="auto"`', 'Content width, capped at the row.'],
         [
           '`.col` (equal widths)',

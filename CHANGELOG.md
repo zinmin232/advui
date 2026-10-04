@@ -49,14 +49,16 @@ one version.
   covers `span` columns of the grid and leaves `offset` empty columns before
   it, each a number or a mobile-first map such as `{ base: 12, md: 8 }`. So a
   12-column Grid lays out 8 / 4 or 3 / 9 from a breakpoint and stacks on
-  phones. `span="full"` covers every column, `span="auto"` sizes to the
-  content; spans and offsets are clamped to the column count, and offsets
-  mirror in right-to-left layouts. Grid also takes `rowGap`, `columnGap` and
+  phones. A `span` map without `base` is the full row below its first
+  breakpoint, as in Bootstrap, so `span={{ md: 8 }}` stacks on phones.
+  `span="full"` covers every column, `span="auto"` sizes to the content;
+  spans and offsets are clamped to the column count, and offsets mirror in
+  right-to-left layouts. Grid also takes `rowGap`, `columnGap` and
   `alignItems`. It stays flex-wrap with percentage widths (not CSS grid), so
   web, iOS and Android lay out the same, and plain children keep their
   one-column cells: existing grids render the same markup.
 - Docs: the Grid page has a playground, four new examples and a "From
-  Bootstrap" table (`col-md-8` → `span={{ base: 12, md: 8 }}`). Component
+  Bootstrap" table (`col-md-8` → `span={{ md: 8 }}`). Component
   metadata can carry reference `tables`.
 - `useFieldControl`, for custom controls inside a Field.
 - Select takes `aria-describedby`, `aria-required` and `accessibilityHint`, so
