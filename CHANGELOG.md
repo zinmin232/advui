@@ -7,6 +7,8 @@ one version.
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-10-04
+
 ### Added
 
 - **AppShell** (beta): the frame of an app screen, with `AppShell.Header`,

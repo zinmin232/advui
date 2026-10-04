@@ -60,6 +60,14 @@ cannot do them. Tick them off here as they are done.
     Sticky headers pinned and pushed in a ScrollArea). Still to check: an
     iPhone; Show / Hide and the Section spacing from md on a tablet or a
     landscape phone; TalkBack / VoiceOver reading a named Section.
+  - AppShell and AutoGrid (0.11.0): checked in the native tests and in
+    Chrome (drawer below the breakpoint, keyboard, closing on widen), not
+    yet on a device. To check: the AppShell examples open their sidebar in
+    a drawer on an Android phone and an iPhone, the back button closes it,
+    the header and footer clear the notch and home indicator, Main scrolls
+    inside the Expo example; the sidebar sits beside Main from md on a
+    tablet; AutoGrid shows 1 column on a phone and more on a tablet;
+    TalkBack / VoiceOver read the drawer by its name.
   - The components that moved to `@advui/data`, `@advui/charts` and
     `@advui/editor` still open in the Expo app (it now loads them from those
     packages).
@@ -96,9 +104,13 @@ cannot do them. Tick them off here as they are done.
       `v0.9.0` and `v0.10.0` point at the merge commits on `main`, for the
       AdvUI Builder. Only 0.10.0 was published to npm (after 0.7.0); 0.8.0 and
       0.9.0 are git tags only.
-- [ ] **Release 0.11.0** (AppShell, AutoGrid): tag the last commit of the
-      pull request as it lands on `main`, check `pnpm release:check` lists
-      all eight public packages at 0.11.0, then run `pnpm release`.
+- [ ] **Release 0.11.0** (AppShell, AutoGrid): merge the pull request with
+      a merge commit, as for 0.8.0 to 0.10.0, and tag that merge commit:
+  - `git pull`, then `git tag v0.11.0 <merge commit> && git push origin v0.11.0`.
+  - `pnpm release:check` must list all eight public packages at 0.11.0. Then
+    run `pnpm release`.
+  - The AdvUI Builder syncs metadata from `v0.11.0`, so the tag must be on
+    `main` before the Builder registers AppShell and AutoGrid.
 - [ ] **Publish the new packages.** 0.6.0 is the first working release of
       `@advui/data`, `@advui/charts` and `@advui/editor`:
   - Deprecate their 0.5.0, published by mistake before the version bump (it
