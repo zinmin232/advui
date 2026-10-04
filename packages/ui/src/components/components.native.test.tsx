@@ -1137,7 +1137,7 @@ describe('Grid layout', () => {
       <Grid.Item span={{ base: 12, md: 8 }} testID="main">
         <Text>Main</Text>
       </Grid.Item>
-      <Grid.Item span={{ base: 12, md: 4 }} offset={{ lg: 0 }} testID="side">
+      <Grid.Item span={{ md: 4 }} offset={{ lg: 0 }} testID="side">
         <Text>Side</Text>
       </Grid.Item>
       <Grid.Item span={6} offset={3} testID="offset">

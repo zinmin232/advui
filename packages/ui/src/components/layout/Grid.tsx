@@ -33,7 +33,10 @@ export interface GridProps extends Omit<ViewProps, 'children' | 'gap' | 'rowGap'
 
 export interface GridItemProps extends Omit<ViewProps, 'children'> {
   children?: ReactNode
-  /** Columns to cover, optionally per breakpoint (mobile-first). */
+  /**
+   * Columns to cover, optionally per breakpoint (mobile-first). A map without
+   * `base` covers the full row below its first breakpoint, like Bootstrap's `col-md-8`.
+   */
   span?: ResponsiveSpan
   /** Empty columns before the cell, optionally per breakpoint (mobile-first). */
   offset?: ResponsiveOffset
@@ -64,7 +67,8 @@ const percent = (part: number, count: number) => `${(100 * part) / count}%` as P
 /**
  * Width and offset of one cell at each breakpoint. Missing breakpoints inherit
  * the nearest smaller one, and only the values that change are returned, as
- * media props (`$md`), so web output is plain CSS media queries.
+ * media props (`$md`), so web output is plain CSS media queries. A `span` map
+ * without `base` starts at the full row, so `{ md: 8 }` stacks on phones.
  */
 export function gridCellLayout(
   columns: ResponsiveColumns,
@@ -73,7 +77,7 @@ export function gridCellLayout(
 ): GridCellLayout {
   const layout: GridCellLayout = {}
   let count = 1
-  let cover: GridSpan = 1
+  let cover: GridSpan = typeof span === 'object' && span !== null ? 'full' : 1
   let skip = 0
   let width: string | undefined
   let margin: Percent | 0 = 0
