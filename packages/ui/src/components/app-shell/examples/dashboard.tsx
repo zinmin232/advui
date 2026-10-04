@@ -19,8 +19,15 @@ const stats = [
 export default function AppShellDashboard() {
   const [page, setPage] = useState('home')
   return (
-    // `height` and the border frame the preview. In an app, leave them out: the shell fills the screen.
-    <AppShell height="$112" borderWidth={1} borderColor="$border" borderRadius="$lg">
+    // `height`, the border and `safeArea={false}` fit the shell into the preview. In an app,
+    // leave them out: the shell fills the screen and clears the notch and home indicator.
+    <AppShell
+      height="$112"
+      borderWidth={1}
+      borderColor="$border"
+      borderRadius="$lg"
+      safeArea={false}
+    >
       <AppShell.Header>
         <AppShell.SidebarTrigger />
         <Text weight="semibold" flex={1}>

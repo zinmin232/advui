@@ -101,6 +101,14 @@ export default defineMeta({
           description:
             'Keep the header in place while Main scrolls. With `false` it scrolls away at the top of Main, so it spans Main’s column only.',
         },
+        {
+          name: 'safeArea',
+          type: 'boolean',
+          default: 'true',
+          platforms: ['ios', 'android'],
+          description:
+            'Pad the edges the shell touches for the notch and home indicator. Turn it off when the shell sits below a navigation header or above a tab bar, which pad them already. The drawer always pads.',
+        },
       ],
       children: {
         accepts: ['AppShell.Header', 'AppShell.Sidebar', 'AppShell.Main', 'AppShell.Footer'],

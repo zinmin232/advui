@@ -77,7 +77,9 @@ describe('AppShell on web', () => {
     expect(trigger).toHaveAttribute('aria-controls', drawer.id)
     // In the drawer the Sidebar never collapses, so it has no toggle.
     expect(drawer.querySelector('[aria-label="Collapse sidebar"]')).toBeNull()
-    const item = [...drawer.querySelectorAll('a, button')].find((el) => el.textContent === 'Reports')
+    const item = [...drawer.querySelectorAll('a, button')].find(
+      (el) => el.textContent === 'Reports',
+    )
     await user.click(item as Element)
     expect(onPage).toHaveBeenCalledWith('reports')
     expect(onSidebarOpenChange).toHaveBeenLastCalledWith(false)

@@ -44,7 +44,9 @@ describe('AutoGrid on web', () => {
       </UniversalProvider>,
     )
     expect(html).toContain('_dsp-grid')
-    expect(html).toContain('grid-template-columns:repeat(auto-fill, minmax(min(max(200px, calc((100% - 16px) / 3)), 100%), 1fr))')
+    expect(html).toContain(
+      'grid-template-columns:repeat(auto-fill, minmax(min(max(200px, calc((100% - 16px) / 3)), 100%), 1fr))',
+    )
   })
 
   it('keeps children as the grid cells, without wrappers', () => {

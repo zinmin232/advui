@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, jest } from '@jest/globals'
-import { act, fireEvent, screen } from '@testing-library/react-native'
+import { act, fireEvent, render, screen } from '@testing-library/react-native'
 import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
-import { createThemeColors, themePresets, zIndex } from '@advui/theme'
+import { createThemeColors, createUniversalConfig, themePresets, zIndex } from '@advui/theme'
 import { Fragment, type ReactElement } from 'react'
 import { BackHandler, Dimensions, StyleSheet } from 'react-native'
 import { XStack } from 'tamagui'
@@ -84,6 +84,7 @@ import { Video } from './video/Video'
 import { setVideoView } from './video/shared'
 import { Text } from './typography/Text'
 import { useBreakpoint } from '../hooks/useBreakpoint'
+import { UniversalProvider } from '../provider/UniversalProvider'
 
 // These run the React Native code path (react-native + Tamagui native builds,
 // `.native.tsx` platform files) — the same code Expo ships to iOS and Android.
@@ -1461,6 +1462,49 @@ describe('AppShell and AutoGrid on native', () => {
     await renderNative(shell({}))
     expect(screen.getByRole('link', { name: 'Reports' })).toBeOnTheScreen()
     expect(screen.queryByRole('button', { name: 'Open navigation' })).toBeNull()
+  })
+
+  it('pads the safe areas, except with safeArea={false}; the drawer always does', async () => {
+    const padding = (testID: string) => {
+      const style = StyleSheet.flatten(screen.getByTestId(testID).props.style)
+      return { top: style.paddingTop, bottom: style.paddingBottom }
+    }
+    const drawerPadding = async () => {
+      let node = (await screen.findByText('Reports')).parent
+      while (node && node.props.role !== 'dialog') node = node.parent
+      const style = StyleSheet.flatten(node?.props.style)
+      return { top: style.paddingTop, bottom: style.paddingBottom }
+    }
+    const app = (safeArea: boolean) => (
+      <UniversalProvider
+        config={createUniversalConfig()}
+        toaster={false}
+        insets={{ top: 40, bottom: 30, left: 0, right: 0 }}
+      >
+        <AppShell safeArea={safeArea} defaultSidebarOpen>
+          <AppShell.Header testID="header">
+            <Text>Adv Data</Text>
+          </AppShell.Header>
+          <AppShell.Sidebar aria-label="Main">
+            <Text>Reports</Text>
+          </AppShell.Sidebar>
+          <AppShell.Main>
+            <Text>Overview</Text>
+          </AppShell.Main>
+          <AppShell.Footer testID="footer">
+            <Text>Synced</Text>
+          </AppShell.Footer>
+        </AppShell>
+      </UniversalProvider>
+    )
+    const view = await render(app(true))
+    expect(padding('header').top).toBe(40)
+    expect(padding('footer').bottom).toBe(30)
+    expect(await drawerPadding()).toEqual({ top: 40, bottom: 30 })
+    await view.rerender(app(false))
+    expect(padding('header').top).not.toBe(40)
+    expect(padding('footer').bottom).not.toBe(30)
+    expect(await drawerPadding()).toEqual({ top: 40, bottom: 30 })
   })
 
   it('AutoGrid shows one column until it is measured, then the same count as web', async () => {

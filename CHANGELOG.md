@@ -23,8 +23,9 @@ one version.
   `onSidebarOpenChange` control it, and `useAppShell()` reads it.
   `stickyHeader={false}` lets the header scroll away with Main. Web
   landmarks: banner, navigation (named by the sidebar's `aria-label`),
-  main and contentinfo. On iOS and Android the bars pad the safe areas and
-  the back button closes the drawer.
+  main and contentinfo. On iOS and Android the bars pad the safe areas
+  (`safeArea={false}` turns that off under a navigation header or above a
+  tab bar) and the back button closes the drawer.
 - **AutoGrid** (beta): equal-width cells, as many columns as fit at
   `minChildWidth` (default 240), up to `maxColumns`, with no breakpoints:
   `<AutoGrid minChildWidth={240} gap="$4" maxColumns={4}>`. On web it is CSS

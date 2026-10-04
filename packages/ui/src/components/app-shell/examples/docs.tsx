@@ -9,7 +9,8 @@ const groups = [
 export default function AppShellDocs() {
   const [page, setPage] = useState('App Shell')
   return (
-    // `height` and the border frame the preview. In an app, leave them out: the shell fills the screen.
+    // `height`, the border and `safeArea={false}` fit the shell into the preview. In an app,
+    // leave them out: the shell fills the screen and clears the notch and home indicator.
     <AppShell
       layout="sidebar-full"
       sidebarBreakpoint="lg"
@@ -17,6 +18,7 @@ export default function AppShellDocs() {
       borderWidth={1}
       borderColor="$border"
       borderRadius="$lg"
+      safeArea={false}
     >
       <AppShell.Sidebar aria-label="Docs">
         <Sidebar>
@@ -50,8 +52,8 @@ export default function AppShellDocs() {
           {page}
         </Text>
         <Text>
-          The sidebar spans the full height of the screen, and the header sits beside it. Below
-          the lg breakpoint the sidebar becomes a drawer.
+          The sidebar spans the full height of the screen, and the header sits beside it. Below the
+          lg breakpoint the sidebar becomes a drawer.
         </Text>
         <Text tone="muted">
           Only this column scrolls: the header, the sidebar and the footer stay in place.

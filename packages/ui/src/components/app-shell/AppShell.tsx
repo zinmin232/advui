@@ -335,8 +335,8 @@ function SidebarDrawer({ sidebar, width, context }: SidebarDrawerProps) {
     <Drawer.Content
       side="left"
       width={width}
-      padding={0}
       gap={0}
+      // Longhands only: with `padding` too, the shorthand wins and drops the insets.
       paddingTop={insets?.top ?? 0}
       paddingBottom={insets?.bottom ?? 0}
       paddingLeft={insets?.left ?? 0}
@@ -374,6 +374,12 @@ export interface AppShellProps extends Omit<GetProps<typeof RootFrame>, 'layout'
   onSidebarOpenChange?: (open: boolean) => void
   /** Keep the header in place while Main scrolls. With `false` it scrolls away with Main. Default `true`. */
   stickyHeader?: boolean
+  /**
+   * iOS / Android: pad the edges the shell touches for the notch and home
+   * indicator. Turn it off when the shell sits below a navigation header or
+   * above a tab bar, which pad them already. The drawer always pads. Default `true`.
+   */
+  safeArea?: boolean
   /** `AppShell.Header`, `.Sidebar`, `.Main` and `.Footer`, each at most once. */
   children?: ReactNode
 }
@@ -387,6 +393,7 @@ function AppShellRoot({
   defaultSidebarOpen = false,
   onSidebarOpenChange,
   stickyHeader = true,
+  safeArea = true,
   ...props
 }: AppShellProps) {
   const [open, setOpen] = useControllableState({
@@ -403,7 +410,8 @@ function AppShellRoot({
   }, [desktop, open, setOpen])
   const drawerOpen = open && !desktop
 
-  const configInsets = useConfiguration().insets
+  const providerInsets = useConfiguration().insets
+  const configInsets = safeArea ? providerInsets : undefined
   const insets = useMemo(
     () => ({
       top: configInsets?.top ?? 0,

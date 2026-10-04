@@ -60,14 +60,13 @@ cannot do them. Tick them off here as they are done.
     Sticky headers pinned and pushed in a ScrollArea). Still to check: an
     iPhone; Show / Hide and the Section spacing from md on a tablet or a
     landscape phone; TalkBack / VoiceOver reading a named Section.
-  - AppShell and AutoGrid (0.11.0): checked in the native tests and in
-    Chrome (drawer below the breakpoint, keyboard, closing on widen), not
-    yet on a device. To check: the AppShell examples open their sidebar in
-    a drawer on an Android phone and an iPhone, the back button closes it,
-    the header and footer clear the notch and home indicator, Main scrolls
-    inside the Expo example; the sidebar sits beside Main from md on a
-    tablet; AutoGrid shows 1 column on a phone and more on a tablet;
-    TalkBack / VoiceOver read the drawer by its name.
+  - AppShell and AutoGrid (0.11.0): the Android phone was checked on
+    2026-10-04 (both examples open their sidebar in a drawer that clears
+    the status bar; the back button, the × and an item close it; Main
+    scrolls inside the Expo example; AutoGrid is one column). Still to
+    check: an iPhone; the sidebar beside Main from md on a tablet or a
+    landscape phone, and AutoGrid with more columns there; TalkBack /
+    VoiceOver reading the drawer by its name.
   - The components that moved to `@advui/data`, `@advui/charts` and
     `@advui/editor` still open in the Expo app (it now loads them from those
     packages).
