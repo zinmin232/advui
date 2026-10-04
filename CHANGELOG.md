@@ -41,6 +41,12 @@ tools read.
 - Docs: the props tables say which props also take a breakpoint map and which
   work on some platforms only.
 
+### Fixed
+
+- Select in a Field had no accessible name until the page hydrated: the
+  server-rendered trigger is a `div`, which the Field's `<label for>` cannot
+  name, so it now points at the label with `aria-labelledby`.
+
 ### Changed
 
 - Component metadata lists one prop per row and one part per entry
