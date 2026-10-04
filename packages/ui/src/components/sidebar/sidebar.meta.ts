@@ -152,17 +152,18 @@ import { HomeIcon } from '@advui/icons'
     'Items are links (`<a>` with `href`); the current page has `aria-current="page"` on web, and "current page" in its name on native.',
     'Collapsed, the labels and badges are visually hidden but stay in each link’s name, so the icon rail is still fully labelled.',
     'The toggle is a named button with `aria-expanded`. Rows are 44pt tall on touch screens.',
+    'Inside `AppShell.Sidebar` the area is the navigation landmark, so the Sidebar does not add its own.',
   ],
   keyboard: [
     { keys: 'Tab', action: 'Moves through the links and the toggle.' },
     { keys: 'Enter', action: 'Follows the focused link.' },
   ],
   responsive:
-    'Give it the full height of the layout. On phones, hide it (`$max-md={{ display: "none" }}`) and put the same items in a Drawer.',
+    'Give it the full height of the layout. In an AppShell, put it in `AppShell.Sidebar`: below the breakpoint it moves into the shell’s drawer, where it fills the width, does not collapse, and closes the drawer when an item is pressed. Elsewhere, hide it on phones (`$max-md={{ display: "none" }}`) and put the same items in a Drawer.',
   platformNotes: {
     web: '`Sidebar.Content` scrolls when the items overflow.',
     ios: 'Wrap long content in a ScrollArea to scroll it.',
     android: 'Same as iOS, with the ripple when the config has `androidRipple`.',
   },
-  related: ['drawer', 'navigation-menu', 'menu', 'navigation-bar'],
+  related: ['app-shell', 'drawer', 'navigation-menu', 'menu', 'navigation-bar'],
 })
