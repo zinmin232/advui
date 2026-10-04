@@ -76,16 +76,27 @@ import { VideoView, useVideoPlayer } from 'expo-video'`,
           default: 'true',
           description: 'The platform’s play, seek, volume and full-screen controls.',
         },
-        { name: 'onEnded / onError', type: '() => void', description: 'Playback ended or failed.' },
+        {
+          name: 'onEnded',
+          type: '() => void',
+          description: 'Called when playback reaches the end.',
+        },
+        {
+          name: 'onError',
+          type: '() => void',
+          description: 'Called when the video fails to load or play.',
+        },
         {
           name: 'labels',
           type: 'Partial<VideoLabels>',
           description: 'Error text, for translation.',
         },
       ],
+      children: { accepts: 'none' },
     },
     {
       name: 'setVideoView',
+      kind: 'function',
       description:
         'Registers the native player: a component that takes `NativeVideoViewProps` (`source`, `autoPlay`, `muted`, `loop`, `controls`, `accessibilityLabel`, `onEnded`, `onError`, `style`). Call it once at app start.',
       props: [],

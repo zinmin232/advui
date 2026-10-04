@@ -25,25 +25,39 @@ export default defineMeta({
         {
           name: 'mode',
           type: "'single' | 'range'",
+          options: ['single', 'range'],
           default: "'single'",
           description: 'Pick one day, or a start and an end.',
         },
         {
-          name: 'value / defaultValue',
-          type: 'Date | null  (range: { start, end })',
-          description: 'The picked day or range. Only the calendar day is used, not the time.',
+          name: 'value',
+          type: 'Date | DateRange | null',
+          description:
+            'The picked day, or `{ start, end }` in range mode, when you control it. Only the calendar day is used, not the time.',
+        },
+        {
+          name: 'defaultValue',
+          type: 'Date | DateRange | null',
+          description: 'The picked day or range at first, when the calendar manages it.',
         },
         {
           name: 'onValueChange',
           type: '(value) => void',
           description: 'Called when a day is picked.',
         },
+        { name: 'month', type: 'Date', description: 'The visible month, when you control it.' },
         {
-          name: 'month / defaultMonth / onMonthChange',
+          name: 'defaultMonth',
           type: 'Date',
-          description: 'The visible month. Defaults to the picked day or today.',
+          description: 'The month shown first. Defaults to the picked day or today.',
         },
-        { name: 'min / max', type: 'Date', description: 'Earliest and latest selectable days.' },
+        {
+          name: 'onMonthChange',
+          type: '(month: Date) => void',
+          description: 'Called when the visible month changes.',
+        },
+        { name: 'min', type: 'Date', description: 'Earliest selectable day.' },
+        { name: 'max', type: 'Date', description: 'Latest selectable day.' },
         {
           name: 'isDateDisabled',
           type: '(date: Date) => boolean',
@@ -51,7 +65,8 @@ export default defineMeta({
         },
         {
           name: 'weekStartsOn',
-          type: '0 – 6',
+          type: '0 | 1 | 2 | 3 | 4 | 5 | 6',
+          options: ['0', '1', '2', '3', '4', '5', '6'],
           default: '0',
           description: 'First day of the week (0 = Sunday).',
         },
@@ -61,12 +76,19 @@ export default defineMeta({
           description: 'BCP 47 locale for month and day names. Defaults to the device.',
         },
         {
-          name: 'previousMonthLabel / nextMonthLabel',
+          name: 'previousMonthLabel',
           type: 'string',
-          default: "'Previous month' / 'Next month'",
-          description: 'Accessible names of the month buttons.',
+          default: "'Previous month'",
+          description: 'Accessible name of the previous-month button.',
+        },
+        {
+          name: 'nextMonthLabel',
+          type: 'string',
+          default: "'Next month'",
+          description: 'Accessible name of the next-month button.',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [

@@ -67,7 +67,8 @@ export default defineMeta({
         },
         {
           name: 'surface',
-          type: 'color token',
+          type: 'ColorTokens',
+          token: 'color',
           default: "'$background'",
           description:
             'The color behind the chart, for the ring around markers. Use `$card` inside a Card.',
@@ -81,6 +82,7 @@ export default defineMeta({
           name: 'height',
           type: 'number',
           default: '240',
+          min: 0,
           description: 'Pixels, including the axes.',
         },
         {
@@ -94,6 +96,7 @@ export default defineMeta({
           description: '"Show table", "Hide table" and the keyboard hint, for translation.',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [

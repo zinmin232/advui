@@ -37,13 +37,27 @@ export default defineMeta({
         {
           name: 'size',
           type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
           default: "'md'",
           description: 'Type scale of the label, value and help text.',
         },
       ],
+      children: { accepts: ['Stat.Label', 'Stat.Value', 'Stat.Delta', 'Stat.HelpText'] },
     },
-    { name: 'Stat.Label', description: 'Muted name of the figure.', props: [] },
-    { name: 'Stat.Value', description: 'The figure, in the heading font.', props: [] },
+    {
+      name: 'Stat.Label',
+      description: 'Muted name of the figure.',
+      props: [],
+      children: { accepts: 'text' },
+      within: 'Stat',
+    },
+    {
+      name: 'Stat.Value',
+      description: 'The figure, in the heading font.',
+      props: [],
+      children: { accepts: 'text' },
+      within: 'Stat',
+    },
     {
       name: 'Stat.Delta',
       description: 'The change since the last period, with an arrow.',
@@ -51,12 +65,14 @@ export default defineMeta({
         {
           name: 'trend',
           type: "'up' | 'down' | 'neutral'",
+          options: ['up', 'down', 'neutral'],
           default: "'neutral'",
           description: 'Direction of the change; picks the arrow.',
         },
         {
           name: 'tone',
           type: "'positive' | 'negative' | 'neutral'",
+          options: ['positive', 'negative', 'neutral'],
           default: 'from `trend`',
           description:
             'Good or bad news; picks the color. `up` is positive and `down` negative unless you say otherwise.',
@@ -64,18 +80,28 @@ export default defineMeta({
         {
           name: 'variant',
           type: "'plain' | 'badge'",
+          options: ['plain', 'badge'],
           default: "'plain'",
           description: '`badge` puts the change on a soft pill.',
         },
         {
           name: 'trendLabel',
           type: 'string',
-          default: "'Increased by' | 'Decreased by' | 'No change:'",
-          description: 'Read by screen readers before the value. Translate it here.',
+          default: 'from `trend`',
+          description:
+            "Read by screen readers before the value: 'Increased by', 'Decreased by' or 'No change:' for the `trend`. Translate it here.",
         },
       ],
+      children: { accepts: 'text' },
+      within: 'Stat',
     },
-    { name: 'Stat.HelpText', description: 'Small muted note, such as the period.', props: [] },
+    {
+      name: 'Stat.HelpText',
+      description: 'Small muted note, such as the period.',
+      props: [],
+      children: { accepts: 'text' },
+      within: 'Stat',
+    },
   ],
   examples: [
     { name: 'basic', title: 'Basic' },

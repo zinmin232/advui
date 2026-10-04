@@ -27,12 +27,14 @@ export function SaveButton() {
         {
           name: 'variant',
           type: "'default' | 'secondary' | 'outline' | 'ghost' | 'destructive' | 'link'",
+          options: ['default', 'secondary', 'outline', 'ghost', 'destructive', 'link'],
           default: "'default'",
           description: 'Visual style. Use one `default` button per view for the primary action.',
         },
         {
           name: 'size',
           type: "'sm' | 'md' | 'lg' | 'icon'",
+          options: ['sm', 'md', 'lg', 'icon'],
           default: "'md'",
           description: 'Height and padding.',
         },
@@ -72,12 +74,15 @@ export function SaveButton() {
           description: 'Render as a different element, e.g. `<a href>` for links.',
         },
       ],
+      children: { accepts: 'text' },
     },
     {
       name: 'Button.Text',
       description:
         'Styled label for custom compositions. Plain string children are wrapped automatically.',
       props: [],
+      children: { accepts: 'text' },
+      within: 'Button',
     },
   ],
   examples: [

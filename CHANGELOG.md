@@ -7,6 +7,49 @@ one version.
 
 ## [Unreleased]
 
+No component changes at run time: this release is about the metadata that
+tools read.
+
+### Added
+
+- **Metadata for tools** such as the AdvUI Builder, which builds prop editors
+  and drop rules from each component's `*.meta.ts`. The new fields are
+  optional (`@advui/core/meta`):
+  - On a prop: `options`, the closed list of values; `responsive`, when it
+    also takes a `{ base, sm, md, … }` map; `token`, the theme scale its value
+    comes from (`space`, `size`, `color`, `radius`, `zIndex`); `min`, `max`
+    and `step` for numbers; and `platforms`, when it works on some platforms
+    only. A new `Breakpoint` type names the breakpoints.
+  - On a part: `children` (what may go inside: `'any'`, `'text'`, `'none'`
+    or a list of parts, with `min` and `max`), `parents` (it must be a direct
+    child of one of these), `within` (it must sit inside this part, because it
+    reads its context) and `kind` (`hook`, `function` or `type` for documented
+    parts that are not components).
+
+  Every component fills them in: `options` for each closed list and child
+  rules for each part. For example, Tooltip wraps exactly one trigger,
+  `Tabs.List` takes `Tabs.Trigger`s, `Grid.Item` must be a direct child of
+  `Grid`, and Button takes text.
+
+- A metadata check (`packages/catalog/src/validate.ts`) that `pnpm catalog`
+  and `pnpm test` run. It fails on duplicate `options`, a literal default that
+  is not one of them, a closed type without `options`, child rules that name
+  a part that does not exist, and rows that combine props, naming the
+  component, part and prop.
+- Docs: the props tables say which props also take a breakpoint map and which
+  work on some platforms only.
+
+### Changed
+
+- Component metadata lists one prop per row and one part per entry
+  (`value`, `defaultValue` and `onValueChange`, not
+  `value / defaultValue`; `Dialog.Header` and `Dialog.Footer`, not
+  `Dialog.Header / Footer`), with no `…` and no aliases such as `FlexAlign`,
+  `ButtonVariant` or `TextSize` in place of the values. The Stack page lists
+  `flexDirection`, `alignItems`, `justifyContent`, `flexWrap` and `gap` with
+  every value, for Stack, HStack and VStack. Responsive props show the
+  value's own type (`columns: number`) and set `responsive`.
+
 ## [0.7.0] - 2026-10-03
 
 ### Changed

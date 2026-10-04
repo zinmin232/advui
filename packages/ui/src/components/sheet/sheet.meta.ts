@@ -36,13 +36,15 @@ export default defineMeta({
     {
       name: 'Sheet',
       props: [
-        { name: 'open / defaultOpen', type: 'boolean', description: 'Open state.' },
+        { name: 'open', type: 'boolean', description: 'Open state.' },
+        { name: 'defaultOpen', type: 'boolean', description: 'Starting `open` when uncontrolled.' },
         {
           name: 'onOpenChange',
           type: '(open: boolean) => void',
           description: 'Called when the sheet opens or closes.',
         },
       ],
+      children: { accepts: ['Sheet.Trigger', 'Sheet.Content'], max: 2 },
     },
     {
       name: 'Sheet.Trigger',
@@ -54,6 +56,8 @@ export default defineMeta({
           description: 'One pressable element, usually a Button. It toggles the sheet.',
         },
       ],
+      children: { accepts: 'any', min: 1, max: 1 },
+      within: 'Sheet',
     },
     {
       name: 'Sheet.Content',
@@ -77,6 +81,8 @@ export default defineMeta({
           description: 'Hide the × button. Keep another way to close.',
         },
       ],
+      children: { accepts: 'any' },
+      within: 'Sheet',
     },
     {
       name: 'Sheet.Title',
@@ -88,10 +94,14 @@ export default defineMeta({
           description: 'Heading that names the sheet for screen readers.',
         },
       ],
+      children: { accepts: 'text' },
+      within: 'Sheet.Content',
     },
     {
       name: 'Sheet.Description',
       props: [{ name: 'children', type: 'ReactNode', description: 'Supporting text.' }],
+      children: { accepts: 'text' },
+      within: 'Sheet.Content',
     },
     {
       name: 'Sheet.Close',
@@ -103,13 +113,28 @@ export default defineMeta({
           description: 'One pressable element that closes the sheet.',
         },
       ],
+      children: { accepts: 'any', min: 1, max: 1 },
+      within: 'Sheet.Content',
     },
     {
       name: 'Sheet.ScrollView',
       description: 'Scrolls long content; use it with `snapPoints`.',
       props: [],
+      children: { accepts: 'any' },
+      within: 'Sheet.Content',
     },
-    { name: 'Sheet.Header / Footer', props: [] },
+    {
+      name: 'Sheet.Header',
+      description: 'Stacks the title and description at the top.',
+      props: [],
+      children: { accepts: 'any' },
+    },
+    {
+      name: 'Sheet.Footer',
+      description: 'A row of actions at the bottom.',
+      props: [],
+      children: { accepts: 'any' },
+    },
   ],
   examples: [
     { name: 'basic', title: 'Short form' },

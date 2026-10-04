@@ -44,23 +44,35 @@ export function packageByName(name) {
 
 export const toPosix = (p) => p.split(sep).join('/')
 
-/** Evaluates a `*.meta.ts` file and returns its default export. */
-export function loadMetaFile(file) {
+/** Transpiles a TypeScript module that imports nothing at run time and returns its exports. */
+function loadTsModule(file, localRequire) {
   const source = readFileSync(file, 'utf8')
   const { outputText } = ts.transpileModule(source, {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
   })
   const module = { exports: {} }
-  const localRequire = (id) => {
+  new Function('module', 'exports', 'require', outputText)(module, module.exports, localRequire)
+  return module.exports
+}
+
+/** Evaluates a `*.meta.ts` file and returns its default export. */
+export function loadMetaFile(file) {
+  return loadTsModule(file, (id) => {
     // Core's metadata imports its own types; the other packages import core's.
     if (id.endsWith('meta/types') || id === `${corePackage.name}/meta`)
       return { defineMeta: (meta) => meta, categories: [] }
     throw new Error(
       `${file}: metadata files may only import defineMeta from ${corePackage.name}/meta (found "${id}")`,
     )
-  }
-  new Function('module', 'exports', 'require', outputText)(module, module.exports, localRequire)
-  return module.exports.default
+  }).default
+}
+
+/** `validateMetadata` from the catalog package: options, child rules and the names they use. */
+function loadMetadataValidator() {
+  const file = join(catalogSrc, 'validate.ts')
+  return loadTsModule(file, (id) => {
+    throw new Error(`${file} may only import types (found "${id}")`)
+  }).validateMetadata
 }
 
 /** Every component metadata file with its package and folder. */
@@ -144,6 +156,7 @@ export function validateCatalog(entries) {
       if (!existsSync(exampleFile)) problems.push(`${where}: example "${example.name}" has no file`)
     }
   }
+  problems.push(...loadMetadataValidator()(entries.map(({ meta }) => meta).filter(Boolean)))
   const known = new Set([...slugs, ...planned, 'theme', 'colors'])
   for (const { file, meta } of entries) {
     for (const related of meta?.related ?? []) {

@@ -21,8 +21,20 @@ export default defineMeta({
       name: 'OtpInput',
       description: 'Also accepts Input props such as `aria-label`, `autoFocus` and `name`.',
       props: [
-        { name: 'length', type: 'number', default: '6', description: 'Number of characters.' },
-        { name: 'value / defaultValue', type: 'string', description: 'The code typed so far.' },
+        {
+          name: 'length',
+          type: 'number',
+          default: '6',
+          min: 1,
+          step: 1,
+          description: 'Number of characters.',
+        },
+        { name: 'value', type: 'string', description: 'The code typed so far.' },
+        {
+          name: 'defaultValue',
+          type: 'string',
+          description: 'Starting `value` when uncontrolled.',
+        },
         {
           name: 'onValueChange',
           type: '(value: string) => void',
@@ -36,17 +48,38 @@ export default defineMeta({
         {
           name: 'type',
           type: "'numeric' | 'alphanumeric'",
+          options: ['numeric', 'alphanumeric'],
           default: "'numeric'",
           description: 'Which characters are kept; others are dropped.',
         },
         {
           name: 'groupSize',
           type: 'number',
+          min: 1,
+          step: 1,
           description: 'Draws a dash after every N slots.',
         },
-        { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Slot size.' },
-        { name: 'invalid / disabled', type: 'boolean', default: 'false', description: 'As Input.' },
+        {
+          name: 'size',
+          type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
+          default: "'md'",
+          description: 'Slot size.',
+        },
+        {
+          name: 'invalid',
+          type: 'boolean',
+          default: 'false',
+          description: 'Error styling and `aria-invalid`.',
+        },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          default: 'false',
+          description: 'Not focusable or editable.',
+        },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [

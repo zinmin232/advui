@@ -28,11 +28,13 @@ export default defineMeta({
         {
           name: 'resize',
           type: "'none' | 'vertical'",
+          options: ['none', 'vertical'],
           default: "'vertical'",
           description: 'User resizing (web only).',
         },
         { name: 'rows', type: 'number', description: 'Initial visible lines (web).' },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [{ name: 'basic', title: 'With label and hint' }],

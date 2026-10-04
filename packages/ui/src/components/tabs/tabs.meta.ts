@@ -25,7 +25,12 @@ export default defineMeta({
     {
       name: 'Tabs',
       props: [
-        { name: 'value / defaultValue', type: 'string', description: 'Active tab.' },
+        { name: 'value', type: 'string', description: 'Active tab.' },
+        {
+          name: 'defaultValue',
+          type: 'string',
+          description: 'Starting `value` when uncontrolled.',
+        },
         {
           name: 'onValueChange',
           type: '(value: string) => void',
@@ -34,28 +39,34 @@ export default defineMeta({
         {
           name: 'variant',
           type: "'pills' | 'underline'",
+          options: ['pills', 'underline'],
           default: "'pills'",
           description: 'Visual style.',
         },
         {
           name: 'orientation',
           type: "'horizontal' | 'vertical'",
+          options: ['horizontal', 'vertical'],
           default: "'horizontal'",
           description: 'Arrow-key direction.',
         },
         {
           name: 'activationMode',
           type: "'automatic' | 'manual'",
+          options: ['automatic', 'manual'],
           default: "'automatic'",
           description: 'Select on focus, or on Enter/Space.',
         },
       ],
+      children: { accepts: ['Tabs.List', 'Tabs.Content'] },
     },
     {
       name: 'Tabs.List',
       props: [
         { name: 'loop', type: 'boolean', default: 'true', description: 'Wrap focus at the ends.' },
       ],
+      children: { accepts: ['Tabs.Trigger'] },
+      within: 'Tabs',
     },
     {
       name: 'Tabs.Trigger',
@@ -64,10 +75,14 @@ export default defineMeta({
         { name: 'icon', type: 'ReactNode', description: 'Leading icon.' },
         { name: 'disabled', type: 'boolean', description: 'Skip this tab.' },
       ],
+      children: { accepts: 'text' },
+      within: 'Tabs.List',
     },
     {
       name: 'Tabs.Content',
       props: [{ name: 'value', type: 'string', required: true, description: 'Matching tab id.' }],
+      children: { accepts: 'any' },
+      within: 'Tabs',
     },
   ],
   examples: [

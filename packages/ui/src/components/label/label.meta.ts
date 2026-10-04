@@ -35,6 +35,7 @@ export default defineMeta({
           description: 'Dims the label to match a disabled control.',
         },
       ],
+      children: { accepts: 'text' },
     },
   ],
   examples: [{ name: 'basic', title: 'Labelling controls' }],

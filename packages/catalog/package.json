@@ -12,7 +12,8 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "vitest run"
   },
   "dependencies": {
     "@advui/charts": "workspace:*",
@@ -26,11 +27,12 @@
     "tamagui": "^2.7.7"
   },
   "devDependencies": {
-    "@types/react": "~19.2.2",
     "@advui/eslint-config": "workspace:*",
     "@advui/tsconfig": "workspace:*",
+    "@types/react": "~19.2.2",
     "react": "19.2.3",
     "react-native": "0.86.3",
-    "tamagui": "2.7.7"
+    "tamagui": "2.7.7",
+    "vitest": "^5.0.2"
   }
 }

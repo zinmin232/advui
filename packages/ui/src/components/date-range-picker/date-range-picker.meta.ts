@@ -28,9 +28,14 @@ export default defineMeta({
       description: 'Takes the same props as Date Picker, except the value is a range.',
       props: [
         {
-          name: 'value / defaultValue',
+          name: 'value',
           type: '{ start: Date | null; end: Date | null }',
           description: 'The picked range.',
+        },
+        {
+          name: 'defaultValue',
+          type: '{ start: Date | null; end: Date | null }',
+          description: 'Starting `value` when uncontrolled.',
         },
         {
           name: 'onValueChange',
@@ -50,6 +55,7 @@ export default defineMeta({
           description: 'Title of the panel.',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [{ name: 'basic', title: 'Basic' }],

@@ -26,14 +26,20 @@ export default defineMeta({
         {
           name: 'type',
           type: "'single' | 'multiple'",
+          options: ['single', 'multiple'],
           required: true,
           description:
             '`single`: one choice at a time (it stays chosen when pressed again). `multiple`: any number on.',
         },
         {
-          name: 'value / defaultValue',
-          type: 'string (single) | string[] (multiple)',
-          description: 'The chosen item values.',
+          name: 'value',
+          type: 'string | string[]',
+          description: 'The chosen item (`single`) or items (`multiple`), when you control them.',
+        },
+        {
+          name: 'defaultValue',
+          type: 'string | string[]',
+          description: 'Starting `value` when uncontrolled.',
         },
         {
           name: 'onValueChange',
@@ -43,18 +49,21 @@ export default defineMeta({
         {
           name: 'variant',
           type: "'default' | 'outline'",
+          options: ['default', 'outline'],
           default: "'default'",
           description: 'Applies to every item.',
         },
         {
           name: 'size',
           type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
           default: "'md'",
           description: 'Applies to every item.',
         },
         {
           name: 'orientation',
           type: "'horizontal' | 'vertical'",
+          options: ['horizontal', 'vertical'],
           default: "'horizontal'",
           description: 'Layout direction.',
         },
@@ -70,6 +79,7 @@ export default defineMeta({
           description: 'Names the group for screen readers, e.g. “Text alignment”.',
         },
       ],
+      children: { accepts: ['ToggleGroup.Item'] },
     },
     {
       name: 'ToggleGroup.Item',
@@ -79,6 +89,8 @@ export default defineMeta({
         { name: 'disabled', type: 'boolean', default: 'false', description: 'Not selectable.' },
         { name: 'aria-label', type: 'string', description: 'Required for icon-only items.' },
       ],
+      children: { accepts: 'text' },
+      within: 'ToggleGroup',
     },
   ],
   examples: [

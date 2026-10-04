@@ -36,20 +36,24 @@ export default defineMeta({
         {
           name: 'orientation',
           type: "'horizontal' | 'vertical'",
+          options: ['horizontal', 'vertical'],
           default: "'horizontal'",
           description: 'Lay the buttons out in a row or a column.',
         },
         {
           name: 'variant',
           type: "'default' | 'secondary' | 'outline' | 'ghost' | 'destructive'",
+          options: ['default', 'secondary', 'outline', 'ghost', 'destructive'],
           description: 'Variant for buttons that do not set their own.',
         },
         {
           name: 'size',
           type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
           description: 'Size for buttons and icon buttons that do not set their own.',
         },
       ],
+      children: { accepts: ['Button', 'IconButton', 'LoadingButton'], min: 1 },
     },
   ],
   examples: [

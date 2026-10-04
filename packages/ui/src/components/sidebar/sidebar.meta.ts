@@ -44,16 +44,40 @@ import { HomeIcon } from '@advui/icons'
           description: 'Names the navigation landmark.',
         },
         {
-          name: 'collapsed / defaultCollapsed / onCollapsedChange',
+          name: 'collapsed',
           type: 'boolean',
           description: 'Icon-only rail (64px instead of 256px).',
         },
+        {
+          name: 'defaultCollapsed',
+          type: 'boolean',
+          description: 'Starting `collapsed` when uncontrolled.',
+        },
+        {
+          name: 'onCollapsedChange',
+          type: '(collapsed: boolean) => void',
+          description: 'Called with the new `collapsed`.',
+        },
       ],
+      children: { accepts: ['Sidebar.Header', 'Sidebar.Content', 'Sidebar.Footer'], max: 3 },
     },
     {
-      name: 'Sidebar.Header / Sidebar.Content / Sidebar.Footer',
-      description: 'Top row (brand, toggle), the scrolling middle, and the bottom (account).',
+      name: 'Sidebar.Header',
+      description: 'The top row: brand and toggle.',
       props: [],
+      children: { accepts: 'any' },
+    },
+    {
+      name: 'Sidebar.Content',
+      description: 'The scrolling middle: groups and items.',
+      props: [],
+      children: { accepts: 'any' },
+    },
+    {
+      name: 'Sidebar.Footer',
+      description: 'The bottom, such as the account.',
+      props: [],
+      children: { accepts: 'any' },
     },
     {
       name: 'Sidebar.Group',
@@ -64,12 +88,19 @@ import { HomeIcon } from '@advui/icons'
           description: 'Heading that names the list; hidden but still read when collapsed.',
         },
       ],
+      children: { accepts: ['Sidebar.Item'] },
+      within: 'Sidebar',
     },
     {
       name: 'Sidebar.Item',
       props: [
         { name: 'icon', type: 'ReactNode', description: 'Shown alone when collapsed.' },
-        { name: 'href', type: 'string', description: 'Link target on web.' },
+        {
+          name: 'href',
+          type: 'string',
+          platforms: ['web'],
+          description: 'Link target. On iOS and Android, navigate in `onPress`.',
+        },
         {
           name: 'onPress',
           type: '(event) => void',
@@ -85,6 +116,8 @@ import { HomeIcon } from '@advui/icons'
         { name: 'badge', type: 'ReactNode', description: 'A count or tag after the label.' },
         { name: 'disabled', type: 'boolean', default: 'false', description: 'Not pressable.' },
       ],
+      children: { accepts: 'text' },
+      within: 'Sidebar',
     },
     {
       name: 'Sidebar.Toggle',
@@ -96,9 +129,12 @@ import { HomeIcon } from '@advui/icons'
           description: 'Button names, for translation.',
         },
       ],
+      children: { accepts: 'none' },
+      within: 'Sidebar',
     },
     {
       name: 'useSidebar()',
+      kind: 'hook',
       description: '`{ collapsed, setCollapsed }` for your own header and footer content.',
       props: [],
     },

@@ -24,7 +24,14 @@ export default defineMeta({
     {
       name: 'Pagination',
       props: [
-        { name: 'count', type: 'number', required: true, description: 'Number of pages.' },
+        {
+          name: 'count',
+          type: 'number',
+          required: true,
+          min: 0,
+          step: 1,
+          description: 'Number of pages.',
+        },
         { name: 'page', type: 'number', description: 'Current page, from 1 (controlled).' },
         {
           name: 'defaultPage',
@@ -37,21 +44,32 @@ export default defineMeta({
           name: 'siblings',
           type: 'number',
           default: '1',
+          min: 0,
+          step: 1,
           description: 'Pages shown on each side of the current one.',
         },
         {
           name: 'boundaries',
           type: 'number',
           default: '1',
+          min: 0,
+          step: 1,
           description: 'Pages always shown at the start and the end.',
         },
         {
           name: 'variant',
           type: "'full' | 'compact'",
+          options: ['full', 'compact'],
           default: "'full'",
           description: '`compact` shows "Page 3 of 10" instead of numbers; good on phones.',
         },
-        { name: 'size', type: "'sm' | 'md'", default: "'md'", description: 'Button size.' },
+        {
+          name: 'size',
+          type: "'sm' | 'md'",
+          options: ['sm', 'md'],
+          default: "'md'",
+          description: 'Button size.',
+        },
         {
           name: 'disabled',
           type: 'boolean',
@@ -64,9 +82,11 @@ export default defineMeta({
           description: 'Button names and the compact text, for translation.',
         },
       ],
+      children: { accepts: 'none' },
     },
     {
       name: 'getPaginationItems(page, count, options?)',
+      kind: 'function',
       description:
         'The page numbers and gaps to show, for building your own pager. The item count stays the same while paging.',
       props: [],

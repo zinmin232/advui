@@ -34,7 +34,17 @@ export default defineMeta({
     {
       name: 'DropdownMenu',
       props: [
-        { name: 'open / defaultOpen', type: 'boolean', description: 'Open state.' },
+        {
+          name: 'open',
+          type: 'boolean',
+          description: 'Open state, when you control it.',
+        },
+        {
+          name: 'defaultOpen',
+          type: 'boolean',
+          default: 'false',
+          description: 'Open at first, when the menu manages its state.',
+        },
         {
           name: 'onOpenChange',
           type: '(open: boolean) => void',
@@ -43,16 +53,21 @@ export default defineMeta({
         {
           name: 'side',
           type: "'top' | 'right' | 'bottom' | 'left'",
+          options: ['top', 'right', 'bottom', 'left'],
           default: "'bottom'",
-          description: 'Where to open relative to the trigger (web).',
+          platforms: ['web'],
+          description: 'Where to open relative to the trigger. iOS and Android use a bottom sheet.',
         },
         {
           name: 'align',
           type: "'start' | 'center' | 'end'",
+          options: ['start', 'center', 'end'],
           default: "'start'",
-          description: 'Alignment along that side (web).',
+          platforms: ['web'],
+          description: 'Alignment along that side.',
         },
       ],
+      children: { accepts: ['DropdownMenu.Trigger', 'DropdownMenu.Content'], max: 2 },
     },
     {
       name: 'DropdownMenu.Trigger',
@@ -64,6 +79,8 @@ export default defineMeta({
           description: 'One element, usually a Button or IconButton.',
         },
       ],
+      children: { accepts: 'any', min: 1, max: 1 },
+      within: 'DropdownMenu',
     },
     {
       name: 'DropdownMenu.Content',
@@ -71,10 +88,24 @@ export default defineMeta({
         {
           name: 'minWidth',
           type: "'$40' | '$48' | '$56' | '$64'",
+          options: ['$40', '$48', '$56', '$64'],
           default: "'$48'",
-          description: 'Minimum menu width (web).',
+          token: 'size',
+          platforms: ['web'],
+          description: 'Minimum menu width.',
         },
       ],
+      children: {
+        accepts: [
+          'DropdownMenu.Item',
+          'DropdownMenu.CheckboxItem',
+          'DropdownMenu.RadioGroup',
+          'DropdownMenu.Label',
+          'DropdownMenu.Separator',
+          'DropdownMenu.Group',
+        ],
+      },
+      within: 'DropdownMenu',
     },
     {
       name: 'DropdownMenu.Item',
@@ -85,7 +116,12 @@ export default defineMeta({
           description: 'Called when chosen; the menu closes.',
         },
         { name: 'icon', type: 'ReactNode', description: 'Leading icon.' },
-        { name: 'shortcut', type: 'string', description: 'Keyboard hint on the right (web).' },
+        {
+          name: 'shortcut',
+          type: 'string',
+          platforms: ['web'],
+          description: 'Keyboard hint on the right.',
+        },
         { name: 'destructive', type: 'boolean', description: 'Style as a dangerous action.' },
         { name: 'disabled', type: 'boolean', description: 'Skip this item.' },
         {
@@ -94,6 +130,8 @@ export default defineMeta({
           description: 'Type-ahead text when children is not a string.',
         },
       ],
+      children: { accepts: 'text' },
+      within: 'DropdownMenu.Content',
     },
     {
       name: 'DropdownMenu.CheckboxItem',
@@ -105,6 +143,8 @@ export default defineMeta({
           description: 'Called with the new state.',
         },
       ],
+      children: { accepts: 'text' },
+      within: 'DropdownMenu.Content',
     },
     {
       name: 'DropdownMenu.RadioGroup',
@@ -116,16 +156,43 @@ export default defineMeta({
           description: 'Called with the chosen value.',
         },
       ],
+      children: { accepts: ['DropdownMenu.RadioItem'] },
+      within: 'DropdownMenu.Content',
     },
     {
       name: 'DropdownMenu.RadioItem',
       props: [{ name: 'value', type: 'string', required: true, description: 'Item value.' }],
+      children: { accepts: 'text' },
+      within: 'DropdownMenu.RadioGroup',
     },
     {
-      name: 'DropdownMenu.Label / Separator / Group',
-      props: [
-        { name: 'children', type: 'ReactNode', description: 'Section heading and grouping.' },
-      ],
+      name: 'DropdownMenu.Label',
+      description: 'A heading for the items after it.',
+      props: [],
+      children: { accepts: 'text' },
+      within: 'DropdownMenu.Content',
+    },
+    {
+      name: 'DropdownMenu.Separator',
+      description: 'A line between groups of items.',
+      props: [],
+      children: { accepts: 'none' },
+      within: 'DropdownMenu.Content',
+    },
+    {
+      name: 'DropdownMenu.Group',
+      description: 'Groups items under a Label for screen readers.',
+      props: [],
+      children: {
+        accepts: [
+          'DropdownMenu.Item',
+          'DropdownMenu.CheckboxItem',
+          'DropdownMenu.RadioGroup',
+          'DropdownMenu.Label',
+          'DropdownMenu.Separator',
+        ],
+      },
+      within: 'DropdownMenu.Content',
     },
   ],
   examples: [

@@ -37,9 +37,15 @@ export default defineMeta({
       name: 'Drawer',
       props: [
         {
-          name: 'open / defaultOpen',
+          name: 'open',
           type: 'boolean',
-          description: 'Controlled / uncontrolled open state.',
+          description: 'Open state, when you control it.',
+        },
+        {
+          name: 'defaultOpen',
+          type: 'boolean',
+          default: 'false',
+          description: 'Open at first, when the drawer manages its state.',
         },
         {
           name: 'onOpenChange',
@@ -47,11 +53,14 @@ export default defineMeta({
           description: 'Called when opened or closed.',
         },
       ],
+      children: { accepts: ['Drawer.Trigger', 'Drawer.Content'], max: 2 },
     },
     {
       name: 'Drawer.Trigger',
       description: 'Opens the drawer. Use `asChild` to render your Button.',
       props: [],
+      children: { accepts: 'any', min: 1, max: 1 },
+      within: 'Drawer',
     },
     {
       name: 'Drawer.Content',
@@ -59,12 +68,14 @@ export default defineMeta({
         {
           name: 'side',
           type: "'left' | 'right' | 'top' | 'bottom'",
+          options: ['left', 'right', 'top', 'bottom'],
           default: "'right'",
           description: 'Edge the drawer is attached to.',
         },
         {
           name: 'size',
           type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
           default: "'md'",
           description: 'Width of a left or right drawer ($72, $96, $128), up to 85% of the screen.',
         },
@@ -75,13 +86,49 @@ export default defineMeta({
           description: 'Hide the × button.',
         },
       ],
+      children: { accepts: 'any' },
+      within: 'Drawer',
     },
     {
       name: 'Drawer.Body',
       description: 'Scrolls long content between the header and the footer.',
       props: [],
+      children: { accepts: 'any' },
+      within: 'Drawer.Content',
     },
-    { name: 'Drawer.Header / Footer / Title / Description / Close', props: [] },
+    {
+      name: 'Drawer.Header',
+      description: 'Stacks the title and description at the top.',
+      props: [],
+      children: { accepts: 'any' },
+    },
+    {
+      name: 'Drawer.Footer',
+      description: 'A row of actions at the bottom.',
+      props: [],
+      children: { accepts: 'any' },
+    },
+    {
+      name: 'Drawer.Title',
+      description: 'Names the drawer for screen readers.',
+      props: [],
+      children: { accepts: 'text' },
+      within: 'Drawer.Content',
+    },
+    {
+      name: 'Drawer.Description',
+      description: 'Describes the drawer; read with the title.',
+      props: [],
+      children: { accepts: 'text' },
+      within: 'Drawer.Content',
+    },
+    {
+      name: 'Drawer.Close',
+      description: 'Closes the drawer. Use `asChild` to render your Button.',
+      props: [{ name: 'asChild', type: 'boolean', description: 'Wrap your own Button.' }],
+      children: { accepts: 'any', min: 1, max: 1 },
+      within: 'Drawer.Content',
+    },
   ],
   examples: [
     {

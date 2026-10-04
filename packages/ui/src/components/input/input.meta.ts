@@ -26,6 +26,7 @@ export default defineMeta({
         {
           name: 'size',
           type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
           default: "'md'",
           description: '32, 40 or 48px tall.',
         },
@@ -36,10 +37,11 @@ export default defineMeta({
           description: 'Error styling + `aria-invalid`.',
         },
         { name: 'disabled', type: 'boolean', default: 'false', description: 'Prevents editing.' },
+        { name: 'value', type: 'string', description: 'Controlled or uncontrolled value.' },
         {
-          name: 'value / defaultValue',
+          name: 'defaultValue',
           type: 'string',
-          description: 'Controlled or uncontrolled value.',
+          description: 'Starting `value` when uncontrolled.',
         },
         {
           name: 'onChangeText',
@@ -52,6 +54,7 @@ export default defineMeta({
           description: 'Hint text — never a replacement for a label.',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [

@@ -17,14 +17,18 @@ export default defineMeta({
   parts: [
     {
       name: 'Container',
+      description: 'Takes View style props too.',
       props: [
         {
           name: 'size',
           type: "'sm' | 'md' | 'lg' | 'xl' | 'full'",
+          options: ['sm', 'md', 'lg', 'xl', 'full'],
           default: "'xl'",
-          description: 'Max width (breakpoint widths).',
+          description:
+            'Max width: the breakpoint width (640, 768, 1024 or 1280 px), or `full` for no maximum.',
         },
       ],
+      children: { accepts: 'any' },
     },
   ],
   examples: [{ name: 'container', title: 'Page container' }],

@@ -23,7 +23,12 @@ export default defineMeta({
     {
       name: 'Select',
       props: [
-        { name: 'value / defaultValue', type: 'string', description: 'Selected value.' },
+        { name: 'value', type: 'string', description: 'Selected value.' },
+        {
+          name: 'defaultValue',
+          type: 'string',
+          description: 'Starting `value` when uncontrolled.',
+        },
         {
           name: 'onValueChange',
           type: '(value: string) => void',
@@ -38,26 +43,27 @@ export default defineMeta({
         {
           name: 'size',
           type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
           default: "'md'",
           description: 'Trigger height.',
         },
+        { name: 'invalid', type: 'boolean', description: 'Error styling and `aria-invalid`.' },
+        { name: 'disabled', type: 'boolean', description: 'Not focusable or editable.' },
+        { name: 'id', type: 'string', description: 'Links the trigger to a Label’s `htmlFor`.' },
         {
-          name: 'invalid / disabled',
-          type: 'boolean',
-          description: 'Error styling / disable the trigger.',
-        },
-        {
-          name: 'id / aria-label',
+          name: 'aria-label',
           type: 'string',
-          description: 'Link to a Label, or name it directly.',
+          description: 'Names the select when there is no visible label.',
         },
         {
           name: 'width',
           type: 'SizeTokens | string',
+          token: 'size',
           default: "'100%'",
           description: 'Trigger width.',
         },
       ],
+      children: { accepts: ['Select.Item', 'Select.Group'] },
     },
     {
       name: 'Select.Item',
@@ -69,10 +75,14 @@ export default defineMeta({
           description: 'Option value. Children are the label.',
         },
       ],
+      children: { accepts: 'text' },
+      parents: ['Select', 'Select.Group'],
     },
     {
       name: 'Select.Group',
       props: [{ name: 'label', type: 'string', description: 'Group heading.' }],
+      children: { accepts: ['Select.Item'] },
+      parents: ['Select'],
     },
   ],
   examples: [
