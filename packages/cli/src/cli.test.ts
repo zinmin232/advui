@@ -85,7 +85,8 @@ describe('init + add against the local registry', () => {
     expect(existsSync(join(dir, 'tamagui.config.ts'))).toBe(true)
 
     const { items } = await addCommand(['icon-button'], options())
-    expect(items.map((i) => i.name)).toEqual(['hooks', 'spinner', 'utils', 'button', 'icon-button'])
+    // Dependencies first: the hooks import utils (useBreakpoint reads utils/responsive).
+    expect(items.map((i) => i.name)).toEqual(['utils', 'hooks', 'spinner', 'button', 'icon-button'])
     expect(existsSync(join(dir, 'ui/components/button/Button.tsx'))).toBe(true)
     // Button imports ../../utils/isTextContent, which must land next to it.
     expect(existsSync(join(dir, 'ui/utils/isTextContent.ts'))).toBe(true)
