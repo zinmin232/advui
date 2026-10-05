@@ -1,3 +1,4 @@
+import { components } from '@advui/catalog'
 import { appExamples } from '@advui/examples/meta'
 import AxeBuilder from '@axe-core/playwright'
 import type { Page } from '@playwright/test'
@@ -62,6 +63,26 @@ test('component page contains every documentation section', async ({ page }) => 
     'Buttons & Actions',
   )
   await expect(page.getByRole('table').first()).toContainText('variant')
+})
+
+// Examples hard-code element ids, so a page must render each example once: a
+// second copy duplicates the ids and every label then names its field twice.
+for (const { slug } of components) {
+  test(`no duplicate element ids on /docs/components/${slug}`, async ({ page }) => {
+    await page.goto(`/docs/components/${slug}`)
+    await page.waitForLoadState('networkidle')
+    const duplicates = await page.evaluate(() => {
+      const ids = [...document.querySelectorAll('[id]')].map((el) => el.id)
+      return [...new Set(ids.filter((id, i) => ids.indexOf(id) !== i))]
+    })
+    expect(duplicates).toEqual([])
+  })
+}
+
+test('example fields are named by their label once', async ({ page }) => {
+  await page.goto('/docs/components/label')
+  await page.waitForLoadState('networkidle')
+  await expect(page.locator('#full-name')).toHaveAccessibleName('Full name')
 })
 
 test('playground updates the preview and generated JSX', async ({ page }) => {

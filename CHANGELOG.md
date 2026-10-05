@@ -33,6 +33,15 @@ one version.
   file), a square silent loop, a flood-safety radio message and a voice
   message. They are served from the docs site (`/media`) and made by
   `scripts/demo-media/make-demo-media.ps1`.
+- **BarChart, LineChart and AreaChart** are generic over the row type, like
+  DataTable: `data` is `T[]` (any object type), and `index` and each series
+  `key` must be fields of `T`. Rows typed with an `interface` now compile
+  (they failed with "Index signature for type 'string' is missing"), and a
+  misspelled `index` or series key is a type error. Rows typed as
+  `Record<string, unknown>` take any field name, as before. A `series` array
+  declared apart from the chart needs `as const` (or a
+  `BarChartProps<Row>['series']` annotation) so its keys stay literal; a plain
+  `{ key: string }[]` no longer type-checks against typed rows.
 
 - Stable after the Android phone check: Stat, KPI Card, List, Timeline,
   Image, Table, Pagination, Stepper, Data Table, Tree View, Navigation Menu,
@@ -43,6 +52,10 @@ one version.
 
 ### Fixed
 
+- Button, Toggle, Toggle Group and Fab on native: holding them did not
+  show the pressed color. Tamagui's React Native animation driver updated
+  press colors without a render, so the view never received the new color. The
+  driver now re-renders on press, hover and focus changes.
 - TalkBack kept reading a cleared state on Android: "Page 1, selected" and
   "Previous page, disabled" after paging, or a disabled button after it was
   enabled again. React Native keeps the last value of an accessibility prop
@@ -79,10 +92,15 @@ one version.
   when given a hint, now set this native-only prop on iOS and Android only.
 - Docs: the install steps said React Native Web is installed automatically.
   It is not; web apps add `react-native-web` themselves.
+- Docs: component pages without a playground rendered their first example twice
+  (as the preview and again under Examples), duplicating the element ids the
+  example sets, so fields were named twice ("Full name Full name"). The first
+  example is now only the preview. The react-native-web stylesheet was also
+  inserted once per streamed chunk under the same id. An e2e test now checks
+  every component page for duplicate ids.
 - CLI registry: the hooks, utils and chart files came out in a different
   order on Windows than on Linux, since NTFS lists files ignoring case. They
-  are sorted now, so the registry is the same on every machine. The `select`
-  item is rebuilt with the web `accessibilityHint` fix.
+  are sorted now, so the registry is the same on every machine.
 
 ## [0.11.0] - 2026-10-04
 

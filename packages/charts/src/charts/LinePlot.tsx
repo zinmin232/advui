@@ -10,17 +10,21 @@ import { formatFull, numberAt } from './format'
 import { linearScale, niceTicks } from './scale'
 import { Circle, G, Line, Path, Svg } from './svg'
 
-export interface LinePlotProps {
+// Rows are `object`, not `Record<string, unknown>`: an interface has no index signature.
+export interface LinePlotProps<T extends object = Record<string, unknown>> {
   title: string
   description?: string
-  /** One object per x position, e.g. `{ month: 'Jan', reached: 1200 }`. */
-  data: Record<string, unknown>[]
+  /**
+   * One object per x position, e.g. `{ month: 'Jan', reached: 1200 }`. The row
+   * type is inferred from here only; `index` and `series` must name its fields.
+   */
+  data: readonly T[]
   /** The field holding each row's x label. */
-  index: string
+  index: NoInfer<keyof T & string>
   /** Heading of the x column in the table view. Default: `index`. */
   indexLabel?: string
   /** The numeric fields to plot, in color order. */
-  series: ChartSeries[]
+  series: readonly ChartSeries<NoInfer<keyof T & string>>[]
   /** Height in pixels, including the axes. Default: 240. */
   height?: number
   width?: number
@@ -37,7 +41,7 @@ export interface LinePlotProps {
 }
 
 /** Shared by LineChart and AreaChart. */
-export function LinePlot({
+export function LinePlot<T extends object>({
   title,
   description,
   data,
@@ -52,7 +56,7 @@ export function LinePlot({
   labels,
   area = false,
   stacked = false,
-}: LinePlotProps & { area?: boolean; stacked?: boolean }) {
+}: LinePlotProps<T> & { area?: boolean; stacked?: boolean }) {
   const colors = useChartColors()
   const ink = useChartInk(surface)
   const categories = data.map((row) => String(row[index] ?? ''))
