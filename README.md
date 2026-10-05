@@ -147,6 +147,7 @@ app in Expo Go.
 
 ```bash
 pnpm add @advui/core @advui/theme @advui/icons tamagui
+pnpm add react-native-web   # web only (Next.js, Vite)
 # add the packages you need:
 pnpm add @advui/data      # tables, data grid, tree view, timeline, stats
 pnpm add @advui/charts    # charts (also installs @advui/data)
