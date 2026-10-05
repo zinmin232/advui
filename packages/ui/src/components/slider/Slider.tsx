@@ -9,6 +9,7 @@ import {
   useDidFinishSSR,
 } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
+import { ariaState } from '../../utils/ariaState'
 
 export type SliderValue = number | number[]
 export type SliderSize = 'sm' | 'md' | 'lg'
@@ -226,7 +227,7 @@ export const Slider = forwardRef<TamaguiElement, SliderProps>(function Slider(
           aria-label={thumbLabel(index)}
           aria-labelledby={values.length === 1 ? ariaLabelledBy : undefined}
           aria-valuetext={getValueText?.(value)}
-          aria-disabled={disabled || undefined}
+          aria-disabled={ariaState(disabled)}
           {...(!isWeb && {
             // Screen readers adjust sliders with swipe gestures (increment / decrement).
             accessible: true,

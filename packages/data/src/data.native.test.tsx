@@ -1,6 +1,7 @@
 import { describe, expect, it, jest } from '@jest/globals'
 import { fireEvent, screen } from '@testing-library/react-native'
 import { PlusIcon } from '@advui/icons'
+import { StyleSheet } from 'react-native'
 import { renderNative } from '../test/native-utils'
 import { DataGrid, DataTable, KpiCard, Stat, Table, Timeline, TreeView } from './index'
 
@@ -62,6 +63,26 @@ describe('@advui/data native rendering', () => {
     await fireEvent.press(screen.getByRole('button', { name: 'Population, sorted descending' }))
     expect(onSort).toHaveBeenCalledTimes(1)
     expect(screen.getByText('687,867')).toBeOnTheScreen()
+  })
+
+  it('Table with minWidth gets a set width, so its columns line up', async () => {
+    // Regression: in the sideways ScrollView each row sized its flex columns to
+    // its own text, so the columns drifted apart on Android.
+    await renderNative(
+      <Table aria-label="Invoices" minWidth={480}>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>INV-001</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>,
+    )
+    const table = () => screen.getByLabelText('Invoices')
+    expect(StyleSheet.flatten(table().props.style).width).toBe(480)
+    // Wider than minWidth: the table fills the visible width.
+    const scrollView = table().parent!.parent!
+    await fireEvent(scrollView, 'layout', { nativeEvent: { layout: { width: 700, height: 200 } } })
+    expect(StyleSheet.flatten(table().props.style).width).toBe(700)
   })
 
   it('DataTable sorts, selects and pages on native', async () => {
@@ -128,6 +149,12 @@ describe('@advui/data native rendering', () => {
     expect(screen.getByLabelText('Township, Hakha: Hakha')).toBeOnTheScreen()
     await fireEvent.press(screen.getByRole('button', { name: 'Reached, Hakha: 4200' }))
     const field = screen.getByLabelText('Reached, Hakha')
+    // Regression: the return key blurred the field on Android, and a blur drops
+    // an invalid value, so its error never showed.
+    expect(field.props.submitBehavior).toBe('submit')
+    await fireEvent.changeText(field, 'many')
+    await fireEvent(field, 'submitEditing')
+    expect(screen.getByText(/^Reached, Hakha: /)).toBeOnTheScreen()
     await fireEvent.changeText(field, '4500')
     await fireEvent(field, 'submitEditing')
     expect(onCellChange).toHaveBeenCalledWith(expect.objectContaining({ value: 4500 }))

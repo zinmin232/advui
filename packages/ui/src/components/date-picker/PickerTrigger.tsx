@@ -4,6 +4,7 @@ import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui
 import { useFieldControl } from '../../hooks/useFieldControl'
 import { fieldBoxStyle } from '../input/Input'
 import { Text } from '../typography/Text'
+import { ariaState } from '../../utils/ariaState'
 
 const TriggerFrame = styled(View, {
   name: 'PickerTrigger',
@@ -66,7 +67,7 @@ export const PickerTrigger = forwardRef<TamaguiElement, PickerTriggerProps>(
         disabled={disabled}
         aria-haspopup="dialog"
         aria-invalid={invalid || undefined}
-        aria-disabled={disabled || undefined}
+        aria-disabled={ariaState(disabled)}
         aria-describedby={[valueId, describedBy].filter(Boolean).join(' ')}
         {...(isWeb
           ? { type: 'button' }

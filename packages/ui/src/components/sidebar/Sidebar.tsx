@@ -14,6 +14,7 @@ import { useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
 import { IconButton } from '../icon-button/IconButton'
 import { Text } from '../typography/Text'
+import { ariaState } from '../../utils/ariaState'
 
 const linkReset = { textDecoration: 'none', textAlign: 'start' } as const
 
@@ -244,7 +245,7 @@ const SidebarItem = forwardRef<TamaguiElement, SidebarItemProps>(function Sideba
         role="link"
         // Web: an <a> underlines its text and a <button> centers it; links here do neither.
         {...(isWeb && { style: linkReset })}
-        aria-disabled={disabled || undefined}
+        aria-disabled={ariaState(disabled)}
         {...(isWeb
           ? { 'aria-current': active ? ('page' as const) : undefined }
           : { accessible: true, ...(nativeName && { 'aria-label': nativeName }) })}

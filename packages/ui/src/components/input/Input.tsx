@@ -1,6 +1,7 @@
 import { forwardRef } from 'react'
 import { type GetProps, Input as TamaguiInput, type TamaguiElement, styled } from 'tamagui'
 import { useFieldControl } from '../../hooks/useFieldControl'
+import { ariaState } from '../../utils/ariaState'
 
 /** Box styles shared by text fields and field-like triggers (Select). */
 export const fieldBoxStyle = {
@@ -70,7 +71,7 @@ export const Input = forwardRef<TamaguiElement, InputProps>(function Input(input
       invalid={invalid}
       disabled={disabled}
       aria-invalid={invalid || undefined}
-      aria-disabled={disabled || undefined}
+      aria-disabled={ariaState(disabled)}
       {...props}
     />
   )

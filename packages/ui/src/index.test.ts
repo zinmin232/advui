@@ -35,6 +35,7 @@ describe('@advui/core public API', () => {
       'Dialog',
       'Card',
       'UniversalProvider',
+      'ariaState',
       'isTextContent',
       'responsiveStyle',
       'Wrap',

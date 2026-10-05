@@ -150,6 +150,8 @@ export function DataGrid<T>({
   const cellId = (row: number, col: number) => `${baseId}-${row}-${col}`
   const refocus = useRef(false)
   const [gridFocused, setGridFocused] = useState(false)
+  const scrollRef = useRef<{ scrollTo: (to: { x: number; animated: boolean }) => void }>(null)
+  const editorRef = useRef<{ focus: () => void }>(null)
 
   const rowCount = data.length
   const colCount = columns.length
@@ -163,6 +165,18 @@ export function DataGrid<T>({
   const focusCell = (position: Position) => {
     if (isWeb) document.getElementById(cellId(position.row, position.col))?.focus()
   }
+
+  // Native: Android ignores `autoFocus` on an input mounted by a press, so the
+  // keyboard stayed closed. Focus the editor once it is mounted, and scroll its
+  // column into view: a phone shows only part of a wide grid.
+  useEffect(() => {
+    if (isWeb || !editing) return
+    const left = widths.slice(0, editing.col).reduce((sum, width) => sum + width, 0)
+    scrollRef.current?.scrollTo({ x: left, animated: true })
+    const timer = setTimeout(() => editorRef.current?.focus(), 50)
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editing])
 
   // After an edit ends, focus goes back to its cell (web).
   useEffect(() => {
@@ -290,6 +304,7 @@ export function DataGrid<T>({
   return (
     <View gap="$2" width="100%">
       <ScrollView
+        ref={scrollRef as never}
         horizontal
         // Hugs the columns when they are narrower than the page; scrolls when wider.
         alignSelf="flex-start"
@@ -387,6 +402,7 @@ export function DataGrid<T>({
                   >
                     {isEditing ? (
                       <Input
+                        ref={editorRef as never}
                         autoFocus
                         unstyled
                         size={size}
@@ -410,7 +426,13 @@ export function DataGrid<T>({
                         }}
                         {...(isWeb
                           ? { onKeyDown: onEditorKeyDown }
-                          : { onSubmitEditing: () => commit(), returnKeyType: 'done' as const })}
+                          : {
+                              onSubmitEditing: () => commit(),
+                              returnKeyType: 'done' as const,
+                              // Done must not blur: a blur drops an invalid value, so the
+                              // error would never show.
+                              submitBehavior: 'submit' as const,
+                            })}
                         onBlur={() => {
                           // Clicking elsewhere saves; an invalid value is dropped.
                           if (!commit()) cancelEdit()

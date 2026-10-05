@@ -163,8 +163,9 @@ export const Pagination = forwardRef<TamaguiElement, PaginationProps>(function P
                   aria-label={labels.page(item)}
                   disabled={disabled}
                   // Native has no aria-current; a selected button says "selected".
-                  {...(item === page &&
-                    (isWeb ? { 'aria-current': 'page' as const } : { 'aria-selected': true }))}
+                  {...(isWeb
+                    ? item === page && { 'aria-current': 'page' as const }
+                    : { 'aria-selected': item === page })}
                   onPress={() => setPage(item)}
                 >
                   {String(item)}

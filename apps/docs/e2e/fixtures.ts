@@ -45,6 +45,9 @@ export const test = base.extend({
     await page.route(remoteMedia, (route) =>
       route.fulfill({ contentType: 'audio/wav', body: silence }),
     )
+    // Examples that show a failed load point at `.invalid`; fail them at once
+    // instead of waiting on DNS.
+    await page.route(/^https:\/\/[^/]+\.invalid\//, (route) => route.abort())
     await provide(page)
   },
 })

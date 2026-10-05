@@ -904,6 +904,26 @@ describe('native rendering', () => {
     expect(screen.getByRole('button', { name: 'Next page' })).toBeDisabled()
   })
 
+  it('cleared disabled, busy and selected states are sent as false', async () => {
+    // Regression: Android keeps the last value of a prop that is removed, so a
+    // state that went from true to absent stayed on and TalkBack kept reading
+    // "Page 1, selected" and "Previous page, disabled" after paging.
+    await renderNative(<Pagination count={10} />)
+    await fireEvent.press(screen.getByRole('button', { name: 'Next page' }))
+    const state = (name: string) => {
+      const { props } = screen.getByRole('button', { name })
+      return {
+        ...props.accessibilityState,
+        disabled: props['aria-disabled'],
+        busy: props['aria-busy'],
+        selected: props['aria-selected'],
+      }
+    }
+    expect(state('Previous page')).toMatchObject({ disabled: false, busy: false })
+    expect(state('Page 1')).toMatchObject({ selected: false, disabled: false })
+    expect(state('Page 2')).toMatchObject({ selected: true })
+  })
+
   it('Stepper names each step with its number and status', async () => {
     const onStepPress = jest.fn()
     await renderNative(
