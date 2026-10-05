@@ -159,7 +159,7 @@ export default defineMeta({
   ],
   playground: {
     component: 'Table',
-    staticProps: { 'aria-label': 'Empty table' },
+    staticProps: { caption: 'Recent invoices' },
     controls: [
       { prop: 'variant', type: 'select', options: ['plain', 'outline'], default: 'outline' },
       { prop: 'size', type: 'select', options: ['sm', 'md'], default: 'md' },

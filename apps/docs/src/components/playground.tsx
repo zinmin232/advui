@@ -1,9 +1,17 @@
 'use client'
 
 import * as UI from '@advui/core'
+import * as Data from '@advui/data'
 import type { PlaygroundControl, PlaygroundSpec } from '@advui/catalog'
 import { Button, HStack, Input, Label, Switch, Text, VStack, toast } from '@advui/core'
-import { CopyIcon, ExternalLinkIcon, SettingsIcon } from '@advui/icons'
+import {
+  CopyIcon,
+  ExternalLinkIcon,
+  FileIcon,
+  FolderIcon,
+  ImageIcon,
+  SettingsIcon,
+} from '@advui/icons'
 import { type ReactNode, useMemo, useState } from 'react'
 import { View } from 'tamagui'
 import { themeToCode, useThemeStore } from '../lib/theme-store'
@@ -12,6 +20,12 @@ import { Segmented } from './customizer-panel'
 import { withBasePath } from '../lib/site'
 
 type Values = Record<string, string | number | boolean>
+
+// Specs name an export; Data components (KPI Card, Table) have playgrounds too.
+const components = { ...UI, ...Data } as unknown as Record<
+  string,
+  React.ComponentType<Record<string, unknown>> | undefined
+>
 
 function GridCell({ label }: { label: string }) {
   return (
@@ -31,6 +45,12 @@ interface Structure {
   props?: Record<string, unknown>
   propsCode?: string[]
 }
+
+const invoices = [
+  ['INV-001', 'Paid', '$250.00'],
+  ['INV-002', 'Pending', '$150.00'],
+  ['INV-003', 'Unpaid', '$350.00'],
+] as const
 
 /** Children for components whose content is structural rather than a text label. */
 const structuralChildren: Record<string, Structure> = {
@@ -80,6 +100,59 @@ const structuralChildren: Record<string, Structure> = {
   <Box>2</Box>
   <Box>3</Box>
   <Box>4</Box>`,
+  },
+  List: {
+    element: (
+      <>
+        <UI.List.Item leading={<FolderIcon />} title="Field reports" description="12 files" />
+        <UI.List.Item
+          leading={<FileIcon />}
+          title="Budget 2026.xlsx"
+          description="Edited yesterday"
+        />
+        <UI.List.Item leading={<ImageIcon />} title="Site photo.jpg" trailing="JPG" />
+      </>
+    ),
+    code: `  <List.Item leading={<FolderIcon />} title="Field reports" description="12 files" />
+  <List.Item leading={<FileIcon />} title="Budget 2026.xlsx" description="Edited yesterday" />
+  <List.Item leading={<ImageIcon />} title="Site photo.jpg" trailing="JPG" />`,
+  },
+  Table: {
+    element: (
+      <>
+        <Data.Table.Header>
+          <Data.Table.Row>
+            <Data.Table.Head>Invoice</Data.Table.Head>
+            <Data.Table.Head>Status</Data.Table.Head>
+            <Data.Table.Head align="end">Amount</Data.Table.Head>
+          </Data.Table.Row>
+        </Data.Table.Header>
+        <Data.Table.Body>
+          {invoices.map(([invoice, status, amount]) => (
+            <Data.Table.Row key={invoice}>
+              <Data.Table.Cell>{invoice}</Data.Table.Cell>
+              <Data.Table.Cell>{status}</Data.Table.Cell>
+              <Data.Table.Cell align="end">{amount}</Data.Table.Cell>
+            </Data.Table.Row>
+          ))}
+        </Data.Table.Body>
+      </>
+    ),
+    code: `  <Table.Header>
+    <Table.Row>
+      <Table.Head>Invoice</Table.Head>
+      <Table.Head>Status</Table.Head>
+      <Table.Head align="end">Amount</Table.Head>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>INV-001</Table.Cell>
+      <Table.Cell>Paid</Table.Cell>
+      <Table.Cell align="end">$250.00</Table.Cell>
+    </Table.Row>
+    …
+  </Table.Body>`,
   },
   // In a horizontal form the fields share the row, as in a search or filter form.
   Form: {
@@ -232,9 +305,7 @@ export function Playground({
 }) {
   const [values, setValues] = useState<Values>(() => initialValues(spec, initial))
   const { theme } = useThemeStore()
-  const Component = (UI as unknown as Record<string, React.ComponentType<Record<string, unknown>>>)[
-    spec.component
-  ]
+  const Component = components[spec.component]
   const jsx = useMemo(() => generateJsx(spec, values), [spec, values])
 
   if (!Component) return <Text tone="error">Unknown component {spec.component}</Text>
@@ -247,7 +318,8 @@ export function Playground({
       {...values}
       {...structural?.props}
       {...(spec.component === 'Card' ? { width: '100%', maxWidth: '$80' } : null)}
-      {...(spec.component === 'Grid' ? { width: '100%' } : null)}
+      {...(spec.component === 'Grid' || spec.component === 'Table' ? { width: '100%' } : null)}
+      {...(spec.component === 'List' ? { width: '100%', maxWidth: '$96' } : null)}
       {...(spec.component === 'Form' ? { width: '100%', maxWidth: '$96' } : null)}
     >
       {structural ? resolve(structural.element, values) : spec.children}
@@ -267,12 +339,13 @@ export function Playground({
       overflow="hidden"
       $lg={{ flexDirection: 'row' }}
     >
+      {/* flex only in the row: below lg its 0px basis would collapse the column
+          to nothing, and the preview would draw under the props. */}
       <View
-        flex={1}
         minWidth={0}
         borderColor="$border"
         borderBottomWidth={1}
-        $lg={{ borderBottomWidth: 0, borderRightWidth: 1 }}
+        $lg={{ flex: 1, borderBottomWidth: 0, borderRightWidth: 1 }}
       >
         <PreviewSurface minHeight="$72">
           {/* Remount when props change so uncontrolled defaults (defaultChecked…) apply. */}

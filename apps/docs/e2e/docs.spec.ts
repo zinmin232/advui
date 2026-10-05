@@ -94,6 +94,37 @@ test('playground updates the preview and generated JSX', async ({ page }) => {
   )
 })
 
+test('every playground renders its component, Data ones included', async ({ page }) => {
+  for (const { slug } of components.filter((c) => c.playground)) {
+    await page.goto(`/docs/components/${slug}`)
+    await expect(page.getByLabel('Generated JSX'), slug).toBeVisible()
+    await expect(page.getByText(/^Unknown component/), slug).toHaveCount(0)
+  }
+  // List and Table need rows to show anything.
+  await page.goto('/playground?component=List')
+  await expect(page.getByRole('listitem')).toHaveCount(3)
+  await page.goto('/playground?component=Table')
+  await expect(page.getByRole('table', { name: 'Recent invoices' }).getByRole('row')).toHaveCount(4)
+})
+
+// The list floats in a portal that ignores the pointer; the options must not.
+test('combobox fields open on a click and pick options with the mouse', async ({ page }) => {
+  await page.goto('/docs/components/combobox')
+  const zone = page.getByRole('combobox', { name: 'Time zone' })
+  await zone.click()
+  await expect(zone).toHaveAttribute('aria-expanded', 'true')
+  await page.getByRole('option', { name: /^Bangkok/ }).click()
+  await expect(zone).toHaveValue('Bangkok')
+  await expect(zone).toHaveAttribute('aria-expanded', 'false')
+
+  await page.goto('/docs/components/multi-select')
+  const labels = page.getByRole('combobox', { name: 'Labels' })
+  await labels.click()
+  await page.getByRole('option', { name: 'Feature' }).click()
+  await expect(page.getByRole('button', { name: 'Remove Feature' })).toBeVisible()
+  await expect(labels).toHaveAttribute('aria-expanded', 'true')
+})
+
 test('grid splits 8 / 4 from md', async ({ page }) => {
   await page.goto('/preview/grid/two-column-8-4')
   const [main, side] = await gridCells(page, ['Sprint progress', 'Details'])
