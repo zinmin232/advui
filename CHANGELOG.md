@@ -79,6 +79,12 @@ one version.
   when given a hint, now set this native-only prop on iOS and Android only.
 - Docs: the install steps said React Native Web is installed automatically.
   It is not; web apps add `react-native-web` themselves.
+- Docs: component pages without a playground rendered their first example twice
+  (as the preview and again under Examples), duplicating the element ids the
+  example sets, so fields were named twice ("Full name Full name"). The first
+  example is now only the preview. The react-native-web stylesheet was also
+  inserted once per streamed chunk under the same id. An e2e test now checks
+  every component page for duplicate ids.
 
 ## [0.11.0] - 2026-10-04
 

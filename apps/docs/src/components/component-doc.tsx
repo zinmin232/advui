@@ -175,13 +175,17 @@ function SectionAnchor({ id, children }: { id: string; children: ReactNode }) {
 
 export function ComponentDoc({ data }: { data: ComponentDocData }) {
   const { meta } = data
-  const [first] = data.examples
+  const [first, ...rest] = data.examples
+  // Without a playground the first example is the preview, so it is not repeated
+  // under Examples: a second copy duplicates the element ids examples hard-code,
+  // and labels then name their field twice ("Name Name").
+  const listed = meta.playground ? data.examples : rest
   const toc: TocItem[] = [
     { id: 'preview', title: meta.playground ? 'Playground' : 'Preview' },
     { id: 'installation', title: 'Installation' },
     { id: 'usage', title: 'Usage' },
-    { id: 'examples', title: 'Examples' },
-    ...data.examples.map((e) => ({ id: `example-${e.name}`, title: e.title, level: 3 as const })),
+    ...(listed.length ? [{ id: 'examples', title: 'Examples' }] : []),
+    ...listed.map((e) => ({ id: `example-${e.name}`, title: e.title, level: 3 as const })),
     { id: 'api', title: 'API reference' },
     ...(meta.tables ?? []).map((t) => ({ id: t.id, title: t.title })),
     { id: 'accessibility', title: 'Accessibility' },
@@ -279,14 +283,16 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
         <CodeBlock {...data.usage} />
       </SectionAnchor>
 
-      <SectionAnchor id="examples">
-        <H2 id="examples-heading">Examples</H2>
-        <VStack gap="$8">
-          {data.examples.map((example) => (
-            <ComponentPreview key={example.name} slug={meta.slug} {...example} />
-          ))}
-        </VStack>
-      </SectionAnchor>
+      {listed.length ? (
+        <SectionAnchor id="examples">
+          <H2 id="examples-heading">Examples</H2>
+          <VStack gap="$8">
+            {listed.map((example) => (
+              <ComponentPreview key={example.name} slug={meta.slug} {...example} />
+            ))}
+          </VStack>
+        </SectionAnchor>
+      ) : null}
 
       <SectionAnchor id="api">
         <H2 id="api-heading">API reference</H2>
