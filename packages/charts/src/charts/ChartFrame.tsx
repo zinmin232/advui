@@ -13,7 +13,7 @@ export interface ChartSeries<Key extends string = string> {
 export interface ChartLabels {
   showTable: string
   hideTable: string
-  /** Read before the arrow-key hint on the focused plot. */
+  /** Ends the plot's name on web. Native has no arrow keys, so it is left out there. */
   keyboardHint: string
 }
 
@@ -191,7 +191,7 @@ export function ChartFrame({
         }
         // The plot is one focusable image; the arrow keys read it point by point.
         role="img"
-        aria-label={`${title}. ${description ? `${description}. ` : ''}${labels.keyboardHint}`}
+        aria-label={`${title}.${description ? ` ${description}.` : ''}${isWeb ? ` ${labels.keyboardHint}` : ''}`}
         {...(isWeb
           ? {
               tabIndex: 0,

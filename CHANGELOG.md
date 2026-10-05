@@ -7,8 +7,32 @@ one version.
 
 ## [Unreleased]
 
+### Added
+
+- **`ariaState(on)`** in `@advui/core`, for components built on core: a
+  boolean `aria-disabled`, `aria-busy` or `aria-selected` that is left out
+  when off on web and sent as `false` on iOS and Android.
+- **Video `crossOrigin`** (`'anonymous'` or `'use-credentials'`, web): browsers
+  only load caption files from another origin when the video is fetched with
+  CORS.
+- Docs: a **Form playground** (title, description, direction, gap, loading,
+  disabled, full width), also on the Playground page. Text props in every
+  playground now appear in the generated JSX even when unchanged.
+
 ### Changed
 
+- **A disabled Form disables every form control inside it**, in a Field or
+  not: Input, Textarea, Select, Checkbox, Switch, Radio Group, the pickers
+  and any control that calls `useFieldControl`. Buttons other than
+  `Form.Submit` stay enabled, so Cancel still works.
+- **`useFormStatus` is now `useParentForm`**, and its type `FormStatus` is
+  `FormContextValue`, so it is not mistaken for React DOM's `useFormStatus`
+  (Server Actions). The old names still work as deprecated aliases.
+- The Video and Audio Player examples play clips made for these docs instead
+  of MDN's samples: a handwashing video with English captions (a WebVTT
+  file), a square silent loop, a flood-safety radio message and a voice
+  message. They are served from the docs site (`/media`) and made by
+  `scripts/demo-media/make-demo-media.ps1`.
 - **BarChart, LineChart and AreaChart** are generic over the row type, like
   DataTable: `data` is `T[]` (any object type), and `index` and each series
   `key` must be fields of `T`. Rows typed with an `interface` now compile
@@ -18,6 +42,52 @@ one version.
   declared apart from the chart needs `as const` (or a
   `BarChartProps<Row>['series']` annotation) so its keys stay literal; a plain
   `{ key: string }[]` no longer type-checks against typed rows.
+
+- Stable after the Android phone check: Stat, KPI Card, List, Timeline,
+  Image, Table, Pagination, Stepper, Data Table, Tree View, Navigation Menu,
+  Sidebar, Search, Command Palette, Image Gallery, Bar / Line / Area / Pie
+  Chart, Resizable Panel, Data Grid, Video, Audio Player and Loading Button.
+  Form and Rich Text Editor stay beta until their open API questions are
+  settled.
+
+### Fixed
+
+- TalkBack kept reading a cleared state on Android: "Page 1, selected" and
+  "Previous page, disabled" after paging, or a disabled button after it was
+  enabled again. React Native keeps the last value of an accessibility prop
+  that is removed, so disabled, busy and selected states are now sent as
+  `false` when they turn off (Button, Pagination, Input, Textarea, Slider,
+  Toggle, Toggle Group, Chip, Fab, List, Menu, Navigation Bar, Sidebar,
+  Calendar, Combobox, pickers, File Dropzone, Search, Circular Progress and
+  Tree View).
+- Button and Loading Button on Android: while loading, TalkBack read only
+  "busy", and went on reading "busy" after loading ended. A text button now
+  names itself with its text on native, so it reads "Saving…, busy" and then
+  its label again. Data Table and KPI Card set `aria-busy` on web only, since
+  a native container cannot report it without a name.
+- Table with `minWidth` on iOS and Android: the columns did not line up from
+  row to row, because each row sized its columns to its own text inside the
+  sideways scroll view. The table now gets a set width there.
+- Data Grid on Android: tapping a cell opened the editor without the
+  keyboard, and the cell could stay off screen. The editor is now focused and
+  its column scrolled into view. The Done key no longer blurs the editor, so
+  an invalid value shows its error instead of being dropped.
+- Charts on iOS and Android: the plot's name ended with "Use the arrow keys
+  to read each value", which a phone cannot do. The hint is web only now.
+- Image: the fallback example used a relative path, which never fails on
+  Android, so the fallback did not show there. It now uses an address that
+  fails on every platform.
+- Table: the basic example squeezed its columns on phones and broke words
+  mid-way; it scrolls sideways below 480 pt now.
+- Sidebar: the App sidebar example squeezed its page into a 60 pt column on
+  phones, so the heading and text broke letter by letter. Below `md` it now
+  starts as an icon rail, and opening the sidebar pushes the page aside
+  instead of squeezing it. Desktop looks the same.
+- Select on web: every page with a Select logged "React does not recognize
+  the `accessibilityHint` prop on a DOM element". Select, and Rich Text Editor
+  when given a hint, now set this native-only prop on iOS and Android only.
+- Docs: the install steps said React Native Web is installed automatically.
+  It is not; web apps add `react-native-web` themselves.
 
 ## [0.11.0] - 2026-10-04
 

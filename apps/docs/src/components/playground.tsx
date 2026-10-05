@@ -23,8 +23,17 @@ function GridCell({ label }: { label: string }) {
   )
 }
 
+interface Structure {
+  /** The children, or a function of the props when they change with them. */
+  element: ReactNode | ((values: Values) => ReactNode)
+  code: string | ((values: Values) => string)
+  /** Props the controls do not set, such as a footer, and how they read in the JSX. */
+  props?: Record<string, unknown>
+  propsCode?: string[]
+}
+
 /** Children for components whose content is structural rather than a text label. */
-const structuralChildren: Record<string, { element: ReactNode; code: string }> = {
+const structuralChildren: Record<string, Structure> = {
   Card: {
     element: (
       <>
@@ -72,7 +81,53 @@ const structuralChildren: Record<string, { element: ReactNode; code: string }> =
   <Box>3</Box>
   <Box>4</Box>`,
   },
+  // In a horizontal form the fields share the row, as in a search or filter form.
+  Form: {
+    element: ({ direction }) => {
+      const share = direction === 'horizontal' ? { flex: 1, minWidth: 160 } : null
+      return (
+        <>
+          <UI.Field label="Name" {...share}>
+            <UI.Input placeholder="Ada Lovelace" />
+          </UI.Field>
+          <UI.Field label="Email" {...share}>
+            <UI.Input inputMode="email" placeholder="ada@example.org" />
+          </UI.Field>
+        </>
+      )
+    },
+    code: ({ direction }) => {
+      const share = direction === 'horizontal' ? ' flex={1} minWidth={160}' : ''
+      return `  <Field label="Name"${share}>
+    <Input placeholder="Ada Lovelace" />
+  </Field>
+  <Field label="Email"${share}>
+    <Input inputMode="email" placeholder="ada@example.org" />
+  </Field>`
+    },
+    props: {
+      onSubmit: () => toast.success('Submitted'),
+      footer: (
+        <>
+          <UI.Button variant="outline">Cancel</UI.Button>
+          <UI.Form.Submit>Save</UI.Form.Submit>
+        </>
+      ),
+    },
+    propsCode: [
+      'onSubmit={save}',
+      `footer={
+    <>
+      <Button variant="outline">Cancel</Button>
+      <Form.Submit>Save</Form.Submit>
+    </>
+  }`,
+    ],
+  },
 }
+
+const resolve = <T,>(part: T | ((values: Values) => T), values: Values) =>
+  typeof part === 'function' ? (part as (values: Values) => T)(values) : part
 
 const iconFor: Record<string, ReactNode> = { IconButton: <SettingsIcon /> }
 
@@ -94,16 +149,19 @@ export function generateJsx(spec: PlaygroundSpec, values: Values): string {
   if (spec.component === 'IconButton') props.push('icon={<SettingsIcon />}')
   for (const control of spec.controls) {
     const value = values[control.prop]
-    if (value === undefined || value === control.default || value === false || value === '')
-      continue
+    // A text control's default is sample content, such as a title, not the
+    // component's own default, so it is always shown.
+    const isDefault = value === control.default && control.type !== 'text'
+    if (value === undefined || isDefault || value === false || value === '') continue
     props.push(formatProp(control.prop, value))
   }
+  const structural = structuralChildren[spec.component]
+  props.push(...(structural?.propsCode ?? []))
   const open =
     props.length > 2
       ? `<${spec.component}\n  ${props.join('\n  ')}\n`
       : `<${spec.component}${props.length ? ` ${props.join(' ')}` : ''}`
-  const structural = structuralChildren[spec.component]
-  if (structural) return `${open}>\n${structural.code}\n</${spec.component}>`
+  if (structural) return `${open}>\n${resolve(structural.code, values)}\n</${spec.component}>`
   if (spec.children)
     return `${open}>${props.length > 2 ? '\n  ' : ''}${spec.children}${props.length > 2 ? '\n' : ''}</${spec.component}>`
   return `${open}${props.length > 2 ? '' : ' '}/>`
@@ -187,10 +245,12 @@ export function Playground({
       {...spec.staticProps}
       {...(iconFor[spec.component] ? { icon: iconFor[spec.component] } : null)}
       {...values}
+      {...structural?.props}
       {...(spec.component === 'Card' ? { width: '100%', maxWidth: '$80' } : null)}
       {...(spec.component === 'Grid' ? { width: '100%' } : null)}
+      {...(spec.component === 'Form' ? { width: '100%', maxWidth: '$96' } : null)}
     >
-      {structural ? structural.element : spec.children}
+      {structural ? resolve(structural.element, values) : spec.children}
     </Component>
   )
 

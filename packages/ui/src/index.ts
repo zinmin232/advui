@@ -5,11 +5,18 @@ export { ColorModeProvider, useColorMode, type ColorModeContextValue } from './p
 export { UniversalProvider, type UniversalProviderProps } from './provider/UniversalProvider'
 export { useControllableState } from './hooks/useControllableState'
 export { useFieldControl, type FieldControlProps, type FieldState } from './hooks/useFieldControl'
-export { useFormStatus, type FormStatus } from './hooks/useFormStatus'
+export {
+  useParentForm,
+  type FormContextValue,
+  // Deprecated aliases, kept for apps on 0.6 to 0.11.
+  useFormStatus,
+  type FormStatus,
+} from './hooks/useParentForm'
 export { useBreakpoint, useBreakpointValue } from './hooks/useBreakpoint'
 export { useReducedMotion } from './hooks/useReducedMotion'
 export { useRipple, type Ripple, type RippleOptions } from './hooks/useRipple'
 // For components built on core (the other @advui packages, or your own).
+export { ariaState } from './utils/ariaState'
 export { isTextContent } from './utils/isTextContent'
 export {
   responsiveStyle,

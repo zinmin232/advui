@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'table',
   category: 'data-display',
   description: 'Rows and columns of data, with sortable headers, stripes and sideways scrolling.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

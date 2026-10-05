@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'sidebar',
   category: 'navigation',
   description: 'App navigation down the side of the screen, collapsible to an icon rail.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [
@@ -143,7 +143,8 @@ import { HomeIcon } from '@advui/icons'
     {
       name: 'basic',
       title: 'App sidebar',
-      description: 'Groups, badges, a disabled item and the collapse toggle.',
+      description:
+        'Groups, badges, a disabled item and the collapse toggle. On phones it starts as an icon rail.',
     },
     { name: 'drawer', title: 'In a drawer on phones' },
   ],

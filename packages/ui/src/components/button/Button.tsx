@@ -14,6 +14,7 @@ import { useRipple } from '../../hooks/useRipple'
 import { ButtonGroupContext, ButtonGroupItemContext, attachedStyle } from './groupContext'
 import { Spinner } from '../spinner'
 import { isTextContent } from '../../utils/isTextContent'
+import { ariaState } from '../../utils/ariaState'
 
 export type ButtonVariant = 'default' | 'secondary' | 'outline' | 'ghost' | 'destructive' | 'link'
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'icon'
@@ -202,6 +203,10 @@ const ButtonImpl = forwardRef<TamaguiElement, ButtonProps>(function Button(
     onPressOut,
   })
   const content = isTextContent(children) ? <ButtonText>{children}</ButtonText> : children
+  // Android writes a busy view's description from its label. Without one it
+  // reads only "busy", and goes on reading it after loading ends, so a text
+  // button names itself with its text on native.
+  const nativeLabel = !isWeb && isTextContent(children) ? [children].flat().join('') : undefined
 
   return (
     <ButtonFrame
@@ -209,10 +214,11 @@ const ButtonImpl = forwardRef<TamaguiElement, ButtonProps>(function Button(
       variant={variant}
       size={size}
       disabled={inactive}
-      aria-disabled={inactive || undefined}
-      aria-busy={loading || undefined}
+      aria-disabled={ariaState(inactive)}
+      aria-busy={ariaState(loading)}
       hitSlop={isWeb ? undefined : nativeHitSlop[size]}
       {...(isWeb ? { type: 'button' } : null)}
+      {...(nativeLabel && { 'aria-label': nativeLabel })}
       {...(group?.attached && position && attachedStyle(position, group.orientation, variant))}
       {...(ripple.active && {
         pressStyle: { backgroundColor: buttonBackground[variant] },

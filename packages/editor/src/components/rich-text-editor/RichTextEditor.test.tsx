@@ -130,6 +130,13 @@ describe('RichTextEditor', () => {
     expect(within(region).getByRole('listitem')).toHaveTextContent('water')
     expect(screen.getByRole('button', { name: 'Bold' })).toBeDisabled()
   })
+
+  it('keeps the native-only accessibilityHint off the DOM', () => {
+    const { container } = renderWithProvider(
+      <RichTextEditor aria-label="Report" accessibilityHint="Markdown is supported." />,
+    )
+    expect(container.querySelector('[accessibilityhint]')).toBeNull()
+  })
 })
 
 describe('RichTextContent', () => {

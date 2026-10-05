@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'list',
   category: 'data-display',
   description: 'A vertical list of rows with a leading visual, text and trailing meta.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

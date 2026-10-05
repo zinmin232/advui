@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react'
 import { isWeb } from 'tamagui'
+import { FormContext } from './useParentForm'
 
 /** What a Field tells the control inside it. */
 export interface FieldState {
@@ -39,12 +40,14 @@ const joinIds = (...lists: Array<string | undefined>) =>
  * Fills in what the surrounding Field decides: the id its label targets,
  * `invalid`, `disabled`, `aria-required`, and the links to its help and error
  * text. The control's own props win, `invalid` and `disabled` add up, and
- * outside a Field the props come back unchanged. Call it in your own controls
- * so a Field wires them like the core ones.
+ * outside a Field the props come back unchanged, except that a disabled Form
+ * disables the control with or without a Field. Call it in your own controls
+ * so a Field and a Form wire them like the core ones.
  */
 export function useFieldControl<P extends FieldControlProps>(props: P): P {
   const field = useContext(FieldContext)
-  if (!field) return props
+  const form = useContext(FormContext)
+  if (!field) return form.disabled && !props.disabled ? { ...props, disabled: true } : props
   // Joined without repeats, so a control that passes the result on to an inner
   // control (Password Input to Input) gets the same props a second time.
   const describedBy = joinIds(props['aria-describedby'], field.describedBy)

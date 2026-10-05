@@ -7,6 +7,7 @@ import {
   isValidElement,
   useContext,
   useId,
+  useState,
 } from 'react'
 import {
   type GetProps,
@@ -146,6 +147,10 @@ const TableImpl = forwardRef<TamaguiElement, TableProps>(function Table(
 ) {
   const captionId = useId()
   const hasCaption = caption != null && !ariaLabel
+  // Native: a sideways ScrollView gives its content no width, so each row sized
+  // its flex columns to its own text and the columns did not line up. The table
+  // gets a set width there: the visible width, or `minWidth` when that is wider.
+  const [visibleWidth, setVisibleWidth] = useState(0)
   const table = (
     <StripedContext.Provider value={striped}>
       <TableFrame
@@ -154,7 +159,8 @@ const TableImpl = forwardRef<TamaguiElement, TableProps>(function Table(
         size={size}
         aria-label={ariaLabel}
         {...(hasCaption && { 'aria-labelledby': captionId })}
-        {...(minWidth != null && { minWidth })}
+        {...(minWidth != null &&
+          (isWeb ? { minWidth } : { width: Math.max(minWidth, visibleWidth) }))}
         {...props}
       >
         {children}
@@ -169,7 +175,12 @@ const TableImpl = forwardRef<TamaguiElement, TableProps>(function Table(
           width="100%"
           contentContainerStyle={{ minWidth: '100%' }}
           // Keyboard users scroll it with the arrow keys once it has focus.
-          {...(isWeb && { tabIndex: 0 })}
+          {...(isWeb
+            ? { tabIndex: 0 }
+            : {
+                onLayout: (event: { nativeEvent: { layout: { width: number } } }) =>
+                  setVisibleWidth(event.nativeEvent.layout.width),
+              })}
           focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
         >
           {table}

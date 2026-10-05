@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'timeline',
   category: 'data-display',
   description: 'Events in order along a vertical line, such as an activity feed or order history.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

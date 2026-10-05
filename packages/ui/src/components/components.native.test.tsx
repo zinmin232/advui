@@ -740,6 +740,18 @@ describe('native rendering', () => {
     expect(screen.getByPlaceholderText('Search').props.accessibilityHint).toBeUndefined()
   })
 
+  it('Field gives a Select its help text as the hint', async () => {
+    await renderNative(
+      <Field label="Plan" description="Billed monthly.">
+        <Select defaultValue="team">
+          <Select.Item value="free">Free</Select.Item>
+          <Select.Item value="team">Team</Select.Item>
+        </Select>
+      </Field>,
+    )
+    expect(screen.getByLabelText('Plan').props.accessibilityHint).toBe('Billed monthly.')
+  })
+
   it('Form submits from Form.Submit and blocks it while loading or disabled', async () => {
     const onSubmit = jest.fn<() => void>()
     const form = (state: { loading?: boolean; disabled?: boolean }) => (
@@ -753,6 +765,7 @@ describe('native rendering', () => {
         <Field label="Email">
           <Input placeholder="you@example.com" />
         </Field>
+        <Input aria-label="Notes" placeholder="Notes" />
       </Form>
     )
     const { unmount } = await renderNative(form({}))
@@ -773,6 +786,8 @@ describe('native rendering', () => {
     await renderNative(form({ disabled: true }))
     expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
     expect(screen.getByPlaceholderText('you@example.com')).toBeDisabled()
+    // A control outside a Field follows the form too.
+    expect(screen.getByPlaceholderText('Notes')).toBeDisabled()
   })
 
   it('PasswordInput toggles secure text entry from its toggle button', async () => {
@@ -902,6 +917,26 @@ describe('native rendering', () => {
     await fireEvent.press(screen.getByRole('button', { name: 'Page 10' }))
     expect(onPageChange).toHaveBeenLastCalledWith(10)
     expect(screen.getByRole('button', { name: 'Next page' })).toBeDisabled()
+  })
+
+  it('cleared disabled, busy and selected states are sent as false', async () => {
+    // Regression: Android keeps the last value of a prop that is removed, so a
+    // state that went from true to absent stayed on and TalkBack kept reading
+    // "Page 1, selected" and "Previous page, disabled" after paging.
+    await renderNative(<Pagination count={10} />)
+    await fireEvent.press(screen.getByRole('button', { name: 'Next page' }))
+    const state = (name: string) => {
+      const { props } = screen.getByRole('button', { name })
+      return {
+        ...props.accessibilityState,
+        disabled: props['aria-disabled'],
+        busy: props['aria-busy'],
+        selected: props['aria-selected'],
+      }
+    }
+    expect(state('Previous page')).toMatchObject({ disabled: false, busy: false })
+    expect(state('Page 1')).toMatchObject({ selected: false, disabled: false })
+    expect(state('Page 2')).toMatchObject({ selected: true })
   })
 
   it('Stepper names each step with its number and status', async () => {

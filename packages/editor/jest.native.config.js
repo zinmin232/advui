@@ -15,7 +15,9 @@ const allow = [
 
 module.exports = {
   preset: 'jest-expo/ios',
-  testMatch: ['<rootDir>/src/**/*.native.test.tsx'],
+  // On Windows, a <rootDir> under .claude\ becomes a glob with an escaped dot, so match relatively
+  roots: ['<rootDir>/src'],
+  testMatch: ['**/*.native.test.tsx'],
   // pnpm nests packages under node_modules/.pnpm/<name>@<version>/node_modules/<name>
   // and encodes scopes as @scope+name inside .pnpm
   transformIgnorePatterns: [`node_modules/(?!(?:\\.pnpm/)?(${allow}))`],

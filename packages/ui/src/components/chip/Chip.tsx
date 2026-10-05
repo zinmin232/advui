@@ -4,6 +4,7 @@ import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 't
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
+import { ariaState } from '../../utils/ariaState'
 
 const ChipFrame = styled(View, {
   name: 'Chip',
@@ -190,7 +191,7 @@ export const Chip = forwardRef<TamaguiElement, ChipProps>(function Chip(
       interactive={pressable}
       selected={on}
       disabled={disabled}
-      aria-disabled={disabled || undefined}
+      aria-disabled={ariaState(disabled)}
       {...semantics}
       onPress={
         pressable

@@ -5,6 +5,7 @@ import { useControllableState } from '../../hooks/useControllableState'
 import { IconButton } from '../icon-button/IconButton'
 import { Input, type InputProps } from '../input/Input'
 import { Spinner } from '../spinner'
+import { ariaState } from '../../utils/ariaState'
 
 const sidePadding = { sm: '$8', md: '$9', lg: '$10' } as const
 const iconSize = { sm: 14, md: 16, lg: 18 } as const
@@ -92,7 +93,7 @@ export const Search = forwardRef<TamaguiElement, SearchProps>(function Search(
         }}
         role="searchbox"
         aria-label={ariaLabel}
-        aria-busy={loading || undefined}
+        aria-busy={ariaState(loading)}
         enterKeyHint="search"
         returnKeyType="search"
         autoCorrect={false}

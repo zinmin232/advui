@@ -31,8 +31,9 @@ describe('@advui/charts native rendering', () => {
         />
       </>,
     )
-    // Each plot is one accessible image named by its title.
-    const bars = screen.getByRole('img', { name: /^Bars\./ })
+    // Each plot is one accessible image named by its title. The web's arrow-key
+    // hint is left out: a phone has no arrow keys.
+    const bars = screen.getByRole('img', { name: 'Bars.' })
     expect(screen.getByRole('img', { name: /^Slices\./ })).toBeOnTheScreen()
     expect(screen.getByText('Health · 75%')).toBeOnTheScreen()
     // Tapping the right half of the bar plot shows February.

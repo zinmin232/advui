@@ -1,7 +1,7 @@
 import { ChevronRightIcon, IconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef, useEffect, useRef, useState } from 'react'
 import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
-import { Text, useControllableState, useRipple } from '@advui/core'
+import { Text, ariaState, useControllableState, useRipple } from '@advui/core'
 
 export interface TreeNode {
   id: string
@@ -280,7 +280,7 @@ function TreeItem({
           { accessible: true, role: 'button', 'aria-label': node.label })}
       {...(hasChildren && { 'aria-expanded': open })}
       aria-selected={selected}
-      aria-disabled={disabled || undefined}
+      aria-disabled={ariaState(disabled)}
       onPress={onPress}
       {...(ripple.active && { pressStyle: { backgroundColor: 'transparent' } })}
       {...ripple.props}

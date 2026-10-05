@@ -35,11 +35,15 @@ describe('@advui/core public API', () => {
       'Dialog',
       'Card',
       'UniversalProvider',
+      'ariaState',
       'isTextContent',
       'responsiveStyle',
       'Wrap',
       'useControllableState',
       'useFieldControl',
+      'useParentForm',
+      // Deprecated alias of useParentForm.
+      'useFormStatus',
       'useRipple',
     ])
       expect(core).toHaveProperty(name)

@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'buttons',
   description:
     'A button that displays a loading indicator and prevents interaction while an asynchronous action is in progress.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['LoadingButton', 'LoadingButtonProps', 'SpinnerPosition'],

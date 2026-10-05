@@ -5,6 +5,7 @@ import { FileList } from '../file-upload/FileList'
 import { type FileSelectionProps, useFileSelection } from '../file-upload/useFileSelection'
 import { Text } from '../typography/Text'
 import { useDropTarget } from './useDropTarget'
+import { ariaState } from '../../utils/ariaState'
 
 const DropArea = styled(View, {
   name: 'FileDropzone',
@@ -117,7 +118,7 @@ export const FileDropzone = forwardRef<TamaguiElement, FileDropzoneProps>(functi
         dragging={dragging}
         invalid={invalid}
         disabled={inactive}
-        aria-disabled={inactive || undefined}
+        aria-disabled={ariaState(inactive)}
         aria-invalid={invalid || undefined}
         // Native views with a role need `accessible` to be announced.
         {...(isWeb

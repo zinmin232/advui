@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "Compares values across categories as columns or bars, grouped or stacked.",
   "category": "charts",
-  "status": "beta",
+  "status": "stable",
   "since": "0.6.0",
   "platforms": [
     "web",
