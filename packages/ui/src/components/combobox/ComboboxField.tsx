@@ -15,6 +15,7 @@ import { useFieldControl } from '../../hooks/useFieldControl'
 import { fieldBoxStyle } from '../input/Input'
 import { Text } from '../typography/Text'
 import { type ComboboxFieldProps, defaultFilter, fieldHeights } from './options'
+import { ariaState } from '../../utils/ariaState'
 
 const FieldBox = styled(XStack, {
   name: 'ComboboxField',
@@ -302,7 +303,7 @@ export const ComboboxField = forwardRef<TamaguiElement, ComboboxFieldProps>(
                       id={optionId(index)}
                       role={'option' as never}
                       aria-selected={isSelected}
-                      aria-disabled={option.disabled || undefined}
+                      aria-disabled={ariaState(option.disabled)}
                       highlighted={index === active}
                       disabled={option.disabled}
                       onMouseEnter={() => {

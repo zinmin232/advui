@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'data-display',
   description:
     'A table driven by data and columns, with sorting, search, row selection and pagination.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [
@@ -51,9 +51,19 @@ const columns: DataTableColumn<Project>[] = [
           description: 'Names a row’s checkbox ("Select INV-001"). Default: its id.',
         },
         {
-          name: 'sort / defaultSort / onSortChange',
+          name: 'sort',
           type: "{ column: string; direction: 'ascending' | 'descending' } | null",
           description: 'Sorted column. Pressing a header cycles ascending, descending, none.',
+        },
+        {
+          name: 'defaultSort',
+          type: "{ column: string; direction: 'ascending' | 'descending' } | null",
+          description: 'Starting `sort` when uncontrolled.',
+        },
+        {
+          name: 'onSortChange',
+          type: "(sort: { column: string; direction: 'ascending' | 'descending' } | null) => void",
+          description: 'Called with the new `sort`.',
         },
         {
           name: 'pageSize',
@@ -61,9 +71,15 @@ const columns: DataTableColumn<Project>[] = [
           description: 'Rows per page. Without it every row is shown.',
         },
         {
-          name: 'page / defaultPage / onPageChange',
+          name: 'page',
           type: 'number',
           description: 'Current page, from 1. Sorting and searching go back to page 1.',
+        },
+        { name: 'defaultPage', type: 'number', description: 'Starting `page` when uncontrolled.' },
+        {
+          name: 'onPageChange',
+          type: '(page: number) => void',
+          description: 'Called with the new `page`.',
         },
         {
           name: 'selectable',
@@ -71,10 +87,16 @@ const columns: DataTableColumn<Project>[] = [
           default: 'false',
           description: 'Adds a checkbox column and a "select all on this page" box.',
         },
+        { name: 'selectedIds', type: 'string[]', description: 'Selected row ids.' },
         {
-          name: 'selectedIds / defaultSelectedIds / onSelectedIdsChange',
+          name: 'defaultSelectedIds',
           type: 'string[]',
-          description: 'Selected row ids.',
+          description: 'Starting `selectedIds` when uncontrolled.',
+        },
+        {
+          name: 'onSelectedIdsChange',
+          type: '(selectedIds: string[]) => void',
+          description: 'Called with the new `selectedIds`.',
         },
         {
           name: 'searchable',
@@ -82,10 +104,16 @@ const columns: DataTableColumn<Project>[] = [
           default: 'false',
           description: 'Adds a search field over the searchable columns.',
         },
+        { name: 'search', type: 'string', description: 'Search text (controlled or not).' },
         {
-          name: 'search / defaultSearch / onSearchChange',
+          name: 'defaultSearch',
           type: 'string',
-          description: 'Search text (controlled or not).',
+          description: 'Starting `search` when uncontrolled.',
+        },
+        {
+          name: 'onSearchChange',
+          type: '(search: string) => void',
+          description: 'Called with the new `search`.',
         },
         {
           name: 'filterRow',
@@ -107,9 +135,11 @@ const columns: DataTableColumn<Project>[] = [
           description: 'Search, checkbox, empty and status text, for translation.',
         },
       ],
+      children: { accepts: 'none' },
     },
     {
       name: 'DataTableColumn<T>',
+      kind: 'type',
       props: [
         {
           name: 'id',
@@ -120,7 +150,7 @@ const columns: DataTableColumn<Project>[] = [
         { name: 'header', type: 'ReactNode', required: true, description: 'Header text.' },
         {
           name: 'accessor',
-          type: '(row) => string | number | Date | …',
+          type: '(row: T) => string | number | boolean | Date | null | undefined',
           description: 'Value to sort, search and show. Default: `row[id]`.',
         },
         { name: 'cell', type: '(row) => ReactNode', description: 'Custom cell content.' },
@@ -132,9 +162,24 @@ const columns: DataTableColumn<Project>[] = [
           description: 'Include in the search.',
         },
         {
-          name: 'align / flex / width',
-          type: '…',
-          description: 'Alignment and width, as on Table cells.',
+          name: 'align',
+          type: "'start' | 'center' | 'end'",
+          options: ['start', 'center', 'end'],
+          default: "'start'",
+          description: 'Alignment of the header and cells, as on Table cells.',
+        },
+        {
+          name: 'flex',
+          type: 'number',
+          default: '1',
+          min: 0,
+          description: 'Share of the width, like CSS `flex-grow`.',
+        },
+        {
+          name: 'width',
+          type: 'number | SizeTokens',
+          token: 'size',
+          description: 'A fixed width instead of a share.',
         },
       ],
     },

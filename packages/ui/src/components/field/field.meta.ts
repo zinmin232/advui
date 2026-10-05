@@ -97,6 +97,7 @@ export default defineMeta({
         {
           name: 'orientation',
           type: "'vertical' | 'horizontal'",
+          options: ['vertical', 'horizontal'],
           default: "'vertical'",
           description:
             '`horizontal` puts the label beside the control, in a third of the width, with the help and error text under the control.',
@@ -104,6 +105,7 @@ export default defineMeta({
         {
           name: 'gap',
           type: 'SpaceTokens | number',
+          token: 'space',
           default: "'$2'",
           description: 'Space between the label, control and messages.',
         },
@@ -120,11 +122,13 @@ export default defineMeta({
             "The control's id, which the label targets. Defaults to the `id` of a single child, or a generated one.",
         },
       ],
+      children: { accepts: 'any', min: 1 },
     },
     {
       name: 'useFieldControl',
+      kind: 'hook',
       description:
-        'For your own controls: `const props = useFieldControl(ownProps)` fills in what the surrounding Field decides, so a Field wires your control like a core one. Outside a Field it returns the props unchanged.',
+        'For your own controls: `const props = useFieldControl(ownProps)` fills in what the surrounding Field decides, so a Field wires your control like a core one. Outside a Field it returns the props unchanged, except `disabled`, which is `true` inside a disabled Form.',
       props: [
         {
           name: 'id',
@@ -139,7 +143,8 @@ export default defineMeta({
         {
           name: 'disabled',
           type: 'boolean',
-          description: '`true` when the field, its Form or the control is disabled.',
+          description:
+            '`true` when the field, the surrounding Form or the control is disabled. A disabled Form disables the control even without a Field.',
         },
         {
           name: 'aria-required',

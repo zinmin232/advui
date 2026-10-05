@@ -1,10 +1,16 @@
 import { useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
-import { useFormStatus } from '../../hooks/useFormStatus'
+import { useFormStatus, useParentForm } from '../../hooks/useParentForm'
 import { renderWithProvider, screen, within } from '../../../test/utils'
 import { Button } from '../button/Button'
+import { Checkbox } from '../checkbox/Checkbox'
 import { Field } from '../field/Field'
 import { Input } from '../input/Input'
+import { Label } from '../label/Label'
+import { RadioGroup } from '../radio-group/RadioGroup'
+import { Select } from '../select/Select'
+import { Switch } from '../switch/Switch'
+import { Textarea } from '../textarea/Textarea'
 import { Heading } from '../typography/Heading'
 import { Text } from '../typography/Text'
 import { Form } from './Form'
@@ -243,21 +249,41 @@ describe('Form', () => {
     expect(onSubmit).not.toHaveBeenCalled()
   })
 
-  it('does not clone or change children that are not form-aware', () => {
-    renderWithProvider(
+  it('when disabled, also disables plain form controls but not other buttons', async () => {
+    const onChange = vi.fn()
+    const onCancel = vi.fn()
+    const { user } = renderWithProvider(
       <Form disabled>
-        <Input aria-label="Plain" />
-        <Button>Other</Button>
+        <Input aria-label="Name" />
+        <Textarea aria-label="Notes" />
+        <Select aria-label="Fruit" placeholder="Pick a fruit" onValueChange={onChange}>
+          <Select.Item value="apple">Apple</Select.Item>
+        </Select>
+        <Checkbox aria-label="Terms" onCheckedChange={onChange} />
+        <Switch aria-label="Sync" onCheckedChange={onChange} />
+        <RadioGroup aria-label="Plan" onValueChange={onChange}>
+          <RadioGroup.Item value="free" id="plan-free" />
+          <Label htmlFor="plan-free">Free</Label>
+        </RadioGroup>
+        <Button onPress={onCancel}>Cancel</Button>
       </Form>,
     )
-    expect(screen.getByRole('textbox', { name: 'Plain' })).not.toBeDisabled()
-    expect(screen.getByRole('button', { name: 'Other' })).not.toBeDisabled()
+    expect(screen.getByRole('textbox', { name: 'Name' })).toBeDisabled()
+    expect(screen.getByRole('textbox', { name: 'Notes' })).toBeDisabled()
+    expect(screen.getByRole('combobox', { name: 'Fruit' })).toHaveAttribute('aria-disabled', 'true')
+    await user.click(screen.getByRole('checkbox', { name: 'Terms' }))
+    await user.click(screen.getByRole('switch', { name: 'Sync' }))
+    await user.click(screen.getByRole('radio', { name: 'Free' }))
+    expect(onChange).not.toHaveBeenCalled()
+    // Not a form control: Cancel stays usable, and the form clones no children.
+    await user.click(screen.getByRole('button', { name: 'Cancel' }))
+    expect(onCancel).toHaveBeenCalledOnce()
   })
 
-  it('shares its status with custom controls through useFormStatus', async () => {
+  it('shares its state with custom controls through useParentForm', async () => {
     const onSubmit = vi.fn()
     function CustomSubmit() {
-      const { disabled, loading, submit } = useFormStatus()
+      const { disabled, loading, submit } = useParentForm()
       return (
         <Button onPress={submit} disabled={disabled || loading}>
           {loading ? 'Busy' : 'Send'}
@@ -304,6 +330,10 @@ describe('Form', () => {
     await user.type(screen.getByRole('textbox', { name: 'Email' }), 'ada@example.org')
     await user.click(save)
     expect(onValid).toHaveBeenCalledWith({ email: 'ada@example.org' })
+  })
+
+  it('keeps useFormStatus as an alias', () => {
+    expect(useFormStatus).toBe(useParentForm)
   })
 
   it('turns off browser validation, so the app decides', () => {

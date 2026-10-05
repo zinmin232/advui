@@ -25,6 +25,7 @@ export default defineMeta({
           name: 'ratio',
           type: 'number',
           default: '1',
+          min: 0,
           description: 'Width divided by height, e.g. `16 / 9`.',
         },
         {
@@ -34,6 +35,7 @@ export default defineMeta({
             'Content that fills the box: 100% width and height, or absolutely positioned.',
         },
       ],
+      children: { accepts: 'any' },
     },
   ],
   examples: [

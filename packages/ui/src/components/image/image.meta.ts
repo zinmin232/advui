@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'image',
   category: 'media',
   description: 'A picture in a box of a set size or ratio, with a placeholder and a fallback.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Image', 'ImageProps'],
@@ -39,6 +39,7 @@ export default defineMeta({
         {
           name: 'fit',
           type: "'cover' | 'contain' | 'fill' | 'none' | 'scale-down'",
+          options: ['cover', 'contain', 'fill', 'none', 'scale-down'],
           default: "'cover'",
           description: 'How the picture fills the box (`object-fit` / `resizeMode`).',
         },
@@ -51,11 +52,14 @@ export default defineMeta({
         {
           name: 'loading',
           type: "'lazy' | 'eager'",
-          description: 'Web only: `lazy` waits until the image nears the viewport.',
+          options: ['lazy', 'eager'],
+          platforms: ['web'],
+          description: '`lazy` waits until the image nears the viewport.',
         },
         { name: 'onLoad', type: '() => void', description: 'The image loaded.' },
         { name: 'onError', type: '() => void', description: 'The image failed to load.' },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [

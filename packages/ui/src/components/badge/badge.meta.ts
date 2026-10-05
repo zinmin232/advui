@@ -21,12 +21,20 @@ export default defineMeta({
         {
           name: 'variant',
           type: "'default' | 'secondary' | 'outline' | 'destructive' | 'success' | 'warning' | 'info'",
+          options: ['default', 'secondary', 'outline', 'destructive', 'success', 'warning', 'info'],
           default: "'default'",
           description: 'Color intent.',
         },
-        { name: 'size', type: "'sm' | 'md'", default: "'md'", description: 'Padding scale.' },
+        {
+          name: 'size',
+          type: "'sm' | 'md'",
+          options: ['sm', 'md'],
+          default: "'md'",
+          description: 'Padding scale.',
+        },
         { name: 'icon', type: 'ReactNode', description: 'Leading icon (12px, tinted to match).' },
       ],
+      children: { accepts: 'text' },
     },
   ],
   examples: [

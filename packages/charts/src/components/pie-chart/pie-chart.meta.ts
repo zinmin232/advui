@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'pie-chart',
   category: 'charts',
   description: 'Part-to-whole at a glance, as a donut or pie with up to six slices.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['PieChart', 'PieChartProps', 'PieSlice'],
@@ -42,6 +42,7 @@ export default defineMeta({
         {
           name: 'variant',
           type: "'donut' | 'pie'",
+          options: ['donut', 'pie'],
           default: "'donut'",
           description: 'A donut shows the total in the middle.',
         },
@@ -49,6 +50,8 @@ export default defineMeta({
           name: 'maxSlices',
           type: 'number',
           default: '6',
+          min: 1,
+          step: 1,
           description: 'More parts than this fold the smallest into "Other".',
         },
         {
@@ -65,6 +68,7 @@ export default defineMeta({
           name: 'height',
           type: 'number',
           default: '240',
+          min: 0,
           description: 'Pixels, including the axes.',
         },
         {
@@ -78,6 +82,7 @@ export default defineMeta({
           description: '"Show table", "Hide table" and the keyboard hint, for translation.',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [
@@ -99,7 +104,7 @@ export default defineMeta({
   responsive: 'The circle fits the smaller of the width and height.',
   platformNotes: {
     web: 'SVG in the page. Hover shows the tooltip; the arrow keys work once the plot has focus.',
-    ios: 'Drawn with react-native-svg. Tap the plot to show the tooltip for that point.',
+    ios: 'Drawn with react-native-svg. Tap the plot to show the tooltip for that point. VoiceOver and TalkBack read the title and description, without the arrow-key hint; Show table lists every value.',
     android: 'Same as iOS.',
   },
   related: ['bar-chart', 'stat', 'table'],

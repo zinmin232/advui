@@ -5,7 +5,7 @@ export default function AudioPlayerCompact() {
   return (
     <AudioPlayer
       maxWidth="$96"
-      src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3"
+      src="https://zinmin232.github.io/advui/media/voice-message.mp3"
       title="Voice message from Daw Hla"
       artwork={<MailIcon size={20} color="$mutedForeground" />}
       skip={0}

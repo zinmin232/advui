@@ -125,6 +125,14 @@ entry, search entry, Expo screen and registry item then appear automatically.
 - Stay SSR-safe: no `window` access during render, and no `useMedia()`
   branching that changes markup between server and client. Prefer media props
   (`$sm={{ … }}`).
+- A prop that takes a breakpoint map is typed `Responsive<T>` and becomes
+  media props through `responsiveStyle(prop, value, map?)` (`utils/responsive.ts`),
+  usually in a function variant, as Stack's `direction` and Container's
+  `gutter` do. Don't emit a media style that a default or a raw prop also sets
+  at the same breakpoint: the later one wins on web but the first on native.
+- For width-dependent markup, use Show / Hide (CSS on web). `useBreakpoint()`
+  and `useBreakpointValue()` see a phone on the first server render, so keep
+  them for behavior (how many items to load), not for layout.
 - Document real platform differences in `platformNotes`.
 
 ## Tests
@@ -156,8 +164,36 @@ It must be plain data (no JSX, no imports other than `defineMeta`):
 - `playground`: controls that map to real props
 - `accessibility`, `keyboard`, `responsive`, `platformNotes`, `related`
 
+Tools such as the AdvUI Builder read `parts` to build prop editors and drop
+rules, so write them for a program as well as for the docs:
+
+- **One part per entry and one prop per row**: `Dialog.Header` and
+  `Dialog.Footer`, not `Dialog.Header / Footer`; `value`, `defaultValue` and
+  `onValueChange`, not `value / defaultValue`. No `…` in names or types, and
+  no aliases that hide a closed list (`ButtonVariant`): write the union.
+- **`options`** for every prop that takes a closed list, without quotes:
+  `type: "'sm' | 'md'"` → `options: ['sm', 'md']`. A literal `default` must be
+  one of them.
+- **`responsive: true`** when the prop also takes a `{ base, sm, md, … }` map;
+  `type` is then the value's own type (`number`). **`token`** names the theme
+  scale a value comes from (`space` for gaps), **`min`/`max`/`step`** bound
+  numbers, and **`platforms`** lists where a prop works when that is not
+  everywhere (the docs print "Web only.").
+- **`children`** on every component part: `accepts: 'any'`, `'text'` (strings
+  and numbers, as in Button), `'none'` (Input) or a list of part names
+  (`['Tabs.Trigger']`), with `min`/`max` when the count is fixed (Tooltip
+  wraps exactly one trigger). **`parents`** is for a real direct-child
+  requirement, such as `Grid.Item` in `Grid`; **`within`** is for a part
+  that reads its component's context anywhere inside it, such as `Tabs.Content`
+  in `Tabs`.
+- **`kind`** marks a hook, function or type documented as a part
+  (`useFieldControl`, `toast()`, `DataTableColumn<T>`). They have no child
+  rules.
+
 `pnpm catalog` validates metadata. It fails on missing examples, unknown
-related slugs and files that don't exist.
+related slugs, files that don't exist, and on the rules above
+(`packages/catalog/src/validate.ts`, also run by `pnpm test`). Each problem
+names the component, part and prop.
 
 ## Status
 

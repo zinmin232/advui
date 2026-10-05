@@ -28,16 +28,23 @@ export default defineMeta({
       description:
         'Also takes Calendar’s `min`, `max`, `isDateDisabled`, `weekStartsOn` and `locale`.',
       props: [
-        { name: 'value / defaultValue', type: 'Date | null', description: 'The picked day.' },
+        { name: 'value', type: 'Date | null', description: 'The picked day.' },
+        {
+          name: 'defaultValue',
+          type: 'Date | null',
+          description: 'Starting `value` when uncontrolled.',
+        },
         {
           name: 'onValueChange',
           type: '(value: Date | null) => void',
           description: 'Called when a day is picked; the panel then closes.',
         },
+        { name: 'open', type: 'boolean', description: 'Open state of the panel.' },
+        { name: 'defaultOpen', type: 'boolean', description: 'Starting `open` when uncontrolled.' },
         {
-          name: 'open / defaultOpen / onOpenChange',
-          type: 'boolean',
-          description: 'Open state of the panel.',
+          name: 'onOpenChange',
+          type: '(open: boolean) => void',
+          description: 'Called with the new `open`.',
         },
         {
           name: 'placeholder',
@@ -57,9 +64,27 @@ export default defineMeta({
           default: "'Choose a date'",
           description: 'Title of the panel, which names it for screen readers.',
         },
-        { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'As Input.' },
-        { name: 'invalid / disabled', type: 'boolean', default: 'false', description: 'As Input.' },
+        {
+          name: 'size',
+          type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
+          default: "'md'",
+          description: 'As Input.',
+        },
+        {
+          name: 'invalid',
+          type: 'boolean',
+          default: 'false',
+          description: 'Error styling and `aria-invalid`.',
+        },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          default: 'false',
+          description: 'Not focusable or editable.',
+        },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [{ name: 'basic', title: 'Basic' }],

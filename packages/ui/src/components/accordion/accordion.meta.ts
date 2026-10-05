@@ -27,13 +27,19 @@ export default defineMeta({
         {
           name: 'type',
           type: "'single' | 'multiple'",
+          options: ['single', 'multiple'],
           required: true,
           description: 'Whether one or several sections can be open at once.',
         },
         {
-          name: 'value / defaultValue',
-          type: 'string (single) | string[] (multiple)',
-          description: 'Open section(s).',
+          name: 'value',
+          type: 'string | string[]',
+          description: 'Open section (`single`) or sections (`multiple`), when you control them.',
+        },
+        {
+          name: 'defaultValue',
+          type: 'string | string[]',
+          description: 'Sections open at first, when the accordion manages them.',
         },
         {
           name: 'onValueChange',
@@ -49,11 +55,13 @@ export default defineMeta({
         {
           name: 'variant',
           type: "'default' | 'card'",
+          options: ['default', 'card'],
           default: "'default'",
           description: 'Divided list or bordered surface.',
         },
         { name: 'disabled', type: 'boolean', description: 'Disable every section.' },
       ],
+      children: { accepts: ['Accordion.Item'] },
     },
     {
       name: 'Accordion.Item',
@@ -61,6 +69,8 @@ export default defineMeta({
         { name: 'value', type: 'string', required: true, description: 'Section id.' },
         { name: 'disabled', type: 'boolean', description: 'Prevent opening this section.' },
       ],
+      children: { accepts: ['Accordion.Trigger', 'Accordion.Content'], max: 2 },
+      within: 'Accordion',
     },
     {
       name: 'Accordion.Trigger',
@@ -74,10 +84,13 @@ export default defineMeta({
         {
           name: 'level',
           type: '1 | 2 | 3 | 4 | 5 | 6',
+          options: ['1', '2', '3', '4', '5', '6'],
           default: '3',
           description: 'Heading level around the trigger on web; match your page outline.',
         },
       ],
+      children: { accepts: 'text' },
+      within: 'Accordion.Item',
     },
     {
       name: 'Accordion.Content',
@@ -89,6 +102,8 @@ export default defineMeta({
           description: 'Section body. Strings are styled for you.',
         },
       ],
+      children: { accepts: 'any' },
+      within: 'Accordion.Item',
     },
   ],
   examples: [

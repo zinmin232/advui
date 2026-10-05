@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'buttons',
   description:
     'A button that displays a loading indicator and prevents interaction while an asynchronous action is in progress.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['LoadingButton', 'LoadingButtonProps', 'SpinnerPosition'],
@@ -56,8 +56,10 @@ const save = async () => {
         {
           name: 'spinnerPosition',
           type: "'left' | 'right'",
-          default: "'left', or 'right' with only `iconAfter`",
-          description: 'Side of the spinner. It takes the place of the icon on that side.',
+          options: ['left', 'right'],
+          default: "'left'",
+          description:
+            "Side of the spinner. It takes the place of the icon on that side. With only `iconAfter`, it defaults to `'right'`.",
         },
         {
           name: 'disabled',
@@ -66,6 +68,7 @@ const save = async () => {
           description: 'Works as on Button. While loading the button is disabled either way.',
         },
       ],
+      children: { accepts: 'text' },
     },
   ],
   examples: [

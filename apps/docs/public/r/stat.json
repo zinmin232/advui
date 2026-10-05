@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "One figure with its label, how it changed and a short note.",
   "category": "data-display",
-  "status": "beta",
+  "status": "stable",
   "since": "0.6.0",
   "platforms": [
     "web",
@@ -54,5 +54,5 @@
     "typography",
     "utils"
   ],
-  "version": "0.7.0"
+  "version": "0.11.0"
 }

@@ -53,6 +53,7 @@ export default defineMeta({
         },
         { name: 'children', type: 'ReactNode', description: 'More actions after Retry.' },
       ],
+      children: { accepts: 'any' },
     },
   ],
   examples: [{ name: 'basic', title: 'Retry' }],

@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'list',
   category: 'data-display',
   description: 'A vertical list of rows with a leading visual, text and trailing meta.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [
@@ -38,12 +38,14 @@ import { ChevronRightIcon, UserIcon } from '@advui/icons'
         {
           name: 'variant',
           type: "'plain' | 'outline'",
+          options: ['plain', 'outline'],
           default: "'plain'",
           description: '`outline` puts the rows on a bordered card surface.',
         },
         {
           name: 'size',
           type: "'sm' | 'md'",
+          options: ['sm', 'md'],
           default: "'md'",
           description: 'Row padding and text size.',
         },
@@ -54,6 +56,7 @@ import { ChevronRightIcon, UserIcon } from '@advui/icons'
           description: 'Draws a line between items.',
         },
       ],
+      children: { accepts: ['List.Item'] },
     },
     {
       name: 'List.Item',
@@ -83,11 +86,22 @@ import { ChevronRightIcon, UserIcon } from '@advui/icons'
           description: 'Custom content in place of `title` and `description`.',
         },
       ],
+      children: { accepts: 'any' },
+      parents: ['List'],
     },
     {
-      name: 'List.ItemTitle / List.ItemDescription',
-      description: 'The styled text, for custom `children`.',
+      name: 'List.ItemTitle',
+      description: 'The styled main line, for custom `children`.',
       props: [],
+      children: { accepts: 'text' },
+      within: 'List',
+    },
+    {
+      name: 'List.ItemDescription',
+      description: 'The styled muted line, for custom `children`.',
+      props: [],
+      children: { accepts: 'text' },
+      within: 'List',
     },
   ],
   examples: [

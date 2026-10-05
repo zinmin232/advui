@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'advanced',
   description:
     'Panels side by side or stacked, with handles to drag, or move with the arrow keys, to resize them.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [
@@ -35,13 +35,19 @@ export default defineMeta({
         {
           name: 'direction',
           type: "'horizontal' | 'vertical'",
+          options: ['horizontal', 'vertical'],
           default: "'horizontal'",
           description: 'Side by side, or stacked.',
         },
         {
-          name: 'sizes / onSizesChange',
+          name: 'sizes',
           type: 'number[]',
           description: 'Panel sizes in percent (controlled). They add up to 100.',
+        },
+        {
+          name: 'onSizesChange',
+          type: '(sizes: number[]) => void',
+          description: 'Called with the new `sizes`.',
         },
         {
           name: 'onSizesCommit',
@@ -52,6 +58,7 @@ export default defineMeta({
           name: 'keyboardStep',
           type: 'number',
           default: '5',
+          min: 1,
           description: 'Percent moved by one arrow key press.',
         },
         {
@@ -60,6 +67,7 @@ export default defineMeta({
           description: 'Default handle name ("Resize"), for translation.',
         },
       ],
+      children: { accepts: ['Resizable.Panel', 'Resizable.Handle'] },
     },
     {
       name: 'Resizable.Panel',
@@ -70,7 +78,20 @@ export default defineMeta({
           type: 'number',
           description: 'Starting size in percent. Default: an equal share of what is left.',
         },
-        { name: 'minSize / maxSize', type: 'number', description: 'Limits in percent.' },
+        {
+          name: 'minSize',
+          type: 'number',
+          min: 0,
+          max: 100,
+          description: 'Smallest size, in percent of the group.',
+        },
+        {
+          name: 'maxSize',
+          type: 'number',
+          min: 0,
+          max: 100,
+          description: 'Largest size, in percent of the group.',
+        },
         {
           name: 'collapsible',
           type: 'boolean',
@@ -85,6 +106,8 @@ export default defineMeta({
           description: 'Size when collapsed, in percent.',
         },
       ],
+      children: { accepts: 'any' },
+      parents: ['Resizable'],
     },
     {
       name: 'Resizable.Handle',
@@ -103,6 +126,8 @@ export default defineMeta({
         },
         { name: 'disabled', type: 'boolean', default: 'false', description: 'Fixes the sizes.' },
       ],
+      children: { accepts: 'none' },
+      parents: ['Resizable'],
     },
   ],
   examples: [

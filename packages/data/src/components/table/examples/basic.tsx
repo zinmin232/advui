@@ -12,7 +12,7 @@ const statusVariant = { Paid: 'success', Pending: 'warning', Unpaid: 'secondary'
 
 export default function TableBasic() {
   return (
-    <Table caption="Recent invoices" variant="outline">
+    <Table caption="Recent invoices" variant="outline" minWidth={480}>
       <Table.Header>
         <Table.Row>
           <Table.Head>Invoice</Table.Head>

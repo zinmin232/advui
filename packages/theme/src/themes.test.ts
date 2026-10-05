@@ -2,6 +2,8 @@ import { contrastRatio } from '@advui/utils'
 import { describe, expect, it } from 'vitest'
 import { generateScale, resolveScale, scales } from './palettes'
 import { themePresetNames, themePresets } from './presets'
+import { createUniversalConfig } from './config'
+import { createMaterialThemes } from './material'
 import { createThemeColors } from './themes'
 import { createRadius } from './tokens'
 
@@ -118,5 +120,57 @@ describe('chart palette', () => {
       // Dark mode has its own steps rather than reusing the light ones.
       expect(themes.dark.chart1).not.toBe(themes.light.chart1)
     }
+  })
+})
+
+describe.each(themePresetNames)('sub-themes of preset "%s"', (name) => {
+  const themes = createThemeColors(themePresets[name].colors)
+
+  it.each(['light', 'dark'] as const)(
+    'keeps text readable on a primary surface in %s mode',
+    (mode) => {
+      const theme = themes[`${mode}_primary`]
+      expect(theme.background).toBe(themes[mode].primary)
+      for (const [bg, fg] of [
+        ['background', 'foreground'],
+        ['background', 'mutedForeground'],
+        ['background', 'primaryText'],
+        ['card', 'cardForeground'],
+        ['card', 'mutedForeground'],
+        ['primary', 'primaryForeground'],
+        ['primarySoft', 'primarySoftForeground'],
+        ['foreground', 'inversePrimary'],
+      ] as const) {
+        expect(
+          contrastRatio(theme[bg], theme[fg]),
+          `${mode}_primary: ${fg} on ${bg} (${theme[fg]} / ${theme[bg]})`,
+        ).toBeGreaterThanOrEqual(4.5)
+      }
+      expect(contrastRatio(theme.ring, theme.background)).toBeGreaterThanOrEqual(3)
+    },
+  )
+
+  it('inverts light and dark', () => {
+    expect(themes.light_inverse).toEqual(themes.dark)
+    expect(themes.dark_inverse).toEqual(themes.light)
+  })
+})
+
+describe('sub-themes from other sources', () => {
+  it('derives readable primary sub-themes from Material themes', () => {
+    const themes = createMaterialThemes()
+    for (const mode of ['light', 'dark'] as const) {
+      const theme = themes[`${mode}_primary`]
+      expect(contrastRatio(theme.background, theme.foreground)).toBeGreaterThanOrEqual(4.5)
+      expect(contrastRatio(theme.background, theme.mutedForeground)).toBeGreaterThanOrEqual(4.5)
+    }
+  })
+
+  it('adds them to hand-made themes passed to the config', () => {
+    const { light, dark } = createThemeColors({ primary: 'teal' })
+    const config = createUniversalConfig({ themes: { light, dark } })
+    expect(Object.keys(config.themes)).toEqual(
+      expect.arrayContaining(['light_primary', 'dark_primary', 'light_inverse', 'dark_inverse']),
+    )
   })
 })

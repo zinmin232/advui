@@ -5,12 +5,15 @@ import AccordionCard from '../../ui/src/components/accordion/examples/card'
 import AlertVariants from '../../ui/src/components/alert/examples/variants'
 import AlertDialogBasic from '../../ui/src/components/alert-dialog/examples/basic'
 import AlertDialogAsync from '../../ui/src/components/alert-dialog/examples/async'
+import AppShellDashboard from '../../ui/src/components/app-shell/examples/dashboard'
+import AppShellDocs from '../../ui/src/components/app-shell/examples/docs'
 import AreaChartBasic from '../../charts/src/components/area-chart/examples/basic'
 import AreaChartStacked from '../../charts/src/components/area-chart/examples/stacked'
 import AspectRatioBasic from '../../ui/src/components/aspect-ratio/examples/basic'
 import AspectRatioRatios from '../../ui/src/components/aspect-ratio/examples/ratios'
 import AudioPlayerBasic from '../../ui/src/components/audio-player/examples/basic'
 import AudioPlayerCompact from '../../ui/src/components/audio-player/examples/compact'
+import AutoGridCardGallery from '../../ui/src/components/layout/examples/card-gallery'
 import AutocompleteBasic from '../../ui/src/components/autocomplete/examples/basic'
 import AvatarBasic from '../../ui/src/components/avatar/examples/basic'
 import AvatarSizes from '../../ui/src/components/avatar/examples/sizes'
@@ -48,6 +51,7 @@ import CollapsibleSettings from '../../ui/src/components/collapsible/examples/se
 import ComboboxBasic from '../../ui/src/components/combobox/examples/basic'
 import CommandPaletteBasic from '../../ui/src/components/command-palette/examples/basic'
 import ContainerContainer from '../../ui/src/components/layout/examples/container'
+import ContainerGutter from '../../ui/src/components/layout/examples/gutter'
 import ContextMenuBasic from '../../ui/src/components/context-menu/examples/basic'
 import ContextMenuList from '../../ui/src/components/context-menu/examples/list'
 import DataGridBasic from '../../data/src/components/data-grid/examples/basic'
@@ -147,11 +151,17 @@ import ScrollAreaBasic from '../../ui/src/components/scroll-area/examples/basic'
 import ScrollAreaHorizontal from '../../ui/src/components/scroll-area/examples/horizontal'
 import SearchBasic from '../../ui/src/components/search/examples/basic'
 import SearchLive from '../../ui/src/components/search/examples/live'
+import SectionHero from '../../ui/src/components/section/examples/hero'
+import SectionFeatures from '../../ui/src/components/section/examples/features'
+import SectionCallToAction from '../../ui/src/components/section/examples/call-to-action'
 import SelectBasic from '../../ui/src/components/select/examples/basic'
 import SelectGroups from '../../ui/src/components/select/examples/groups'
 import SeparatorBasic from '../../ui/src/components/separator/examples/basic'
+import SeparatorLogin from '../../ui/src/components/separator/examples/login'
 import SheetBasic from '../../ui/src/components/sheet/examples/basic'
 import SheetScroll from '../../ui/src/components/sheet/examples/scroll'
+import ShowHideNavigation from '../../ui/src/components/show-hide/examples/navigation'
+import ShowHideBreakpointValue from '../../ui/src/components/show-hide/examples/breakpoint-value'
 import SidebarBasic from '../../ui/src/components/sidebar/examples/basic'
 import SidebarDrawer from '../../ui/src/components/sidebar/examples/drawer'
 import SkeletonCard from '../../ui/src/components/skeleton/examples/card'
@@ -161,12 +171,17 @@ import SnackbarBasic from '../../ui/src/components/snackbar/examples/basic'
 import SnackbarPersistent from '../../ui/src/components/snackbar/examples/persistent'
 import SpinnerBasic from '../../ui/src/components/spinner/examples/basic'
 import StackBasic from '../../ui/src/components/layout/examples/basic'
+import StackResponsiveDirection from '../../ui/src/components/layout/examples/responsive-direction'
+import StackToolbar from '../../ui/src/components/layout/examples/toolbar'
+import StackWrap from '../../ui/src/components/layout/examples/wrap'
 import StackResponsive from '../../ui/src/components/layout/examples/responsive'
 import StatBasic from '../../data/src/components/stat/examples/basic'
 import StatTrends from '../../data/src/components/stat/examples/trends'
 import StatSizes from '../../data/src/components/stat/examples/sizes'
 import StepperBasic from '../../ui/src/components/stepper/examples/basic'
 import StepperVertical from '../../ui/src/components/stepper/examples/vertical'
+import StickyPageHeader from '../../ui/src/components/sticky/examples/page-header'
+import StickyListHeaders from '../../ui/src/components/sticky/examples/list-headers'
 import SwitchSettings from '../../ui/src/components/switch/examples/settings'
 import TableBasic from '../../data/src/components/table/examples/basic'
 import TableSortable from '../../data/src/components/table/examples/sortable'
@@ -192,6 +207,7 @@ import TypographyScale from '../../ui/src/components/typography/examples/scale'
 import TypographyTones from '../../ui/src/components/typography/examples/tones'
 import VideoBasic from '../../ui/src/components/video/examples/basic'
 import VideoMutedLoop from '../../ui/src/components/video/examples/muted-loop'
+import WrapTags from '../../ui/src/components/layout/examples/tags'
 
 export const examples: Record<string, Record<string, ComponentType>> = {
   'accordion': {
@@ -205,6 +221,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': AlertDialogBasic,
     'async': AlertDialogAsync,
   },
+  'app-shell': {
+    'dashboard': AppShellDashboard,
+    'docs': AppShellDocs,
+  },
   'area-chart': {
     'basic': AreaChartBasic,
     'stacked': AreaChartStacked,
@@ -216,6 +236,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'audio-player': {
     'basic': AudioPlayerBasic,
     'compact': AudioPlayerCompact,
+  },
+  'auto-grid': {
+    'card-gallery': AutoGridCardGallery,
   },
   'autocomplete': {
     'basic': AutocompleteBasic,
@@ -285,6 +308,7 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'container': {
     'container': ContainerContainer,
+    'gutter': ContainerGutter,
   },
   'context-menu': {
     'basic': ContextMenuBasic,
@@ -469,16 +493,26 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': SearchBasic,
     'live': SearchLive,
   },
+  'section': {
+    'hero': SectionHero,
+    'features': SectionFeatures,
+    'call-to-action': SectionCallToAction,
+  },
   'select': {
     'basic': SelectBasic,
     'groups': SelectGroups,
   },
   'separator': {
     'basic': SeparatorBasic,
+    'login': SeparatorLogin,
   },
   'sheet': {
     'basic': SheetBasic,
     'scroll': SheetScroll,
+  },
+  'show-hide': {
+    'navigation': ShowHideNavigation,
+    'breakpoint-value': ShowHideBreakpointValue,
   },
   'sidebar': {
     'basic': SidebarBasic,
@@ -500,6 +534,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'stack': {
     'basic': StackBasic,
+    'responsive-direction': StackResponsiveDirection,
+    'toolbar': StackToolbar,
+    'wrap': StackWrap,
     'responsive': StackResponsive,
   },
   'stat': {
@@ -510,6 +547,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'stepper': {
     'basic': StepperBasic,
     'vertical': StepperVertical,
+  },
+  'sticky': {
+    'page-header': StickyPageHeader,
+    'list-headers': StickyListHeaders,
   },
   'switch': {
     'settings': SwitchSettings,
@@ -561,5 +602,8 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'video': {
     'basic': VideoBasic,
     'muted-loop': VideoMutedLoop,
+  },
+  'wrap': {
+    'tags': WrapTags,
   },
 }

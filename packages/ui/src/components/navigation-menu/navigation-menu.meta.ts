@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'navigation-menu',
   category: 'navigation',
   description: 'Site navigation with links and buttons that open panels of more links.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [
@@ -35,16 +35,32 @@ export default defineMeta({
           description: 'Names the landmark. Needed when a page has more than one.',
         },
         {
-          name: 'value / defaultValue / onValueChange',
+          name: 'value',
           type: 'string | null',
           description: 'The open item (its `value` or `label`).',
         },
+        {
+          name: 'defaultValue',
+          type: 'string | null',
+          description: 'Starting `value` when uncontrolled.',
+        },
+        {
+          name: 'onValueChange',
+          type: '(value: string | null) => void',
+          description: 'Called with the new `value`.',
+        },
       ],
+      children: { accepts: ['NavigationMenu.Link', 'NavigationMenu.Item'] },
     },
     {
       name: 'NavigationMenu.Link',
       props: [
-        { name: 'href', type: 'string', description: 'Link target on web.' },
+        {
+          name: 'href',
+          type: 'string',
+          platforms: ['web'],
+          description: 'Link target. On iOS and Android, navigate in `onPress`.',
+        },
         {
           name: 'onPress',
           type: '(event) => void',
@@ -64,6 +80,8 @@ export default defineMeta({
         { name: 'description', type: 'ReactNode', description: 'Second line, in panels.' },
         { name: 'icon', type: 'ReactNode', description: 'Icon before the title, in panels.' },
       ],
+      children: { accepts: 'text' },
+      within: 'NavigationMenu',
     },
     {
       name: 'NavigationMenu.Item',
@@ -72,9 +90,11 @@ export default defineMeta({
         { name: 'value', type: 'string', description: 'Id for `value`. Default: `label`.' },
         {
           name: 'panelWidth',
-          type: 'size token | number',
+          type: 'SizeTokens | number',
+          token: 'size',
           default: "'$72'",
-          description: 'Width of the panel on web.',
+          platforms: ['web'],
+          description: 'Width of the panel. iOS and Android show the links under the bar.',
         },
         {
           name: 'children',
@@ -83,6 +103,8 @@ export default defineMeta({
           description: '`NavigationMenu.Link` elements shown in the panel.',
         },
       ],
+      children: { accepts: ['NavigationMenu.Link'] },
+      parents: ['NavigationMenu'],
     },
   ],
   examples: [{ name: 'basic', title: 'Links and panels' }],

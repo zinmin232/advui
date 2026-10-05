@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "Panels side by side or stacked, with handles to drag, or move with the arrow keys, to resize them.",
   "category": "advanced",
-  "status": "beta",
+  "status": "stable",
   "since": "0.6.0",
   "platforms": [
     "web",
@@ -54,5 +54,5 @@
   "registryDependencies": [
     "hooks"
   ],
-  "version": "0.7.0"
+  "version": "0.11.0"
 }

@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'advanced',
   description:
     'A spreadsheet-like grid: move between cells with the arrow keys and edit values in place, with validation.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [
@@ -44,9 +44,15 @@ const columns: DataGridColumn<Row>[] = [
           description: 'Column definitions (below).',
         },
         {
-          name: 'data / defaultData / onDataChange',
+          name: 'data',
           type: 'T[]',
           description: 'The rows. Accepted edits come back as a new array.',
+        },
+        { name: 'defaultData', type: 'T[]', description: 'Starting `data` when uncontrolled.' },
+        {
+          name: 'onDataChange',
+          type: '(data: T[]) => void',
+          description: 'Called with the new `data`.',
         },
         {
           name: 'onCellChange',
@@ -67,16 +73,24 @@ const columns: DataGridColumn<Row>[] = [
           description: 'Names the row in cell names and errors ("Reached, Hakha").',
         },
         { name: 'readOnly', type: 'boolean', default: 'false', description: 'No editing.' },
-        { name: 'size', type: "'sm' | 'md'", default: "'md'", description: 'Row height.' },
+        {
+          name: 'size',
+          type: "'sm' | 'md'",
+          options: ['sm', 'md'],
+          default: "'md'",
+          description: 'Row height.',
+        },
         {
           name: 'labels',
           type: 'Partial<DataGridLabels>',
           description: 'Edit hint and error text, for translation.',
         },
       ],
+      children: { accepts: 'none' },
     },
     {
       name: 'DataGridColumn<T>',
+      kind: 'type',
       props: [
         {
           name: 'id',
@@ -94,6 +108,7 @@ const columns: DataGridColumn<Row>[] = [
         {
           name: 'type',
           type: "'text' | 'number'",
+          options: ['text', 'number'],
           default: "'text'",
           description: '`number` right-aligns, shows the number keyboard and parses the input.',
         },
@@ -103,9 +118,14 @@ const columns: DataGridColumn<Row>[] = [
           description: 'Return a message to reject an edit. The cell stays open with the error.',
         },
         {
-          name: 'accessor / setValue',
-          type: '(row) => value / (row, value) => row',
-          description: 'Read and write a value that is not a plain field.',
+          name: 'accessor',
+          type: '(row: T) => string | number | null | undefined',
+          description: 'Reads a value that is not a plain field. Default: `row[id]`.',
+        },
+        {
+          name: 'setValue',
+          type: '(row: T, value: string | number | null) => T',
+          description: 'Writes an edited value that is not a plain field; returns the new row.',
         },
         {
           name: 'format',
@@ -119,7 +139,12 @@ const columns: DataGridColumn<Row>[] = [
           default: '160',
           description: 'Pixels. The grid scrolls sideways when wider than its container.',
         },
-        { name: 'align', type: "'start' | 'center' | 'end'", description: 'Alignment.' },
+        {
+          name: 'align',
+          type: "'start' | 'center' | 'end'",
+          options: ['start', 'center', 'end'],
+          description: 'Alignment.',
+        },
       ],
     },
   ],

@@ -34,7 +34,13 @@ export default defineMeta({
           type: "(checked: boolean | 'indeterminate') => void",
           description: 'Called when toggled.',
         },
-        { name: 'size', type: "'sm' | 'md'", default: "'md'", description: '16 or 20px.' },
+        {
+          name: 'size',
+          type: "'sm' | 'md'",
+          options: ['sm', 'md'],
+          default: "'md'",
+          description: '16 or 20px.',
+        },
         { name: 'disabled', type: 'boolean', default: 'false', description: 'Prevents toggling.' },
         {
           name: 'invalid',
@@ -43,11 +49,25 @@ export default defineMeta({
           description: 'Error styling + `aria-invalid`.',
         },
         {
-          name: 'name / value / required',
-          type: 'string / string / boolean',
-          description: 'Native form participation (web).',
+          name: 'name',
+          type: 'string',
+          platforms: ['web'],
+          description: 'Field name when a native form is submitted.',
+        },
+        {
+          name: 'value',
+          type: 'string',
+          platforms: ['web'],
+          description: 'Value sent with the form when checked.',
+        },
+        {
+          name: 'required',
+          type: 'boolean',
+          platforms: ['web'],
+          description: 'The native form will not submit until it is checked.',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [

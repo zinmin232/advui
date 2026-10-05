@@ -1,6 +1,6 @@
 import { IconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
-import { type TamaguiElement, View, XStack } from 'tamagui'
+import { type TamaguiElement, View, XStack, isWeb } from 'tamagui'
 import { Card, type CardProps, Skeleton } from '@advui/core'
 import { Stat, type StatTone, type StatTrend } from '../stat/Stat'
 
@@ -49,7 +49,13 @@ export const KpiCard = forwardRef<TamaguiElement, KpiCardProps>(function KpiCard
 ) {
   const footer = delta != null || description != null
   return (
-    <Card ref={ref} aria-busy={loading || undefined} {...props}>
+    <Card
+      ref={ref}
+      // Web only: Android has no busy state for an unnamed view and would read
+      // "busy" on it for good.
+      {...(isWeb && { 'aria-busy': loading || undefined })}
+      {...props}
+    >
       <Card.Content gap="$3">
         <Stat>
           <XStack alignItems="flex-start" justifyContent="space-between" gap="$3">

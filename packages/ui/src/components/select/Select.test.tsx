@@ -1,5 +1,8 @@
+import { renderToString } from 'react-dom/server'
 import { describe, expect, it, vi } from 'vitest'
-import { renderWithProvider, screen, waitFor } from '../../../test/utils'
+import { renderWithProvider, screen, testConfig, waitFor } from '../../../test/utils'
+import { UniversalProvider } from '../../provider/UniversalProvider'
+import { Field } from '../field/Field'
 import { Label } from '../label/Label'
 import { Select } from './Select'
 
@@ -19,6 +22,24 @@ function Fruits(props: { onValueChange?: (v: string) => void; defaultValue?: str
 }
 
 describe('Select', () => {
+  it('is named by its Field label before hydration', () => {
+    const html = renderToString(
+      <UniversalProvider config={testConfig}>
+        <Field label="Plan">
+          <Select defaultValue="team">
+            <Select.Item value="free">Free</Select.Item>
+            <Select.Item value="team">Team</Select.Item>
+          </Select>
+        </Field>
+      </UniversalProvider>,
+    )
+    const page = new DOMParser().parseFromString(html, 'text/html')
+    const trigger = page.querySelector('[role="combobox"]')
+    const labelledBy = trigger?.getAttribute('aria-labelledby')
+    expect(labelledBy).toBeTruthy()
+    expect(page.getElementById(labelledBy ?? '')?.textContent).toContain('Plan')
+  })
+
   it('renders a labelled combobox showing the placeholder', async () => {
     renderWithProvider(<Fruits />)
     const trigger = await screen.findByRole('combobox', { name: 'Fruit' })
@@ -38,5 +59,18 @@ describe('Select', () => {
     const option = await screen.findByRole('option', { name: 'Strawberry' })
     await user.click(option)
     expect(onValueChange).toHaveBeenCalledWith('strawberry')
+  })
+
+  it('keeps the native-only accessibilityHint off the DOM', async () => {
+    const { container } = renderWithProvider(
+      <Field label="Plan" description="Billed monthly.">
+        <Select defaultValue="team" accessibilityHint="Billed monthly.">
+          <Select.Item value="free">Free</Select.Item>
+          <Select.Item value="team">Team</Select.Item>
+        </Select>
+      </Field>,
+    )
+    await screen.findByRole('combobox', { name: 'Plan' })
+    expect(container.querySelector('[accessibilityhint]')).toBeNull()
   })
 })

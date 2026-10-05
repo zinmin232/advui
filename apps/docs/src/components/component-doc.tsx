@@ -102,9 +102,19 @@ function PropsTable({ part }: { part: PartDoc }) {
                   </td>
                   <td>
                     <code className="prop-type">{prop.type}</code>
+                    {prop.responsive ? (
+                      <span className="prop-note">or a breakpoint map</span>
+                    ) : null}
                   </td>
                   <td>{prop.default ? <code>{prop.default}</code> : '—'}</td>
-                  <td>{prop.description}</td>
+                  <td>
+                    {prop.description}
+                    {prop.platforms ? (
+                      <span className="prop-note">
+                        {prop.platforms.map((p) => platformLabel[p]).join(', ')} only.
+                      </span>
+                    ) : null}
+                  </td>
                 </tr>
               ))}
             </tbody>

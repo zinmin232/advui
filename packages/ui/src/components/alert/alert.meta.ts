@@ -24,6 +24,7 @@ export default defineMeta({
         {
           name: 'variant',
           type: "'default' | 'info' | 'success' | 'warning' | 'error'",
+          options: ['default', 'info', 'success', 'warning', 'error'],
           default: "'default'",
           description: 'Intent and icon.',
         },
@@ -33,9 +34,10 @@ export default defineMeta({
           description: 'Custom icon, or `null` to hide it.',
         },
       ],
+      children: { accepts: 'any' },
     },
-    { name: 'Alert.Title', props: [] },
-    { name: 'Alert.Description', props: [] },
+    { name: 'Alert.Title', props: [], children: { accepts: 'text' } },
+    { name: 'Alert.Description', props: [], children: { accepts: 'any' } },
   ],
   examples: [{ name: 'variants', title: 'Variants' }],
   accessibility: [

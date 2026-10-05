@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'tree-view',
   category: 'advanced',
   description: 'A hierarchy of items that open and close, such as folders or place codes.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['TreeView', 'flattenTree', 'TreeViewProps', 'TreeNode'],
@@ -29,15 +29,27 @@ export default defineMeta({
           description: '`{ id, label, icon?, children?, disabled? }` nodes.',
         },
         { name: 'aria-label', type: 'string', description: 'Names the tree. Required.' },
+        { name: 'expanded', type: 'string[]', description: 'Ids of open branches.' },
         {
-          name: 'expanded / defaultExpanded / onExpandedChange',
+          name: 'defaultExpanded',
           type: 'string[]',
-          description: 'Ids of open branches.',
+          description: 'Starting `expanded` when uncontrolled.',
         },
         {
-          name: 'selected / defaultSelected / onSelectedChange',
+          name: 'onExpandedChange',
+          type: '(expanded: string[]) => void',
+          description: 'Called with the new `expanded`.',
+        },
+        { name: 'selected', type: 'string | null', description: 'Id of the selected item.' },
+        {
+          name: 'defaultSelected',
           type: 'string | null',
-          description: 'Id of the selected item.',
+          description: 'Starting `selected` when uncontrolled.',
+        },
+        {
+          name: 'onSelectedChange',
+          type: '(selected: string | null) => void',
+          description: 'Called with the new `selected`.',
         },
         {
           name: 'onNodePress',
@@ -45,9 +57,11 @@ export default defineMeta({
           description: 'An item was activated (press, Enter or Space).',
         },
       ],
+      children: { accepts: 'none' },
     },
     {
       name: 'flattenTree(nodes, expanded)',
+      kind: 'function',
       description:
         'The visible nodes in order, with level and position. Useful for your own rendering.',
       props: [],

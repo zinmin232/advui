@@ -3,6 +3,7 @@ import { shadows } from '@advui/theme'
 import { type ReactNode, forwardRef } from 'react'
 import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui'
 import { useRipple } from '../../hooks/useRipple'
+import { ariaState } from '../../utils/ariaState'
 
 export type FabVariant = 'soft' | 'primary' | 'secondary' | 'surface'
 export type FabSize = 'sm' | 'md' | 'lg'
@@ -142,7 +143,7 @@ export const Fab = forwardRef<TamaguiElement, FabProps>(function Fab(
       extended={extended}
       placement={placement}
       disabled={disabled}
-      aria-disabled={disabled || undefined}
+      aria-disabled={ariaState(disabled)}
       {...(isWeb ? { type: 'button' } : null)}
       {...(ripple.active && { pressStyle: { backgroundColor: background[variant] } })}
       {...props}

@@ -143,7 +143,16 @@ export default defineMeta({
   parts: [
     {
       name: '${Name}',
-      props: [{ name: 'size', type: "'sm' | 'md'", default: "'md'", description: 'Padding scale.' }],
+      props: [
+        {
+          name: 'size',
+          type: "'sm' | 'md'",
+          options: ['sm', 'md'],
+          default: "'md'",
+          description: 'Padding scale.',
+        },
+      ],
+      children: { accepts: 'any' },
     },
   ],
   examples: [{ name: 'basic', title: 'Basic' }],

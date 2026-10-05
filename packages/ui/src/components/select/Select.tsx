@@ -7,6 +7,7 @@ import {
   type ReactNode,
   cloneElement,
   isValidElement,
+  useContext,
   useMemo,
 } from 'react'
 import {
@@ -23,7 +24,7 @@ import {
 } from 'tamagui'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
-import { useFieldControl } from '../../hooks/useFieldControl'
+import { FieldContext, useFieldControl } from '../../hooks/useFieldControl'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 import { fieldBoxStyle } from '../input/Input'
@@ -259,6 +260,7 @@ function SelectRoot(selectProps: SelectProps) {
     onOpenChange,
     ...props
   } = useFieldControl(selectProps)
+  const field = useContext(FieldContext)
   const reducedMotion = useReducedMotion()
   const [open, setOpen] = useControllableState({
     value: openProp,
@@ -279,6 +281,9 @@ function SelectRoot(selectProps: SelectProps) {
         role="combobox"
         aria-expanded={false}
         aria-label={ariaLabel}
+        // A `<label for>` names the hydrated trigger (a button) but not this
+        // div, so until hydration a Field's label names it by id.
+        aria-labelledby={ariaLabel ? undefined : field?.labelId}
         aria-describedby={describedBy}
         aria-required={required}
         id={id}
@@ -316,7 +321,8 @@ function SelectRoot(selectProps: SelectProps) {
         aria-invalid={invalid || undefined}
         aria-describedby={describedBy}
         aria-required={required}
-        accessibilityHint={accessibilityHint}
+        // Native only: on web it reaches the button, and React warns even when undefined.
+        {...(!isWeb && { accessibilityHint })}
         iconAfter={<ChevronDownIcon size={16} color="$mutedForeground" />}
       >
         <ValueText placeholder={placeholder} />

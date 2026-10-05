@@ -1,4 +1,4 @@
-import { Avatar, Badge, HStack, Sidebar, Text, VStack, useSidebar } from '@advui/core'
+import { Avatar, Badge, HStack, Hide, Show, Sidebar, Text, VStack, useSidebar } from '@advui/core'
 import { BarChartIcon, FileIcon, HomeIcon, SettingsIcon, UsersIcon } from '@advui/icons'
 import { useState } from 'react'
 
@@ -36,8 +36,14 @@ const pages = [
   { id: 'partners', label: 'Partners', icon: <UsersIcon /> },
 ]
 
-export default function SidebarBasic() {
-  const [page, setPage] = useState('home')
+interface AppLayoutProps {
+  page: string
+  onPageChange: (page: string) => void
+  defaultCollapsed?: boolean
+}
+
+function AppLayout({ page, onPageChange, defaultCollapsed = false }: AppLayoutProps) {
+  const [collapsed, setCollapsed] = useState(defaultCollapsed)
   return (
     <HStack
       height="$112"
@@ -47,7 +53,7 @@ export default function SidebarBasic() {
       overflow="hidden"
       width="100%"
     >
-      <Sidebar aria-label="App">
+      <Sidebar aria-label="App" collapsed={collapsed} onCollapsedChange={setCollapsed}>
         <Sidebar.Header>
           <Brand />
           <Sidebar.Toggle />
@@ -60,7 +66,7 @@ export default function SidebarBasic() {
                 icon={item.icon}
                 badge={item.badge}
                 active={page === item.id}
-                onPress={() => setPage(item.id)}
+                onPress={() => onPageChange(item.id)}
               >
                 {item.label}
               </Sidebar.Item>
@@ -79,12 +85,33 @@ export default function SidebarBasic() {
           <Account />
         </Sidebar.Footer>
       </Sidebar>
-      <VStack flex={1} padding="$6" gap="$2">
+      {/* Where both don't fit, the open sidebar pushes the page aside instead of squeezing it. */}
+      <VStack flex={1} minWidth="$56" padding="$6" gap="$2">
         <Text size="xl" weight="semibold">
           {pages.find((p) => p.id === page)?.label}
         </Text>
-        <Text tone="muted">Collapse the sidebar with the arrow button.</Text>
+        <Text tone="muted">
+          {collapsed
+            ? 'Expand the sidebar with the arrow button.'
+            : 'Collapse the sidebar with the arrow button.'}
+        </Text>
       </VStack>
     </HStack>
+  )
+}
+
+export default function SidebarBasic() {
+  const [page, setPage] = useState('home')
+  // Phones start with the icon rail, so the page has room. Show and Hide are CSS
+  // on web: the server renders both and the right one shows from the first paint.
+  return (
+    <>
+      <Hide below="md">
+        <AppLayout page={page} onPageChange={setPage} />
+      </Hide>
+      <Show below="md">
+        <AppLayout page={page} onPageChange={setPage} defaultCollapsed />
+      </Show>
+    </>
   )
 }

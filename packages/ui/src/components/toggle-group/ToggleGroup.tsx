@@ -24,6 +24,7 @@ import {
   toggleHitSlop,
   useToggleRipple,
 } from '../toggle/Toggle'
+import { ariaState } from '../../utils/ariaState'
 
 type GroupState = {
   type: 'single' | 'multiple'
@@ -154,7 +155,7 @@ const ToggleGroupRoot = forwardRef<TamaguiElement, ToggleGroupProps>(function To
         role={single ? 'radiogroup' : 'group'}
         // aria-orientation is only valid on radiogroup, not on group.
         aria-orientation={single ? orientation : undefined}
-        aria-disabled={disabled || undefined}
+        aria-disabled={ariaState(disabled)}
         flexDirection={orientation === 'vertical' ? 'column' : 'row'}
         alignItems={orientation === 'vertical' ? 'stretch' : 'center'}
         flexWrap="wrap"
@@ -215,7 +216,7 @@ const ToggleGroupItem = forwardRef<TamaguiElement, ToggleGroupItemProps>(functio
       size={group.size}
       on={on}
       disabled={disabled}
-      aria-disabled={disabled || undefined}
+      aria-disabled={ariaState(disabled)}
       data-toggle-group-item=""
       data-value={value}
       {...(isWeb && { type: 'button' })}

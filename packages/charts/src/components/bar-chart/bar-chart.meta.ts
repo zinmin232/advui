@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'bar-chart',
   category: 'charts',
   description: 'Compares values across categories as columns or bars, grouped or stacked.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['BarChart', 'BarChartProps'],
@@ -62,6 +62,7 @@ export default defineMeta({
         {
           name: 'layout',
           type: "'vertical' | 'horizontal'",
+          options: ['vertical', 'horizontal'],
           default: "'vertical'",
           description: '`horizontal` bars suit long category names.',
         },
@@ -80,6 +81,7 @@ export default defineMeta({
           name: 'height',
           type: 'number',
           default: '240',
+          min: 0,
           description: 'Pixels, including the axes.',
         },
         {
@@ -93,6 +95,7 @@ export default defineMeta({
           description: '"Show table", "Hide table" and the keyboard hint, for translation.',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [
@@ -115,7 +118,7 @@ export default defineMeta({
     'Fills its container; category labels thin out when they would overlap. Use `horizontal` for long names on phones.',
   platformNotes: {
     web: 'SVG in the page. Hover shows the tooltip; the arrow keys work once the plot has focus.',
-    ios: 'Drawn with react-native-svg. Tap the plot to show the tooltip for that point.',
+    ios: 'Drawn with react-native-svg. Tap the plot to show the tooltip for that point. VoiceOver and TalkBack read the title and description, without the arrow-key hint; Show table lists every value.',
     android: 'Same as iOS.',
   },
   related: ['line-chart', 'pie-chart', 'table', 'kpi-card'],

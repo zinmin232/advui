@@ -26,6 +26,7 @@ export default defineMeta({
           description: 'Fully rounded (for avatars).',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [{ name: 'card', title: 'Loading card' }],

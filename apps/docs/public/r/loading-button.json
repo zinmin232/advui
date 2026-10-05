@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "A button that displays a loading indicator and prevents interaction while an asynchronous action is in progress.",
   "category": "buttons",
-  "status": "beta",
+  "status": "stable",
   "since": "0.6.0",
   "platforms": [
     "web",
@@ -64,5 +64,5 @@
     "button",
     "spinner"
   ],
-  "version": "0.7.0"
+  "version": "0.11.0"
 }

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "section",
+  "title": "Section",
+  "type": "registry:component",
+  "description": "A band of a page: a `<section>` with vertical spacing, a surface and a Container, for heroes, feature lists and calls to action.",
+  "category": "layout",
+  "status": "beta",
+  "since": "0.10.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/section/Section.tsx",
+      "type": "registry:ui",
+      "content": "import { type ReactNode, forwardRef } from 'react'\nimport {\n  type GetProps,\n  type SpaceTokens,\n  type TamaguiElement,\n  Theme,\n  View,\n  getConfig,\n} from 'tamagui'\nimport {\n  type Breakpoint,\n  type Responsive,\n  breakpointKeys,\n  responsiveValue,\n} from '../../utils/responsive'\nimport { Container, type ContainerProps } from '../layout/Container'\n\nexport type SectionSpacing = 'none' | 'sm' | 'md' | 'lg' | 'xl'\nexport type SectionBackground =\n  'none' | 'background' | 'card' | 'muted' | 'primary' | 'primarySoft' | 'inverse'\nexport type SectionContainer = NonNullable<ContainerProps['size']> | 'none'\n\n/** Vertical padding of each spacing step: on phones, and from md. */\nconst spacingScale: Record<SectionSpacing, [SpaceTokens, SpaceTokens]> = {\n  none: ['$0', '$0'],\n  sm: ['$6', '$8'],\n  md: ['$12', '$16'],\n  lg: ['$16', '$24'],\n  xl: ['$24', '$32'],\n}\n\nconst fromMd = breakpointKeys.indexOf('md')\n\ntype PaddingStyle = { paddingVertical?: SpaceTokens } & Partial<\n  Record<`$${Breakpoint}`, { paddingVertical: SpaceTokens }>\n>\n\n/**\n * Vertical padding for a spacing value or map. Each step grows at md, so the\n * padding at a breakpoint depends on both the step that applies there and\n * whether it is md or wider; only the breakpoints where it changes are emitted.\n */\nexport function sectionPadding(spacing: Responsive<SectionSpacing>): PaddingStyle {\n  const style: PaddingStyle = {}\n  let step: SectionSpacing = 'md'\n  let current: SpaceTokens | undefined\n  for (const [index, key] of (['base', ...breakpointKeys] as const).entries()) {\n    step = responsiveValue(spacing, key) ?? step\n    const padding = spacingScale[step][index - 1 >= fromMd ? 1 : 0]\n    if (padding === current) continue\n    current = padding\n    if (key === 'base') style.paddingVertical = padding\n    else style[`$${key}`] = { paddingVertical: padding }\n  }\n  return style\n}\n\ntype SubTheme = 'primary' | 'inverse'\n\n/**\n * Configs from `createUniversalConfig` have the sub-themes; a hand-built one\n * may not, and Tamagui's missing-theme warning crashes on native. Without\n * them, the band keeps the colors it can: the surface (`$primary`) or none.\n */\nfunction hasSubTheme(name: SubTheme) {\n  const themes = getConfig().themes as Record<string, unknown>\n  return `light_${name}` in themes && `dark_${name}` in themes\n}\n\nconst surfaces: Record<SectionBackground, { theme?: SubTheme; color?: string; fallback?: string }> =\n  {\n    none: {},\n    background: { color: '$background' },\n    card: { color: '$card' },\n    muted: { color: '$muted' },\n    primarySoft: { color: '$primarySoft' },\n    // These change the text color too: the sub-theme's `$background` is the\n    // surface and its `$foreground` reads on it, in light and dark mode.\n    primary: { theme: 'primary', color: '$background', fallback: '$primary' },\n    inverse: { theme: 'inverse', color: '$background' },\n  }\n\nexport interface SectionProps extends Omit<GetProps<typeof View>, 'children'> {\n  /** Vertical padding, a step or a mobile-first map. Default `md`. */\n  spacing?: Responsive<SectionSpacing>\n  /** The surface. `primary` and `inverse` switch to a sub-theme, so text stays readable. */\n  background?: SectionBackground\n  /** Wraps the children in a Container of this size; `none` doesn't. Default `xl`. */\n  container?: SectionContainer\n  children?: ReactNode\n}\n\n/**\n * A band of a page: a `<section>` on web with vertical padding, a surface and\n * a Container. Name it with `aria-labelledby` (its heading's id) or\n * `aria-label` so it is a region landmark, and give it an `id` for anchor\n * links such as `#features`.\n */\nexport const Section = forwardRef<TamaguiElement, SectionProps>(function Section(\n  { spacing = 'md', background = 'none', container = 'xl', children, ...props },\n  ref,\n) {\n  const preferred = surfaces[background]\n  const surface =\n    preferred.theme && !hasSubTheme(preferred.theme) ? { color: preferred.fallback } : preferred\n  const content =\n    container === 'none' ? children : <Container size={container}>{children}</Container>\n  const section = (\n    <View\n      ref={ref}\n      render=\"section\"\n      width=\"100%\"\n      {...(surface.color ? { backgroundColor: surface.color as never } : null)}\n      {...sectionPadding(spacing)}\n      {...props}\n    >\n      {content}\n    </View>\n  )\n  return surface.theme ? <Theme name={surface.theme}>{section}</Theme> : section\n})\n"
+    },
+    {
+      "path": "components/section/index.ts",
+      "type": "registry:ui",
+      "content": "export {\n  Section,\n  sectionPadding,\n  type SectionBackground,\n  type SectionContainer,\n  type SectionProps,\n  type SectionSpacing,\n} from './Section'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "hero",
+      "title": "Hero",
+      "code": "import { Button, HStack, Heading, Section, Text, VStack } from '@advui/core'\nimport { ArrowRightIcon } from '@advui/icons'\n\nexport default function SectionHero() {\n  return (\n    <Section spacing=\"lg\" container=\"md\" aria-labelledby=\"hero-title\" width=\"100%\">\n      <VStack gap=\"$4\" align=\"center\">\n        <Heading id=\"hero-title\" level={2} size=\"4xl\" textAlign=\"center\">\n          Who does what, where\n        </Heading>\n        <Text tone=\"muted\" textAlign=\"center\">\n          One place for partners to report their activities, and for everyone to see the gaps.\n        </Text>\n        <HStack gap=\"$2\" wrap=\"wrap\" distribute=\"center\">\n          <Button iconAfter={<ArrowRightIcon />}>Start reporting</Button>\n          <Button variant=\"outline\">See the dashboard</Button>\n        </HStack>\n      </VStack>\n    </Section>\n  )\n}\n"
+    },
+    {
+      "name": "features",
+      "title": "Features",
+      "code": "import { Card, Grid, Heading, Section, Text, VStack } from '@advui/core'\nimport { GlobeIcon, LockIcon, UsersIcon } from '@advui/icons'\n\nconst features = [\n  {\n    icon: <UsersIcon />,\n    title: 'For every partner',\n    text: 'Clusters, agencies and NGOs report in one format.',\n  },\n  {\n    icon: <GlobeIcon />,\n    title: 'Down to the township',\n    text: 'Map coverage and spot the places nobody reaches.',\n  },\n  {\n    icon: <LockIcon />,\n    title: 'Private by default',\n    text: 'Share figures, not the people behind them.',\n  },\n]\n\nexport default function SectionFeatures() {\n  return (\n    <Section\n      id=\"features\"\n      background=\"muted\"\n      spacing={{ base: 'sm', md: 'md' }}\n      aria-labelledby=\"features-title\"\n      width=\"100%\"\n    >\n      <VStack gap=\"$6\">\n        <Heading id=\"features-title\" level={2}>\n          Features\n        </Heading>\n        <Grid columns={{ base: 1, md: 3 }} gap=\"$4\">\n          {features.map((feature) => (\n            <Card key={feature.title} padding=\"$4\" gap=\"$2\">\n              {feature.icon}\n              <Text weight=\"semibold\">{feature.title}</Text>\n              <Text size=\"sm\" tone=\"muted\">\n                {feature.text}\n              </Text>\n            </Card>\n          ))}\n        </Grid>\n      </VStack>\n    </Section>\n  )\n}\n"
+    },
+    {
+      "name": "call-to-action",
+      "title": "Call to action",
+      "code": "import { Button, Heading, Section, Stack, Text, VStack } from '@advui/core'\n\nexport default function SectionCallToAction() {\n  return (\n    <VStack gap=\"$4\" width=\"100%\">\n      <Section background=\"inverse\" spacing=\"md\" container=\"lg\" aria-label=\"Get started\">\n        <Stack direction={{ base: 'column', md: 'row' }} align={{ md: 'center' }} gap=\"$4\">\n          <VStack flex={1} gap=\"$1\">\n            <Heading level={3}>Ready for the next round?</Heading>\n            <Text tone=\"muted\">Reporting for October closes on the 10th.</Text>\n          </VStack>\n          <Button>Open the form</Button>\n        </Stack>\n      </Section>\n      <Section background=\"primary\" spacing=\"sm\" container=\"lg\" aria-label=\"Newsletter\">\n        <Stack direction={{ base: 'column', md: 'row' }} align={{ md: 'center' }} gap=\"$4\">\n          <Text flex={1} weight=\"medium\">\n            Get the monthly gaps report by email.\n          </Text>\n          <Button>Subscribe</Button>\n        </Stack>\n      </Section>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/section",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "container",
+    "utils"
+  ],
+  "version": "0.11.0"
+}

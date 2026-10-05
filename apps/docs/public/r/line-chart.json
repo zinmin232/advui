@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "Shows change over an ordered axis, such as months, as one or more lines.",
   "category": "charts",
-  "status": "beta",
+  "status": "stable",
   "since": "0.6.0",
   "platforms": [
     "web",
@@ -43,5 +43,5 @@
   "registryDependencies": [
     "charts"
   ],
-  "version": "0.7.0"
+  "version": "0.11.0"
 }

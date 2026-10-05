@@ -37,18 +37,27 @@ export default defineMeta({
     {
       name: 'AlertDialog',
       props: [
-        { name: 'open / defaultOpen', type: 'boolean', description: 'Open state.' },
+        { name: 'open', type: 'boolean', description: 'Open state, when you control it.' },
+        {
+          name: 'defaultOpen',
+          type: 'boolean',
+          default: 'false',
+          description: 'Open at first, when the dialog manages its state.',
+        },
         {
           name: 'onOpenChange',
           type: '(open: boolean) => void',
           description: 'Called when the dialog opens or closes.',
         },
       ],
+      children: { accepts: ['AlertDialog.Trigger', 'AlertDialog.Content'], max: 2 },
     },
     {
       name: 'AlertDialog.Trigger',
       description: 'Opens the dialog. Use `asChild` to render your Button.',
       props: [],
+      children: { accepts: 'any', min: 1, max: 1 },
+      within: 'AlertDialog',
     },
     {
       name: 'AlertDialog.Content',
@@ -56,10 +65,13 @@ export default defineMeta({
         {
           name: 'size',
           type: "'sm' | 'md' | 'lg' | 'xl'",
+          options: ['sm', 'md', 'lg', 'xl'],
           default: "'sm'",
           description: 'Max width.',
         },
       ],
+      children: { accepts: 'any' },
+      within: 'AlertDialog',
     },
     {
       name: 'AlertDialog.Title',
@@ -71,6 +83,8 @@ export default defineMeta({
           description: 'The question, e.g. “Delete this project?”. Names the dialog.',
         },
       ],
+      children: { accepts: 'text' },
+      within: 'AlertDialog.Content',
     },
     {
       name: 'AlertDialog.Description',
@@ -82,19 +96,36 @@ export default defineMeta({
           description: 'The consequences. Announced with the title.',
         },
       ],
+      children: { accepts: 'text' },
+      within: 'AlertDialog.Content',
     },
     {
       name: 'AlertDialog.Cancel',
       description: 'Closes without acting. Receives focus when the dialog opens.',
       props: [{ name: 'asChild', type: 'boolean', description: 'Wrap your own Button.' }],
+      children: { accepts: 'any', min: 1, max: 1 },
+      within: 'AlertDialog.Content',
     },
     {
       name: 'AlertDialog.Action',
       description:
         'Confirms and closes. For work that takes time, use a plain Button and close when it finishes.',
       props: [{ name: 'asChild', type: 'boolean', description: 'Wrap your own Button.' }],
+      children: { accepts: 'any', min: 1, max: 1 },
+      within: 'AlertDialog.Content',
     },
-    { name: 'AlertDialog.Header / Footer', props: [] },
+    {
+      name: 'AlertDialog.Header',
+      description: 'Stacks the title and description.',
+      props: [],
+      children: { accepts: 'any' },
+    },
+    {
+      name: 'AlertDialog.Footer',
+      description: 'A row for Cancel and the Action.',
+      props: [],
+      children: { accepts: 'any' },
+    },
   ],
   examples: [
     { name: 'basic', title: 'Destructive confirmation' },

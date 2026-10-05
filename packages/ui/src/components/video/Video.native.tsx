@@ -13,6 +13,7 @@ export function Video({
   title,
   poster: _poster,
   captions: _captions,
+  crossOrigin: _crossOrigin,
   ratio = 16 / 9,
   autoPlay = false,
   muted = autoPlay,

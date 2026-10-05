@@ -27,7 +27,8 @@ export default defineMeta({
     {
       name: 'Popover',
       props: [
-        { name: 'open / defaultOpen', type: 'boolean', description: 'Open state.' },
+        { name: 'open', type: 'boolean', description: 'Open state.' },
+        { name: 'defaultOpen', type: 'boolean', description: 'Starting `open` when uncontrolled.' },
         {
           name: 'onOpenChange',
           type: '(open: boolean) => void',
@@ -36,17 +37,20 @@ export default defineMeta({
         {
           name: 'side',
           type: "'top' | 'right' | 'bottom' | 'left'",
+          options: ['top', 'right', 'bottom', 'left'],
           default: "'bottom'",
           description: 'Where to open relative to the trigger (flips when there is no room).',
         },
         {
           name: 'align',
           type: "'start' | 'center' | 'end'",
+          options: ['start', 'center', 'end'],
           default: "'center'",
           description: 'Alignment along that side.',
         },
         { name: 'offset', type: 'number', default: '8', description: 'Gap to the trigger in px.' },
       ],
+      children: { accepts: ['Popover.Trigger', 'Popover.Content'], max: 2 },
     },
     {
       name: 'Popover.Trigger',
@@ -57,16 +61,15 @@ export default defineMeta({
           description: 'Use your own element (e.g. a Button) as the trigger.',
         },
       ],
+      children: { accepts: 'any', min: 1, max: 1 },
+      within: 'Popover',
     },
     {
       name: 'Popover.Content',
-      props: [
-        {
-          name: '…ViewProps',
-          type: 'StackProps',
-          description: 'Style the panel (width defaults to $72).',
-        },
-      ],
+      description: 'Takes View props to style the panel; its width defaults to `$72`.',
+      props: [],
+      children: { accepts: 'any' },
+      within: 'Popover',
     },
     {
       name: 'Popover.Title',
@@ -78,10 +81,14 @@ export default defineMeta({
           description: 'Heading that names the dialog for screen readers.',
         },
       ],
+      children: { accepts: 'text' },
+      within: 'Popover.Content',
     },
     {
       name: 'Popover.Description',
       props: [{ name: 'children', type: 'ReactNode', description: 'Supporting text.' }],
+      children: { accepts: 'text' },
+      within: 'Popover.Content',
     },
     {
       name: 'Popover.Close',
@@ -92,6 +99,8 @@ export default defineMeta({
           description: 'Wrap a button that closes the popover.',
         },
       ],
+      children: { accepts: 'any', min: 1, max: 1 },
+      within: 'Popover.Content',
     },
   ],
   examples: [

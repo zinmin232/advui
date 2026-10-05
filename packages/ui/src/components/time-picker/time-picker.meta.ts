@@ -21,9 +21,14 @@ export default defineMeta({
       name: 'TimePicker',
       props: [
         {
-          name: 'value / defaultValue',
+          name: 'value',
           type: 'string | null',
           description: '24-hour `"HH:mm"`, whatever `hourCycle` shows.',
+        },
+        {
+          name: 'defaultValue',
+          type: 'string | null',
+          description: 'Starting `value` when uncontrolled.',
         },
         {
           name: 'onValueChange',
@@ -33,6 +38,7 @@ export default defineMeta({
         {
           name: 'hourCycle',
           type: '12 | 24',
+          options: ['12', '24'],
           default: '24',
           description: '12 adds an AM/PM select.',
         },
@@ -48,19 +54,44 @@ export default defineMeta({
           description: 'Goes on the hour select, so a Field’s label targets it.',
         },
         {
-          name: 'hourLabel / minuteLabel / periodLabel',
+          name: 'hourLabel',
           type: 'string',
-          default: "'Hour' / 'Minute' / 'AM or PM'",
-          description: 'Accessible names of the selects.',
+          default: "'Hour'",
+          description: 'Accessible name of the hour select.',
         },
-        { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'As Select.' },
         {
-          name: 'invalid / disabled',
-          type: 'boolean',
-          default: 'false',
+          name: 'minuteLabel',
+          type: 'string',
+          default: "'Minute'",
+          description: 'Accessible name of the minute select.',
+        },
+        {
+          name: 'periodLabel',
+          type: 'string',
+          default: "'AM or PM'",
+          description: 'Accessible name of the AM / PM select (12-hour clock only).',
+        },
+        {
+          name: 'size',
+          type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
+          default: "'md'",
           description: 'As Select.',
         },
+        {
+          name: 'invalid',
+          type: 'boolean',
+          default: 'false',
+          description: 'Error styling and `aria-invalid`.',
+        },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          default: 'false',
+          description: 'Not focusable or editable.',
+        },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [

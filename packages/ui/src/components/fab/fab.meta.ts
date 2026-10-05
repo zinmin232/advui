@@ -30,22 +30,26 @@ import { EditIcon } from '@advui/icons'
         {
           name: 'variant',
           type: "'soft' | 'primary' | 'secondary' | 'surface'",
+          options: ['soft', 'primary', 'secondary', 'surface'],
           default: "'soft'",
           description: '`soft` is Material’s primary container color.',
         },
         {
           name: 'size',
           type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
           default: "'md'",
           description: '40, 56 or 96 square (icon-only).',
         },
         {
           name: 'placement',
           type: "'bottom-end' | 'bottom-start' | 'bottom-center'",
+          options: ['bottom-end', 'bottom-start', 'bottom-center'],
           description: 'Pins it to a corner of the nearest positioned parent.',
         },
         { name: 'disabled', type: 'boolean', default: 'false', description: 'Not interactive.' },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [

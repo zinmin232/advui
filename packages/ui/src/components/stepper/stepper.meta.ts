@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'stepper',
   category: 'navigation',
   description: 'Progress through a multi-step flow, such as a form wizard or checkout.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [
@@ -42,6 +42,7 @@ export default defineMeta({
         {
           name: 'orientation',
           type: "'horizontal' | 'vertical'",
+          options: ['horizontal', 'vertical'],
           default: "'horizontal'",
           description: 'Vertical steps can show the current step’s content under it.',
         },
@@ -62,6 +63,7 @@ export default defineMeta({
           description: 'Screen-reader text ("Step 2 of 3", "completed"…), for translation.',
         },
       ],
+      children: { accepts: ['Stepper.Step'] },
     },
     {
       name: 'Stepper.Step',
@@ -71,6 +73,7 @@ export default defineMeta({
         {
           name: 'status',
           type: "'complete' | 'current' | 'upcoming' | 'error'",
+          options: ['complete', 'current', 'upcoming', 'error'],
           default: 'from `activeStep`',
           description: 'Override, e.g. `error` for a step that failed validation.',
         },
@@ -80,6 +83,8 @@ export default defineMeta({
           description: 'Vertical only: shown under the step while it is current.',
         },
       ],
+      children: { accepts: 'any' },
+      parents: ['Stepper'],
     },
   ],
   examples: [

@@ -20,6 +20,7 @@ import { ensureContrast, parseColor, toHex, withAlpha } from '@advui/utils'
 import type { UniversalConfigOptions } from './config'
 import type { FontFamilies } from './fonts'
 import { chartColors } from './chart'
+import { withSubThemes } from './subThemes'
 import type { ColorMode, GeneratedThemes, ThemeValues } from './themes'
 import type { RadiusOverrides } from './tokens'
 
@@ -221,10 +222,10 @@ export function createMaterialThemes(options: MaterialOptions = {}): GeneratedTh
     info: customColor(source, { name: 'info', value: argbFromHex(colors.info), blend: true }),
   }
   const scheme = (isDark: boolean) => new SchemeTonalSpot(Hct.fromInt(source), isDark, 0)
-  return {
+  return withSubThemes({
     light: { ...buildMode(scheme(false), 'light', status), ...options.overrides?.light },
     dark: { ...buildMode(scheme(true), 'dark', status), ...options.overrides?.dark },
-  }
+  })
 }
 
 /**

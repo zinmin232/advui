@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'search',
   category: 'advanced',
   description: 'A search field with a magnifier, a clear button and a loading state.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Search', 'SearchProps'],
@@ -20,9 +20,19 @@ export default defineMeta({
       description: 'Also takes the Input props (`placeholder`, `disabled`, `id`…).',
       props: [
         {
-          name: 'value / defaultValue / onValueChange',
+          name: 'value',
           type: 'string',
           description: 'The text (controlled or not). Filter live from `onValueChange`.',
+        },
+        {
+          name: 'defaultValue',
+          type: 'string',
+          description: 'Starting `value` when uncontrolled.',
+        },
+        {
+          name: 'onValueChange',
+          type: '(value: string) => void',
+          description: 'Called with the new `value`.',
         },
         {
           name: 'onSearch',
@@ -35,7 +45,13 @@ export default defineMeta({
           default: 'false',
           description: 'A spinner replaces the magnifier; sets `aria-busy`.',
         },
-        { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Height.' },
+        {
+          name: 'size',
+          type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
+          default: "'md'",
+          description: 'Height.',
+        },
         {
           name: 'aria-label',
           type: 'string',
@@ -52,9 +68,11 @@ export default defineMeta({
           name: 'landmark',
           type: 'boolean',
           default: 'false',
-          description: 'Wraps it in a `search` landmark (web) for the page’s main search.',
+          platforms: ['web'],
+          description: 'Wraps it in a `search` landmark, for the page’s main search.',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [

@@ -40,9 +40,15 @@ export default defineMeta({
       name: 'Dialog',
       props: [
         {
-          name: 'open / defaultOpen',
+          name: 'open',
           type: 'boolean',
-          description: 'Controlled / uncontrolled open state.',
+          description: 'Open state, when you control it.',
+        },
+        {
+          name: 'defaultOpen',
+          type: 'boolean',
+          default: 'false',
+          description: 'Open at first, when the dialog manages its state.',
         },
         {
           name: 'onOpenChange',
@@ -50,11 +56,14 @@ export default defineMeta({
           description: 'Called when opened or closed.',
         },
       ],
+      children: { accepts: ['Dialog.Trigger', 'Dialog.Content'], max: 2 },
     },
     {
       name: 'Dialog.Trigger',
       description: 'Opens the dialog. Use `asChild` to render your Button.',
       props: [],
+      children: { accepts: 'any', min: 1, max: 1 },
+      within: 'Dialog',
     },
     {
       name: 'Dialog.Content',
@@ -62,6 +71,7 @@ export default defineMeta({
         {
           name: 'size',
           type: "'sm' | 'md' | 'lg' | 'xl'",
+          options: ['sm', 'md', 'lg', 'xl'],
           default: "'md'",
           description: 'Max width.',
         },
@@ -72,8 +82,42 @@ export default defineMeta({
           description: 'Hide the × button.',
         },
       ],
+      children: { accepts: 'any' },
+      within: 'Dialog',
     },
-    { name: 'Dialog.Header / Footer / Title / Description / Close', props: [] },
+    {
+      name: 'Dialog.Header',
+      description: 'Stacks the title and description at the top.',
+      props: [],
+      children: { accepts: 'any' },
+    },
+    {
+      name: 'Dialog.Footer',
+      description: 'A row of actions at the bottom.',
+      props: [],
+      children: { accepts: 'any' },
+    },
+    {
+      name: 'Dialog.Title',
+      description: 'Names the dialog for screen readers.',
+      props: [],
+      children: { accepts: 'text' },
+      within: 'Dialog.Content',
+    },
+    {
+      name: 'Dialog.Description',
+      description: 'Describes the dialog; read with the title.',
+      props: [],
+      children: { accepts: 'text' },
+      within: 'Dialog.Content',
+    },
+    {
+      name: 'Dialog.Close',
+      description: 'Closes the dialog. Use `asChild` to render your Button.',
+      props: [{ name: 'asChild', type: 'boolean', description: 'Wrap your own Button.' }],
+      children: { accepts: 'any', min: 1, max: 1 },
+      within: 'Dialog.Content',
+    },
   ],
   examples: [
     { name: 'basic', title: 'Edit form' },

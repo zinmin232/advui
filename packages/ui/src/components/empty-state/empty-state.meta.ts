@@ -32,6 +32,7 @@ import { MailIcon } from '@advui/icons'
         {
           name: 'headingLevel',
           type: '1 | 2 | 3 | 4 | 5 | 6',
+          options: ['1', '2', '3', '4', '5', '6'],
           default: '3',
           description: 'Heading level of the title.',
         },
@@ -44,10 +45,12 @@ import { MailIcon } from '@advui/icons'
         {
           name: 'tone',
           type: "'default' | 'error'",
+          options: ['default', 'error'],
           default: "'default'",
           description: 'Colors of the icon circle.',
         },
       ],
+      children: { accepts: 'any' },
     },
   ],
   examples: [

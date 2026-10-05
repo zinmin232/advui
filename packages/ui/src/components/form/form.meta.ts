@@ -9,7 +9,16 @@ export default defineMeta({
   status: 'beta',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
-  exports: ['Form', 'FormProps', 'FormSubmitProps', 'FormDirection', 'useFormStatus', 'FormStatus'],
+  exports: [
+    'Form',
+    'FormProps',
+    'FormSubmitProps',
+    'FormDirection',
+    'useParentForm',
+    'FormContextValue',
+    'useFormStatus',
+    'FormStatus',
+  ],
   files: ['components/form/Form.tsx', 'components/form/index.ts'],
   keywords: [
     'form',
@@ -68,6 +77,7 @@ const save = async () => {
         {
           name: 'gap',
           type: 'SpaceTokens | number',
+          token: 'space',
           default: "'$4'",
           description: 'Space between the fields.',
         },
@@ -112,11 +122,12 @@ const save = async () => {
           type: 'boolean',
           default: 'false',
           description:
-            'Disables every Field control and `Form.Submit`, and blocks `onSubmit`. Other children keep their own `disabled`.',
+            'Disables every form control inside, in a Field or not (Input, Textarea, Select, Checkbox, Switch, Radio Group, pickers…), and `Form.Submit`, and blocks `onSubmit`. Other buttons, such as Cancel, stay enabled.',
         },
         {
           name: 'direction',
           type: "'vertical' | 'horizontal'",
+          options: ['vertical', 'horizontal'],
           default: "'vertical'",
           description:
             '`horizontal` puts the fields in a wrapping, bottom-aligned row: for search bars and filters.',
@@ -129,6 +140,7 @@ const save = async () => {
             'The form fills its container, and footer actions stack at full width. Fields fill the width in either case.',
         },
       ],
+      children: { accepts: 'any' },
     },
     {
       name: 'Form.Submit',
@@ -154,11 +166,14 @@ const save = async () => {
           description: 'Also disabled while the form is.',
         },
       ],
+      children: { accepts: 'text' },
+      within: 'Form',
     },
     {
-      name: 'useFormStatus',
+      name: 'useParentForm',
+      kind: 'hook',
       description:
-        'Reads the surrounding Form, for your own fields and actions. Outside a Form it returns the defaults, and `submit` does nothing.',
+        'Reads the surrounding Form, for your own fields and actions; returns a `FormContextValue`. Outside a Form it returns the defaults, and `submit` does nothing. It was called `useFormStatus` (still exported, deprecated), which is also the name of a React DOM hook for Server Actions.',
       props: [
         { name: 'disabled', type: 'boolean', description: "The form's `disabled`." },
         { name: 'loading', type: 'boolean', description: "The form's `loading`." },
@@ -172,6 +187,24 @@ const save = async () => {
       ],
     },
   ],
+  playground: {
+    component: 'Form',
+    controls: [
+      { prop: 'title', type: 'text', default: 'Create account' },
+      { prop: 'description', type: 'text', default: 'Enter your details.' },
+      {
+        prop: 'direction',
+        type: 'select',
+        options: ['vertical', 'horizontal'],
+        default: 'vertical',
+      },
+      { prop: 'gap', type: 'select', options: ['$2', '$4', '$6'], default: '$4' },
+      { prop: 'loading', type: 'boolean', default: false },
+      { prop: 'loadingText', type: 'text', default: 'Saving…' },
+      { prop: 'disabled', type: 'boolean', default: false },
+      { prop: 'fullWidth', type: 'boolean', default: false },
+    ],
+  },
   examples: [
     { name: 'basic', title: 'Basic', description: 'Fields stacked with a consistent gap.' },
     { name: 'title-description', title: 'Title and description' },
@@ -207,9 +240,9 @@ const save = async () => {
   accessibility: [
     'On web it is a `<form>`. With a `title` it is named by it (`aria-labelledby`) and described by `description`, so screen-reader users can jump to it as a form landmark. Without a title, pass `aria-label` if it should be a landmark.',
     'A text `title` is a heading (level 2, `header` role on iOS and Android); pass your own Heading for another level.',
-    'Enter in a field submits on web, as in any HTML form with a submit button. On native, call `submit` from `useFormStatus()` in `onSubmitEditing` if Return should submit.',
+    'Enter in a field submits on web, as in any HTML form with a submit button. On native, call `submit` from `useParentForm()` in `onSubmitEditing` if Return should submit.',
     'While loading, `Form.Submit` is busy (`aria-busy`) and disabled, and `loadingText` is read once from a polite status region on web. The form itself is not marked busy, so its fields stay readable.',
-    'While disabled, Field controls are disabled (`aria-disabled` and not editable) and their labels are dimmed. Form never clones other children: pass `disabled` to them, or read `useFormStatus()`.',
+    'While disabled, every form control inside is disabled (`aria-disabled` and not editable), and Field labels are dimmed. Form never clones its children: the core controls read the form through context, and your own controls can call `useFieldControl(props)` or `useParentForm()`. Buttons other than `Form.Submit` stay enabled, so Cancel still works.',
     'Browser validation is off (`noValidate`) so errors come from your app, the same on every platform: show them with a Field’s `error`.',
   ],
   keyboard: [

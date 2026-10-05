@@ -7,6 +7,244 @@ one version.
 
 ## [Unreleased]
 
+### Added
+
+- **`ariaState(on)`** in `@advui/core`, for components built on core: a
+  boolean `aria-disabled`, `aria-busy` or `aria-selected` that is left out
+  when off on web and sent as `false` on iOS and Android.
+- **Video `crossOrigin`** (`'anonymous'` or `'use-credentials'`, web): browsers
+  only load caption files from another origin when the video is fetched with
+  CORS.
+- Docs: a **Form playground** (title, description, direction, gap, loading,
+  disabled, full width), also on the Playground page. Text props in every
+  playground now appear in the generated JSX even when unchanged.
+
+### Changed
+
+- **A disabled Form disables every form control inside it**, in a Field or
+  not: Input, Textarea, Select, Checkbox, Switch, Radio Group, the pickers
+  and any control that calls `useFieldControl`. Buttons other than
+  `Form.Submit` stay enabled, so Cancel still works.
+- **`useFormStatus` is now `useParentForm`**, and its type `FormStatus` is
+  `FormContextValue`, so it is not mistaken for React DOM's `useFormStatus`
+  (Server Actions). The old names still work as deprecated aliases.
+- The Video and Audio Player examples play clips made for these docs instead
+  of MDN's samples: a handwashing video with English captions (a WebVTT
+  file), a square silent loop, a flood-safety radio message and a voice
+  message. They are served from the docs site (`/media`) and made by
+  `scripts/demo-media/make-demo-media.ps1`.
+
+- Stable after the Android phone check: Stat, KPI Card, List, Timeline,
+  Image, Table, Pagination, Stepper, Data Table, Tree View, Navigation Menu,
+  Sidebar, Search, Command Palette, Image Gallery, Bar / Line / Area / Pie
+  Chart, Resizable Panel, Data Grid, Video, Audio Player and Loading Button.
+  Form and Rich Text Editor stay beta until their open API questions are
+  settled.
+
+### Fixed
+
+- TalkBack kept reading a cleared state on Android: "Page 1, selected" and
+  "Previous page, disabled" after paging, or a disabled button after it was
+  enabled again. React Native keeps the last value of an accessibility prop
+  that is removed, so disabled, busy and selected states are now sent as
+  `false` when they turn off (Button, Pagination, Input, Textarea, Slider,
+  Toggle, Toggle Group, Chip, Fab, List, Menu, Navigation Bar, Sidebar,
+  Calendar, Combobox, pickers, File Dropzone, Search, Circular Progress and
+  Tree View).
+- Button and Loading Button on Android: while loading, TalkBack read only
+  "busy", and went on reading "busy" after loading ended. A text button now
+  names itself with its text on native, so it reads "Saving…, busy" and then
+  its label again. Data Table and KPI Card set `aria-busy` on web only, since
+  a native container cannot report it without a name.
+- Table with `minWidth` on iOS and Android: the columns did not line up from
+  row to row, because each row sized its columns to its own text inside the
+  sideways scroll view. The table now gets a set width there.
+- Data Grid on Android: tapping a cell opened the editor without the
+  keyboard, and the cell could stay off screen. The editor is now focused and
+  its column scrolled into view. The Done key no longer blurs the editor, so
+  an invalid value shows its error instead of being dropped.
+- Charts on iOS and Android: the plot's name ended with "Use the arrow keys
+  to read each value", which a phone cannot do. The hint is web only now.
+- Image: the fallback example used a relative path, which never fails on
+  Android, so the fallback did not show there. It now uses an address that
+  fails on every platform.
+- Table: the basic example squeezed its columns on phones and broke words
+  mid-way; it scrolls sideways below 480 pt now.
+- Sidebar: the App sidebar example squeezed its page into a 60 pt column on
+  phones, so the heading and text broke letter by letter. Below `md` it now
+  starts as an icon rail, and opening the sidebar pushes the page aside
+  instead of squeezing it. Desktop looks the same.
+- Select on web: every page with a Select logged "React does not recognize
+  the `accessibilityHint` prop on a DOM element". Select, and Rich Text Editor
+  when given a hint, now set this native-only prop on iOS and Android only.
+- Docs: the install steps said React Native Web is installed automatically.
+  It is not; web apps add `react-native-web` themselves.
+
+## [0.11.0] - 2026-10-04
+
+### Added
+
+- **AppShell** (beta): the frame of an app screen, with `AppShell.Header`,
+  `AppShell.Sidebar`, `AppShell.Main` and `AppShell.Footer`. It fills the
+  screen (`100dvh` on web, `flex: 1` on iOS and Android) and only Main
+  scrolls, between the header and footer. `layout="header-full"` (default)
+  or `"sidebar-full"` chooses which spans its edge. Below
+  `sidebarBreakpoint` (default `md`) the sidebar's children move into a
+  Drawer from the left, `drawerWidth` wide (default 280), opened by
+  `AppShell.SidebarTrigger`; a drawer left open closes when the window
+  widens past the breakpoint. `sidebarOpen` / `defaultSidebarOpen` /
+  `onSidebarOpenChange` control it, and `useAppShell()` reads it.
+  `stickyHeader={false}` lets the header scroll away with Main. Web
+  landmarks: banner, navigation (named by the sidebar's `aria-label`),
+  main and contentinfo. On iOS and Android the bars pad the safe areas
+  (`safeArea={false}` turns that off under a navigation header or above a
+  tab bar) and the back button closes the drawer.
+- **AutoGrid** (beta): equal-width cells, as many columns as fit at
+  `minChildWidth` (default 240), up to `maxColumns`, with no breakpoints:
+  `<AutoGrid minChildWidth={240} gap="$4" maxColumns={4}>`. On web it is CSS
+  grid (`repeat(auto-fill, minmax(…))`), so server-rendered HTML has the
+  right columns; on iOS and Android it measures its width and picks the same
+  count. **`autoGridColumns(width, minChildWidth, gap, maxColumns)`** returns
+  that count.
+
+### Changed
+
+- Sidebar inside `AppShell.Sidebar` drops its own navigation landmark, since
+  the area is one. In the AppShell's phone drawer it fills the drawer, does
+  not collapse (Sidebar.Toggle renders nothing there), and pressing an item
+  closes the drawer. Sidebars elsewhere are unchanged.
+
+## [0.10.0] - 2026-10-04
+
+### Added
+
+- **Show and Hide** (beta): `<Show above="md">`, `<Show below="md">`,
+  `<Show above="sm" below="lg">` and `<Hide below="sm">`. On web they are
+  CSS media queries around a `display: contents` wrapper, so the server
+  renders the right content for every width (no flash, no hydration
+  mismatch) and hidden content stays mounted. On iOS and Android they read
+  the window size and leave hidden content out.
+- **`useBreakpoint()`** (the largest matching breakpoint, or `'base'`) and
+  **`useBreakpointValue(map)`** (the value of a responsive map now, with the
+  same cascade as the layout props). They see a phone on the first server
+  render, so use them for behavior and Show / Hide or responsive props for
+  layout.
+- **Section** (beta): a `<section>` band with `spacing` (`none` … `xl`,
+  larger from md, or a map), `background` (`muted`, `card`, `primarySoft`,
+  `primary`, `inverse`…) and a `container` size. It passes `id`,
+  `aria-label` and `aria-labelledby` through, so a named Section is a region
+  landmark and `#features` links jump to it.
+- **Sticky** (beta): keeps a header in view while its container scrolls,
+  with `edge`, `offset` and `zIndex` (default `$sticky`). On web it is
+  `position: sticky`. On iOS and Android a ScrollArea pins a top Sticky that
+  is a direct child of its content element, with `stickyHeaderIndices`.
+- **Primary and inverse sub-themes** in `@advui/theme`: `light_primary`,
+  `dark_primary`, `light_inverse` and `dark_inverse`, for content on a
+  primary or other-mode surface (`<Theme name="primary">`). Their text meets
+  WCAG AA in every preset. `primarySurfaceTheme()` and `withSubThemes()`
+  build them for your own themes.
+
+### Changed
+
+- `createThemeColors` and `createMaterialThemes` return the sub-themes too.
+  If you swap themes at runtime, update every entry
+  (`for (const [name, theme] of Object.entries(themes)) updateTheme({ name, theme })`),
+  not only `light` and `dark`. `createUniversalConfig({ themes })` adds
+  them to hand-made light and dark themes.
+- ScrollArea on Android scrolls inside a scrolling screen: it turns on
+  `nestedScrollEnabled`. Before, the screen took every vertical drag.
+- ScrollArea on iOS and Android: when the content element's children
+  include a top Sticky, they become the ScrollView's own children and the
+  element's style props style the scroll content, so the Sticky can be
+  pinned. Other ScrollAreas are unchanged.
+
+## [0.9.0] - 2026-10-04
+
+### Added
+
+- **Responsive Stack props**: `direction`, `wrap`, `align` and `distribute`
+  on Stack, HStack and VStack, each a value or a mobile-first map:
+  `<Stack direction={{ base: 'column', md: 'row' }} align="center" distribute="between">`.
+  `align` and `distribute` take short values (`start`, `end`, `between`,
+  `around`, `evenly`). They are media props underneath, so on web they are
+  CSS media queries (no flash during SSR) and they work in
+  `styled(Stack, …)`. The raw style props still work and win when both set
+  the same style: `flexDirection` over `direction`, `$md={{ flexDirection }}`
+  over `direction`'s md value, in either order. On a stack, `direction` is now
+  the layout prop. It replaces React Native's text-direction style of the
+  same name in the types; `direction="rtl"` still sets the text direction at
+  run time, so existing code keeps working.
+- **Wrap** (beta): a row that wraps, for chips and tags: centered items and a
+  `$2` gap, with the Stack props.
+- **Container**: `gutter` sets the side padding with a token or a map
+  (`gutter="$0"` removes it; the default stays 16 / 24 / 32px),
+  `centerContent` centers the children, and `size="xxl"` (1536px). There is
+  no `fluid` prop: `size="full"` is Bootstrap's `container-fluid`.
+- **Labelled Separator**: `<Separator label="or" />`, with
+  `labelPosition="start" | "center" | "end"` and `children` for richer
+  content. Horizontal only. A decorative one hides its lines and leaves the
+  label as text; with `decorative={false}` it is a `separator` named by the
+  label.
+- `Responsive<T>` and `responsiveStyle(prop, value, map?)`, the helper behind
+  these props, for your own components. Grid uses it too, and
+  `ResponsiveColumns` is now `Responsive<number>`.
+
+### Changed
+
+- Container's default side padding comes from its `gutter` variant instead
+  of base styles. The CSS is the same.
+
+## [0.8.0] - 2026-10-04
+
+No component changes at run time: this release is about the metadata that
+tools read.
+
+### Added
+
+- **Metadata for tools** such as the AdvUI Builder, which builds prop editors
+  and drop rules from each component's `*.meta.ts`. The new fields are
+  optional (`@advui/core/meta`):
+  - On a prop: `options`, the closed list of values; `responsive`, when it
+    also takes a `{ base, sm, md, … }` map; `token`, the theme scale its value
+    comes from (`space`, `size`, `color`, `radius`, `zIndex`); `min`, `max`
+    and `step` for numbers; and `platforms`, when it works on some platforms
+    only. A new `Breakpoint` type names the breakpoints.
+  - On a part: `children` (what may go inside: `'any'`, `'text'`, `'none'`
+    or a list of parts, with `min` and `max`), `parents` (it must be a direct
+    child of one of these), `within` (it must sit inside this part, because it
+    reads its context) and `kind` (`hook`, `function` or `type` for documented
+    parts that are not components).
+
+  Every component fills them in: `options` for each closed list and child
+  rules for each part. For example, Tooltip wraps exactly one trigger,
+  `Tabs.List` takes `Tabs.Trigger`s, `Grid.Item` must be a direct child of
+  `Grid`, and Button takes text.
+
+- A metadata check (`packages/catalog/src/validate.ts`) that `pnpm catalog`
+  and `pnpm test` run. It fails on duplicate `options`, a literal default that
+  is not one of them, a closed type without `options`, child rules that name
+  a part that does not exist, and rows that combine props, naming the
+  component, part and prop.
+- Docs: the props tables say which props also take a breakpoint map and which
+  work on some platforms only.
+
+### Fixed
+
+- Select in a Field had no accessible name until the page hydrated: the
+  server-rendered trigger is a `div`, which the Field's `<label for>` cannot
+  name, so it now points at the label with `aria-labelledby`.
+
+### Changed
+
+- Component metadata lists one prop per row and one part per entry
+  (`value`, `defaultValue` and `onValueChange`, not
+  `value / defaultValue`; `Dialog.Header` and `Dialog.Footer`, not
+  `Dialog.Header / Footer`), with no `…` and no aliases such as `FlexAlign`,
+  `ButtonVariant` or `TextSize` in place of the values. The Stack page lists
+  `flexDirection`, `alignItems`, `justifyContent`, `flexWrap` and `gap` with
+  every value, for Stack, HStack and VStack. Responsive props show the
+  value's own type (`columns: number`) and set `responsive`.
+
 ## [0.7.0] - 2026-10-03
 
 ### Changed

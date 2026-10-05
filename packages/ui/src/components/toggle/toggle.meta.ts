@@ -20,11 +20,12 @@ import { BoldIcon } from '@advui/icons'
     {
       name: 'Toggle',
       props: [
+        { name: 'pressed', type: 'boolean', description: 'On or off, when you control it.' },
         {
-          name: 'pressed / defaultPressed',
+          name: 'defaultPressed',
           type: 'boolean',
           default: 'false',
-          description: 'Controlled / uncontrolled on state.',
+          description: 'Starting `pressed` when uncontrolled.',
         },
         {
           name: 'onPressedChange',
@@ -34,10 +35,17 @@ import { BoldIcon } from '@advui/icons'
         {
           name: 'variant',
           type: "'default' | 'outline'",
+          options: ['default', 'outline'],
           default: "'default'",
           description: 'Transparent, or with a border.',
         },
-        { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Height.' },
+        {
+          name: 'size',
+          type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
+          default: "'md'",
+          description: 'Height.',
+        },
         { name: 'icon', type: 'ReactNode', description: 'Icon before the label.' },
         { name: 'disabled', type: 'boolean', default: 'false', description: 'Not interactive.' },
         {
@@ -46,6 +54,7 @@ import { BoldIcon } from '@advui/icons'
           description: 'Required for icon-only toggles. Keep it the same in both states.',
         },
       ],
+      children: { accepts: 'text' },
     },
   ],
   examples: [

@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'kpi-card',
   category: 'data-display',
   description: 'A card for one key figure on a dashboard, with its change and an icon.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['KpiCard', 'KpiCardProps'],
@@ -38,20 +38,23 @@ import { CreditCardIcon } from '@advui/icons'
         {
           name: 'trend',
           type: "'up' | 'down' | 'neutral'",
+          options: ['up', 'down', 'neutral'],
           default: "'neutral'",
           description: 'Direction of the change; picks the arrow.',
         },
         {
           name: 'tone',
           type: "'positive' | 'negative' | 'neutral'",
+          options: ['positive', 'negative', 'neutral'],
           default: 'from `trend`',
           description: 'Good or bad news; picks the color. Set it when a drop is good.',
         },
         {
           name: 'trendLabel',
           type: 'string',
-          default: "'Increased by' | 'Decreased by' | 'No change:'",
-          description: 'Read by screen readers before the delta.',
+          default: 'from `trend`',
+          description:
+            "Read by screen readers before the delta: 'Increased by', 'Decreased by' or 'No change:' for the `trend`.",
         },
         { name: 'description', type: 'ReactNode', description: 'Short note after the delta.' },
         { name: 'icon', type: 'ReactNode', description: 'Decorative icon in the top corner.' },
@@ -67,6 +70,7 @@ import { CreditCardIcon } from '@advui/icons'
           description: 'Extra content below the figure, such as a Progress bar.',
         },
       ],
+      children: { accepts: 'any' },
     },
   ],
   examples: [

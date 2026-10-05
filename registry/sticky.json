@@ -1,0 +1,48 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "sticky",
+  "title": "Sticky",
+  "type": "registry:component",
+  "description": "Keeps a header or a list heading in view while its container scrolls: CSS sticky on web, a pinned ScrollArea header on iOS and Android.",
+  "category": "layout",
+  "status": "beta",
+  "since": "0.10.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/sticky/Sticky.tsx",
+      "type": "registry:ui",
+      "content": "import { type ReactNode, forwardRef } from 'react'\nimport {\n  type GetProps,\n  type SpaceTokens,\n  type TamaguiElement,\n  View,\n  type ZIndexTokens,\n  isWeb,\n} from 'tamagui'\n\nexport type StickyEdge = 'top' | 'bottom'\n\nexport interface StickyProps extends Omit<GetProps<typeof View>, 'children' | 'zIndex'> {\n  /** The edge it sticks to while its container scrolls. `bottom` is web only. Default `top`. */\n  edge?: StickyEdge\n  /** Distance from that edge, such as the height of a header above it. Default `0`. */\n  offset?: SpaceTokens | number\n  /** Stacking level. Default `$sticky` (above content, below dropdowns and dialogs). */\n  zIndex?: ZIndexTokens | number\n  children?: ReactNode\n}\n\n/**\n * Keeps its content in view while the page or a ScrollArea scrolls.\n *\n * Web: `position: sticky`, so it sticks inside its nearest scrolling ancestor\n * and stays in the flow until then.\n * iOS / Android: React Native has no sticky positioning. A top Sticky that is\n * a direct child of a ScrollArea's content element is pinned by the\n * ScrollArea (`stickyHeaderIndices`); anywhere else it is a plain View.\n */\nexport const Sticky = forwardRef<TamaguiElement, StickyProps>(function Sticky(\n  { edge = 'top', offset = 0, zIndex = '$sticky', ...props },\n  ref,\n) {\n  return (\n    <View\n      ref={ref}\n      zIndex={zIndex}\n      {...(isWeb ? { position: 'sticky' as never, [edge]: offset } : null)}\n      {...props}\n    />\n  )\n})\n"
+    },
+    {
+      "path": "components/sticky/index.ts",
+      "type": "registry:ui",
+      "content": "export { Sticky, type StickyEdge, type StickyProps } from './Sticky'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "page-header",
+      "title": "Sticky header",
+      "code": "import { Button, HStack, ScrollArea, Sticky, Text, VStack } from '@advui/core'\n\nconst paragraphs = Array.from({ length: 8 }, (_, i) => i + 1)\n\nexport default function StickyPageHeader() {\n  return (\n    <ScrollArea\n      aria-label=\"Report\"\n      height={280}\n      width=\"100%\"\n      borderWidth={1}\n      borderColor=\"$border\"\n      borderRadius=\"$lg\"\n    >\n      <VStack>\n        <Sticky>\n          <HStack\n            distribute=\"between\"\n            padding=\"$3\"\n            backgroundColor=\"$background\"\n            borderBottomWidth={1}\n            borderColor=\"$border\"\n          >\n            <Text weight=\"semibold\">Quarterly report</Text>\n            <Button size=\"sm\">Download</Button>\n          </HStack>\n        </Sticky>\n        <VStack padding=\"$4\" gap=\"$3\">\n          {paragraphs.map((n) => (\n            <Text key={n} tone=\"muted\">\n              Section {n}. Scroll: the header stays at the top while the report moves under it.\n            </Text>\n          ))}\n        </VStack>\n      </VStack>\n    </ScrollArea>\n  )\n}\n"
+    },
+    {
+      "name": "list-headers",
+      "title": "List section headers",
+      "code": "import { List, ScrollArea, Sticky, Text, VStack } from '@advui/core'\nimport { Fragment } from 'react'\n\nconst groups = [\n  { region: 'Kachin', townships: ['Bhamo', 'Myitkyina', 'Putao', 'Waingmaw'] },\n  { region: 'Rakhine', townships: ['Kyaukpyu', 'Maungdaw', 'Mrauk-U', 'Sittwe'] },\n  { region: 'Shan', townships: ['Kengtung', 'Lashio', 'Muse', 'Taunggyi'] },\n]\n\nexport default function StickyListHeaders() {\n  return (\n    <ScrollArea\n      aria-label=\"Townships\"\n      height={280}\n      width=\"100%\"\n      maxWidth={360}\n      borderWidth={1}\n      borderColor=\"$border\"\n      borderRadius=\"$lg\"\n    >\n      {/* Each header is a direct child of the content, so it is pinned on iOS and Android too. */}\n      <VStack>\n        {groups.map((group) => (\n          <Fragment key={group.region}>\n            <Sticky>\n              <Text\n                role=\"heading\"\n                aria-level={3}\n                size=\"sm\"\n                weight=\"semibold\"\n                paddingHorizontal=\"$4\"\n                paddingVertical=\"$2\"\n                backgroundColor=\"$muted\"\n              >\n                {group.region}\n              </Text>\n            </Sticky>\n            <List>\n              {group.townships.map((township) => (\n                <List.Item key={township} title={township} />\n              ))}\n            </List>\n          </Fragment>\n        ))}\n      </VStack>\n    </ScrollArea>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/sticky",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.11.0"
+}

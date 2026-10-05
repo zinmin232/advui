@@ -1,0 +1,48 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "auto-grid",
+  "title": "Auto Grid",
+  "type": "registry:component",
+  "description": "Equal-width cells that pick their column count from the available width: as many as fit at a minimum width, with no breakpoints.",
+  "category": "layout",
+  "status": "beta",
+  "since": "0.11.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/layout/AutoGrid.tsx",
+      "type": "registry:ui",
+      "content": "import { type ReactNode, forwardRef } from 'react'\nimport { type SpaceTokens, type TamaguiElement, View, type ViewProps } from 'tamagui'\nimport { spaceValue } from './autoGridColumns'\n\nexport interface AutoGridProps extends Omit<ViewProps, 'children' | 'gap'> {\n  children?: ReactNode\n  /** Narrowest a cell gets, in px; the column count follows from it. Default `240`. */\n  minChildWidth?: number\n  /** Space between cells, across and down (token). Default `$4`. */\n  gap?: SpaceTokens\n  /** Most columns, however wide the grid gets. */\n  maxColumns?: number\n  onLayout?: (event: { nativeEvent: { layout: { width: number; height: number } } }) => void\n}\n\n/**\n * `grid-template-columns` for an AutoGrid. `auto-fill` keeps empty tracks, so\n * a lone card stays one column wide. `maxColumns` raises the narrowest cell to\n * a 1/n share of the row, so no more than n fit, and `min(…, 100%)` keeps one\n * column from overflowing a grid narrower than `minChildWidth`.\n */\nexport function autoGridTemplate(minChildWidth: number, gap: number, maxColumns?: number) {\n  const min = `${Math.max(minChildWidth, 1)}px`\n  const most = maxColumns !== undefined && maxColumns >= 1 ? Math.floor(maxColumns) : undefined\n  const cell = most ? `max(${min}, calc((100% - ${(most - 1) * gap}px) / ${most}))` : min\n  return `repeat(auto-fill, minmax(min(${cell}, 100%), 1fr))`\n}\n\n/**\n * Equal-width cells that fill the row: as many columns as fit at\n * `minChildWidth`, up to `maxColumns`. Web uses CSS grid, the one place Adv\n * UI does, because it is the only way to get the column count right on the\n * first paint (and in server-rendered HTML) without measuring.\n * AutoGrid.native.tsx measures instead.\n */\nexport const AutoGrid = forwardRef<TamaguiElement, AutoGridProps>(function AutoGrid(\n  { minChildWidth = 240, gap = '$4', maxColumns, style, ...props },\n  ref,\n) {\n  const template = autoGridTemplate(minChildWidth, spaceValue(gap), maxColumns)\n  return (\n    <View\n      ref={ref}\n      display={'grid' as ViewProps['display']}\n      gap={gap}\n      width=\"100%\"\n      {...props}\n      style={{ gridTemplateColumns: template, ...(style as object | undefined) }}\n    />\n  )\n})\n"
+    },
+    {
+      "path": "components/layout/AutoGrid.native.tsx",
+      "type": "registry:ui",
+      "content": "import { Children, forwardRef, isValidElement, useState } from 'react'\nimport { type TamaguiElement, View } from 'tamagui'\nimport type { AutoGridProps } from './AutoGrid'\nimport { autoGridColumns, spaceValue } from './autoGridColumns'\n\n/**\n * Native: React Native has no CSS grid, so the grid measures its width and\n * lays cells out like Grid does, a wrapping row of equal widths. Until the\n * first layout it renders one full-width column, so cells never flash at zero width.\n */\nexport const AutoGrid = forwardRef<TamaguiElement, AutoGridProps>(function AutoGrid(\n  { children, minChildWidth = 240, gap = '$4', maxColumns, onLayout, ...props },\n  ref,\n) {\n  const [width, setWidth] = useState(0)\n  const space = spaceValue(gap)\n  const columns = width ? autoGridColumns(width, minChildWidth, space, maxColumns) : 1\n  // Whole pixels: Yoga rounds each cell, and widths that add up to a hair over\n  // the row would push the last cell onto the next line.\n  const cell = width ? Math.floor((width - (columns - 1) * space) / columns) : '100%'\n\n  return (\n    <View\n      ref={ref}\n      flexDirection=\"row\"\n      flexWrap=\"wrap\"\n      gap={gap}\n      width=\"100%\"\n      onLayout={(event) => {\n        setWidth(event.nativeEvent.layout.width)\n        onLayout?.(event)\n      }}\n      {...props}\n    >\n      {Children.toArray(children).map((child, index) => (\n        <View key={isValidElement(child) && child.key != null ? child.key : index} width={cell}>\n          {child}\n        </View>\n      ))}\n    </View>\n  )\n})\n\nexport type { AutoGridProps } from './AutoGrid'\n"
+    },
+    {
+      "path": "components/layout/autoGridColumns.ts",
+      "type": "registry:ui",
+      "content": "import { type SpaceTokens, type Token, getTokenValue } from 'tamagui'\n\n/**\n * How many columns at least `minChildWidth` wide fit in `width`, with `gap`\n * between them, capped by `maxColumns`, and never fewer than 1. It is the\n * count CSS grid's `repeat(auto-fill, minmax(…))` picks on web, so native\n * AutoGrids, which measure their width, get the same columns as web ones.\n */\nexport function autoGridColumns(\n  width: number,\n  minChildWidth: number,\n  gap = 0,\n  maxColumns?: number,\n): number {\n  const fit = Math.floor((width + gap) / (Math.max(minChildWidth, 1) + gap))\n  const cap = maxColumns !== undefined && maxColumns >= 1 ? Math.floor(maxColumns) : Infinity\n  const columns = Math.min(fit, cap)\n  return Number.isFinite(columns) && columns > 1 ? columns : 1\n}\n\n/** A space token (or number) in px. */\nexport function spaceValue(gap: SpaceTokens | number): number {\n  if (typeof gap === 'number') return gap\n  return (getTokenValue(gap as Token, 'space') as number | undefined) ?? 0\n}\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "card-gallery",
+      "title": "Card gallery",
+      "code": "import { AutoGrid, Badge, Card, HStack, Text } from '@advui/core'\n\nconst places = [\n  { name: 'Atlas', region: 'North', sites: 12 },\n  { name: 'Beacon', region: 'Coast', sites: 8 },\n  { name: 'Compass', region: 'Delta', sites: 15 },\n  { name: 'Delta', region: 'Hills', sites: 4 },\n  { name: 'Echo', region: 'Capital', sites: 21 },\n]\n\nexport default function AutoGridCardGallery() {\n  // No breakpoints: as many 220px columns as fit, never more than 4.\n  return (\n    <AutoGrid minChildWidth={220} maxColumns={4} gap=\"$4\">\n      {places.map((place) => (\n        <Card key={place.name}>\n          <Card.Header>\n            <Card.Title>{place.name}</Card.Title>\n            <Card.Description>{place.region} region</Card.Description>\n          </Card.Header>\n          <Card.Content>\n            <HStack gap=\"$2\">\n              <Badge variant=\"secondary\" size=\"sm\">\n                {place.sites}\n              </Badge>\n              <Text size=\"sm\" tone=\"muted\">\n                active sites\n              </Text>\n            </HStack>\n          </Card.Content>\n        </Card>\n      ))}\n    </AutoGrid>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/auto-grid",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.11.0"
+}

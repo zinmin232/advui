@@ -27,7 +27,12 @@ export default defineMeta({
       name: 'Autocomplete',
       description: 'Takes Combobox’s `options`, `filter`, `placeholder`, `size` and states.',
       props: [
-        { name: 'value / defaultValue', type: 'string', description: 'The text.' },
+        { name: 'value', type: 'string', description: 'The text, when you control it.' },
+        {
+          name: 'defaultValue',
+          type: 'string',
+          description: 'The text at first, when the field manages it.',
+        },
         {
           name: 'onValueChange',
           type: '(value: string) => void',
@@ -45,6 +50,7 @@ export default defineMeta({
           description: 'By default the list hides when nothing matches.',
         },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [{ name: 'basic', title: 'Basic' }],

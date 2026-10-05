@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'media',
   description:
     'A video with the platform’s own controls, a fixed aspect ratio, captions on web and an error state.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [
@@ -61,6 +61,13 @@ import { VideoView, useVideoPlayer } from 'expo-video'`,
           description:
             'WebVTT tracks: `src`, `srcLang`, `label`, `kind` (`captions` or `subtitles`), `default`. Web.',
         },
+        {
+          name: 'crossOrigin',
+          type: "'anonymous' | 'use-credentials'",
+          options: ['anonymous', 'use-credentials'],
+          description:
+            'Fetches the video and captions with CORS. Browsers only load caption files from another origin with it, and that server must allow it. Web.',
+        },
         { name: 'ratio', type: 'number', default: '16 / 9', description: 'Width / height.' },
         {
           name: 'autoPlay',
@@ -76,23 +83,39 @@ import { VideoView, useVideoPlayer } from 'expo-video'`,
           default: 'true',
           description: 'The platform’s play, seek, volume and full-screen controls.',
         },
-        { name: 'onEnded / onError', type: '() => void', description: 'Playback ended or failed.' },
+        {
+          name: 'onEnded',
+          type: '() => void',
+          description: 'Called when playback reaches the end.',
+        },
+        {
+          name: 'onError',
+          type: '() => void',
+          description: 'Called when the video fails to load or play.',
+        },
         {
           name: 'labels',
           type: 'Partial<VideoLabels>',
           description: 'Error text, for translation.',
         },
       ],
+      children: { accepts: 'none' },
     },
     {
       name: 'setVideoView',
+      kind: 'function',
       description:
         'Registers the native player: a component that takes `NativeVideoViewProps` (`source`, `autoPlay`, `muted`, `loop`, `controls`, `accessibilityLabel`, `onEnded`, `onError`, `style`). Call it once at app start.',
       props: [],
     },
   ],
   examples: [
-    { name: 'basic', title: 'Video with a poster' },
+    {
+      name: 'basic',
+      title: 'Video with a poster',
+      description:
+        'With English captions, shown by default (the player’s captions button turns them off). The files are on another origin, so the video sets `crossOrigin`.',
+    },
     { name: 'muted-loop', title: 'Square, muted and looping' },
   ],
   accessibility: [
@@ -108,7 +131,7 @@ import { VideoView, useVideoPlayer } from 'expo-video'`,
   responsive: 'Fills its container’s width and keeps `ratio`; set `maxWidth` to limit it.',
   platformNotes: {
     web: 'A `<video>` element with `playsInline` (no forced full screen on iPhone Safari) and `preload="metadata"`.',
-    ios: 'Uses the player registered with `setVideoView`, e.g. a wrapper around `expo-video` (see the Expo playground’s `_layout.tsx`). Without one it shows the error message and warns in development. `poster` and `captions` are web only.',
+    ios: 'Uses the player registered with `setVideoView`, e.g. a wrapper around `expo-video` (see the Expo playground’s `_layout.tsx`). Without one it shows the error message and warns in development. `poster`, `captions` and `crossOrigin` are web only.',
     android: 'Same as iOS.',
   },
   related: ['audio-player', 'image', 'aspect-ratio'],

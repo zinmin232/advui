@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'command-palette',
   category: 'advanced',
   description: 'A searchable list of actions in a dialog, opened with ⌘K or Ctrl+K.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [
@@ -36,13 +36,25 @@ const commands: Command[] = [
           description: '`{ id, label, onSelect, group?, icon?, shortcut?, keywords?, disabled? }`.',
         },
         {
-          name: 'open / defaultOpen / onOpenChange',
+          name: 'open',
           type: 'boolean',
-          description: 'Open state; also opened by the hotkey.',
+          description: 'Open state, when you control it; the hotkey also opens it.',
+        },
+        {
+          name: 'defaultOpen',
+          type: 'boolean',
+          default: 'false',
+          description: 'Open at first, when the palette manages its state.',
+        },
+        {
+          name: 'onOpenChange',
+          type: '(open: boolean) => void',
+          description: 'Called when the palette opens or closes.',
         },
         {
           name: 'hotkey',
           type: 'string | null',
+          platforms: ['web'],
           default: "'k'",
           description: 'Web: ⌘ or Ctrl plus this key toggles it. `null` turns it off.',
         },
@@ -52,9 +64,11 @@ const commands: Command[] = [
           description: 'Title, placeholder and empty text, for translation.',
         },
       ],
+      children: { accepts: 'none' },
     },
     {
       name: 'rankCommand(command, query)',
+      kind: 'function',
       description:
         'The ranking it uses: 0 label starts with the text, 1 a word does, 2 contains (label, keywords, group), -1 no match.',
       props: [],

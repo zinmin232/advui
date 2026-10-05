@@ -1,12 +1,13 @@
 import { afterEach, describe, expect, it, jest } from '@jest/globals'
-import { act, fireEvent, screen } from '@testing-library/react-native'
+import { act, fireEvent, render, screen } from '@testing-library/react-native'
 import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
-import { zIndex } from '@advui/theme'
-import type { ReactElement } from 'react'
+import { createThemeColors, createUniversalConfig, themePresets, zIndex } from '@advui/theme'
+import { Fragment, type ReactElement } from 'react'
 import { BackHandler, Dimensions, StyleSheet } from 'react-native'
 import { XStack } from 'tamagui'
 import { renderNative } from '../../test/native-utils'
 import { Accordion } from './accordion/Accordion'
+import { AppShell } from './app-shell/AppShell'
 import { AlertDialog } from './alert-dialog/AlertDialog'
 import { AspectRatio } from './aspect-ratio/AspectRatio'
 import { Alert } from './alert/Alert'
@@ -43,7 +44,11 @@ import { IconButton } from './icon-button/IconButton'
 import { Image } from './image/Image'
 import { ImageGallery } from './image-gallery/ImageGallery'
 import { Input } from './input/Input'
+import { AutoGrid } from './layout/AutoGrid'
+import { autoGridColumns } from './layout/autoGridColumns'
+import { Container } from './layout/Container'
 import { Grid } from './layout/Grid'
+import { HStack, Stack, VStack, Wrap } from './layout/Stack'
 import { List } from './list/List'
 import { LoadingButton } from './loading-button/LoadingButton'
 import { Menu } from './menu/Menu'
@@ -57,6 +62,10 @@ import { PasswordInput } from './password-input/PasswordInput'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
 import { ScrollArea } from './scroll-area/ScrollArea'
+import { Section } from './section/Section'
+import { Separator } from './separator/Separator'
+import { Hide, Show } from './show-hide/ShowHide'
+import { Sticky } from './sticky/Sticky'
 import { Resizable } from './resizable-panel/ResizablePanel'
 import { Search } from './search/Search'
 import { Select } from './select/Select'
@@ -74,6 +83,8 @@ import { Heading } from './typography/Heading'
 import { Video } from './video/Video'
 import { setVideoView } from './video/shared'
 import { Text } from './typography/Text'
+import { useBreakpoint } from '../hooks/useBreakpoint'
+import { UniversalProvider } from '../provider/UniversalProvider'
 
 // These run the React Native code path (react-native + Tamagui native builds,
 // `.native.tsx` platform files) — the same code Expo ships to iOS and Android.
@@ -729,6 +740,18 @@ describe('native rendering', () => {
     expect(screen.getByPlaceholderText('Search').props.accessibilityHint).toBeUndefined()
   })
 
+  it('Field gives a Select its help text as the hint', async () => {
+    await renderNative(
+      <Field label="Plan" description="Billed monthly.">
+        <Select defaultValue="team">
+          <Select.Item value="free">Free</Select.Item>
+          <Select.Item value="team">Team</Select.Item>
+        </Select>
+      </Field>,
+    )
+    expect(screen.getByLabelText('Plan').props.accessibilityHint).toBe('Billed monthly.')
+  })
+
   it('Form submits from Form.Submit and blocks it while loading or disabled', async () => {
     const onSubmit = jest.fn<() => void>()
     const form = (state: { loading?: boolean; disabled?: boolean }) => (
@@ -742,6 +765,7 @@ describe('native rendering', () => {
         <Field label="Email">
           <Input placeholder="you@example.com" />
         </Field>
+        <Input aria-label="Notes" placeholder="Notes" />
       </Form>
     )
     const { unmount } = await renderNative(form({}))
@@ -762,6 +786,8 @@ describe('native rendering', () => {
     await renderNative(form({ disabled: true }))
     expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
     expect(screen.getByPlaceholderText('you@example.com')).toBeDisabled()
+    // A control outside a Field follows the form too.
+    expect(screen.getByPlaceholderText('Notes')).toBeDisabled()
   })
 
   it('PasswordInput toggles secure text entry from its toggle button', async () => {
@@ -891,6 +917,26 @@ describe('native rendering', () => {
     await fireEvent.press(screen.getByRole('button', { name: 'Page 10' }))
     expect(onPageChange).toHaveBeenLastCalledWith(10)
     expect(screen.getByRole('button', { name: 'Next page' })).toBeDisabled()
+  })
+
+  it('cleared disabled, busy and selected states are sent as false', async () => {
+    // Regression: Android keeps the last value of a prop that is removed, so a
+    // state that went from true to absent stayed on and TalkBack kept reading
+    // "Page 1, selected" and "Previous page, disabled" after paging.
+    await renderNative(<Pagination count={10} />)
+    await fireEvent.press(screen.getByRole('button', { name: 'Next page' }))
+    const state = (name: string) => {
+      const { props } = screen.getByRole('button', { name })
+      return {
+        ...props.accessibilityState,
+        disabled: props['aria-disabled'],
+        busy: props['aria-busy'],
+        selected: props['aria-selected'],
+      }
+    }
+    expect(state('Previous page')).toMatchObject({ disabled: false, busy: false })
+    expect(state('Page 1')).toMatchObject({ selected: false, disabled: false })
+    expect(state('Page 2')).toMatchObject({ selected: true })
   })
 
   it('Stepper names each step with its number and status', async () => {
@@ -1179,6 +1225,205 @@ describe('Grid layout', () => {
   })
 })
 
+// The responsive layout props are media props underneath, so on native they
+// follow the window size like Grid's spans.
+describe('responsive layout props', () => {
+  const phone = Dimensions.get('window')
+  const resize = async (width: number) => {
+    await act(async () => {
+      Dimensions.set({ window: { ...phone, width }, screen: { ...phone, width } })
+    })
+  }
+  const style = (testID: string) => StyleSheet.flatten(screen.getByTestId(testID).props.style)
+
+  afterEach(async () => {
+    await resize(phone.width)
+  })
+
+  const responsiveStack = (
+    <Stack testID="stack" direction={{ base: 'column', md: 'row' }} align="center" />
+  )
+
+  it('lays a Stack out as a column below md', async () => {
+    await renderNative(responsiveStack)
+    expect(style('stack')).toMatchObject({ flexDirection: 'column', alignItems: 'center' })
+  })
+
+  it('lays the same Stack out as a row from md', async () => {
+    await resize(1024)
+    await renderNative(responsiveStack)
+    expect(style('stack')).toMatchObject({ flexDirection: 'row', alignItems: 'center' })
+  })
+
+  it('lets raw style props win over the responsive ones, in either order', async () => {
+    await resize(1024)
+    await renderNative(
+      <>
+        <Stack testID="before" flexDirection="column-reverse" direction="row" />
+        <Stack testID="after" direction="row" flexDirection="column-reverse" />
+        <Stack
+          testID="media"
+          direction={{ base: 'column', md: 'row' }}
+          $md={{ flexDirection: 'row-reverse' }}
+        />
+        <HStack testID="hstack" direction="column" distribute="between" />
+      </>,
+    )
+    expect(style('before').flexDirection).toBe('column-reverse')
+    expect(style('after').flexDirection).toBe('column-reverse')
+    expect(style('media').flexDirection).toBe('row-reverse')
+    expect(style('hstack')).toMatchObject({
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+    })
+  })
+
+  it('wraps a Wrap row of chips', async () => {
+    await renderNative(<Wrap testID="wrap" distribute="center" />)
+    expect(style('wrap')).toMatchObject({
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 8,
+    })
+  })
+
+  it('pads a Container by its gutter, and by default as before', async () => {
+    await resize(1024)
+    await renderNative(
+      <>
+        <Container testID="default" />
+        <Container testID="flush" gutter="$0" centerContent />
+      </>,
+    )
+    expect(style('default')).toMatchObject({ paddingLeft: 32, paddingRight: 32 })
+    expect(style('flush')).toMatchObject({ paddingLeft: 0, paddingRight: 0, alignItems: 'center' })
+  })
+
+  it('reads a labelled separator as its label', async () => {
+    await renderNative(
+      <>
+        <Separator label="or" />
+        <Separator label="Continue with" decorative={false} testID="named" />
+      </>,
+    )
+    expect(screen.getByText('or')).toBeTruthy()
+    const named = screen.getByTestId('named')
+    expect(named.props.accessible).toBe(true)
+    expect(named.props['aria-label'] ?? named.props.accessibilityLabel).toBe('Continue with')
+  })
+})
+
+// Show / Hide read the window size on native and leave hidden content out.
+describe('Show, Hide, Section and Sticky on native', () => {
+  const phone = Dimensions.get('window')
+  const resize = async (width: number) => {
+    await act(async () => {
+      Dimensions.set({ window: { ...phone, width }, screen: { ...phone, width } })
+    })
+  }
+  function Probe() {
+    return <Text>{`at ${useBreakpoint()}`}</Text>
+  }
+  const layout = () => (
+    <>
+      <Show above="md">
+        <Text>desktop nav</Text>
+      </Show>
+      <Show below="md">
+        <Text>menu button</Text>
+      </Show>
+      <Hide below="sm">
+        <Text>search</Text>
+      </Hide>
+      <Probe />
+    </>
+  )
+
+  afterEach(async () => {
+    await resize(phone.width)
+  })
+
+  it('renders only what fits a phone (the mocked one is 750 wide)', async () => {
+    await renderNative(layout())
+    expect(screen.queryByText('desktop nav')).toBeNull()
+    expect(screen.getByText('menu button')).toBeTruthy()
+    expect(screen.getByText('search')).toBeTruthy()
+    expect(screen.getByText('at sm')).toBeTruthy()
+  })
+
+  it('unmounts the phone content and mounts the desktop content from md', async () => {
+    await resize(1024)
+    await renderNative(layout())
+    expect(screen.getByText('desktop nav')).toBeTruthy()
+    expect(screen.queryByText('menu button')).toBeNull()
+    expect(screen.getByText('at lg')).toBeTruthy()
+  })
+
+  it('hides content below sm on a narrow phone', async () => {
+    await resize(400)
+    await renderNative(layout())
+    expect(screen.queryByText('search')).toBeNull()
+    expect(screen.getByText('at base')).toBeTruthy()
+  })
+
+  it('reads text on a primary Section in the sub-theme colors', async () => {
+    const theme = createThemeColors(themePresets.indigo.colors).light_primary
+    await renderNative(
+      <Section background="primary" aria-label="Newsletter" testID="band">
+        <Text>Subscribe</Text>
+      </Section>,
+    )
+    const style = StyleSheet.flatten(screen.getByText('Subscribe').props.style)
+    expect(String(style.color).toLowerCase()).toBe(theme.foreground.toLowerCase())
+    expect(
+      String(
+        StyleSheet.flatten(screen.getByTestId('band').props.style).backgroundColor,
+      ).toLowerCase(),
+    ).toBe(theme.background.toLowerCase())
+  })
+
+  it('pins top Stickys in a ScrollArea, looking through fragments', async () => {
+    await renderNative(
+      <ScrollArea aria-label="Townships" height={300}>
+        <VStack padding="$4" gap="$2">
+          {['Kachin', 'Shan'].map((region) => (
+            <Fragment key={region}>
+              <Sticky>
+                <Text>{region}</Text>
+              </Sticky>
+              <Text>{`${region} township`}</Text>
+            </Fragment>
+          ))}
+        </VStack>
+      </ScrollArea>,
+    )
+    const scroll = screen.getByLabelText('Townships')
+    expect(scroll.props.stickyHeaderIndices).toEqual([0, 2])
+    // The VStack's padding and gap now style the scroll content.
+    expect(StyleSheet.flatten(scroll.props.contentContainerStyle)).toMatchObject({
+      paddingTop: 16,
+      gap: 8,
+    })
+    expect(screen.getByText('Shan township')).toBeTruthy()
+  })
+
+  it('leaves a ScrollArea without Stickys as it was', async () => {
+    await renderNative(
+      <ScrollArea aria-label="Plain" height={300}>
+        <VStack padding="$4">
+          <Text>Row</Text>
+        </VStack>
+      </ScrollArea>,
+    )
+    const plain = screen.getByLabelText('Plain')
+    expect(plain.props.stickyHeaderIndices).toBeUndefined()
+    // Android: it scrolls inside a scrolling screen.
+    expect(plain.props.nestedScrollEnabled).toBe(true)
+  })
+})
+
 // Android's back button: React Native calls the `hardwareBackPress` listeners
 // newest first and stops at the first that returns true; if none does, the
 // router goes back. The fake below does the same, without a device.
@@ -1203,9 +1448,142 @@ function fakeBackHandler() {
   }
 }
 
+describe('AppShell and AutoGrid on native', () => {
+  const phone = Dimensions.get('window')
+  const resize = async (width: number) => {
+    await act(async () => {
+      Dimensions.set({ window: { ...phone, width }, screen: { ...phone, width } })
+    })
+  }
+  const shell = (props: { onSidebarOpenChange?: (open: boolean) => void; onPage?: () => void }) => (
+    <AppShell onSidebarOpenChange={props.onSidebarOpenChange}>
+      <AppShell.Header>
+        <AppShell.SidebarTrigger />
+        <Text>Adv Data</Text>
+      </AppShell.Header>
+      <AppShell.Sidebar aria-label="Main">
+        <Sidebar>
+          <Sidebar.Group label="Workspace">
+            <Sidebar.Item onPress={props.onPage}>Reports</Sidebar.Item>
+          </Sidebar.Group>
+        </Sidebar>
+      </AppShell.Sidebar>
+      <AppShell.Main>
+        <Text>Overview</Text>
+      </AppShell.Main>
+    </AppShell>
+  )
+
+  afterEach(async () => {
+    await resize(phone.width)
+  })
+
+  it('opens the sidebar in a drawer on a phone, and an item closes it', async () => {
+    const onSidebarOpenChange = jest.fn()
+    const onPage = jest.fn()
+    await renderNative(shell({ onSidebarOpenChange, onPage }))
+    expect(screen.getByText('Overview')).toBeOnTheScreen()
+    // Below md (the mocked phone is 750 wide) the side area is not mounted.
+    expect(screen.queryByText('Reports')).toBeNull()
+    await fireEvent.press(screen.getByRole('button', { name: 'Open navigation' }))
+    expect(onSidebarOpenChange).toHaveBeenLastCalledWith(true)
+    await fireEvent.press(await screen.findByRole('link', { name: 'Reports' }))
+    expect(onPage).toHaveBeenCalledTimes(1)
+    expect(onSidebarOpenChange).toHaveBeenLastCalledWith(false)
+  })
+
+  it('shows the sidebar beside Main from md, with no trigger', async () => {
+    await resize(1024)
+    await renderNative(shell({}))
+    expect(screen.getByRole('link', { name: 'Reports' })).toBeOnTheScreen()
+    expect(screen.queryByRole('button', { name: 'Open navigation' })).toBeNull()
+  })
+
+  it('pads the safe areas, except with safeArea={false}; the drawer always does', async () => {
+    const padding = (testID: string) => {
+      const style = StyleSheet.flatten(screen.getByTestId(testID).props.style)
+      return { top: style.paddingTop, bottom: style.paddingBottom }
+    }
+    const drawerPadding = async () => {
+      let node = (await screen.findByText('Reports')).parent
+      while (node && node.props.role !== 'dialog') node = node.parent
+      const style = StyleSheet.flatten(node?.props.style)
+      return { top: style.paddingTop, bottom: style.paddingBottom }
+    }
+    const app = (safeArea: boolean) => (
+      <UniversalProvider
+        config={createUniversalConfig()}
+        toaster={false}
+        insets={{ top: 40, bottom: 30, left: 0, right: 0 }}
+      >
+        <AppShell safeArea={safeArea} defaultSidebarOpen>
+          <AppShell.Header testID="header">
+            <Text>Adv Data</Text>
+          </AppShell.Header>
+          <AppShell.Sidebar aria-label="Main">
+            <Text>Reports</Text>
+          </AppShell.Sidebar>
+          <AppShell.Main>
+            <Text>Overview</Text>
+          </AppShell.Main>
+          <AppShell.Footer testID="footer">
+            <Text>Synced</Text>
+          </AppShell.Footer>
+        </AppShell>
+      </UniversalProvider>
+    )
+    const view = await render(app(true))
+    expect(padding('header').top).toBe(40)
+    expect(padding('footer').bottom).toBe(30)
+    expect(await drawerPadding()).toEqual({ top: 40, bottom: 30 })
+    await view.rerender(app(false))
+    expect(padding('header').top).not.toBe(40)
+    expect(padding('footer').bottom).not.toBe(30)
+    expect(await drawerPadding()).toEqual({ top: 40, bottom: 30 })
+  })
+
+  it('AutoGrid shows one column until it is measured, then the same count as web', async () => {
+    await renderNative(
+      <AutoGrid testID="grid" minChildWidth={240} gap="$4">
+        {['A', 'B', 'C', 'D'].map((name) => (
+          <Text key={name} testID={name}>
+            {name}
+          </Text>
+        ))}
+      </AutoGrid>,
+    )
+    const cell = () => StyleSheet.flatten(screen.getByTestId('A').parent?.props.style)
+    expect(cell().width).toBe('100%')
+    await fireEvent(screen.getByTestId('grid'), 'layout', {
+      nativeEvent: { layout: { width: 1000, height: 400, x: 0, y: 0 } },
+    })
+    // 3 columns of (1000 - 2 × 16) / 3, as web's CSS grid would pick.
+    expect(autoGridColumns(1000, 240, 16)).toBe(3)
+    expect(cell().width).toBe(322)
+    expect(StyleSheet.flatten(screen.getByTestId('grid').props.style)).toMatchObject({
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 16,
+    })
+  })
+})
+
 describe('Android back button', () => {
   // Each overlay starts open; back must close it instead of leaving the screen.
   const overlays: [string, (onOpenChange: (open: boolean) => void) => ReactElement][] = [
+    [
+      'AppShell drawer',
+      (onOpenChange) => (
+        <AppShell defaultSidebarOpen onSidebarOpenChange={onOpenChange}>
+          <AppShell.Sidebar aria-label="Main">
+            <Text>Reports</Text>
+          </AppShell.Sidebar>
+          <AppShell.Main>
+            <Text>Overview</Text>
+          </AppShell.Main>
+        </AppShell>
+      ),
+    ],
     [
       'Dialog',
       (onOpenChange) => (

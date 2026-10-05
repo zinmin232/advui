@@ -21,11 +21,12 @@ export default defineMeta({
       name: 'PasswordInput',
       description: 'Accepts every Input prop except `type` and `secureTextEntry`.',
       props: [
+        { name: 'visible', type: 'boolean', description: 'Whether the password is shown.' },
         {
-          name: 'visible / defaultVisible',
+          name: 'defaultVisible',
           type: 'boolean',
           default: 'false',
-          description: 'Whether the password is shown.',
+          description: 'Starting `visible` when uncontrolled.',
         },
         {
           name: 'onVisibleChange',
@@ -44,8 +45,15 @@ export default defineMeta({
           default: "'current-password'",
           description: "Use 'new-password' on sign-up forms.",
         },
-        { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'As Input.' },
+        {
+          name: 'size',
+          type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
+          default: "'md'",
+          description: 'As Input.',
+        },
       ],
+      children: { accepts: 'none' },
     },
   ],
   examples: [{ name: 'basic', title: 'Basic' }],

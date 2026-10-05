@@ -5,15 +5,31 @@ export { ColorModeProvider, useColorMode, type ColorModeContextValue } from './p
 export { UniversalProvider, type UniversalProviderProps } from './provider/UniversalProvider'
 export { useControllableState } from './hooks/useControllableState'
 export { useFieldControl, type FieldControlProps, type FieldState } from './hooks/useFieldControl'
-export { useFormStatus, type FormStatus } from './hooks/useFormStatus'
+export {
+  useParentForm,
+  type FormContextValue,
+  // Deprecated aliases, kept for apps on 0.6 to 0.11.
+  useFormStatus,
+  type FormStatus,
+} from './hooks/useParentForm'
+export { useBreakpoint, useBreakpointValue } from './hooks/useBreakpoint'
 export { useReducedMotion } from './hooks/useReducedMotion'
 export { useRipple, type Ripple, type RippleOptions } from './hooks/useRipple'
 // For components built on core (the other @advui packages, or your own).
+export { ariaState } from './utils/ariaState'
 export { isTextContent } from './utils/isTextContent'
+export {
+  responsiveStyle,
+  type Breakpoint,
+  type Responsive,
+  type ResponsiveMap,
+  type ResponsiveStyle,
+} from './utils/responsive'
 export type { ColorModePreference, ResolvedColorMode } from './types'
 
 // Components
 export * from './components/accordion'
+export * from './components/app-shell'
 export * from './components/alert-dialog'
 export * from './components/alert'
 export * from './components/aspect-ratio'
@@ -68,15 +84,18 @@ export * from './components/radio-group'
 export * from './components/resizable-panel'
 export * from './components/scroll-area'
 export * from './components/search'
+export * from './components/section'
 export * from './components/select'
 export * from './components/separator'
 export * from './components/sheet'
+export * from './components/show-hide'
 export * from './components/sidebar'
 export * from './components/skeleton'
 export * from './components/snackbar'
 export * from './components/slider'
 export * from './components/spinner'
 export * from './components/stepper'
+export * from './components/sticky'
 export * from './components/switch'
 export * from './components/tabs'
 export * from './components/time-picker'

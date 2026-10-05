@@ -61,7 +61,7 @@ const libItems = [
     title: 'Hooks',
     type: 'registry:lib',
     description:
-      'Shared hooks: controllable state, reduced-motion detection, the Android press ripple, Android back-button handling for overlays and the surrounding Form’s status.',
+      'Shared hooks: controllable state, reduced-motion detection, the Android press ripple, Android back-button handling for overlays, the surrounding Form’s status, the window’s breakpoint and the AppShell drawer state.',
     pkg: corePackage,
     files: listDir(corePackage, 'hooks'),
   },

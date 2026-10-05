@@ -2,9 +2,11 @@
 import accordionMeta from '../../ui/src/components/accordion/accordion.meta'
 import alertMeta from '../../ui/src/components/alert/alert.meta'
 import alertDialogMeta from '../../ui/src/components/alert-dialog/alert-dialog.meta'
+import appShellMeta from '../../ui/src/components/app-shell/app-shell.meta'
 import areaChartMeta from '../../charts/src/components/area-chart/area-chart.meta'
 import aspectRatioMeta from '../../ui/src/components/aspect-ratio/aspect-ratio.meta'
 import audioPlayerMeta from '../../ui/src/components/audio-player/audio-player.meta'
+import autoGridMeta from '../../ui/src/components/layout/auto-grid.meta'
 import autocompleteMeta from '../../ui/src/components/autocomplete/autocomplete.meta'
 import avatarMeta from '../../ui/src/components/avatar/avatar.meta'
 import badgeMeta from '../../ui/src/components/badge/badge.meta'
@@ -63,9 +65,11 @@ import resizablePanelMeta from '../../ui/src/components/resizable-panel/resizabl
 import richTextEditorMeta from '../../editor/src/components/rich-text-editor/rich-text-editor.meta'
 import scrollAreaMeta from '../../ui/src/components/scroll-area/scroll-area.meta'
 import searchMeta from '../../ui/src/components/search/search.meta'
+import sectionMeta from '../../ui/src/components/section/section.meta'
 import selectMeta from '../../ui/src/components/select/select.meta'
 import separatorMeta from '../../ui/src/components/separator/separator.meta'
 import sheetMeta from '../../ui/src/components/sheet/sheet.meta'
+import showHideMeta from '../../ui/src/components/show-hide/show-hide.meta'
 import sidebarMeta from '../../ui/src/components/sidebar/sidebar.meta'
 import skeletonMeta from '../../ui/src/components/skeleton/skeleton.meta'
 import sliderMeta from '../../ui/src/components/slider/slider.meta'
@@ -74,6 +78,7 @@ import spinnerMeta from '../../ui/src/components/spinner/spinner.meta'
 import stackMeta from '../../ui/src/components/layout/stack.meta'
 import statMeta from '../../data/src/components/stat/stat.meta'
 import stepperMeta from '../../ui/src/components/stepper/stepper.meta'
+import stickyMeta from '../../ui/src/components/sticky/sticky.meta'
 import switchMeta from '../../ui/src/components/switch/switch.meta'
 import tableMeta from '../../data/src/components/table/table.meta'
 import tabsMeta from '../../ui/src/components/tabs/tabs.meta'
@@ -87,6 +92,7 @@ import tooltipMeta from '../../ui/src/components/tooltip/tooltip.meta'
 import treeViewMeta from '../../data/src/components/tree-view/tree-view.meta'
 import typographyMeta from '../../ui/src/components/typography/typography.meta'
 import videoMeta from '../../ui/src/components/video/video.meta'
+import wrapMeta from '../../ui/src/components/layout/wrap.meta'
 import type { CatalogComponent, ComponentPackage } from './types'
 
 /** Published component packages, in dependency order. */
@@ -121,9 +127,11 @@ export const components: CatalogComponent[] = [
   { ...accordionMeta, package: '@advui/core' },
   { ...alertMeta, package: '@advui/core' },
   { ...alertDialogMeta, package: '@advui/core' },
+  { ...appShellMeta, package: '@advui/core' },
   { ...areaChartMeta, package: '@advui/charts' },
   { ...aspectRatioMeta, package: '@advui/core' },
   { ...audioPlayerMeta, package: '@advui/core' },
+  { ...autoGridMeta, package: '@advui/core' },
   { ...autocompleteMeta, package: '@advui/core' },
   { ...avatarMeta, package: '@advui/core' },
   { ...badgeMeta, package: '@advui/core' },
@@ -182,9 +190,11 @@ export const components: CatalogComponent[] = [
   { ...richTextEditorMeta, package: '@advui/editor' },
   { ...scrollAreaMeta, package: '@advui/core' },
   { ...searchMeta, package: '@advui/core' },
+  { ...sectionMeta, package: '@advui/core' },
   { ...selectMeta, package: '@advui/core' },
   { ...separatorMeta, package: '@advui/core' },
   { ...sheetMeta, package: '@advui/core' },
+  { ...showHideMeta, package: '@advui/core' },
   { ...sidebarMeta, package: '@advui/core' },
   { ...skeletonMeta, package: '@advui/core' },
   { ...sliderMeta, package: '@advui/core' },
@@ -193,6 +203,7 @@ export const components: CatalogComponent[] = [
   { ...stackMeta, package: '@advui/core' },
   { ...statMeta, package: '@advui/data' },
   { ...stepperMeta, package: '@advui/core' },
+  { ...stickyMeta, package: '@advui/core' },
   { ...switchMeta, package: '@advui/core' },
   { ...tableMeta, package: '@advui/data' },
   { ...tabsMeta, package: '@advui/core' },
@@ -206,6 +217,7 @@ export const components: CatalogComponent[] = [
   { ...treeViewMeta, package: '@advui/data' },
   { ...typographyMeta, package: '@advui/core' },
   { ...videoMeta, package: '@advui/core' },
+  { ...wrapMeta, package: '@advui/core' },
 ]
 
 export function getComponent(slug: string): CatalogComponent | undefined {
