@@ -79,6 +79,10 @@ one version.
   when given a hint, now set this native-only prop on iOS and Android only.
 - Docs: the install steps said React Native Web is installed automatically.
   It is not; web apps add `react-native-web` themselves.
+- CLI registry: the hooks, utils and chart files came out in a different
+  order on Windows than on Linux, since NTFS lists files ignoring case. They
+  are sorted now, so the registry is the same on every machine. The `select`
+  item is rebuilt with the web `accessibilityHint` fix.
 
 ## [0.11.0] - 2026-10-04
 
