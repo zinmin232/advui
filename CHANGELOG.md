@@ -98,6 +98,9 @@ one version.
   example is now only the preview. The react-native-web stylesheet was also
   inserted once per streamed chunk under the same id. An e2e test now checks
   every component page for duplicate ids.
+- CLI registry: the hooks, utils and chart files came out in a different
+  order on Windows than on Linux, since NTFS lists files ignoring case. They
+  are sorted now, so the registry is the same on every machine.
 
 ## [0.11.0] - 2026-10-04
 

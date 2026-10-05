@@ -47,10 +47,13 @@ if (problems.length) {
 }
 
 // --- library-internal items (hooks, utils, provider) ----------------------------------
+// readdir order is the file system's (NTFS ignores case), so sort by code point, the
+// order Linux gives: the registry must come out the same on every machine.
 const listDir = (pkg, dir) =>
   readdirSync(join(pkg.src, dir))
     .filter((f) => /\.tsx?$/.test(f) && !f.includes('.test.'))
     .map((f) => `${dir}/${f}`)
+    .sort()
 
 const libItems = [
   {
