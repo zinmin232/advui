@@ -3,7 +3,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react-native'
 import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
 import { createThemeColors, createUniversalConfig, themePresets, zIndex } from '@advui/theme'
 import { Fragment, type ReactElement } from 'react'
-import { BackHandler, Dimensions, StyleSheet } from 'react-native'
+import { BackHandler, Dimensions, StyleSheet, processColor } from 'react-native'
 import { XStack } from 'tamagui'
 import { renderNative } from '../../test/native-utils'
 import { Accordion } from './accordion/Accordion'
@@ -116,6 +116,41 @@ describe('native rendering', () => {
     await renderNative(<Button loading>Saving</Button>)
     expect(screen.getByRole('button', { name: /Saving/ })).toBeBusy()
     expect(screen.getByRole('progressbar', { name: 'Loading' })).toBeOnTheScreen()
+  })
+
+  it('shows pressStyle colors on frames with a transition', async () => {
+    // Regression: the Animated driver's re-render-free style emitter built the
+    // pressed color's interpolation but never rendered it, so a held Button
+    // kept its resting fill.
+    jest.useFakeTimers()
+    const { light } = createThemeColors(themePresets.indigo.colors)
+    await renderNative(
+      <>
+        <Button onPress={() => {}}>Save</Button>
+        <Toggle aria-label="Bold" />
+      </>,
+    )
+    const cases = [
+      { role: 'button', name: 'Save', rest: light.primary, pressed: light.primaryPress },
+      { role: 'togglebutton', name: 'Bold', rest: 'transparent', pressed: light.accentHover },
+    ] as const
+    const background = (role: string, name: string) =>
+      processColor(StyleSheet.flatten(screen.getByRole(role, { name }).props.style).backgroundColor)
+    const settle = () => act(async () => jest.advanceTimersByTime(1000))
+    const touch = { nativeEvent: {}, persist() {} }
+
+    for (const { role, name, rest, pressed } of cases) {
+      await settle()
+      expect(background(role, name)).toBe(processColor(rest))
+      await fireEvent(screen.getByRole(role, { name }), 'responderGrant', touch)
+      await settle()
+      expect(background(role, name)).toBe(processColor(pressed))
+      // A cancelled touch (e.g. a scroll took over), so the Toggle stays off.
+      await fireEvent(screen.getByRole(role, { name }), 'responderTerminate', touch)
+      await settle()
+      expect(background(role, name)).toBe(processColor(rest))
+    }
+    jest.useRealTimers()
   })
 
   it('IconButton is named by its aria-label', async () => {
@@ -738,6 +773,18 @@ describe('native rendering', () => {
     expect(field.props.accessibilityHint).toBe('Where you live.')
     await fireEvent.press(field)
     expect(screen.getByPlaceholderText('Search').props.accessibilityHint).toBeUndefined()
+  })
+
+  it('Field gives a Select its help text as the hint', async () => {
+    await renderNative(
+      <Field label="Plan" description="Billed monthly.">
+        <Select defaultValue="team">
+          <Select.Item value="free">Free</Select.Item>
+          <Select.Item value="team">Team</Select.Item>
+        </Select>
+      </Field>,
+    )
+    expect(screen.getByLabelText('Plan').props.accessibilityHint).toBe('Billed monthly.')
   })
 
   it('Form submits from Form.Submit and blocks it while loading or disabled', async () => {

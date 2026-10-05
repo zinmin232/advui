@@ -36,13 +36,14 @@ export default defineMeta({
         },
         {
           name: 'data',
-          type: 'Record<string, unknown>[]',
+          type: 'T[]',
           required: true,
-          description: 'One object per category or x position.',
+          description:
+            'One object per category or x position. Its type `T` (an interface works) is inferred, and `index` and `series` must name its fields.',
         },
         {
           name: 'index',
-          type: 'string',
+          type: 'keyof T & string',
           required: true,
           description: 'Field holding each row’s label.',
         },
@@ -54,10 +55,10 @@ export default defineMeta({
         },
         {
           name: 'series',
-          type: '{ key: string; label: string }[]',
+          type: '{ key: keyof T & string; label: string }[]',
           required: true,
           description:
-            'Numeric fields to plot. Colors follow this order (`$chart1`…`$chart8`), never the values.',
+            'Numeric fields to plot. Colors follow this order (`$chart1`…`$chart8`), never the values. An array declared apart from the chart needs `as const` to keep its keys literal.',
         },
         {
           name: 'layout',
