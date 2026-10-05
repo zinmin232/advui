@@ -10,7 +10,7 @@ export default function FormDisabled() {
       maxWidth={400}
       footer={<Form.Submit>Save</Form.Submit>}
     >
-      {/* Field and Form.Submit follow the form's `disabled`. */}
+      {/* The inputs and Form.Submit follow the form's `disabled`. */}
       <Field label="Start">
         <Input defaultValue="January 2026" />
       </Field>

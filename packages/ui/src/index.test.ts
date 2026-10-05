@@ -41,6 +41,9 @@ describe('@advui/core public API', () => {
       'Wrap',
       'useControllableState',
       'useFieldControl',
+      'useParentForm',
+      // Deprecated alias of useParentForm.
+      'useFormStatus',
       'useRipple',
     ])
       expect(core).toHaveProperty(name)
