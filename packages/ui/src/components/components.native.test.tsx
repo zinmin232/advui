@@ -740,6 +740,18 @@ describe('native rendering', () => {
     expect(screen.getByPlaceholderText('Search').props.accessibilityHint).toBeUndefined()
   })
 
+  it('Field gives a Select its help text as the hint', async () => {
+    await renderNative(
+      <Field label="Plan" description="Billed monthly.">
+        <Select defaultValue="team">
+          <Select.Item value="free">Free</Select.Item>
+          <Select.Item value="team">Team</Select.Item>
+        </Select>
+      </Field>,
+    )
+    expect(screen.getByLabelText('Plan').props.accessibilityHint).toBe('Billed monthly.')
+  })
+
   it('Form submits from Form.Submit and blocks it while loading or disabled', async () => {
     const onSubmit = jest.fn<() => void>()
     const form = (state: { loading?: boolean; disabled?: boolean }) => (

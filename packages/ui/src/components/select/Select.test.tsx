@@ -60,4 +60,17 @@ describe('Select', () => {
     await user.click(option)
     expect(onValueChange).toHaveBeenCalledWith('strawberry')
   })
+
+  it('keeps the native-only accessibilityHint off the DOM', async () => {
+    const { container } = renderWithProvider(
+      <Field label="Plan" description="Billed monthly.">
+        <Select defaultValue="team" accessibilityHint="Billed monthly.">
+          <Select.Item value="free">Free</Select.Item>
+          <Select.Item value="team">Team</Select.Item>
+        </Select>
+      </Field>,
+    )
+    await screen.findByRole('combobox', { name: 'Plan' })
+    expect(container.querySelector('[accessibilityhint]')).toBeNull()
+  })
 })
