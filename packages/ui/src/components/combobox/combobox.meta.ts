@@ -91,6 +91,7 @@ export default defineMeta({
     'On web the text box has `role="combobox"` with `aria-expanded`, `aria-controls` and `aria-autocomplete="list"`; focus stays in it and `aria-activedescendant` points at the highlighted option.',
     'Options have `role="option"` and `aria-selected`; the picked one also shows a check.',
     'On phones the field is a button that opens a bottom sheet with a search box and large, labelled rows.',
+    'On web a click or tap on the field opens the list, as on a select; Tab focus does not, so moving through a form stays quiet. The chevron toggles it.',
   ],
   keyboard: [
     { keys: 'ArrowDown / ArrowUp', action: 'Opens the list, then moves between options.' },

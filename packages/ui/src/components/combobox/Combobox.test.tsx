@@ -42,6 +42,20 @@ describe('Combobox', () => {
     expect(screen.getByText('No results')).toBeInTheDocument()
   })
 
+  it('opens on a click but not on Tab focus, and the chevron closes it', async () => {
+    const { user } = renderWithProvider(<Combobox aria-label="Country" options={options} />)
+    const input = screen.getByRole('combobox')
+    await user.tab()
+    expect(input).toHaveFocus()
+    expect(input).toHaveAttribute('aria-expanded', 'false')
+    await user.click(input)
+    expect(input).toHaveAttribute('aria-expanded', 'true')
+    expect(screen.getAllByRole('option')).toHaveLength(4)
+    await user.click(input.nextElementSibling!)
+    expect(input).toHaveAttribute('aria-expanded', 'false')
+    expect(input).toHaveFocus()
+  })
+
   it('restores the picked label on Escape and marks the picked option', async () => {
     const { user } = renderWithProvider(
       <Combobox aria-label="Country" options={options} defaultValue="mm" />,

@@ -39,6 +39,8 @@ describe('MultiSelect', () => {
     )
     await user.click(screen.getByRole('button', { name: 'Remove Docs' }))
     expect(onValueChange).toHaveBeenLastCalledWith(['bug', 'perf'])
+    // Removing a chip is not a request for the list.
+    expect(screen.getByRole('combobox')).toHaveAttribute('aria-expanded', 'false')
     await user.click(screen.getByRole('combobox'))
     await user.keyboard('{Backspace}')
     expect(onValueChange).toHaveBeenLastCalledWith(['bug'])

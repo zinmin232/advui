@@ -79,7 +79,11 @@ const ListFrame = styled(View, {
   borderColor: '$border',
   borderRadius: '$lg',
   padding: '$1',
-  overflow: 'scroll',
+  overflowX: 'hidden',
+  overflowY: 'auto',
+  // The portal around it ignores the pointer so the page stays clickable;
+  // without this the clicks pass through the options to the page below.
+  pointerEvents: 'auto',
   ...shadows.md,
 })
 
@@ -237,7 +241,17 @@ export const ComboboxField = forwardRef<TamaguiElement, ComboboxFieldProps>(
           invalid={invalid}
           disabled={disabled}
           width={width as GetProps<typeof FieldBox>['width']}
-          onPress={() => inputRef.current?.focus()}
+          // Clicks on the box, chevron or chips keep focus in the text box, so
+          // its blur does not close the list in the middle of a click.
+          onMouseDown={(event: { target: unknown; preventDefault: () => void }) => {
+            if (event.target !== inputRef.current) event.preventDefault()
+          }}
+          // A click or tap opens the list, as on a select; Tab focus does not.
+          onPress={(event: { target?: unknown }) => {
+            inputRef.current?.focus()
+            // A chip's remove button is not a request for the list.
+            if (!(event.target as Element | undefined)?.closest?.('button')) setOpen(true)
+          }}
         >
           {leading}
           <BareInput
@@ -270,7 +284,9 @@ export const ComboboxField = forwardRef<TamaguiElement, ComboboxFieldProps>(
             aria-hidden
             padding="$1"
             cursor="pointer"
-            onPress={() => {
+            onPress={(event: { stopPropagation: () => void }) => {
+              // The box's own press would open the list again.
+              event.stopPropagation()
               inputRef.current?.focus()
               setOpen(!open)
             }}
