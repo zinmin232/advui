@@ -12,6 +12,14 @@ one version.
 - **`ariaState(on)`** in `@advui/core`, for components built on core: a
   boolean `aria-disabled`, `aria-busy` or `aria-selected` that is left out
   when off on web and sent as `false` on iOS and Android.
+- **Metadata on npm.** Every component package publishes the metadata of its
+  components as `components` at `<package>/meta`: `@advui/core/meta`,
+  `@advui/data/meta`, `@advui/charts/meta` and `@advui/editor/meta`. Core's
+  entry also exports the `ComponentMeta` types, `categories` and
+  `defineMeta`. Tools such as the AdvUI Builder can import it instead of
+  reading the repository at a git tag. It is a separate entry point, so apps
+  that don't import it don't bundle it; core's installed size grows by about
+  1 MB.
 - **Video `crossOrigin`** (`'anonymous'` or `'use-credentials'`, web): browsers
   only load caption files from another origin when the video is fetched with
   CORS.

@@ -64,8 +64,8 @@ file: `pnpm --filter @advui/core exec vitest run src/components/button`.
    must not import React or components;
    Server Components and Node scripts read them.
 7. **Generated files are not edited by hand**: `packages/catalog/src/index.ts`,
-   `packages/catalog/src/examples.ts`, `registry/*`, `apps/docs/public/r/*` and
-   `packages/icons/src/generated.ts`.
+   `packages/catalog/src/examples.ts`, `packages/*/src/meta/components.ts`,
+   `registry/*`, `apps/docs/public/r/*` and `packages/icons/src/generated.ts`.
 8. **Match the surrounding code**: naming, comment density (comments explain
    why), file layout.
 9. **Packages are layered**: core ← data ← charts, core ← editor. A package

@@ -18,16 +18,14 @@
   "react-native": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./meta": "./src/meta/types.ts",
+    "./meta": "./src/meta/index.ts",
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
     "src",
     "!src/**/*.test.*",
-    "!src/**/examples",
-    "!src/**/*.meta.ts",
-    "!src/meta"
+    "!src/**/examples"
   ],
   "publishConfig": {
     "access": "public",
@@ -38,6 +36,10 @@
       ".": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
+      },
+      "./meta": {
+        "types": "./dist/meta/index.d.ts",
+        "default": "./dist/meta/index.js"
       },
       "./package.json": "./package.json"
     }

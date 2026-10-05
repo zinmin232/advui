@@ -34,4 +34,7 @@ No charting library is added.
 
 **Exports:** AreaChart, BarChart, LineChart, PieChart and their prop types.
 
+**Metadata:** `@advui/charts/meta` exports `components`, the metadata of these
+components (types in `@advui/core/meta`), for tools such as the AdvUI Builder.
+
 Docs: https://zinmin232.github.io/advui/docs/components/bar-chart. License: MIT.
