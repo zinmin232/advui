@@ -33,6 +33,15 @@ one version.
   file), a square silent loop, a flood-safety radio message and a voice
   message. They are served from the docs site (`/media`) and made by
   `scripts/demo-media/make-demo-media.ps1`.
+- **BarChart, LineChart and AreaChart** are generic over the row type, like
+  DataTable: `data` is `T[]` (any object type), and `index` and each series
+  `key` must be fields of `T`. Rows typed with an `interface` now compile
+  (they failed with "Index signature for type 'string' is missing"), and a
+  misspelled `index` or series key is a type error. Rows typed as
+  `Record<string, unknown>` take any field name, as before. A `series` array
+  declared apart from the chart needs `as const` (or a
+  `BarChartProps<Row>['series']` annotation) so its keys stay literal; a plain
+  `{ key: string }[]` no longer type-checks against typed rows.
 
 - Stable after the Android phone check: Stat, KPI Card, List, Timeline,
   Image, Table, Pagination, Stepper, Data Table, Tree View, Navigation Menu,
