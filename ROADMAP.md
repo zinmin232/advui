@@ -87,14 +87,8 @@ cannot do them. Tick them off here as they are done.
 - [ ] **Promote to stable.** When a component passes the phone check, change
       its `status` from `beta` to `stable` in its `*.meta.ts` and run
       `pnpm catalog`.
-- [ ] **Release 0.6.0.** The release commit (versions, dated CHANGELOG,
-      registry, docs) is on `main`. The first `pnpm release` ran before it, so
-      publish again from that commit (see [CONTRIBUTING.md](CONTRIBUTING.md)):
-  - Move the tag to the release commit: `git pull`, then
-    `git tag -f v0.6.0 && git push -f origin v0.6.0`.
-  - `pnpm release:check` must list all eight public packages at 0.6.0, with
-    `@advui/core` as a `^0.6.0` peer dependency of data, charts and editor.
-    Then run `pnpm release`.
+- [x] **Release 0.6.0**: tag `v0.6.0` points at the release commit, and all
+      eight public packages are published at 0.6.0.
 - [x] **Release 0.7.0** (Grid spans, Field): tagged `v0.7.0` and published.
 - [x] **Releases 0.8.0, 0.9.0 and 0.10.0** (Builder metadata; responsive
       Stack props, Wrap, Container gutter, labelled Separator; Show / Hide,
@@ -103,19 +97,13 @@ cannot do them. Tick them off here as they are done.
       `v0.9.0` and `v0.10.0` point at the merge commits on `main`, for the
       AdvUI Builder. Only 0.10.0 was published to npm (after 0.7.0); 0.8.0 and
       0.9.0 are git tags only.
-- [ ] **Release 0.11.0** (AppShell, AutoGrid): merge the pull request with
-      a merge commit, as for 0.8.0 to 0.10.0, and tag that merge commit:
-  - `git pull`, then `git tag v0.11.0 <merge commit> && git push origin v0.11.0`.
-  - `pnpm release:check` must list all eight public packages at 0.11.0. Then
-    run `pnpm release`.
-  - The AdvUI Builder syncs metadata from `v0.11.0`, so the tag must be on
-    `main` before the Builder registers AppShell and AutoGrid.
-- [ ] **Publish the new packages.** 0.6.0 is the first working release of
-      `@advui/data`, `@advui/charts` and `@advui/editor`:
-  - Deprecate their 0.5.0, published by mistake before the version bump (it
-    needs core and icons 0.6.0):
-    `npm deprecate @advui/data@0.5.0 "Does not work: use 0.6.0 or later"`,
-    and the same for `@advui/charts` and `@advui/editor`.
-  - Try the install in a fresh app:
-    `pnpm add @advui/core @advui/data @advui/charts @advui/editor @advui/theme @advui/icons tamagui`,
-    then import `DataTable`, `BarChart` and `RichTextEditor`.
+- [x] **Release 0.11.0** (AppShell, AutoGrid): published on 2026-10-04 and
+      merged on 2026-10-05 with a merge commit. Tag `v0.11.0` points at the
+      pull request's last commit, which `main` contains, so the AdvUI Builder
+      can sync metadata from it.
+- [ ] **Try the new packages.** 0.6.0 is the first working release of
+      `@advui/data`, `@advui/charts` and `@advui/editor`; their 0.5.0,
+      published by mistake before the version bump, is deprecated. Try the
+      install in a fresh app:
+      `pnpm add @advui/core @advui/data @advui/charts @advui/editor @advui/theme @advui/icons tamagui`,
+      then import `DataTable`, `BarChart` and `RichTextEditor`.
