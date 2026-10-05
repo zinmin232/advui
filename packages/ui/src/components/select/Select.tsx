@@ -321,7 +321,8 @@ function SelectRoot(selectProps: SelectProps) {
         aria-invalid={invalid || undefined}
         aria-describedby={describedBy}
         aria-required={required}
-        accessibilityHint={accessibilityHint}
+        // Native only: on web it reaches the button, and React warns even when undefined.
+        {...(!isWeb && { accessibilityHint })}
         iconAfter={<ChevronDownIcon size={16} color="$mutedForeground" />}
       >
         <ValueText placeholder={placeholder} />

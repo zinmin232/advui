@@ -298,7 +298,7 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}
           aria-required={ariaRequired}
-          {...(accessibilityHint && { accessibilityHint })}
+          {...(!isWeb && accessibilityHint && { accessibilityHint })}
           aria-describedby={
             [ariaDescribedBy, maxLength != null ? countId : null].filter(Boolean).join(' ') ||
             undefined

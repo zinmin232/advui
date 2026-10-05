@@ -74,6 +74,9 @@ one version.
   phones, so the heading and text broke letter by letter. Below `md` it now
   starts as an icon rail, and opening the sidebar pushes the page aside
   instead of squeezing it. Desktop looks the same.
+- Select on web: every page with a Select logged "React does not recognize
+  the `accessibilityHint` prop on a DOM element". Select, and Rich Text Editor
+  when given a hint, now set this native-only prop on iOS and Android only.
 - Docs: the install steps said React Native Web is installed automatically.
   It is not; web apps add `react-native-web` themselves.
 
