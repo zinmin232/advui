@@ -2,7 +2,7 @@ import { createAnimations } from '@tamagui/animations-react-native'
 
 // Native: React Native Animated driver — no extra native modules, works in Expo Go.
 // Keep the key set identical to animations.ts (Tamagui primitives use the ms names).
-export const animations = createAnimations({
+const driver = createAnimations({
   '0ms': { type: 'timing', duration: 0 },
   '50ms': { type: 'timing', duration: 50 },
   '75ms': { type: 'timing', duration: 75 },
@@ -19,3 +19,10 @@ export const animations = createAnimations({
   bouncy: { type: 'spring', damping: 10, mass: 0.9, stiffness: 120 },
   lazy: { type: 'spring', damping: 18, mass: 1, stiffness: 50 },
 })
+
+// With avoidReRenders, press/hover/focus styles reach the driver through a style
+// emitter instead of a render. For colors the emitter builds a new interpolation
+// node that is never rendered, so the view keeps its resting color: a Button with
+// a `transition` never shows `pressStyle`. Re-rendering on pseudo-state changes
+// renders the new interpolation and animates the color (Tamagui 2.7.7).
+export const animations: typeof driver = { ...driver, avoidReRenders: false }

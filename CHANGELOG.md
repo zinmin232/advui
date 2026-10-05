@@ -52,6 +52,10 @@ one version.
 
 ### Fixed
 
+- Button, Toggle, Toggle Group and Fab on native: holding them did not
+  show the pressed color. Tamagui's React Native animation driver updated
+  press colors without a render, so the view never received the new color. The
+  driver now re-renders on press, hover and focus changes.
 - TalkBack kept reading a cleared state on Android: "Page 1, selected" and
   "Previous page, disabled" after paging, or a disabled button after it was
   enabled again. React Native keeps the last value of an accessibility prop
