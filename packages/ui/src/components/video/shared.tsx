@@ -33,6 +33,12 @@ export interface VideoProps extends Omit<GetProps<typeof View>, 'children'> {
   poster?: string
   /** Caption or subtitle tracks (web). */
   captions?: VideoCaptionTrack[]
+  /**
+   * Fetches the video and captions with CORS (web). Set `anonymous` when the
+   * caption files are on another origin than the page, or the browser will not
+   * load them; that server must then allow it.
+   */
+  crossOrigin?: 'anonymous' | 'use-credentials'
   /** Width / height. Default: 16 / 9. */
   ratio?: number
   /** Starts muted: browsers block autoplay with sound. */

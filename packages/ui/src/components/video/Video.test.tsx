@@ -22,6 +22,19 @@ describe('Video', () => {
     expect(track).toHaveAttribute('kind', 'captions')
     expect(track).toHaveAttribute('srclang', 'en')
     expect(track).toHaveAttribute('label', 'English')
+    expect(video).not.toHaveAttribute('crossorigin')
+  })
+
+  it('fetches with CORS when captions come from another origin', () => {
+    const { container } = renderWithProvider(
+      <Video
+        src="https://cdn.example.org/clip.mp4"
+        title="Clip"
+        crossOrigin="anonymous"
+        captions={[{ src: 'https://cdn.example.org/clip.en.vtt', srcLang: 'en', label: 'English' }]}
+      />,
+    )
+    expect(container.querySelector('video')).toHaveAttribute('crossorigin', 'anonymous')
   })
 
   it('mutes autoplay', () => {

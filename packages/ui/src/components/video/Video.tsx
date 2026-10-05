@@ -11,6 +11,7 @@ export function Video({
   title,
   poster,
   captions = [],
+  crossOrigin,
   ratio = 16 / 9,
   autoPlay = false,
   muted = autoPlay,
@@ -37,6 +38,7 @@ export function Video({
         <video
           src={typeof src === 'string' ? src : undefined}
           poster={poster}
+          crossOrigin={crossOrigin}
           aria-label={title}
           controls={controls}
           autoPlay={autoPlay}
