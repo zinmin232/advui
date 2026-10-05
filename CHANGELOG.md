@@ -51,6 +51,10 @@ one version.
   fails on every platform.
 - Table: the basic example squeezed its columns on phones and broke words
   mid-way; it scrolls sideways below 480 pt now.
+- Sidebar: the App sidebar example squeezed its page into a 60 pt column on
+  phones, so the heading and text broke letter by letter. Below `md` it now
+  starts as an icon rail, and opening the sidebar pushes the page aside
+  instead of squeezing it. Desktop looks the same.
 - Docs: the install steps said React Native Web is installed automatically.
   It is not; web apps add `react-native-web` themselves.
 

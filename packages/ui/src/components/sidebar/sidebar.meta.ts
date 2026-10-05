@@ -143,7 +143,8 @@ import { HomeIcon } from '@advui/icons'
     {
       name: 'basic',
       title: 'App sidebar',
-      description: 'Groups, badges, a disabled item and the collapse toggle.',
+      description:
+        'Groups, badges, a disabled item and the collapse toggle. On phones it starts as an icon rail.',
     },
     { name: 'drawer', title: 'In a drawer on phones' },
   ],
