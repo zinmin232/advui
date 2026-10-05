@@ -3,8 +3,13 @@
   "name": "hooks",
   "title": "Hooks",
   "type": "registry:lib",
-  "description": "Shared hooks: controllable state, reduced-motion detection, the Android press ripple, Android back-button handling for overlays and the surrounding Form’s status.",
+  "description": "Shared hooks: controllable state, reduced-motion detection, the Android press ripple, Android back-button handling for overlays, the surrounding Form’s status, the window’s breakpoint and the AppShell drawer state.",
   "files": [
+    {
+      "path": "hooks/useAppShell.ts",
+      "type": "registry:hook",
+      "content": "import { createContext, useContext } from 'react'\n\nexport interface AppShellContextValue {\n  /** Whether the phone drawer is open. Always false at desktop sizes. */\n  sidebarOpen: boolean\n  setSidebarOpen: (open: boolean) => void\n}\n\nexport const AppShellContext = createContext<AppShellContextValue | null>(null)\n\n/**\n * Where a Sidebar is rendered inside an AppShell: the desktop slot or the\n * phone drawer. The slot is the navigation landmark, so a Sidebar inside it\n * drops its own; in the drawer it also fills the drawer, never collapses, and\n * closes the drawer when an item is pressed. It lives with the hooks, not in\n * AppShell.tsx, so a Sidebar copied with the CLI does not bring the shell along.\n */\nexport const AppShellSlotContext = createContext<'inline' | 'drawer' | null>(null)\n\n/** The AppShell's drawer state, for your own menu buttons. Outside an AppShell it is always closed. */\nexport function useAppShell(): AppShellContextValue {\n  return useContext(AppShellContext) ?? { sidebarOpen: false, setSidebarOpen: () => {} }\n}\n"
+    },
     {
       "path": "hooks/useBackToClose.native.ts",
       "type": "registry:hook",
@@ -67,5 +72,5 @@
   "registryDependencies": [
     "utils"
   ],
-  "version": "0.10.0"
+  "version": "0.11.0"
 }

@@ -1,12 +1,13 @@
 import { afterEach, describe, expect, it, jest } from '@jest/globals'
-import { act, fireEvent, screen } from '@testing-library/react-native'
+import { act, fireEvent, render, screen } from '@testing-library/react-native'
 import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
-import { createThemeColors, themePresets, zIndex } from '@advui/theme'
+import { createThemeColors, createUniversalConfig, themePresets, zIndex } from '@advui/theme'
 import { Fragment, type ReactElement } from 'react'
 import { BackHandler, Dimensions, StyleSheet } from 'react-native'
 import { XStack } from 'tamagui'
 import { renderNative } from '../../test/native-utils'
 import { Accordion } from './accordion/Accordion'
+import { AppShell } from './app-shell/AppShell'
 import { AlertDialog } from './alert-dialog/AlertDialog'
 import { AspectRatio } from './aspect-ratio/AspectRatio'
 import { Alert } from './alert/Alert'
@@ -43,6 +44,8 @@ import { IconButton } from './icon-button/IconButton'
 import { Image } from './image/Image'
 import { ImageGallery } from './image-gallery/ImageGallery'
 import { Input } from './input/Input'
+import { AutoGrid } from './layout/AutoGrid'
+import { autoGridColumns } from './layout/autoGridColumns'
 import { Container } from './layout/Container'
 import { Grid } from './layout/Grid'
 import { HStack, Stack, VStack, Wrap } from './layout/Stack'
@@ -81,6 +84,7 @@ import { Video } from './video/Video'
 import { setVideoView } from './video/shared'
 import { Text } from './typography/Text'
 import { useBreakpoint } from '../hooks/useBreakpoint'
+import { UniversalProvider } from '../provider/UniversalProvider'
 
 // These run the React Native code path (react-native + Tamagui native builds,
 // `.native.tsx` platform files) — the same code Expo ships to iOS and Android.
@@ -1409,9 +1413,142 @@ function fakeBackHandler() {
   }
 }
 
+describe('AppShell and AutoGrid on native', () => {
+  const phone = Dimensions.get('window')
+  const resize = async (width: number) => {
+    await act(async () => {
+      Dimensions.set({ window: { ...phone, width }, screen: { ...phone, width } })
+    })
+  }
+  const shell = (props: { onSidebarOpenChange?: (open: boolean) => void; onPage?: () => void }) => (
+    <AppShell onSidebarOpenChange={props.onSidebarOpenChange}>
+      <AppShell.Header>
+        <AppShell.SidebarTrigger />
+        <Text>Adv Data</Text>
+      </AppShell.Header>
+      <AppShell.Sidebar aria-label="Main">
+        <Sidebar>
+          <Sidebar.Group label="Workspace">
+            <Sidebar.Item onPress={props.onPage}>Reports</Sidebar.Item>
+          </Sidebar.Group>
+        </Sidebar>
+      </AppShell.Sidebar>
+      <AppShell.Main>
+        <Text>Overview</Text>
+      </AppShell.Main>
+    </AppShell>
+  )
+
+  afterEach(async () => {
+    await resize(phone.width)
+  })
+
+  it('opens the sidebar in a drawer on a phone, and an item closes it', async () => {
+    const onSidebarOpenChange = jest.fn()
+    const onPage = jest.fn()
+    await renderNative(shell({ onSidebarOpenChange, onPage }))
+    expect(screen.getByText('Overview')).toBeOnTheScreen()
+    // Below md (the mocked phone is 750 wide) the side area is not mounted.
+    expect(screen.queryByText('Reports')).toBeNull()
+    await fireEvent.press(screen.getByRole('button', { name: 'Open navigation' }))
+    expect(onSidebarOpenChange).toHaveBeenLastCalledWith(true)
+    await fireEvent.press(await screen.findByRole('link', { name: 'Reports' }))
+    expect(onPage).toHaveBeenCalledTimes(1)
+    expect(onSidebarOpenChange).toHaveBeenLastCalledWith(false)
+  })
+
+  it('shows the sidebar beside Main from md, with no trigger', async () => {
+    await resize(1024)
+    await renderNative(shell({}))
+    expect(screen.getByRole('link', { name: 'Reports' })).toBeOnTheScreen()
+    expect(screen.queryByRole('button', { name: 'Open navigation' })).toBeNull()
+  })
+
+  it('pads the safe areas, except with safeArea={false}; the drawer always does', async () => {
+    const padding = (testID: string) => {
+      const style = StyleSheet.flatten(screen.getByTestId(testID).props.style)
+      return { top: style.paddingTop, bottom: style.paddingBottom }
+    }
+    const drawerPadding = async () => {
+      let node = (await screen.findByText('Reports')).parent
+      while (node && node.props.role !== 'dialog') node = node.parent
+      const style = StyleSheet.flatten(node?.props.style)
+      return { top: style.paddingTop, bottom: style.paddingBottom }
+    }
+    const app = (safeArea: boolean) => (
+      <UniversalProvider
+        config={createUniversalConfig()}
+        toaster={false}
+        insets={{ top: 40, bottom: 30, left: 0, right: 0 }}
+      >
+        <AppShell safeArea={safeArea} defaultSidebarOpen>
+          <AppShell.Header testID="header">
+            <Text>Adv Data</Text>
+          </AppShell.Header>
+          <AppShell.Sidebar aria-label="Main">
+            <Text>Reports</Text>
+          </AppShell.Sidebar>
+          <AppShell.Main>
+            <Text>Overview</Text>
+          </AppShell.Main>
+          <AppShell.Footer testID="footer">
+            <Text>Synced</Text>
+          </AppShell.Footer>
+        </AppShell>
+      </UniversalProvider>
+    )
+    const view = await render(app(true))
+    expect(padding('header').top).toBe(40)
+    expect(padding('footer').bottom).toBe(30)
+    expect(await drawerPadding()).toEqual({ top: 40, bottom: 30 })
+    await view.rerender(app(false))
+    expect(padding('header').top).not.toBe(40)
+    expect(padding('footer').bottom).not.toBe(30)
+    expect(await drawerPadding()).toEqual({ top: 40, bottom: 30 })
+  })
+
+  it('AutoGrid shows one column until it is measured, then the same count as web', async () => {
+    await renderNative(
+      <AutoGrid testID="grid" minChildWidth={240} gap="$4">
+        {['A', 'B', 'C', 'D'].map((name) => (
+          <Text key={name} testID={name}>
+            {name}
+          </Text>
+        ))}
+      </AutoGrid>,
+    )
+    const cell = () => StyleSheet.flatten(screen.getByTestId('A').parent?.props.style)
+    expect(cell().width).toBe('100%')
+    await fireEvent(screen.getByTestId('grid'), 'layout', {
+      nativeEvent: { layout: { width: 1000, height: 400, x: 0, y: 0 } },
+    })
+    // 3 columns of (1000 - 2 × 16) / 3, as web's CSS grid would pick.
+    expect(autoGridColumns(1000, 240, 16)).toBe(3)
+    expect(cell().width).toBe(322)
+    expect(StyleSheet.flatten(screen.getByTestId('grid').props.style)).toMatchObject({
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 16,
+    })
+  })
+})
+
 describe('Android back button', () => {
   // Each overlay starts open; back must close it instead of leaving the screen.
   const overlays: [string, (onOpenChange: (open: boolean) => void) => ReactElement][] = [
+    [
+      'AppShell drawer',
+      (onOpenChange) => (
+        <AppShell defaultSidebarOpen onSidebarOpenChange={onOpenChange}>
+          <AppShell.Sidebar aria-label="Main">
+            <Text>Reports</Text>
+          </AppShell.Sidebar>
+          <AppShell.Main>
+            <Text>Overview</Text>
+          </AppShell.Main>
+        </AppShell>
+      ),
+    ],
     [
       'Dialog',
       (onOpenChange) => (

@@ -8,6 +8,7 @@ import {
   styled,
   withStaticProperties,
 } from 'tamagui'
+import { AppShellContext, AppShellSlotContext } from '../../hooks/useAppShell'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
@@ -135,21 +136,26 @@ const SidebarImpl = forwardRef<TamaguiElement, SidebarProps>(function Sidebar(
   },
   ref,
 ) {
-  const [collapsed, setCollapsed] = useControllableState({
+  const [collapsedState, setCollapsed] = useControllableState({
     value: collapsedProp,
     defaultValue: defaultCollapsed,
     onChange: onCollapsedChange,
   })
   const id = useId()
+  // In an AppShell the area around it is the navigation landmark. In its
+  // phone drawer it fills the drawer, and a rail would make no sense there.
+  const slot = useContext(AppShellSlotContext)
+  const collapsed = slot === 'drawer' ? false : collapsedState
   return (
     <SidebarContext.Provider value={{ collapsed, setCollapsed, id }}>
       <SidebarFrame
         ref={ref}
         id={id}
-        render="nav"
-        aria-label={ariaLabel}
-        {...(!isWeb && { role: 'navigation' })}
         collapsed={collapsed}
+        {...(slot
+          ? { flex: 1, height: 'auto' }
+          : { render: 'nav', 'aria-label': ariaLabel, ...(!isWeb && { role: 'navigation' }) })}
+        {...(slot === 'drawer' && { width: '100%', borderRightWidth: 0 })}
         {...props}
       />
     </SidebarContext.Provider>
@@ -217,6 +223,8 @@ const SidebarItem = forwardRef<TamaguiElement, SidebarItemProps>(function Sideba
   ref,
 ) {
   const { collapsed } = useContext(SidebarContext)
+  const shell = useContext(AppShellContext)
+  const inDrawer = useContext(AppShellSlotContext) === 'drawer'
   const ripple = useRipple({ color: '$foreground', disabled })
   const text = isTextContent(children) ? [children].flat().join('') : undefined
   const badgeText = isTextContent(badge) ? [badge].flat().join('') : undefined
@@ -241,7 +249,10 @@ const SidebarItem = forwardRef<TamaguiElement, SidebarItemProps>(function Sideba
           ? { 'aria-current': active ? ('page' as const) : undefined }
           : { accessible: true, ...(nativeName && { 'aria-label': nativeName }) })}
         onPress={(event) => {
-          if (!disabled) onPress?.(event)
+          if (disabled) return
+          onPress?.(event)
+          // Following a link from an AppShell's phone drawer closes the drawer.
+          if (inDrawer) shell?.setSidebarOpen(false)
         }}
         {...props}
         {...ripple.props}
@@ -290,6 +301,9 @@ function SidebarToggle({
   labels = { collapse: 'Collapse sidebar', expand: 'Expand sidebar' },
 }: SidebarToggleProps) {
   const { collapsed, setCollapsed, id } = useContext(SidebarContext)
+  // An AppShell drawer never collapses to a rail.
+  const inDrawer = useContext(AppShellSlotContext) === 'drawer'
+  if (inDrawer) return null
   return (
     <IconButton
       size="sm"

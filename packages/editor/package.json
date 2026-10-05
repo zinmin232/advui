@@ -1,6 +1,6 @@
 {
   "name": "@advui/editor",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Rich text editing for Adv UI: a Markdown editor with a formatting toolbar, shortcuts and a preview, and a viewer for the same Markdown, on web, iOS and Android.",
   "license": "MIT",
   "repository": {

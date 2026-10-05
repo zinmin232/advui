@@ -5,12 +5,15 @@ import AccordionCard from '../../ui/src/components/accordion/examples/card'
 import AlertVariants from '../../ui/src/components/alert/examples/variants'
 import AlertDialogBasic from '../../ui/src/components/alert-dialog/examples/basic'
 import AlertDialogAsync from '../../ui/src/components/alert-dialog/examples/async'
+import AppShellDashboard from '../../ui/src/components/app-shell/examples/dashboard'
+import AppShellDocs from '../../ui/src/components/app-shell/examples/docs'
 import AreaChartBasic from '../../charts/src/components/area-chart/examples/basic'
 import AreaChartStacked from '../../charts/src/components/area-chart/examples/stacked'
 import AspectRatioBasic from '../../ui/src/components/aspect-ratio/examples/basic'
 import AspectRatioRatios from '../../ui/src/components/aspect-ratio/examples/ratios'
 import AudioPlayerBasic from '../../ui/src/components/audio-player/examples/basic'
 import AudioPlayerCompact from '../../ui/src/components/audio-player/examples/compact'
+import AutoGridCardGallery from '../../ui/src/components/layout/examples/card-gallery'
 import AutocompleteBasic from '../../ui/src/components/autocomplete/examples/basic'
 import AvatarBasic from '../../ui/src/components/avatar/examples/basic'
 import AvatarSizes from '../../ui/src/components/avatar/examples/sizes'
@@ -218,6 +221,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': AlertDialogBasic,
     'async': AlertDialogAsync,
   },
+  'app-shell': {
+    'dashboard': AppShellDashboard,
+    'docs': AppShellDocs,
+  },
   'area-chart': {
     'basic': AreaChartBasic,
     'stacked': AreaChartStacked,
@@ -229,6 +236,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'audio-player': {
     'basic': AudioPlayerBasic,
     'compact': AudioPlayerCompact,
+  },
+  'auto-grid': {
+    'card-gallery': AutoGridCardGallery,
   },
   'autocomplete': {
     'basic': AutocompleteBasic,

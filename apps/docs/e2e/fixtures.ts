@@ -70,4 +70,21 @@ export function gridCells(page: Page, texts: string[]) {
   }, texts)
 }
 
+/** Boxes of the AutoGrid cells that hold these texts: the children of the CSS grid. */
+export function autoGridCells(page: Page, texts: string[]) {
+  return page.evaluate((labels) => {
+    return labels.map((label) => {
+      const text = [...document.querySelectorAll('body *')].find(
+        (el) => el.children.length === 0 && el.textContent === label,
+      )
+      let cell = text
+      while (cell?.parentElement && getComputedStyle(cell.parentElement).display !== 'grid')
+        cell = cell.parentElement
+      if (!cell?.parentElement) throw new Error(`No auto grid cell holds "${label}"`)
+      const { x, y, width } = cell.getBoundingClientRect()
+      return { x, y, width }
+    })
+  }, texts)
+}
+
 export { expect } from '@playwright/test'

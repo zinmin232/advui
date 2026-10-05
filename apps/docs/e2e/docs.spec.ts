@@ -1,7 +1,7 @@
 import { appExamples } from '@advui/examples/meta'
 import AxeBuilder from '@axe-core/playwright'
 import type { Page } from '@playwright/test'
-import { expect, gridCells, test } from './fixtures'
+import { autoGridCells, expect, gridCells, test } from './fixtures'
 
 function trackErrors(page: Page) {
   const errors: string[] = []
@@ -79,6 +79,22 @@ test('grid splits 8 / 4 from md', async ({ page }) => {
   expect(side!.y).toBeCloseTo(main!.y, 0)
   expect(main!.width).toBeCloseTo(2 * side!.width, 0)
   expect(side!.x).toBeCloseTo(main!.x + main!.width, 0)
+})
+
+test('auto grid fits as many columns as the width allows, up to maxColumns', async ({ page }) => {
+  await page.goto('/preview/auto-grid/card-gallery')
+  const cells = await autoGridCells(page, ['Atlas', 'Beacon', 'Compass', 'Delta', 'Echo'])
+  // Desktop Chrome is 1280 wide: room for 5 cells of 220px, capped at 4.
+  expect(new Set(cells.slice(0, 4).map((cell) => Math.round(cell.y))).size).toBe(1)
+  expect(cells[4]!.y).toBeGreaterThan(cells[0]!.y)
+  expect(cells[4]!.x).toBeCloseTo(cells[0]!.x, 0)
+  expect(cells[4]!.width).toBeCloseTo(cells[0]!.width, 0)
+})
+
+test('app shell keeps the sidebar beside Main at desktop widths', async ({ page }) => {
+  await page.goto('/preview/app-shell/docs')
+  await expect(page.getByRole('navigation', { name: 'Docs' })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Open navigation' })).toBeHidden()
 })
 
 test('grid playground changes the column count', async ({ page }) => {
