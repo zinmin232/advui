@@ -56,7 +56,8 @@ export function PlaygroundPage({ components }: { components: Playable[] }) {
           onChange={(component) => router.replace(`/playground?component=${component}`)}
         />
         <View gap="$6" $xl={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-          <View flex={1} minWidth={0}>
+          {/* flex only beside the theme card; in a column its 0px basis collapses it. */}
+          <View minWidth={0} $xl={{ flex: 1 }}>
             {/* key resets state when switching components */}
             <Playground key={spec.component} spec={spec} initial={initial} showOpenLink={false} />
           </View>

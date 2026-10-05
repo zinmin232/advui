@@ -53,7 +53,8 @@ export default defineMeta({
   examples: [{ name: 'basic', title: 'Basic' }],
   accessibility: [
     'On web the listbox has `aria-multiselectable`, stays open while you pick, and each option’s `aria-selected` says whether it is picked.',
-    'Chips have named remove buttons; Backspace in the empty text box removes the last one.',
+    'Chips have named remove buttons; Backspace in the empty text box removes the last one. Removing a chip does not open the list.',
+    'On web a click or tap on the field opens the list; Tab focus does not.',
     'On phones the sheet shows checkbox rows, and the field announces how many are selected.',
   ],
   keyboard: [

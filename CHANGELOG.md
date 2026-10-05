@@ -29,6 +29,10 @@ one version.
 
 ### Changed
 
+- **Combobox, Autocomplete and Multi Select open on a click or tap** on web,
+  as a select does; before, only typing or ArrowDown opened the list. Tab
+  focus still leaves it closed, and removing a Multi Select chip does not open
+  it. The chevron still toggles it.
 - **A disabled Form disables every form control inside it**, in a Field or
   not: Input, Textarea, Select, Checkbox, Switch, Radio Group, the pickers
   and any control that calls `useFieldControl`. Buttons other than
@@ -60,6 +64,18 @@ one version.
 
 ### Fixed
 
+- Combobox, Autocomplete and Multi Select on web: options could not be
+  picked with the mouse. The list sits in a portal that ignores the pointer,
+  and the list inherited that, so clicks went to the page underneath and the
+  list closed. The list also showed a sideways scrollbar on Windows.
+- Docs: the KPI Card and Table playgrounds showed "Unknown component", because
+  the playground only looked in `@advui/core`. The List and Table playgrounds
+  now have rows to show.
+- Docs on phones: in every playground the preview and JSX collapsed to nothing
+  and drew under the props, so the component looked missing. A `flex={1}` box
+  that only shares a row on wide screens has a 0 px basis in the phone column.
+  The same bug clipped the product example to a sliver, and an example's long
+  description widened the page instead of wrapping.
 - Button, Toggle, Toggle Group and Fab on native: holding them did not
   show the pressed color. Tamagui's React Native animation driver updated
   press colors without a render, so the view never received the new color. The

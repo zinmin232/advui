@@ -56,6 +56,7 @@ export default defineMeta({
   examples: [{ name: 'basic', title: 'Basic' }],
   accessibility: [
     'The same combobox pattern as Combobox; picking a suggestion fills the text, and Escape closes the list without changing it.',
+    'A click or tap on the field shows the suggestions that match its text; Tab focus does not.',
   ],
   keyboard: [
     { keys: 'ArrowDown / ArrowUp', action: 'Moves through the suggestions.' },

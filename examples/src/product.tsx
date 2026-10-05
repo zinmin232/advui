@@ -40,7 +40,9 @@ export function ProductScreen() {
       marginHorizontal="auto"
       $md={{ padding: '$8', flexDirection: 'row' }}
     >
-      <VStack gap="$3" flex={1}>
+      {/* flex only in the md row: in the phone column its 0px basis collapses
+          the gallery and details in containers without a fixed height. */}
+      <VStack gap="$3" $md={{ flex: 1 }}>
         <View
           position="relative"
           borderRadius="$xl"
@@ -81,7 +83,7 @@ export function ProductScreen() {
         </HStack>
       </VStack>
 
-      <VStack gap="$5" flex={1}>
+      <VStack gap="$5" $md={{ flex: 1 }}>
         <VStack gap="$2">
           <Text size="sm" tone="muted">
             Running · Men
