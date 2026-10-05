@@ -7,6 +7,13 @@ one version.
 
 ## [Unreleased]
 
+### Fixed
+
+- Docs: on phones the Sidebar "App sidebar" example squeezed its page into a
+  60pt column, so the heading and text wrapped letter by letter. Below `md` it
+  now starts as an icon rail, and the open sidebar pushes the page aside
+  instead of squeezing it. Desktop looks the same.
+
 ## [0.11.0] - 2026-10-04
 
 ### Added
