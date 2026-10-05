@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-// Validates component metadata and generates, for every component package:
+// Validates component metadata and generates:
 //   packages/catalog/src/index.ts     – typed list of all component metadata, with its package
 //   packages/catalog/src/examples.ts  – example components keyed by slug + example name
+//   packages/*/src/meta/components.ts – each package's own metadata, published as `<package>/meta`
 // Run: pnpm catalog   (also runs automatically before docs dev/build)
-import { writeFileSync } from 'node:fs'
+import { mkdirSync, writeFileSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import {
   catalogSrc,
@@ -90,8 +91,31 @@ ${exampleMap.join('\n')}
 }
 `
 
+// Each published package lists its own metadata, so tools such as the AdvUI
+// Builder can import it from npm (`@advui/core/meta`) instead of reading the repo.
+function packageMetaIndex(pkg) {
+  const own = entries
+    .filter((entry) => entry.pkg === pkg)
+    .sort((a, b) => a.meta.slug.localeCompare(b.meta.slug))
+  const metaDir = join(pkg.src, 'meta')
+  const from = (file) => toPosix(relative(metaDir, file)).replace(/\.tsx?$/, '')
+  const types = pkg === corePackage ? './types' : `${corePackage.name}/meta`
+  return `${header}import type { ComponentMeta } from '${types}'
+${own.map(({ meta, file }) => `import ${camel(meta.slug)}Meta from '${from(file)}'`).join('\n')}
+
+/** The metadata of every ${pkg.name} component, sorted by slug. */
+export const components: ComponentMeta[] = [
+${own.map(({ meta }) => `  ${camel(meta.slug)}Meta,`).join('\n')}
+]
+`
+}
+
 writeFileSync(join(catalogSrc, 'index.ts'), metaIndex)
 writeFileSync(join(catalogSrc, 'examples.ts'), examplesIndex)
+for (const pkg of componentPackages) {
+  mkdirSync(join(pkg.src, 'meta'), { recursive: true })
+  writeFileSync(join(pkg.src, 'meta', 'components.ts'), packageMetaIndex(pkg))
+}
 const exampleCount = sorted.reduce((sum, { meta }) => sum + meta.examples.length, 0)
 console.log(`Catalog OK: ${sorted.length} components, ${exampleCount} examples.`)
 

@@ -41,4 +41,17 @@ UniversalProvider,
 `isTextContent`, plus re-exports of
 `createUniversalConfig`, `Icon`, `IconDefaults`, `createIcon`, `Theme`, `useTheme` and `useMedia`.
 
+**Metadata:** `@advui/core/meta` exports `components`, the metadata behind
+the docs (parts, props, child rules, examples, platform notes) for every core
+component, with its `ComponentMeta` types, for tools such as the AdvUI
+Builder. `@advui/data/meta`, `@advui/charts/meta` and `@advui/editor/meta` list
+their own components. It is a separate entry point, so apps that don't import
+it don't bundle it.
+
+```ts
+import { components } from '@advui/core/meta'
+
+const button = components.find((meta) => meta.slug === 'button')
+```
+
 Docs: component pages, playground and theme customizer in `apps/docs`. License: MIT.

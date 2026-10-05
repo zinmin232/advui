@@ -28,4 +28,7 @@ The components render inside the app's `UniversalProvider` from
 StatHelpText, StatFrame), Table (with its frames), Timeline (with its parts),
 TreeView, `flattenTree`, and their prop types.
 
+**Metadata:** `@advui/data/meta` exports `components`, the metadata of these
+components (types in `@advui/core/meta`), for tools such as the AdvUI Builder.
+
 Docs: https://zinmin232.github.io/advui/docs/components/data-table. License: MIT.

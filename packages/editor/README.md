@@ -28,4 +28,7 @@ edits Markdown text in core's Textarea. It renders inside the app's
 **Exports:** RichTextEditor, RichTextContent, `defaultRichTextTools`,
 `applyFormat`, `parseMarkdown` and their types.
 
+**Metadata:** `@advui/editor/meta` exports `components`, the metadata of these
+components (types in `@advui/core/meta`), for tools such as the AdvUI Builder.
+
 Docs: https://zinmin232.github.io/advui/docs/components/rich-text-editor. License: MIT.
