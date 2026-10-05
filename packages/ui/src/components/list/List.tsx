@@ -19,6 +19,7 @@ import {
 import { useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
 import { Text } from '../typography/Text'
+import { ariaState } from '../../utils/ariaState'
 
 type ListSize = 'sm' | 'md'
 
@@ -240,7 +241,7 @@ const ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListItem(
         <ListItemRow
           interactive
           disabled={disabled}
-          aria-disabled={disabled || undefined}
+          aria-disabled={ariaState(disabled)}
           {...(isWeb
             ? // A button centers its text by default.
               { render: 'button', type: 'button', style: { textAlign: 'start' } }

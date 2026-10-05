@@ -16,6 +16,7 @@ import type {
   DropdownMenuRadioGroupProps,
   DropdownMenuRadioItemProps,
 } from './types'
+import { ariaState } from '../../utils/ariaState'
 
 // iOS / Android menu, shared by Dropdown Menu and Context Menu (their
 // `.native.tsx` files add the trigger). Native menus need a native module (not
@@ -106,7 +107,7 @@ function Row({
       role={role}
       accessible
       aria-checked={role === 'menuitem' ? undefined : checked}
-      aria-disabled={disabled || undefined}
+      aria-disabled={ariaState(disabled)}
       flexDirection="row"
       alignItems="center"
       gap="$3"

@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'tree-view',
   category: 'advanced',
   description: 'A hierarchy of items that open and close, such as folders or place codes.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['TreeView', 'flattenTree', 'TreeViewProps', 'TreeNode'],

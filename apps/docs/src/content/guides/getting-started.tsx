@@ -125,10 +125,15 @@ export async function Installation() {
     <>
       <H2 id="install">Install</H2>
       <P>
-        Install the core package. Peer dependencies (Tamagui and React Native Web on web) are
-        installed automatically by pnpm and npm 7+.
+        Install the core package. pnpm and npm 7+ install its peer dependencies (Tamagui and React
+        Native) automatically. On web, add React Native Web yourself: it is what <C>react-native</C>{' '}
+        is aliased to, and no package asks for it.
       </P>
-      <Code lang="bash" code={`pnpm add @advui/core @advui/theme @advui/icons tamagui`} />
+      <Code
+        lang="bash"
+        code={`pnpm add @advui/core @advui/theme @advui/icons tamagui
+pnpm add react-native-web   # web only (Next.js, Vite)`}
+      />
       <P>
         Add the packages for the components you need. Each component page says which package it is
         in:

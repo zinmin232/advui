@@ -8,6 +8,7 @@ import { useRipple } from '../../hooks/useRipple'
 import { fieldBoxStyle, Input } from '../input/Input'
 import { Text } from '../typography/Text'
 import { type ComboboxFieldProps, type ComboboxOption, defaultFilter } from './options'
+import { ariaState } from '../../utils/ariaState'
 
 const FieldBox = styled(XStack, {
   name: 'ComboboxField',
@@ -48,7 +49,7 @@ function OptionRow({
       aria-label={option.label}
       aria-checked={multiple ? selected : undefined}
       aria-selected={multiple ? undefined : selected}
-      aria-disabled={option.disabled || undefined}
+      aria-disabled={ariaState(option.disabled)}
       flexDirection="row"
       alignItems="center"
       gap="$3"
@@ -136,7 +137,7 @@ export const ComboboxField = forwardRef<TamaguiElement, ComboboxFieldProps>(
           role="button"
           accessible
           aria-label={ariaLabel}
-          aria-disabled={disabled || undefined}
+          aria-disabled={ariaState(disabled)}
           accessibilityHint={accessibilityHint}
           accessibilityValue={{ text: multiple ? `${selected.length} selected` : inputValue }}
           size={size}

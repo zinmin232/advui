@@ -16,6 +16,7 @@ import {
   startOfDay,
   toISODate,
 } from './dates'
+import { ariaState } from '../../utils/ariaState'
 
 const CalendarFrame = styled(View, {
   name: 'Calendar',
@@ -306,7 +307,7 @@ export const Calendar = forwardRef<TamaguiElement, CalendarProps>(function Calen
                   {...(!isWeb && { accessible: true })}
                   aria-label={formats.day.format(day)}
                   aria-selected={selected}
-                  aria-disabled={disabled || undefined}
+                  aria-disabled={ariaState(disabled)}
                   aria-current={isToday ? 'date' : undefined}
                   {...(isWeb && {
                     tabIndex: isSameDay(day, tabDay) ? 0 : -1,

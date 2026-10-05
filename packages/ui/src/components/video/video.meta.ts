@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'media',
   description:
     'A video with the platform’s own controls, a fixed aspect ratio, captions on web and an error state.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

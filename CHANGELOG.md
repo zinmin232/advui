@@ -7,12 +7,56 @@ one version.
 
 ## [Unreleased]
 
+### Added
+
+- **`ariaState(on)`** in `@advui/core`, for components built on core: a
+  boolean `aria-disabled`, `aria-busy` or `aria-selected` that is left out
+  when off on web and sent as `false` on iOS and Android.
+
+### Changed
+
+- Stable after the Android phone check: Stat, KPI Card, List, Timeline,
+  Image, Table, Pagination, Stepper, Data Table, Tree View, Navigation Menu,
+  Sidebar, Search, Command Palette, Image Gallery, Bar / Line / Area / Pie
+  Chart, Resizable Panel, Data Grid, Video, Audio Player and Loading Button.
+  Form and Rich Text Editor stay beta until their open API questions are
+  settled.
+
 ### Fixed
 
-- Docs: on phones the Sidebar "App sidebar" example squeezed its page into a
-  60pt column, so the heading and text wrapped letter by letter. Below `md` it
-  now starts as an icon rail, and the open sidebar pushes the page aside
+- TalkBack kept reading a cleared state on Android: "Page 1, selected" and
+  "Previous page, disabled" after paging, or a disabled button after it was
+  enabled again. React Native keeps the last value of an accessibility prop
+  that is removed, so disabled, busy and selected states are now sent as
+  `false` when they turn off (Button, Pagination, Input, Textarea, Slider,
+  Toggle, Toggle Group, Chip, Fab, List, Menu, Navigation Bar, Sidebar,
+  Calendar, Combobox, pickers, File Dropzone, Search, Circular Progress and
+  Tree View).
+- Button and Loading Button on Android: while loading, TalkBack read only
+  "busy", and went on reading "busy" after loading ended. A text button now
+  names itself with its text on native, so it reads "Saving…, busy" and then
+  its label again. Data Table and KPI Card set `aria-busy` on web only, since
+  a native container cannot report it without a name.
+- Table with `minWidth` on iOS and Android: the columns did not line up from
+  row to row, because each row sized its columns to its own text inside the
+  sideways scroll view. The table now gets a set width there.
+- Data Grid on Android: tapping a cell opened the editor without the
+  keyboard, and the cell could stay off screen. The editor is now focused and
+  its column scrolled into view. The Done key no longer blurs the editor, so
+  an invalid value shows its error instead of being dropped.
+- Charts on iOS and Android: the plot's name ended with "Use the arrow keys
+  to read each value", which a phone cannot do. The hint is web only now.
+- Image: the fallback example used a relative path, which never fails on
+  Android, so the fallback did not show there. It now uses an address that
+  fails on every platform.
+- Table: the basic example squeezed its columns on phones and broke words
+  mid-way; it scrolls sideways below 480 pt now.
+- Sidebar: the App sidebar example squeezed its page into a 60 pt column on
+  phones, so the heading and text broke letter by letter. Below `md` it now
+  starts as an icon rail, and opening the sidebar pushes the page aside
   instead of squeezing it. Desktop looks the same.
+- Docs: the install steps said React Native Web is installed automatically.
+  It is not; web apps add `react-native-web` themselves.
 
 ## [0.11.0] - 2026-10-04
 

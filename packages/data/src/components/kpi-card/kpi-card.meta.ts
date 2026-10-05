@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'kpi-card',
   category: 'data-display',
   description: 'A card for one key figure on a dashboard, with its change and an icon.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['KpiCard', 'KpiCardProps'],

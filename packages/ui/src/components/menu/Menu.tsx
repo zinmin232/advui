@@ -13,6 +13,7 @@ import {
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { Text } from '../typography/Text'
+import { ariaState } from '../../utils/ariaState'
 
 type MenuState = { value: string; select: (value: string) => void }
 
@@ -166,7 +167,7 @@ const MenuItem = forwardRef<TamaguiElement, MenuItemProps>(function MenuItem(
       role="menuitem"
       {...semantics}
       aria-current={selected ? (isLink ? 'page' : 'true') : undefined}
-      aria-disabled={disabled || undefined}
+      aria-disabled={ariaState(disabled)}
       position="relative"
       flexDirection="row"
       alignItems="center"

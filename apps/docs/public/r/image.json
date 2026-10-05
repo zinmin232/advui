@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "A picture in a box of a set size or ratio, with a placeholder and a fallback.",
   "category": "media",
-  "status": "beta",
+  "status": "stable",
   "since": "0.6.0",
   "platforms": [
     "web",
@@ -39,7 +39,7 @@
     {
       "name": "fallback",
       "title": "Fallback",
-      "code": "import { Image, Text, HStack } from '@advui/core'\n\nexport default function ImageFallback() {\n  return (\n    <HStack gap=\"$4\" flexWrap=\"wrap\">\n      {/* This file does not exist, so the fallback shows. */}\n      <Image\n        src=\"/missing-photo.jpg\"\n        alt=\"Clinic entrance\"\n        width=\"$40\"\n        ratio={4 / 3}\n        borderRadius=\"$md\"\n      />\n      <Image\n        src=\"/missing-photo.jpg\"\n        alt=\"Team photo\"\n        width=\"$40\"\n        ratio={4 / 3}\n        borderRadius=\"$md\"\n        fallback={\n          <Text size=\"sm\" tone=\"muted\">\n            Photo unavailable\n          </Text>\n        }\n      />\n    </HStack>\n  )\n}\n"
+      "code": "import { Image, Text, HStack } from '@advui/core'\n\nexport default function ImageFallback() {\n  return (\n    <HStack gap=\"$4\" flexWrap=\"wrap\">\n      {/* `.invalid` never resolves (RFC 2606), so the image fails on every platform. */}\n      <Image\n        src=\"https://example.invalid/missing-photo.jpg\"\n        alt=\"Clinic entrance\"\n        width=\"$40\"\n        ratio={4 / 3}\n        borderRadius=\"$md\"\n      />\n      <Image\n        src=\"https://example.invalid/missing-photo.jpg\"\n        alt=\"Team photo\"\n        width=\"$40\"\n        ratio={4 / 3}\n        borderRadius=\"$md\"\n        fallback={\n          <Text size=\"sm\" tone=\"muted\">\n            Photo unavailable\n          </Text>\n        }\n      />\n    </HStack>\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/image",

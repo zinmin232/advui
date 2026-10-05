@@ -8,6 +8,7 @@ import {
   toneColor,
   valueFontSize,
 } from './geometry'
+import { ariaState } from '../../utils/ariaState'
 
 export interface CircularProgressProps extends Omit<ViewProps, 'children'> {
   /** Current value. Omit (or `null`) for a spinning, indeterminate ring. */
@@ -49,7 +50,7 @@ export function CircularProgress({
       aria-valuemin={0}
       aria-valuemax={max}
       aria-valuenow={clamped ?? undefined}
-      aria-busy={fraction === null || undefined}
+      aria-busy={ariaState(fraction === null)}
       width={geometry.diameter}
       height={geometry.diameter}
       alignItems="center"

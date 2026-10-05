@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'command-palette',
   category: 'advanced',
   description: 'A searchable list of actions in a dialog, opened with ⌘K or Ctrl+K.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

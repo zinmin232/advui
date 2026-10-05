@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'stat',
   category: 'data-display',
   description: 'One figure with its label, how it changed and a short note.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

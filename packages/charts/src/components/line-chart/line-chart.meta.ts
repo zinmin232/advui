@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'line-chart',
   category: 'charts',
   description: 'Shows change over an ordered axis, such as months, as one or more lines.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['LineChart', 'LineChartProps'],
@@ -117,7 +117,7 @@ export default defineMeta({
   responsive: 'Fills its container; x labels thin out when they would overlap.',
   platformNotes: {
     web: 'SVG in the page. Hover shows the tooltip; the arrow keys work once the plot has focus.',
-    ios: 'Drawn with react-native-svg. Tap the plot to show the tooltip for that point.',
+    ios: 'Drawn with react-native-svg. Tap the plot to show the tooltip for that point. VoiceOver and TalkBack read the title and description, without the arrow-key hint; Show table lists every value.',
     android: 'Same as iOS.',
   },
   related: ['area-chart', 'bar-chart', 'table'],

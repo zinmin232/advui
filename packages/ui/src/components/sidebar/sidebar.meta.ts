@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'sidebar',
   category: 'navigation',
   description: 'App navigation down the side of the screen, collapsible to an icon rail.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

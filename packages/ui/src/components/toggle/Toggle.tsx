@@ -4,6 +4,7 @@ import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 't
 import { useControllableState } from '../../hooks/useControllableState'
 import { type RippleOptions, useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
+import { ariaState } from '../../utils/ariaState'
 
 export type ToggleVariant = 'default' | 'outline'
 export type ToggleSize = 'sm' | 'md' | 'lg'
@@ -170,7 +171,7 @@ export const Toggle = forwardRef<TamaguiElement, ToggleProps>(function Toggle(
       size={size}
       on={pressed}
       disabled={disabled}
-      aria-disabled={disabled || undefined}
+      aria-disabled={ariaState(disabled)}
       {...(isWeb
         ? { type: 'button', 'aria-pressed': pressed }
         : {
