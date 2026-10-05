@@ -1,3 +1,4 @@
+import { appExamples } from '@advui/examples/meta'
 import { autoGridCells, expect, gridCells, test } from './fixtures'
 
 test('sidebar becomes a drawer on phones', async ({ page }) => {
@@ -55,6 +56,37 @@ test('pages do not overflow horizontally on a phone', async ({ page }) => {
       () => document.documentElement.scrollWidth - window.innerWidth,
     )
     expect(overflow, path).toBeLessThanOrEqual(1)
+  }
+})
+
+// flex={1} sets a 0px basis, so a box that only shares a row on wide screens
+// collapses in the phone column: the playground drew its preview under the
+// props, and the product example was clipped to a sliver.
+test('playground stacks the preview, JSX and props on a phone', async ({ page }) => {
+  for (const path of ['/docs/components/badge', '/playground?component=Avatar']) {
+    await page.goto(path)
+    const jsx = (await page.getByLabel('Generated JSX').boundingBox())!
+    const props = (await page.getByRole('group', { name: 'Props' }).boundingBox())!
+    expect(props.y, path).toBeGreaterThanOrEqual(jsx.y + jsx.height)
+  }
+})
+
+test('app examples fit a phone', async ({ page }) => {
+  for (const { slug } of appExamples) {
+    await page.goto(`/examples/${slug}`)
+    await page.getByRole('button', { name: 'Desktop' }).click()
+    const frame = page.getByTestId('example-frame')
+    const size = await frame.evaluate((el) => ({
+      scroll: el.scrollHeight,
+      client: el.clientHeight,
+    }))
+    expect(size.client, `${slug} frame height`).toBeGreaterThan(200)
+    expect(size.scroll, `${slug} content is clipped`).toBeLessThanOrEqual(size.client + 1)
+    // The long description wraps instead of widening the page.
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    )
+    expect(overflow, slug).toBeLessThanOrEqual(1)
   }
 })
 

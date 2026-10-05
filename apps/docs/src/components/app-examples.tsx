@@ -82,11 +82,12 @@ export function ExampleViewer({ slug }: { slug: string }) {
           width="100%"
           marginHorizontal="auto"
         >
-          <HStack gap="$3">
+          {/* Shrinks so the description wraps on phones instead of widening the page. */}
+          <HStack gap="$3" flexShrink={1} minWidth={0}>
             <Link href="/examples" className="plain-link" aria-label="All examples">
               <ArrowLeftIcon />
             </Link>
-            <VStack>
+            <VStack flexShrink={1} minWidth={0}>
               <Text render="h1" size="xl" weight="bold" margin={0}>
                 {example.title}
               </Text>
