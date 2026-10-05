@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'advanced',
   description:
     'A spreadsheet-like grid: move between cells with the arrow keys and edit values in place, with validation.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

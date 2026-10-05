@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'stepper',
   category: 'navigation',
   description: 'Progress through a multi-step flow, such as a form wizard or checkout.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

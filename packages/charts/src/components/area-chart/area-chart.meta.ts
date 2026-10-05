@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'charts',
   description:
     'A line chart with a light wash under each line, for totals and stacked parts over time.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['AreaChart', 'AreaChartProps'],
@@ -112,7 +112,7 @@ export default defineMeta({
   responsive: 'Fills its container; x labels thin out when they would overlap.',
   platformNotes: {
     web: 'SVG in the page. Hover shows the tooltip; the arrow keys work once the plot has focus.',
-    ios: 'Drawn with react-native-svg. Tap the plot to show the tooltip for that point.',
+    ios: 'Drawn with react-native-svg. Tap the plot to show the tooltip for that point. VoiceOver and TalkBack read the title and description, without the arrow-key hint; Show table lists every value.',
     android: 'Same as iOS.',
   },
   related: ['line-chart', 'bar-chart', 'table'],

@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'media',
   description:
     'Plays a sound with a play button, a seek bar, skip buttons and a speed control, the same on every platform.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

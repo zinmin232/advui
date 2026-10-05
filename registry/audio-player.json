@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "Plays a sound with a play button, a seek bar, skip buttons and a speed control, the same on every platform.",
   "category": "media",
-  "status": "beta",
+  "status": "stable",
   "since": "0.6.0",
   "platforms": [
     "web",

@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'pagination',
   category: 'navigation',
   description: 'Previous and next buttons around the page numbers of a long list or table.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "A searchable list of actions in a dialog, opened with ⌘K or Ctrl+K.",
   "category": "advanced",
-  "status": "beta",
+  "status": "stable",
   "since": "0.6.0",
   "platforms": [
     "web",

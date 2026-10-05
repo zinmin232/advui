@@ -58,7 +58,7 @@
       "type": "registry:component",
       "description": "A line chart with a light wash under each line, for totals and stacked parts over time.",
       "category": "charts",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/charts",
       "dependencies": [],
       "registryDependencies": [
@@ -71,7 +71,7 @@
       "type": "registry:component",
       "description": "Compares values across categories as columns or bars, grouped or stacked.",
       "category": "charts",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/charts",
       "dependencies": [],
       "registryDependencies": [
@@ -84,7 +84,7 @@
       "type": "registry:component",
       "description": "Shows change over an ordered axis, such as months, as one or more lines.",
       "category": "charts",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/charts",
       "dependencies": [],
       "registryDependencies": [
@@ -97,7 +97,7 @@
       "type": "registry:component",
       "description": "Part-to-whole at a glance, as a donut or pie with up to six slices.",
       "category": "charts",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/charts",
       "dependencies": [
         "@advui/icons"
@@ -112,7 +112,7 @@
       "type": "registry:component",
       "description": "A spreadsheet-like grid: move between cells with the arrow keys and edit values in place, with validation.",
       "category": "advanced",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/data",
       "dependencies": [],
       "registryDependencies": [
@@ -127,7 +127,7 @@
       "type": "registry:component",
       "description": "A table driven by data and columns, with sorting, search, row selection and pagination.",
       "category": "data-display",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/data",
       "dependencies": [
         "@advui/icons"
@@ -148,7 +148,7 @@
       "type": "registry:component",
       "description": "A card for one key figure on a dashboard, with its change and an icon.",
       "category": "data-display",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/data",
       "dependencies": [
         "@advui/icons"
@@ -165,7 +165,7 @@
       "type": "registry:component",
       "description": "One figure with its label, how it changed and a short note.",
       "category": "data-display",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/data",
       "dependencies": [
         "@advui/icons"
@@ -181,7 +181,7 @@
       "type": "registry:component",
       "description": "Rows and columns of data, with sortable headers, stripes and sideways scrolling.",
       "category": "data-display",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/data",
       "dependencies": [
         "@advui/icons"
@@ -197,7 +197,7 @@
       "type": "registry:component",
       "description": "Events in order along a vertical line, such as an activity feed or order history.",
       "category": "data-display",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/data",
       "dependencies": [
         "@advui/icons"
@@ -212,14 +212,15 @@
       "type": "registry:component",
       "description": "A hierarchy of items that open and close, such as folders or place codes.",
       "category": "advanced",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/data",
       "dependencies": [
         "@advui/icons"
       ],
       "registryDependencies": [
         "hooks",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {
@@ -323,7 +324,7 @@
       "type": "registry:component",
       "description": "Plays a sound with a play button, a seek bar, skip buttons and a speed control, the same on every platform.",
       "category": "media",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -352,7 +353,8 @@
       "registryDependencies": [
         "hooks",
         "input",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {
@@ -438,7 +440,8 @@
       "registryDependencies": [
         "hooks",
         "icon-button",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {
@@ -500,7 +503,8 @@
         "@advui/icons"
       ],
       "registryDependencies": [
-        "hooks"
+        "hooks",
+        "utils"
       ]
     },
     {
@@ -533,7 +537,8 @@
         "autocomplete",
         "hooks",
         "input",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {
@@ -542,7 +547,7 @@
       "type": "registry:component",
       "description": "A searchable list of actions in a dialog, opened with ⌘K or Ctrl+K.",
       "category": "advanced",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -583,7 +588,8 @@
         "icon-button",
         "input",
         "popover",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {
@@ -604,7 +610,8 @@
         "icon-button",
         "input",
         "popover",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {
@@ -657,7 +664,8 @@
       ],
       "registryDependencies": [
         "hooks",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {
@@ -705,7 +713,8 @@
         "@advui/theme"
       ],
       "registryDependencies": [
-        "hooks"
+        "hooks",
+        "utils"
       ]
     },
     {
@@ -737,7 +746,8 @@
       "registryDependencies": [
         "hooks",
         "icon-button",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {
@@ -812,7 +822,7 @@
       "type": "registry:component",
       "description": "A grid of thumbnails that open a viewer with previous and next.",
       "category": "media",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -832,7 +842,7 @@
       "type": "registry:component",
       "description": "A picture in a box of a set size or ratio, with a placeholder and a fallback.",
       "category": "media",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -849,7 +859,8 @@
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
-        "hooks"
+        "hooks",
+        "utils"
       ]
     },
     {
@@ -938,7 +949,7 @@
       "type": "registry:component",
       "description": "A vertical list of rows with a leading visual, text and trailing meta.",
       "category": "data-display",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -955,7 +966,7 @@
       "type": "registry:component",
       "description": "A button that displays a loading indicator and prevents interaction while an asynchronous action is in progress.",
       "category": "buttons",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -980,7 +991,8 @@
       ],
       "registryDependencies": [
         "hooks",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {
@@ -1017,7 +1029,8 @@
         "@advui/icons"
       ],
       "registryDependencies": [
-        "hooks"
+        "hooks",
+        "utils"
       ]
     },
     {
@@ -1026,7 +1039,7 @@
       "type": "registry:component",
       "description": "Site navigation with links and buttons that open panels of more links.",
       "category": "navigation",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
@@ -1075,7 +1088,7 @@
       "type": "registry:component",
       "description": "Previous and next buttons around the page numbers of a long list or table.",
       "category": "navigation",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -1150,7 +1163,7 @@
       "type": "registry:component",
       "description": "Panels side by side or stacked, with handles to drag, or move with the arrow keys, to resize them.",
       "category": "advanced",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -1180,7 +1193,7 @@
       "type": "registry:component",
       "description": "A search field with a magnifier, a clear button and a loading state.",
       "category": "advanced",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -1189,7 +1202,8 @@
         "hooks",
         "icon-button",
         "input",
-        "spinner"
+        "spinner",
+        "utils"
       ]
     },
     {
@@ -1275,7 +1289,7 @@
       "type": "registry:component",
       "description": "App navigation down the side of the screen, collapsible to an icon rail.",
       "category": "navigation",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -1310,7 +1324,8 @@
         "@advui/theme"
       ],
       "registryDependencies": [
-        "hooks"
+        "hooks",
+        "utils"
       ]
     },
     {
@@ -1348,7 +1363,7 @@
       "type": "registry:component",
       "description": "Progress through a multi-step flow, such as a form wizard or checkout.",
       "category": "navigation",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -1412,7 +1427,8 @@
       "dependencies": [],
       "registryDependencies": [
         "hooks",
-        "input"
+        "input",
+        "utils"
       ]
     },
     {
@@ -1459,7 +1475,8 @@
       "dependencies": [],
       "registryDependencies": [
         "hooks",
-        "toggle"
+        "toggle",
+        "utils"
       ]
     },
     {
@@ -1510,7 +1527,7 @@
       "type": "registry:component",
       "description": "A video with the platform’s own controls, a fixed aspect ratio, captions on web and an error state.",
       "category": "media",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"

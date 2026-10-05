@@ -6,6 +6,11 @@
   "description": "Small shared helpers used by several components.",
   "files": [
     {
+      "path": "utils/ariaState.ts",
+      "type": "registry:ui",
+      "content": "import { isWeb } from 'tamagui'\n\n/**\n * A boolean ARIA state that turns on and off: `aria-disabled`, `aria-busy`,\n * `aria-selected`. Web leaves an off state out. Native sends `false`: React\n * Native keeps the last value of a prop that is removed, so TalkBack would go\n * on reading \"disabled\" or \"selected\" after the state cleared.\n *\n * Not for `aria-checked` or `aria-expanded`: on native, `false` makes any view\n * read as \"not checked\" or \"collapsed\".\n */\nexport function ariaState(on: boolean | null | undefined): boolean | undefined {\n  return isWeb ? on || undefined : Boolean(on)\n}\n"
+    },
+    {
       "path": "utils/isTextContent.ts",
       "type": "registry:ui",
       "content": "import type { ReactNode } from 'react'\n\n/**\n * True for children that are only text: `\"Save\"`, `3`, or `Status ({count})`\n * (JSX turns that into `['Status (', 3, ')']`). Such children must be wrapped in\n * a Text component: React Native throws on bare strings inside a View.\n */\nexport function isTextContent(\n  children: ReactNode,\n): children is string | number | Array<string | number> {\n  if (typeof children === 'string' || typeof children === 'number') return true\n  return (\n    Array.isArray(children) &&\n    children.length > 0 &&\n    children.every((child) => typeof child === 'string' || typeof child === 'number')\n  )\n}\n"
@@ -20,7 +25,8 @@
     "@advui/theme"
   ],
   "peerDependencies": [
-    "react"
+    "react",
+    "tamagui"
   ],
   "registryDependencies": [],
   "version": "0.11.0"

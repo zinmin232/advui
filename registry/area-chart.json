@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "A line chart with a light wash under each line, for totals and stacked parts over time.",
   "category": "charts",
-  "status": "beta",
+  "status": "stable",
   "since": "0.6.0",
   "platforms": [
     "web",
