@@ -98,6 +98,17 @@ cannot do them. Tick them off here as they are done.
       merged on 2026-10-05 with a merge commit. Tag `v0.11.0` points at the
       pull request's last commit, which `main` contains, so the AdvUI Builder
       can sync metadata from it.
+- [ ] **Release 0.12.0** (metadata on npm at `<package>/meta`, Combobox
+      fields that open on a click, the Form and accessibility fixes):
+  - Merge the release pull request with a merge commit, then `git pull` and
+    `git tag v0.12.0 <merge commit> && git push origin v0.12.0`.
+  - `pnpm release:check` must list all eight public packages at 0.12.0. Then
+    `npm login` and `pnpm release`.
+  - Check the packages on the registry with
+    `curl -s https://registry.npmjs.org/@advui%2fcore` (npm may stage a
+    version for a while; don't re-publish on a 409).
+  - The AdvUI Builder can then import `components` from `@advui/core/meta`
+    (bundled by Vite) instead of syncing `*.meta.ts` from the git tag.
 - [x] **Try the new packages.** 0.6.0 is the first working release of
       `@advui/data`, `@advui/charts` and `@advui/editor`; their 0.5.0,
       published by mistake before the version bump, is deprecated. On
