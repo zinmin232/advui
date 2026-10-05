@@ -5,8 +5,8 @@ import { Button, Text } from '@advui/core'
 import { Table } from '@advui/data'
 
 /** One series (a line, a set of bars): the data field it reads and its name. */
-export interface ChartSeries {
-  key: string
+export interface ChartSeries<Key extends string = string> {
+  key: Key
   label: string
 }
 

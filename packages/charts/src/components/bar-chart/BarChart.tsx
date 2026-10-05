@@ -25,18 +25,22 @@ const MAX_BAR = 24
 const GAP = 2
 const RADIUS = 4
 
-export interface BarChartProps {
+// Rows are `object`, not `Record<string, unknown>`: an interface has no index signature.
+export interface BarChartProps<T extends object = Record<string, unknown>> {
   /** Names the chart: its heading and accessible name. */
   title: string
   description?: string
-  /** One object per category, e.g. `{ month: 'Jan', health: 120, wash: 80 }`. */
-  data: Record<string, unknown>[]
+  /**
+   * One object per category, e.g. `{ month: 'Jan', health: 120, wash: 80 }`. The
+   * row type is inferred from here only; `index` and `series` must name its fields.
+   */
+  data: readonly T[]
   /** The field holding each row's category name. */
-  index: string
+  index: NoInfer<keyof T & string>
   /** Heading of the category column in the table view. Default: `index`. */
   indexLabel?: string
   /** The numeric fields to plot, in color order. */
-  series: ChartSeries[]
+  series: readonly ChartSeries<NoInfer<keyof T & string>>[]
   /** `vertical` draws columns; `horizontal` bars suit long category names. */
   layout?: 'vertical' | 'horizontal'
   /** Stacks the series in one bar per category (part-to-whole). */
@@ -54,7 +58,7 @@ export interface BarChartProps {
  * Compares values across categories as columns or bars, grouped or stacked.
  * Includes a legend, a tooltip (hover, tap or arrow keys) and a table view.
  */
-export function BarChart({
+export function BarChart<T extends object>({
   title,
   description,
   data,
@@ -67,7 +71,7 @@ export function BarChart({
   width,
   valueFormatter = formatFull,
   labels,
-}: BarChartProps) {
+}: BarChartProps<T>) {
   const colors = useChartColors()
   const ink = useChartInk('$background')
   const horizontal = layout === 'horizontal'

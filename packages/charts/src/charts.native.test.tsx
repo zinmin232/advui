@@ -15,7 +15,7 @@ describe('@advui/charts native rendering', () => {
     const series = [
       { key: 'planned', label: 'Planned' },
       { key: 'reached', label: 'Reached' },
-    ]
+    ] as const
     await renderNative(
       <>
         <BarChart title="Bars" data={data} index="month" series={series} width={300} />

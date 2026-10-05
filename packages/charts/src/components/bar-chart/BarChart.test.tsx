@@ -7,10 +7,11 @@ const data = [
   { sector: 'WASH', planned: 310, reached: null },
   { sector: 'Education', planned: 260, reached: 191 },
 ]
+// `as const` keeps the keys literal, so they are checked against the rows.
 const series = [
   { key: 'planned', label: 'Planned' },
   { key: 'reached', label: 'Reached' },
-]
+] as const
 
 describe('BarChart', () => {
   it('is a named figure with a plot image, a legend and bars', () => {

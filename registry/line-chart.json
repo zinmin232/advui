@@ -17,7 +17,7 @@
     {
       "path": "components/line-chart/LineChart.tsx",
       "type": "registry:ui",
-      "content": "import { LinePlot, type LinePlotProps } from '../../charts'\n\nexport type LineChartProps = LinePlotProps\n\n/**\n * Shows change over an ordered axis (months, years) as 2px lines, with a\n * crosshair tooltip (hover, tap or arrow keys), a legend and a table view.\n */\nexport function LineChart(props: LineChartProps) {\n  return <LinePlot {...props} />\n}\n"
+      "content": "import { LinePlot, type LinePlotProps } from '../../charts'\n\nexport type LineChartProps<T extends object = Record<string, unknown>> = LinePlotProps<T>\n\n/**\n * Shows change over an ordered axis (months, years) as 2px lines, with a\n * crosshair tooltip (hover, tap or arrow keys), a legend and a table view.\n */\nexport function LineChart<T extends object>(props: LineChartProps<T>) {\n  return <LinePlot<T> {...props} />\n}\n"
     },
     {
       "path": "components/line-chart/index.ts",

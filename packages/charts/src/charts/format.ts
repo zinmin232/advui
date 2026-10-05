@@ -8,7 +8,7 @@ export const formatCompact = (value: number) => compact.format(value)
 export const formatFull = (value: number) => full.format(value)
 
 /** Reads a numeric field; anything else counts as missing. */
-export function numberAt(row: Record<string, unknown>, key: string): number | null {
-  const value = row[key]
+export function numberAt<T extends object>(row: T, key: keyof T): number | null {
+  const value: unknown = row[key]
   return typeof value === 'number' && Number.isFinite(value) ? value : null
 }

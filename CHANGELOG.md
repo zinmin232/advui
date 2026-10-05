@@ -7,6 +7,18 @@ one version.
 
 ## [Unreleased]
 
+### Changed
+
+- **BarChart, LineChart and AreaChart** are generic over the row type, like
+  DataTable: `data` is `T[]` (any object type), and `index` and each series
+  `key` must be fields of `T`. Rows typed with an `interface` now compile
+  (they failed with "Index signature for type 'string' is missing"), and a
+  misspelled `index` or series key is a type error. Rows typed as
+  `Record<string, unknown>` take any field name, as before. A `series` array
+  declared apart from the chart needs `as const` (or a
+  `BarChartProps<Row>['series']` annotation) so its keys stay literal; a plain
+  `{ key: string }[]` no longer type-checks against typed rows.
+
 ## [0.11.0] - 2026-10-04
 
 ### Added
