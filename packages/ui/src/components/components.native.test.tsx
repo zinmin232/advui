@@ -753,6 +753,7 @@ describe('native rendering', () => {
         <Field label="Email">
           <Input placeholder="you@example.com" />
         </Field>
+        <Input aria-label="Notes" placeholder="Notes" />
       </Form>
     )
     const { unmount } = await renderNative(form({}))
@@ -773,6 +774,8 @@ describe('native rendering', () => {
     await renderNative(form({ disabled: true }))
     expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
     expect(screen.getByPlaceholderText('you@example.com')).toBeDisabled()
+    // A control outside a Field follows the form too.
+    expect(screen.getByPlaceholderText('Notes')).toBeDisabled()
   })
 
   it('PasswordInput toggles secure text entry from its toggle button', async () => {

@@ -65,20 +65,25 @@ cannot do them. Tick them off here as they are done.
       shortcuts, preview), the same on every platform with no extra
       dependencies. Keep it, or ask for a WYSIWYG editor, which needs new
       libraries (TipTap on web, a WebView-based editor on iOS and Android).
-- [ ] **Form: decide.** Three API choices to settle before Form is `stable`:
-  - A disabled Form disables controls inside a Field and `Form.Submit`
-    only. Keep that, or also make plain Input, Textarea, Select, Checkbox,
-    Switch and Radio Group follow it through `useFormStatus()`.
-  - Keep the hook name `useFormStatus`, or rename it: React DOM has a hook with
-    the same name for Server Actions, which could confuse Next.js users.
-  - Add a Form playground to the docs page, or keep the eight examples only.
-- [ ] **Demo media.** The Video and Audio Player examples use MDN's public CC0
-      samples. Swap in your own if you prefer, and add a captions `.vtt` file for
-      any video with speech.
+- [x] **Form: decided** on 2026-10-05. Nothing else holds Form back from
+      `stable`, though the new disabled behavior has only been checked by a
+      native unit test, not on a phone.
+  - A disabled Form disables every form control inside it, in a Field or
+    not (through `useFieldControl`); other buttons, such as Cancel, stay
+    enabled.
+  - The hook is `useParentForm` (type `FormContextValue`); `useFormStatus`
+    stays as a deprecated alias for now.
+  - The docs page has a Form playground, next to the eight examples.
+- [x] **Demo media.** The Video and Audio Player examples play clips made for
+      the docs (`apps/docs/public/media`, made by
+      `scripts/demo-media/make-demo-media.ps1` with the Windows voices and
+      ffmpeg); the handwashing video has an English captions file. They load
+      from the published site, so they play once that is deployed.
 - [ ] **Promote to stable.** When a component passes the phone check, change
       its `status` from `beta` to `stable` in its `*.meta.ts` and run
-      `pnpm catalog`. Done on 2026-10-05 for 24 of the 26; Form and Rich Text
-      Editor stay beta until the decisions above.
+      `pnpm catalog`. Done on 2026-10-05 for 24 of the 26. Form can follow
+      now that its API is decided; Rich Text Editor stays beta until its
+      decision above.
 - [x] **Release 0.6.0**: tag `v0.6.0` points at the release commit, and all
       eight public packages are published at 0.6.0.
 - [x] **Release 0.7.0** (Grid spans, Field): tagged `v0.7.0` and published.

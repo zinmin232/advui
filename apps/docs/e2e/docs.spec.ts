@@ -97,6 +97,33 @@ test('app shell keeps the sidebar beside Main at desktop widths', async ({ page 
   await expect(page.getByRole('button', { name: 'Open navigation' })).toBeHidden()
 })
 
+test('video example shows its captions from another origin', async ({ page }) => {
+  await page.goto('/preview/video/basic')
+  const video = page.locator('video')
+  // Without crossOrigin the browser would refuse the cross-origin caption file.
+  await expect
+    .poll(() => video.evaluate((v: HTMLVideoElement) => v.textTracks[0]?.cues?.length ?? 0))
+    .toBe(7)
+  const track = await video.evaluate((v: HTMLVideoElement) => ({
+    mode: v.textTracks[0]!.mode,
+    first: (v.textTracks[0]!.cues![1] as VTTCue).text,
+  }))
+  expect(track).toEqual({
+    mode: 'showing',
+    first: 'Step 1: Wet your hands with clean, running water.',
+  })
+})
+
+test('form playground disables the fields and Save, but not Cancel', async ({ page }) => {
+  await page.goto('/docs/components/form')
+  await page.getByLabel('disabled', { exact: true }).click()
+  await expect(page.getByLabel('Generated JSX')).toContainText('disabled')
+  const preview = page.locator('form').first()
+  await expect(preview.getByRole('textbox', { name: 'Name' })).toBeDisabled()
+  await expect(preview.getByRole('button', { name: 'Save' })).toBeDisabled()
+  await expect(preview.getByRole('button', { name: 'Cancel' })).toBeEnabled()
+})
+
 test('grid playground changes the column count', async ({ page }) => {
   await page.goto('/docs/components/grid')
   await page.getByLabel('columns', { exact: true }).fill('3')

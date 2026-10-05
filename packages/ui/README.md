@@ -37,7 +37,7 @@ Input, Label, NavigationBar, Popover, Progress, RadioGroup, Select, Separator,
 Sheet, Skeleton, Slider, Snackbar, Spinner, Stack (Box, HStack, VStack, Center, Spacer), Switch, Tabs, Text,
 Heading, Kbd, Textarea, Toaster, `toast`, Toggle, ToggleGroup, Tooltip,
 UniversalProvider,
-`useColorMode`, `useControllableState`, `useFormStatus`, `useReducedMotion`, `useRipple`,
+`useColorMode`, `useControllableState`, `useFieldControl`, `useParentForm`, `useReducedMotion`, `useRipple`,
 `isTextContent`, plus re-exports of
 `createUniversalConfig`, `Icon`, `IconDefaults`, `createIcon`, `Theme`, `useTheme` and `useMedia`.
 

@@ -34,12 +34,12 @@
     {
       "name": "basic",
       "title": "Audio player",
-      "code": "import { AudioPlayer } from '@advui/core'\n\nexport default function AudioPlayerBasic() {\n  return (\n    <AudioPlayer\n      maxWidth=\"$112\"\n      src=\"https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3\"\n      title=\"Radio message: flood safety\"\n      subtitle=\"Community radio · Ayeyarwady\"\n    />\n  )\n}\n"
+      "code": "import { AudioPlayer } from '@advui/core'\n\nexport default function AudioPlayerBasic() {\n  return (\n    <AudioPlayer\n      maxWidth=\"$112\"\n      src=\"https://zinmin232.github.io/advui/media/flood-safety.mp3\"\n      title=\"Radio message: flood safety\"\n      subtitle=\"Community radio · Ayeyarwady\"\n    />\n  )\n}\n"
     },
     {
       "name": "compact",
       "title": "Voice message",
-      "code": "import { AudioPlayer } from '@advui/core'\nimport { MailIcon } from '@advui/icons'\n\nexport default function AudioPlayerCompact() {\n  return (\n    <AudioPlayer\n      maxWidth=\"$96\"\n      src=\"https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3\"\n      title=\"Voice message from Daw Hla\"\n      artwork={<MailIcon size={20} color=\"$mutedForeground\" />}\n      skip={0}\n      rates={[1]}\n    />\n  )\n}\n"
+      "code": "import { AudioPlayer } from '@advui/core'\nimport { MailIcon } from '@advui/icons'\n\nexport default function AudioPlayerCompact() {\n  return (\n    <AudioPlayer\n      maxWidth=\"$96\"\n      src=\"https://zinmin232.github.io/advui/media/voice-message.mp3\"\n      title=\"Voice message from Daw Hla\"\n      artwork={<MailIcon size={20} color=\"$mutedForeground\" />}\n      skip={0}\n      rates={[1]}\n    />\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/audio-player",

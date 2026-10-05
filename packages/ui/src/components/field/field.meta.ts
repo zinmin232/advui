@@ -128,7 +128,7 @@ export default defineMeta({
       name: 'useFieldControl',
       kind: 'hook',
       description:
-        'For your own controls: `const props = useFieldControl(ownProps)` fills in what the surrounding Field decides, so a Field wires your control like a core one. Outside a Field it returns the props unchanged.',
+        'For your own controls: `const props = useFieldControl(ownProps)` fills in what the surrounding Field decides, so a Field wires your control like a core one. Outside a Field it returns the props unchanged, except `disabled`, which is `true` inside a disabled Form.',
       props: [
         {
           name: 'id',
@@ -143,7 +143,8 @@ export default defineMeta({
         {
           name: 'disabled',
           type: 'boolean',
-          description: '`true` when the field, its Form or the control is disabled.',
+          description:
+            '`true` when the field, the surrounding Form or the control is disabled. A disabled Form disables the control even without a Field.',
         },
         {
           name: 'aria-required',

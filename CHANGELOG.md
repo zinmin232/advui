@@ -12,8 +12,27 @@ one version.
 - **`ariaState(on)`** in `@advui/core`, for components built on core: a
   boolean `aria-disabled`, `aria-busy` or `aria-selected` that is left out
   when off on web and sent as `false` on iOS and Android.
+- **Video `crossOrigin`** (`'anonymous'` or `'use-credentials'`, web): browsers
+  only load caption files from another origin when the video is fetched with
+  CORS.
+- Docs: a **Form playground** (title, description, direction, gap, loading,
+  disabled, full width), also on the Playground page. Text props in every
+  playground now appear in the generated JSX even when unchanged.
 
 ### Changed
+
+- **A disabled Form disables every form control inside it**, in a Field or
+  not: Input, Textarea, Select, Checkbox, Switch, Radio Group, the pickers
+  and any control that calls `useFieldControl`. Buttons other than
+  `Form.Submit` stay enabled, so Cancel still works.
+- **`useFormStatus` is now `useParentForm`**, and its type `FormStatus` is
+  `FormContextValue`, so it is not mistaken for React DOM's `useFormStatus`
+  (Server Actions). The old names still work as deprecated aliases.
+- The Video and Audio Player examples play clips made for these docs instead
+  of MDN's samples: a handwashing video with English captions (a WebVTT
+  file), a square silent loop, a flood-safety radio message and a voice
+  message. They are served from the docs site (`/media`) and made by
+  `scripts/demo-media/make-demo-media.ps1`.
 
 - Stable after the Android phone check: Stat, KPI Card, List, Timeline,
   Image, Table, Pagination, Stepper, Data Table, Tree View, Navigation Menu,

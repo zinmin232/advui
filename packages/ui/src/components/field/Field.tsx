@@ -1,7 +1,7 @@
 import { type ReactNode, forwardRef, isValidElement, useId, useMemo } from 'react'
 import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
 import { FieldContext, type FieldState } from '../../hooks/useFieldControl'
-import { useFormStatus } from '../../hooks/useFormStatus'
+import { useParentForm } from '../../hooks/useParentForm'
 import { Label } from '../label/Label'
 import { Text } from '../typography/Text'
 
@@ -106,7 +106,7 @@ export const Field = forwardRef<TamaguiElement, FieldProps>(function Field(
   },
   ref,
 ) {
-  const form = useFormStatus()
+  const form = useParentForm()
   const disabled = disabledProp || form.disabled
   const generatedId = useId()
   // A single control's own id is kept, so the label targets it.

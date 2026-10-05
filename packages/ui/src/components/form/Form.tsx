@@ -10,7 +10,7 @@ import {
   styled,
   withStaticProperties,
 } from 'tamagui'
-import { type FormStatus, FormStatusContext, useFormStatus } from '../../hooks/useFormStatus'
+import { FormContext, type FormContextValue, useParentForm } from '../../hooks/useParentForm'
 import { isTextContent } from '../../utils/isTextContent'
 import { LoadingButton, type LoadingButtonProps } from '../loading-button/LoadingButton'
 import { Heading } from '../typography/Heading'
@@ -85,7 +85,10 @@ export interface FormProps extends Omit<
    * `disabled` or `loading`. A returned Promise is not awaited: set `loading` yourself.
    */
   onSubmit?: () => void | Promise<unknown>
-  /** Disables Field controls and `Form.Submit`, and blocks `onSubmit`. */
+  /**
+   * Disables the form controls inside (Input, Select, Checkbox…) and
+   * `Form.Submit`, and blocks `onSubmit`. Other buttons stay enabled.
+   */
   disabled?: boolean
   /** The app is submitting: `Form.Submit` shows a spinner and `onSubmit` is blocked. */
   loading?: boolean
@@ -128,13 +131,13 @@ const FormImpl = forwardRef<TamaguiElement, FormProps>(function Form(
     void onSubmit?.()
   }, [disabled, loading, onSubmit])
 
-  const status = useMemo<FormStatus>(
+  const context = useMemo<FormContextValue>(
     () => ({ disabled, loading, loadingText, submit }),
     [disabled, loading, loadingText, submit],
   )
 
   return (
-    <FormStatusContext.Provider value={status}>
+    <FormContext.Provider value={context}>
       <FormFrame
         ref={ref}
         fullWidth={fullWidth}
@@ -181,7 +184,7 @@ const FormImpl = forwardRef<TamaguiElement, FormProps>(function Form(
           <VisuallyHidden role="status">{loading ? loadingText : null}</VisuallyHidden>
         ) : null}
       </FormFrame>
-    </FormStatusContext.Provider>
+    </FormContext.Provider>
   )
 })
 
@@ -196,7 +199,7 @@ const FormSubmit = forwardRef<TamaguiElement, FormSubmitProps>(function FormSubm
   { loading, loadingText, disabled = false, onPress, ...props },
   ref,
 ) {
-  const form = useFormStatus()
+  const form = useParentForm()
   return (
     <LoadingButton
       ref={ref}

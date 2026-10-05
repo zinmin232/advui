@@ -2,11 +2,12 @@ import { Video } from '@advui/core'
 
 export default function VideoMutedLoop() {
   return (
+    // No sound, so no captions are needed.
     <Video
       maxWidth="$96"
       ratio={1}
-      src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-      title="A pink flower opening, looping without sound"
+      src="https://zinmin232.github.io/advui/media/handwashing-loop.mp4"
+      title="The five handwashing steps, looping without sound"
       muted
       loop
     />
