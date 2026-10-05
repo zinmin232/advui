@@ -6,6 +6,7 @@ import { Text, View } from 'tamagui'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import type { CircularProgressProps } from './CircularProgress'
 import { progressFraction, ring, toneColor, valueFontSize } from './geometry'
+import { ariaState } from '../../utils/ariaState'
 
 // One turn, like the web spinner keyframes; slower when motion is reduced, as
 // a loading indicator still has to show it is busy.
@@ -61,7 +62,7 @@ export function CircularProgress({
       aria-valuemin={0}
       aria-valuemax={max}
       aria-valuenow={clamped ?? undefined}
-      aria-busy={spinning || undefined}
+      aria-busy={ariaState(spinning)}
       width={geometry.diameter}
       height={geometry.diameter}
       alignItems="center"

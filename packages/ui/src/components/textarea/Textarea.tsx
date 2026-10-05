@@ -2,6 +2,7 @@ import { forwardRef } from 'react'
 import { type GetProps, type TamaguiElement, TextArea, isWeb, styled } from 'tamagui'
 import { useFieldControl } from '../../hooks/useFieldControl'
 import { inputBaseStyle } from '../input/Input'
+import { ariaState } from '../../utils/ariaState'
 
 const TextareaFrame = styled(TextArea, {
   name: 'Textarea',
@@ -46,7 +47,7 @@ export const Textarea = forwardRef<TamaguiElement, TextareaProps>(
         invalid={invalid}
         disabled={disabled}
         aria-invalid={invalid || undefined}
-        aria-disabled={disabled || undefined}
+        aria-disabled={ariaState(disabled)}
         // Native: `disabled` stops at the variant above and never reaches the
         // TextInput through Tamagui's TextArea, which stayed editable.
         {...(!isWeb && disabled && { readOnly: true })}

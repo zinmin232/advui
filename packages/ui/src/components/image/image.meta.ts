@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'image',
   category: 'media',
   description: 'A picture in a box of a set size or ratio, with a placeholder and a fallback.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Image', 'ImageProps'],

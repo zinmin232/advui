@@ -21,7 +21,7 @@ export function App() {
 }
 ```
 
-On web, alias `react-native` to `react-native-web` and transpile the
+On web, install `react-native-web`, alias `react-native` to it and transpile the
 `@advui/*` packages (see the Installation guide). Expo needs no extra
 setup.
 

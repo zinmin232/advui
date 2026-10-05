@@ -1,6 +1,6 @@
 import { SearchIcon } from '@advui/icons'
 import type { ReactNode } from 'react'
-import { type GetProps, View, XStack } from 'tamagui'
+import { type GetProps, View, XStack, isWeb } from 'tamagui'
 import { Checkbox, Input, Pagination, Skeleton, Text, useControllableState } from '@advui/core'
 import { Table, type TableAlign, type TableProps } from '../table/Table'
 
@@ -230,7 +230,13 @@ export function DataTable<T>({
   const placeholderRows = Math.min(pageSize ?? 5, 5)
 
   return (
-    <View gap="$3" width="100%" aria-busy={loading || undefined}>
+    <View
+      gap="$3"
+      width="100%"
+      // Web only: Android has no busy state for an unnamed view and would read
+      // "busy" on it for good.
+      {...(isWeb && { 'aria-busy': loading || undefined })}
+    >
       {searchable || toolbar ? (
         <XStack gap="$2" alignItems="center" flexWrap="wrap">
           {searchable ? (

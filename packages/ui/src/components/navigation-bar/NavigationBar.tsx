@@ -10,6 +10,7 @@ import {
 } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
+import { ariaState } from '../../utils/ariaState'
 
 type BarState = { value: string; select: (value: string) => void }
 
@@ -125,7 +126,7 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
         ref={ref}
         {...semantics}
         aria-label={name}
-        aria-disabled={disabled || undefined}
+        aria-disabled={ariaState(disabled)}
         flex={1}
         alignItems="center"
         justifyContent="flex-start"

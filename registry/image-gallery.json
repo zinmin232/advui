@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "A grid of thumbnails that open a viewer with previous and next.",
   "category": "media",
-  "status": "beta",
+  "status": "stable",
   "since": "0.6.0",
   "platforms": [
     "web",

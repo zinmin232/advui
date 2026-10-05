@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'navigation-menu',
   category: 'navigation',
   description: 'Site navigation with links and buttons that open panels of more links.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "Site navigation with links and buttons that open panels of more links.",
   "category": "navigation",
-  "status": "beta",
+  "status": "stable",
   "since": "0.6.0",
   "platforms": [
     "web",

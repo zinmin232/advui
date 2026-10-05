@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'image-gallery',
   category: 'media',
   description: 'A grid of thumbnails that open a viewer with previous and next.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['ImageGallery', 'GalleryImage', 'ImageGalleryProps', 'ImageGalleryLabels'],

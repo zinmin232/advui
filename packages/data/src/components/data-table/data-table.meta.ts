@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'data-display',
   description:
     'A table driven by data and columns, with sorting, search, row selection and pagination.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

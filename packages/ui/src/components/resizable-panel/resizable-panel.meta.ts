@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'advanced',
   description:
     'Panels side by side or stacked, with handles to drag, or move with the arrow keys, to resize them.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

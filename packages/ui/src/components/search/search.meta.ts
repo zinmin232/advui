@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'search',
   category: 'advanced',
   description: 'A search field with a magnifier, a clear button and a loading state.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Search', 'SearchProps'],

@@ -3,16 +3,16 @@ import { Image, Text, HStack } from '@advui/core'
 export default function ImageFallback() {
   return (
     <HStack gap="$4" flexWrap="wrap">
-      {/* This file does not exist, so the fallback shows. */}
+      {/* `.invalid` never resolves (RFC 2606), so the image fails on every platform. */}
       <Image
-        src="/missing-photo.jpg"
+        src="https://example.invalid/missing-photo.jpg"
         alt="Clinic entrance"
         width="$40"
         ratio={4 / 3}
         borderRadius="$md"
       />
       <Image
-        src="/missing-photo.jpg"
+        src="https://example.invalid/missing-photo.jpg"
         alt="Team photo"
         width="$40"
         ratio={4 / 3}
