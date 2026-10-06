@@ -7,6 +7,8 @@ one version.
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-10-05
+
 ### Added
 
 - **`ariaState(on)`** in `@advui/core`, for components built on core: a
