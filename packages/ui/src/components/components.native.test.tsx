@@ -51,6 +51,7 @@ import { Container } from './layout/Container'
 import { Grid } from './layout/Grid'
 import { HStack, Stack, VStack, Wrap } from './layout/Stack'
 import { List } from './list/List'
+import { ListItem } from './list-item/ListItem'
 import { LoadingButton } from './loading-button/LoadingButton'
 import { LoadingState } from './loading-state/LoadingState'
 import { Menu } from './menu/Menu'
@@ -1018,6 +1019,53 @@ describe('native rendering', () => {
     await fireEvent.press(disabled)
     expect(onPress).toHaveBeenCalledTimes(1)
     expect(screen.getByText('2.4.0')).toBeOnTheScreen()
+  })
+
+  it('ListItem: the row is one button beside its actions, and says when it is selected', async () => {
+    const onPress = jest.fn()
+    const onDownload = jest.fn()
+    await renderNative(
+      <>
+        <ListItem title="Reports" selected onPress={onPress} />
+        <ListItem
+          title="Quarterly report.pdf"
+          description="Modified 2 hours ago"
+          onPress={onPress}
+          actions={<Button onPress={onDownload}>Download</Button>}
+        />
+        <ListItem title="Version" trailing="2.4.0" />
+      </>,
+    )
+    expect(screen.getByRole('button', { name: 'Reports' })).toBeSelected()
+    expect(screen.getByRole('button', { name: /Quarterly report/ })).not.toBeSelected()
+    // A sibling of the row's button, so pressing it does not press the row.
+    await fireEvent.press(screen.getByRole('button', { name: 'Download' }))
+    expect(onDownload).toHaveBeenCalledTimes(1)
+    expect(onPress).not.toHaveBeenCalled()
+    await fireEvent.press(screen.getByRole('button', { name: /Quarterly report/ }))
+    expect(onPress).toHaveBeenCalledTimes(1)
+    // Without onPress the row is not a button.
+    expect(screen.queryByRole('button', { name: /Version/ })).toBeNull()
+  })
+
+  it('ListItem: a selectable row is a toggle button that reports checked', async () => {
+    const onSelectedChange = jest.fn()
+    await renderNative(
+      <>
+        <ListItem title="Option A" selectable onSelectedChange={onSelectedChange} />
+        <ListItem title="Option B" selectable disabled onSelectedChange={onSelectedChange} />
+      </>,
+    )
+    const state = () =>
+      screen.getByRole('togglebutton', { name: 'Option A' }).props.accessibilityState
+    expect(state()).toMatchObject({ checked: false })
+    await fireEvent.press(screen.getByRole('togglebutton', { name: 'Option A' }))
+    expect(state()).toMatchObject({ checked: true })
+    expect(onSelectedChange).toHaveBeenLastCalledWith(true)
+    const disabled = screen.getByRole('togglebutton', { name: 'Option B' })
+    expect(disabled).toBeDisabled()
+    await fireEvent.press(disabled)
+    expect(onSelectedChange).toHaveBeenCalledTimes(1)
   })
 
   it('Pagination pages with named buttons and marks the current page selected', async () => {

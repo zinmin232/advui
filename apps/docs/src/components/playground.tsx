@@ -5,11 +5,14 @@ import * as Data from '@advui/data'
 import type { PlaygroundControl, PlaygroundSpec } from '@advui/catalog'
 import { Button, HStack, Input, Label, Switch, Text, VStack, toast } from '@advui/core'
 import {
+  ChevronRightIcon,
   CopyIcon,
   ExternalLinkIcon,
   FileIcon,
   FolderIcon,
   ImageIcon,
+  LockIcon,
+  MoreHorizontalIcon,
   SettingsIcon,
 } from '@advui/icons'
 import { type ReactNode, useMemo, useState } from 'react'
@@ -214,10 +217,11 @@ const resolve = <T,>(part: T | ((values: Values) => T), values: Values) =>
   typeof part === 'function' ? (part as (values: Values) => T)(values) : part
 
 /**
- * Boolean controls that stand for an element prop: `on` is passed while the
- * switch is on and `off` while it is off. A side without an entry passes nothing.
+ * Boolean controls that stand for an element or handler prop: `on` is passed
+ * while the switch is on and `off` while it is off. A side without an entry
+ * passes nothing.
  */
-type ElementProp = { value: ReactNode; code: string }
+type ElementProp = { value: ReactNode | (() => void); code: string }
 const elementControls: Record<string, Record<string, { on?: ElementProp; off?: ElementProp }>> = {
   Alert: {
     icon: { off: { value: null, code: 'icon={null}' } },
@@ -229,6 +233,17 @@ const elementControls: Record<string, Record<string, { on?: ElementProp; off?: E
           </UI.Button>
         ),
         code: 'actions={<Button size="sm" variant="outline">Review</Button>}',
+      },
+    },
+  },
+  ListItem: {
+    leading: { on: { value: <LockIcon />, code: 'leading={<LockIcon />}' } },
+    trailing: { on: { value: <ChevronRightIcon />, code: 'trailing={<ChevronRightIcon />}' } },
+    onPress: { on: { value: () => toast('Pressed'), code: 'onPress={open}' } },
+    actions: {
+      on: {
+        value: <UI.IconButton size="sm" icon={<MoreHorizontalIcon />} aria-label="More" />,
+        code: 'actions={<IconButton size="sm" icon={<MoreHorizontalIcon />} aria-label="More" />}',
       },
     },
   },
@@ -372,7 +387,7 @@ export function Playground({
       {...structural?.props}
       {...(spec.component === 'Card' ? { width: '100%', maxWidth: '$80' } : null)}
       {...(spec.component === 'Grid' || spec.component === 'Table' ? { width: '100%' } : null)}
-      {...(spec.component === 'List' || spec.component === 'Alert'
+      {...(spec.component === 'List' || spec.component === 'ListItem' || spec.component === 'Alert'
         ? { width: '100%', maxWidth: '$96' }
         : null)}
       {...(spec.component === 'Form' ? { width: '100%', maxWidth: '$96' } : null)}

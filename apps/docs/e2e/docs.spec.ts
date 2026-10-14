@@ -345,6 +345,7 @@ for (const path of [
   '/docs/components/stat',
   '/docs/components/kpi-card',
   '/docs/components/list',
+  '/docs/components/list-item',
   '/docs/components/timeline',
   '/docs/components/image',
   '/docs/components/table',
