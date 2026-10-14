@@ -55,6 +55,9 @@ import CollapsibleBasic from '../../ui/src/components/collapsible/examples/basic
 import CollapsibleSettings from '../../ui/src/components/collapsible/examples/settings'
 import ComboboxBasic from '../../ui/src/components/combobox/examples/basic'
 import CommandPaletteBasic from '../../ui/src/components/command-palette/examples/basic'
+import ConfirmDialogBasic from '../../ui/src/components/confirm-dialog/examples/basic'
+import ConfirmDialogAsync from '../../ui/src/components/confirm-dialog/examples/async'
+import ConfirmDialogMenu from '../../ui/src/components/confirm-dialog/examples/menu'
 import ContainerContainer from '../../ui/src/components/layout/examples/container'
 import ContainerGutter from '../../ui/src/components/layout/examples/gutter'
 import ContextMenuBasic from '../../ui/src/components/context-menu/examples/basic'
@@ -317,6 +320,11 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'command-palette': {
     'basic': CommandPaletteBasic,
+  },
+  'confirm-dialog': {
+    'basic': ConfirmDialogBasic,
+    'async': ConfirmDialogAsync,
+    'menu': ConfirmDialogMenu,
   },
   'container': {
     'container': ContainerContainer,

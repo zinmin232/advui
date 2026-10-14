@@ -561,6 +561,22 @@
       ]
     },
     {
+      "name": "confirm-dialog",
+      "title": "Confirm Dialog",
+      "type": "registry:component",
+      "description": "Asks the user to confirm one action, in one element. An async action keeps it open and busy until it finishes.",
+      "category": "feedback",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": [
+        "alert-dialog",
+        "button",
+        "hooks",
+        "loading-button"
+      ]
+    },
+    {
       "name": "context-menu",
       "title": "Context Menu",
       "type": "registry:component",

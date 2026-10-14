@@ -21,6 +21,7 @@ import circularProgressMeta from '../components/circular-progress/circular-progr
 import collapsibleMeta from '../components/collapsible/collapsible.meta'
 import comboboxMeta from '../components/combobox/combobox.meta'
 import commandPaletteMeta from '../components/command-palette/command-palette.meta'
+import confirmDialogMeta from '../components/confirm-dialog/confirm-dialog.meta'
 import containerMeta from '../components/layout/container.meta'
 import contextMenuMeta from '../components/context-menu/context-menu.meta'
 import datePickerMeta from '../components/date-picker/date-picker.meta'
@@ -107,6 +108,7 @@ export const components: ComponentMeta[] = [
   collapsibleMeta,
   comboboxMeta,
   commandPaletteMeta,
+  confirmDialogMeta,
   containerMeta,
   contextMenuMeta,
   datePickerMeta,

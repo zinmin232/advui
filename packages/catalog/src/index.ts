@@ -22,6 +22,7 @@ import circularProgressMeta from '../../ui/src/components/circular-progress/circ
 import collapsibleMeta from '../../ui/src/components/collapsible/collapsible.meta'
 import comboboxMeta from '../../ui/src/components/combobox/combobox.meta'
 import commandPaletteMeta from '../../ui/src/components/command-palette/command-palette.meta'
+import confirmDialogMeta from '../../ui/src/components/confirm-dialog/confirm-dialog.meta'
 import containerMeta from '../../ui/src/components/layout/container.meta'
 import contextMenuMeta from '../../ui/src/components/context-menu/context-menu.meta'
 import dataGridMeta from '../../data/src/components/data-grid/data-grid.meta'
@@ -148,6 +149,7 @@ export const components: CatalogComponent[] = [
   { ...collapsibleMeta, package: '@advui/core' },
   { ...comboboxMeta, package: '@advui/core' },
   { ...commandPaletteMeta, package: '@advui/core' },
+  { ...confirmDialogMeta, package: '@advui/core' },
   { ...containerMeta, package: '@advui/core' },
   { ...contextMenuMeta, package: '@advui/core' },
   { ...dataGridMeta, package: '@advui/data' },

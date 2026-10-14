@@ -38,9 +38,9 @@ function GridCell({ label }: { label: string }) {
 }
 
 interface Structure {
-  /** The children, or a function of the props when they change with them. */
-  element: ReactNode | ((values: Values) => ReactNode)
-  code: string | ((values: Values) => string)
+  /** The children, or a function of the props when they change with them. Leave out for none. */
+  element?: ReactNode | ((values: Values) => ReactNode)
+  code?: string | ((values: Values) => string)
   /** Props the controls do not set, such as a footer, and how they read in the JSX. */
   props?: Record<string, unknown>
   propsCode?: string[]
@@ -197,6 +197,17 @@ const structuralChildren: Record<string, Structure> = {
   }`,
     ],
   },
+  // No children: the dialog needs a trigger to open from the preview.
+  ConfirmDialog: {
+    props: {
+      trigger: <UI.Button variant="outline">Publish project</UI.Button>,
+      onConfirm: () => toast.success('Confirmed'),
+    },
+    propsCode: [
+      'trigger={<Button variant="outline">Publish project</Button>}',
+      'onConfirm={confirm}',
+    ],
+  },
 }
 
 const resolve = <T,>(part: T | ((values: Values) => T), values: Values) =>
@@ -276,7 +287,7 @@ export function generateJsx(spec: PlaygroundSpec, values: Values): string {
     props.length > 2
       ? `<${spec.component}\n  ${props.join('\n  ')}\n`
       : `<${spec.component}${props.length ? ` ${props.join(' ')}` : ''}`
-  if (structural) return `${open}>\n${resolve(structural.code, values)}\n</${spec.component}>`
+  if (structural?.code) return `${open}>\n${resolve(structural.code, values)}\n</${spec.component}>`
   if (spec.children)
     return `${open}>${props.length > 2 ? '\n  ' : ''}${spec.children}${props.length > 2 ? '\n' : ''}</${spec.component}>`
   return `${open}${props.length > 2 ? '' : ' '}/>`
@@ -366,7 +377,7 @@ export function Playground({
         : null)}
       {...(spec.component === 'Form' ? { width: '100%', maxWidth: '$96' } : null)}
     >
-      {structural ? resolve(structural.element, values) : spec.children}
+      {structural?.element ? resolve(structural.element, values) : spec.children}
     </Component>
   )
 
