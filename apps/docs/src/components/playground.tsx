@@ -202,6 +202,41 @@ const structuralChildren: Record<string, Structure> = {
 const resolve = <T,>(part: T | ((values: Values) => T), values: Values) =>
   typeof part === 'function' ? (part as (values: Values) => T)(values) : part
 
+/**
+ * Boolean controls that stand for an element prop: `on` is passed while the
+ * switch is on and `off` while it is off. A side without an entry passes nothing.
+ */
+type ElementProp = { value: ReactNode; code: string }
+const elementControls: Record<string, Record<string, { on?: ElementProp; off?: ElementProp }>> = {
+  Alert: {
+    icon: { off: { value: null, code: 'icon={null}' } },
+    actions: {
+      on: {
+        value: (
+          <UI.Button size="sm" variant="outline">
+            Review
+          </UI.Button>
+        ),
+        code: 'actions={<Button size="sm" variant="outline">Review</Button>}',
+      },
+    },
+  },
+}
+
+/** The props the controls set: element switches resolved, empty text left out. */
+function controlProps(spec: PlaygroundSpec, values: Values): Record<string, unknown> {
+  const elements = elementControls[spec.component] ?? {}
+  const props: Record<string, unknown> = {}
+  for (const [name, value] of Object.entries(values)) {
+    const element = elements[name]
+    if (element) {
+      const side = element[value ? 'on' : 'off']
+      if (side) props[name] = side.value
+    } else if (value !== '') props[name] = value
+  }
+  return props
+}
+
 const iconFor: Record<string, ReactNode> = { IconButton: <SettingsIcon /> }
 
 export function initialValues(spec: PlaygroundSpec, overrides: Values = {}): Values {
@@ -220,8 +255,15 @@ export function generateJsx(spec: PlaygroundSpec, values: Values): string {
   for (const [name, value] of Object.entries(spec.staticProps ?? {}))
     props.push(formatProp(name, value))
   if (spec.component === 'IconButton') props.push('icon={<SettingsIcon />}')
+  const elements = elementControls[spec.component] ?? {}
   for (const control of spec.controls) {
     const value = values[control.prop]
+    const element = elements[control.prop]
+    if (element) {
+      const side = element[value ? 'on' : 'off']
+      if (side) props.push(side.code)
+      continue
+    }
     // A text control's default is sample content, such as a title, not the
     // component's own default, so it is always shown.
     const isDefault = value === control.default && control.type !== 'text'
@@ -315,11 +357,13 @@ export function Playground({
     <Component
       {...spec.staticProps}
       {...(iconFor[spec.component] ? { icon: iconFor[spec.component] } : null)}
-      {...values}
+      {...controlProps(spec, values)}
       {...structural?.props}
       {...(spec.component === 'Card' ? { width: '100%', maxWidth: '$80' } : null)}
       {...(spec.component === 'Grid' || spec.component === 'Table' ? { width: '100%' } : null)}
-      {...(spec.component === 'List' ? { width: '100%', maxWidth: '$96' } : null)}
+      {...(spec.component === 'List' || spec.component === 'Alert'
+        ? { width: '100%', maxWidth: '$96' }
+        : null)}
       {...(spec.component === 'Form' ? { width: '100%', maxWidth: '$96' } : null)}
     >
       {structural ? resolve(structural.element, values) : spec.children}
