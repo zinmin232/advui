@@ -308,6 +308,7 @@ for (const path of [
   '/docs/components/dropdown-menu',
   '/docs/components/alert',
   '/docs/components/alert-dialog',
+  '/docs/components/confirm-dialog',
   '/docs/components/sheet',
   '/docs/components/toggle',
   '/docs/components/toggle-group',
@@ -428,6 +429,27 @@ test('alert dialog starts on Cancel and returns focus on Escape', async ({ page 
   await expect(dialog.getByRole('button', { name: 'Cancel' })).toBeFocused()
   expect(await seriousViolations(page)).toEqual([])
   await page.keyboard.press('Escape')
+  await expect(dialog).toBeHidden()
+  await expect(trigger).toBeFocused()
+  expect(errors).toEqual([])
+})
+
+test('confirm dialog waits for an async action before it closes', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/confirm-dialog')
+  await page.waitForLoadState('networkidle')
+  const trigger = page.getByRole('button', { name: 'Sign out everywhere' })
+  await trigger.click()
+  const dialog = page.getByRole('alertdialog', { name: 'Sign out of all devices?' })
+  await expect(dialog).toBeVisible()
+  await expect(dialog.getByRole('button', { name: 'Stay signed in' })).toBeFocused()
+  expect(await seriousViolations(page)).toEqual([])
+  await dialog.getByRole('button', { name: 'Sign out' }).click()
+  await expect(dialog.getByRole('button', { name: 'Sign out' })).toHaveAttribute(
+    'aria-busy',
+    'true',
+  )
+  await expect(dialog.getByRole('button', { name: 'Stay signed in' })).toBeDisabled()
   await expect(dialog).toBeHidden()
   await expect(trigger).toBeFocused()
   expect(errors).toEqual([])

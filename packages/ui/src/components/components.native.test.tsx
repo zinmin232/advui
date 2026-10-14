@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, jest } from '@jest/globals'
-import { act, fireEvent, render, screen } from '@testing-library/react-native'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
 import { createThemeColors, createUniversalConfig, themePresets, zIndex } from '@advui/theme'
 import { Fragment, type ReactElement } from 'react'
@@ -26,6 +26,7 @@ import { CircularProgress } from './circular-progress/CircularProgress'
 import { Collapsible } from './collapsible/Collapsible'
 import { Combobox } from './combobox/Combobox'
 import { CommandPalette } from './command-palette/CommandPalette'
+import { ConfirmDialog } from './confirm-dialog/ConfirmDialog'
 import { DatePicker } from './date-picker/DatePicker'
 import { ContextMenu } from './context-menu/ContextMenu'
 import { Dialog } from './dialog/Dialog'
@@ -358,6 +359,41 @@ describe('native rendering', () => {
     expect(node?.props.role).toBe('alertdialog')
     await fireEvent.press(screen.getByRole('button', { name: 'Delete' }))
     expect(onDelete).toHaveBeenCalledTimes(1)
+  })
+
+  it('ConfirmDialog opens an alertdialog and stays busy until onConfirm resolves', async () => {
+    const onOpenChange = jest.fn()
+    let finish = () => {}
+    const onConfirm = jest.fn(
+      () =>
+        new Promise<void>((resolve) => {
+          finish = resolve
+        }),
+    )
+    await renderNative(
+      <ConfirmDialog
+        trigger={<Button>Delete project</Button>}
+        title="Delete Atlas?"
+        description="This cannot be undone."
+        confirmLabel="Delete"
+        tone="destructive"
+        onConfirm={onConfirm}
+        onOpenChange={onOpenChange}
+      />,
+    )
+    await fireEvent.press(screen.getByRole('button', { name: 'Delete project' }))
+    let node: { props: { role?: string }; parent: unknown } | null =
+      await screen.findByText('Delete Atlas?')
+    while (node && node.props.role !== 'alertdialog') node = node.parent as typeof node
+    expect(node?.props.role).toBe('alertdialog')
+    await fireEvent.press(screen.getByRole('button', { name: 'Delete' }))
+    expect(onConfirm).toHaveBeenCalledTimes(1)
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeBusy()
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeDisabled()
+    expect(onOpenChange).toHaveBeenLastCalledWith(true)
+    await act(async () => finish())
+    expect(onOpenChange).toHaveBeenLastCalledWith(false)
+    await waitFor(() => expect(screen.queryByText('Delete Atlas?')).toBeNull())
   })
 
   it('Sheet content is hidden from screen readers until it opens', async () => {
@@ -1684,6 +1720,12 @@ describe('Android back button', () => {
       ),
     ],
     [
+      'ConfirmDialog',
+      (onOpenChange) => (
+        <ConfirmDialog defaultOpen onOpenChange={onOpenChange} title="Delete Atlas?" />
+      ),
+    ],
+    [
       'Drawer',
       (onOpenChange) => (
         <Drawer defaultOpen onOpenChange={onOpenChange}>
@@ -1797,6 +1839,26 @@ describe('Android back button', () => {
     await fireEvent(screen.getByTestId('row'), 'longPress')
     expect(await back.press()).toBe(true)
     expect(onOpenChange).toHaveBeenLastCalledWith(false)
+    back.restore()
+  })
+
+  it('keeps a ConfirmDialog open while onConfirm runs', async () => {
+    const back = fakeBackHandler()
+    const onOpenChange = jest.fn()
+    await renderNative(
+      <ConfirmDialog
+        defaultOpen
+        onOpenChange={onOpenChange}
+        title="Delete Atlas?"
+        confirmLabel="Delete"
+        onConfirm={() => new Promise(() => {})}
+      />,
+    )
+    await fireEvent.press(await screen.findByRole('button', { name: 'Delete' }))
+    // Handled, so the screen stays, but the dialog does not close mid-request.
+    expect(await back.press()).toBe(true)
+    expect(onOpenChange).not.toHaveBeenCalled()
+    expect(screen.getByText('Delete Atlas?')).toBeOnTheScreen()
     back.restore()
   })
 

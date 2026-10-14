@@ -152,5 +152,5 @@ export default defineMeta({
     ios: 'Rendered in a native portal above navigation.',
     android: 'The back button cancels, like Escape.',
   },
-  related: ['dialog', 'sheet', 'toast'],
+  related: ['confirm-dialog', 'dialog', 'sheet', 'toast'],
 })

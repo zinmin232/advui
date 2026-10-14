@@ -9,6 +9,14 @@ one version.
 
 ### Added
 
+- **Confirm Dialog**: asks the user to confirm one action, in one element:
+  `title`, `description`, `confirmLabel`, `cancelLabel`, `tone`
+  (`destructive` for the confirm button), an optional `trigger`, and
+  `onConfirm` / `onCancel`. When `onConfirm` returns a Promise, the dialog
+  stays open with a busy confirm button until it resolves, and stays open if
+  it rejects so the user can retry; Escape and the Android back button wait
+  for it too. Built on Alert Dialog, which remains the way to compose a
+  confirmation with more content.
 - **Loading State**: shown in place of content while it loads, with a
   spinner, a title, a description and optional actions such as Cancel. It
   lays out like Empty State and Error State, so the three can swap in place.

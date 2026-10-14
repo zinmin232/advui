@@ -34,6 +34,7 @@ describe('@advui/core public API', () => {
       'DatePicker',
       'Combobox',
       'Dialog',
+      'ConfirmDialog',
       'Card',
       'UniversalProvider',
       'ariaState',
