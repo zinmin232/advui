@@ -225,3 +225,6 @@ names the component, part and prop.
       public-API test updated); registry rebuilt (`pnpm registry:build`)
 - [ ] Visual baselines updated if the look changed
 - [ ] CHANGELOG entry under _Unreleased_
+- [ ] `pnpm verify:component <slug>` passes while you work, and
+      `pnpm verify:component <slug> --full` once before the PR (CI runs the
+      rest)
