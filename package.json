@@ -29,6 +29,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "create-component": "node scripts/create-component.mjs",
+    "verify:component": "node scripts/verify-component.mjs",
     "registry:build": "node scripts/build-registry.mjs",
     "release:check": "pnpm -r publish --dry-run --access public --no-git-checks",
     "release": "pnpm -r publish --access public",

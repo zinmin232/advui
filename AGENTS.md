@@ -26,6 +26,7 @@ pnpm build                   # all packages + docs production build
 pnpm catalog                 # regenerate + validate component metadata
 pnpm registry:build          # regenerate registry JSON
 pnpm create-component <slug> [--package data|charts|editor] # scaffold a component (core by default)
+pnpm verify:component <slug> [--full] [--skip-native]       # check one component (see Definition of done)
 ```
 
 Run a single package: `pnpm --filter @advui/core test`. Run one test
@@ -43,6 +44,8 @@ file: `pnpm --filter @advui/core exec vitest run src/components/button`.
   Guides: `apps/docs/src/content/guides/`
 - Expo screens: `apps/expo/app/`
 - App-level examples shared by docs and Expo: `examples/src/`
+- Checklist for adding or extending a component (order of work, files to
+  touch, metadata rules, pitfalls): `.claude/skills/add-component/SKILL.md`
 
 ## Rules
 
@@ -76,12 +79,28 @@ file: `pnpm --filter @advui/core exec vitest run src/components/button`.
 
 ## Definition of done for a change
 
-- `pnpm lint`, `pnpm typecheck` and `pnpm test` pass.
-- Component changes: `pnpm test:native` passes, and metadata and examples are
-  updated (`pnpm catalog` passes).
-- Visual changes: visual baselines are updated intentionally. Update both the
-  local set (`pnpm --filter @advui/docs test:visual:update`) and the Linux set
-  CI uses (the "Update visual baselines" workflow; see CONTRIBUTING.md).
+Check in tiers. CI runs everything on every PR (lint, typecheck, all web and
+native tests, the build, e2e and the Linux visual baselines), and the full
+suites take about half an hour on a dev machine, so do not run them after
+each edit.
+
+- **While working on a component:** `pnpm verify:component <slug>` passes. It
+  regenerates and validates the catalog and registry, runs the component's
+  web tests and the native tests that name it, and lints and typechecks the
+  packages whose source changed. `--skip-native` skips the slowest step for
+  quick loops.
+- **Once, before the PR:** `pnpm verify:component <slug> --full` passes (it
+  adds the dependent packages and the package's whole web and native suites).
+  For changes that are not one component: `pnpm lint`, `pnpm typecheck` and
+  `pnpm test`, plus `pnpm test:native` when components or `.native` files
+  change.
+- Component changes: metadata and examples are updated, and a native test
+  names the component (the verify script warns when none does).
+- Visual changes (examples or styles): visual baselines are updated
+  intentionally. After `pnpm build`, update both the local set
+  (`pnpm --filter @advui/docs test:visual:update`) and the Linux set CI uses
+  (the "Update visual baselines" workflow; see CONTRIBUTING.md). Skip this
+  when the look did not change.
 - Report honestly what you ran and what you could not run, such as iOS without
   macOS or a physical device. Never claim a platform works without running it.
 

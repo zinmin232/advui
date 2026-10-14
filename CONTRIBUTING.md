@@ -23,13 +23,26 @@ pnpm dev:expo     # Expo dev server
 2. **Make the change.** For components, follow
    [COMPONENT_GUIDELINES.md](COMPONENT_GUIDELINES.md). New components start
    with `pnpm create-component <slug>`.
-3. **Check it:**
+3. **Check it.** While you work on a component, check just that component;
+   it takes a few minutes rather than the full suite's half hour:
 
    ```bash
-   pnpm lint && pnpm typecheck && pnpm test
-   pnpm test:native                 # when touching components or .native files
-   pnpm test:e2e                    # when touching the docs or visuals
+   pnpm verify:component <slug>          # add --skip-native for quick loops
    ```
+
+   It regenerates and validates the catalog and registry, runs the
+   component's web tests and the native tests that name it, and lints and
+   typechecks the packages whose source changed. Once, before the PR:
+
+   ```bash
+   pnpm verify:component <slug> --full   # adds dependent packages and the package's whole suites
+   pnpm test:e2e                         # when touching the docs or visuals (after `pnpm build`)
+   ```
+
+   For changes that are not one component, run
+   `pnpm lint && pnpm typecheck && pnpm test`, plus `pnpm test:native` when
+   touching components or `.native` files. CI runs all of these, the build
+   and e2e on every PR.
 
 4. **Look at it** in the docs (light and dark, narrow and wide) and in Expo on
    at least one platform. If you could not run a platform, say so in the PR.

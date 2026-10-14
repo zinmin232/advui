@@ -115,6 +115,7 @@ pnpm dev            # docs at http://localhost:3000
 | `pnpm lint`             | ESLint across the workspace                                                   |
 | `pnpm typecheck`        | `tsc --noEmit` across the workspace                                           |
 | `pnpm create-component` | Scaffold a component (see [COMPONENT_GUIDELINES.md](COMPONENT_GUIDELINES.md)) |
+| `pnpm verify:component` | Check one component in minutes: its tests, catalog, lint and typecheck        |
 | `pnpm registry:build`   | Regenerate `registry/*.json` from component metadata                          |
 | `pnpm rename`           | Rename the project, e.g. `pnpm rename --name "Acme UI" --scope @acme`         |
 
