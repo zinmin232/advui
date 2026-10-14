@@ -962,12 +962,12 @@
       ]
     },
     {
-      "name": "list",
-      "title": "List",
+      "name": "list-item",
+      "title": "List Item",
       "type": "registry:component",
-      "description": "A vertical list of rows with a leading visual, text and trailing meta.",
+      "description": "One row of content: a leading visual, a title and description, trailing meta and actions. Pressable, selectable or a link.",
       "category": "data-display",
-      "status": "stable",
+      "status": "beta",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -976,6 +976,19 @@
         "hooks",
         "typography",
         "utils"
+      ]
+    },
+    {
+      "name": "list",
+      "title": "List",
+      "type": "registry:component",
+      "description": "A vertical list of rows with a leading visual, text and trailing meta.",
+      "category": "data-display",
+      "status": "stable",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": [
+        "list-item"
       ]
     },
     {

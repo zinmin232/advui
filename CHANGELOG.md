@@ -9,6 +9,16 @@ one version.
 
 ### Added
 
+- **List Item**: one row of content, on its own or as `List.Item` (the same
+  component). `leading`, `title`, `description`, `trailing` and custom
+  children, plus `actions`: buttons beside the pressable row that keep their
+  own presses. `selected` marks the current item (`aria-current`) with a fill
+  and an edge bar; `selectable` with `onSelectedChange` makes a toggle button
+  (`aria-pressed`, "checked" on native) whose state the parent can control.
+  `href` makes a link on web. `variant` (`plain`, `filled`, `outline`), `size`
+  (`sm`, `md`, `lg`), `divider` and `color`; padding and gap go to the
+  pressable row, and other style props such as `backgroundColor` and
+  `borderRadius` override the variant.
 - **Confirm Dialog**: asks the user to confirm one action, in one element:
   `title`, `description`, `confirmLabel`, `cancelLabel`, `tone`
   (`destructive` for the confirm button), an optional `trigger`, and
@@ -36,6 +46,10 @@ one version.
 
 ### Changed
 
+- `List.Item` is now `ListItem`, so it gains every List Item prop. Existing
+  lists look and behave the same. A `List.Item` rendered outside a `List`
+  no longer has the `listitem` role, which is invalid outside a list.
+  `List` accepts `size="lg"`.
 - `Alert.Title` and `Alert.Description` no longer take a `variant` prop. It
   was undocumented: the alert sets their color, now through `color`.
 

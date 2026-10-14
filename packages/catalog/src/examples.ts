@@ -125,6 +125,11 @@ import LineChartMultiple from '../../charts/src/components/line-chart/examples/m
 import ListBasic from '../../ui/src/components/list/examples/basic'
 import ListInteractive from '../../ui/src/components/list/examples/interactive'
 import ListWithAvatars from '../../ui/src/components/list/examples/with-avatars'
+import ListItemSettings from '../../ui/src/components/list-item/examples/settings'
+import ListItemNavigation from '../../ui/src/components/list-item/examples/navigation'
+import ListItemProfiles from '../../ui/src/components/list-item/examples/profiles'
+import ListItemSelectable from '../../ui/src/components/list-item/examples/selectable'
+import ListItemVariants from '../../ui/src/components/list-item/examples/variants'
 import LoadingButtonBasic from '../../ui/src/components/loading-button/examples/basic'
 import LoadingButtonLoadingText from '../../ui/src/components/loading-button/examples/loading-text'
 import LoadingButtonCustomSpinner from '../../ui/src/components/loading-button/examples/custom-spinner'
@@ -444,6 +449,13 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': ListBasic,
     'interactive': ListInteractive,
     'with-avatars': ListWithAvatars,
+  },
+  'list-item': {
+    'settings': ListItemSettings,
+    'navigation': ListItemNavigation,
+    'profiles': ListItemProfiles,
+    'selectable': ListItemSelectable,
+    'variants': ListItemVariants,
   },
   'loading-button': {
     'basic': LoadingButtonBasic,

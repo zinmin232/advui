@@ -8,15 +8,7 @@ export default defineMeta({
   status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
-  exports: [
-    'List',
-    'ListFrame',
-    'ListItemFrame',
-    'ListItemTitle',
-    'ListItemDescription',
-    'ListProps',
-    'ListItemProps',
-  ],
+  exports: ['List', 'ListFrame', 'ListProps'],
   files: ['components/list/List.tsx', 'components/list/index.ts'],
   keywords: ['list', 'rows', 'items', 'menu list', 'settings', 'contacts', 'list item'],
   usage: `import { List } from '@advui/core'
@@ -44,10 +36,10 @@ import { ChevronRightIcon, UserIcon } from '@advui/icons'
         },
         {
           name: 'size',
-          type: "'sm' | 'md'",
-          options: ['sm', 'md'],
+          type: "'sm' | 'md' | 'lg'",
+          options: ['sm', 'md', 'lg'],
           default: "'md'",
-          description: 'Row padding and text size.',
+          description: 'Row padding and text size. An item can set its own.',
         },
         {
           name: 'divided',
@@ -60,6 +52,8 @@ import { ChevronRightIcon, UserIcon } from '@advui/icons'
     },
     {
       name: 'List.Item',
+      description:
+        'The same component as `ListItem`; see List Item for every prop: `actions`, `selected`, `selectable`, `href`, `variant`, `size` and style props.',
       props: [
         { name: 'title', type: 'ReactNode', description: 'Main line.' },
         { name: 'description', type: 'ReactNode', description: 'Muted second line.' },
@@ -72,7 +66,17 @@ import { ChevronRightIcon, UserIcon } from '@advui/icons'
           name: 'trailing',
           type: 'ReactNode',
           description:
-            'Meta text, a Badge, a chevron, or actions (only when the item has no `onPress`).',
+            'Meta text, a Badge or a chevron. Controls go in `actions` when the item has `onPress`.',
+        },
+        {
+          name: 'actions',
+          type: 'ReactNode',
+          description: 'Buttons beside the pressable row, which keep their own presses.',
+        },
+        {
+          name: 'selected',
+          type: 'boolean',
+          description: 'Highlights the item; a pressable one is the current one (`aria-current`).',
         },
         {
           name: 'onPress',
@@ -121,15 +125,15 @@ import { ChevronRightIcon, UserIcon } from '@advui/icons'
     component: 'List',
     controls: [
       { prop: 'variant', type: 'select', options: ['plain', 'outline'], default: 'outline' },
-      { prop: 'size', type: 'select', options: ['sm', 'md'], default: 'md' },
+      { prop: 'size', type: 'select', options: ['sm', 'md', 'lg'], default: 'md' },
       { prop: 'divided', type: 'boolean', default: true },
     ],
   },
   accessibility: [
     'The list has the `list` role and each row `listitem`, so screen readers announce the count.',
-    'A row with `onPress` holds one button (`<button>` on web) named by its title, description and trailing text. Do not put other buttons inside it.',
+    'A row with `onPress` holds one button (`<button>` on web) named by its title, description and trailing text. Put other buttons in `actions`, which sit beside it.',
     'A disabled row keeps focus but sets `aria-disabled` and ignores presses.',
-    'Rows are at least 44px (`sm`) or 48px (`md`) tall.',
+    'Rows are at least 44px (`sm`), 48px (`md`) or 56px (`lg`) tall.',
   ],
   keyboard: [
     { keys: 'Tab', action: 'Moves between pressable rows and the controls inside rows.' },
@@ -140,5 +144,5 @@ import { ChevronRightIcon, UserIcon } from '@advui/icons'
     ios: 'A pressable row is one accessible button; VoiceOver reads all of its text.',
     android: 'Same as iOS. Pressable rows show the ripple when the config has `androidRipple`.',
   },
-  related: ['card', 'avatar', 'badge', 'separator'],
+  related: ['list-item', 'card', 'avatar', 'badge', 'separator'],
 })
