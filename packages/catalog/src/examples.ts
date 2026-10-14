@@ -127,6 +127,8 @@ import LoadingButtonLoadingText from '../../ui/src/components/loading-button/exa
 import LoadingButtonCustomSpinner from '../../ui/src/components/loading-button/examples/custom-spinner'
 import LoadingButtonSpinnerPosition from '../../ui/src/components/loading-button/examples/spinner-position'
 import LoadingButtonAsync from '../../ui/src/components/loading-button/examples/async'
+import LoadingStateBasic from '../../ui/src/components/loading-state/examples/basic'
+import LoadingStateCancel from '../../ui/src/components/loading-state/examples/cancel'
 import MenuBasic from '../../ui/src/components/menu/examples/basic'
 import MenuActions from '../../ui/src/components/menu/examples/actions'
 import MultiSelectBasic from '../../ui/src/components/multi-select/examples/basic'
@@ -441,6 +443,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'custom-spinner': LoadingButtonCustomSpinner,
     'spinner-position': LoadingButtonSpinnerPosition,
     'async': LoadingButtonAsync,
+  },
+  'loading-state': {
+    'basic': LoadingStateBasic,
+    'cancel': LoadingStateCancel,
   },
   'menu': {
     'basic': MenuBasic,

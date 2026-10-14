@@ -1,0 +1,51 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "loading-state",
+  "title": "Loading State",
+  "type": "registry:component",
+  "description": "Shown in place of content while it loads: a spinner, what is loading and a way to cancel.",
+  "category": "feedback",
+  "status": "beta",
+  "since": "0.13.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/loading-state/LoadingState.tsx",
+      "type": "registry:ui",
+      "content": "import { type ReactNode, forwardRef, useEffect, useState } from 'react'\nimport { type GetProps, type TamaguiElement, View, XStack, isWeb, styled } from 'tamagui'\nimport { Spinner } from '../spinner/Spinner'\nimport { Text } from '../typography/Text'\n\n// Same layout as Empty State and Error State, so the three can swap in place.\nconst LoadingStateFrame = styled(View, {\n  name: 'LoadingState',\n  alignItems: 'center',\n  justifyContent: 'center',\n  gap: '$3',\n  paddingVertical: '$10',\n  paddingHorizontal: '$6',\n\n  variants: {\n    bordered: {\n      true: {\n        borderWidth: 1,\n        borderStyle: 'dashed',\n        borderColor: '$border',\n        borderRadius: '$lg',\n      },\n    },\n  } as const,\n})\n\nexport interface LoadingStateProps extends Omit<GetProps<typeof LoadingStateFrame>, 'children'> {\n  /** What is loading, such as \"Loading invoices…\". */\n  title?: ReactNode\n  description?: ReactNode\n  /**\n   * Milliseconds to wait before showing anything, so loads that finish\n   * quickly do not flash a spinner.\n   */\n  delay?: number\n  /** Actions, such as a Cancel button. */\n  children?: ReactNode\n}\n\n/**\n * Shown in place of content while it loads: a spinner, what is loading and,\n * optionally, a way to cancel. On web the text is a `status`, so it is\n * announced politely.\n */\nexport const LoadingState = forwardRef<TamaguiElement, LoadingStateProps>(function LoadingState(\n  { title = 'Loading…', description, delay = 0, bordered = false, children, ...props },\n  ref,\n) {\n  const [elapsed, setElapsed] = useState(false)\n  useEffect(() => {\n    if (delay <= 0) return\n    const timer = setTimeout(() => setElapsed(true), delay)\n    return () => clearTimeout(timer)\n  }, [delay])\n  const shown = delay <= 0 || elapsed\n\n  // Web: the status element is rendered empty during the delay, because\n  // screen readers announce text added to a live region more reliably than a\n  // new region. Native: one element for the text, so buttons stay reachable.\n  const textSemantics = isWeb\n    ? { role: 'status' as const }\n    : shown\n      ? { role: 'status' as const, accessible: true }\n      : null\n\n  return (\n    <LoadingStateFrame ref={ref} bordered={bordered && shown} {...props}>\n      {/* The text says what the spinner shows; a second \"Loading\" is noise. */}\n      {shown ? <Spinner size=\"lg\" color=\"$primary\" aria-hidden /> : null}\n      <View gap=\"$1\" alignItems=\"center\" {...textSemantics}>\n        {shown ? (\n          <>\n            <Text weight=\"medium\" textAlign=\"center\">\n              {title}\n            </Text>\n            {description ? (\n              <Text size=\"sm\" tone=\"muted\" textAlign=\"center\" maxWidth={420}>\n                {description}\n              </Text>\n            ) : null}\n          </>\n        ) : null}\n      </View>\n      {shown && children ? (\n        <XStack gap=\"$2\" marginTop=\"$2\" flexWrap=\"wrap\" justifyContent=\"center\">\n          {children}\n        </XStack>\n      ) : null}\n    </LoadingStateFrame>\n  )\n})\n"
+    },
+    {
+      "path": "components/loading-state/index.ts",
+      "type": "registry:ui",
+      "content": "export { LoadingState, type LoadingStateProps } from './LoadingState'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { LoadingState } from '@advui/core'\n\nexport default function LoadingStateBasic() {\n  return (\n    <LoadingState\n      title=\"Loading invoices…\"\n      description=\"This can take a few seconds.\"\n      width=\"100%\"\n    />\n  )\n}\n"
+    },
+    {
+      "name": "cancel",
+      "title": "With a cancel button",
+      "code": "import { Button, LoadingState } from '@advui/core'\n\nexport default function LoadingStateCancel() {\n  return (\n    <LoadingState\n      bordered\n      title=\"Importing contacts…\"\n      description=\"Adding 1,240 contacts. This can take a minute.\"\n      width=\"100%\"\n    >\n      <Button variant=\"outline\">Cancel import</Button>\n    </LoadingState>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/loading-state",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "spinner",
+    "typography"
+  ],
+  "version": "0.12.0"
+}

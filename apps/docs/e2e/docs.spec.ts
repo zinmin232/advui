@@ -330,6 +330,7 @@ for (const path of [
   '/docs/components/number-input',
   '/docs/components/empty-state',
   '/docs/components/error-state',
+  '/docs/components/loading-state',
   '/docs/components/otp-input',
   '/docs/components/calendar',
   '/docs/components/date-picker',

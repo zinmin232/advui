@@ -65,5 +65,5 @@ export default defineMeta({
     ios: 'Not announced automatically; move focus to it or announce with `AccessibilityInfo`.',
     android: 'Not announced automatically; move focus to it or announce with `AccessibilityInfo`.',
   },
-  related: ['empty-state', 'alert'],
+  related: ['empty-state', 'loading-state', 'alert'],
 })

@@ -51,6 +51,7 @@ import { Grid } from './layout/Grid'
 import { HStack, Stack, VStack, Wrap } from './layout/Stack'
 import { List } from './list/List'
 import { LoadingButton } from './loading-button/LoadingButton'
+import { LoadingState } from './loading-state/LoadingState'
 import { Menu } from './menu/Menu'
 import { MultiSelect } from './multi-select/MultiSelect'
 import { NavigationBar } from './navigation-bar/NavigationBar'
@@ -888,6 +889,20 @@ describe('native rendering', () => {
     expect(screen.getByRole('heading', { name: 'No projects' })).toBeTruthy()
     await fireEvent.press(screen.getByRole('button', { name: 'Try again' }))
     expect(onRetry).toHaveBeenCalled()
+  })
+
+  it('LoadingState reads its text as one status and keeps its button reachable', async () => {
+    const onCancel = jest.fn()
+    await renderNative(
+      <LoadingState title="Loading invoices…" description="This can take a minute.">
+        <Button onPress={onCancel}>Cancel</Button>
+      </LoadingState>,
+    )
+    // The text says it, so the spinner is hidden.
+    expect(screen.queryByRole('progressbar')).toBeNull()
+    expect(screen.getByRole('status')).toHaveTextContent('Loading invoices…This can take a minute.')
+    await fireEvent.press(screen.getByRole('button', { name: 'Cancel' }))
+    expect(onCancel).toHaveBeenCalled()
   })
 
   it('Combobox opens a searchable sheet and picks a labelled row', async () => {
