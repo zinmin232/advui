@@ -278,7 +278,7 @@
       "name": "alert",
       "title": "Alert",
       "type": "registry:component",
-      "description": "An inline message that draws attention without interrupting the task.",
+      "description": "An inline message that draws attention without interrupting the task, with optional actions and a dismiss button.",
       "category": "feedback",
       "status": "stable",
       "package": "@advui/core",
@@ -286,7 +286,9 @@
         "@advui/icons"
       ],
       "registryDependencies": [
-        "typography"
+        "hooks",
+        "typography",
+        "utils"
       ]
     },
     {

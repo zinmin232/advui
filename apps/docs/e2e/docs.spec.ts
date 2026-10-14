@@ -306,6 +306,7 @@ for (const path of [
   '/docs/components/slider',
   '/docs/components/popover',
   '/docs/components/dropdown-menu',
+  '/docs/components/alert',
   '/docs/components/alert-dialog',
   '/docs/components/sheet',
   '/docs/components/toggle',

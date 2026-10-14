@@ -209,6 +209,32 @@ describe('native rendering', () => {
     }
   })
 
+  it('Alert keeps its actions and dismiss button reachable, and hides when dismissed', async () => {
+    const onDismiss = jest.fn()
+    const save = jest.fn()
+    await renderNative(
+      <Alert
+        variant="warning"
+        size="lg"
+        title="Unsaved changes"
+        description="Save before you leave."
+        actions={<Button onPress={save}>Save</Button>}
+        dismissible
+        onDismiss={onDismiss}
+      />,
+    )
+    // The text is one announced element; the buttons stay separate stops.
+    const text = screen.getByRole('alert')
+    expect(text.props.accessible).toBe(true)
+    expect(text).toHaveTextContent('Unsaved changesSave before you leave.')
+    await fireEvent.press(screen.getByRole('button', { name: 'Save' }))
+    expect(save).toHaveBeenCalledTimes(1)
+    expect(onDismiss).not.toHaveBeenCalled()
+    await fireEvent.press(screen.getByRole('button', { name: 'Dismiss' }))
+    expect(onDismiss).toHaveBeenCalledTimes(1)
+    expect(screen.queryByRole('alert')).toBeNull()
+  })
+
   it('Toaster portals toasts with a zIndex Android can represent', async () => {
     // Fake timers let the enter/exit animations finish inside act().
     jest.useFakeTimers()

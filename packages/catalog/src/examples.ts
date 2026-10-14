@@ -3,6 +3,11 @@ import type { ComponentType } from 'react'
 import AccordionBasic from '../../ui/src/components/accordion/examples/basic'
 import AccordionCard from '../../ui/src/components/accordion/examples/card'
 import AlertVariants from '../../ui/src/components/alert/examples/variants'
+import AlertSizes from '../../ui/src/components/alert/examples/sizes'
+import AlertActions from '../../ui/src/components/alert/examples/actions'
+import AlertDismissible from '../../ui/src/components/alert/examples/dismissible'
+import AlertCustom from '../../ui/src/components/alert/examples/custom'
+import AlertComposition from '../../ui/src/components/alert/examples/composition'
 import AlertDialogBasic from '../../ui/src/components/alert-dialog/examples/basic'
 import AlertDialogAsync from '../../ui/src/components/alert-dialog/examples/async'
 import AppShellDashboard from '../../ui/src/components/app-shell/examples/dashboard'
@@ -216,6 +221,11 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'alert': {
     'variants': AlertVariants,
+    'sizes': AlertSizes,
+    'actions': AlertActions,
+    'dismissible': AlertDismissible,
+    'custom': AlertCustom,
+    'composition': AlertComposition,
   },
   'alert-dialog': {
     'basic': AlertDialogBasic,

@@ -7,6 +7,25 @@ one version.
 
 ## [Unreleased]
 
+### Added
+
+- **Alert** does what a callout needs, without breaking existing alerts:
+  `title`, `description` and `actions` props; `size` (`sm`, `md`, `lg`);
+  a `destructive` variant (a solid fill, announced as an alert);
+  `dismissible` with `onDismiss`, `dismissLabel` and an optional controlled
+  `open`; and `color` for the title, description and icons. Style props
+  such as `backgroundColor`, `borderRadius`, `padding` and `borderWidth`
+  override the variant and size. On iOS and Android, an alert with actions or
+  a dismiss button keeps its text as one accessible element and each button
+  as its own.
+- The docs playground can switch element props on and off, such as an
+  Alert's icon and actions.
+
+### Changed
+
+- `Alert.Title` and `Alert.Description` no longer take a `variant` prop. It
+  was undocumented: the alert sets their color, now through `color`.
+
 ## [0.12.0] - 2026-10-06
 
 ### Added

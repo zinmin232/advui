@@ -22,6 +22,10 @@ export default function AlertVariants() {
         <Alert.Title>Build failed</Alert.Title>
         <Alert.Description>Check the logs for details.</Alert.Description>
       </Alert>
+      <Alert variant="destructive">
+        <Alert.Title>This deletes the project</Alert.Title>
+        <Alert.Description>Its files and history cannot be recovered.</Alert.Description>
+      </Alert>
     </VStack>
   )
 }
