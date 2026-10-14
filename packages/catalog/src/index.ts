@@ -91,6 +91,7 @@ import timelineMeta from '../../data/src/components/timeline/timeline.meta'
 import toastMeta from '../../ui/src/components/toast/toast.meta'
 import toggleMeta from '../../ui/src/components/toggle/toggle.meta'
 import toggleGroupMeta from '../../ui/src/components/toggle-group/toggle-group.meta'
+import toolbarMeta from '../../ui/src/components/toolbar/toolbar.meta'
 import tooltipMeta from '../../ui/src/components/tooltip/tooltip.meta'
 import treeViewMeta from '../../data/src/components/tree-view/tree-view.meta'
 import typographyMeta from '../../ui/src/components/typography/typography.meta'
@@ -219,6 +220,7 @@ export const components: CatalogComponent[] = [
   { ...toastMeta, package: '@advui/core' },
   { ...toggleMeta, package: '@advui/core' },
   { ...toggleGroupMeta, package: '@advui/core' },
+  { ...toolbarMeta, package: '@advui/core' },
   { ...tooltipMeta, package: '@advui/core' },
   { ...treeViewMeta, package: '@advui/data' },
   { ...typographyMeta, package: '@advui/core' },

@@ -215,6 +215,17 @@ import ToggleBasic from '../../ui/src/components/toggle/examples/basic'
 import ToggleControlled from '../../ui/src/components/toggle/examples/controlled'
 import ToggleGroupBasic from '../../ui/src/components/toggle-group/examples/basic'
 import ToggleGroupMultiple from '../../ui/src/components/toggle-group/examples/multiple'
+import ToolbarBasic from '../../ui/src/components/toolbar/examples/basic'
+import ToolbarGroups from '../../ui/src/components/toolbar/examples/groups'
+import ToolbarRegions from '../../ui/src/components/toolbar/examples/regions'
+import ToolbarDataTable from '../../ui/src/components/toolbar/examples/data-table'
+import ToolbarBulkActions from '../../ui/src/components/toolbar/examples/bulk-actions'
+import ToolbarFormatting from '../../ui/src/components/toolbar/examples/formatting'
+import ToolbarVertical from '../../ui/src/components/toolbar/examples/vertical'
+import ToolbarVariants from '../../ui/src/components/toolbar/examples/variants'
+import ToolbarSizes from '../../ui/src/components/toolbar/examples/sizes'
+import ToolbarCustom from '../../ui/src/components/toolbar/examples/custom'
+import ToolbarWrap from '../../ui/src/components/toolbar/examples/wrap'
 import TooltipBasic from '../../ui/src/components/tooltip/examples/basic'
 import TreeViewBasic from '../../data/src/components/tree-view/examples/basic'
 import TreeViewControlled from '../../data/src/components/tree-view/examples/controlled'
@@ -623,6 +634,19 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'toggle-group': {
     'basic': ToggleGroupBasic,
     'multiple': ToggleGroupMultiple,
+  },
+  'toolbar': {
+    'basic': ToolbarBasic,
+    'groups': ToolbarGroups,
+    'regions': ToolbarRegions,
+    'data-table': ToolbarDataTable,
+    'bulk-actions': ToolbarBulkActions,
+    'formatting': ToolbarFormatting,
+    'vertical': ToolbarVertical,
+    'variants': ToolbarVariants,
+    'sizes': ToolbarSizes,
+    'custom': ToolbarCustom,
+    'wrap': ToolbarWrap,
   },
   'tooltip': {
     'basic': TooltipBasic,

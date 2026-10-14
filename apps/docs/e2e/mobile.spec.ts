@@ -49,6 +49,44 @@ test('auto grid is one column on a phone', async ({ page }) => {
   expect(beacon!.x).toBeCloseTo(atlas!.x, 0)
 })
 
+test('toolbar regions fit a phone without overlapping', async ({ page }) => {
+  type Box = { x: number; y: number; width: number; height: number }
+  const overlap = (a: Box, b: Box) =>
+    a.x < b.x + b.width - 0.5 &&
+    b.x < a.x + a.width - 0.5 &&
+    a.y < b.y + b.height - 0.5 &&
+    b.y < a.y + a.height - 0.5
+  for (const [example, name] of [
+    ['regions', 'Users'],
+    ['data-table', 'Users table'],
+    ['wrap', 'Orders'],
+  ]) {
+    await page.goto(`/preview/toolbar/${example}`)
+    const bar = page.getByRole('group', { name, exact: true })
+    const frame = (await bar.boundingBox())!
+    const controls = bar.locator('button, input, h3')
+    const boxes: Box[] = []
+    for (let i = 0; i < (await controls.count()); i++)
+      boxes.push((await controls.nth(i).boundingBox())!)
+    expect(boxes.length, example).toBeGreaterThan(2)
+    boxes.forEach((box, i) => {
+      expect(box.x, `${example} #${i} start`).toBeGreaterThanOrEqual(frame.x - 0.5)
+      expect(box.x + box.width, `${example} #${i} end`).toBeLessThanOrEqual(
+        frame.x + frame.width + 0.5,
+      )
+      for (const other of boxes.slice(i + 1))
+        expect(overlap(box, other), `${example} #${i} overlaps`).toBe(false)
+    })
+  }
+  // With `wrap`, the actions move below the title and stay at the end edge.
+  const orders = page.getByRole('group', { name: 'Orders', exact: true })
+  const frame = (await orders.boundingBox())!
+  const heading = (await orders.getByRole('heading').boundingBox())!
+  const create = (await orders.getByRole('button', { name: 'New order' }).boundingBox())!
+  expect(create.y).toBeGreaterThan(heading.y + heading.height - 1)
+  expect(frame.x + frame.width - (create.x + create.width)).toBeLessThan(20)
+})
+
 test('pages do not overflow horizontally on a phone', async ({ page }) => {
   for (const path of ['/', '/docs/components/select', '/examples/mobile-home']) {
     await page.goto(path)

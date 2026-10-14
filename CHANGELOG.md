@@ -9,6 +9,21 @@ one version.
 
 ### Added
 
+- **Toolbar**: a row or column of related controls (actions, filters,
+  formatting). Controls go in as children, unwrapped, or in `leading`,
+  `center` and `trailing` regions: the center takes the free space, else
+  trailing does and keeps its content at the end edge; a region left out
+  adds no box. `Toolbar.Group` keeps related controls together and
+  `Toolbar.Separator` (a decorative Separator) divides them, both following
+  the toolbar's `orientation`. `variant` (`default`, `outline`, `filled`,
+  `ghost`) and `size` (`sm`, `md`, `lg`) style the container only, never the
+  controls; `align` and `distribute` take Stack's values and breakpoint maps,
+  and `wrap` moves controls and regions onto new lines on narrow screens.
+  Style props such as `padding`, `gap`, `backgroundColor` and `borderRadius`
+  override the variant and size. By default it is a named `group`;
+  `role="toolbar"` makes it the WAI-ARIA toolbar on web: one Tab stop, with
+  the arrow keys, Home and End moving between enabled controls, while text
+  fields, selects and sliders keep their own Tab stop and arrow keys.
 - **List Item**: one row of content, on its own or as `List.Item` (the same
   component). `leading`, `title`, `description`, `trailing` and custom
   children, plus `actions`: buttons beside the pressable row that keep their
@@ -46,6 +61,10 @@ one version.
 
 ### Changed
 
+- **Toggle Group** inside a Toolbar with `role="toolbar"` leaves its Tab
+  stop and arrow keys to the toolbar, so the arrow keys move out of the
+  group to the next control. There they move focus without choosing; Space
+  or Enter chooses. Toggle Groups anywhere else are unchanged.
 - `List.Item` is now `ListItem`, so it gains every List Item prop. Existing
   lists look and behave the same. A `List.Item` rendered outside a `List`
   no longer has the `listitem` role, which is invalid outside a list.

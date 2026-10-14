@@ -346,6 +346,7 @@ for (const path of [
   '/docs/components/kpi-card',
   '/docs/components/list',
   '/docs/components/list-item',
+  '/docs/components/toolbar',
   '/docs/components/timeline',
   '/docs/components/image',
   '/docs/components/table',
@@ -564,6 +565,34 @@ test('toggle group is one Tab stop and arrow keys choose', async ({ page }) => {
   await expect(center).toBeFocused()
   await expect(center).toHaveAttribute('aria-checked', 'true')
   await expect(center).toHaveAttribute('tabindex', '0')
+})
+
+test('toolbar is one Tab stop and the arrow keys cross its toggle groups', async ({ page }) => {
+  await page.goto('/preview/toolbar/formatting')
+  await page.waitForLoadState('networkidle')
+  const toolbar = page.getByRole('toolbar', { name: 'Formatting' })
+  const bold = toolbar.getByRole('button', { name: 'Bold' })
+  await expect(bold).toHaveAttribute('tabindex', '0')
+  await expect(toolbar.getByRole('radio', { name: 'Align left' })).toHaveAttribute('tabindex', '-1')
+  await bold.focus()
+  await page.keyboard.press('ArrowRight')
+  await page.keyboard.press('ArrowRight')
+  await page.keyboard.press('ArrowRight')
+  // Out of the first Toggle Group and into the second, without choosing.
+  const left = toolbar.getByRole('radio', { name: 'Align left' })
+  await expect(left).toBeFocused()
+  await page.keyboard.press('ArrowRight')
+  await expect(toolbar.getByRole('radio', { name: 'Align center' })).toBeFocused()
+  await expect(left).toHaveAttribute('aria-checked', 'true')
+  await page.keyboard.press('End')
+  await expect(toolbar.getByRole('button', { name: 'Quote' })).toBeFocused()
+  await page.keyboard.press('ArrowRight')
+  await expect(bold).toBeFocused()
+  // Tab leaves the toolbar from any control.
+  await page.keyboard.press('ArrowLeft')
+  await page.keyboard.press('Tab')
+  await expect(toolbar.locator(':focus')).toHaveCount(0)
+  expect(await seriousViolations(page)).toEqual([])
 })
 
 test('snackbar announces politely and its action works from the keyboard', async ({ page }) => {

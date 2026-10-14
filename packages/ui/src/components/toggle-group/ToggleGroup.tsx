@@ -25,6 +25,7 @@ import {
   useToggleRipple,
 } from '../toggle/Toggle'
 import { ariaState } from '../../utils/ariaState'
+import { inArrowToolbar } from '../toolbar/arrowKeys'
 
 type GroupState = {
   type: 'single' | 'multiple'
@@ -110,14 +111,17 @@ const ToggleGroupRoot = forwardRef<TamaguiElement, ToggleGroupProps>(function To
   }
 
   // Web keyboard support: one Tab stop (the chosen item, else the first) and
-  // arrow keys to move between items, which also choose in single mode.
+  // arrow keys to move between items, which also choose in single mode. In a
+  // Toolbar with role="toolbar", the toolbar does this for all its controls,
+  // these items included, so the arrow keys can leave the group.
+  const inToolbar = () => inArrowToolbar(ref.current as HTMLElement | null)
   const items = () =>
     [...((ref.current as HTMLElement | null)?.querySelectorAll<HTMLElement>(ITEM) ?? [])].filter(
       (el) => el.getAttribute('aria-disabled') !== 'true',
     )
 
   useLayoutEffect(() => {
-    if (!isWeb) return
+    if (!isWeb || inToolbar()) return
     const all = items()
     const target =
       all.find((el) => el.getAttribute('aria-checked') === 'true') ??
@@ -127,6 +131,7 @@ const ToggleGroupRoot = forwardRef<TamaguiElement, ToggleGroupProps>(function To
   })
 
   const onKeyDown = (event: KeyboardEvent) => {
+    if (inToolbar()) return
     const all = items()
     const index = all.indexOf(event.target as HTMLElement)
     if (index === -1) return
