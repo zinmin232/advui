@@ -9,6 +9,11 @@ one version.
 
 ### Added
 
+- **Loading State**: shown in place of content while it loads, with a
+  spinner, a title, a description and optional actions such as Cancel. It
+  lays out like Empty State and Error State, so the three can swap in place.
+  `delay` keeps fast loads from flashing a spinner. On web the text is a
+  polite `status` region.
 - **Alert** does what a callout needs, without breaking existing alerts:
   `title`, `description` and `actions` props; `size` (`sm`, `md`, `lg`);
   a `destructive` variant (a solid fill, announced as an alert);

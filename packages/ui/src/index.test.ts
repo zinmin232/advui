@@ -25,6 +25,7 @@ describe('@advui/core public API', () => {
     for (const name of [
       'Button',
       'LoadingButton',
+      'LoadingState',
       'Input',
       'Form',
       'Field',

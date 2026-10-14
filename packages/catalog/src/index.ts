@@ -49,6 +49,7 @@ import labelMeta from '../../ui/src/components/label/label.meta'
 import lineChartMeta from '../../charts/src/components/line-chart/line-chart.meta'
 import listMeta from '../../ui/src/components/list/list.meta'
 import loadingButtonMeta from '../../ui/src/components/loading-button/loading-button.meta'
+import loadingStateMeta from '../../ui/src/components/loading-state/loading-state.meta'
 import menuMeta from '../../ui/src/components/menu/menu.meta'
 import multiSelectMeta from '../../ui/src/components/multi-select/multi-select.meta'
 import navigationBarMeta from '../../ui/src/components/navigation-bar/navigation-bar.meta'
@@ -174,6 +175,7 @@ export const components: CatalogComponent[] = [
   { ...lineChartMeta, package: '@advui/charts' },
   { ...listMeta, package: '@advui/core' },
   { ...loadingButtonMeta, package: '@advui/core' },
+  { ...loadingStateMeta, package: '@advui/core' },
   { ...menuMeta, package: '@advui/core' },
   { ...multiSelectMeta, package: '@advui/core' },
   { ...navigationBarMeta, package: '@advui/core' },

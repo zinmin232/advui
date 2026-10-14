@@ -979,6 +979,20 @@
       ]
     },
     {
+      "name": "loading-state",
+      "title": "Loading State",
+      "type": "registry:component",
+      "description": "Shown in place of content while it loads: a spinner, what is loading and a way to cancel.",
+      "category": "feedback",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": [
+        "spinner",
+        "typography"
+      ]
+    },
+    {
       "name": "menu",
       "title": "Menu",
       "type": "registry:component",

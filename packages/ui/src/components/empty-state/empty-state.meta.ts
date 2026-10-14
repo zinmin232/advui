@@ -62,5 +62,5 @@ import { MailIcon } from '@advui/icons'
     'The icon is decorative and hidden from assistive technology.',
   ],
   platformNotes: {},
-  related: ['error-state', 'skeleton', 'alert'],
+  related: ['error-state', 'loading-state', 'skeleton', 'alert'],
 })
