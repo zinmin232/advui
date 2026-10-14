@@ -38,6 +38,7 @@ describe('@advui/core public API', () => {
       'Card',
       'List',
       'ListItem',
+      'Toolbar',
       'UniversalProvider',
       'ariaState',
       'isTextContent',

@@ -81,6 +81,7 @@ import timePickerMeta from '../components/time-picker/time-picker.meta'
 import toastMeta from '../components/toast/toast.meta'
 import toggleMeta from '../components/toggle/toggle.meta'
 import toggleGroupMeta from '../components/toggle-group/toggle-group.meta'
+import toolbarMeta from '../components/toolbar/toolbar.meta'
 import tooltipMeta from '../components/tooltip/tooltip.meta'
 import typographyMeta from '../components/typography/typography.meta'
 import videoMeta from '../components/video/video.meta'
@@ -169,6 +170,7 @@ export const components: ComponentMeta[] = [
   toastMeta,
   toggleMeta,
   toggleGroupMeta,
+  toolbarMeta,
   tooltipMeta,
   typographyMeta,
   videoMeta,

@@ -7,12 +7,15 @@ import { Button, HStack, Input, Label, Switch, Text, VStack, toast } from '@advu
 import {
   ChevronRightIcon,
   CopyIcon,
+  DownloadIcon,
   ExternalLinkIcon,
   FileIcon,
   FolderIcon,
   ImageIcon,
   LockIcon,
   MoreHorizontalIcon,
+  RotateCcwIcon,
+  RotateCwIcon,
   SettingsIcon,
 } from '@advui/icons'
 import { type ReactNode, useMemo, useState } from 'react'
@@ -200,6 +203,30 @@ const structuralChildren: Record<string, Structure> = {
   }`,
     ],
   },
+  // Two groups of icon buttons, so orientation, alignment and separators show.
+  Toolbar: {
+    element: ({ separators }) => (
+      <>
+        <UI.Toolbar.Group aria-label="History">
+          <UI.IconButton size="sm" aria-label="Undo" icon={<RotateCcwIcon />} />
+          <UI.IconButton size="sm" aria-label="Redo" icon={<RotateCwIcon />} />
+        </UI.Toolbar.Group>
+        {separators ? <UI.Toolbar.Separator /> : null}
+        <UI.Toolbar.Group aria-label="File">
+          <UI.IconButton size="sm" aria-label="Copy" icon={<CopyIcon />} />
+          <UI.IconButton size="sm" aria-label="Download" icon={<DownloadIcon />} />
+        </UI.Toolbar.Group>
+      </>
+    ),
+    code: ({ separators }) => `  <Toolbar.Group aria-label="History">
+    <IconButton size="sm" aria-label="Undo" icon={<RotateCcwIcon />} />
+    <IconButton size="sm" aria-label="Redo" icon={<RotateCwIcon />} />
+  </Toolbar.Group>${separators ? '\n  <Toolbar.Separator />' : ''}
+  <Toolbar.Group aria-label="File">
+    <IconButton size="sm" aria-label="Copy" icon={<CopyIcon />} />
+    <IconButton size="sm" aria-label="Download" icon={<DownloadIcon />} />
+  </Toolbar.Group>`,
+  },
   // No children: the dialog needs a trigger to open from the preview.
   ConfirmDialog: {
     props: {
@@ -246,6 +273,30 @@ const elementControls: Record<string, Record<string, { on?: ElementProp; off?: E
         code: 'actions={<IconButton size="sm" icon={<MoreHorizontalIcon />} aria-label="More" />}',
       },
     },
+  },
+  Toolbar: {
+    leading: {
+      on: {
+        value: <UI.Text weight="semibold">Report</UI.Text>,
+        code: 'leading={<Text weight="semibold">Report</Text>}',
+      },
+    },
+    center: {
+      on: {
+        value: (
+          <UI.Input size="sm" flex={1} maxWidth="$64" placeholder="Search…" aria-label="Search" />
+        ),
+        code: 'center={<Input size="sm" flex={1} maxWidth="$64" placeholder="Search…" aria-label="Search" />}',
+      },
+    },
+    trailing: {
+      on: {
+        value: <UI.Button size="sm">Save</UI.Button>,
+        code: 'trailing={<Button size="sm">Save</Button>}',
+      },
+    },
+    // Read by the children above; not a prop.
+    separators: {},
   },
 }
 
@@ -324,7 +375,8 @@ function Control({
         <Segmented
           label={control.prop}
           value={String(value)}
-          options={control.options.map((o) => ({ value: o, label: o }))}
+          // An empty option passes nothing, leaving the component's own default.
+          options={control.options.map((o) => ({ value: o, label: o || 'default' }))}
           onChange={onChange}
         />
       )
@@ -391,6 +443,9 @@ export function Playground({
         ? { width: '100%', maxWidth: '$96' }
         : null)}
       {...(spec.component === 'Form' ? { width: '100%', maxWidth: '$96' } : null)}
+      {...(spec.component === 'Toolbar' && values.orientation !== 'vertical'
+        ? { width: '100%', maxWidth: '$144' }
+        : null)}
     >
       {structural?.element ? resolve(structural.element, values) : spec.children}
     </Component>

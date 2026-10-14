@@ -82,6 +82,7 @@ import { Textarea } from './textarea/Textarea'
 import { Toaster, toast } from './toast/Toaster'
 import { Toggle } from './toggle/Toggle'
 import { ToggleGroup } from './toggle-group/ToggleGroup'
+import { Toolbar } from './toolbar/Toolbar'
 import { Heading } from './typography/Heading'
 import { Video } from './video/Video'
 import { setVideoView } from './video/shared'
@@ -689,6 +690,56 @@ describe('native rendering', () => {
     expect(last.borderTopLeftRadius).toBe(0)
     // Outline buttons share their 1px border.
     expect(last.marginLeft).toBe(-1)
+  })
+
+  it('Toolbar lays out its regions and keeps each control reachable', async () => {
+    const onPress = jest.fn()
+    const onValueChange = jest.fn()
+    await renderNative(
+      <>
+        <Toolbar
+          testID="bar"
+          role="toolbar"
+          aria-label="Formatting"
+          leading="Notes"
+          trailing={<Button onPress={onPress}>Save</Button>}
+        >
+          <Toolbar.Group aria-label="Alignment" testID="group">
+            <ToggleGroup type="single" defaultValue="left" onValueChange={onValueChange}>
+              <ToggleGroup.Item value="left">Left</ToggleGroup.Item>
+              <ToggleGroup.Item value="right">Right</ToggleGroup.Item>
+            </ToggleGroup>
+          </Toolbar.Group>
+          <Toolbar.Separator testID="separator" />
+        </Toolbar>
+        <Toolbar testID="column" orientation="vertical" variant="ghost">
+          <IconButton aria-label="Rotate" icon={<PlusIcon />} />
+        </Toolbar>
+      </>,
+    )
+    const bar = screen.getByTestId('bar')
+    expect(bar.props.role).toBe('toolbar')
+    expect(bar.props['aria-label'] ?? bar.props.accessibilityLabel).toBe('Formatting')
+    // Not one merged element: its controls stay separate for TalkBack and VoiceOver.
+    expect(bar.props.accessible).not.toBe(true)
+    expect(StyleSheet.flatten(bar.props.style).flexDirection).toBe('row')
+    expect(screen.getByTestId('group').props.role).toBe('group')
+    // Decorative, so hidden from assistive technology.
+    const separator = screen.getByTestId('separator', { includeHiddenElements: true })
+    expect(separator).not.toBeVisible()
+    expect(StyleSheet.flatten(separator.props.style).width).toBe(1)
+    // A text region is wrapped in Text (a bare string would throw in a View).
+    expect(screen.getByText('Notes')).toBeOnTheScreen()
+
+    await fireEvent.press(screen.getByRole('button', { name: 'Save' }))
+    expect(onPress).toHaveBeenCalledTimes(1)
+    await fireEvent.press(screen.getByRole('radio', { name: 'Right' }))
+    expect(onValueChange).toHaveBeenCalledWith('right')
+
+    const column = StyleSheet.flatten(screen.getByTestId('column').props.style)
+    expect(column.flexDirection).toBe('column')
+    expect(column.alignSelf).toBe('flex-start')
+    expect(screen.getByRole('button', { name: 'Rotate' })).toBeOnTheScreen()
   })
 
   it('AspectRatio and ScrollArea use the native aspectRatio and ScrollView', async () => {
