@@ -39,6 +39,7 @@ describe('@advui/core public API', () => {
       'List',
       'ListItem',
       'Toolbar',
+      'Link',
       'UniversalProvider',
       'ariaState',
       'isTextContent',

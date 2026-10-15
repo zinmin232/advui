@@ -49,6 +49,7 @@ import inputMeta from '../../ui/src/components/input/input.meta'
 import kpiCardMeta from '../../data/src/components/kpi-card/kpi-card.meta'
 import labelMeta from '../../ui/src/components/label/label.meta'
 import lineChartMeta from '../../charts/src/components/line-chart/line-chart.meta'
+import linkMeta from '../../ui/src/components/link/link.meta'
 import listMeta from '../../ui/src/components/list/list.meta'
 import listItemMeta from '../../ui/src/components/list-item/list-item.meta'
 import loadingButtonMeta from '../../ui/src/components/loading-button/loading-button.meta'
@@ -179,6 +180,7 @@ export const components: CatalogComponent[] = [
   { ...kpiCardMeta, package: '@advui/data' },
   { ...labelMeta, package: '@advui/core' },
   { ...lineChartMeta, package: '@advui/charts' },
+  { ...linkMeta, package: '@advui/core' },
   { ...listMeta, package: '@advui/core' },
   { ...listItemMeta, package: '@advui/core' },
   { ...loadingButtonMeta, package: '@advui/core' },

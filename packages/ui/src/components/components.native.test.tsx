@@ -3,7 +3,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-
 import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
 import { createThemeColors, createUniversalConfig, themePresets, zIndex } from '@advui/theme'
 import { Fragment, type ReactElement } from 'react'
-import { BackHandler, Dimensions, StyleSheet, processColor } from 'react-native'
+import { BackHandler, Dimensions, Linking, StyleSheet, processColor } from 'react-native'
 import { XStack } from 'tamagui'
 import { renderNative } from '../../test/native-utils'
 import { Accordion } from './accordion/Accordion'
@@ -51,6 +51,7 @@ import { autoGridColumns } from './layout/autoGridColumns'
 import { Container } from './layout/Container'
 import { Grid } from './layout/Grid'
 import { HStack, Stack, VStack, Wrap } from './layout/Stack'
+import { Link } from './link/Link'
 import { List } from './list/List'
 import { ListItem } from './list-item/ListItem'
 import { LoadingButton } from './loading-button/LoadingButton'
@@ -566,6 +567,40 @@ describe('native rendering', () => {
     })
     expect(onPress).toHaveBeenCalledTimes(2)
     expect(screen.getByLabelText('Atlas, current page')).toBeOnTheScreen()
+  })
+
+  it('Link opens URLs with the system; a path needs onPress', async () => {
+    const openURL = jest.spyOn(Linking, 'openURL').mockResolvedValue(true)
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {})
+    const onPress = jest.fn()
+    await renderNative(
+      <>
+        <Link href="https://example.com" external>
+          Example
+        </Link>
+        <Link href="/docs">Docs</Link>
+        <Link href="/settings" onPress={onPress}>
+          Settings
+        </Link>
+        <Text>
+          Email <Link href="mailto:team@example.com">the team</Link>.
+        </Text>
+      </>,
+    )
+    await fireEvent.press(screen.getByRole('link', { name: 'Example' }))
+    expect(openURL).toHaveBeenLastCalledWith('https://example.com')
+    await fireEvent(screen.getByRole('link', { name: 'the team' }), 'accessibilityAction', {
+      nativeEvent: { actionName: 'activate' },
+    })
+    expect(openURL).toHaveBeenLastCalledWith('mailto:team@example.com')
+
+    expect(screen.queryByRole('link', { name: 'Docs' })).toBeNull()
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('router.push("/docs")'))
+    await fireEvent.press(screen.getByRole('link', { name: 'Settings' }))
+    expect(onPress).toHaveBeenCalledTimes(1)
+    expect(openURL).toHaveBeenCalledTimes(2)
+    openURL.mockRestore()
+    warn.mockRestore()
   })
 
   it('Fab is a button named by its label', async () => {
