@@ -115,7 +115,11 @@ test('filter bar controls stay inside the bar on a phone', async ({ page }) => {
   // `layout="responsive"` stacks full-width controls below the md breakpoint.
   await page.goto('/preview/filter-bar/dashboard')
   await page.waitForLoadState('networkidle')
-  const search = (await page.getByRole('searchbox').boundingBox())!
+  // The search field's box: the text field inside it stops at the magnifier.
+  const search = (await page
+    .getByRole('searchbox')
+    .locator('xpath=ancestor::*[contains(@class, "is_InputGroup")][1]')
+    .boundingBox())!
   const period = (await page.getByRole('button', { name: 'Period', exact: true }).boundingBox())!
   expect(period.y).toBeGreaterThan(search.y + search.height - 1)
   expect(Math.abs(period.width - search.width)).toBeLessThan(2)
