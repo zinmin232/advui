@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from '@advui/icons'
-import { type ReactNode, forwardRef } from 'react'
+import { type CSSProperties, type ReactNode, forwardRef } from 'react'
 import { type GestureResponderEvent, Linking } from 'react-native'
 import { type GetProps, type TamaguiTextElement, Text as TamaguiText, isWeb, styled } from 'tamagui'
 import { type TextSize, textSizes, textWeights } from '../typography/Text'
@@ -162,22 +162,20 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
   }
 
   const isButton = href === undefined && render === undefined
+  // A <button> keeps the browser's font, color and alignment; take the text's, as an <a> does.
+  const buttonStyle: CSSProperties = {
+    fontFamily: 'inherit',
+    letterSpacing: 'inherit',
+    textAlign: 'inherit',
+    ...(size === undefined && { fontSize: 'inherit', lineHeight: 'inherit' }),
+    ...(weight === undefined && { fontWeight: 'inherit' }),
+    ...(tone === 'inherit' && { color: 'inherit' }),
+  }
   const semantics = isWeb
     ? {
         render: render ?? (isButton ? 'button' : 'a'),
         ...(href !== undefined && { href }),
-        ...(isButton && {
-          type: 'button',
-          // A <button> keeps the browser's font and color; take the text's, as an <a> does.
-          style: {
-            fontFamily: 'inherit',
-            letterSpacing: 'inherit',
-            textAlign: 'inherit',
-            ...(size === undefined && { fontSize: 'inherit', lineHeight: 'inherit' }),
-            ...(weight === undefined && { fontWeight: 'inherit' }),
-            ...(tone === 'inherit' && { color: 'inherit' }),
-          },
-        }),
+        ...(isButton && { type: 'button', style: buttonStyle }),
         ...(external && { target: '_blank', rel: 'noopener noreferrer' }),
       }
     : {
