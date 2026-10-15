@@ -43,6 +43,7 @@ import imageMeta from '../components/image/image.meta'
 import imageGalleryMeta from '../components/image-gallery/image-gallery.meta'
 import inputMeta from '../components/input/input.meta'
 import labelMeta from '../components/label/label.meta'
+import linkMeta from '../components/link/link.meta'
 import listMeta from '../components/list/list.meta'
 import listItemMeta from '../components/list-item/list-item.meta'
 import loadingButtonMeta from '../components/loading-button/loading-button.meta'
@@ -132,6 +133,7 @@ export const components: ComponentMeta[] = [
   imageGalleryMeta,
   inputMeta,
   labelMeta,
+  linkMeta,
   listMeta,
   listItemMeta,
   loadingButtonMeta,

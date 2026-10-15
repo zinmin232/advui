@@ -7,6 +7,20 @@ one version.
 
 ## [Unreleased]
 
+### Added
+
+- **Link**: a text link to another page, a section or an outside site,
+  inside a sentence (nested in Text, it takes the text's size and font) or
+  on its own (`size`, `weight`). On web it renders a real `<a href>`, or a
+  `<button>` with the `link` role when there is only `onPress`; `render`
+  takes your router's link. On iOS and Android an absolute `href`
+  (`https:`, `mailto:`, `tel:`) opens with `Linking.openURL` after `onPress`,
+  unless `onPress` calls `event.preventDefault()`; a path needs `onPress`.
+  `external` adds an icon and, on web, opens a new tab with
+  `rel="noopener noreferrer"` and ends the name with "(opens in a new tab)"
+  (`labels.external` translates it). `tone` (`primary`, `muted`, `inherit`)
+  and `underline` (`always` by default, `hover`, `none`).
+
 ## [0.13.0] - 2026-10-15
 
 ### Added

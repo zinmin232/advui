@@ -133,6 +133,9 @@ import KpiCardLoading from '../../data/src/components/kpi-card/examples/loading'
 import LabelBasic from '../../ui/src/components/label/examples/basic'
 import LineChartBasic from '../../charts/src/components/line-chart/examples/basic'
 import LineChartMultiple from '../../charts/src/components/line-chart/examples/multiple'
+import LinkBasic from '../../ui/src/components/link/examples/basic'
+import LinkExternal from '../../ui/src/components/link/examples/external'
+import LinkTones from '../../ui/src/components/link/examples/tones'
 import ListBasic from '../../ui/src/components/list/examples/basic'
 import ListInteractive from '../../ui/src/components/list/examples/interactive'
 import ListWithAvatars from '../../ui/src/components/list/examples/with-avatars'
@@ -479,6 +482,11 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'line-chart': {
     'basic': LineChartBasic,
     'multiple': LineChartMultiple,
+  },
+  'link': {
+    'basic': LinkBasic,
+    'external': LinkExternal,
+    'tones': LinkTones,
   },
   'list': {
     'basic': ListBasic,

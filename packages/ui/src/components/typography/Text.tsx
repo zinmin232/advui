@@ -11,7 +11,8 @@ const tones = {
   inherit: {},
 } as const
 
-const sizes = {
+/** The type scale, shared with Link so its sizes match. */
+export const textSizes = {
   xs: { fontSize: '$1', lineHeight: '$1' },
   sm: { fontSize: '$2', lineHeight: '$2' },
   base: { fontSize: '$3', lineHeight: '$3' },
@@ -24,7 +25,7 @@ const sizes = {
   '6xl': { fontSize: '$10', lineHeight: '$10' },
 } as const
 
-const weights = {
+export const textWeights = {
   normal: { fontWeight: '400' },
   medium: { fontWeight: '500' },
   semibold: { fontWeight: '600' },
@@ -38,8 +39,8 @@ export const Text = styled(TamaguiText, {
   color: '$foreground',
 
   variants: {
-    size: sizes,
-    weight: weights,
+    size: textSizes,
+    weight: textWeights,
     tone: tones,
     truncate: {
       true: { numberOfLines: 1, ellipsis: true },
@@ -55,5 +56,5 @@ export const Text = styled(TamaguiText, {
 })
 
 export type TextProps = GetProps<typeof Text>
-export type TextSize = keyof typeof sizes
+export type TextSize = keyof typeof textSizes
 export type TextTone = keyof typeof tones

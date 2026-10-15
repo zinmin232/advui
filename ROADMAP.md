@@ -105,17 +105,11 @@ cannot do them. Tick them off here as they are done.
       Tag `v0.12.0` points at the merge commit on `main`. The AdvUI Builder
       can now import `components` from `@advui/core/meta` (bundled by Vite)
       instead of syncing `*.meta.ts` from the git tag.
-- [ ] **Release 0.13.0** (Toolbar, Filter Bar, List Item, Confirm Dialog,
-      Loading State, Alert as a callout, the Date Picker fixes):
-  - Merge the release pull request with a merge commit, then `git pull` and
-    `git tag v0.13.0 <merge commit> && git push origin v0.13.0`.
-  - `pnpm release:check` must list all eight public packages at 0.13.0. Then
-    `npm login` and `pnpm release`.
-  - Check the packages on the registry with
-    `curl -s https://registry.npmjs.org/@advui%2fcore` (npm may stage a
-    version for a while; don't re-publish on a 409).
-  - The AdvUI Builder can then move to 0.13.0 and register Toolbar and
-    Filter Bar.
+- [x] **Release 0.13.0** (Toolbar, Filter Bar, List Item, Confirm Dialog,
+      Loading State, Alert as a callout, the Date Picker fixes): published on
+      2026-10-15; all eight public packages are on npm at 0.13.0. Tag
+      `v0.13.0` points at the merge commit on `main`. The AdvUI Builder can
+      move to 0.13.0 and register Toolbar and Filter Bar.
 - [x] **Try the new packages.** 0.6.0 is the first working release of
       `@advui/data`, `@advui/charts` and `@advui/editor`; their 0.5.0,
       published by mistake before the version bump, is deprecated. On
@@ -133,6 +127,8 @@ Design) have and Adv UI does not yet. Scaffold one with
 the roadmap entry. Banner, Segmented Control, Avatar Group, Range Slider,
 Lightbox and Donut are not listed because Alert, Toggle Group, Avatar, Slider,
 Image Gallery and Pie Chart already cover them.
+
+Built so far (the table keeps them for reference): Link.
 
 | Phase | Package         | Components                                                                                                                                  |
 | ----- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
