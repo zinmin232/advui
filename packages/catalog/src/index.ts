@@ -37,6 +37,7 @@ import errorStateMeta from '../../ui/src/components/error-state/error-state.meta
 import fieldMeta from '../../ui/src/components/field/field.meta'
 import fileDropzoneMeta from '../../ui/src/components/file-dropzone/file-dropzone.meta'
 import fileUploadMeta from '../../ui/src/components/file-upload/file-upload.meta'
+import filterBarMeta from '../../data/src/components/filter-bar/filter-bar.meta'
 import fabMeta from '../../ui/src/components/fab/fab.meta'
 import formMeta from '../../ui/src/components/form/form.meta'
 import gridMeta from '../../ui/src/components/layout/grid.meta'
@@ -110,7 +111,7 @@ export const packages: ComponentPackage[] = [
   {
     name: '@advui/data',
     title: 'Data',
-    description: 'Data components for Adv UI: Table, Data Table, Data Grid, Tree View, Timeline, Stat and KPI Card, on web, iOS and Android.',
+    description: 'Data components for Adv UI: Table, Data Table, Data Grid, Filter Bar, Tree View, Timeline, Stat and KPI Card, on web, iOS and Android.',
     dir: 'packages/data',
   },
   {
@@ -166,6 +167,7 @@ export const components: CatalogComponent[] = [
   { ...fieldMeta, package: '@advui/core' },
   { ...fileDropzoneMeta, package: '@advui/core' },
   { ...fileUploadMeta, package: '@advui/core' },
+  { ...filterBarMeta, package: '@advui/data' },
   { ...fabMeta, package: '@advui/core' },
   { ...formMeta, package: '@advui/core' },
   { ...gridMeta, package: '@advui/core' },

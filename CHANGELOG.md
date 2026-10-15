@@ -9,6 +9,26 @@ one version.
 
 ### Added
 
+- **Filter Bar** (`@advui/data`): search, filter controls built from
+  definitions, active-filter chips, a count, and Apply and Reset, above a
+  table, list or dashboard. Each filter is a labelled Field around a core
+  control: `select` (Select, with an "All" option that unsets it),
+  `multi-select` (Multi Select), `boolean` (All, Yes, No: `false` stays apart
+  from unset), `date` (Date Picker), `date-range` (Date Range Picker; a range
+  that ends before it starts is marked invalid, never swapped), `text`
+  (Input) or `custom` (any control, with a typed value and its own chip
+  text). Option values go into the state as given, numbers included. The
+  state is one object (`value` / `defaultValue` / `onValueChange`): a missing
+  key reads as the filter's `defaultValue`, unset is always `null`, the search
+  text sits under `searchKey`, and keys that are not filters are passed back
+  untouched. `showApplyButton` keeps edits in a draft until Apply
+  (`onApply`); Reset (`onReset`) and chip removal go back to the defaults and
+  apply at once. `collapsible` puts filters marked `advanced` behind a "More
+  filters" button that counts the active ones. `layout` (`horizontal`,
+  `vertical`, `responsive`), `size`, `variant` (`default`, `outline`,
+  `filled`, `ghost`), `showLabels`, `leading` / `trailing`, `locale` and
+  `labels` for translation; style props override the variant. Filter Bar
+  never fetches or filters data itself.
 - **Toolbar**: a row or column of related controls (actions, filters,
   formatting). Controls go in as children, unwrapped, or in `leading`,
   `center` and `trailing` regions: the center takes the free space, else

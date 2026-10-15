@@ -3,7 +3,8 @@
 Components for showing and working with structured data in
 [Adv UI](https://github.com/zinmin232/advui), on web, iOS and Android:
 Table, Data Table (sorting, selection, pagination), Data Grid (editable cells),
-Tree View, Timeline, Stat and KPI Card.
+Filter Bar (search, filters, active-filter chips), Tree View, Timeline, Stat
+and KPI Card.
 
 ```bash
 pnpm add @advui/data @advui/core @advui/theme @advui/icons tamagui
@@ -24,7 +25,8 @@ The components render inside the app's `UniversalProvider` from
 `@advui/core`, which is a peer dependency, as are `react`, `react-native` and
 `tamagui`. No other libraries are added.
 
-**Exports:** DataGrid, DataTable, KpiCard, Stat (with StatLabel, StatValue,
+**Exports:** DataGrid, DataTable, FilterBar (with its filter definition and
+state types), KpiCard, Stat (with StatLabel, StatValue,
 StatHelpText, StatFrame), Table (with its frames), Timeline (with its parts),
 TreeView, `flattenTree`, and their prop types.
 

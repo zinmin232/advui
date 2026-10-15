@@ -48,8 +48,8 @@ interface Structure {
   element?: ReactNode | ((values: Values) => ReactNode)
   code?: string | ((values: Values) => string)
   /** Props the controls do not set, such as a footer, and how they read in the JSX. */
-  props?: Record<string, unknown>
-  propsCode?: string[]
+  props?: Record<string, unknown> | ((values: Values) => Record<string, unknown>)
+  propsCode?: string[] | ((values: Values) => string[])
 }
 
 const invoices = [
@@ -57,6 +57,107 @@ const invoices = [
   ['INV-002', 'Pending', '$150.00'],
   ['INV-003', 'Unpaid', '$350.00'],
 ] as const
+
+type FilterSample = 'users' | 'orders' | 'transactions' | 'analytics'
+
+const statusOptions = [
+  { label: 'Active', value: 'active' },
+  { label: 'Inactive', value: 'inactive' },
+  { label: 'Pending', value: 'pending' },
+]
+
+/** Filter Bar's playground samples: user management, a data table, transactions, analytics. */
+const filterSamples: Record<
+  FilterSample,
+  {
+    filters: Data.FilterDefinition[]
+    defaultValue: Data.FilterState
+    /** `defaultValue` as it reads in the JSX. */
+    defaultValueCode: string
+  }
+> = {
+  users: {
+    filters: [
+      { key: 'status', label: 'Status', type: 'select', options: statusOptions },
+      {
+        key: 'department',
+        label: 'Department',
+        type: 'multi-select',
+        options: [
+          { label: 'Engineering', value: 'engineering' },
+          { label: 'Finance', value: 'finance' },
+          { label: 'Operations', value: 'operations' },
+        ],
+      },
+      { key: 'verified', label: 'Verified', type: 'boolean', advanced: true },
+    ],
+    defaultValue: { status: 'active', verified: false },
+    defaultValueCode: "{ status: 'active', verified: false }",
+  },
+  orders: {
+    filters: [
+      {
+        key: 'fulfilment',
+        label: 'Fulfilment',
+        type: 'select',
+        options: [
+          { label: 'Unfulfilled', value: 'unfulfilled' },
+          { label: 'Shipped', value: 'shipped' },
+          { label: 'Delivered', value: 'delivered' },
+        ],
+      },
+      { key: 'placed', label: 'Placed', type: 'date' },
+      { key: 'reference', label: 'Reference', type: 'text', placeholder: 'ORD-…', advanced: true },
+    ],
+    defaultValue: { fulfilment: 'shipped' },
+    defaultValueCode: "{ fulfilment: 'shipped' }",
+  },
+  transactions: {
+    filters: [
+      { key: 'period', label: 'Period', type: 'date-range' },
+      {
+        key: 'channel',
+        label: 'Channel',
+        type: 'select',
+        options: [
+          { label: 'Card', value: 'card' },
+          { label: 'Bank transfer', value: 'bank' },
+          { label: 'Mobile wallet', value: 'wallet' },
+        ],
+      },
+      { key: 'flagged', label: 'Flagged', type: 'boolean', advanced: true },
+    ],
+    defaultValue: { period: { start: new Date(2026, 8, 1), end: new Date(2026, 8, 30) } },
+    defaultValueCode: '{ period: { start: new Date(2026, 8, 1), end: new Date(2026, 8, 30) } }',
+  },
+  analytics: {
+    filters: [
+      {
+        key: 'metric',
+        label: 'Metric',
+        type: 'select',
+        defaultValue: 'sessions',
+        options: [
+          { label: 'Sessions', value: 'sessions' },
+          { label: 'Conversions', value: 'conversions' },
+        ],
+      },
+      {
+        key: 'region',
+        label: 'Region',
+        type: 'multi-select',
+        options: [
+          { label: 'Yangon', value: 'yangon' },
+          { label: 'Mandalay', value: 'mandalay' },
+          { label: 'Naypyidaw', value: 'naypyidaw' },
+        ],
+      },
+      { key: 'day', label: 'Day', type: 'date', advanced: true },
+    ],
+    defaultValue: { region: ['yangon', 'mandalay'] },
+    defaultValueCode: "{ region: ['yangon', 'mandalay'] }",
+  },
+}
 
 /** Children for components whose content is structural rather than a text label. */
 const structuralChildren: Record<string, Structure> = {
@@ -227,6 +328,18 @@ const structuralChildren: Record<string, Structure> = {
     <IconButton size="sm" aria-label="Download" icon={<DownloadIcon />} />
   </Toolbar.Group>`,
   },
+  // No children: the filters come from the `sample` control, with a few set
+  // so chips, the count and Reset have something to show.
+  FilterBar: {
+    props: ({ sample }) => {
+      const { filters, defaultValue } = filterSamples[sample as FilterSample]
+      return { filters, defaultValue, width: '100%' }
+    },
+    propsCode: ({ sample }) => [
+      `filters={${sample}Filters}`,
+      `defaultValue={${filterSamples[sample as FilterSample].defaultValueCode}}`,
+    ],
+  },
   // No children: the dialog needs a trigger to open from the preview.
   ConfirmDialog: {
     props: {
@@ -298,6 +411,8 @@ const elementControls: Record<string, Record<string, { on?: ElementProp; off?: E
     // Read by the children above; not a prop.
     separators: {},
   },
+  // Picks the filters passed by `structuralChildren`; not a prop.
+  FilterBar: { sample: {} },
 }
 
 /** The props the controls set: element switches resolved, empty text left out. */
@@ -348,7 +463,7 @@ export function generateJsx(spec: PlaygroundSpec, values: Values): string {
     props.push(formatProp(control.prop, value))
   }
   const structural = structuralChildren[spec.component]
-  props.push(...(structural?.propsCode ?? []))
+  props.push(...(structural?.propsCode ? resolve(structural.propsCode, values) : []))
   const open =
     props.length > 2
       ? `<${spec.component}\n  ${props.join('\n  ')}\n`
@@ -436,7 +551,7 @@ export function Playground({
       {...spec.staticProps}
       {...(iconFor[spec.component] ? { icon: iconFor[spec.component] } : null)}
       {...controlProps(spec, values)}
-      {...structural?.props}
+      {...(structural?.props ? resolve(structural.props, values) : null)}
       {...(spec.component === 'Card' ? { width: '100%', maxWidth: '$80' } : null)}
       {...(spec.component === 'Grid' || spec.component === 'Table' ? { width: '100%' } : null)}
       {...(spec.component === 'List' || spec.component === 'ListItem' || spec.component === 'Alert'

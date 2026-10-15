@@ -26,8 +26,8 @@ On web, install `react-native-web`, alias `react-native` to it and transpile the
 setup.
 
 More components ship in packages built on this one, so apps install only what
-they use: `@advui/data` (Table, Data Table, Data Grid, Tree View, Timeline,
-Stat, KPI Card), `@advui/charts` (Bar, Line, Area and Pie Chart) and
+they use: `@advui/data` (Table, Data Table, Data Grid, Filter Bar, Tree View,
+Timeline, Stat, KPI Card), `@advui/charts` (Bar, Line, Area and Pie Chart) and
 `@advui/editor` (Rich Text Editor). They render inside the same
 `UniversalProvider`.
 

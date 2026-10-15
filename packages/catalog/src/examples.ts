@@ -89,6 +89,17 @@ import FieldForm from '../../ui/src/components/field/examples/form'
 import FileDropzoneBasic from '../../ui/src/components/file-dropzone/examples/basic'
 import FileUploadBasic from '../../ui/src/components/file-upload/examples/basic'
 import FileUploadMultiple from '../../ui/src/components/file-upload/examples/multiple'
+import FilterBarBasic from '../../data/src/components/filter-bar/examples/basic'
+import FilterBarDataTable from '../../data/src/components/filter-bar/examples/data-table'
+import FilterBarMultiSelect from '../../data/src/components/filter-bar/examples/multi-select'
+import FilterBarApply from '../../data/src/components/filter-bar/examples/apply'
+import FilterBarActiveFilters from '../../data/src/components/filter-bar/examples/active-filters'
+import FilterBarDashboard from '../../data/src/components/filter-bar/examples/dashboard'
+import FilterBarCustomContent from '../../data/src/components/filter-bar/examples/custom-content'
+import FilterBarCollapsible from '../../data/src/components/filter-bar/examples/collapsible'
+import FilterBarCustomFilter from '../../data/src/components/filter-bar/examples/custom-filter'
+import FilterBarCompact from '../../data/src/components/filter-bar/examples/compact'
+import FilterBarVariants from '../../data/src/components/filter-bar/examples/variants'
 import FabBasic from '../../ui/src/components/fab/examples/basic'
 import FabExtended from '../../ui/src/components/fab/examples/extended'
 import FormBasic from '../../ui/src/components/form/examples/basic'
@@ -400,6 +411,19 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'file-upload': {
     'basic': FileUploadBasic,
     'multiple': FileUploadMultiple,
+  },
+  'filter-bar': {
+    'basic': FilterBarBasic,
+    'data-table': FilterBarDataTable,
+    'multi-select': FilterBarMultiSelect,
+    'apply': FilterBarApply,
+    'active-filters': FilterBarActiveFilters,
+    'dashboard': FilterBarDashboard,
+    'custom-content': FilterBarCustomContent,
+    'collapsible': FilterBarCollapsible,
+    'custom-filter': FilterBarCustomFilter,
+    'compact': FilterBarCompact,
+    'variants': FilterBarVariants,
   },
   'fab': {
     'basic': FabBasic,

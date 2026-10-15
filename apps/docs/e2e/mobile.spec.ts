@@ -87,6 +87,40 @@ test('toolbar regions fit a phone without overlapping', async ({ page }) => {
   expect(frame.x + frame.width - (create.x + create.width)).toBeLessThan(20)
 })
 
+test('filter bar controls stay inside the bar on a phone', async ({ page }) => {
+  for (const [example, name] of [
+    ['dashboard', 'Filter transactions'],
+    ['active-filters', 'Filter users'],
+    ['collapsible', 'Filter invoices'],
+    ['custom-content', 'Filter users'],
+  ]) {
+    await page.goto(`/preview/filter-bar/${example}`)
+    await page.waitForLoadState('networkidle')
+    const bar = page.getByRole('group', { name, exact: true })
+    const frame = (await bar.boundingBox())!
+    const controls = bar.locator('button:visible, input:visible')
+    expect(await controls.count(), example).toBeGreaterThan(1)
+    for (let i = 0; i < (await controls.count()); i++) {
+      const box = (await controls.nth(i).boundingBox())!
+      expect(box.x, `${example} #${i} start`).toBeGreaterThanOrEqual(frame.x - 0.5)
+      expect(box.x + box.width, `${example} #${i} end`).toBeLessThanOrEqual(
+        frame.x + frame.width + 0.5,
+      )
+    }
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    )
+    expect(overflow, example).toBeLessThanOrEqual(1)
+  }
+  // `layout="responsive"` stacks full-width controls below the md breakpoint.
+  await page.goto('/preview/filter-bar/dashboard')
+  await page.waitForLoadState('networkidle')
+  const search = (await page.getByRole('searchbox').boundingBox())!
+  const period = (await page.getByRole('button', { name: 'Period', exact: true }).boundingBox())!
+  expect(period.y).toBeGreaterThan(search.y + search.height - 1)
+  expect(Math.abs(period.width - search.width)).toBeLessThan(2)
+})
+
 test('pages do not overflow horizontally on a phone', async ({ page }) => {
   for (const path of ['/', '/docs/components/select', '/examples/mobile-home']) {
     await page.goto(path)

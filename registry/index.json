@@ -143,6 +143,38 @@
       ]
     },
     {
+      "name": "filter-bar",
+      "title": "Filter Bar",
+      "type": "registry:component",
+      "description": "Search, filter controls built from definitions, active-filter chips, and Apply and Reset, above a table, list or dashboard.",
+      "category": "advanced",
+      "status": "beta",
+      "package": "@advui/data",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "autocomplete",
+        "badge",
+        "button",
+        "calendar",
+        "chip",
+        "collapsible",
+        "date-picker",
+        "date-range-picker",
+        "field",
+        "hooks",
+        "icon-button",
+        "input",
+        "multi-select",
+        "search",
+        "select",
+        "stack",
+        "typography",
+        "utils"
+      ]
+    },
+    {
       "name": "kpi-card",
       "title": "KPI Card",
       "type": "registry:component",
