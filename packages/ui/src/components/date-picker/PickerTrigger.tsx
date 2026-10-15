@@ -80,7 +80,9 @@ export const PickerTrigger = forwardRef<TamaguiElement, PickerTriggerProps>(
           size="sm"
           numberOfLines={1}
           flexShrink={1}
-          color={valueText ? '$foreground' : '$placeholderColor'}
+          // The placeholder is real text here, not an input's placeholder, so
+          // it needs body-text contrast: `$placeholderColor` is below 4.5:1.
+          color={valueText ? '$foreground' : '$mutedForeground'}
         >
           {valueText ?? placeholder}
         </Text>

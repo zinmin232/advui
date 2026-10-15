@@ -72,6 +72,19 @@ one version.
 - `Alert.Title` and `Alert.Description` no longer take a `variant` prop. It
   was undocumented: the alert sets their color, now through `color`.
 
+### Fixed
+
+- **Date Picker** and **Date Range Picker**: the placeholder of an empty
+  field ("Pick a date") is drawn in `$mutedForeground` instead of
+  `$placeholderColor`. It is text in a button, not an input's placeholder,
+  and failed the 4.5:1 contrast check (3.8:1 in the default theme).
+- **Date Range Picker**: a server-rendered field with a range no longer fails
+  hydration. Node's ICU puts thin spaces around the dash ("Oct 1 – 14, 2026")
+  and Chrome's does not, so React threw the server text away and rendered the
+  tree again. The field now shows plain spaces in place of thin and narrow
+  no-break ones, through **`plainSpaces(text)`**, a new `@advui/core` export
+  that Filter Bar's chips use too.
+
 ## [0.12.0] - 2026-10-06
 
 ### Added

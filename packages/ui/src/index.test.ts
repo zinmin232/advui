@@ -42,6 +42,7 @@ describe('@advui/core public API', () => {
       'UniversalProvider',
       'ariaState',
       'isTextContent',
+      'plainSpaces',
       'responsiveStyle',
       'Wrap',
       'useControllableState',
