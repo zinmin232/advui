@@ -495,6 +495,23 @@
       ]
     },
     {
+      "name": "checkbox-group",
+      "title": "Checkbox Group",
+      "type": "registry:component",
+      "description": "A labelled set of checkboxes that share one value, the list of checked options, with an optional Select All.",
+      "category": "forms",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": [
+        "checkbox",
+        "hooks",
+        "label",
+        "typography",
+        "utils"
+      ]
+    },
+    {
       "name": "checkbox",
       "title": "Checkbox",
       "type": "registry:component",
@@ -779,7 +796,8 @@
       "registryDependencies": [
         "hooks",
         "label",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {

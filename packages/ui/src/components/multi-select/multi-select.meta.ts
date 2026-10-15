@@ -67,5 +67,5 @@ export default defineMeta({
     ios: 'Opens a bottom sheet of checkbox rows; unpick there to remove a chip.',
     android: 'Opens a bottom sheet of checkbox rows; the back button closes it.',
   },
-  related: ['combobox', 'chip', 'select'],
+  related: ['combobox', 'chip', 'select', 'checkbox-group'],
 })

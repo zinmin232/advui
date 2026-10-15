@@ -128,8 +128,9 @@ the roadmap entry. Banner, Segmented Control, Avatar Group, Range Slider,
 Lightbox and Donut are not listed because Alert, Toggle Group, Avatar, Slider,
 Image Gallery and Pie Chart already cover them.
 
-Built so far (the table keeps them for reference): Link, and Input Group as
-slots on Input (`leading`, `trailing`, `leadingAddon`, `trailingAddon`).
+Built so far (the table keeps them for reference): Link, Input Group as
+slots on Input (`leading`, `trailing`, `leadingAddon`, `trailingAddon`), and
+Checkbox Group.
 
 | Phase | Package         | Components                                                                                                                                  |
 | ----- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |

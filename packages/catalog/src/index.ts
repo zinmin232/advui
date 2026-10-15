@@ -17,6 +17,7 @@ import buttonGroupMeta from '../../ui/src/components/button-group/button-group.m
 import calendarMeta from '../../ui/src/components/calendar/calendar.meta'
 import cardMeta from '../../ui/src/components/card/card.meta'
 import checkboxMeta from '../../ui/src/components/checkbox/checkbox.meta'
+import checkboxGroupMeta from '../../ui/src/components/checkbox-group/checkbox-group.meta'
 import chipMeta from '../../ui/src/components/chip/chip.meta'
 import circularProgressMeta from '../../ui/src/components/circular-progress/circular-progress.meta'
 import collapsibleMeta from '../../ui/src/components/collapsible/collapsible.meta'
@@ -148,6 +149,7 @@ export const components: CatalogComponent[] = [
   { ...calendarMeta, package: '@advui/core' },
   { ...cardMeta, package: '@advui/core' },
   { ...checkboxMeta, package: '@advui/core' },
+  { ...checkboxGroupMeta, package: '@advui/core' },
   { ...chipMeta, package: '@advui/core' },
   { ...circularProgressMeta, package: '@advui/core' },
   { ...collapsibleMeta, package: '@advui/core' },

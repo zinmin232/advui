@@ -90,5 +90,5 @@ export default defineMeta({
     { keys: 'Arrow keys', action: 'Moves focus and selection between items.' },
     { keys: 'Space', action: 'Selects the focused item.' },
   ],
-  related: ['checkbox', 'select'],
+  related: ['checkbox-group', 'checkbox', 'select'],
 })
