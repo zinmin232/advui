@@ -188,6 +188,26 @@ describe('native rendering', () => {
     expect(onChangeText).toHaveBeenCalledWith('hi@example.com')
   })
 
+  it('Input slots: addon text joins the hint, and a slot button stays reachable', async () => {
+    const onCopy = jest.fn()
+    await renderNative(
+      <Field label="Weight" description="Without the box.">
+        <Input
+          placeholder="0"
+          leading={<SearchIcon />}
+          trailing={<IconButton icon={<PlusIcon />} aria-label="Add" onPress={onCopy} />}
+          trailingAddon="kg"
+        />
+      </Field>,
+    )
+    const input = screen.getByPlaceholderText('0')
+    expect(input.props.accessibilityHint).toBe('Without the box. kg')
+    expect(screen.getByLabelText('Weight')).toBe(input)
+    await fireEvent.press(screen.getByRole('button', { name: 'Add' }))
+    expect(onCopy).toHaveBeenCalledTimes(1)
+    await fireEvent.changeText(input, '12')
+  })
+
   it('Card, typography, badge, avatar and alert compose in light and dark mode', async () => {
     for (const mode of ['light', 'dark'] as const) {
       const { unmount } = await renderNative(

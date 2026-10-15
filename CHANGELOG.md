@@ -20,6 +20,24 @@ one version.
   `rel="noopener noreferrer"` and ends the name with "(opens in a new tab)"
   (`labels.external` translates it). `tone` (`primary`, `muted`, `inherit`)
   and `underline` (`always` by default, `hover`, `none`).
+- **Input slots** (the roadmap's Input Group): `leading` and `trailing` put
+  an icon, a small button or short text ("$", "kg") inside the field, and
+  `leadingAddon` and `trailingAddon` join shaded boxes to it ("https://",
+  ".com"). Icons and buttons sit in a square the height of the field. With
+  slots, the focus ring and the invalid and disabled styles cover the whole
+  box, layout and box props (`width`, `margin`, `flex`, `backgroundColor`,
+  `border*`) apply to the box, and pressing an icon or addon focuses the
+  field. Slot and addon text is read with the field: in its description on
+  web (`aria-describedby`, after any help text), in its hint on iOS and
+  Android. An Input without slots renders exactly as before. Pass `null` for
+  a slot that is empty for now, so the field is not re-created while typing.
+
+### Changed
+
+- **Password Input** and **Search** are built on Input's slots instead of
+  positioning their buttons and icon over the field. They behave as before;
+  the text and buttons sit a few pixels differently, and Password Input
+  accepts `leading` and the addons.
 
 ## [0.13.0] - 2026-10-15
 

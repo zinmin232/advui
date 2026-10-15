@@ -903,11 +903,13 @@
       "name": "input",
       "title": "Input",
       "type": "registry:component",
-      "description": "A single-line text field.",
+      "description": "A single-line text field, with optional icons, buttons or text inside it and addons joined to it.",
       "category": "forms",
       "status": "stable",
       "package": "@advui/core",
-      "dependencies": [],
+      "dependencies": [
+        "@advui/icons"
+      ],
       "registryDependencies": [
         "hooks",
         "utils"

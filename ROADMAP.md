@@ -128,7 +128,8 @@ the roadmap entry. Banner, Segmented Control, Avatar Group, Range Slider,
 Lightbox and Donut are not listed because Alert, Toggle Group, Avatar, Slider,
 Image Gallery and Pie Chart already cover them.
 
-Built so far (the table keeps them for reference): Link.
+Built so far (the table keeps them for reference): Link, and Input Group as
+slots on Input (`leading`, `trailing`, `leadingAddon`, `trailingAddon`).
 
 | Phase | Package         | Components                                                                                                                                  |
 | ----- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -139,7 +140,8 @@ Built so far (the table keeps them for reference): Link.
 
 Notes for whoever picks these up:
 
-- **Input Group** may land as prefix and suffix slots on Input rather than a
+- **Input Group** landed as slots on Input; Password Input and Search use them.
+  The original note: it may land as prefix and suffix slots on Input rather than a
   new component; Number Input and Password Input should use the same slots.
 - **Tags Input** takes free text. Multi Select, which picks from a fixed list,
   stays as it is; both can render Chip.
