@@ -20,6 +20,7 @@ import { Button } from './button/Button'
 import { Calendar } from './calendar/Calendar'
 import { ButtonGroup } from './button-group/ButtonGroup'
 import { Card } from './card/Card'
+import { CheckboxGroup } from './checkbox-group/CheckboxGroup'
 import { Checkbox } from './checkbox/Checkbox'
 import { Chip } from './chip/Chip'
 import { CircularProgress } from './circular-progress/CircularProgress'
@@ -177,6 +178,35 @@ describe('native rendering', () => {
     expect(onSwitch).toHaveBeenCalledWith(true)
     await fireEvent.press(screen.getByRole('checkbox', { name: 'Terms' }))
     expect(onCheck).toHaveBeenCalledWith(true)
+  })
+
+  it('CheckboxGroup names items by their labels and reads the group as their hint', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <Field label="Notifications" description="Pick where we reach you.">
+        <CheckboxGroup defaultValue={['email']} onValueChange={onValueChange}>
+          <CheckboxGroup.SelectAll label="All" />
+          <CheckboxGroup.Item value="email" label="Email" description="Daily digest" />
+          <CheckboxGroup.Item value="sms" label="SMS" />
+        </CheckboxGroup>
+      </Field>,
+    )
+    const email = screen.getByRole('checkbox', { name: 'Email' })
+    expect(email).toBeChecked()
+    expect(email.props.accessibilityHint).toBe(
+      'Daily digest. Notifications. Pick where we reach you.',
+    )
+    // The visible label and description are not read a second time.
+    expect(screen.getByText('Email', { includeHiddenElements: true })).not.toBeVisible()
+    expect(screen.getByText('Daily digest', { includeHiddenElements: true })).not.toBeVisible()
+    expect(screen.getByRole('checkbox', { name: 'All' })).toBePartiallyChecked()
+
+    await fireEvent.press(screen.getByRole('checkbox', { name: 'SMS' }))
+    expect(onValueChange).toHaveBeenLastCalledWith(['email', 'sms'])
+    expect(screen.getByRole('checkbox', { name: 'All' })).toBeChecked()
+    await fireEvent.press(screen.getByRole('checkbox', { name: 'All' }))
+    expect(onValueChange).toHaveBeenLastCalledWith([])
+    expect(screen.getByRole('checkbox', { name: 'Email' })).not.toBeChecked()
   })
 
   it('Input reports text changes', async () => {

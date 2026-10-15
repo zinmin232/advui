@@ -31,6 +31,16 @@ one version.
   web (`aria-describedby`, after any help text), in its hint on iOS and
   Android. An Input without slots renders exactly as before. Pass `null` for
   a slot that is empty for now, so the field is not re-created while typing.
+- **Checkbox Group**: checkboxes that share one value, the list of checked
+  options (`value`, `defaultValue`, `onValueChange`). `CheckboxGroup.Item`
+  takes a `label` and a `description`, or none for your own layout.
+  `CheckboxGroup.SelectAll` checks or clears every enabled item and is mixed
+  while only some are checked. `orientation` (`vertical`, or `horizontal` in a
+  row that wraps), `size`, `disabled` and `invalid` apply to every item, and
+  on web each checked item submits its value under the group's `name`. It is
+  a `role="group"`; inside a Field the field's label names it and the error
+  marks every box invalid. On iOS and Android, where screen readers have no
+  group names, each item reads the group's name and help text as its hint.
 
 ### Changed
 

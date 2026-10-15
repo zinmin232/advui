@@ -40,6 +40,7 @@ describe('@advui/core public API', () => {
       'ListItem',
       'Toolbar',
       'Link',
+      'CheckboxGroup',
       'UniversalProvider',
       'ariaState',
       'isTextContent',

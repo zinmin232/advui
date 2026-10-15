@@ -348,6 +348,7 @@ for (const path of [
   '/docs/components/list-item',
   '/docs/components/toolbar',
   '/docs/components/link',
+  '/docs/components/checkbox-group',
   '/docs/components/timeline',
   '/docs/components/image',
   '/docs/components/table',

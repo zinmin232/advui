@@ -43,7 +43,7 @@ export default defineMeta({
     {
       name: 'Field',
       description:
-        'A View that takes every view prop (`padding`, `width`, `backgroundColor`, `theme`, media props, `testID`…). It tells the control inside it, at any depth, its id, state and descriptions through context, and never clones its children. Every core form control reads it: Input, Textarea, Select, Checkbox, Switch, Radio Group, Password, Number and OTP Input, the date and time pickers, Combobox, Autocomplete, Multi Select, File Upload and Rich Text Editor.',
+        'A View that takes every view prop (`padding`, `width`, `backgroundColor`, `theme`, media props, `testID`…). It tells the control inside it, at any depth, its id, state and descriptions through context, and never clones its children. Every core form control reads it: Input, Textarea, Select, Checkbox, Checkbox Group, Switch, Radio Group, Password, Number and OTP Input, the date and time pickers, Combobox, Autocomplete, Multi Select, File Upload and Rich Text Editor.',
       props: [
         {
           name: 'children',
@@ -189,7 +189,7 @@ export default defineMeta({
     { name: 'form', title: 'In a Form' },
   ],
   accessibility: [
-    'The label targets the control (`htmlFor` ↔ `id`), so clicking it focuses the control. A Radio Group is named with `aria-labelledby` instead.',
+    'The label targets the control (`htmlFor` ↔ `id`), so clicking it focuses the control. A Radio Group or Checkbox Group is named with `aria-labelledby` instead.',
     'Help and error text are linked with `aria-describedby` on web (error first). On native, the text of the label names the control, the help and error text become its hint, and the visible label is hidden from screen readers so it is not read twice.',
     'An error sets `aria-invalid` on the control; the message is text, not just a red border.',
     '`required` sets `aria-required` on the control, so screen readers say "required"; the asterisk itself is hidden from them. "(optional)" is part of the label.',

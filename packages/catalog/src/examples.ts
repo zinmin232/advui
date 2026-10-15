@@ -47,6 +47,9 @@ import CardVariants from '../../ui/src/components/card/examples/variants'
 import CardInteractive from '../../ui/src/components/card/examples/interactive'
 import CheckboxBasic from '../../ui/src/components/checkbox/examples/basic'
 import CheckboxIndeterminate from '../../ui/src/components/checkbox/examples/indeterminate'
+import CheckboxGroupBasic from '../../ui/src/components/checkbox-group/examples/basic'
+import CheckboxGroupSelectAll from '../../ui/src/components/checkbox-group/examples/select-all'
+import CheckboxGroupField from '../../ui/src/components/checkbox-group/examples/field'
 import ChipFilter from '../../ui/src/components/chip/examples/filter'
 import ChipInput from '../../ui/src/components/chip/examples/input'
 import CircularProgressBasic from '../../ui/src/components/circular-progress/examples/basic'
@@ -334,6 +337,11 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'checkbox': {
     'basic': CheckboxBasic,
     'indeterminate': CheckboxIndeterminate,
+  },
+  'checkbox-group': {
+    'basic': CheckboxGroupBasic,
+    'select-all': CheckboxGroupSelectAll,
+    'field': CheckboxGroupField,
   },
   'chip': {
     'filter': ChipFilter,

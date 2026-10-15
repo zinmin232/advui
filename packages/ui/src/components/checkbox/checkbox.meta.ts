@@ -95,5 +95,5 @@ export default defineMeta({
     ios: 'Pressable with checkbox semantics (iOS has no native checkbox).',
     android: 'Pressable with checkbox semantics announced by TalkBack.',
   },
-  related: ['switch', 'radio-group', 'label'],
+  related: ['checkbox-group', 'switch', 'radio-group', 'label'],
 })

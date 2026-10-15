@@ -16,6 +16,7 @@ import buttonGroupMeta from '../components/button-group/button-group.meta'
 import calendarMeta from '../components/calendar/calendar.meta'
 import cardMeta from '../components/card/card.meta'
 import checkboxMeta from '../components/checkbox/checkbox.meta'
+import checkboxGroupMeta from '../components/checkbox-group/checkbox-group.meta'
 import chipMeta from '../components/chip/chip.meta'
 import circularProgressMeta from '../components/circular-progress/circular-progress.meta'
 import collapsibleMeta from '../components/collapsible/collapsible.meta'
@@ -106,6 +107,7 @@ export const components: ComponentMeta[] = [
   calendarMeta,
   cardMeta,
   checkboxMeta,
+  checkboxGroupMeta,
   chipMeta,
   circularProgressMeta,
   collapsibleMeta,

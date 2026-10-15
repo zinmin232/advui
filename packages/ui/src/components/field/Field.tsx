@@ -2,6 +2,7 @@ import { type ReactNode, forwardRef, isValidElement, useId, useMemo } from 'reac
 import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
 import { FieldContext, type FieldState } from '../../hooks/useFieldControl'
 import { useParentForm } from '../../hooks/useParentForm'
+import { plainText } from '../../utils/plainText'
 import { Label } from '../label/Label'
 import { Text } from '../typography/Text'
 
@@ -70,17 +71,6 @@ export interface FieldProps extends Omit<FrameProps, 'children' | 'id' | 'gap' |
 }
 
 const hasContent = (node: ReactNode) => node != null && node !== false && node !== ''
-
-// The text inside a node, like a browser's accessible name: native has no
-// aria-labelledby or aria-describedby, so the field passes text instead.
-function textOf(node: ReactNode): string {
-  if (typeof node === 'string' || typeof node === 'number') return String(node)
-  if (Array.isArray(node)) return node.map(textOf).join('')
-  if (isValidElement<{ children?: ReactNode }>(node)) return textOf(node.props.children)
-  return ''
-}
-
-const plainText = (node: ReactNode) => textOf(node).replace(/\s+/g, ' ').trim()
 
 /**
  * Label, control, help text and error message wired together. The field tells
