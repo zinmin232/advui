@@ -3,7 +3,7 @@ import { fireEvent, screen } from '@testing-library/react-native'
 import { PlusIcon } from '@advui/icons'
 import { StyleSheet } from 'react-native'
 import { renderNative } from '../test/native-utils'
-import { DataGrid, DataTable, KpiCard, Stat, Table, Timeline, TreeView } from './index'
+import { DataGrid, DataTable, FilterBar, KpiCard, Stat, Table, Timeline, TreeView } from './index'
 
 // These run the React Native code path (react-native + Tamagui native builds,
 // `.native.tsx` platform files): the same code Expo ships to iOS and Android.
@@ -109,6 +109,56 @@ describe('@advui/data native rendering', () => {
     await fireEvent.press(screen.getByRole('button', { name: 'Page 2' }))
     expect(screen.getByText('Chin')).toBeOnTheScreen()
     expect(screen.queryByText('Bago')).toBeNull()
+  })
+
+  it('FilterBar names its controls and its chips and Reset change the filters', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <FilterBar
+        searchable
+        filters={[
+          {
+            key: 'status',
+            label: 'Status',
+            type: 'select',
+            options: [{ label: 'Active', value: 'active' }],
+          },
+          { key: 'reference', label: 'Reference', type: 'text' },
+          { key: 'created', label: 'Created', type: 'date' },
+        ]}
+        defaultValue={{ status: 'active', reference: 'INV' }}
+        onValueChange={onValueChange}
+        showActiveFilters
+        showResetButton
+      />,
+    )
+    // The Field passes each label to its control as its name on native.
+    expect(screen.getByLabelText('Search')).toBeOnTheScreen()
+    const reference = screen.getByLabelText('Reference')
+    expect(reference.props.value).toBe('INV')
+    expect(screen.getByRole('button', { name: 'Created' })).toBeOnTheScreen()
+    await fireEvent.changeText(reference, 'INV-7')
+    expect(onValueChange).toHaveBeenLastCalledWith({
+      status: 'active',
+      reference: 'INV-7',
+      created: null,
+      search: null,
+    })
+    await fireEvent.press(screen.getByRole('button', { name: 'Remove Status: Active' }))
+    expect(onValueChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ status: null, reference: 'INV-7' }),
+    )
+    expect(screen.queryByRole('button', { name: 'Remove Status: Active' })).toBeNull()
+    await fireEvent.press(screen.getByRole('button', { name: 'Clear Reference' }))
+    expect(screen.getByLabelText('Reference').props.value).toBe('')
+    await fireEvent.changeText(screen.getByLabelText('Search'), 'ada')
+    await fireEvent.press(screen.getByRole('button', { name: 'Reset' }))
+    expect(onValueChange).toHaveBeenLastCalledWith({
+      status: null,
+      reference: null,
+      created: null,
+      search: null,
+    })
   })
 
   it('TreeView items are buttons that report expanded and selected', async () => {

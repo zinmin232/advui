@@ -1,7 +1,7 @@
 {
   "name": "@advui/data",
   "version": "0.12.0",
-  "description": "Data components for Adv UI: Table, Data Table, Data Grid, Tree View, Timeline, Stat and KPI Card, on web, iOS and Android.",
+  "description": "Data components for Adv UI: Table, Data Table, Data Grid, Filter Bar, Tree View, Timeline, Stat and KPI Card, on web, iOS and Android.",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -1,6 +1,7 @@
 import { forwardRef } from 'react'
 import type { TamaguiElement } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
+import { plainSpaces } from '../../utils/plainSpaces'
 import { Calendar } from '../calendar/Calendar'
 import type { DateRange } from '../calendar/dates'
 import type { DatePickerProps } from '../date-picker/DatePicker'
@@ -56,12 +57,16 @@ export const DateRangePicker = forwardRef<TamaguiElement, DateRangePickerProps>(
     })
     const format = new Intl.DateTimeFormat(locale, formatOptions)
     const text = range.start
-      ? range.end
-        ? // Hermes may lack formatRange.
-          typeof format.formatRange === 'function'
-          ? format.formatRange(range.start, range.end)
-          : `${format.format(range.start)} – ${format.format(range.end)}`
-        : `${format.format(range.start)} –`
+      ? // Node's ICU puts thin spaces around the dash and Chrome's does not,
+        // which would fail hydration.
+        plainSpaces(
+          range.end
+            ? // Hermes may lack formatRange.
+              typeof format.formatRange === 'function'
+              ? format.formatRange(range.start, range.end)
+              : `${format.format(range.start)} – ${format.format(range.end)}`
+            : `${format.format(range.start)} –`,
+        )
       : null
 
     return (

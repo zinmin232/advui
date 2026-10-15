@@ -2,6 +2,7 @@
 import type { ComponentMeta } from '@advui/core/meta'
 import dataGridMeta from '../components/data-grid/data-grid.meta'
 import dataTableMeta from '../components/data-table/data-table.meta'
+import filterBarMeta from '../components/filter-bar/filter-bar.meta'
 import kpiCardMeta from '../components/kpi-card/kpi-card.meta'
 import statMeta from '../components/stat/stat.meta'
 import tableMeta from '../components/table/table.meta'
@@ -12,6 +13,7 @@ import treeViewMeta from '../components/tree-view/tree-view.meta'
 export const components: ComponentMeta[] = [
   dataGridMeta,
   dataTableMeta,
+  filterBarMeta,
   kpiCardMeta,
   statMeta,
   tableMeta,

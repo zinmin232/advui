@@ -6,6 +6,7 @@ describe('@advui/data public API', () => {
     expect(Object.keys(data).sort()).toEqual([
       'DataGrid',
       'DataTable',
+      'FilterBar',
       'KpiCard',
       'Stat',
       'StatFrame',

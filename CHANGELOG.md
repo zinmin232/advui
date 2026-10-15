@@ -9,6 +9,26 @@ one version.
 
 ### Added
 
+- **Filter Bar** (`@advui/data`): search, filter controls built from
+  definitions, active-filter chips, a count, and Apply and Reset, above a
+  table, list or dashboard. Each filter is a labelled Field around a core
+  control: `select` (Select, with an "All" option that unsets it),
+  `multi-select` (Multi Select), `boolean` (All, Yes, No: `false` stays apart
+  from unset), `date` (Date Picker), `date-range` (Date Range Picker; a range
+  that ends before it starts is marked invalid, never swapped), `text`
+  (Input) or `custom` (any control, with a typed value and its own chip
+  text). Option values go into the state as given, numbers included. The
+  state is one object (`value` / `defaultValue` / `onValueChange`): a missing
+  key reads as the filter's `defaultValue`, unset is always `null`, the search
+  text sits under `searchKey`, and keys that are not filters are passed back
+  untouched. `showApplyButton` keeps edits in a draft until Apply
+  (`onApply`); Reset (`onReset`) and chip removal go back to the defaults and
+  apply at once. `collapsible` puts filters marked `advanced` behind a "More
+  filters" button that counts the active ones. `layout` (`horizontal`,
+  `vertical`, `responsive`), `size`, `variant` (`default`, `outline`,
+  `filled`, `ghost`), `showLabels`, `leading` / `trailing`, `locale` and
+  `labels` for translation; style props override the variant. Filter Bar
+  never fetches or filters data itself.
 - **Toolbar**: a row or column of related controls (actions, filters,
   formatting). Controls go in as children, unwrapped, or in `leading`,
   `center` and `trailing` regions: the center takes the free space, else
@@ -71,6 +91,19 @@ one version.
   `List` accepts `size="lg"`.
 - `Alert.Title` and `Alert.Description` no longer take a `variant` prop. It
   was undocumented: the alert sets their color, now through `color`.
+
+### Fixed
+
+- **Date Picker** and **Date Range Picker**: the placeholder of an empty
+  field ("Pick a date") is drawn in `$mutedForeground` instead of
+  `$placeholderColor`. It is text in a button, not an input's placeholder,
+  and failed the 4.5:1 contrast check (3.8:1 in the default theme).
+- **Date Range Picker**: a server-rendered field with a range no longer fails
+  hydration. Node's ICU puts thin spaces around the dash ("Oct 1 – 14, 2026")
+  and Chrome's does not, so React threw the server text away and rendered the
+  tree again. The field now shows plain spaces in place of thin and narrow
+  no-break ones, through **`plainSpaces(text)`**, a new `@advui/core` export
+  that Filter Bar's chips use too.
 
 ## [0.12.0] - 2026-10-06
 

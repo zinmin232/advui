@@ -28,6 +28,7 @@ import { Combobox } from './combobox/Combobox'
 import { CommandPalette } from './command-palette/CommandPalette'
 import { ConfirmDialog } from './confirm-dialog/ConfirmDialog'
 import { DatePicker } from './date-picker/DatePicker'
+import { DateRangePicker } from './date-range-picker/DateRangePicker'
 import { ContextMenu } from './context-menu/ContextMenu'
 import { Dialog } from './dialog/Dialog'
 import { Drawer } from './drawer/Drawer'
@@ -799,6 +800,20 @@ describe('native rendering', () => {
     await fireEvent.press(screen.getByRole('button', { name: 'Due date' }))
     await fireEvent.press(await screen.findByRole('button', { name: /October 20, 2026/ }))
     expect(onValueChange).toHaveBeenCalledWith(new Date(2026, 9, 20))
+  })
+
+  it('DateRangePicker reads its range with plain spaces', async () => {
+    await renderNative(
+      <DateRangePicker
+        aria-label="Stay"
+        locale="en-US"
+        defaultValue={{ start: new Date(2026, 9, 1), end: new Date(2026, 9, 14) }}
+      />,
+    )
+    // Newer ICU puts thin spaces around the dash; the field shows plain ones.
+    expect(screen.getByRole('button', { name: 'Stay' })).toHaveAccessibilityValue({
+      text: 'Oct 1 – 14, 2026',
+    })
   })
 
   it('Field names its control and reads help and error text as the hint', async () => {

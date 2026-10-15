@@ -353,6 +353,7 @@ for (const path of [
   '/docs/components/pagination',
   '/docs/components/stepper',
   '/docs/components/data-table',
+  '/docs/components/filter-bar',
   '/docs/components/tree-view',
   '/docs/components/navigation-menu',
   '/docs/components/sidebar',
@@ -593,6 +594,40 @@ test('toolbar is one Tab stop and the arrow keys cross its toggle groups', async
   await page.keyboard.press('Tab')
   await expect(toolbar.locator(':focus')).toHaveCount(0)
   expect(await seriousViolations(page)).toEqual([])
+})
+
+test('filter bar chips remove one filter each and Reset clears the rest', async ({ page }) => {
+  await page.goto('/preview/filter-bar/active-filters')
+  await page.waitForLoadState('networkidle')
+  const bar = page.getByRole('group', { name: 'Filter users', exact: true })
+  const chips = bar.getByRole('group', { name: 'Active filters' })
+  await expect(bar.getByText('4 filters applied')).toBeVisible()
+  await chips.getByRole('button', { name: 'Remove Verified: No' }).focus()
+  await page.keyboard.press('Enter')
+  // Focus moves to the chip that took the removed one's place.
+  await expect(chips.getByRole('button', { name: 'Remove Joined: Oct 1, 2026' })).toBeFocused()
+  await expect(bar.getByText('3 filters applied')).toBeVisible()
+  await expect(bar.getByRole('combobox', { name: 'Verified' })).toHaveText('All')
+  const reset = bar.getByRole('button', { name: 'Reset' })
+  await reset.click()
+  await expect(chips).toBeHidden()
+  await expect(reset).toBeDisabled()
+  expect(await seriousViolations(page)).toEqual([])
+})
+
+test('filter bar keeps edits as a draft until Apply', async ({ page }) => {
+  await page.goto('/preview/filter-bar/apply')
+  await page.waitForLoadState('networkidle')
+  const bar = page.getByRole('group', { name: 'Filter orders', exact: true })
+  const apply = bar.getByRole('button', { name: 'Apply' })
+  await expect(apply).toBeDisabled()
+  await bar.getByRole('combobox', { name: 'Type' }).click()
+  await page.getByRole('option', { name: 'Refund' }).click()
+  await expect(apply).toBeEnabled()
+  await expect(page.getByText('Change a filter, then press Apply.')).toBeVisible()
+  await apply.click()
+  await expect(page.getByText('Applied: refund, with dates.')).toBeVisible()
+  await expect(apply).toBeDisabled()
 })
 
 test('snackbar announces politely and its action works from the keyboard', async ({ page }) => {

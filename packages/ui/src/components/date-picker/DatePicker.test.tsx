@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { renderWithProvider, screen } from '../../../test/utils'
 import { Field } from '../field/Field'
+import { Text } from '../typography/Text'
 import { DatePicker } from './DatePicker'
 
 describe('DatePicker', () => {
@@ -13,6 +14,19 @@ describe('DatePicker', () => {
     const trigger = screen.getByRole('button', { name: 'Due date' })
     expect(trigger).toHaveAttribute('aria-haspopup', 'dialog')
     expect(trigger).toHaveAccessibleDescription('Oct 14, 2026')
+  })
+
+  it('shows its placeholder in a text color with body-text contrast', () => {
+    renderWithProvider(
+      <>
+        <DatePicker aria-label="Due date" placeholder="Pick a date" />
+        <Text color="$mutedForeground">Reference</Text>
+      </>,
+    )
+    // Real text, not an input placeholder, so it must meet 4.5:1 like any text.
+    expect(getComputedStyle(screen.getByText('Pick a date')).color).toBe(
+      getComputedStyle(screen.getByText('Reference')).color,
+    )
   })
 
   it('opens a calendar, picks a day and closes', async () => {
