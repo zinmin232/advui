@@ -7,6 +7,8 @@ one version.
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-10-15
+
 ### Added
 
 - **Filter Bar** (`@advui/data`): search, filter controls built from
