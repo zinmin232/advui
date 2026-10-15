@@ -13,18 +13,21 @@ import {
   type GetProps,
   type TamaguiElement,
   View,
-  XStack,
-  YStack,
   isWeb,
   styled,
   withStaticProperties,
 } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
 import { FieldContext, type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
-import { plainText } from '../../utils/plainText'
+import { sentences } from '../../utils/plainText'
 import { Checkbox, type CheckboxProps, type CheckedState } from '../checkbox/Checkbox'
-import { Label } from '../label/Label'
-import { Text } from '../typography/Text'
+import {
+  type ChoiceText,
+  ChoiceRow,
+  choiceControlStyle,
+  choiceProps,
+  hasChoiceText,
+} from '../label/ChoiceRow'
 
 export type CheckboxGroupOrientation = 'vertical' | 'horizontal'
 
@@ -52,16 +55,6 @@ function useGroup(part: string) {
   if (!group) throw new Error(`CheckboxGroup.${part} must be rendered inside <CheckboxGroup>.`)
   return group
 }
-
-const hasContent = (node: ReactNode) => node != null && node !== false && node !== ''
-
-// Texts read one after another in a hint, each ending like a sentence so the
-// screen reader pauses between them.
-const sentences = (...texts: Array<string | undefined>) =>
-  texts
-    .filter(Boolean)
-    .map((text) => (/[.!?:]$/.test(text!) ? text : `${text}.`))
-    .join(' ') || undefined
 
 const CheckboxGroupFrame = styled(View, {
   name: 'CheckboxGroup',
@@ -197,12 +190,10 @@ const CheckboxGroupRoot = forwardRef<TamaguiElement, CheckboxGroupProps>(
   },
 )
 
-interface ChoiceProps extends Omit<CheckboxProps, 'invalid' | 'size'> {
+interface ChoiceProps extends Omit<CheckboxProps, 'invalid' | 'size'>, ChoiceText {
   id: string
   'aria-describedby'?: string
   size?: 'sm' | 'md'
-  label?: ReactNode
-  description?: ReactNode
   // Not `group`: Tamagui views take a `group` prop of their own.
   groupState: GroupState
 }
@@ -214,15 +205,8 @@ const Choice = forwardRef<TamaguiElement, ChoiceProps>(function Choice(
 ) {
   const checkboxSize = size ?? group.size
   const disabled = group.disabled || Boolean(disabledProp)
-  const hasLabel = hasContent(label)
-  const hasDescription = hasContent(description)
-  const descriptionId = `${id}-description`
-  const labelText = hasLabel ? plainText(label) || undefined : undefined
-  const descriptionText = hasDescription ? plainText(description) || undefined : undefined
-  const describedBy = [hasDescription ? descriptionId : '', props['aria-describedby'] ?? '']
-    .filter(Boolean)
-    .join(' ')
-
+  const text = { label, description }
+  const withText = hasChoiceText(text)
   const checkbox = (
     <Checkbox
       ref={ref}
@@ -230,43 +214,16 @@ const Choice = forwardRef<TamaguiElement, ChoiceProps>(function Choice(
       size={checkboxSize}
       disabled={disabled}
       invalid={group.invalid}
-      {...(hasLabel || hasDescription
-        ? // Lines the box up with the first line of the label.
-          { flexShrink: 0, ...(checkboxSize === 'sm' && { marginTop: '$0.5' as const }) }
-        : null)}
+      {...(withText && choiceControlStyle(checkboxSize))}
       {...props}
-      {...(isWeb
-        ? describedBy && { 'aria-describedby': describedBy }
-        : {
-            'aria-label': props['aria-label'] ?? labelText,
-            accessibilityHint: props.accessibilityHint ?? sentences(descriptionText, group.hint),
-          })}
+      {...choiceProps(id, text, props, group.hint)}
     />
   )
-  if (!hasLabel && !hasDescription) return checkbox
-
+  if (!withText) return checkbox
   return (
-    <XStack gap="$2" alignItems="flex-start">
+    <ChoiceRow id={id} {...text} disabled={disabled}>
       {checkbox}
-      {/* Native: the checkbox already carries these texts as its name and hint. */}
-      <YStack flexShrink={1} gap="$0.5" opacity={disabled ? 0.6 : 1}>
-        {hasLabel ? (
-          <Label htmlFor={id} aria-hidden={(!isWeb && labelText !== undefined) || undefined}>
-            {label}
-          </Label>
-        ) : null}
-        {hasDescription ? (
-          <Text
-            id={descriptionId}
-            size="sm"
-            tone="muted"
-            aria-hidden={(!isWeb && descriptionText !== undefined) || undefined}
-          >
-            {description}
-          </Text>
-        ) : null}
-      </YStack>
-    </XStack>
+    </ChoiceRow>
   )
 })
 

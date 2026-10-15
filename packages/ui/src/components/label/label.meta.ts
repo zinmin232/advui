@@ -9,7 +9,11 @@ export default defineMeta({
   since: '0.1.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Label'],
-  files: ['components/label/Label.tsx', 'components/label/index.ts'],
+  files: [
+    'components/label/Label.tsx',
+    'components/label/ChoiceRow.tsx',
+    'components/label/index.ts',
+  ],
   keywords: ['form', 'caption', 'field name'],
   usage: `import { Checkbox, HStack, Label } from '@advui/core'
 

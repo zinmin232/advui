@@ -13,3 +13,13 @@ function textOf(node: ReactNode): string {
  * has no aria-labelledby or aria-describedby, so controls pass text instead.
  */
 export const plainText = (node: ReactNode) => textOf(node).replace(/\s+/g, ' ').trim()
+
+/**
+ * Texts read one after another in a native hint, each ending like a sentence
+ * so the screen reader pauses between them. Undefined when there are none.
+ */
+export const sentences = (...texts: Array<string | undefined>) =>
+  texts
+    .filter(Boolean)
+    .map((text) => (/[.!?:]$/.test(text!) ? text : `${text}.`))
+    .join(' ') || undefined

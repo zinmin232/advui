@@ -11,14 +11,14 @@ export default defineMeta({
   exports: ['RadioGroup'],
   files: ['components/radio-group/RadioGroup.tsx', 'components/radio-group/index.ts'],
   keywords: ['radio', 'option', 'choice', 'single select'],
-  usage: `import { HStack, Label, RadioGroup } from '@advui/core'
+  usage: `import { Field, RadioGroup } from '@advui/core'
 
-<RadioGroup value={plan} onValueChange={setPlan} aria-label="Plan">
-  <HStack gap="$2">
-    <RadioGroup.Item value="free" id="plan-free" />
-    <Label htmlFor="plan-free">Free</Label>
-  </HStack>
-</RadioGroup>`,
+<Field label="Plan">
+  <RadioGroup value={plan} onValueChange={setPlan}>
+    <RadioGroup.Item value="free" label="Free" description="Up to 3 projects" />
+    <RadioGroup.Item value="pro" label="Pro" />
+  </RadioGroup>
+</Field>`,
   parts: [
     {
       name: 'RadioGroup',
@@ -37,6 +37,13 @@ export default defineMeta({
           name: 'onValueChange',
           type: '(value: string) => void',
           description: 'Called when the selection changes.',
+        },
+        {
+          name: 'gap',
+          type: 'SpaceTokens',
+          token: 'space',
+          default: "'$3'",
+          description: 'Space between items.',
         },
         {
           name: 'orientation',
@@ -65,6 +72,17 @@ export default defineMeta({
       name: 'RadioGroup.Item',
       props: [
         { name: 'value', type: 'string', required: true, description: 'The option value.' },
+        {
+          name: 'label',
+          type: 'ReactNode',
+          description:
+            'Text beside the radio; pressing it selects the item. Without one, give the item an `aria-label`, or an `id` and your own `Label htmlFor`.',
+        },
+        {
+          name: 'description',
+          type: 'ReactNode',
+          description: 'Smaller text under the label, linked as the radio’s description.',
+        },
         { name: 'id', type: 'string', description: 'Link to a Label with the same `htmlFor`.' },
         {
           name: 'size',
@@ -79,16 +97,24 @@ export default defineMeta({
       within: 'RadioGroup',
     },
   ],
-  examples: [{ name: 'basic', title: 'Plans' }],
+  examples: [
+    { name: 'basic', title: 'Plans', description: 'Items with a label and a description.' },
+  ],
   accessibility: [
     'Implements the WAI-ARIA radio group: `role="radiogroup"` with `role="radio"` items and `aria-checked`.',
     'Only the selected item is in the tab order; arrow keys move and select (roving focus).',
-    'Name the group with `aria-label` or `aria-labelledby`.',
+    'Name the group with `aria-label` or `aria-labelledby`; inside a Field, the field’s label names it.',
+    'An item’s `label` names its radio and its `description` is linked through `aria-describedby`.',
   ],
   keyboard: [
     { keys: 'Tab', action: 'Moves focus into the group (to the selected item).' },
     { keys: 'Arrow keys', action: 'Moves focus and selection between items.' },
     { keys: 'Space', action: 'Selects the focused item.' },
   ],
+  platformNotes: {
+    ios: 'VoiceOver has no group names, so each item reads the group’s name and help text as its hint, after its own description. A labelled item’s visible label and description are hidden from VoiceOver, since the radio already reads them.',
+    android:
+      'TalkBack has no group names, so each item reads the group’s name and help text as its hint, after its own description. A labelled item’s visible label and description are hidden from TalkBack, since the radio already reads them.',
+  },
   related: ['checkbox-group', 'checkbox', 'select'],
 })
