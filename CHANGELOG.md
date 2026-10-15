@@ -41,6 +41,12 @@ one version.
   a `role="group"`; inside a Field the field's label names it and the error
   marks every box invalid. On iOS and Android, where screen readers have no
   group names, each item reads the group's name and help text as its hint.
+- **Radio Group**: `RadioGroup.Item` takes a `label` and a `description`,
+  like Checkbox Group's items. The label names the radio on every platform
+  (a `Label htmlFor` only moves focus on iOS and Android), pressing it
+  selects the item, and the description is linked as its description on web
+  and read as its hint on iOS and Android. Items without them render as
+  before.
 
 ### Changed
 
@@ -48,6 +54,17 @@ one version.
   positioning their buttons and icon over the field. They behave as before;
   the text and buttons sit a few pixels differently, and Password Input
   accepts `leading` and the addons.
+- **Radio Group** on iOS and Android: each item reads the group's name and
+  help text (a Field's label, help and error, or the group's `aria-label`)
+  as its hint, after its own description. Screen readers there do not
+  announce group names, so inside a Field the group's label was never read.
+  Items also get a generated `id` when you give none.
+
+### Fixed
+
+- **Radio Group** spaces its items 12px apart (`gap="$3"`), as intended.
+  The gap was set on a frame that Tamagui's radio group does not render, so
+  items sat flush unless you passed `gap`.
 
 ## [0.13.0] - 2026-10-15
 

@@ -1,4 +1,4 @@
-import { createContext, forwardRef, useContext } from 'react'
+import { createContext, forwardRef, useContext, useId, useMemo } from 'react'
 import {
   RadioGroupFrame as TamaguiRadioGroupFrame,
   RadioGroupIndicatorFrame as TamaguiIndicatorFrame,
@@ -13,12 +13,28 @@ import {
 } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
 import { FieldContext, type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
+import { sentences } from '../../utils/plainText'
+import {
+  type ChoiceText,
+  ChoiceRow,
+  choiceControlStyle,
+  choiceProps,
+  hasChoiceText,
+} from '../label/ChoiceRow'
 
-const SelectedValueContext = createContext<string | undefined>(undefined)
+interface GroupState {
+  value: string
+  disabled: boolean
+  /** Native: the group's name and help text, read as each item's hint. */
+  hint?: string
+}
 
+const GroupContext = createContext<GroupState>({ value: '', disabled: false })
+
+// createRadioGroup renders Tamagui's own frame, so styles set here are dropped;
+// the gap is a prop default instead (see RadioGroupRoot).
 const Frame = styled(TamaguiRadioGroupFrame, {
   name: 'RadioGroup',
-  gap: '$3',
 })
 
 // Visual styles live in the `unstyled: false` variant so they override the
@@ -76,25 +92,39 @@ const BaseRadioGroup = createRadioGroup({ Frame, Item, Indicator, disableActiveT
 
 export type RadioGroupProps = TamaguiRadioGroupProps
 
-export interface RadioGroupItemProps extends Omit<TamaguiItemProps, 'size'> {
+export interface RadioGroupItemProps extends Omit<TamaguiItemProps, 'size'>, ChoiceText {
   size?: 'sm' | 'md'
+  'aria-describedby'?: string
 }
 
 const RadioGroupItem = forwardRef<TamaguiElement, RadioGroupItemProps>(function RadioGroupItem(
-  { size = 'md', ...props },
+  { size = 'md', label, description, id: idProp, ...props },
   ref,
 ) {
-  const checked = useContext(SelectedValueContext) === props.value
-  return (
+  const group = useContext(GroupContext)
+  const generatedId = useId()
+  const id = idProp ?? generatedId
+  const text = { label, description }
+  const withText = hasChoiceText(text)
+  const item = (
     <BaseRadioGroup.Item
       ref={ref}
+      id={id}
       size={size as never}
       {...(isWeb ? null : { accessible: true })}
-      {...(checked ? { borderColor: '$primary' as const } : null)}
+      {...(group.value === props.value ? { borderColor: '$primary' as const } : null)}
+      {...(withText && choiceControlStyle(size))}
       {...props}
+      {...choiceProps(id, text, props, group.hint)}
     >
       <BaseRadioGroup.Indicator />
     </BaseRadioGroup.Item>
+  )
+  if (!withText) return item
+  return (
+    <ChoiceRow id={id} {...text} disabled={group.disabled || Boolean(props.disabled)}>
+      {item}
+    </ChoiceRow>
   )
 })
 
@@ -106,6 +136,7 @@ const RadioGroupRoot = forwardRef<TamaguiElement, RadioGroupProps>(
       defaultValue,
       onValueChange,
       invalid,
+      gap = '$3',
       ...props
     } = useFieldControl<RadioGroupProps & FieldControlProps>(groupProps)
     const [value, setValue] = useControllableState({
@@ -113,12 +144,26 @@ const RadioGroupRoot = forwardRef<TamaguiElement, RadioGroupProps>(
       defaultValue: defaultValue ?? '',
       onChange: onValueChange,
     })
+    const disabled = Boolean(props.disabled)
+    const groupLabel = props['aria-label']
+    const groupHint = props.accessibilityHint
+    const state = useMemo<GroupState>(
+      () => ({
+        value,
+        disabled,
+        // Native has no group names: VoiceOver and TalkBack skip a view that is
+        // not an element, and a Field hides its label once it names the control.
+        hint: isWeb ? undefined : sentences(groupLabel, groupHint),
+      }),
+      [value, disabled, groupLabel, groupHint],
+    )
     return (
-      <SelectedValueContext.Provider value={value}>
+      <GroupContext.Provider value={state}>
         <BaseRadioGroup
           ref={ref}
           value={value}
           onValueChange={setValue}
+          gap={gap}
           aria-invalid={invalid || undefined}
           // A <label for> cannot name a group, so a Field's label is linked by id.
           {...(isWeb &&
@@ -126,14 +171,15 @@ const RadioGroupRoot = forwardRef<TamaguiElement, RadioGroupProps>(
             props['aria-label'] === undefined && { 'aria-labelledby': field.labelId })}
           {...props}
         />
-      </SelectedValueContext.Provider>
+      </GroupContext.Provider>
     )
   },
 )
 
 /**
  * A set of mutually exclusive options. Arrow keys move between items (roving
- * focus) on web; each `RadioGroup.Item` needs a `value` and an `id` for its Label.
+ * focus) on web. Each `RadioGroup.Item` needs a `value`, and a `label` or an
+ * `aria-label` (or an `id` for your own Label).
  */
 export const RadioGroup = withStaticProperties(RadioGroupRoot, {
   Item: RadioGroupItem,

@@ -507,7 +507,6 @@
         "checkbox",
         "hooks",
         "label",
-        "typography",
         "utils"
       ]
     },
@@ -942,7 +941,10 @@
       "status": "stable",
       "package": "@advui/core",
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [
+        "typography",
+        "utils"
+      ]
     },
     {
       "name": "auto-grid",
@@ -1266,7 +1268,9 @@
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
-        "hooks"
+        "hooks",
+        "label",
+        "utils"
       ]
     },
     {

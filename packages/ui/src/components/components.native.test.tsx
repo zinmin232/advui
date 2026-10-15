@@ -67,6 +67,7 @@ import { Pagination } from './pagination/Pagination'
 import { PasswordInput } from './password-input/PasswordInput'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
+import { RadioGroup } from './radio-group/RadioGroup'
 import { ScrollArea } from './scroll-area/ScrollArea'
 import { Section } from './section/Section'
 import { Separator } from './separator/Separator'
@@ -207,6 +208,29 @@ describe('native rendering', () => {
     await fireEvent.press(screen.getByRole('checkbox', { name: 'All' }))
     expect(onValueChange).toHaveBeenLastCalledWith([])
     expect(screen.getByRole('checkbox', { name: 'Email' })).not.toBeChecked()
+  })
+
+  it('RadioGroup names items by their labels and reads the group as their hint', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <Field label="Plan" error="Pick a plan.">
+        <RadioGroup defaultValue="free" onValueChange={onValueChange}>
+          <RadioGroup.Item value="free" label="Free" description="Up to 3 projects" />
+          <RadioGroup.Item value="pro" aria-label="Pro" />
+        </RadioGroup>
+      </Field>,
+    )
+    const free = screen.getByRole('radio', { name: 'Free' })
+    expect(free).toBeChecked()
+    expect(free.props.accessibilityHint).toBe('Up to 3 projects. Plan. Pick a plan.')
+    expect(screen.getByText('Free', { includeHiddenElements: true })).not.toBeVisible()
+    // An item without a label still hears which group it is in.
+    const pro = screen.getByRole('radio', { name: 'Pro' })
+    expect(pro.props.accessibilityHint).toBe('Plan. Pick a plan.')
+
+    await fireEvent.press(pro)
+    expect(onValueChange).toHaveBeenLastCalledWith('pro')
+    expect(screen.getByRole('radio', { name: 'Pro' })).toBeChecked()
   })
 
   it('Input reports text changes', async () => {
