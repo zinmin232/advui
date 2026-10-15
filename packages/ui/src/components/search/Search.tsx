@@ -7,12 +7,12 @@ import { Input, type InputProps } from '../input/Input'
 import { Spinner } from '../spinner'
 import { ariaState } from '../../utils/ariaState'
 
-const sidePadding = { sm: '$8', md: '$9', lg: '$10' } as const
 const iconSize = { sm: 14, md: 16, lg: 18 } as const
 
+// The magnifier and the clear button take the leading and trailing slots.
 export interface SearchProps extends Omit<
   InputProps,
-  'size' | 'value' | 'defaultValue' | 'onChangeText' | 'type'
+  'size' | 'value' | 'defaultValue' | 'onChangeText' | 'type' | 'leading' | 'trailing'
 > {
   size?: 'sm' | 'md' | 'lg'
   /** The search text (controlled). */
@@ -64,64 +64,48 @@ export const Search = forwardRef<TamaguiElement, SearchProps>(function Search(
     inputRef.current?.focus()
   }
 
-  return (
-    <View
-      position="relative"
-      justifyContent="center"
-      // Tamagui's role type lacks 'search'; react-native-web passes it through.
-      {...((landmark && isWeb ? { role: 'search' } : {}) as object)}
-    >
-      <View
-        position="absolute"
-        left="$3"
-        zIndex={1}
-        pointerEvents="none"
-        aria-hidden
-        {...(!isWeb && { accessible: false })}
-      >
-        {loading ? (
-          <Spinner size="sm" />
-        ) : (
-          <SearchIcon size={iconSize[size]} color="$mutedForeground" />
-        )}
-      </View>
-      <Input
-        ref={(node: TamaguiElement | null) => {
-          inputRef.current = node as unknown as HTMLInputElement | null
-          if (typeof ref === 'function') ref(node)
-          else if (ref) ref.current = node
-        }}
-        role="searchbox"
-        aria-label={ariaLabel}
-        aria-busy={ariaState(loading)}
-        enterKeyHint="search"
-        returnKeyType="search"
-        autoCorrect={false}
-        autoCapitalize="none"
-        size={size}
-        disabled={disabled}
-        placeholder={placeholder}
-        value={value}
-        onChangeText={setValue}
-        onSubmitEditing={() => onSearch?.(value)}
-        {...(isWeb && {
-          onKeyDown: (event: { key: string; preventDefault: () => void }) => {
-            if (event.key === 'Escape' && value) {
-              event.preventDefault()
-              setValue('')
-            }
-          },
-        })}
-        {...props}
-        // After the spread: text never runs under the icon or the clear button.
-        paddingLeft={sidePadding[size]}
-        {...(value && { paddingRight: sidePadding[size] })}
-      />
-      {value && !disabled ? (
-        <View position="absolute" right="$1" top={0} bottom={0} justifyContent="center">
-          <IconButton size="sm" icon={<XIcon />} aria-label={clearLabel} onPress={clear} />
+  const field = (
+    <Input
+      ref={(node: TamaguiElement | null) => {
+        inputRef.current = node as unknown as HTMLInputElement | null
+        if (typeof ref === 'function') ref(node)
+        else if (ref) ref.current = node
+      }}
+      role="searchbox"
+      aria-label={ariaLabel}
+      aria-busy={ariaState(loading)}
+      enterKeyHint="search"
+      returnKeyType="search"
+      autoCorrect={false}
+      autoCapitalize="none"
+      size={size}
+      disabled={disabled}
+      placeholder={placeholder}
+      value={value}
+      onChangeText={setValue}
+      onSubmitEditing={() => onSearch?.(value)}
+      {...(isWeb && {
+        onKeyDown: (event: { key: string; preventDefault: () => void }) => {
+          if (event.key === 'Escape' && value) {
+            event.preventDefault()
+            setValue('')
+          }
+        },
+      })}
+      {...props}
+      leading={
+        <View aria-hidden {...(!isWeb && { accessible: false })}>
+          {loading ? <Spinner size="sm" /> : <SearchIcon size={iconSize[size]} />}
         </View>
-      ) : null}
-    </View>
+      }
+      trailing={
+        value && !disabled ? (
+          <IconButton size="sm" icon={<XIcon />} aria-label={clearLabel} onPress={clear} />
+        ) : null
+      }
+    />
   )
+
+  // Tamagui's role type lacks 'search'; react-native-web passes it through.
+  return landmark && isWeb ? <View {...({ role: 'search' } as object)}>{field}</View> : field
 })

@@ -1,14 +1,16 @@
 import { EyeIcon, EyeOffIcon } from '@advui/icons'
 import { forwardRef, useId } from 'react'
-import { type TamaguiElement, View, isWeb } from 'tamagui'
+import { type TamaguiElement, isWeb } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useFieldControl } from '../../hooks/useFieldControl'
 import { IconButton } from '../icon-button/IconButton'
 import { Input, type InputProps } from '../input/Input'
 
-const togglePadding = { sm: '$9', md: '$10', lg: '$12' } as const
-
-export interface PasswordInputProps extends Omit<InputProps, 'type' | 'secureTextEntry' | 'size'> {
+// The show/hide button takes the trailing slot.
+export interface PasswordInputProps extends Omit<
+  InputProps,
+  'type' | 'secureTextEntry' | 'size' | 'trailing'
+> {
   size?: 'sm' | 'md' | 'lg'
   /** Whether the password is shown (controlled). */
   visible?: boolean
@@ -43,21 +45,17 @@ export const PasswordInput = forwardRef<TamaguiElement, PasswordInputProps>(
     })
 
     return (
-      <View position="relative" justifyContent="center">
-        <Input
-          ref={ref}
-          id={id}
-          type={visible ? 'text' : 'password'}
-          autoComplete="current-password"
-          autoCapitalize="none"
-          autoCorrect={false}
-          size={size}
-          disabled={disabled}
-          {...props}
-          // After the spread: text must never run under the toggle.
-          paddingRight={togglePadding[size]}
-        />
-        <View position="absolute" right="$1" top={0} bottom={0} justifyContent="center">
+      <Input
+        ref={ref}
+        id={id}
+        type={visible ? 'text' : 'password'}
+        autoComplete="current-password"
+        autoCapitalize="none"
+        autoCorrect={false}
+        size={size}
+        disabled={disabled}
+        {...props}
+        trailing={
           <IconButton
             size="sm"
             icon={visible ? <EyeOffIcon /> : <EyeIcon />}
@@ -67,8 +65,8 @@ export const PasswordInput = forwardRef<TamaguiElement, PasswordInputProps>(
             disabled={disabled}
             onPress={() => setVisible(!visible)}
           />
-        </View>
-      </View>
+        }
+      />
     )
   },
 )

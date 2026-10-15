@@ -126,6 +126,8 @@ import ImageGalleryBasic from '../../ui/src/components/image-gallery/examples/ba
 import InputBasic from '../../ui/src/components/input/examples/basic'
 import InputSizes from '../../ui/src/components/input/examples/sizes'
 import InputStates from '../../ui/src/components/input/examples/states'
+import InputSlots from '../../ui/src/components/input/examples/slots'
+import InputAddons from '../../ui/src/components/input/examples/addons'
 import KpiCardBasic from '../../data/src/components/kpi-card/examples/basic'
 import KpiCardGrid from '../../data/src/components/kpi-card/examples/grid'
 import KpiCardWithProgress from '../../data/src/components/kpi-card/examples/with-progress'
@@ -469,6 +471,8 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': InputBasic,
     'sizes': InputSizes,
     'states': InputStates,
+    'slots': InputSlots,
+    'addons': InputAddons,
   },
   'kpi-card': {
     'basic': KpiCardBasic,
