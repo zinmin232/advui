@@ -24,10 +24,10 @@ describe('Link', () => {
         </Link>
       </>,
     )
-    const link = screen.getByRole('link', { name: /^Example\s\(opens in a new tab\)$/ })
+    const link = screen.getByRole('link', { name: /^Example\s+\(opens in a new tab\)$/ })
     expect(link).toHaveAttribute('target', '_blank')
     expect(link).toHaveAttribute('rel', 'noopener noreferrer')
-    expect(screen.getByRole('link', { name: /^Beispiel\s\(neuer Tab\)$/ })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /^Beispiel\s+\(neuer Tab\)$/ })).toBeInTheDocument()
   })
 
   it('without an href, is a link button that calls onPress', async () => {
@@ -76,6 +76,24 @@ describe('Link', () => {
     expect(getComputedStyle(screen.getByRole('link', { name: 'big' })).fontSize).toBe(
       sized('large'),
     )
+  })
+
+  it('as a button, takes the font and color of the text around it', () => {
+    renderWithProvider(
+      <Text size="xs" tone="success" testID="sentence">
+        Agree to the{' '}
+        <Link onPress={() => {}} tone="inherit">
+          terms
+        </Link>
+      </Text>,
+    )
+    const link = screen.getByRole('link', { name: 'terms' })
+    const sentence = getComputedStyle(screen.getByTestId('sentence'))
+    expect(link.tagName).toBe('BUTTON')
+    const style = getComputedStyle(link)
+    expect(style.color).toBe(sentence.color)
+    expect(style.fontSize).toBe(sentence.fontSize)
+    expect(style.fontFamily).toBe(sentence.fontFamily)
   })
 
   it('underlines on hover only when asked', () => {

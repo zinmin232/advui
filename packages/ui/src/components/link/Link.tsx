@@ -34,6 +34,16 @@ const iconSizes: Record<TextSize, number> = {
   '6xl': 36,
 }
 
+/** Hidden on screen, still read by screen readers (web). */
+const visuallyHidden = {
+  position: 'absolute',
+  width: 1,
+  height: 1,
+  overflow: 'hidden',
+  opacity: 0.00000001,
+  pointerEvents: 'none',
+} as const
+
 // Warn once per path, not on every render.
 const warnedPaths = new Set<string>()
 
@@ -116,6 +126,7 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
     tone = 'primary',
     underline = 'always',
     size,
+    weight,
     labels: labelsProp,
     onPress,
     ...props
@@ -150,11 +161,23 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
     }
   }
 
+  const isButton = href === undefined && render === undefined
   const semantics = isWeb
     ? {
-        render: render ?? (href !== undefined ? 'a' : 'button'),
+        render: render ?? (isButton ? 'button' : 'a'),
         ...(href !== undefined && { href }),
-        ...(href === undefined && render === undefined && { type: 'button' }),
+        ...(isButton && {
+          type: 'button',
+          // A <button> keeps the browser's font and color; take the text's, as an <a> does.
+          style: {
+            fontFamily: 'inherit',
+            letterSpacing: 'inherit',
+            textAlign: 'inherit',
+            ...(size === undefined && { fontSize: 'inherit', lineHeight: 'inherit' }),
+            ...(weight === undefined && { fontWeight: 'inherit' }),
+            ...(tone === 'inherit' && { color: 'inherit' }),
+          },
+        }),
         ...(external && { target: '_blank', rel: 'noopener noreferrer' }),
       }
     : {
@@ -169,9 +192,13 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
   return (
     <LinkText
       ref={ref}
+      // Tamagui's Text sets the theme's text color unless unstyled. Before
+      // tone, which must win: later variant props override earlier ones.
+      unstyled={tone === 'inherit'}
       tone={tone}
       underline={underline}
       size={size}
+      weight={weight}
       {...(isLink && { role: 'link', pressable: true, onPress: press, ...semantics })}
       {...props}
     >
@@ -181,15 +208,22 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
           {/* Keeps the icon on the line of the last word. */}
           {'\u00A0'}
           <TamaguiText
+            // Unstyled, so the icon's currentColor is the link's.
+            unstyled
             {...(isWeb && { display: 'inline-flex', verticalAlign: 'middle' })}
             {...(!isWeb && { accessible: false })}
           >
             <ExternalLinkIcon
               size={size ? iconSizes[size] : 14}
               {...(!isWeb && tone !== 'inherit' && { color: color(tone) })}
-              {...(isWeb && { 'aria-label': labels.external })}
             />
           </TamaguiText>
+          {/* Text, not the icon's label: every browser puts text in the link's name. */}
+          {isWeb ? (
+            <TamaguiText unstyled {...visuallyHidden}>
+              {` ${labels.external}`}
+            </TamaguiText>
+          ) : null}
         </>
       ) : null}
     </LinkText>
