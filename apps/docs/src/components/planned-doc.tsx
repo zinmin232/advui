@@ -19,7 +19,7 @@ export function PlannedDoc({ item, categoryLabel }: { item: RoadmapItem; categor
       />
       <PageHeader
         title={item.name}
-        description={`${item.name} is on the roadmap for phase ${item.phase}.`}
+        description={`${item.name} is on the roadmap for phase ${item.phase}${item.package ? `, in ${item.package}` : ''}.`}
       />
       <Alert variant="info">
         <Alert.Title>Not available yet</Alert.Title>

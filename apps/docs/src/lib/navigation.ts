@@ -1,6 +1,7 @@
 import {
   type CatalogComponent,
   type ComponentStatus,
+  type RoadmapItem,
   categories,
   components,
   packages,
@@ -49,6 +50,12 @@ const componentLink = (c: CatalogComponent): NavItem => ({
   href: `/docs/components/${c.slug}`,
   status: c.status,
 })
+const plannedLink = (r: RoadmapItem): NavItem => ({
+  title: r.name,
+  href: `/docs/components/${r.slug}`,
+  status: 'planned',
+  planned: true,
+})
 
 /**
  * The sidebar is generated from component metadata + the roadmap, so adding a
@@ -63,15 +70,10 @@ export function buildNavigation(): NavSection[] {
       const implemented: NavItem[] = components
         .filter((c) => c.package === core?.name && c.category === category.id)
         .map(componentLink)
-      // Planned items have no package yet; they are listed with core's categories.
+      // Planned items without a package are core's, listed with its categories.
       const planned: NavItem[] = roadmap
-        .filter((r) => r.category === category.id)
-        .map((r) => ({
-          title: r.name,
-          href: `/docs/components/${r.slug}`,
-          status: 'planned',
-          planned: true,
-        }))
+        .filter((r) => !r.package && r.category === category.id)
+        .map(plannedLink)
       const items = [...implemented, ...planned].sort(byTitle)
       return { id: category.id, title: category.label, items }
     })
@@ -80,10 +82,10 @@ export function buildNavigation(): NavSection[] {
     .map((pkg) => ({
       id: `package-${pkg.title.toLowerCase()}`,
       title: pkg.name,
-      items: components
-        .filter((c) => c.package === pkg.name)
-        .map(componentLink)
-        .sort(byTitle),
+      items: [
+        ...components.filter((c) => c.package === pkg.name).map(componentLink),
+        ...roadmap.filter((r) => r.package === pkg.name).map(plannedLink),
+      ].sort(byTitle),
     }))
     .filter((category) => category.items.length > 0)
   const componentCategories = [...coreCategories, ...packageCategories]

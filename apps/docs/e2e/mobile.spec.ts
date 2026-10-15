@@ -7,7 +7,7 @@ test('sidebar becomes a drawer on phones', async ({ page }) => {
   await page.getByRole('button', { name: 'Open navigation' }).click()
   const drawer = page.getByRole('dialog', { name: 'Navigation' })
   await expect(drawer).toBeVisible()
-  await drawer.getByRole('link', { name: /^Checkbox/ }).click()
+  await drawer.getByRole('link', { name: 'Checkbox', exact: true }).click()
   await expect(page).toHaveURL(/\/docs\/components\/checkbox$/)
   await expect(drawer).toBeHidden()
 })
