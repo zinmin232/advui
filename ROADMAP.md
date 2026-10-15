@@ -2,7 +2,8 @@
 
 Components still to be built are listed in
 [`packages/catalog/src/roadmap.ts`](packages/catalog/src/roadmap.ts); the docs
-show them as "Planned". That list is empty now: phases 1 to 5 are built.
+show them as "Planned". Phases 1 to 5 are built; phases 7 to 9 (at the end of
+this file) are planned.
 
 ## Phases 1–5 (built)
 
@@ -112,3 +113,30 @@ cannot do them. Tick them off here as they are done.
       `react-native-web` was added (the install guide now says to add it).
       Within a day of a release, pnpm 11 and later install the previous
       version: its `minimumReleaseAge` default skips newer ones.
+
+## Phases 7–9 (planned)
+
+Common components that other libraries (shadcn/ui, MUI, Mantine, Chakra, Ant
+Design) have and Adv UI does not yet. Scaffold one with
+`pnpm create-component <slug>`: it takes the name, category and package from
+the roadmap entry. Banner, Segmented Control, Avatar Group, Range Slider,
+Lightbox and Donut are not listed because Alert, Toggle Group, Avatar, Slider,
+Image Gallery and Pie Chart already cover them.
+
+| Phase | Package         | Components                                                                                                                                  |
+| ----- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| 7     | `@advui/core`   | Link, Input Group, Checkbox Group, Tags Input, Carousel, Rating, Color Picker, Menubar, Code Block, Copy Button                             |
+| 8     | `@advui/core`   | Date Time Picker, Description List, Indicator, Tour, Spoiler, Meter, Table of Contents, Back to Top, Transfer List, Visually Hidden, Portal |
+| 9     | `@advui/charts` | Scatter Chart, Radar Chart, Radial Chart (radial bars and gauges), Composed Chart (bars and lines on one axis), Heatmap                     |
+| 9     | `@advui/data`   | Virtual List, Infinite Scroll, Kanban, Event Calendar                                                                                       |
+
+Notes for whoever picks these up:
+
+- **Input Group** may land as prefix and suffix slots on Input rather than a
+  new component; Number Input and Password Input should use the same slots.
+- **Tags Input** takes free text. Multi Select, which picks from a fixed list,
+  stays as it is; both can render Chip.
+- **Indicator** is a dot or count pinned to an avatar or icon; Badge has no
+  dot mode today.
+- **Visually Hidden** and **Portal** exist in Tamagui; they may only need to be
+  re-exported and documented, with the native portal pitfalls in AGENTS.md.

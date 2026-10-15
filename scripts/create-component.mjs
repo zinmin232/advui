@@ -3,8 +3,9 @@
 //
 //   pnpm create-component <slug> [--category forms] [--name "Display Name"] [--package data]
 //
-// Creates src/components/<slug>/ in the package (core by default; data, charts
-// or editor) with the component, a test, metadata, an example and an index;
+// Creates src/components/<slug>/ in the package (the roadmap entry's, else
+// core; --package picks data, charts or editor) with the component, a test,
+// metadata, an example and an index;
 // exports it from the package; removes it from the roadmap; and regenerates
 // the catalog.
 import { execFileSync } from 'node:child_process'
@@ -26,7 +27,7 @@ const { values, positionals } = parseArgs({
   options: {
     category: { type: 'string' },
     name: { type: 'string' },
-    package: { type: 'string', default: 'core' },
+    package: { type: 'string' },
   },
 })
 const slug = positionals[0]
@@ -36,10 +37,19 @@ if (!slug || !/^[a-z][a-z0-9-]*$/.test(slug)) {
   )
   process.exit(1)
 }
+const roadmapFile = join(catalogSrc, 'roadmap.ts')
+const roadmapSource = readFileSync(roadmapFile, 'utf8')
+// The `{ … }` entry, on one line or spread over several where Prettier wrapped it.
+const roadmapEntry = roadmapSource.match(
+  new RegExp(`\\r?\\n *\\{[^}]*slug: '${slug}'[^}]*\\},`),
+)?.[0]
+const roadmapField = (key) => roadmapEntry?.match(new RegExp(`${key}: '([^']+)'`))?.[1]
+
 const scope = corePackage.name.split('/')[0]
+const packageName = values.package ?? roadmapField('package') ?? 'core'
 let pkg
 try {
-  pkg = packageByName(values.package.includes('/') ? values.package : `${scope}/${values.package}`)
+  pkg = packageByName(packageName.includes('/') ? packageName : `${scope}/${packageName}`)
 } catch (error) {
   console.error(error.message)
   process.exit(1)
@@ -47,13 +57,7 @@ try {
 const isCore = pkg === corePackage
 const componentsDir = pkg.componentsDir
 
-const roadmapFile = join(catalogSrc, 'roadmap.ts')
-const roadmapSource = readFileSync(roadmapFile, 'utf8')
-const roadmapLine = roadmapSource.split('\n').find((line) => line.includes(`slug: '${slug}'`))
-const roadmapCategory = roadmapLine?.match(/category: '([^']+)'/)?.[1]
-const roadmapName = roadmapLine?.match(/name: '([^']+)'/)?.[1]
-
-const category = values.category ?? roadmapCategory ?? 'foundations'
+const category = values.category ?? roadmapField('category') ?? 'foundations'
 if (!CATEGORY_IDS.includes(category)) {
   console.error(`Unknown category "${category}". Use one of: ${CATEGORY_IDS.join(', ')}`)
   process.exit(1)
@@ -61,7 +65,7 @@ if (!CATEGORY_IDS.includes(category)) {
 const Name = pascal(slug)
 const title =
   values.name ??
-  roadmapName ??
+  roadmapField('name') ??
   slug
     .split('-')
     .map((w) => w[0].toUpperCase() + w.slice(1))
@@ -192,7 +196,7 @@ if (!index.includes(exportLine)) {
   writeFileSync(indexFile, lines.join('\n'))
 }
 
-if (roadmapLine) writeFileSync(roadmapFile, roadmapSource.replace(`${roadmapLine}\n`, ''))
+if (roadmapEntry) writeFileSync(roadmapFile, roadmapSource.replace(roadmapEntry, ''))
 
 execFileSync(process.execPath, [join(repoRoot, 'scripts', 'generate-catalog.mjs')], {
   stdio: 'inherit',

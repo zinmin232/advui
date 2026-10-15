@@ -200,13 +200,13 @@ names the component, part and prop.
 
 ## Status
 
-| Status         | Meaning                                                                  |
-| -------------- | ------------------------------------------------------------------------ |
-| `stable`       | API is settled; changes follow semver                                    |
-| `beta`         | Complete and tested; API may still change in a minor release             |
-| `experimental` | Usable, but incomplete or likely to change                               |
-| `deprecated`   | Kept for compatibility; the docs point to the replacement                |
-| `planned`      | On the roadmap (`src/meta/roadmap.ts`); shown in the docs as coming soon |
+| Status         | Meaning                                                                              |
+| -------------- | ------------------------------------------------------------------------------------ |
+| `stable`       | API is settled; changes follow semver                                                |
+| `beta`         | Complete and tested; API may still change in a minor release                         |
+| `experimental` | Usable, but incomplete or likely to change                                           |
+| `deprecated`   | Kept for compatibility; the docs point to the replacement                            |
+| `planned`      | On the roadmap (`packages/catalog/src/roadmap.ts`); shown in the docs as coming soon |
 
 ## Definition of done
 
