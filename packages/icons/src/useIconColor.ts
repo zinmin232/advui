@@ -5,7 +5,14 @@ import { isWeb, useTheme } from 'tamagui'
  * the CSS variable so the icon follows light/dark switches without a re-render.
  */
 export function useIconColor(color: string | undefined): string | undefined {
-  const theme = useTheme()
+  return resolveIconColor(useTheme(), color)
+}
+
+/** `useIconColor` for a theme you already hold, so one component can resolve several colors. */
+export function resolveIconColor(
+  theme: ReturnType<typeof useTheme>,
+  color: string | undefined,
+): string | undefined {
   if (!color) return undefined
   if (!color.startsWith('$')) return color
   const variable = theme[color.slice(1) as keyof typeof theme] as

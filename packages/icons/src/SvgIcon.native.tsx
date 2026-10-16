@@ -13,13 +13,13 @@ const elements: Record<string, ComponentType<Record<string, unknown>>> = {
 }
 
 /** Native renderer backed by react-native-svg (bundled with Expo). */
-export function SvgIcon({ node, size, color, strokeWidth, label, testID }: SvgIconProps) {
+export function SvgIcon({ node, size, color, fill, strokeWidth, label, testID }: SvgIconProps) {
   return (
     <Svg
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="none"
+      fill={fill ?? 'none'}
       stroke={color}
       strokeWidth={strokeWidth}
       strokeLinecap="round"

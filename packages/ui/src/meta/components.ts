@@ -61,6 +61,7 @@ import passwordInputMeta from '../components/password-input/password-input.meta'
 import popoverMeta from '../components/popover/popover.meta'
 import progressMeta from '../components/progress/progress.meta'
 import radioGroupMeta from '../components/radio-group/radio-group.meta'
+import ratingMeta from '../components/rating/rating.meta'
 import resizablePanelMeta from '../components/resizable-panel/resizable-panel.meta'
 import scrollAreaMeta from '../components/scroll-area/scroll-area.meta'
 import searchMeta from '../components/search/search.meta'
@@ -154,6 +155,7 @@ export const components: ComponentMeta[] = [
   popoverMeta,
   progressMeta,
   radioGroupMeta,
+  ratingMeta,
   resizablePanelMeta,
   scrollAreaMeta,
   searchMeta,

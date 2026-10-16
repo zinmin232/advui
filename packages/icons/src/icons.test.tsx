@@ -69,4 +69,16 @@ describe('icons', () => {
     expect(svg).toHaveAttribute('width', '24')
     expect(svg.getAttribute('style')).toContain('var(--primary)')
   })
+
+  it('stays an outline unless given a fill, which takes theme tokens', () => {
+    wrap(
+      <>
+        <SearchIcon testID="outline" />
+        <SearchIcon testID="filled" fill="$warning" />
+      </>,
+    )
+    expect(screen.getByTestId('outline')).toHaveAttribute('fill', 'none')
+    expect(screen.getByTestId('outline').getAttribute('style')).not.toContain('fill')
+    expect(screen.getByTestId('filled').getAttribute('style')).toContain('fill: var(--warning)')
+  })
 })

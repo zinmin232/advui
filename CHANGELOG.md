@@ -71,6 +71,21 @@ one version.
   the WAI-ARIA carousel pattern on web (a named region of named slides, the
   arrow keys, Home and End on the slide area), announces the new slide after
   a user moves it, and `labels` translates every name and announcement.
+- **Rating**: a row of stars, or any `icon`, to give a score (`value`,
+  `defaultValue`, `onValueChange`, from 0 to `count`, 5 by default) or to
+  show one with `readOnly`, where a fraction part-fills an icon (4.3 fills
+  30% of the fifth). `allowHalf` gives each half of an icon its own value.
+  It is a slider, as in the WAI-ARIA rating slider example: the arrow keys
+  step (swapped in RTL), Home clears and End picks the top score, VoiceOver
+  and TalkBack adjust it with swipes, and `getValueText` sets what they read
+  ("3 of 5" by default). A read-only rating is an image named by its value.
+  On web hovering previews a value. `size` (16, 24 or 32px icons), `color`
+  (amber with a darker outline by default) and `emptyColor`; it takes a
+  Field's label, help and error, and on web it submits under `name`.
+- **Icons** (`@advui/icons`): a `fill` prop paints the inside of an icon, as
+  in Lucide: a theme token or any color. Icons stay outlines without it.
+  Rating needs it, so a Rating copied from the registry needs `@advui/icons`
+  0.14.0.
 
 ### Changed
 

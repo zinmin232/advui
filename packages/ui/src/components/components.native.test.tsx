@@ -76,6 +76,7 @@ import { PasswordInput } from './password-input/PasswordInput'
 import { Popover } from './popover/Popover'
 import { Progress } from './progress/Progress'
 import { RadioGroup } from './radio-group/RadioGroup'
+import { Rating } from './rating/Rating'
 import { ScrollArea } from './scroll-area/ScrollArea'
 import { Section } from './section/Section'
 import { Separator } from './separator/Separator'
@@ -373,6 +374,41 @@ describe('native rendering', () => {
     expect(onValueChange).toHaveBeenLastCalledWith(45)
     await fireEvent(thumb, 'accessibilityAction', { nativeEvent: { actionName: 'decrement' } })
     expect(onValueChange).toHaveBeenLastCalledWith(40)
+  })
+
+  it('Rating is an adjustable element that swipes and presses change', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <>
+        <Field label="Your stay" description="Shown with your review.">
+          <Rating defaultValue={3} onValueChange={onValueChange} />
+        </Field>
+        <Rating aria-label="Average rating" readOnly value={4.3} />
+      </>,
+    )
+    const rating = screen.getByRole('slider', { name: 'Your stay' })
+    expect(rating.props.accessible).toBe(true)
+    expect(rating.props.accessibilityHint).toBe('Shown with your review.')
+    expect(rating.props.accessibilityValue).toEqual({ min: 0, max: 5, now: 3, text: '3 of 5' })
+    await fireEvent(rating, 'accessibilityAction', { nativeEvent: { actionName: 'increment' } })
+    expect(onValueChange).toHaveBeenLastCalledWith(4)
+    await fireEvent(rating, 'accessibilityAction', { nativeEvent: { actionName: 'decrement' } })
+    expect(onValueChange).toHaveBeenLastCalledWith(3)
+
+    // The icons are press targets that reach 44pt with hitSlop.
+    type Host = typeof rating
+    const descendants = (node: Host): Host[] =>
+      node.children.flatMap((child) =>
+        typeof child === 'string' ? [] : [child as Host, ...descendants(child as Host)],
+      )
+    const icons = descendants(rating).filter((node) => node.props.hitSlop !== undefined)
+    expect(icons).toHaveLength(5)
+    expect(icons[0]!.props.hitSlop).toEqual({ top: 10, bottom: 10 })
+    await fireEvent.press(icons[0]!)
+    expect(onValueChange).toHaveBeenLastCalledWith(1)
+    expect(screen.getByRole('slider', { name: 'Your stay' }).props.accessibilityValue.now).toBe(1)
+
+    expect(screen.getByRole('image', { name: 'Average rating: 4.3 of 5' })).toBeOnTheScreen()
   })
 
   it('DropdownMenu opens a sheet of accessible items and closes after a choice', async () => {
