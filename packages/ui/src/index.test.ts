@@ -45,6 +45,7 @@ describe('@advui/core public API', () => {
       'Carousel',
       'CarouselItem',
       'Rating',
+      'ColorPicker',
       'UniversalProvider',
       'ariaState',
       'isTextContent',

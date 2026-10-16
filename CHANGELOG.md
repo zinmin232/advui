@@ -86,6 +86,24 @@ one version.
   in Lucide: a theme token or any color. Icons stay outlines without it.
   Rating needs it, so a Rating copied from the registry needs `@advui/icons`
   0.14.0.
+- **Color Picker**: a field that shows the color and opens a picker in a
+  popover (a bottom sheet on phones), or the picker itself with `inline`.
+  Drag over the saturation and brightness area, slide the hue and, with
+  `alpha`, the opacity over a transparency grid, type hex (with or without
+  `#`), `rgb()` or `hsl()`, press one of the `swatches`, or, in Chrome and
+  Edge, pick from the screen with the eyedropper. `onValueChange` follows
+  every drag with a lowercase `#rrggbb` (`#rrggbbaa` when translucent), and
+  `onValueCommit` fires once a drag, key, swatch or typed color is done. The
+  hue of a gray is kept, so desaturating and saturating again brings the
+  color back. The area is one slider with `aria-roledescription="2D slider"`
+  (left and right change saturation, up and down brightness), hue and
+  opacity are sliders, and swatches are toggle buttons with a check mark;
+  on iOS and Android they are adjustable with swipes, the area's saturation
+  is in the actions menu, and a drag keeps the touch from the sheet. It takes
+  a Field's label, help and error, on web it submits under `name`, and
+  `labels` translates every name and value text.
+- **Icons**: `PipetteIcon`.
+- **Color utilities** (`@advui/utils`): `toHsv` and `fromHsv`.
 
 ### Changed
 
