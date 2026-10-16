@@ -22,6 +22,7 @@ import checkboxGroupMeta from '../../ui/src/components/checkbox-group/checkbox-g
 import chipMeta from '../../ui/src/components/chip/chip.meta'
 import circularProgressMeta from '../../ui/src/components/circular-progress/circular-progress.meta'
 import collapsibleMeta from '../../ui/src/components/collapsible/collapsible.meta'
+import colorPickerMeta from '../../ui/src/components/color-picker/color-picker.meta'
 import comboboxMeta from '../../ui/src/components/combobox/combobox.meta'
 import commandPaletteMeta from '../../ui/src/components/command-palette/command-palette.meta'
 import confirmDialogMeta from '../../ui/src/components/confirm-dialog/confirm-dialog.meta'
@@ -157,6 +158,7 @@ export const components: CatalogComponent[] = [
   { ...chipMeta, package: '@advui/core' },
   { ...circularProgressMeta, package: '@advui/core' },
   { ...collapsibleMeta, package: '@advui/core' },
+  { ...colorPickerMeta, package: '@advui/core' },
   { ...comboboxMeta, package: '@advui/core' },
   { ...commandPaletteMeta, package: '@advui/core' },
   { ...confirmDialogMeta, package: '@advui/core' },

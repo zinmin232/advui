@@ -21,6 +21,7 @@ import checkboxGroupMeta from '../components/checkbox-group/checkbox-group.meta'
 import chipMeta from '../components/chip/chip.meta'
 import circularProgressMeta from '../components/circular-progress/circular-progress.meta'
 import collapsibleMeta from '../components/collapsible/collapsible.meta'
+import colorPickerMeta from '../components/color-picker/color-picker.meta'
 import comboboxMeta from '../components/combobox/combobox.meta'
 import commandPaletteMeta from '../components/command-palette/command-palette.meta'
 import confirmDialogMeta from '../components/confirm-dialog/confirm-dialog.meta'
@@ -115,6 +116,7 @@ export const components: ComponentMeta[] = [
   chipMeta,
   circularProgressMeta,
   collapsibleMeta,
+  colorPickerMeta,
   comboboxMeta,
   commandPaletteMeta,
   confirmDialogMeta,

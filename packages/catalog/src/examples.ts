@@ -61,6 +61,10 @@ import CircularProgressBasic from '../../ui/src/components/circular-progress/exa
 import CircularProgressSizes from '../../ui/src/components/circular-progress/examples/sizes'
 import CollapsibleBasic from '../../ui/src/components/collapsible/examples/basic'
 import CollapsibleSettings from '../../ui/src/components/collapsible/examples/settings'
+import ColorPickerBasic from '../../ui/src/components/color-picker/examples/basic'
+import ColorPickerInline from '../../ui/src/components/color-picker/examples/inline'
+import ColorPickerAlpha from '../../ui/src/components/color-picker/examples/alpha'
+import ColorPickerSwatches from '../../ui/src/components/color-picker/examples/swatches'
 import ComboboxBasic from '../../ui/src/components/combobox/examples/basic'
 import CommandPaletteBasic from '../../ui/src/components/command-palette/examples/basic'
 import ConfirmDialogBasic from '../../ui/src/components/confirm-dialog/examples/basic'
@@ -374,6 +378,12 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'collapsible': {
     'basic': CollapsibleBasic,
     'settings': CollapsibleSettings,
+  },
+  'color-picker': {
+    'basic': ColorPickerBasic,
+    'inline': ColorPickerInline,
+    'alpha': ColorPickerAlpha,
+    'swatches': ColorPickerSwatches,
   },
   'combobox': {
     'basic': ComboboxBasic,

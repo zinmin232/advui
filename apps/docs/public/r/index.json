@@ -589,6 +589,28 @@
       ]
     },
     {
+      "name": "color-picker",
+      "title": "Color Picker",
+      "type": "registry:component",
+      "description": "Pick a color by dragging over saturation and brightness, sliding hue and opacity, typing a hex or pressing a swatch, in a field that opens a popover or inline.",
+      "category": "forms",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [
+        "@advui/icons",
+        "@advui/theme",
+        "@advui/utils"
+      ],
+      "registryDependencies": [
+        "date-picker",
+        "hooks",
+        "icon-button",
+        "input",
+        "popover",
+        "utils"
+      ]
+    },
+    {
       "name": "combobox",
       "title": "Combobox",
       "type": "registry:component",
