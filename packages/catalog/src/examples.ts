@@ -222,6 +222,9 @@ import TableSortable from '../../data/src/components/table/examples/sortable'
 import TableScroll from '../../data/src/components/table/examples/scroll'
 import TabsBasic from '../../ui/src/components/tabs/examples/basic'
 import TabsUnderline from '../../ui/src/components/tabs/examples/underline'
+import TagsInputBasic from '../../ui/src/components/tags-input/examples/basic'
+import TagsInputValidation from '../../ui/src/components/tags-input/examples/validation'
+import TagsInputSizes from '../../ui/src/components/tags-input/examples/sizes'
 import TextareaBasic from '../../ui/src/components/textarea/examples/basic'
 import TimePickerBasic from '../../ui/src/components/time-picker/examples/basic'
 import TimePickerTwelveHour from '../../ui/src/components/time-picker/examples/twelve-hour'
@@ -654,6 +657,11 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'tabs': {
     'basic': TabsBasic,
     'underline': TabsUnderline,
+  },
+  'tags-input': {
+    'basic': TagsInputBasic,
+    'validation': TagsInputValidation,
+    'sizes': TagsInputSizes,
   },
   'textarea': {
     'basic': TextareaBasic,

@@ -78,6 +78,7 @@ import stepperMeta from '../components/stepper/stepper.meta'
 import stickyMeta from '../components/sticky/sticky.meta'
 import switchMeta from '../components/switch/switch.meta'
 import tabsMeta from '../components/tabs/tabs.meta'
+import tagsInputMeta from '../components/tags-input/tags-input.meta'
 import textareaMeta from '../components/textarea/textarea.meta'
 import timePickerMeta from '../components/time-picker/time-picker.meta'
 import toastMeta from '../components/toast/toast.meta'
@@ -169,6 +170,7 @@ export const components: ComponentMeta[] = [
   stickyMeta,
   switchMeta,
   tabsMeta,
+  tagsInputMeta,
   textareaMeta,
   timePickerMeta,
   toastMeta,

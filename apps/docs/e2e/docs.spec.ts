@@ -125,6 +125,28 @@ test('combobox fields open on a click and pick options with the mouse', async ({
   await expect(labels).toHaveAttribute('aria-expanded', 'true')
 })
 
+// Presses on the box and on remove buttons must keep focus in the text box,
+// or its blur adds half-typed text.
+test('tags input adds, pastes and removes tags without losing focus', async ({ page }) => {
+  await page.goto('/preview/tags-input/basic')
+  const topics = page.getByRole('textbox', { name: 'Topics' })
+  await topics.click()
+  await page.keyboard.type('expo,')
+  await expect(page.getByRole('button', { name: 'Remove expo' })).toBeVisible()
+  await expect(topics).toHaveValue('')
+  await page.keyboard.type('draft')
+  await page.getByRole('button', { name: 'Remove react' }).click()
+  await expect(page.getByRole('button', { name: 'Remove react' })).toHaveCount(0)
+  await expect(topics).toBeFocused()
+  await expect(topics).toHaveValue('draft')
+  await page.keyboard.press('Control+A')
+  await page.keyboard.insertText('web, ios, android')
+  await expect(page.getByRole('button', { name: /^Remove / })).toHaveCount(5)
+  await page.keyboard.press('Backspace')
+  await expect(page.getByRole('button', { name: 'Remove android' })).toHaveCount(0)
+  await expect(page.getByRole('status')).toHaveText('Removed android')
+})
+
 test('grid splits 8 / 4 from md', async ({ page }) => {
   await page.goto('/preview/grid/two-column-8-4')
   const [main, side] = await gridCells(page, ['Sprint progress', 'Details'])
@@ -349,6 +371,7 @@ for (const path of [
   '/docs/components/toolbar',
   '/docs/components/link',
   '/docs/components/checkbox-group',
+  '/docs/components/tags-input',
   '/docs/components/timeline',
   '/docs/components/image',
   '/docs/components/table',
