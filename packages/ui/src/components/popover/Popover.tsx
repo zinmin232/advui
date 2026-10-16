@@ -1,6 +1,8 @@
 import { shadows, zIndex } from '@advui/theme'
+import { composeEventHandlers } from '@advui/utils'
 import {
   type ReactNode,
+  type RefObject,
   createContext,
   forwardRef,
   useContext,
@@ -17,6 +19,7 @@ import {
   type TamaguiElement,
   View,
   isWeb,
+  useComposedRefs,
   withStaticProperties,
 } from 'tamagui'
 import { useBackToClose } from '../../hooks/useBackToClose'
@@ -29,6 +32,8 @@ type Align = 'start' | 'center' | 'end'
 
 // Links the dialog to its title for screen readers.
 const TitleIdContext = createContext<string | undefined>(undefined)
+// The trigger's element, where focus goes back when the popover closes.
+const TriggerRefContext = createContext<RefObject<TamaguiElement | null> | null>(null)
 
 export interface PopoverProps extends Omit<
   TamaguiPopoverProps,
@@ -66,52 +71,55 @@ function PopoverRoot({
   // instead of leaving the screen.
   useBackToClose(open, () => setOpen(false))
   const titleId = useId()
+  const triggerRef = useRef<TamaguiElement | null>(null)
   const placement = (
     align === 'center' ? side : `${side}-${align}`
   ) as TamaguiPopoverProps['placement']
   return (
     <TitleIdContext.Provider value={titleId}>
-      <TamaguiPopover
-        placement={placement}
-        offset={offset}
-        allowFlip
-        stayInFrame={{ padding: 8 }}
-        zIndex={zIndex.popover}
-        open={open}
-        onOpenChange={(next) => setOpen(next)}
-        {...props}
-      >
-        {children}
-        {/* Phones and native apps get a bottom sheet instead of a floating panel. */}
-        <Adapt when={isWeb ? 'max-md' : true} platform="touch">
-          <Sheet
-            modal
-            dismissOnSnapToBottom
-            snapPointsMode="fit"
-            transition={reducedMotion ? undefined : 'medium'}
-          >
-            <Sheet.Overlay
-              backgroundColor="$overlay"
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
-              transition={reducedMotion ? undefined : 'quick'}
-            />
-            <Sheet.Handle backgroundColor="$borderStrong" />
-            <Sheet.Frame
-              backgroundColor="$popover"
-              borderTopLeftRadius="$dialog"
-              borderTopRightRadius="$dialog"
-              padding="$5"
-              paddingBottom="$8"
+      <TriggerRefContext.Provider value={triggerRef}>
+        <TamaguiPopover
+          placement={placement}
+          offset={offset}
+          allowFlip
+          stayInFrame={{ padding: 8 }}
+          zIndex={zIndex.popover}
+          open={open}
+          onOpenChange={(next) => setOpen(next)}
+          {...props}
+        >
+          {children}
+          {/* Phones and native apps get a bottom sheet instead of a floating panel. */}
+          <Adapt when={isWeb ? 'max-md' : true} platform="touch">
+            <Sheet
+              modal
+              dismissOnSnapToBottom
+              snapPointsMode="fit"
+              transition={reducedMotion ? undefined : 'medium'}
             >
-              {/* Not on Sheet.Frame: Tamagui copies its props onto a decorative cover view. */}
-              <View role="dialog" aria-labelledby={titleId} gap="$3">
-                <Adapt.Contents />
-              </View>
-            </Sheet.Frame>
-          </Sheet>
-        </Adapt>
-      </TamaguiPopover>
+              <Sheet.Overlay
+                backgroundColor="$overlay"
+                enterStyle={{ opacity: 0 }}
+                exitStyle={{ opacity: 0 }}
+                transition={reducedMotion ? undefined : 'quick'}
+              />
+              <Sheet.Handle backgroundColor="$borderStrong" />
+              <Sheet.Frame
+                backgroundColor="$popover"
+                borderTopLeftRadius="$dialog"
+                borderTopRightRadius="$dialog"
+                padding="$5"
+                paddingBottom="$8"
+              >
+                {/* Not on Sheet.Frame: Tamagui copies its props onto a decorative cover view. */}
+                <View role="dialog" aria-labelledby={titleId} gap="$3">
+                  <Adapt.Contents />
+                </View>
+              </Sheet.Frame>
+            </Sheet>
+          </Adapt>
+        </TamaguiPopover>
+      </TriggerRefContext.Provider>
     </TitleIdContext.Provider>
   )
 }
@@ -120,17 +128,22 @@ export type PopoverTriggerProps = GetProps<typeof TamaguiPopover.Trigger>
 
 const PopoverTrigger = forwardRef<TamaguiElement, PopoverTriggerProps>(
   function PopoverTrigger(props, ref) {
-    return <TamaguiPopover.Trigger ref={ref as never} aria-haspopup="dialog" {...props} />
+    const triggerRef = useContext(TriggerRefContext)
+    const composedRef = useComposedRefs(ref, triggerRef ?? undefined)
+    return <TamaguiPopover.Trigger ref={composedRef as never} aria-haspopup="dialog" {...props} />
   },
 )
 
 export type PopoverContentProps = GetProps<typeof TamaguiPopover.Content>
 
 const PopoverContent = forwardRef<TamaguiElement, PopoverContentProps>(function PopoverContent(
-  { children, ...props },
+  { children, onCloseAutoFocus, onPointerDownOutside, ...props },
   ref,
 ) {
   const reducedMotion = useReducedMotion()
+  const triggerRef = useContext(TriggerRefContext)
+  // A right click outside opens a menu there, so focus stays where it is.
+  const rightClick = useRef(false)
   return (
     <TamaguiPopover.Content
       ref={ref as never}
@@ -151,6 +164,27 @@ const PopoverContent = forwardRef<TamaguiElement, PopoverContentProps>(function 
       y={0}
       transition={reducedMotion ? null : 'quick'}
       animateOnly={['transform', 'opacity']}
+      onPointerDownOutside={composeEventHandlers(
+        onPointerDownOutside,
+        (event) => {
+          const { button, ctrlKey } = event.detail.originalEvent
+          rightClick.current = button === 2 || (button === 0 && ctrlKey)
+        },
+        { checkDefaultPrevented: false },
+      )}
+      // Tamagui's trigger learns its element from pointer and focus events,
+      // but `asChild` drops its onFocus: after an open from the keyboard alone
+      // it had no element, and focus fell to the body on close.
+      onCloseAutoFocus={
+        onCloseAutoFocus === false
+          ? false
+          : composeEventHandlers(onCloseAutoFocus, (event) => {
+              const trigger = triggerRef?.current
+              if (!trigger) return
+              event.preventDefault()
+              if (!rightClick.current) trigger.focus()
+            })
+      }
       {...props}
     >
       {children}

@@ -771,7 +771,23 @@ test('date picker opens, moves by keyboard, picks and passes axe while open', as
   await page.keyboard.press('Enter')
   await expect(grid).toBeHidden()
   await expect(trigger).toContainText('Oct 15, 2026')
+  // Opened from the keyboard alone, focus still goes back to the field.
+  await expect(trigger).toBeFocused()
   expect(errors).toEqual([])
+})
+
+test('popover returns focus to its trigger on Escape after a keyboard-only open', async ({
+  page,
+}) => {
+  await page.goto('/preview/popover/basic')
+  const trigger = page.getByRole('button', { name: 'Dimensions' })
+  await trigger.focus()
+  await page.keyboard.press('Enter')
+  const dialog = page.getByRole('dialog', { name: 'Dimensions' })
+  await expect(dialog).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(dialog).toBeHidden()
+  await expect(trigger).toBeFocused()
 })
 
 test('combobox filters, picks by keyboard and passes axe while open', async ({ page }) => {

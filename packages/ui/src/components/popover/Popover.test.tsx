@@ -53,6 +53,31 @@ describe('Popover', () => {
     await waitFor(() => expect(trigger).toHaveFocus())
   })
 
+  it('returns focus to the trigger after a keyboard-only open and Escape', async () => {
+    const { user } = renderWithProvider(<Example />)
+    const trigger = screen.getByRole('button', { name: 'Dimensions' })
+    // Tab and Enter only: no pointer ever reaches the trigger.
+    await user.tab()
+    expect(trigger).toHaveFocus()
+    await user.keyboard('{Enter}')
+    await screen.findByRole('dialog')
+    await user.keyboard('{Escape}')
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+    await waitFor(() => expect(trigger).toHaveFocus())
+  })
+
+  it('returns focus to the trigger when Popover.Close closes it', async () => {
+    const { user } = renderWithProvider(<Example />)
+    const trigger = screen.getByRole('button', { name: 'Dimensions' })
+    await user.tab()
+    await user.keyboard('{Enter}')
+    const done = await screen.findByRole('button', { name: 'Done' })
+    done.focus()
+    await user.keyboard('{Enter}')
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+    await waitFor(() => expect(trigger).toHaveFocus())
+  })
+
   it('closes from Popover.Close', async () => {
     const { user } = renderWithProvider(<Example />)
     await user.click(screen.getByRole('button', { name: 'Dimensions' }))
