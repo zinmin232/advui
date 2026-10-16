@@ -1292,6 +1292,22 @@
       ]
     },
     {
+      "name": "rating",
+      "title": "Rating",
+      "type": "registry:component",
+      "description": "A row of stars, or any icon, to give a score with a press or the keyboard, or to show one read-only, with half and part-filled icons.",
+      "category": "forms",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "utils"
+      ]
+    },
+    {
       "name": "resizable-panel",
       "title": "Resizable Panel",
       "type": "registry:component",

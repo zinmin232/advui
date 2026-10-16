@@ -44,6 +44,7 @@ describe('@advui/core public API', () => {
       'TagsInput',
       'Carousel',
       'CarouselItem',
+      'Rating',
       'UniversalProvider',
       'ariaState',
       'isTextContent',

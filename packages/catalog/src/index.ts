@@ -68,6 +68,7 @@ import pieChartMeta from '../../charts/src/components/pie-chart/pie-chart.meta'
 import popoverMeta from '../../ui/src/components/popover/popover.meta'
 import progressMeta from '../../ui/src/components/progress/progress.meta'
 import radioGroupMeta from '../../ui/src/components/radio-group/radio-group.meta'
+import ratingMeta from '../../ui/src/components/rating/rating.meta'
 import resizablePanelMeta from '../../ui/src/components/resizable-panel/resizable-panel.meta'
 import richTextEditorMeta from '../../editor/src/components/rich-text-editor/rich-text-editor.meta'
 import scrollAreaMeta from '../../ui/src/components/scroll-area/scroll-area.meta'
@@ -202,6 +203,7 @@ export const components: CatalogComponent[] = [
   { ...popoverMeta, package: '@advui/core' },
   { ...progressMeta, package: '@advui/core' },
   { ...radioGroupMeta, package: '@advui/core' },
+  { ...ratingMeta, package: '@advui/core' },
   { ...resizablePanelMeta, package: '@advui/core' },
   { ...richTextEditorMeta, package: '@advui/editor' },
   { ...scrollAreaMeta, package: '@advui/core' },

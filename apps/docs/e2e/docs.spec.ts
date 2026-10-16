@@ -184,6 +184,32 @@ test('carousel scrolls with its buttons and keys, and follows a scroll', async (
   await expect(dot(1)).toHaveAttribute('aria-current', 'true')
 })
 
+// Halves and the hover preview depend on real layout and pointer events.
+test('rating picks a half with the pointer, previews on hover and steps with keys', async ({
+  page,
+}) => {
+  await page.goto('/preview/rating/half')
+  const rating = page.getByRole('slider', { name: 'Medium' })
+  const icon = (n: number) => rating.locator(':scope > div').nth(n)
+  // Each icon with any fill draws a filled copy over its outline.
+  const svgs = rating.locator('svg')
+  await expect(rating).toHaveAttribute('aria-valuenow', '3.5')
+
+  const second = (await icon(1).boundingBox())!
+  await page.mouse.click(second.x + second.width / 4, second.y + second.height / 2)
+  await expect(rating).toHaveAttribute('aria-valuenow', '1.5')
+  await expect(rating).toBeFocused()
+  await page.keyboard.press('ArrowRight')
+  await expect(rating).toHaveAttribute('aria-valuenow', '2')
+
+  const last = (await icon(4).boundingBox())!
+  await page.mouse.move(last.x + (last.width * 3) / 4, last.y + last.height / 2)
+  await expect(svgs).toHaveCount(10)
+  await expect(rating).toHaveAttribute('aria-valuenow', '2')
+  await page.mouse.move(last.x + last.width + 100, last.y - 100)
+  await expect(svgs).toHaveCount(7)
+})
+
 test('grid splits 8 / 4 from md', async ({ page }) => {
   await page.goto('/preview/grid/two-column-8-4')
   const [main, side] = await gridCells(page, ['Sprint progress', 'Details'])
@@ -410,6 +436,7 @@ for (const path of [
   '/docs/components/checkbox-group',
   '/docs/components/tags-input',
   '/docs/components/carousel',
+  '/docs/components/rating',
   '/docs/components/timeline',
   '/docs/components/image',
   '/docs/components/table',

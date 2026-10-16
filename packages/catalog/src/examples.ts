@@ -180,6 +180,11 @@ import PopoverBasic from '../../ui/src/components/popover/examples/basic'
 import PopoverFilter from '../../ui/src/components/popover/examples/filter'
 import ProgressBasic from '../../ui/src/components/progress/examples/basic'
 import RadioGroupBasic from '../../ui/src/components/radio-group/examples/basic'
+import RatingBasic from '../../ui/src/components/rating/examples/basic'
+import RatingHalf from '../../ui/src/components/rating/examples/half'
+import RatingReadOnly from '../../ui/src/components/rating/examples/read-only'
+import RatingField from '../../ui/src/components/rating/examples/field'
+import RatingCustomIcon from '../../ui/src/components/rating/examples/custom-icon'
 import ResizablePanelBasic from '../../ui/src/components/resizable-panel/examples/basic'
 import ResizablePanelVertical from '../../ui/src/components/resizable-panel/examples/vertical'
 import ResizablePanelCollapsible from '../../ui/src/components/resizable-panel/examples/collapsible'
@@ -580,6 +585,13 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'radio-group': {
     'basic': RadioGroupBasic,
+  },
+  'rating': {
+    'basic': RatingBasic,
+    'half': RatingHalf,
+    'read-only': RatingReadOnly,
+    'field': RatingField,
+    'custom-icon': RatingCustomIcon,
   },
   'resizable-panel': {
     'basic': ResizablePanelBasic,
