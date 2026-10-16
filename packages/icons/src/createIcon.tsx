@@ -10,16 +10,18 @@ import { useIconColor } from './useIconColor'
  * Use it to add your own icons that behave exactly like the built-in ones.
  */
 export function createIcon(name: string, node: IconNode): IconComponent {
-  function IconImpl({ size, color, strokeWidth, testID, ...rest }: IconProps) {
+  function IconImpl({ size, color, fill, strokeWidth, testID, ...rest }: IconProps) {
     const defaults = useIconDefaults()
     // Web inherits `currentColor` from surrounding text; native has no
     // inheritance, so fall back to the theme's text color.
     const resolved = useIconColor(color ?? defaults.color ?? (isWeb ? undefined : '$color'))
+    const resolvedFill = useIconColor(fill)
     return (
       <SvgIcon
         node={node}
         size={size ?? defaults.size ?? 16}
         color={resolved}
+        fill={resolvedFill}
         strokeWidth={strokeWidth ?? defaults.strokeWidth ?? 2}
         label={rest['aria-label']}
         testID={testID}

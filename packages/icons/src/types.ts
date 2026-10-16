@@ -8,6 +8,11 @@ export interface IconProps {
   size?: number
   /** Theme token (`"$primary"`) or any color string. Defaults to the surrounding text color. */
   color?: string
+  /**
+   * Paints the inside of the shape: a theme token or any color. Icons are
+   * outlines by default; a filled star or heart can show a chosen state.
+   */
+  fill?: string
   strokeWidth?: number
   /**
    * Accessible name. When omitted the icon is decorative and hidden from
