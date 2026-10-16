@@ -130,7 +130,7 @@ Image Gallery and Pie Chart already cover them.
 
 Built so far (the table keeps them for reference): Link, Input Group as
 slots on Input (`leading`, `trailing`, `leadingAddon`, `trailingAddon`),
-Checkbox Group and Tags Input.
+Checkbox Group, Tags Input and Carousel.
 
 | Phase | Package         | Components                                                                                                                                  |
 | ----- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
