@@ -39,20 +39,23 @@ export interface PickerTriggerProps extends Omit<GetProps<typeof TriggerFrame>, 
   /** The formatted value, or null to show the placeholder. */
   valueText: string | null
   placeholder: string
+  /** Before the value, such as Color Picker's swatch. */
+  leading?: ReactNode
   icon?: ReactNode
   'aria-describedby'?: string
 }
 
 /**
- * The field-shaped button of Date Picker and Date Range Picker. Its value text
- * is linked with `aria-describedby`, so a label from a Field (which names
- * the button) and the value are both announced.
+ * The field-shaped button of Date Picker, Date Range Picker and Color
+ * Picker. Its value text is linked with `aria-describedby`, so a label from a
+ * Field (which names the button) and the value are both announced.
  */
 export const PickerTrigger = forwardRef<TamaguiElement, PickerTriggerProps>(
   function PickerTrigger(triggerProps, ref) {
     const {
       valueText,
       placeholder,
+      leading,
       icon = <CalendarIcon />,
       invalid = false,
       disabled = false,
@@ -60,6 +63,19 @@ export const PickerTrigger = forwardRef<TamaguiElement, PickerTriggerProps>(
       ...props
     } = useFieldControl(triggerProps)
     const valueId = useId()
+    const text = (
+      <Text
+        id={valueId}
+        size="sm"
+        numberOfLines={1}
+        flexShrink={1}
+        // The placeholder is real text here, not an input's placeholder, so
+        // it needs body-text contrast: `$placeholderColor` is below 4.5:1.
+        color={valueText ? '$foreground' : '$mutedForeground'}
+      >
+        {valueText ?? placeholder}
+      </Text>
+    )
     return (
       <TriggerFrame
         ref={ref}
@@ -75,17 +91,14 @@ export const PickerTrigger = forwardRef<TamaguiElement, PickerTriggerProps>(
             { accessibilityValue: { text: valueText ?? placeholder } })}
         {...props}
       >
-        <Text
-          id={valueId}
-          size="sm"
-          numberOfLines={1}
-          flexShrink={1}
-          // The placeholder is real text here, not an input's placeholder, so
-          // it needs body-text contrast: `$placeholderColor` is below 4.5:1.
-          color={valueText ? '$foreground' : '$mutedForeground'}
-        >
-          {valueText ?? placeholder}
-        </Text>
+        {leading ? (
+          <View flexDirection="row" alignItems="center" gap="$2" flexShrink={1}>
+            {leading}
+            {text}
+          </View>
+        ) : (
+          text
+        )}
         <IconDefaults size={16} color="$mutedForeground">
           {icon}
         </IconDefaults>

@@ -210,6 +210,26 @@ test('rating picks a half with the pointer, previews on hover and steps with key
   await expect(svgs).toHaveCount(7)
 })
 
+// Dragging needs real layout and pointer capture; Chrome also has the EyeDropper API.
+test('color picker follows a drag across the area and commits when it ends', async ({ page }) => {
+  await page.goto('/preview/color-picker/inline')
+  const area = page.getByRole('slider', { name: 'Color' })
+  const box = (await area.boundingBox())!
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
+  await page.mouse.down()
+  await expect(area).toBeFocused()
+  await expect(area).toHaveAttribute('aria-valuetext', 'Saturation 50%, brightness 50%')
+  // Past the corner the thumb stops at the edge: white.
+  await page.mouse.move(box.x - 40, box.y - 40, { steps: 4 })
+  await expect(area).toHaveAttribute('aria-valuetext', 'Saturation 0%, brightness 100%')
+  await expect(page.getByText('Saved: #10b981')).toBeVisible()
+  await page.mouse.up()
+  await expect(page.getByText('Saved: #ffffff')).toBeVisible()
+  await page.keyboard.press('ArrowDown')
+  await expect(page.getByText('Saved: #fcfcfc')).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Pick a color from the screen' })).toBeVisible()
+})
+
 test('grid splits 8 / 4 from md', async ({ page }) => {
   await page.goto('/preview/grid/two-column-8-4')
   const [main, side] = await gridCells(page, ['Sprint progress', 'Details'])
@@ -437,6 +457,7 @@ for (const path of [
   '/docs/components/tags-input',
   '/docs/components/carousel',
   '/docs/components/rating',
+  '/docs/components/color-picker',
   '/docs/components/timeline',
   '/docs/components/image',
   '/docs/components/table',
@@ -788,6 +809,26 @@ test('popover returns focus to its trigger on Escape after a keyboard-only open'
   await page.keyboard.press('Escape')
   await expect(dialog).toBeHidden()
   await expect(trigger).toBeFocused()
+})
+
+test('color picker opens, takes a typed color and passes axe while open', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/color-picker')
+  await page.waitForLoadState('networkidle')
+  const trigger = page.getByRole('button', { name: 'Brand color' }).first()
+  await trigger.focus()
+  await page.keyboard.press('Enter')
+  const dialog = page.getByRole('dialog', { name: 'Choose a color' })
+  await expect(dialog.getByRole('slider', { name: 'Color' })).toBeVisible()
+  expect(await seriousViolations(page)).toEqual([])
+  const hex = dialog.getByRole('textbox', { name: 'Hex color' })
+  await hex.fill('ef4444')
+  await hex.press('Enter')
+  await expect(trigger).toContainText('#ef4444')
+  await page.keyboard.press('Escape')
+  await expect(dialog).toBeHidden()
+  await expect(trigger).toBeFocused()
+  expect(errors).toEqual([])
 })
 
 test('combobox filters, picks by keyboard and passes axe while open', async ({ page }) => {

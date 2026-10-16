@@ -33,6 +33,7 @@ import { Checkbox } from './checkbox/Checkbox'
 import { Chip } from './chip/Chip'
 import { CircularProgress } from './circular-progress/CircularProgress'
 import { Collapsible } from './collapsible/Collapsible'
+import { ColorPicker } from './color-picker/ColorPicker'
 import { Combobox } from './combobox/Combobox'
 import { CommandPalette } from './command-palette/CommandPalette'
 import { ConfirmDialog } from './confirm-dialog/ConfirmDialog'
@@ -954,6 +955,61 @@ describe('native rendering', () => {
     await fireEvent.press(screen.getByRole('button', { name: 'Due date' }))
     await fireEvent.press(await screen.findByRole('button', { name: /October 20, 2026/ }))
     expect(onValueChange).toHaveBeenCalledWith(new Date(2026, 9, 20))
+  })
+
+  it('ColorPicker: adjustable area and sliders, swatches, and a field that opens a sheet', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <>
+        <Field label="Brand color" description="Used for buttons.">
+          <ColorPicker
+            inline
+            defaultValue="#ff0000"
+            swatches={[{ value: '#0000ff', label: 'Blue' }]}
+            onValueChange={onValueChange}
+          />
+        </Field>
+        <ColorPicker aria-label="Accent" defaultValue="#00ff00" />
+      </>,
+    )
+    // Native has no group names, so each control reads the field's.
+    const area = screen.getByRole('slider', { name: 'Color' })
+    expect(area.props.accessible).toBe(true)
+    expect(area.props.accessibilityHint).toBe('Brand color. Used for buttons.')
+    expect(area.props.accessibilityValue).toEqual({
+      min: 0,
+      max: 100,
+      now: 100,
+      text: 'Saturation 100%, brightness 100%',
+    })
+    // Swipes change the brightness; the actions menu holds the saturation.
+    await fireEvent(area, 'accessibilityAction', { nativeEvent: { actionName: 'decrement' } })
+    expect(onValueChange).toHaveBeenLastCalledWith('#e60000')
+    await fireEvent(area, 'accessibilityAction', { nativeEvent: { actionName: 'desaturate' } })
+    expect(screen.getByRole('slider', { name: 'Color' }).props.accessibilityValue.text).toBe(
+      'Saturation 90%, brightness 90%',
+    )
+
+    const hue = screen.getByRole('slider', { name: 'Hue' })
+    expect(hue.props.hitSlop).toEqual({ top: 13, bottom: 13 })
+    await fireEvent(hue, 'accessibilityAction', { nativeEvent: { actionName: 'increment' } })
+    expect(screen.getByRole('slider', { name: 'Hue' }).props.accessibilityValue).toEqual({
+      min: 0,
+      max: 360,
+      now: 10,
+      text: '10°',
+    })
+
+    expect(screen.getByRole('button', { name: 'Blue' })).not.toBeSelected()
+    await fireEvent.press(screen.getByRole('button', { name: 'Blue' }))
+    expect(onValueChange).toHaveBeenLastCalledWith('#0000ff')
+    expect(screen.getByRole('button', { name: 'Blue' })).toBeSelected()
+
+    // The field reads its color as the value, and opens the picker in a sheet.
+    const accent = screen.getByRole('button', { name: 'Accent' })
+    expect(accent).toHaveAccessibilityValue({ text: '#00ff00' })
+    await fireEvent.press(accent)
+    expect(await screen.findAllByRole('slider', { name: 'Color' })).toHaveLength(2)
   })
 
   it('DateRangePicker reads its range with plain spaces', async () => {
