@@ -45,6 +45,11 @@ import CalendarRange from '../../ui/src/components/calendar/examples/range'
 import CardBasic from '../../ui/src/components/card/examples/basic'
 import CardVariants from '../../ui/src/components/card/examples/variants'
 import CardInteractive from '../../ui/src/components/card/examples/interactive'
+import CarouselBasic from '../../ui/src/components/carousel/examples/basic'
+import CarouselSeveralPerView from '../../ui/src/components/carousel/examples/several-per-view'
+import CarouselImages from '../../ui/src/components/carousel/examples/images'
+import CarouselAutoplay from '../../ui/src/components/carousel/examples/autoplay'
+import CarouselControlled from '../../ui/src/components/carousel/examples/controlled'
 import CheckboxBasic from '../../ui/src/components/checkbox/examples/basic'
 import CheckboxIndeterminate from '../../ui/src/components/checkbox/examples/indeterminate'
 import CheckboxGroupBasic from '../../ui/src/components/checkbox-group/examples/basic'
@@ -336,6 +341,13 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': CardBasic,
     'variants': CardVariants,
     'interactive': CardInteractive,
+  },
+  'carousel': {
+    'basic': CarouselBasic,
+    'several-per-view': CarouselSeveralPerView,
+    'images': CarouselImages,
+    'autoplay': CarouselAutoplay,
+    'controlled': CarouselControlled,
   },
   'checkbox': {
     'basic': CheckboxBasic,

@@ -15,6 +15,7 @@ import buttonMeta from '../components/button/button.meta'
 import buttonGroupMeta from '../components/button-group/button-group.meta'
 import calendarMeta from '../components/calendar/calendar.meta'
 import cardMeta from '../components/card/card.meta'
+import carouselMeta from '../components/carousel/carousel.meta'
 import checkboxMeta from '../components/checkbox/checkbox.meta'
 import checkboxGroupMeta from '../components/checkbox-group/checkbox-group.meta'
 import chipMeta from '../components/chip/chip.meta'
@@ -107,6 +108,7 @@ export const components: ComponentMeta[] = [
   buttonGroupMeta,
   calendarMeta,
   cardMeta,
+  carouselMeta,
   checkboxMeta,
   checkboxGroupMeta,
   chipMeta,

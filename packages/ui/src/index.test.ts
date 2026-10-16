@@ -42,6 +42,8 @@ describe('@advui/core public API', () => {
       'Link',
       'CheckboxGroup',
       'TagsInput',
+      'Carousel',
+      'CarouselItem',
       'UniversalProvider',
       'ariaState',
       'isTextContent',

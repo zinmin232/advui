@@ -27,6 +27,7 @@ import { Button } from './button/Button'
 import { Calendar } from './calendar/Calendar'
 import { ButtonGroup } from './button-group/ButtonGroup'
 import { Card } from './card/Card'
+import { Carousel } from './carousel/Carousel'
 import { CheckboxGroup } from './checkbox-group/CheckboxGroup'
 import { Checkbox } from './checkbox/Checkbox'
 import { Chip } from './chip/Chip'
@@ -1387,6 +1388,44 @@ describe('native rendering', () => {
     expect(announce).toHaveBeenLastCalledWith('Removed web')
     await fireEvent(field, 'keyPress', { nativeEvent: { key: 'Backspace' } })
     expect(onValueChange).toHaveBeenLastCalledWith([])
+    announce.mockRestore()
+  })
+
+  it('Carousel snaps to each slide, moves with its buttons and announces the slide', async () => {
+    const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility')
+    const onIndexChange = jest.fn()
+    await renderNative(
+      <Carousel aria-label="Featured" slidesPerView={2} onIndexChange={onIndexChange}>
+        <Text>Slide one</Text>
+        <Text>Slide two</Text>
+        <Text>Slide three</Text>
+      </Carousel>,
+    )
+    const slide = screen.getByText('Slide one').parent!
+    let track = slide.parent
+    while (track && track.props.horizontal !== true) track = track.parent
+    if (!track) throw new Error('no horizontal ScrollView')
+    // Slide widths come from the measured width: (300 - 16) / 2, 16px apart.
+    await fireEvent(track, 'layout', { nativeEvent: { layout: { width: 300, height: 120 } } })
+    expect(StyleSheet.flatten(slide.props.style).width).toBe(142)
+    expect(track.props.snapToOffsets).toEqual([0, 158])
+    expect(track.props.disableIntervalMomentum).toBe(true)
+
+    const next = screen.getByRole('button', { name: 'Next slide' })
+    expect(screen.getByRole('button', { name: 'Previous slide' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Go to slide 1' })).toBeSelected()
+    await fireEvent.press(next)
+    expect(onIndexChange).toHaveBeenLastCalledWith(1)
+    expect(announce).toHaveBeenLastCalledWith('Slide 2 of 3')
+    expect(screen.getByRole('button', { name: 'Go to slide 2' })).toBeSelected()
+    expect(screen.getByRole('button', { name: 'Go to slide 1' })).not.toBeSelected()
+    expect(next).toBeDisabled()
+
+    // A swipe back settles on the first slide.
+    await fireEvent(track, 'momentumScrollEnd', {
+      nativeEvent: { contentOffset: { x: 0, y: 0 } },
+    })
+    expect(onIndexChange).toHaveBeenLastCalledWith(0)
     announce.mockRestore()
   })
 

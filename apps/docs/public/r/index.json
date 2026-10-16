@@ -495,6 +495,24 @@
       ]
     },
     {
+      "name": "carousel",
+      "title": "Carousel",
+      "type": "registry:component",
+      "description": "A row of slides shown one or a few at a time, moved by swipes, previous and next buttons or dots, with optional autoplay.",
+      "category": "media",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "hooks",
+        "icon-button",
+        "typography",
+        "utils"
+      ]
+    },
+    {
       "name": "checkbox-group",
       "title": "Checkbox Group",
       "type": "registry:component",

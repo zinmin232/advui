@@ -16,6 +16,7 @@ import buttonMeta from '../../ui/src/components/button/button.meta'
 import buttonGroupMeta from '../../ui/src/components/button-group/button-group.meta'
 import calendarMeta from '../../ui/src/components/calendar/calendar.meta'
 import cardMeta from '../../ui/src/components/card/card.meta'
+import carouselMeta from '../../ui/src/components/carousel/carousel.meta'
 import checkboxMeta from '../../ui/src/components/checkbox/checkbox.meta'
 import checkboxGroupMeta from '../../ui/src/components/checkbox-group/checkbox-group.meta'
 import chipMeta from '../../ui/src/components/chip/chip.meta'
@@ -149,6 +150,7 @@ export const components: CatalogComponent[] = [
   { ...buttonGroupMeta, package: '@advui/core' },
   { ...calendarMeta, package: '@advui/core' },
   { ...cardMeta, package: '@advui/core' },
+  { ...carouselMeta, package: '@advui/core' },
   { ...checkboxMeta, package: '@advui/core' },
   { ...checkboxGroupMeta, package: '@advui/core' },
   { ...chipMeta, package: '@advui/core' },
