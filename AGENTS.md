@@ -137,6 +137,9 @@ each edit.
   `outline-width: 0`; use `outlineStyle: 'none'`.
 - **Tamagui `activeStyle`** is not applied on native; derive active styles from
   state.
+- **Tamagui `asChild` drops `onFocus`** (web): `<View asChild onFocus>` never
+  calls it, so Tamagui triggers that learn their element on focus miss
+  keyboard-only users. Keep your own ref instead (see Popover's trigger ref).
 - **RNTL 14**: `render`, `fireEvent` and `act` are async, so always `await` them.
 - **Vitest uses happy-dom** (jsdom was too slow to start on Windows). Polyfills
   are in `packages/ui/test/setup.ts`.

@@ -1280,7 +1280,8 @@
       "status": "beta",
       "package": "@advui/core",
       "dependencies": [
-        "@advui/theme"
+        "@advui/theme",
+        "@advui/utils"
       ],
       "registryDependencies": [
         "hooks",

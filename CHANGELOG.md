@@ -122,6 +122,12 @@ one version.
 - **Radio Group** spaces its items 12px apart (`gap="$3"`), as intended.
   The gap was set on a frame that Tamagui's radio group does not render, so
   items sat flush unless you passed `gap`.
+- **Popover** (and Date Picker, Date Range Picker and Color Picker, which
+  open one) on web: focus goes back to the trigger when it closes, also
+  after an open from the keyboard alone. It fell to the page body:
+  Tamagui's trigger learns its element from pointer and focus events, and
+  with `asChild` its focus handler never ran, so keyboard users lost their
+  place on Escape, `Popover.Close` or a picked date.
 
 ## [0.13.0] - 2026-10-15
 
