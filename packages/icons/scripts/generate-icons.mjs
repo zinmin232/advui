@@ -57,6 +57,7 @@ export const ICON_NAMES = [
   'more-horizontal',
   'package',
   'palette',
+  'pipette',
   'plus',
   'search',
   'settings',
