@@ -1533,6 +1533,24 @@
       ]
     },
     {
+      "name": "tags-input",
+      "title": "Tags Input",
+      "type": "registry:component",
+      "description": "A text field that turns typed or pasted text into removable tags, for free-form values such as topics or email addresses.",
+      "category": "forms",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "chip",
+        "hooks",
+        "input",
+        "utils"
+      ]
+    },
+    {
       "name": "textarea",
       "title": "Textarea",
       "type": "registry:component",

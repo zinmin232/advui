@@ -88,6 +88,7 @@ import stickyMeta from '../../ui/src/components/sticky/sticky.meta'
 import switchMeta from '../../ui/src/components/switch/switch.meta'
 import tableMeta from '../../data/src/components/table/table.meta'
 import tabsMeta from '../../ui/src/components/tabs/tabs.meta'
+import tagsInputMeta from '../../ui/src/components/tags-input/tags-input.meta'
 import textareaMeta from '../../ui/src/components/textarea/textarea.meta'
 import timePickerMeta from '../../ui/src/components/time-picker/time-picker.meta'
 import timelineMeta from '../../data/src/components/timeline/timeline.meta'
@@ -220,6 +221,7 @@ export const components: CatalogComponent[] = [
   { ...switchMeta, package: '@advui/core' },
   { ...tableMeta, package: '@advui/data' },
   { ...tabsMeta, package: '@advui/core' },
+  { ...tagsInputMeta, package: '@advui/core' },
   { ...textareaMeta, package: '@advui/core' },
   { ...timePickerMeta, package: '@advui/core' },
   { ...timelineMeta, package: '@advui/data' },

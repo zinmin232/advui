@@ -41,6 +41,7 @@ describe('@advui/core public API', () => {
       'Toolbar',
       'Link',
       'CheckboxGroup',
+      'TagsInput',
       'UniversalProvider',
       'ariaState',
       'isTextContent',

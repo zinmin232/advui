@@ -16,7 +16,6 @@ export interface RoadmapItem {
 
 export const roadmap: RoadmapItem[] = [
   // Phase 7: the components apps reach for most.
-  { name: 'Tags Input', slug: 'tags-input', category: 'forms', phase: 7 },
   { name: 'Carousel', slug: 'carousel', category: 'media', phase: 7 },
   { name: 'Rating', slug: 'rating', category: 'forms', phase: 7 },
   { name: 'Color Picker', slug: 'color-picker', category: 'forms', phase: 7 },

@@ -47,6 +47,17 @@ one version.
   selects the item, and the description is linked as its description on web
   and read as its hint on iOS and Android. Items without them render as
   before.
+- **Tags Input**: a text field that turns what you type into tags (`value`,
+  `defaultValue`, `onValueChange`). Enter or a separator (`separators`,
+  a comma by default) adds the typed text, a pasted list adds every part,
+  and Backspace in the empty text box removes the last tag. Each tag is a
+  Chip with a named remove button. `max`, `allowDuplicates` and `validate`
+  refuse tags, which then stay in the text box to be fixed; `addOnBlur` (on
+  by default) keeps half-typed text from being lost when a form is
+  submitted. Added and removed tags are announced to screen readers, and
+  `labels` translates the button names and announcements. It takes a
+  Field's label, help and error like Input, `size` matches Input's heights,
+  and on web each tag submits under the field's `name`.
 
 ### Changed
 

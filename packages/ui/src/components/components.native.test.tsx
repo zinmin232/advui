@@ -3,7 +3,14 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-
 import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
 import { createThemeColors, createUniversalConfig, themePresets, zIndex } from '@advui/theme'
 import { Fragment, type ReactElement } from 'react'
-import { BackHandler, Dimensions, Linking, StyleSheet, processColor } from 'react-native'
+import {
+  AccessibilityInfo,
+  BackHandler,
+  Dimensions,
+  Linking,
+  StyleSheet,
+  processColor,
+} from 'react-native'
 import { XStack } from 'tamagui'
 import { renderNative } from '../../test/native-utils'
 import { Accordion } from './accordion/Accordion'
@@ -82,6 +89,7 @@ import { Slider } from './slider/Slider'
 import { Snackbar } from './snackbar/Snackbar'
 import { Stepper } from './stepper/Stepper'
 import { Switch } from './switch/Switch'
+import { TagsInput } from './tags-input/TagsInput'
 import { Textarea } from './textarea/Textarea'
 import { Toaster, toast } from './toast/Toaster'
 import { Toggle } from './toggle/Toggle'
@@ -1353,6 +1361,33 @@ describe('native rendering', () => {
     expect(onSearch).toHaveBeenCalledWith('hakha')
     await fireEvent.press(screen.getByRole('button', { name: 'Clear search' }))
     expect(screen.queryByRole('button', { name: 'Clear search' })).toBeNull()
+  })
+
+  it('TagsInput adds tags with return and commas, and removes them', async () => {
+    const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility')
+    const onValueChange = jest.fn()
+    await renderNative(
+      <Field label="Topics" description="Press return after each one.">
+        <TagsInput placeholder="Add a topic" onValueChange={onValueChange} />
+      </Field>,
+    )
+    const field = screen.getByPlaceholderText('Add a topic')
+    expect(field.props.accessibilityLabel ?? field.props['aria-label']).toBe('Topics')
+    expect(field.props.accessibilityHint).toBe('Press return after each one.')
+    // Return keeps the keyboard open for the next tag.
+    expect(field.props.submitBehavior).toBe('submit')
+    await fireEvent.changeText(field, 'web')
+    await fireEvent(field, 'submitEditing')
+    expect(onValueChange).toHaveBeenLastCalledWith(['web'])
+    expect(announce).toHaveBeenLastCalledWith('Added web')
+    await fireEvent.changeText(field, 'ios,')
+    expect(onValueChange).toHaveBeenLastCalledWith(['web', 'ios'])
+    await fireEvent.press(screen.getByRole('button', { name: 'Remove web' }))
+    expect(onValueChange).toHaveBeenLastCalledWith(['ios'])
+    expect(announce).toHaveBeenLastCalledWith('Removed web')
+    await fireEvent(field, 'keyPress', { nativeEvent: { key: 'Backspace' } })
+    expect(onValueChange).toHaveBeenLastCalledWith([])
+    announce.mockRestore()
   })
 
   it('CommandPalette lists commands as buttons and runs one', async () => {
