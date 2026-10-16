@@ -147,6 +147,43 @@ test('tags input adds, pastes and removes tags without losing focus', async ({ p
   await expect(page.getByRole('status')).toHaveText('Removed android')
 })
 
+// Buttons scroll the snapping track, and a scroll that is not theirs (a
+// swipe, a trackpad, a tab into a slide) moves the dots once it stops.
+test('carousel scrolls with its buttons and keys, and follows a scroll', async ({ page }) => {
+  await page.goto('/preview/carousel/basic')
+  const region = page.getByRole('region', { name: 'Getting started' })
+  const track = page.locator(
+    `[id="${await region.getByRole('button', { name: 'Next slide' }).getAttribute('aria-controls')}"]`,
+  )
+  const slide = (name: string) => region.getByRole('group', { name })
+  const dot = (n: number) => region.getByRole('button', { name: `Go to slide ${n}` })
+  /** Slide `name` starts where the track starts. */
+  const expectFirstInView = async (name: string) =>
+    expect
+      .poll(async () => {
+        const [a, b] = await Promise.all([slide(name).boundingBox(), track.boundingBox()])
+        return a && b ? Math.round(a.x - b.x) : null
+      })
+      .toBe(0)
+
+  await region.getByRole('button', { name: 'Next slide' }).click()
+  await expect(dot(2)).toHaveAttribute('aria-current', 'true')
+  await expect(page.getByRole('status')).toHaveText('Slide 2 of 4')
+  await expectFirstInView('2 of 4')
+
+  await track.evaluate((el) => el.scrollTo({ left: el.scrollWidth }))
+  await expect(dot(4)).toHaveAttribute('aria-current', 'true')
+  await expect(region.getByRole('button', { name: 'Next slide' })).toBeDisabled()
+
+  await track.focus()
+  await page.keyboard.press('ArrowLeft')
+  await expect(dot(3)).toHaveAttribute('aria-current', 'true')
+  await expectFirstInView('3 of 4')
+  await page.keyboard.press('Home')
+  await expectFirstInView('1 of 4')
+  await expect(dot(1)).toHaveAttribute('aria-current', 'true')
+})
+
 test('grid splits 8 / 4 from md', async ({ page }) => {
   await page.goto('/preview/grid/two-column-8-4')
   const [main, side] = await gridCells(page, ['Sprint progress', 'Details'])
@@ -372,6 +409,7 @@ for (const path of [
   '/docs/components/link',
   '/docs/components/checkbox-group',
   '/docs/components/tags-input',
+  '/docs/components/carousel',
   '/docs/components/timeline',
   '/docs/components/image',
   '/docs/components/table',

@@ -58,6 +58,19 @@ one version.
   `labels` translates the button names and announcements. It takes a
   Field's label, help and error like Input, `size` matches Input's heights,
   and on web each tag submits under the field's `name`.
+- **Carousel**: a row of slides shown one or a few at a time
+  (`slidesPerView`, a number or a mobile-first map; a fraction such as 1.2
+  shows part of the next slide), with previous and next buttons, a dot per
+  stop, and swipes: CSS scroll snap on web (touch, trackpads, the scroll
+  wheel) and a snapping ScrollView on iOS and Android, one slide per swipe.
+  `index`, `defaultIndex` and `onIndexChange` control it, `loop` wraps at
+  the ends, `gap` spaces the slides, and `showArrows` and `showDots` hide
+  the controls. `autoplay` (`true` for 5 seconds, or a delay in ms) adds a
+  pause button, waits while the pointer, focus or a finger is on the
+  carousel, and starts paused for users who ask for less motion. It follows
+  the WAI-ARIA carousel pattern on web (a named region of named slides, the
+  arrow keys, Home and End on the slide area), announces the new slide after
+  a user moves it, and `labels` translates every name and announcement.
 
 ### Changed
 

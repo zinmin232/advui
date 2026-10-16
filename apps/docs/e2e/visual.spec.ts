@@ -8,6 +8,8 @@ for (const mode of ['light', 'dark'] as const) {
     // most of all when writing a full set of baselines.
     test.setTimeout(5 * 60_000)
     await page.addInitScript((m) => window.localStorage.setItem('aui-color-mode', m), mode)
+    // Autoplaying examples (Carousel) start paused for reduced motion, so they hold still.
+    await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto('/visual')
     await page.waitForLoadState('networkidle')
     await expect(page.locator('html')).toHaveClass(new RegExp(`t_${mode}`))
