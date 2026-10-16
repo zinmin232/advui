@@ -204,7 +204,6 @@ function Dot({
         height="$2"
         borderRadius="$full"
         backgroundColor={active ? '$primary' : '$mutedForeground'}
-        transition="quick"
       />
     </View>
   )
