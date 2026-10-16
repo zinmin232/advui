@@ -4,11 +4,13 @@ import {
   adjustLightness,
   contrastRatio,
   ensureContrast,
+  fromHsv,
   fromOklch,
   isValidColor,
   mix,
   parseColor,
   toHex,
+  toHsv,
   toOklch,
   withAlpha,
 } from './color'
@@ -24,6 +26,30 @@ describe('parseColor', () => {
   it('rejects invalid input', () => {
     expect(parseColor('not-a-color')).toBeNull()
     expect(isValidColor('#12')).toBe(false)
+  })
+})
+
+describe('hsv', () => {
+  it('converts primaries, grays and translucent colors', () => {
+    expect(toHsv('#ff0000')).toEqual({ h: 0, s: 1, v: 1, a: 1 })
+    expect(toHsv('#00ff00').h).toBe(120)
+    expect(toHsv('#0000ff').h).toBe(240)
+    expect(toHsv('#ff00ff').h).toBe(300)
+    expect(toHsv('#808080')).toEqual({ h: 0, s: 0, v: 128 / 255, a: 1 })
+    expect(toHsv('#000000')).toEqual({ h: 0, s: 0, v: 0, a: 1 })
+    expect(toHsv('#ff000080').a).toBeCloseTo(128 / 255)
+  })
+
+  it('round-trips through hex', () => {
+    for (const hex of ['#6366f1', '#10b981', '#ef4444', '#0b0b0f', '#ffffff', '#3b82f680']) {
+      expect(fromHsv(toHsv(hex))).toBe(hex)
+    }
+  })
+
+  it('wraps the hue and clamps the other channels', () => {
+    expect(fromHsv({ h: 360, s: 1, v: 1 })).toBe('#ff0000')
+    expect(fromHsv({ h: -120, s: 1, v: 1 })).toBe('#0000ff')
+    expect(fromHsv({ h: 0, s: 2, v: -1 })).toBe('#000000')
   })
 })
 

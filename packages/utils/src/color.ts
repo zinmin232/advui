@@ -85,6 +85,41 @@ export function withAlpha(color: string, alpha: number): string {
   return `rgba(${round(rgba.r)}, ${round(rgba.g)}, ${round(rgba.b)}, ${clamp(alpha)})`
 }
 
+// --- HSV (the model of color picker areas) ----------------------------------------
+
+/** Hue in degrees (0–360); saturation, value and alpha from 0 to 1. */
+export type HSVA = { h: number; s: number; v: number; a: number }
+
+/** Converts a color to HSV. Grays have no hue and report 0. */
+export function toHsv(color: string | RGBA): HSVA {
+  const rgba = typeof color === 'string' ? parseColor(color) : color
+  if (!rgba) throw new Error(`Invalid color: ${String(color)}`)
+  const r = rgba.r / 255
+  const g = rgba.g / 255
+  const b = rgba.b / 255
+  const max = Math.max(r, g, b)
+  const delta = max - Math.min(r, g, b)
+  let h = 0
+  if (delta > 0) {
+    if (max === r) h = ((g - b) / delta) % 6
+    else if (max === g) h = (b - r) / delta + 2
+    else h = (r - g) / delta + 4
+    h = (h * 60 + 360) % 360
+  }
+  return { h, s: max === 0 ? 0 : delta / max, v: max, a: rgba.a }
+}
+
+/** Converts HSV to `#rrggbb` (or `#rrggbbaa` when translucent). */
+export function fromHsv({ h, s, v, a = 1 }: Partial<HSVA> & { h: number; s: number; v: number }) {
+  const sat = clamp(s)
+  const val = clamp(v)
+  const channel = (n: number) => {
+    const k = (n + (((h % 360) + 360) % 360) / 60) % 6
+    return (val - val * sat * Math.max(0, Math.min(k, 4 - k, 1))) * 255
+  }
+  return toHex({ r: channel(5), g: channel(3), b: channel(1), a: clamp(a) })
+}
+
 // --- OKLab / OKLCH (Björn Ottosson) -------------------------------------------------
 
 const toLinear = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
