@@ -29,7 +29,11 @@ export function ColorModeSettingProvider({
 }: {
   children: (resolved: ResolvedMode) => ReactNode
 }) {
-  const [setting, setSettingState] = useState<ColorModeSetting>('system')
+  // Null until the stored setting is read after hydration. Resolving 'system'
+  // before then switched a stored dark page to the OS's light theme and back,
+  // re-rendering every component twice.
+  const [stored, setSettingState] = useState<ColorModeSetting | null>(null)
+  const setting = stored ?? 'system'
   // Read what the blocking script applied so the first client render matches the page.
   const [resolved, setResolved] = useState<ResolvedMode>(() =>
     typeof document !== 'undefined' && document.documentElement.classList.contains('t_dark')
@@ -38,15 +42,17 @@ export function ColorModeSettingProvider({
   )
 
   useEffect(() => {
+    let saved: string | null = null
     try {
-      const stored = window.localStorage.getItem(COLOR_MODE_KEY) as ColorModeSetting | null
-      if (stored === 'light' || stored === 'dark' || stored === 'system') setSettingState(stored)
+      saved = window.localStorage.getItem(COLOR_MODE_KEY)
     } catch {
       // ignore
     }
+    setSettingState(saved === 'light' || saved === 'dark' ? saved : 'system')
   }, [])
 
   useEffect(() => {
+    if (stored === null) return
     if (setting !== 'system') {
       setResolved(setting)
       return
@@ -56,7 +62,7 @@ export function ColorModeSettingProvider({
     update()
     media.addEventListener('change', update)
     return () => media.removeEventListener('change', update)
-  }, [setting])
+  }, [stored, setting])
 
   useEffect(() => {
     document.documentElement.style.colorScheme = resolved
