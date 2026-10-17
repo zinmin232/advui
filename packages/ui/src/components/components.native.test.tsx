@@ -1705,10 +1705,14 @@ describe('native rendering', () => {
     const write = jest.fn((_text: string) => {})
     setClipboard(write)
     await renderNative(<CopyButton value="token-123">Copy token</CopyButton>)
-    await fireEvent.press(screen.getByRole('button', { name: 'Copy token' }))
+    const button = screen.getByRole('button', { name: 'Copy token' })
+    await fireEvent(button, 'layout', { nativeEvent: { layout: { width: 150, height: 40 } } })
+    await fireEvent.press(button)
     expect(write).toHaveBeenCalledWith('token-123')
     await waitFor(() => expect(announce).toHaveBeenLastCalledWith('Copied'))
-    expect(screen.getByRole('button', { name: 'Copied' })).toBeOnTheScreen()
+    // The shorter "Copied" keeps the label's width.
+    const copied = screen.getByRole('button', { name: 'Copied' })
+    expect(StyleSheet.flatten(copied.props.style).minWidth).toBe(150)
     setClipboard(undefined)
     announce.mockRestore()
   })
@@ -1736,6 +1740,19 @@ describe('native rendering', () => {
     await fireEvent.press(screen.getByRole('button', { name: 'Copy code' }))
     expect(write).toHaveBeenCalledWith(code)
     setClipboard(undefined)
+  })
+
+  it('CodeBlock ends an unwrapped italic line with a hair space, so Android keeps its last word', async () => {
+    const tokens = [[{ content: '// a comment', italic: true }]]
+    await renderNative(
+      <>
+        <CodeBlock code="// a comment" tokens={tokens} copyable={false} />
+        <CodeBlock code="// a comment" tokens={tokens} copyable={false} wrap />
+      </>,
+    )
+    const [plain, wrapped] = screen.getAllByText('// a comment').map((token) => token.parent!)
+    expect(plain!.props.children).toContain(' ')
+    expect(wrapped!.props.children).not.toContain(' ')
   })
 })
 

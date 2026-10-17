@@ -263,6 +263,12 @@ export const CodeBlock = forwardRef<TamaguiElement, CodeBlockProps>(function Cod
               <CodeText selectable flexShrink={wrap ? 1 : 0}>
                 {/* An empty Text has no height. */}
                 {line.some((token) => token.content) ? <Tokens line={line} wrap={wrap} /> : ' '}
+                {/*
+                  Android measures an unwrapped line with italic text (and a
+                  line height, or selectable) too narrow and drops its last
+                  word onto a hidden second line; a hair space makes room.
+                */}
+                {!wrap && line.some((token) => token.italic) ? ' ' : null}
               </CodeText>
             </XStack>
           )

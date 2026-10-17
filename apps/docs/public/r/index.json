@@ -700,7 +700,8 @@
       "status": "beta",
       "package": "@advui/core",
       "dependencies": [
-        "@advui/icons"
+        "@advui/icons",
+        "@advui/utils"
       ],
       "registryDependencies": [
         "button",
