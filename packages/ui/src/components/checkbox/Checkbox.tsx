@@ -10,6 +10,7 @@ import {
   styled,
 } from 'tamagui'
 import { useFieldControl } from '../../hooks/useFieldControl'
+import { ariaState } from '../../utils/ariaState'
 
 // Visual styles live in the `unstyled: false` variant so they override the
 // defaults Tamagui's createCheckbox applies through the same variant.
@@ -72,7 +73,12 @@ export interface CheckboxProps extends Omit<
 }
 
 // On iOS/Android a role is only announced when the view is an accessibility element.
-const nativeAccessible = isWeb ? null : { accessible: true }
+// Tamagui sets `disabled` on web only, so native gets it as a state here.
+// `aria-busy` is always false: Android rebuilds the spoken name (which
+// carries "mixed") only on a state change that has a busy, expanded or mixed
+// key, so without it a box that leaves mixed would still say "mixed".
+const nativeA11y = (disabled: boolean | undefined) =>
+  isWeb ? null : { accessible: true, 'aria-disabled': ariaState(disabled), 'aria-busy': false }
 
 const checkedStyle = { backgroundColor: '$primary', borderColor: '$primary' } as const
 
@@ -88,7 +94,7 @@ export const Checkbox = forwardRef<TamaguiElement, CheckboxProps>(
       <BaseCheckbox
         ref={ref}
         size={size as never}
-        {...nativeAccessible}
+        {...nativeA11y(props.disabled)}
         aria-invalid={invalid || undefined}
         {...(invalid ? { borderColor: '$error' as const } : null)}
         activeStyle={checkedStyle}

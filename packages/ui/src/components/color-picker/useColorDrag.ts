@@ -66,10 +66,17 @@ export function useColorDrag(options: ColorDragOptions) {
 
   if (native) {
     return {
-      ...native.panHandlers,
-      onLayout: (event: LayoutChangeEvent) => {
-        size.current = event.nativeEvent.layout
+      surface: {
+        ...native.panHandlers,
+        onLayout: (event: LayoutChangeEvent) => {
+          size.current = event.nativeEvent.layout
+        },
       },
+      // For a view around the surface. During a drag it claims each move
+      // first, so a sheet further up is never asked: Tamagui's Sheet marks
+      // itself as dragging when asked about a vertical move, even though the
+      // surface keeps the gesture, and then stays open when told to close.
+      guard: { onMoveShouldSetResponder: () => dragging.current },
     }
   }
 
@@ -89,20 +96,23 @@ export function useColorDrag(options: ColorDragOptions) {
     handlers.current.onEnd()
   }
   return {
-    onPointerDown: (event: Pointer) => {
-      if (handlers.current.disabled || event.button !== 0) return
-      // No text selection while dragging. That also skips the focus a press
-      // would give, so focus the surface for the arrow keys.
-      event.preventDefault()
-      event.currentTarget.focus()
-      event.currentTarget.setPointerCapture?.(event.pointerId)
-      dragging.current = true
-      report(event)
+    surface: {
+      onPointerDown: (event: Pointer) => {
+        if (handlers.current.disabled || event.button !== 0) return
+        // No text selection while dragging. That also skips the focus a press
+        // would give, so focus the surface for the arrow keys.
+        event.preventDefault()
+        event.currentTarget.focus()
+        event.currentTarget.setPointerCapture?.(event.pointerId)
+        dragging.current = true
+        report(event)
+      },
+      onPointerMove: (event: Pointer) => {
+        if (dragging.current) report(event)
+      },
+      onPointerUp: end,
+      onPointerCancel: end,
     },
-    onPointerMove: (event: Pointer) => {
-      if (dragging.current) report(event)
-    },
-    onPointerUp: end,
-    onPointerCancel: end,
+    guard: null,
   }
 }

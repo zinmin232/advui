@@ -540,7 +540,8 @@
         "@advui/icons"
       ],
       "registryDependencies": [
-        "hooks"
+        "hooks",
+        "utils"
       ]
     },
     {

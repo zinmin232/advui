@@ -92,7 +92,7 @@ export function ChannelSlider({
         hitSlop: { top: (44 - THUMB) / 2, bottom: (44 - THUMB) / 2 },
       }
 
-  return (
+  const surface = (
     <View
       position="relative"
       // As tall as the thumb, so the whole strip takes a press.
@@ -102,7 +102,7 @@ export function ChannelSlider({
       cursor={disabled ? 'not-allowed' : 'pointer'}
       focusVisibleStyle={focusRing}
       {...semantics}
-      {...drag}
+      {...drag.surface}
     >
       <View
         position="relative"
@@ -116,4 +116,5 @@ export function ChannelSlider({
       <Thumb color={thumbColor} left={`${(value / max) * 100}%`} top="50%" />
     </View>
   )
+  return drag.guard ? <View {...drag.guard}>{surface}</View> : surface
 }

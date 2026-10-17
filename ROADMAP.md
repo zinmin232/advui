@@ -74,6 +74,37 @@ cannot do them. Tick them off here as they are done.
     Native `fontFamily: 'monospace'` is proportional too), so code is not
     monospaced on it. Still to check: a phone with the stock font, an
     iPhone, and the announcements by ear.
+  - Menubar (0.14.0): passed on the Android phone on 2026-10-17 (light
+    mode, portrait). Each menu opens as a bottom sheet with its trigger
+    highlighted; separators, the dimmed disabled item and the red
+    destructive item show; choosing an item closes the sheet and runs it;
+    a disabled item and the disabled Tools trigger do nothing; the back
+    button and a tap on the scrim close the sheet without leaving the
+    screen; checkbox items keep their value and radio items move the
+    selection. Shortcuts are web only. Still to check: dark mode,
+    landscape, an iPhone, and TalkBack by ear.
+  - Link, Input slots, Checkbox Group, Tags Input, Carousel, Rating and
+    Color Picker (0.14.0): checked on the Android phone on 2026-10-17
+    (light mode, portrait), with names and states read from the
+    accessibility tree. Inline links, standalone links and the `href`
+    links work (`https:` opens the browser, `tel:` the dialer); slot icons
+    and addons focus their field and the ring covers the whole box;
+    Checkbox Group toggles items and Select All, and its Field error
+    clears; Tags Input adds tags with return, commas and spaces, refuses
+    an invalid address with the error, and removes tags with their
+    buttons; Carousel moves with swipes, arrows and dots, loops, and its
+    autoplay pauses; Rating takes whole and half presses and reads its
+    value; Color Picker drags, takes a hex, picks swatches and opens in a
+    sheet that the back button closes. Fixes from it: a disabled checkbox
+    now reads as disabled; Select All no longer says "mixed" once it is
+    checked; pressing a disabled item's label no longer logs a warning;
+    the Color Picker sheet no longer stays on screen after a vertical drag
+    in the color area (a Tamagui Sheet bug, worked around); and the Link
+    example's standalone link takes presses only on its text. Found and
+    documented, not fixed: on iOS and Android Backspace does not remove
+    tags, because Tamagui drops key presses on native (use the remove
+    buttons). Still to check: dark mode, an iPhone, and the announcements
+    by ear.
 - [ ] **Rich Text Editor: decide.** It is a Markdown editor (toolbar,
       shortcuts, preview), the same on every platform with no extra
       dependencies. Keep it, or ask for a WYSIWYG editor, which needs new

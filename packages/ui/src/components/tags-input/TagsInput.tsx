@@ -139,7 +139,7 @@ type KeyEvent = {
 /**
  * A text field that turns what you type into tags: Enter or a separator
  * (comma by default) adds one, each tag is a chip with a remove button, and
- * Backspace in the empty text box removes the last. Use Multi Select instead
+ * on web Backspace in the empty text box removes the last. Use Multi Select instead
  * when the choices come from a fixed list.
  */
 export const TagsInput = forwardRef<TamaguiElement, TagsInputProps>(

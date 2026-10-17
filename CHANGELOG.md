@@ -50,7 +50,9 @@ one version.
 - **Tags Input**: a text field that turns what you type into tags (`value`,
   `defaultValue`, `onValueChange`). Enter or a separator (`separators`,
   a comma by default) adds the typed text, a pasted list adds every part,
-  and Backspace in the empty text box removes the last tag. Each tag is a
+  and on web Backspace in the empty text box removes the last tag (on iOS
+  and Android Tamagui does not pass key presses on, so use the remove
+  buttons). Each tag is a
   Chip with a named remove button. `max`, `allowDuplicates` and `validate`
   refuse tags, which then stay in the text box to be fixed; `addOnBlur` (on
   by default) keeps half-typed text from being lost when a form is
@@ -164,6 +166,16 @@ one version.
   readers stop reading every button with a tooltip as "collapsed" (or
   "expanded" while the tooltip shows). Tamagui's tooltip trigger is a popover
   trigger and set it; Hover Card already removed it the same way.
+- **Checkbox** on iOS and Android: a disabled checkbox reads as disabled
+  (Tamagui set the state on web only), and a checkbox that leaves the mixed
+  state, such as Checkbox Group's Select All, no longer goes on saying
+  "mixed" to TalkBack once it is checked or cleared.
+- **Checkbox Group** and **Radio Group** on iOS and Android: pressing a
+  disabled item's label no longer logs "No input found" in development.
+- **Color Picker** on iOS and Android: the picker sheet closes after a
+  vertical drag in the color area. Tamagui's Sheet took the drag as its
+  own, though the area kept it, and then stayed on screen without its
+  backdrop.
 
 ## [0.13.0] - 2026-10-15
 

@@ -17,7 +17,15 @@ import {
 import { useColorDrag } from './useColorDrag'
 
 /** A ring around the picked color, outlined so it shows on white and on black. */
-export function Thumb({ color, left, top }: { color: string; left: `${number}%`; top: `${number}%` }) {
+export function Thumb({
+  color,
+  left,
+  top,
+}: {
+  color: string
+  left: `${number}%`
+  top: `${number}%`
+}) {
   return (
     <View
       position="absolute"
@@ -146,7 +154,7 @@ export function ColorArea({
         },
       }
 
-  return (
+  const surface = (
     <View
       position="relative"
       height="$40"
@@ -154,7 +162,7 @@ export function ColorArea({
       cursor={disabled ? 'not-allowed' : 'crosshair'}
       focusVisibleStyle={focusRing}
       {...semantics}
-      {...drag}
+      {...drag.surface}
     >
       <View
         position="absolute"
@@ -182,4 +190,5 @@ export function ColorArea({
       />
     </View>
   )
+  return drag.guard ? <View {...drag.guard}>{surface}</View> : surface
 }

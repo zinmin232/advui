@@ -141,7 +141,7 @@ import NextLink from 'next/link'
     { keys: 'Enter', action: 'Follows the link.' },
   ],
   responsive:
-    'Inside text the link wraps with the sentence; the external icon stays on the line of the last word.',
+    'Inside text the link wraps with the sentence; the external icon stays on the line of the last word. On its own in a stack it stretches to the stack’s width, and so does the area that takes a press; give it `alignSelf="flex-start"` to keep that area on its text.',
   platformNotes: {
     web: 'Renders `<a href>`; pass `render` for client-side routing (Next.js, React Router). `onPress` runs before the browser follows the `href`.',
     ios: 'An absolute `href` opens with `Linking.openURL`. A path needs `onPress`: without it the link is not announced as a link and does nothing, and a warning says so in development.',

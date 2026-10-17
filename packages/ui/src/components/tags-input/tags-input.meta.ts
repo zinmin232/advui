@@ -147,14 +147,14 @@ export default defineMeta({
   keyboard: [
     { keys: 'Enter', action: 'Adds the typed text as a tag.' },
     { keys: ', (separators)', action: 'Adds the typed text as a tag.' },
-    { keys: 'Backspace', action: 'Removes the last tag when the text box is empty.' },
+    { keys: 'Backspace', action: 'Removes the last tag when the text box is empty (web).' },
     { keys: 'Tab', action: 'Moves through the remove buttons and the text box.' },
   ],
   platformNotes: {
     web: 'Presses on the box and on remove buttons keep focus in the text box, so half-typed text is not added by a blur.',
-    ios: 'The return key adds a tag and keeps the keyboard open.',
+    ios: 'The return key adds a tag and keeps the keyboard open. Backspace does not remove tags (Tamagui does not pass key presses to the text box); use the remove buttons.',
     android:
-      'The return key adds a tag and keeps the keyboard open. Backspace in the empty text box removes the last tag with the on-screen keyboard; a hardware keyboard does not report it.',
+      'The return key adds a tag and keeps the keyboard open. Backspace does not remove tags (Tamagui does not pass key presses to the text box); use the remove buttons.',
   },
   related: ['multi-select', 'chip', 'input', 'field'],
 })
