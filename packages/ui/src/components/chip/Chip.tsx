@@ -149,10 +149,13 @@ export const Chip = forwardRef<TamaguiElement, ChipProps>(function Chip(
           width="$6"
           height="$6"
           borderRadius="$full"
-          cursor="pointer"
-          hoverStyle={{ backgroundColor: '$accent' }}
-          pressStyle={removeRipple.active ? undefined : { backgroundColor: '$accentHover' }}
+          cursor={disabled ? 'not-allowed' : 'pointer'}
+          hoverStyle={disabled ? undefined : { backgroundColor: '$accent' }}
+          pressStyle={
+            removeRipple.active || disabled ? undefined : { backgroundColor: '$accentHover' }
+          }
           focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
+          aria-disabled={ariaState(disabled)}
           {...(isWeb
             ? { type: 'button', padding: 0, borderWidth: 0, backgroundColor: 'transparent' }
             : { accessible: true, hitSlop: 10 })}

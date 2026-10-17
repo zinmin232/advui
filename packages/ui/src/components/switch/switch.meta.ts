@@ -55,7 +55,7 @@ export default defineMeta({
     ],
   },
   accessibility: [
-    'Exposes `role="switch"` with `aria-checked`.',
+    'Exposes `role="switch"` with `aria-checked`, and its checked and disabled states on iOS and Android too.',
     'Use a Switch for immediate effects; use a Checkbox inside forms that need a submit.',
     'The thumb animation is removed when reduced motion is requested.',
   ],

@@ -147,6 +147,16 @@ each edit.
   tests still pass, because `fireEvent` finds the handler on a composite
   element: assert that the host element has `onKeyPress`, and check on a
   device with the on-screen keyboard (`adb` key events never fire it).
+- **Tamagui sets control states on web only.** Its native Switch sends no
+  checked state, and its Checkbox and Radio Group items no disabled state, so
+  TalkBack misses them. Set them yourself on native (`accessible`,
+  `aria-checked`, `aria-disabled` through `ariaState`; see `Switch.tsx`). On
+  Android `role` wins over `accessibilityRole`, so a toggle built on Button
+  clears `role` to become a `togglebutton` (see `PasswordInput`).
+- **Android wraps a TextInput placeholder** wider than its box onto a cut-off
+  second line, whatever the props (`numberOfLines` is already 1). Tags Input
+  draws its own one-line copy over a transparent real placeholder
+  (`TagsInputText.native.tsx`).
 - **Drags inside a Tamagui Sheet**: asked about a vertical move, the Sheet
   marks itself as dragging even when the touched view keeps the gesture, and
   then stays on screen when closed. Wrap a drag surface in a view that

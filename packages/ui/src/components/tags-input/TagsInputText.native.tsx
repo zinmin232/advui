@@ -1,7 +1,7 @@
 import { registerFocusable } from '@tamagui/focusable'
 import { forwardRef, useEffect, useRef } from 'react'
 import { TextInput, type TextInputProps } from 'react-native'
-import { styled, useComposedRefs } from 'tamagui'
+import { Text, View, styled, useComposedRefs } from 'tamagui'
 import { textBoxStyle } from './textBoxStyle'
 
 type KeyHandler = (event: { key: string }) => void
@@ -31,8 +31,6 @@ const KeyTextInput = forwardRef<TextInput, KeyTextInputProps>(function KeyTextIn
     <TextInput
       ref={composedRef}
       editable={!disabled}
-      // Android wraps a long placeholder onto a cut-off second line.
-      numberOfLines={1}
       // Read the key now: React Native reuses the event.
       onKeyPress={onKey && ((event) => onKey({ key: event.nativeEvent.key }))}
       {...props}
@@ -45,7 +43,47 @@ const Box = styled(KeyTextInput, textBoxStyle, {
   accept: { placeholderTextColor: 'color' },
 })
 
-/** Native: takes `onKeyDown` like the web box, as a styleable that keeps it. */
+const Placeholder = styled(Text, {
+  name: 'TagsInputPlaceholder',
+  fontFamily: '$body',
+  color: '$placeholderColor',
+  pointerEvents: 'none',
+})
+
+/**
+ * Native: takes `onKeyDown` like the web box, as a styleable that keeps it.
+ * Android wraps a placeholder wider than the box onto a cut-off second line,
+ * whatever the TextInput's props, so the box shows its own one-line copy and
+ * keeps the real placeholder, transparent, for screen readers.
+ */
 export const TagsInputText = Box.styleable<{ onKeyDown?: KeyHandler }>(
-  ({ onKeyDown, ...props }, ref) => <Box ref={ref} {...props} onKey={onKeyDown} />,
+  ({ onKeyDown, placeholder, height, paddingHorizontal, fontSize, ...props }, ref) => (
+    <View flex={1} minWidth="$20" height={height} justifyContent="center">
+      <Box
+        ref={ref}
+        {...props}
+        placeholder={placeholder}
+        placeholderTextColor="$transparent"
+        position="absolute"
+        top={0}
+        right={0}
+        bottom={0}
+        left={0}
+        height={height}
+        paddingHorizontal={paddingHorizontal}
+        fontSize={fontSize}
+        onKey={onKeyDown}
+      />
+      {placeholder && !props.value ? (
+        <Placeholder
+          aria-hidden
+          numberOfLines={1}
+          paddingHorizontal={paddingHorizontal}
+          fontSize={fontSize}
+        >
+          {placeholder}
+        </Placeholder>
+      ) : null}
+    </View>
+  ),
 )

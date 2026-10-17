@@ -13,6 +13,7 @@ import {
 } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
 import { FieldContext, type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
+import { ariaState } from '../../utils/ariaState'
 import { sentences } from '../../utils/plainText'
 import {
   type ChoiceText,
@@ -106,12 +107,14 @@ const RadioGroupItem = forwardRef<TamaguiElement, RadioGroupItemProps>(function 
   const id = idProp ?? generatedId
   const text = { label, description }
   const withText = hasChoiceText(text)
+  const disabled = group.disabled || Boolean(props.disabled)
   const item = (
     <BaseRadioGroup.Item
       ref={ref}
       id={id}
       size={size as never}
-      {...(isWeb ? null : { accessible: true })}
+      // Tamagui sets `disabled` on web only, so native gets it as a state here.
+      {...(isWeb ? null : { accessible: true, 'aria-disabled': ariaState(disabled) })}
       {...(group.value === props.value ? { borderColor: '$primary' as const } : null)}
       {...(withText && choiceControlStyle(size))}
       {...props}
@@ -122,7 +125,7 @@ const RadioGroupItem = forwardRef<TamaguiElement, RadioGroupItemProps>(function 
   )
   if (!withText) return item
   return (
-    <ChoiceRow id={id} {...text} disabled={group.disabled || Boolean(props.disabled)}>
+    <ChoiceRow id={id} {...text} disabled={disabled}>
       {item}
     </ChoiceRow>
   )

@@ -6,9 +6,12 @@ import {
   SwitchThumb as TamaguiSwitchThumb,
   type TamaguiElement,
   createSwitch,
+  isWeb,
   styled,
 } from 'tamagui'
+import { useControllableState } from '../../hooks/useControllableState'
 import { type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
+import { ariaState } from '../../utils/ariaState'
 
 // Visual styles live in the `unstyled: false` variant so they override the
 // defaults Tamagui's createSwitch applies through the same variant.
@@ -83,8 +86,18 @@ export const Switch = forwardRef<TamaguiElement, SwitchProps>(function Switch(sw
   const {
     size = 'md',
     invalid,
+    checked: checkedProp,
+    defaultChecked = false,
+    onCheckedChange,
     ...props
   } = useFieldControl<SwitchProps & FieldControlProps>(switchProps)
+  // Tamagui's switch sends its checked and disabled states on web only, so the
+  // value is held here and native gets both as states of an accessibility element.
+  const [checked, setChecked] = useControllableState({
+    value: checkedProp,
+    defaultValue: defaultChecked,
+    onChange: onCheckedChange,
+  })
   return (
     <BaseSwitch
       ref={ref}
@@ -93,6 +106,11 @@ export const Switch = forwardRef<TamaguiElement, SwitchProps>(function Switch(sw
       activeStyle={{ backgroundColor: '$primary' }}
       aria-invalid={invalid || undefined}
       {...props}
+      checked={checked}
+      onCheckedChange={setChecked}
+      {...(isWeb
+        ? null
+        : { accessible: true, 'aria-checked': checked, 'aria-disabled': ariaState(props.disabled) })}
     >
       <BaseSwitch.Thumb size={size as never} />
     </BaseSwitch>
