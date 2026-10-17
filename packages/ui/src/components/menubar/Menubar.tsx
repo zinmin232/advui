@@ -258,6 +258,13 @@ function MenubarContent(props: MenubarContentProps) {
         event.preventDefault()
         focusMenu()
       }}
+      onEscapeKeyDown={() => {
+        // Escape goes to the menu layered on top, which can be one still
+        // closing after another took its place (that one reopened below it
+        // while it was closing too). Close the open menu instead.
+        const open = bar.valueRef.current
+        if (open !== null && open !== menu.value) bar.setValue(null)
+      }}
       onPointerDownOutside={() => {
         pressedOutside.current = true
       }}

@@ -50,6 +50,7 @@ export type MenuContentOptions = {
   /** Tamagui's menu takes it at runtime; its types leave it out. */
   onOpenAutoFocus?: (event: Event) => void
   onCloseAutoFocus?: (event: Event) => void
+  onEscapeKeyDown?: (event: KeyboardEvent) => void
   onPointerDownOutside?: () => void
   onFocusOutside?: (event: CustomEvent<{ originalEvent: FocusEvent }>) => void
 }

@@ -130,6 +130,22 @@ describe('Menubar', () => {
     expect(onUndo).not.toHaveBeenCalled()
   }, 15_000)
 
+  it('closes on Escape while a menu it left is still closing', async () => {
+    const { user } = renderWithProvider(<Example />)
+    trigger('File').focus()
+    await user.keyboard('{Enter}')
+    await screen.findByRole('menuitem', { name: /New file/ })
+    await user.keyboard('{ArrowRight}')
+    await waitFor(() => expect(screen.getAllByRole('menu')).toHaveLength(1))
+    // File opens again above Edit, which is still closing and so opens again
+    // below it: Escape reaches the closing File menu first.
+    await user.keyboard('{ArrowRight}{ArrowRight}')
+    expect(trigger('Edit')).toHaveAttribute('aria-expanded', 'true')
+    await user.keyboard('{Escape}')
+    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
+    await waitFor(() => expect(trigger('Edit')).toHaveFocus())
+  })
+
   it('returns focus to the trigger after a choice', async () => {
     const onUndo = vi.fn()
     const { user } = renderWithProvider(<Example onUndo={onUndo} />)
