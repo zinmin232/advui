@@ -125,6 +125,17 @@ one version.
   free of highlighting dependencies. On web it is a focusable
   `<pre><code>` group named by its title; line numbers are not selected or
   read, and a selection copies the code as written.
+- **Menubar**: a bar of menus that stays on screen, as at the top of a
+  desktop app. Each `Menubar.Menu` holds a `Menubar.Trigger` and a
+  `Menubar.Content` with Dropdown Menu's items (`Item`, `CheckboxItem`,
+  `RadioGroup`, `Label`, `Separator`, `Group`). One menu is open at a time;
+  `value`, `defaultValue` and `onValueChange` give the open menu's `value`,
+  or null. On web it follows the WAI-ARIA menubar pattern: the bar is one
+  Tab stop, the arrow keys move between triggers and, in an open menu, to
+  the previous or next menu, and focus goes back to the trigger after a
+  choice or Escape. With a menu open, pointing at another trigger opens its
+  menu. On iOS and Android the triggers are buttons and each menu opens as a
+  bottom sheet that the Android back gesture closes.
 
 ### Changed
 

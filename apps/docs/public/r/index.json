@@ -1183,6 +1183,23 @@
       ]
     },
     {
+      "name": "menubar",
+      "title": "Menubar",
+      "type": "registry:component",
+      "description": "A bar of menus that stays on screen, as at the top of a desktop app: File, Edit, View.",
+      "category": "navigation",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": [
+        "dropdown-menu",
+        "hooks",
+        "toolbar",
+        "typography",
+        "utils"
+      ]
+    },
+    {
       "name": "multi-select",
       "title": "Multi Select",
       "type": "registry:component",

@@ -469,6 +469,7 @@ for (const path of [
   '/docs/components/filter-bar',
   '/docs/components/tree-view',
   '/docs/components/navigation-menu',
+  '/docs/components/menubar',
   '/docs/components/sidebar',
   '/docs/components/search',
   '/docs/components/command-palette',
@@ -531,6 +532,38 @@ test('dropdown menu is keyboard operable', async ({ page }) => {
   await page.keyboard.press('Escape')
   await expect(menu).toBeHidden()
   await expect(trigger).toBeFocused()
+  expect(errors).toEqual([])
+})
+
+test('menubar moves between triggers and open menus with the arrow keys', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/menubar')
+  await page.waitForLoadState('networkidle')
+  const bar = page.getByRole('menubar', { name: 'Document' }).first()
+  const file = bar.getByRole('menuitem', { name: 'File' })
+  const edit = bar.getByRole('menuitem', { name: 'Edit' })
+  await file.focus()
+  await page.keyboard.press('ArrowRight')
+  await expect(edit).toBeFocused()
+  await page.keyboard.press('Enter')
+  const menu = page.getByRole('menu')
+  await expect(menu).toBeVisible()
+  await expect(edit).toHaveAttribute('aria-expanded', 'true')
+  await expect.poll(() => menu.evaluate((el) => el.contains(document.activeElement))).toBe(true)
+  expect(await seriousViolations(page)).toEqual([])
+  // Right from an open menu opens the next one, Help, in its place.
+  await page.keyboard.press('ArrowRight')
+  await expect(bar.getByRole('menuitem', { name: 'Help' })).toHaveAttribute('aria-expanded', 'true')
+  await expect(page.getByRole('menuitem', { name: 'Keyboard shortcuts' })).toBeVisible()
+  await expect(edit).toHaveAttribute('aria-expanded', 'false')
+  await page.keyboard.press('Escape')
+  await expect(page.getByRole('menu')).toHaveCount(0)
+  await expect(bar.getByRole('menuitem', { name: 'Help' })).toBeFocused()
+  // Items take the pointer too: the menu's portal is `pointer-events: none`.
+  await file.click()
+  await page.getByRole('menuitem', { name: 'Make a copy' }).click()
+  await expect(page.getByRole('menu')).toHaveCount(0)
+  await expect(page.getByText('Copy made')).toBeVisible()
   expect(errors).toEqual([])
 })
 
