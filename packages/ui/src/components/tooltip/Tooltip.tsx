@@ -92,7 +92,13 @@ export function Tooltip({
       onOpenChange={setOpen}
       {...props}
     >
-      <TamaguiTooltip.Trigger asChild>{trigger}</TamaguiTooltip.Trigger>
+      {/*
+        Tamagui's tooltip trigger is a popover trigger, which sets aria-expanded;
+        a tooltip opens nothing, so screen readers must not hear "collapsed".
+      */}
+      <TamaguiTooltip.Trigger asChild aria-expanded={undefined}>
+        {trigger}
+      </TamaguiTooltip.Trigger>
       <TamaguiTooltip.Content
         id={id}
         zIndex="$tooltip"

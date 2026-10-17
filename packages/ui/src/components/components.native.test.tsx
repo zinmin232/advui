@@ -98,6 +98,7 @@ import { Toaster, toast } from './toast/Toaster'
 import { Toggle } from './toggle/Toggle'
 import { ToggleGroup } from './toggle-group/ToggleGroup'
 import { Toolbar } from './toolbar/Toolbar'
+import { Tooltip } from './tooltip/Tooltip'
 import { Heading } from './typography/Heading'
 import { Video } from './video/Video'
 import { setVideoView } from './video/shared'
@@ -1666,6 +1667,21 @@ describe('native rendering', () => {
     expect(screen.getByRole('img', { name: 'Clinic entrance' })).toBeOnTheScreen()
     // The road and the fallback; the decorative image is hidden.
     expect(screen.getAllByRole('img')).toHaveLength(2)
+  })
+
+  it('Tooltip renders only its trigger, which keeps its name and is not marked expanded', async () => {
+    const onPress = jest.fn()
+    await renderNative(
+      <Tooltip content="Saves your draft">
+        <Button onPress={onPress}>Save</Button>
+      </Tooltip>,
+    )
+    const trigger = screen.getByRole('button', { name: 'Save' })
+    expect(trigger.props['aria-expanded']).toBeUndefined()
+    expect(trigger.props.accessibilityState?.expanded).toBeUndefined()
+    expect(screen.queryByText('Saves your draft')).toBeNull()
+    await fireEvent.press(trigger)
+    expect(onPress).toHaveBeenCalledTimes(1)
   })
 })
 

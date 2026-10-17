@@ -23,6 +23,19 @@ describe('Tooltip', () => {
     await waitFor(() => expect(screen.queryByRole('tooltip')).toBeNull())
   })
 
+  it('does not mark the trigger expanded or collapsed', async () => {
+    const { user } = renderWithProvider(
+      <Tooltip content="Saves your draft" delay={0}>
+        <Button>Save</Button>
+      </Tooltip>,
+    )
+    const trigger = screen.getByRole('button', { name: 'Save' })
+    expect(trigger).not.toHaveAttribute('aria-expanded')
+    await user.tab()
+    await screen.findByRole('tooltip')
+    expect(trigger).not.toHaveAttribute('aria-expanded')
+  })
+
   it('keeps the trigger accessible name intact', () => {
     renderWithProvider(
       <Tooltip content="More info">
