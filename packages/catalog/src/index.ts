@@ -21,6 +21,7 @@ import checkboxMeta from '../../ui/src/components/checkbox/checkbox.meta'
 import checkboxGroupMeta from '../../ui/src/components/checkbox-group/checkbox-group.meta'
 import chipMeta from '../../ui/src/components/chip/chip.meta'
 import circularProgressMeta from '../../ui/src/components/circular-progress/circular-progress.meta'
+import codeBlockMeta from '../../ui/src/components/code-block/code-block.meta'
 import collapsibleMeta from '../../ui/src/components/collapsible/collapsible.meta'
 import colorPickerMeta from '../../ui/src/components/color-picker/color-picker.meta'
 import comboboxMeta from '../../ui/src/components/combobox/combobox.meta'
@@ -28,6 +29,7 @@ import commandPaletteMeta from '../../ui/src/components/command-palette/command-
 import confirmDialogMeta from '../../ui/src/components/confirm-dialog/confirm-dialog.meta'
 import containerMeta from '../../ui/src/components/layout/container.meta'
 import contextMenuMeta from '../../ui/src/components/context-menu/context-menu.meta'
+import copyButtonMeta from '../../ui/src/components/copy-button/copy-button.meta'
 import dataGridMeta from '../../data/src/components/data-grid/data-grid.meta'
 import dataTableMeta from '../../data/src/components/data-table/data-table.meta'
 import datePickerMeta from '../../ui/src/components/date-picker/date-picker.meta'
@@ -157,6 +159,7 @@ export const components: CatalogComponent[] = [
   { ...checkboxGroupMeta, package: '@advui/core' },
   { ...chipMeta, package: '@advui/core' },
   { ...circularProgressMeta, package: '@advui/core' },
+  { ...codeBlockMeta, package: '@advui/core' },
   { ...collapsibleMeta, package: '@advui/core' },
   { ...colorPickerMeta, package: '@advui/core' },
   { ...comboboxMeta, package: '@advui/core' },
@@ -164,6 +167,7 @@ export const components: CatalogComponent[] = [
   { ...confirmDialogMeta, package: '@advui/core' },
   { ...containerMeta, package: '@advui/core' },
   { ...contextMenuMeta, package: '@advui/core' },
+  { ...copyButtonMeta, package: '@advui/core' },
   { ...dataGridMeta, package: '@advui/data' },
   { ...dataTableMeta, package: '@advui/data' },
   { ...datePickerMeta, package: '@advui/core' },

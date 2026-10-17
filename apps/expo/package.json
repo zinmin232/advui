@@ -25,6 +25,7 @@
     "@tamagui/theme": "2.7.7",
     "expo": "~57.0.25",
     "expo-audio": "~57.0.5",
+    "expo-clipboard": "~57.0.2",
     "expo-constants": "~57.0.19",
     "expo-document-picker": "~57.0.2",
     "expo-linking": "~57.0.11",
