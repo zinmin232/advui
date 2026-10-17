@@ -73,7 +73,12 @@ export function ChoiceRow({
       {children}
       <YStack flexShrink={1} gap="$0.5" opacity={disabled ? 0.6 : 1}>
         {hasContent(label) ? (
-          <Label htmlFor={id} aria-hidden={hideLabel || undefined}>
+          <Label
+            // Native: a disabled control is not registered to be focused, and
+            // pressing a label that targets it logs a warning.
+            htmlFor={!isWeb && disabled ? undefined : id}
+            aria-hidden={hideLabel || undefined}
+          >
             {label}
           </Label>
         ) : null}

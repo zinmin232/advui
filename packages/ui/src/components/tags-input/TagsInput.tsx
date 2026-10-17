@@ -2,7 +2,6 @@ import { forwardRef, useRef, useState } from 'react'
 import { AccessibilityInfo } from 'react-native'
 import {
   type GetProps,
-  Input as TamaguiInput,
   type TamaguiElement,
   Text,
   View,
@@ -16,6 +15,7 @@ import { ariaState } from '../../utils/ariaState'
 import { visuallyHidden } from '../../utils/visuallyHidden'
 import { Chip } from '../chip/Chip'
 import { fieldBoxStyle } from '../input/Input'
+import { TagsInputText } from './TagsInputText'
 
 export const TagsInputFrame = styled(XStack, {
   name: 'TagsInput',
@@ -51,22 +51,6 @@ export const TagsInputFrame = styled(XStack, {
   } as const,
 
   defaultVariants: { size: 'md' },
-})
-
-const TextBox = styled(TamaguiInput, {
-  name: 'TagsInputText',
-  unstyled: true,
-  flex: 1,
-  minWidth: '$20',
-  padding: 0,
-  borderWidth: 0,
-  backgroundColor: 'transparent',
-  fontFamily: '$body',
-  color: '$foreground',
-  placeholderTextColor: '$placeholderColor',
-  // The field draws the focus ring; `outline-style: auto` ignores width.
-  focusStyle: { outlineWidth: 0, outlineStyle: 'none' },
-  focusVisibleStyle: { outlineWidth: 0, outlineStyle: 'none' },
 })
 
 const rowHeights = { sm: '$6', md: '$7', lg: '$8' } as const
@@ -303,7 +287,7 @@ export const TagsInput = forwardRef<TamaguiElement, TagsInputProps>(
             {tag}
           </Chip>
         ))}
-        <TextBox
+        <TagsInputText
           ref={inputRef as never}
           id={id}
           aria-label={ariaLabel}
@@ -324,6 +308,8 @@ export const TagsInput = forwardRef<TamaguiElement, TagsInputProps>(
           value={text}
           onChangeText={onChangeText}
           onKeyDown={onKeyDown as never}
+          // Native: return arrives as a submit (web reads it in onKeyDown).
+          {...(!isWeb && { onSubmitEditing: commit })}
           onFocus={() => setFocused(true)}
           onBlur={() => {
             setFocused(false)

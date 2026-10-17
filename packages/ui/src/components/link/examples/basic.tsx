@@ -18,7 +18,14 @@ export default function LinkBasic() {
         </Link>
         .
       </Text>
-      <Link onPress={go('All posts')} size="sm" weight="medium" underline="hover">
+      {/* On its own in a stack a link stretches; alignSelf keeps the press on its text. */}
+      <Link
+        onPress={go('All posts')}
+        size="sm"
+        weight="medium"
+        underline="hover"
+        alignSelf="flex-start"
+      >
         See all posts
       </Link>
     </VStack>

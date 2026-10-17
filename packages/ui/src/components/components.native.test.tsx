@@ -226,6 +226,30 @@ describe('native rendering', () => {
     expect(screen.getByRole('checkbox', { name: 'Email' })).not.toBeChecked()
   })
 
+  it('Checkbox reads as disabled, and as no longer mixed once it is checked', async () => {
+    await renderNative(
+      <>
+        <Checkbox aria-label="Fax" disabled />
+        <CheckboxGroup aria-label="Notifications" defaultValue={['email']}>
+          <CheckboxGroup.SelectAll label="All" />
+          <CheckboxGroup.Item value="email" label="Email" />
+          <CheckboxGroup.Item value="sms" label="SMS" />
+        </CheckboxGroup>
+      </>,
+    )
+    // Tamagui sets `disabled` on web only.
+    expect(screen.getByRole('checkbox', { name: 'Fax' })).toBeDisabled()
+    expect(screen.getByRole('checkbox', { name: 'SMS' })).toBeEnabled()
+    // Android rebuilds the spoken name, which carries "mixed", only on a state
+    // change with a busy key; without one a checked box still said "mixed".
+    const all = screen.getByRole('checkbox', { name: 'All' })
+    expect(all).toBePartiallyChecked()
+    expect(all.props['aria-busy']).toBe(false)
+    await fireEvent.press(all)
+    expect(screen.getByRole('checkbox', { name: 'All' })).toBeChecked()
+    expect(screen.getByRole('checkbox', { name: 'All' }).props['aria-busy']).toBe(false)
+  })
+
   it('RadioGroup names items by their labels and reads the group as their hint', async () => {
     const onValueChange = jest.fn()
     await renderNative(
@@ -1061,6 +1085,27 @@ describe('native rendering', () => {
     expect(await screen.findAllByRole('slider', { name: 'Color' })).toHaveLength(2)
   })
 
+  it('ColorPicker keeps a sheet around it out of its drags', async () => {
+    await renderNative(<ColorPicker aria-label="Accent" inline defaultValue="#00ff00" />)
+    const area = screen.getByRole('slider', { name: 'Color' })
+    // The view around the area: it answers moves, but does not take touches itself.
+    let guard = area.parent
+    while (guard && !(guard.props.onMoveShouldSetResponder && !guard.props.onResponderGrant)) {
+      guard = guard.parent
+    }
+    const touch = {
+      nativeEvent: { locationX: 0, locationY: 0, touches: [], changedTouches: [] },
+      touchHistory: { touchBank: [], numberActiveTouches: 0, indexOfSingleActiveTouch: 0 },
+    }
+    expect(guard!.props.onMoveShouldSetResponder()).toBe(false)
+    await fireEvent(area, 'responderGrant', touch)
+    // Tamagui's Sheet, if asked about a vertical move, marks itself as
+    // dragging even though the area keeps the gesture, and then stays open.
+    expect(guard!.props.onMoveShouldSetResponder()).toBe(true)
+    await fireEvent(area, 'responderRelease', touch)
+    expect(guard!.props.onMoveShouldSetResponder()).toBe(false)
+  })
+
   it('DateRangePicker reads its range with plain spaces', async () => {
     await renderNative(
       <DateRangePicker
@@ -1514,6 +1559,9 @@ describe('native rendering', () => {
       </Field>,
     )
     const field = screen.getByPlaceholderText('Add a topic')
+    // The TextInput itself hears key presses. Tamagui drops onKeyPress from
+    // its own Input on native, and fireEvent would still find it further up.
+    expect(field.props.onKeyPress).toEqual(expect.any(Function))
     expect(field.props.accessibilityLabel ?? field.props['aria-label']).toBe('Topics')
     expect(field.props.accessibilityHint).toBe('Press return after each one.')
     // Return keeps the keyboard open for the next tag.

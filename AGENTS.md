@@ -140,6 +140,17 @@ each edit.
 - **Tamagui `asChild` drops `onFocus`** (web): `<View asChild onFocus>` never
   calls it, so Tamagui triggers that learn their element on focus miss
   keyboard-only users. Keep your own ref instead (see Popover's trigger ref).
+- **Tamagui drops web events on native.** Styled components, Tamagui's own
+  Input included, strip `onKeyDown`, `onKeyPress`, `onChange` and `onScroll`
+  on iOS and Android, so a text field never hears a key press. Tags Input
+  uses React Native's TextInput there (`TagsInputText.native.tsx`). RNTL
+  tests still pass, because `fireEvent` finds the handler on a composite
+  element: assert that the host element has `onKeyPress`, and check on a
+  device with the on-screen keyboard (`adb` key events never fire it).
+- **Drags inside a Tamagui Sheet**: asked about a vertical move, the Sheet
+  marks itself as dragging even when the touched view keeps the gesture, and
+  then stays on screen when closed. Wrap a drag surface in a view that
+  claims moves while it drags (see `useColorDrag`'s `guard`).
 - **RNTL 14**: `render`, `fireEvent` and `act` are async, so always `await` them.
 - **Vitest uses happy-dom** (jsdom was too slow to start on Windows). Polyfills
   are in `packages/ui/test/setup.ts`.

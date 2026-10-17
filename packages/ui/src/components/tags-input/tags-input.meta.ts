@@ -12,6 +12,9 @@ export default defineMeta({
   exports: ['TagsInput', 'TagsInputFrame'],
   files: [
     'components/tags-input/TagsInput.tsx',
+    'components/tags-input/TagsInputText.tsx',
+    'components/tags-input/TagsInputText.native.tsx',
+    'components/tags-input/textBoxStyle.ts',
     'components/tags-input/index.ts',
     'components/chip/Chip.tsx',
   ],

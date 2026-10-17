@@ -164,6 +164,16 @@ one version.
   readers stop reading every button with a tooltip as "collapsed" (or
   "expanded" while the tooltip shows). Tamagui's tooltip trigger is a popover
   trigger and set it; Hover Card already removed it the same way.
+- **Checkbox** on iOS and Android: a disabled checkbox reads as disabled
+  (Tamagui set the state on web only), and a checkbox that leaves the mixed
+  state, such as Checkbox Group's Select All, no longer goes on saying
+  "mixed" to TalkBack once it is checked or cleared.
+- **Checkbox Group** and **Radio Group** on iOS and Android: pressing a
+  disabled item's label no longer logs "No input found" in development.
+- **Color Picker** on iOS and Android: the picker sheet closes after a
+  vertical drag in the color area. Tamagui's Sheet took the drag as its
+  own, though the area kept it, and then stayed on screen without its
+  backdrop.
 
 ## [0.13.0] - 2026-10-15
 
