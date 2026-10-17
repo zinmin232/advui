@@ -30,6 +30,7 @@ import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 import { ariaState } from '../../utils/ariaState'
 import type { Responsive } from '../../utils/responsive'
+import { visuallyHidden } from '../../utils/visuallyHidden'
 import { IconButton } from '../icon-button/IconButton'
 import { Text } from '../typography/Text'
 import { CarouselTrack } from './CarouselTrack'
@@ -68,16 +69,6 @@ const defaultLabels: CarouselLabels = {
   play: 'Play slide show',
   pause: 'Pause slide show',
 }
-
-/** Hidden on screen, still read by screen readers (web). */
-const visuallyHidden = {
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  overflow: 'hidden',
-  opacity: 0.00000001,
-  pointerEvents: 'none',
-} as const
 
 const focusRing = {
   outlineColor: '$ring',

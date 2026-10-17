@@ -458,6 +458,8 @@ for (const path of [
   '/docs/components/carousel',
   '/docs/components/rating',
   '/docs/components/color-picker',
+  '/docs/components/copy-button',
+  '/docs/components/code-block',
   '/docs/components/timeline',
   '/docs/components/image',
   '/docs/components/table',

@@ -59,6 +59,11 @@ import ChipFilter from '../../ui/src/components/chip/examples/filter'
 import ChipInput from '../../ui/src/components/chip/examples/input'
 import CircularProgressBasic from '../../ui/src/components/circular-progress/examples/basic'
 import CircularProgressSizes from '../../ui/src/components/circular-progress/examples/sizes'
+import CodeBlockBasic from '../../ui/src/components/code-block/examples/basic'
+import CodeBlockTitle from '../../ui/src/components/code-block/examples/title'
+import CodeBlockLineNumbers from '../../ui/src/components/code-block/examples/line-numbers'
+import CodeBlockColors from '../../ui/src/components/code-block/examples/colors'
+import CodeBlockLongLines from '../../ui/src/components/code-block/examples/long-lines'
 import CollapsibleBasic from '../../ui/src/components/collapsible/examples/basic'
 import CollapsibleSettings from '../../ui/src/components/collapsible/examples/settings'
 import ColorPickerBasic from '../../ui/src/components/color-picker/examples/basic'
@@ -74,6 +79,10 @@ import ContainerContainer from '../../ui/src/components/layout/examples/containe
 import ContainerGutter from '../../ui/src/components/layout/examples/gutter'
 import ContextMenuBasic from '../../ui/src/components/context-menu/examples/basic'
 import ContextMenuList from '../../ui/src/components/context-menu/examples/list'
+import CopyButtonBasic from '../../ui/src/components/copy-button/examples/basic'
+import CopyButtonLabel from '../../ui/src/components/copy-button/examples/label'
+import CopyButtonInInput from '../../ui/src/components/copy-button/examples/in-input'
+import CopyButtonUseClipboard from '../../ui/src/components/copy-button/examples/use-clipboard'
 import DataGridBasic from '../../data/src/components/data-grid/examples/basic'
 import DataGridReadOnly from '../../data/src/components/data-grid/examples/read-only'
 import DataTableBasic from '../../data/src/components/data-table/examples/basic'
@@ -375,6 +384,13 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': CircularProgressBasic,
     'sizes': CircularProgressSizes,
   },
+  'code-block': {
+    'basic': CodeBlockBasic,
+    'title': CodeBlockTitle,
+    'line-numbers': CodeBlockLineNumbers,
+    'colors': CodeBlockColors,
+    'long-lines': CodeBlockLongLines,
+  },
   'collapsible': {
     'basic': CollapsibleBasic,
     'settings': CollapsibleSettings,
@@ -403,6 +419,12 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'context-menu': {
     'basic': ContextMenuBasic,
     'list': ContextMenuList,
+  },
+  'copy-button': {
+    'basic': CopyButtonBasic,
+    'label': CopyButtonLabel,
+    'in-input': CopyButtonInInput,
+    'use-clipboard': CopyButtonUseClipboard,
   },
   'data-grid': {
     'basic': DataGridBasic,

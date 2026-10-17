@@ -20,6 +20,7 @@ import checkboxMeta from '../components/checkbox/checkbox.meta'
 import checkboxGroupMeta from '../components/checkbox-group/checkbox-group.meta'
 import chipMeta from '../components/chip/chip.meta'
 import circularProgressMeta from '../components/circular-progress/circular-progress.meta'
+import codeBlockMeta from '../components/code-block/code-block.meta'
 import collapsibleMeta from '../components/collapsible/collapsible.meta'
 import colorPickerMeta from '../components/color-picker/color-picker.meta'
 import comboboxMeta from '../components/combobox/combobox.meta'
@@ -27,6 +28,7 @@ import commandPaletteMeta from '../components/command-palette/command-palette.me
 import confirmDialogMeta from '../components/confirm-dialog/confirm-dialog.meta'
 import containerMeta from '../components/layout/container.meta'
 import contextMenuMeta from '../components/context-menu/context-menu.meta'
+import copyButtonMeta from '../components/copy-button/copy-button.meta'
 import datePickerMeta from '../components/date-picker/date-picker.meta'
 import dateRangePickerMeta from '../components/date-range-picker/date-range-picker.meta'
 import dialogMeta from '../components/dialog/dialog.meta'
@@ -115,6 +117,7 @@ export const components: ComponentMeta[] = [
   checkboxGroupMeta,
   chipMeta,
   circularProgressMeta,
+  codeBlockMeta,
   collapsibleMeta,
   colorPickerMeta,
   comboboxMeta,
@@ -122,6 +125,7 @@ export const components: ComponentMeta[] = [
   confirmDialogMeta,
   containerMeta,
   contextMenuMeta,
+  copyButtonMeta,
   datePickerMeta,
   dateRangePickerMeta,
   dialogMeta,

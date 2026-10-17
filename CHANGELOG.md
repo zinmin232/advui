@@ -104,6 +104,26 @@ one version.
   `labels` translates every name and value text.
 - **Icons**: `PipetteIcon`.
 - **Color utilities** (`@advui/utils`): `toHsv` and `fromHsv`.
+- **Copy Button**: copies a `value` and confirms it: the icon turns into a
+  check for `timeout` ms (2 seconds) and screen readers hear "Copied" (a
+  polite live region on web, `announceForAccessibility` on iOS and
+  Android), or "Couldn't copy" when the clipboard refuses. Without children
+  it is an icon button named "Copy" with the result in its tooltip; with
+  children it is a Button whose label shows the result. `onCopy`,
+  `onCopyError`, Button's `variant`, `size` and `disabled`, and `labels`
+  for translation. On web it uses the Clipboard API, with a fallback for
+  pages not served over HTTPS. iOS and Android need the app's clipboard,
+  registered once with `setClipboard` (e.g. `expo-clipboard`);
+  `useClipboard` (`copy`, `status`) and `writeClipboard` build your own
+  copy controls.
+- **Code Block**: code or a command in a monospace block on `$muted` with a
+  Copy Button. `title` and `language` add a header; `lineNumbers` (from
+  `firstLineNumber`), `highlightLines` (a tint and a bar), `wrap` for long
+  lines (they scroll sideways by default) and `maxHeight`. `tokens` takes
+  the code as colored tokens from a highlighter such as Shiki, so it stays
+  free of highlighting dependencies. On web it is a focusable
+  `<pre><code>` group named by its title; line numbers are not selected or
+  read, and a selection copies the code as written.
 
 ### Changed
 
