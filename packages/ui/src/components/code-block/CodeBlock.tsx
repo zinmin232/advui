@@ -268,7 +268,7 @@ export const CodeBlock = forwardRef<TamaguiElement, CodeBlockProps>(function Cod
                   line height, or selectable) too narrow and drops its last
                   word onto a hidden second line; a hair space makes room.
                 */}
-                {!wrap && line.some((token) => token.italic) ? ' ' : null}
+                {!wrap && line.some((token) => token.italic) ? '\u200A' : null}
               </CodeText>
             </XStack>
           )
