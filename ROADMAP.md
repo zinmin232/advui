@@ -142,8 +142,8 @@ Image Gallery and Pie Chart already cover them.
 
 Built so far (the table keeps them for reference): Link, Input Group as
 slots on Input (`leading`, `trailing`, `leadingAddon`, `trailingAddon`),
-Checkbox Group, Tags Input, Carousel, Rating, Color Picker, Copy Button and
-Code Block.
+Checkbox Group, Tags Input, Carousel, Rating, Color Picker, Copy Button,
+Code Block and Menubar. Phase 7 is complete.
 
 | Phase | Package         | Components                                                                                                                                  |
 | ----- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |

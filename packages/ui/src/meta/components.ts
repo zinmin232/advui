@@ -54,6 +54,7 @@ import listItemMeta from '../components/list-item/list-item.meta'
 import loadingButtonMeta from '../components/loading-button/loading-button.meta'
 import loadingStateMeta from '../components/loading-state/loading-state.meta'
 import menuMeta from '../components/menu/menu.meta'
+import menubarMeta from '../components/menubar/menubar.meta'
 import multiSelectMeta from '../components/multi-select/multi-select.meta'
 import navigationBarMeta from '../components/navigation-bar/navigation-bar.meta'
 import navigationMenuMeta from '../components/navigation-menu/navigation-menu.meta'
@@ -151,6 +152,7 @@ export const components: ComponentMeta[] = [
   loadingButtonMeta,
   loadingStateMeta,
   menuMeta,
+  menubarMeta,
   multiSelectMeta,
   navigationBarMeta,
   navigationMenuMeta,

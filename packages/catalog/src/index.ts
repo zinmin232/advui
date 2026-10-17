@@ -60,6 +60,7 @@ import listItemMeta from '../../ui/src/components/list-item/list-item.meta'
 import loadingButtonMeta from '../../ui/src/components/loading-button/loading-button.meta'
 import loadingStateMeta from '../../ui/src/components/loading-state/loading-state.meta'
 import menuMeta from '../../ui/src/components/menu/menu.meta'
+import menubarMeta from '../../ui/src/components/menubar/menubar.meta'
 import multiSelectMeta from '../../ui/src/components/multi-select/multi-select.meta'
 import navigationBarMeta from '../../ui/src/components/navigation-bar/navigation-bar.meta'
 import navigationMenuMeta from '../../ui/src/components/navigation-menu/navigation-menu.meta'
@@ -198,6 +199,7 @@ export const components: CatalogComponent[] = [
   { ...loadingButtonMeta, package: '@advui/core' },
   { ...loadingStateMeta, package: '@advui/core' },
   { ...menuMeta, package: '@advui/core' },
+  { ...menubarMeta, package: '@advui/core' },
   { ...multiSelectMeta, package: '@advui/core' },
   { ...navigationBarMeta, package: '@advui/core' },
   { ...navigationMenuMeta, package: '@advui/core' },

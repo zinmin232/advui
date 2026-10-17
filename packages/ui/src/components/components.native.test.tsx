@@ -70,6 +70,7 @@ import { ListItem } from './list-item/ListItem'
 import { LoadingButton } from './loading-button/LoadingButton'
 import { LoadingState } from './loading-state/LoadingState'
 import { Menu } from './menu/Menu'
+import { Menubar } from './menubar/Menubar'
 import { MultiSelect } from './multi-select/MultiSelect'
 import { NavigationBar } from './navigation-bar/NavigationBar'
 import { NavigationMenu } from './navigation-menu/NavigationMenu'
@@ -442,6 +443,50 @@ describe('native rendering', () => {
     })
     expect(onSelect).toHaveBeenCalledTimes(1)
   })
+
+  it('Menubar opens one menu at a time as a sheet of accessible items', async () => {
+    const onUndo = jest.fn()
+    const onValueChange = jest.fn()
+    await renderNative(
+      <Menubar aria-label="Editor" onValueChange={onValueChange}>
+        <Menubar.Menu value="file">
+          <Menubar.Trigger>File</Menubar.Trigger>
+          <Menubar.Content>
+            <Menubar.Item>New file</Menubar.Item>
+          </Menubar.Content>
+        </Menubar.Menu>
+        <Menubar.Menu value="edit">
+          <Menubar.Trigger>Edit</Menubar.Trigger>
+          <Menubar.Content>
+            <Menubar.Item onSelect={onUndo}>Undo</Menubar.Item>
+          </Menubar.Content>
+        </Menubar.Menu>
+        <Menubar.Menu value="share">
+          <Menubar.Trigger disabled>Share</Menubar.Trigger>
+          <Menubar.Content>
+            <Menubar.Item>Copy link</Menubar.Item>
+          </Menubar.Content>
+        </Menubar.Menu>
+      </Menubar>,
+    )
+    const file = screen.getByRole('button', { name: 'File' })
+    expect(file).toBeCollapsed()
+    expect(screen.getByRole('button', { name: 'Share' })).toBeDisabled()
+    // Closed sheets stay mounted; their rows must be hidden from screen readers.
+    expect(screen.queryByRole('menuitem', { name: 'New file' })).toBeNull()
+    await fireEvent.press(file)
+    expect(file).toBeExpanded()
+    expect(screen.getByRole('menuitem', { name: 'New file' })).toBeOnTheScreen()
+    await fireEvent.press(screen.getByRole('button', { name: 'Edit' }))
+    expect(onValueChange).toHaveBeenLastCalledWith('edit')
+    expect(screen.queryByRole('menuitem', { name: 'New file' })).toBeNull()
+    await fireEvent.press(screen.getByRole('menuitem', { name: 'Undo' }))
+    expect(onUndo).toHaveBeenCalledTimes(1)
+    expect(onValueChange).toHaveBeenLastCalledWith(null)
+    await fireEvent.press(screen.getByRole('button', { name: 'Share' }))
+    expect(onValueChange).toHaveBeenCalledTimes(3)
+  })
+
   it('Popover opens its content from the trigger (bottom sheet on native)', async () => {
     await renderNative(
       <Popover>
@@ -2245,6 +2290,25 @@ describe('Android back button', () => {
             <DropdownMenu.Item>Rename</DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu>
+      ),
+    ],
+    [
+      'Menubar',
+      (onOpenChange) => (
+        <Menubar defaultValue="file" onValueChange={(value) => onOpenChange(value !== null)}>
+          <Menubar.Menu value="file">
+            <Menubar.Trigger>File</Menubar.Trigger>
+            <Menubar.Content>
+              <Menubar.Item>New file</Menubar.Item>
+            </Menubar.Content>
+          </Menubar.Menu>
+          <Menubar.Menu value="edit">
+            <Menubar.Trigger>Edit</Menubar.Trigger>
+            <Menubar.Content>
+              <Menubar.Item>Undo</Menubar.Item>
+            </Menubar.Content>
+          </Menubar.Menu>
+        </Menubar>
       ),
     ],
     [

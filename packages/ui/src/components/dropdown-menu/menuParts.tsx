@@ -1,6 +1,6 @@
 import { CheckIcon, IconDefaults } from '@advui/icons'
 import { shadows, zIndex } from '@advui/theme'
-import type { ReactNode } from 'react'
+import type { ReactElement, ReactNode } from 'react'
 import { type Menu, View } from 'tamagui'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { Text } from '../typography/Text'
@@ -37,6 +37,58 @@ const itemFrame = {
 } as const
 
 const disabledFrame = { opacity: 0.5, cursor: 'not-allowed' } as const
+
+/** What a menu built on these parts passes to the content beyond its props (Menubar). */
+export type MenuContentOptions = {
+  id?: string
+  /**
+   * The portal is `pointer-events: none`; modal menus turn the content's back
+   * on, non-modal ones need `auto` here.
+   */
+  pointerEvents?: 'auto'
+  onKeyDown?: (event: { key: string; preventDefault: () => void }) => void
+  /** Tamagui's menu takes it at runtime; its types leave it out. */
+  onOpenAutoFocus?: (event: Event) => void
+  onCloseAutoFocus?: (event: Event) => void
+  onEscapeKeyDown?: (event: KeyboardEvent) => void
+  onPointerDownOutside?: () => void
+  onFocusOutside?: (event: CustomEvent<{ originalEvent: FocusEvent }>) => void
+}
+
+/** The menu surface. Menus take it from `createMenuParts`, without the options. */
+export function createMenuContent(Primitive: typeof Menu) {
+  return function Content({
+    children,
+    minWidth = '$48',
+    ...options
+  }: DropdownMenuContentProps & MenuContentOptions) {
+    const reducedMotion = useReducedMotion()
+    return (
+      <Primitive.Portal zIndex={zIndex.popover}>
+        <Primitive.Content
+          {...(options as object)}
+          unstyled
+          backgroundColor="$popover"
+          borderWidth={1}
+          borderColor="$border"
+          borderRadius="$lg"
+          padding="$1"
+          minWidth={minWidth}
+          {...shadows.md}
+          enterStyle={{ opacity: 0, scale: 0.97, y: -4 }}
+          exitStyle={{ opacity: 0, scale: 0.97, y: -4 }}
+          opacity={1}
+          scale={1}
+          y={0}
+          transition={reducedMotion ? null : 'quicker'}
+          animateOnly={['transform', 'opacity']}
+        >
+          {children}
+        </Primitive.Content>
+      </Primitive.Portal>
+    )
+  }
+}
 
 export function createMenuParts(Primitive: typeof Menu) {
   function ItemBody({
@@ -82,32 +134,7 @@ export function createMenuParts(Primitive: typeof Menu) {
     )
   }
 
-  function Content({ children, minWidth = '$48' }: DropdownMenuContentProps) {
-    const reducedMotion = useReducedMotion()
-    return (
-      <Primitive.Portal zIndex={zIndex.popover}>
-        <Primitive.Content
-          unstyled
-          backgroundColor="$popover"
-          borderWidth={1}
-          borderColor="$border"
-          borderRadius="$lg"
-          padding="$1"
-          minWidth={minWidth}
-          {...shadows.md}
-          enterStyle={{ opacity: 0, scale: 0.97, y: -4 }}
-          exitStyle={{ opacity: 0, scale: 0.97, y: -4 }}
-          opacity={1}
-          scale={1}
-          y={0}
-          transition={reducedMotion ? null : 'quicker'}
-          animateOnly={['transform', 'opacity']}
-        >
-          {children}
-        </Primitive.Content>
-      </Primitive.Portal>
-    )
-  }
+  const Content: (props: DropdownMenuContentProps) => ReactElement = createMenuContent(Primitive)
 
   function Item({
     children,

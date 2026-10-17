@@ -15,9 +15,6 @@ export interface RoadmapItem {
 }
 
 export const roadmap: RoadmapItem[] = [
-  // Phase 7: the components apps reach for most.
-  { name: 'Menubar', slug: 'menubar', category: 'navigation', phase: 7 },
-
   // Phase 8: less common, still in most libraries.
   { name: 'Date Time Picker', slug: 'date-time-picker', category: 'forms', phase: 8 },
   { name: 'Description List', slug: 'description-list', category: 'data-display', phase: 8 },

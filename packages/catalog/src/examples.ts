@@ -176,6 +176,8 @@ import LoadingStateBasic from '../../ui/src/components/loading-state/examples/ba
 import LoadingStateCancel from '../../ui/src/components/loading-state/examples/cancel'
 import MenuBasic from '../../ui/src/components/menu/examples/basic'
 import MenuActions from '../../ui/src/components/menu/examples/actions'
+import MenubarBasic from '../../ui/src/components/menubar/examples/basic'
+import MenubarOptions from '../../ui/src/components/menubar/examples/options'
 import MultiSelectBasic from '../../ui/src/components/multi-select/examples/basic'
 import NavigationBarBasic from '../../ui/src/components/navigation-bar/examples/basic'
 import NavigationMenuBasic from '../../ui/src/components/navigation-menu/examples/basic'
@@ -578,6 +580,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'menu': {
     'basic': MenuBasic,
     'actions': MenuActions,
+  },
+  'menubar': {
+    'basic': MenubarBasic,
+    'options': MenubarOptions,
   },
   'multi-select': {
     'basic': MultiSelectBasic,
