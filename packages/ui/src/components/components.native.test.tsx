@@ -1751,8 +1751,8 @@ describe('native rendering', () => {
       </>,
     )
     const [plain, wrapped] = screen.getAllByText('// a comment').map((token) => token.parent!)
-    expect(plain!.props.children).toContain(' ')
-    expect(wrapped!.props.children).not.toContain(' ')
+    expect(plain!.props.children).toContain('\u200A')
+    expect(wrapped!.props.children).not.toContain('\u200A')
   })
 })
 
