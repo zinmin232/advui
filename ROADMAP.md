@@ -62,6 +62,18 @@ cannot do them. Tick them off here as they are done.
   - The components that moved to `@advui/data`, `@advui/charts` and
     `@advui/editor` still open in the Expo app (it now loads them from those
     packages).
+  - Copy Button and Code Block (0.14.0): passed on the Android phone on
+    2026-10-17, in light and dark mode. A press copies through
+    `expo-clipboard` (pasted back into a field to confirm), shows the check
+    and Android's own "Copied" preview, and a labelled button keeps its
+    width. Code scrolls sideways, wraps with `wrap`, and a `maxHeight` log
+    scrolls inside the screen; marked lines show their tint and bar. Two
+    fixes came from it: an unwrapped line ending in italic lost its last
+    word on Android, and "Link copied" moved the button beside it. This
+    phone's system font replaces monospace in every app (a plain React
+    Native `fontFamily: 'monospace'` is proportional too), so code is not
+    monospaced on it. Still to check: a phone with the stock font, an
+    iPhone, and the announcements by ear.
 - [ ] **Rich Text Editor: decide.** It is a Markdown editor (toolbar,
       shortcuts, preview), the same on every platform with no extra
       dependencies. Keep it, or ask for a WYSIWYG editor, which needs new

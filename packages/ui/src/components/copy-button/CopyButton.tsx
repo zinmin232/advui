@@ -1,6 +1,7 @@
 import { CheckIcon, CopyIcon, XIcon } from '@advui/icons'
+import { composeEventHandlers } from '@advui/utils'
 import { type ReactNode, forwardRef, useContext, useState } from 'react'
-import { AccessibilityInfo } from 'react-native'
+import { AccessibilityInfo, type LayoutChangeEvent } from 'react-native'
 import { type TamaguiElement, Text, View, isWeb } from 'tamagui'
 import { visuallyHidden } from '../../utils/visuallyHidden'
 import { Button, type ButtonProps } from '../button/Button'
@@ -59,6 +60,7 @@ export const CopyButton = forwardRef<TamaguiElement, CopyButtonProps>(function C
     onCopy,
     onCopyError,
     labels: labelsProp,
+    onLayout,
     ...props
   },
   ref,
@@ -67,6 +69,7 @@ export const CopyButton = forwardRef<TamaguiElement, CopyButtonProps>(function C
   const group = useContext(ButtonGroupContext)
   const { copy, status } = useClipboard({ timeout, onCopy, onError: onCopyError })
   const [message, setMessage] = useState({ text: '', count: 0 })
+  const [labelWidth, setLabelWidth] = useState<number>()
   const result = status === 'idle' ? null : labels[status]
 
   const onPress = async () => {
@@ -88,6 +91,7 @@ export const CopyButton = forwardRef<TamaguiElement, CopyButtonProps>(function C
           variant={variant}
           icon={icons[status]}
           onPress={onPress}
+          onLayout={onLayout}
           {...props}
         />
       </Tooltip>
@@ -99,6 +103,12 @@ export const CopyButton = forwardRef<TamaguiElement, CopyButtonProps>(function C
         variant={variant ?? (group ? undefined : 'outline')}
         icon={icons[status]}
         onPress={onPress}
+        onLayout={composeEventHandlers(onLayout, (event: LayoutChangeEvent) => {
+          if (status === 'idle') setLabelWidth(event.nativeEvent.layout.width)
+        })}
+        // A shorter result ("Copied") keeps the label's width, so the buttons
+        // beside it do not move (or wrap to another row) for two seconds.
+        {...(result && labelWidth !== undefined && { minWidth: labelWidth })}
         {...props}
       >
         {result ?? children}

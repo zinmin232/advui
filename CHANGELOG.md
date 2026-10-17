@@ -109,7 +109,8 @@ one version.
   polite live region on web, `announceForAccessibility` on iOS and
   Android), or "Couldn't copy" when the clipboard refuses. Without children
   it is an icon button named "Copy" with the result in its tooltip; with
-  children it is a Button whose label shows the result. `onCopy`,
+  children it is a Button whose label shows the result, keeping the
+  button's width so the buttons beside it stay put. `onCopy`,
   `onCopyError`, Button's `variant`, `size` and `disabled`, and `labels`
   for translation. On web it uses the Clipboard API, with a fallback for
   pages not served over HTTPS. iOS and Android need the app's clipboard,
