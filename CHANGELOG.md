@@ -187,11 +187,12 @@ one version.
 - **Password Input** on iOS and Android: the show/hide button is a toggle
   button that reads as checked while the password shows. React Native has
   no `aria-pressed`, so its state was never announced.
-- **Dropdown Menu**, **Menubar** and **Select** on iOS and Android: a sheet
-  taller than the screen allows (a long list, or a phone in landscape)
-  stops below the status bar and scrolls its items. Tamagui grows a sheet
-  that fits its content up to the whole screen, so its top edge and handle
-  went under the status bar.
+- **Dropdown Menu**, **Menubar**, **Select** and **Popover** (and Date
+  Picker, Date Range Picker and Color Picker, which open one) on iOS and
+  Android: a sheet taller than the screen allows (a long list, or a
+  calendar on a phone in landscape) stops below the status bar and scrolls
+  its content. Tamagui grows a sheet that fits its content up to the whole
+  screen, so its top edge and handle went under the status bar.
 - **Checkbox Group** and **Radio Group** on iOS and Android: pressing a
   disabled item's label no longer logs "No input found" in development.
 - **Color Picker** on iOS and Android: the picker sheet closes after a

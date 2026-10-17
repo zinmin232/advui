@@ -541,16 +541,17 @@ describe('native rendering', () => {
     expect(onSelect).toHaveBeenCalledTimes(1)
   })
 
-  it('menu and Select sheets stop below the status bar', async () => {
+  it('menu, Select and Popover sheets stop below the status bar', async () => {
     // Tamagui grows a fit sheet up to the whole window; in landscape a tall menu
     // slid under the status bar. The frame is capped and its list scrolls.
-    const maxHeightAbove = (text: string) => {
-      let node = screen.getByText(text).parent
-      while (node && StyleSheet.flatten(node.props.style)?.maxHeight === undefined) {
-        node = node.parent
-      }
-      return StyleSheet.flatten(node?.props.style)?.maxHeight
-    }
+    const maxHeightAbove = (text: string) =>
+      screen.getAllByText(text).map((found) => {
+        let node = found.parent
+        while (node && StyleSheet.flatten(node.props.style)?.maxHeight === undefined) {
+          node = node.parent
+        }
+        return StyleSheet.flatten(node?.props.style)?.maxHeight
+      })
     await render(
       <UniversalProvider
         config={createUniversalConfig()}
@@ -568,13 +569,24 @@ describe('native rendering', () => {
         <Select open aria-label="Fruit" placeholder="Pick a fruit">
           <Select.Item value="apple">Apple</Select.Item>
         </Select>
+        <Popover defaultOpen>
+          <Popover.Trigger asChild>
+            <Button>Dimensions</Button>
+          </Popover.Trigger>
+          <Popover.Content>
+            <Popover.Title>Layer size</Popover.Title>
+          </Popover.Content>
+        </Popover>
       </UniversalProvider>,
     )
     // The screen (which the sheet covers) less the top inset and 32 for the handle.
     const expected = Dimensions.get('screen').height - 40 - 32
     await fireEvent.press(screen.getByRole('button', { name: 'Options' }))
-    expect(maxHeightAbove('Rename')).toBe(expected)
-    expect(maxHeightAbove('Apple')).toBe(expected)
+    expect(maxHeightAbove('Rename')).toContain(expected)
+    expect(maxHeightAbove('Apple')).toContain(expected)
+    // Popover's sheet (Date Picker, Color Picker) too; Adapt renders its content twice.
+    await screen.findAllByText('Layer size')
+    expect(maxHeightAbove('Layer size')).toContain(expected)
   })
 
   it('Menubar opens one menu at a time as a sheet of accessible items', async () => {

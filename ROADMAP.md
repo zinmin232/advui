@@ -88,9 +88,10 @@ cannot do them. Tick them off here as they are done.
     and closes the sheet, radio items move the selection, and the back
     button closes the sheet. The Format menu is nearly as tall as the
     screen, so its sheet's top edge and handle went under the status bar;
-    menu and Select sheets now stop below it and their list scrolls
-    (checked in landscape, with a 12-option Select too). Popover's sheet
-    (Date Picker, Color Picker) still reaches the status bar in landscape.
+    menu, Select and Popover sheets now stop below it and their content
+    scrolls (checked in landscape with a 12-option Select, Date Picker's
+    six-week August, and a vertical drag in Color Picker's sheet, which
+    still closes cleanly).
     Still to check: an iPhone, and TalkBack by ear.
   - Link, Input slots, Checkbox Group, Tags Input, Carousel, Rating and
     Color Picker (0.14.0): checked on the Android phone on 2026-10-17
