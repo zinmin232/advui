@@ -129,10 +129,13 @@ cannot do them. Tick them off here as they are done.
     radio items and a disabled chip's remove button, Tags Input's
     included, read as disabled; and Password Input's toggle is a toggle
     button that reads as checked while the password shows (it used
-    `aria-pressed`, which React Native ignores). Hints (descriptions, the
-    group's name) go to Android's tooltip text, which `uiautomator` does
-    not show, so they are left for TalkBack by ear. Still to check: an
-    iPhone, and the announcements by ear.
+    `aria-pressed`, which React Native ignores). The Switch example's
+    switches had no name on Android (a `Label`'s `htmlFor` only moved
+    focus); a Label now names the control it targets, read from the
+    accessibility tree on the phone for Switch, Checkbox and Input. Hints
+    (descriptions, the group's name) go to Android's tooltip text, which
+    `uiautomator` does not show, so they are left for TalkBack by ear.
+    Still to check: an iPhone, and the announcements by ear.
 - [ ] **Rich Text Editor: decide.** It is a Markdown editor (toolbar,
       shortcuts, preview), the same on every platform with no extra
       dependencies. Keep it, or ask for a WYSIWYG editor, which needs new

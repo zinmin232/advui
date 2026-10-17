@@ -170,6 +170,12 @@ one version.
   (Tamagui set the state on web only), and a checkbox that leaves the mixed
   state, such as Checkbox Group's Select All, no longer goes on saying
   "mixed" to TalkBack once it is checked or cleared.
+- **Label** on iOS and Android: a Label with `htmlFor` names the control
+  with that id, such as a Switch, Checkbox or Input beside it, unless the
+  control has its own `aria-label`; the Label is then hidden from screen
+  readers so the name is not read twice. `htmlFor` only moved focus there,
+  so TalkBack read the Switch example's switches as "switch" with no name.
+  Your own controls get this by calling `useFieldControl`.
 - **Switch** on iOS and Android: screen readers hear whether it is on and
   whether it is disabled. Tamagui's switch sends neither state on native,
   so TalkBack read only "switch"; the value is now held by Switch itself.

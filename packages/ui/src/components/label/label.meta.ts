@@ -45,7 +45,7 @@ export default defineMeta({
   examples: [{ name: 'basic', title: 'Labelling controls' }],
   accessibility: [
     'On web renders `<label for>`, giving the control its accessible name and a larger click target.',
-    'On native, pressing the label focuses (inputs) or toggles (checkbox/switch) the linked control.',
+    'On native, pressing the label focuses (inputs) or toggles (checkbox/switch) the linked control, and its text is the control’s name unless the control has an `aria-label`; the label is then hidden from screen readers so it is not read twice.',
   ],
   related: ['input', 'checkbox', 'switch'],
 })

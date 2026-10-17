@@ -125,8 +125,10 @@ each edit.
   app-wide settings from the Tamagui config (`getConfig()`) instead.
 - **Android zIndex** is 32-bit; keep portal z-indices at `zIndex.*` values
   (see `Toaster.tsx`).
-- **Labels on native**: a `Label`'s `htmlFor` only moves focus. Field
-  passes its label as `aria-label` on native, so field-shaped buttons must
+- **Labels on native**: React Native has no `<label for>`; Tamagui's
+  `htmlFor` only moves focus. So a Label publishes its text for that id
+  (`useLabelFor`) and `useFieldControl` gives it to the control as
+  `aria-label`, as Field passes its own label. Field-shaped buttons must then
   expose their value with `accessibilityValue` (see `PickerTrigger`).
 - **Form controls read Field through context.** A new control calls
   `useFieldControl(props)` first, so a Field around it sets its id, state and
