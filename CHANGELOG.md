@@ -148,6 +148,10 @@ one version.
   Tamagui's trigger learns its element from pointer and focus events, and
   with `asChild` its focus handler never ran, so keyboard users lost their
   place on Escape, `Popover.Close` or a picked date.
+- **Tooltip** on web: the trigger no longer has `aria-expanded`, so screen
+  readers stop reading every button with a tooltip as "collapsed" (or
+  "expanded" while the tooltip shows). Tamagui's tooltip trigger is a popover
+  trigger and set it; Hover Card already removed it the same way.
 
 ## [0.13.0] - 2026-10-15
 
