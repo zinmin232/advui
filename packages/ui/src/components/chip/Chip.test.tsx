@@ -44,6 +44,19 @@ describe('Chip', () => {
     expect(onRemove).toHaveBeenCalledTimes(1)
   })
 
+  it('input chip: a disabled chip’s remove button reads as disabled', async () => {
+    const onRemove = vi.fn()
+    const { user } = renderWithProvider(
+      <Chip onRemove={onRemove} disabled>
+        Ada Lovelace
+      </Chip>,
+    )
+    const remove = screen.getByRole('button', { name: 'Remove Ada Lovelace' })
+    expect(remove).toHaveAttribute('aria-disabled', 'true')
+    await user.click(remove)
+    expect(onRemove).not.toHaveBeenCalled()
+  })
+
   it('action chip: a button; a chip without actions is plain text', async () => {
     const onPress = vi.fn()
     const { user } = renderWithProvider(

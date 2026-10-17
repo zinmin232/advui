@@ -58,7 +58,7 @@ export default defineMeta({
   ],
   examples: [{ name: 'basic', title: 'Basic' }],
   accessibility: [
-    'The button is a toggle with a fixed name ("Show password") and `aria-pressed`, so its state is announced instead of a changing label.',
+    'The button is a toggle with a fixed name ("Show password"), so its state is announced instead of a changing label: `aria-pressed` on web, a toggle button that reads as checked on iOS and Android.',
     'Password managers and autofill see a normal password field.',
   ],
   keyboard: [

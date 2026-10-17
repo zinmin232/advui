@@ -97,9 +97,9 @@ entry, search entry, Expo screen and registry item then appear automatically.
   `role="switch"` with `aria-checked`, `role="dialog"` with a title.
 - Every interactive element has an accessible name: visible text, a `Label`
   with `htmlFor`/`id`, or `aria-label` (required on `IconButton`). On native a
-  `Label`'s `htmlFor` only moves focus, so Field also passes its label as
-  `aria-label`. Form controls call `useFieldControl(props)` so a Field can wire
-  them, wherever they sit inside it. A field-shaped button (Date Picker, Combobox) then loses its
+  `Label`'s `htmlFor` only moves focus, so the Label's text and Field's label
+  reach the control as `aria-label`. Form controls call `useFieldControl(props)`
+  so a Field and a Label can wire them, wherever they sit. A field-shaped button (Date Picker, Combobox) then loses its
   text as a name, so it exposes the value with `accessibilityValue`.
 - State is exposed: `aria-checked`, `aria-selected`, `aria-expanded`,
   `aria-disabled`, `aria-busy`, `aria-invalid` plus `aria-describedby` for

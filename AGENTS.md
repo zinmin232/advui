@@ -125,8 +125,10 @@ each edit.
   app-wide settings from the Tamagui config (`getConfig()`) instead.
 - **Android zIndex** is 32-bit; keep portal z-indices at `zIndex.*` values
   (see `Toaster.tsx`).
-- **Labels on native**: a `Label`'s `htmlFor` only moves focus. Field
-  passes its label as `aria-label` on native, so field-shaped buttons must
+- **Labels on native**: React Native has no `<label for>`; Tamagui's
+  `htmlFor` only moves focus. So a Label publishes its text for that id
+  (`useLabelFor`) and `useFieldControl` gives it to the control as
+  `aria-label`, as Field passes its own label. Field-shaped buttons must then
   expose their value with `accessibilityValue` (see `PickerTrigger`).
 - **Form controls read Field through context.** A new control calls
   `useFieldControl(props)` first, so a Field around it sets its id, state and
@@ -147,6 +149,16 @@ each edit.
   tests still pass, because `fireEvent` finds the handler on a composite
   element: assert that the host element has `onKeyPress`, and check on a
   device with the on-screen keyboard (`adb` key events never fire it).
+- **Tamagui sets control states on web only.** Its native Switch sends no
+  checked state, and its Checkbox and Radio Group items no disabled state, so
+  TalkBack misses them. Set them yourself on native (`accessible`,
+  `aria-checked`, `aria-disabled` through `ariaState`; see `Switch.tsx`). On
+  Android `role` wins over `accessibilityRole`, so a toggle built on Button
+  clears `role` to become a `togglebutton` (see `PasswordInput`).
+- **Android wraps a TextInput placeholder** wider than its box onto a cut-off
+  second line, whatever the props (`numberOfLines` is already 1). Tags Input
+  draws its own one-line copy over a transparent real placeholder
+  (`TagsInputText.native.tsx`).
 - **Drags inside a Tamagui Sheet**: asked about a vertical move, the Sheet
   marks itself as dragging even when the touched view keeps the gesture, and
   then stays on screen when closed. Wrap a drag surface in a view that

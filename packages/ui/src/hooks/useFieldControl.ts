@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react'
 import { isWeb } from 'tamagui'
+import { useLabelFor } from './useLabelFor'
 import { FormContext } from './useParentForm'
 
 /** What a Field tells the control inside it. */
@@ -41,13 +42,20 @@ const joinIds = (...lists: Array<string | undefined>) =>
  * `invalid`, `disabled`, `aria-required`, and the links to its help and error
  * text. The control's own props win, `invalid` and `disabled` add up, and
  * outside a Field the props come back unchanged, except that a disabled Form
- * disables the control with or without a Field. Call it in your own controls
- * so a Field and a Form wire them like the core ones.
+ * disables the control with or without a Field, and that on native a `<Label
+ * htmlFor>` names the control with its id. Call it in your own controls so a
+ * Field, a Form and a Label wire them like the core ones.
  */
 export function useFieldControl<P extends FieldControlProps>(props: P): P {
   const field = useContext(FieldContext)
   const form = useContext(FormContext)
-  if (!field) return form.disabled && !props.disabled ? { ...props, disabled: true } : props
+  // Native: a Label's htmlFor only moves focus, so its text names the control.
+  const unnamed = !isWeb && props['aria-label'] === undefined && field?.label === undefined
+  const labelText = useLabelFor(unnamed ? (props.id ?? field?.id) : undefined)
+  if (!field) {
+    const named = labelText === undefined ? props : { ...props, 'aria-label': labelText }
+    return form.disabled && !props.disabled ? { ...named, disabled: true } : named
+  }
   // Joined without repeats, so a control that passes the result on to an inner
   // control (Password Input to Input) gets the same props a second time.
   const describedBy = joinIds(props['aria-describedby'], field.describedBy)
@@ -63,7 +71,9 @@ export function useFieldControl<P extends FieldControlProps>(props: P): P {
           // A Label's htmlFor only moves focus on native, so the field names the
           // control. Native has no aria-describedby: the texts are the hint.
           ...(props['aria-label'] === undefined &&
-            field.label !== undefined && { 'aria-label': field.label }),
+            (field.label ?? labelText) !== undefined && {
+              'aria-label': field.label ?? labelText,
+            }),
           ...(props.accessibilityHint === undefined &&
             field.hint !== undefined && { accessibilityHint: field.hint }),
         }),

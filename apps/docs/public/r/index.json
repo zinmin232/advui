@@ -1016,6 +1016,7 @@
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
+        "hooks",
         "typography",
         "utils"
       ]
@@ -1620,7 +1621,8 @@
         "@advui/theme"
       ],
       "registryDependencies": [
-        "hooks"
+        "hooks",
+        "utils"
       ]
     },
     {

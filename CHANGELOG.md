@@ -57,7 +57,9 @@ one version.
   submitted. Added and removed tags are announced to screen readers, and
   `labels` translates the button names and announcements. It takes a
   Field's label, help and error like Input, `size` matches Input's heights,
-  and on web each tag submits under the field's `name`.
+  and on web each tag submits under the field's `name`. A placeholder too
+  long for the text box stays on one line and ends in "…" on iOS and
+  Android, as Android would otherwise wrap it onto a cut-off second line.
 - **Carousel**: a row of slides shown one or a few at a time
   (`slidesPerView`, a number or a mobile-first map; a fraction such as 1.2
   shows part of the next slide), with previous and next buttons, a dot per
@@ -168,6 +170,23 @@ one version.
   (Tamagui set the state on web only), and a checkbox that leaves the mixed
   state, such as Checkbox Group's Select All, no longer goes on saying
   "mixed" to TalkBack once it is checked or cleared.
+- **Label** on iOS and Android: a Label with `htmlFor` names the control
+  with that id, such as a Switch, Checkbox or Input beside it, unless the
+  control has its own `aria-label`; the Label is then hidden from screen
+  readers so the name is not read twice. `htmlFor` only moved focus there,
+  so TalkBack read the Switch example's switches as "switch" with no name.
+  Your own controls get this by calling `useFieldControl`.
+- **Switch** on iOS and Android: screen readers hear whether it is on and
+  whether it is disabled. Tamagui's switch sends neither state on native,
+  so TalkBack read only "switch"; the value is now held by Switch itself.
+- **Radio Group** on iOS and Android: the items of a disabled group, and a
+  disabled item, read as disabled (Tamagui set the state on web only).
+- **Chip**: a disabled input chip's remove button reads as disabled and
+  shows no hover or press color. It already did nothing when pressed. Tags
+  Input's remove buttons in a disabled field read the same way.
+- **Password Input** on iOS and Android: the show/hide button is a toggle
+  button that reads as checked while the password shows. React Native has
+  no `aria-pressed`, so its state was never announced.
 - **Checkbox Group** and **Radio Group** on iOS and Android: pressing a
   disabled item's label no longer logs "No input found" in development.
 - **Color Picker** on iOS and Android: the picker sheet closes after a

@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, jest } from '@jest/globals'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
 import { createThemeColors, createUniversalConfig, themePresets, zIndex } from '@advui/theme'
-import { Fragment, type ReactElement } from 'react'
+import { Fragment, type ReactElement, useState } from 'react'
 import {
   AccessibilityInfo,
   BackHandler,
@@ -59,6 +59,7 @@ import { IconButton } from './icon-button/IconButton'
 import { Image } from './image/Image'
 import { ImageGallery } from './image-gallery/ImageGallery'
 import { Input } from './input/Input'
+import { Label } from './label/Label'
 import { AutoGrid } from './layout/AutoGrid'
 import { autoGridColumns } from './layout/autoGridColumns'
 import { Container } from './layout/Container'
@@ -191,10 +192,64 @@ describe('native rendering', () => {
         <Checkbox aria-label="Terms" onCheckedChange={onCheck} />
       </>,
     )
-    await fireEvent.press(screen.getByRole('switch', { name: 'Wi-Fi' }))
+    const wifi = screen.getByRole('switch', { name: 'Wi-Fi' })
+    expect(wifi).not.toBeChecked()
+    await fireEvent.press(wifi)
     expect(onSwitch).toHaveBeenCalledWith(true)
+    // Tamagui's switch reports its state on web only.
+    expect(screen.getByRole('switch', { name: 'Wi-Fi' })).toBeChecked()
     await fireEvent.press(screen.getByRole('checkbox', { name: 'Terms' }))
     expect(onCheck).toHaveBeenCalledWith(true)
+  })
+
+  it('a Label with htmlFor names the control on native and is not read twice', async () => {
+    function Rows() {
+      const [showLabel, setShowLabel] = useState(true)
+      return (
+        <>
+          <Button onPress={() => setShowLabel(false)}>Remove label</Button>
+          {showLabel ? <Label htmlFor="push">Push notifications</Label> : null}
+          <Switch id="push" />
+          <Label htmlFor="terms">Accept the terms</Label>
+          <Checkbox id="terms" />
+          <Label htmlFor="city">City</Label>
+          <Input id="city" placeholder="Yangon" />
+          <Label htmlFor="own">Visible text</Label>
+          <Switch id="own" aria-label="Own name" />
+        </>
+      )
+    }
+    await renderNative(<Rows />)
+    // A Label's htmlFor only moves focus on native, so its text is the name.
+    expect(screen.getByRole('switch', { name: 'Push notifications' })).toBeOnTheScreen()
+    expect(screen.getByRole('checkbox', { name: 'Accept the terms' })).toBeOnTheScreen()
+    expect(screen.getByPlaceholderText('Yangon').props['aria-label']).toBe('City')
+    expect(
+      screen.getByText('Push notifications', { includeHiddenElements: true }),
+    ).not.toBeVisible()
+    // A control with its own name leaves its label to be read as text.
+    expect(screen.getByRole('switch', { name: 'Own name' })).toBeOnTheScreen()
+    expect(screen.getByText('Visible text')).toBeVisible()
+
+    await fireEvent.press(screen.getByRole('button', { name: 'Remove label' }))
+    expect(screen.queryByRole('switch', { name: 'Push notifications' })).toBeNull()
+  })
+
+  it('Switch reads as disabled and keeps a controlled value', async () => {
+    const onCheckedChange = jest.fn()
+    await renderNative(
+      <>
+        <Switch aria-label="Sync" disabled defaultChecked />
+        <Switch aria-label="Backups" checked onCheckedChange={onCheckedChange} />
+      </>,
+    )
+    const sync = screen.getByRole('switch', { name: 'Sync' })
+    expect(sync).toBeDisabled()
+    expect(sync).toBeChecked()
+    await fireEvent.press(screen.getByRole('switch', { name: 'Backups' }))
+    expect(onCheckedChange).toHaveBeenCalledWith(false)
+    expect(screen.getByRole('switch', { name: 'Backups' })).toBeChecked()
+    expect(screen.getByRole('switch', { name: 'Backups' })).toBeEnabled()
   })
 
   it('CheckboxGroup names items by their labels and reads the group as their hint', async () => {
@@ -271,6 +326,24 @@ describe('native rendering', () => {
     await fireEvent.press(pro)
     expect(onValueChange).toHaveBeenLastCalledWith('pro')
     expect(screen.getByRole('radio', { name: 'Pro' })).toBeChecked()
+  })
+
+  it('RadioGroup items read as disabled, from the group or their own prop', async () => {
+    await renderNative(
+      <>
+        <RadioGroup aria-label="Plan" defaultValue="free" disabled>
+          <RadioGroup.Item value="free" label="Free" />
+        </RadioGroup>
+        <RadioGroup aria-label="Size" defaultValue="s">
+          <RadioGroup.Item value="s" label="Small" />
+          <RadioGroup.Item value="l" label="Large" disabled />
+        </RadioGroup>
+      </>,
+    )
+    // Tamagui sets `disabled` on web only.
+    expect(screen.getByRole('radio', { name: 'Free' })).toBeDisabled()
+    expect(screen.getByRole('radio', { name: 'Large' })).toBeDisabled()
+    expect(screen.getByRole('radio', { name: 'Small' })).toBeEnabled()
   })
 
   it('Input reports text changes', async () => {
@@ -821,6 +894,31 @@ describe('native rendering', () => {
     expect(onRemove).toHaveBeenCalledTimes(1)
   })
 
+  it('TagsInput shows its placeholder on one line and keeps it for screen readers', async () => {
+    await renderNative(<TagsInput aria-label="Invite" placeholder="name@example.com" />)
+    // Android wraps a long TextInput placeholder onto a cut-off second line, so
+    // the real one is transparent and a one-line copy, hidden from screen
+    // readers, is drawn over the empty box.
+    const field = screen.getByPlaceholderText('name@example.com')
+    expect(processColor(field.props.placeholderTextColor)).toBe(processColor('transparent'))
+    const copy = screen.getByText('name@example.com', { includeHiddenElements: true })
+    expect(copy.props.numberOfLines).toBe(1)
+    expect(copy).not.toBeVisible()
+    await fireEvent.changeText(field, 'ada')
+    expect(screen.queryByText('name@example.com', { includeHiddenElements: true })).toBeNull()
+  })
+
+  it('TagsInput: a disabled field’s remove buttons read as disabled and do nothing', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <TagsInput aria-label="Topics" defaultValue={['web']} disabled onValueChange={onValueChange} />,
+    )
+    const remove = screen.getByRole('button', { name: 'Remove web' })
+    expect(remove).toBeDisabled()
+    await fireEvent.press(remove)
+    expect(onValueChange).not.toHaveBeenCalled()
+  })
+
   it('Snackbar shows its message and runs the action', async () => {
     const onUndo = jest.fn()
     const onOpenChange = jest.fn()
@@ -1263,8 +1361,14 @@ describe('native rendering', () => {
     await renderNative(<PasswordInput aria-label="Password" placeholder="Password" />)
     const input = screen.getByPlaceholderText('Password')
     expect(input.props.secureTextEntry).toBe(true)
-    await fireEvent.press(screen.getByRole('button', { name: 'Show password' }))
+    // React Native has no aria-pressed: the toggle reports "checked" instead.
+    const toggle = screen.getByRole('togglebutton', { name: 'Show password' })
+    expect(toggle.props['aria-checked']).toBe(false)
+    await fireEvent.press(toggle)
     expect(screen.getByPlaceholderText('Password').props.secureTextEntry).toBe(false)
+    expect(screen.getByRole('togglebutton', { name: 'Show password' }).props['aria-checked']).toBe(
+      true,
+    )
   })
 
   it('NumberInput steps from the buttons and the adjustable actions', async () => {

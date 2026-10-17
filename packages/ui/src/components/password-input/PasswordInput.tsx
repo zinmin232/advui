@@ -22,7 +22,8 @@ export interface PasswordInputProps extends Omit<
 
 /**
  * A password field with a button that shows and hides the text. The button is
- * a toggle (`aria-pressed`) with a fixed name, so its state is announced.
+ * a toggle (`aria-pressed` on web, a checked toggle button on iOS and Android)
+ * with a fixed name, so its state is announced.
  */
 export const PasswordInput = forwardRef<TamaguiElement, PasswordInputProps>(
   function PasswordInput(passwordProps, ref) {
@@ -60,8 +61,11 @@ export const PasswordInput = forwardRef<TamaguiElement, PasswordInputProps>(
             size="sm"
             icon={visible ? <EyeOffIcon /> : <EyeIcon />}
             aria-label={toggleLabel}
-            aria-pressed={visible}
-            {...(isWeb && { 'aria-controls': id })}
+            {...(isWeb
+              ? { 'aria-pressed': visible, 'aria-controls': id }
+              : // React Native has no aria-pressed; a toggle button reports "checked".
+                // `role` wins over `accessibilityRole`, so Button's own role is cleared.
+                { role: undefined, accessibilityRole: 'togglebutton', 'aria-checked': visible })}
             disabled={disabled}
             onPress={() => setVisible(!visible)}
           />

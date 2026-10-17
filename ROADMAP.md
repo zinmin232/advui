@@ -81,8 +81,10 @@ cannot do them. Tick them off here as they are done.
     a disabled item and the disabled Tools trigger do nothing; the back
     button and a tap on the scrim close the sheet without leaving the
     screen; checkbox items keep their value and radio items move the
-    selection. Shortcuts are web only. Still to check: dark mode,
-    landscape, an iPhone, and TalkBack by ear.
+    selection. Shortcuts are web only. Dark mode passed later that day
+    (the sheets, the dimmed disabled item, the red destructive item, the
+    check and radio marks). Still to check: landscape, an iPhone, and
+    TalkBack by ear.
   - Link, Input slots, Checkbox Group, Tags Input, Carousel, Rating and
     Color Picker (0.14.0): checked on the Android phone on 2026-10-17
     (light mode, portrait), with names and states read from the
@@ -103,16 +105,45 @@ cannot do them. Tick them off here as they are done.
     example's standalone link takes presses only on its text; and Backspace
     in Tags Input's empty text box removes the last tag on Android too
     (Tamagui dropped key presses on native, so its text box there is React
-    Native's TextInput), with a long placeholder kept to one line. Still to
-    check: dark mode, an iPhone (Backspace included), and the announcements
-    by ear.
+    Native's TextInput). Dark mode passed later that day for all seven.
+    The long placeholder ("name@example.com" beside a tag) still wrapped
+    onto a cut-off second line, in light mode too: Android wraps every
+    TextInput placeholder wider than its box (plain React Native ones as
+    well; `numberOfLines` is already 1). The text box now draws a one-line
+    copy that ends in "…" and keeps the real placeholder, transparent, for
+    TalkBack; checked on the phone. Still to check: an iPhone (Backspace
+    included), and the announcements by ear.
+  - Form's disabled state, Radio Group items, Password Input and Search
+    (on Input's slots), and Date Picker and Date Range Picker after the
+    Popover change (0.14.0): checked on the Android phone on 2026-10-17 in
+    dark mode. A disabled Form's fields cannot be focused and Save is
+    disabled; with a probe added to the example (not committed), a
+    checkbox, switch, radio group, rating and Tags Input outside a Field
+    ignored presses while Cancel stayed enabled. Radio Group items are
+    named by their labels and a press on the label selects the item;
+    Password Input shows and hides the text; Search filters as you type
+    and its clear button empties the field and keeps focus; both pickers
+    open their sheet and close it with the picked date or range. Fixes
+    from it, checked again on the phone: a Switch reports on/off and
+    disabled (Tamagui's switch sent neither state on native); disabled
+    radio items and a disabled chip's remove button, Tags Input's
+    included, read as disabled; and Password Input's toggle is a toggle
+    button that reads as checked while the password shows (it used
+    `aria-pressed`, which React Native ignores). The Switch example's
+    switches had no name on Android (a `Label`'s `htmlFor` only moved
+    focus); a Label now names the control it targets, read from the
+    accessibility tree on the phone for Switch, Checkbox and Input. Hints
+    (descriptions, the group's name) go to Android's tooltip text, which
+    `uiautomator` does not show, so they are left for TalkBack by ear.
+    Still to check: an iPhone, and the announcements by ear.
 - [ ] **Rich Text Editor: decide.** It is a Markdown editor (toolbar,
       shortcuts, preview), the same on every platform with no extra
       dependencies. Keep it, or ask for a WYSIWYG editor, which needs new
       libraries (TipTap on web, a WebView-based editor on iOS and Android).
 - [x] **Form: decided** on 2026-10-05. Nothing else holds Form back from
-      `stable`, though the new disabled behavior has only been checked by a
-      native unit test, not on a phone.
+      `stable`. Its disabled behavior passed on the Android phone on
+      2026-10-17 (see Real phones), after the Switch and Radio Group fixes
+      that check led to.
   - A disabled Form disables every form control inside it, in a Field or
     not (through `useFieldControl`); other buttons, such as Cancel, stay
     enabled.
