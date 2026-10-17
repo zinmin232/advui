@@ -896,6 +896,9 @@ importers:
       '@tamagui/focus-scope':
         specifier: 2.7.7
         version: 2.7.7(react@19.2.3)
+      '@tamagui/focusable':
+        specifier: 2.7.7
+        version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@tamagui/roving-focus':
         specifier: 2.7.7
         version: 2.7.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)

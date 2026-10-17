@@ -50,9 +50,7 @@ one version.
 - **Tags Input**: a text field that turns what you type into tags (`value`,
   `defaultValue`, `onValueChange`). Enter or a separator (`separators`,
   a comma by default) adds the typed text, a pasted list adds every part,
-  and on web Backspace in the empty text box removes the last tag (on iOS
-  and Android Tamagui does not pass key presses on, so use the remove
-  buttons). Each tag is a
+  and Backspace in the empty text box removes the last tag. Each tag is a
   Chip with a named remove button. `max`, `allowDuplicates` and `validate`
   refuse tags, which then stay in the text box to be fixed; `addOnBlur` (on
   by default) keeps half-typed text from being lost when a form is

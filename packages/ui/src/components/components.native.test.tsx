@@ -1559,6 +1559,9 @@ describe('native rendering', () => {
       </Field>,
     )
     const field = screen.getByPlaceholderText('Add a topic')
+    // The TextInput itself hears key presses. Tamagui drops onKeyPress from
+    // its own Input on native, and fireEvent would still find it further up.
+    expect(field.props.onKeyPress).toEqual(expect.any(Function))
     expect(field.props.accessibilityLabel ?? field.props['aria-label']).toBe('Topics')
     expect(field.props.accessibilityHint).toBe('Press return after each one.')
     // Return keeps the keyboard open for the next tag.

@@ -99,11 +99,12 @@ cannot do them. Tick them off here as they are done.
     now reads as disabled; Select All no longer says "mixed" once it is
     checked; pressing a disabled item's label no longer logs a warning;
     the Color Picker sheet no longer stays on screen after a vertical drag
-    in the color area (a Tamagui Sheet bug, worked around); and the Link
-    example's standalone link takes presses only on its text. Found and
-    documented, not fixed: on iOS and Android Backspace does not remove
-    tags, because Tamagui drops key presses on native (use the remove
-    buttons). Still to check: dark mode, an iPhone, and the announcements
+    in the color area (a Tamagui Sheet bug, worked around); the Link
+    example's standalone link takes presses only on its text; and Backspace
+    in Tags Input's empty text box removes the last tag on Android too
+    (Tamagui dropped key presses on native, so its text box there is React
+    Native's TextInput), with a long placeholder kept to one line. Still to
+    check: dark mode, an iPhone (Backspace included), and the announcements
     by ear.
 - [ ] **Rich Text Editor: decide.** It is a Markdown editor (toolbar,
       shortcuts, preview), the same on every platform with no extra

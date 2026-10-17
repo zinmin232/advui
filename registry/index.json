@@ -1649,7 +1649,8 @@
       "status": "beta",
       "package": "@advui/core",
       "dependencies": [
-        "@advui/icons"
+        "@advui/icons",
+        "@tamagui/focusable"
       ],
       "registryDependencies": [
         "chip",

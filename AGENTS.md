@@ -142,9 +142,11 @@ each edit.
   keyboard-only users. Keep your own ref instead (see Popover's trigger ref).
 - **Tamagui drops web events on native.** Styled components, Tamagui's own
   Input included, strip `onKeyDown`, `onKeyPress`, `onChange` and `onScroll`
-  on iOS and Android, so a text field never hears a key press (Tags Input's
-  Backspace). RNTL tests still pass, because `fireEvent` finds the handler on
-  a composite element; check key handling on a device.
+  on iOS and Android, so a text field never hears a key press. Tags Input
+  uses React Native's TextInput there (`TagsInputText.native.tsx`). RNTL
+  tests still pass, because `fireEvent` finds the handler on a composite
+  element: assert that the host element has `onKeyPress`, and check on a
+  device with the on-screen keyboard (`adb` key events never fire it).
 - **Drags inside a Tamagui Sheet**: asked about a vertical move, the Sheet
   marks itself as dragging even when the touched view keeps the gesture, and
   then stays on screen when closed. Wrap a drag surface in a view that

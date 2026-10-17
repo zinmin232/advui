@@ -12,6 +12,9 @@ export default defineMeta({
   exports: ['TagsInput', 'TagsInputFrame'],
   files: [
     'components/tags-input/TagsInput.tsx',
+    'components/tags-input/TagsInputText.tsx',
+    'components/tags-input/TagsInputText.native.tsx',
+    'components/tags-input/textBoxStyle.ts',
     'components/tags-input/index.ts',
     'components/chip/Chip.tsx',
   ],
@@ -147,14 +150,14 @@ export default defineMeta({
   keyboard: [
     { keys: 'Enter', action: 'Adds the typed text as a tag.' },
     { keys: ', (separators)', action: 'Adds the typed text as a tag.' },
-    { keys: 'Backspace', action: 'Removes the last tag when the text box is empty (web).' },
+    { keys: 'Backspace', action: 'Removes the last tag when the text box is empty.' },
     { keys: 'Tab', action: 'Moves through the remove buttons and the text box.' },
   ],
   platformNotes: {
     web: 'Presses on the box and on remove buttons keep focus in the text box, so half-typed text is not added by a blur.',
-    ios: 'The return key adds a tag and keeps the keyboard open. Backspace does not remove tags (Tamagui does not pass key presses to the text box); use the remove buttons.',
+    ios: 'The return key adds a tag and keeps the keyboard open.',
     android:
-      'The return key adds a tag and keeps the keyboard open. Backspace does not remove tags (Tamagui does not pass key presses to the text box); use the remove buttons.',
+      'The return key adds a tag and keeps the keyboard open. Backspace in the empty text box removes the last tag with the on-screen keyboard; a hardware keyboard does not report it.',
   },
   related: ['multi-select', 'chip', 'input', 'field'],
 })
