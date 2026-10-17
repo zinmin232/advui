@@ -27,6 +27,7 @@ import { useControllableState } from '../../hooks/useControllableState'
 import { FieldContext, useFieldControl } from '../../hooks/useFieldControl'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
+import { useSheetMaxHeight } from '../../hooks/useSheetMaxHeight'
 import { fieldBoxStyle } from '../input/Input'
 
 const Trigger = styled(TamaguiSelect.Trigger, {
@@ -262,6 +263,7 @@ function SelectRoot(selectProps: SelectProps) {
   } = useFieldControl(selectProps)
   const field = useContext(FieldContext)
   const reducedMotion = useReducedMotion()
+  const sheetMaxHeight = useSheetMaxHeight()
   const [open, setOpen] = useControllableState({
     value: openProp,
     defaultValue: false,
@@ -349,6 +351,7 @@ function SelectRoot(selectProps: SelectProps) {
             borderTopRightRadius="$dialog"
             padding="$2"
             paddingBottom="$6"
+            maxHeight={sheetMaxHeight}
           >
             <Sheet.ScrollView>
               <Adapt.Contents />

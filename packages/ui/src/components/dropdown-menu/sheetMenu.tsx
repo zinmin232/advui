@@ -5,6 +5,7 @@ import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
+import { useSheetMaxHeight } from '../../hooks/useSheetMaxHeight'
 import { Text } from '../typography/Text'
 import type {
   DropdownMenuCheckboxItemProps,
@@ -49,6 +50,7 @@ function Content({ children }: DropdownMenuContentProps) {
   const menu = useSheetMenu()
   const { open, setOpen } = menu
   const reducedMotion = useReducedMotion()
+  const maxHeight = useSheetMaxHeight()
   return (
     <Sheet
       open={open}
@@ -72,6 +74,7 @@ function Content({ children }: DropdownMenuContentProps) {
         paddingHorizontal="$2"
         paddingTop="$2"
         paddingBottom="$8"
+        maxHeight={maxHeight}
       >
         <Sheet.ScrollView>
           {/* The sheet renders in a portal, which does not carry React context. */}

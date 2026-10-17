@@ -25,6 +25,7 @@ import {
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { useSheetMaxHeight } from '../../hooks/useSheetMaxHeight'
 import { Text } from '../typography/Text'
 
 type Side = 'top' | 'right' | 'bottom' | 'left'
@@ -62,6 +63,7 @@ function PopoverRoot({
   ...props
 }: PopoverProps) {
   const reducedMotion = useReducedMotion()
+  const sheetMaxHeight = useSheetMaxHeight()
   const [open, setOpen] = useControllableState({
     value: openProp,
     defaultValue: defaultOpen,
@@ -110,11 +112,17 @@ function PopoverRoot({
                 borderTopRightRadius="$dialog"
                 padding="$5"
                 paddingBottom="$8"
+                maxHeight={sheetMaxHeight}
               >
-                {/* Not on Sheet.Frame: Tamagui copies its props onto a decorative cover view. */}
-                <View role="dialog" aria-labelledby={titleId} gap="$3">
-                  <Adapt.Contents />
-                </View>
+                {/* Scrolls when the content is taller than the sheet may be (a
+                    calendar on a phone in landscape). Color Picker's drag area
+                    keeps its gesture from it. */}
+                <Sheet.ScrollView>
+                  {/* Not on Sheet.Frame: Tamagui copies its props onto a decorative cover view. */}
+                  <View role="dialog" aria-labelledby={titleId} gap="$3">
+                    <Adapt.Contents />
+                  </View>
+                </Sheet.ScrollView>
               </Sheet.Frame>
             </Sheet>
           </Adapt>

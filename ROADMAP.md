@@ -83,8 +83,16 @@ cannot do them. Tick them off here as they are done.
     screen; checkbox items keep their value and radio items move the
     selection. Shortcuts are web only. Dark mode passed later that day
     (the sheets, the dimmed disabled item, the red destructive item, the
-    check and radio marks). Still to check: landscape, an iPhone, and
-    TalkBack by ear.
+    check and radio marks). Landscape (2400×1080) passed too: the bar keeps
+    one row, each menu's sheet fits its items, choosing an item runs it
+    and closes the sheet, radio items move the selection, and the back
+    button closes the sheet. The Format menu is nearly as tall as the
+    screen, so its sheet's top edge and handle went under the status bar;
+    menu, Select and Popover sheets now stop below it and their content
+    scrolls (checked in landscape with a 12-option Select, Date Picker's
+    six-week August, and a vertical drag in Color Picker's sheet, which
+    still closes cleanly).
+    Still to check: an iPhone, and TalkBack by ear.
   - Link, Input slots, Checkbox Group, Tags Input, Carousel, Rating and
     Color Picker (0.14.0): checked on the Android phone on 2026-10-17
     (light mode, portrait), with names and states read from the

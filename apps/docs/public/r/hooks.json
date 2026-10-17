@@ -64,6 +64,16 @@
       "path": "hooks/useRipple.tsx",
       "type": "registry:hook",
       "content": "import type { ReactNode } from 'react'\nimport type { ColorTokens, GetProps, View } from 'tamagui'\n\ntype PressHandler = GetProps<typeof View>['onPressIn']\n\nexport interface RippleOptions {\n  /** Color of the content on the surface, e.g. `$primaryForeground`. */\n  color: ColorTokens\n  /** No ripple, e.g. while disabled or when the element is not pressable. */\n  disabled?: boolean\n  /** Your own handlers. They still run. */\n  onPressIn?: PressHandler\n  onPressOut?: PressHandler\n}\n\nexport interface Ripple {\n  /**\n   * The ripple replaces the pressed style, so drop your `pressStyle`\n   * background while this is true. It is clipped inside the border, so drop\n   * a transparent border too.\n   */\n  active: boolean\n  /** Spread on the pressable element, after its other props. */\n  props: { overflow?: 'hidden'; onPressIn?: PressHandler; onPressOut?: PressHandler }\n  /** Render as the first child of the pressable element. */\n  element: ReactNode\n}\n\n/**\n * The Android press ripple for your own pressables, drawn when the config has\n * `androidRipple` (as `material()` does). On web and iOS it does nothing.\n *\n * @example\n * const ripple = useRipple({ color: '$foreground', onPressIn, onPressOut })\n * <View onPress={open} {...ripple.props}>\n *   {ripple.element}\n *   <Text>Inbox</Text>\n * </View>\n */\nexport function useRipple({ onPressIn, onPressOut }: RippleOptions): Ripple {\n  return {\n    active: false,\n    props: { ...(onPressIn && { onPressIn }), ...(onPressOut && { onPressOut }) },\n    element: null,\n  }\n}\n"
+    },
+    {
+      "path": "hooks/useSheetMaxHeight.native.ts",
+      "type": "registry:hook",
+      "content": "import { Dimensions } from 'react-native'\nimport { getTokenValue, useConfiguration, useWindowDimensions } from 'tamagui'\n\n/**\n * The tallest a bottom sheet's frame may be. Tamagui grows a `fit` sheet to\n * its content, up to the whole screen, so a long menu or list (or a short one\n * on a phone in landscape) slid under the status bar. Capped at the screen less\n * the top inset (from UniversalProvider) and room for the handle, the sheet's\n * ScrollView scrolls instead. Call it in the component that renders the Sheet:\n * the frame itself renders in a portal, which drops context.\n */\nexport function useSheetMaxHeight(): number | undefined {\n  // Re-renders when the phone turns. The sheet covers the screen, while the\n  // window can leave out the system bars, so the screen is what it is measured\n  // against (as Tamagui does).\n  useWindowDimensions()\n  const top = useConfiguration().insets?.top ?? 0\n  return Dimensions.get('screen').height - top - (getTokenValue('$8', 'space') as number)\n}\n"
+    },
+    {
+      "path": "hooks/useSheetMaxHeight.ts",
+      "type": "registry:hook",
+      "content": "/**\n * Web: no cap. A bottom sheet there (Select on touch devices) has no status bar\n * to keep clear. The native file caps sheets below the status bar.\n */\nexport function useSheetMaxHeight(): number | undefined {\n  return undefined\n}\n"
     }
   ],
   "dependencies": [
