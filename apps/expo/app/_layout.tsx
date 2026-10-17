@@ -1,4 +1,5 @@
-import { UniversalProvider, setFilePicker, useColorMode, useTheme } from '@advui/core'
+import { UniversalProvider, setClipboard, setFilePicker, useColorMode, useTheme } from '@advui/core'
+import * as Clipboard from 'expo-clipboard'
 import * as DocumentPicker from 'expo-document-picker'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
@@ -22,6 +23,9 @@ setFilePicker(async ({ multiple, accept }) => {
     uri: asset.uri,
   }))
 })
+
+// Copy Button and Code Block copy with expo-clipboard on iOS and Android.
+setClipboard(Clipboard.setStringAsync)
 
 // Video and Audio Player use expo-video and expo-audio on iOS and Android.
 registerMedia()

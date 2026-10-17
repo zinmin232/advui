@@ -32,6 +32,7 @@ import { CheckboxGroup } from './checkbox-group/CheckboxGroup'
 import { Checkbox } from './checkbox/Checkbox'
 import { Chip } from './chip/Chip'
 import { CircularProgress } from './circular-progress/CircularProgress'
+import { CodeBlock } from './code-block/CodeBlock'
 import { Collapsible } from './collapsible/Collapsible'
 import { ColorPicker } from './color-picker/ColorPicker'
 import { Combobox } from './combobox/Combobox'
@@ -40,6 +41,8 @@ import { ConfirmDialog } from './confirm-dialog/ConfirmDialog'
 import { DatePicker } from './date-picker/DatePicker'
 import { DateRangePicker } from './date-range-picker/DateRangePicker'
 import { ContextMenu } from './context-menu/ContextMenu'
+import { CopyButton } from './copy-button/CopyButton'
+import { setClipboard } from './copy-button/clipboard'
 import { Dialog } from './dialog/Dialog'
 import { Drawer } from './drawer/Drawer'
 import { EmptyState } from './empty-state/EmptyState'
@@ -1682,6 +1685,57 @@ describe('native rendering', () => {
     expect(screen.queryByText('Saves your draft')).toBeNull()
     await fireEvent.press(trigger)
     expect(onPress).toHaveBeenCalledTimes(1)
+  })
+
+  it('CopyButton copies with the clipboard from setClipboard and announces the result', async () => {
+    const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility')
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {})
+    const onCopyError = jest.fn()
+    const { unmount } = await renderNative(
+      <CopyButton value="token-123" onCopyError={onCopyError} />,
+    )
+    // No clipboard yet: the press fails and says why.
+    await fireEvent.press(screen.getByRole('button', { name: 'Copy' }))
+    await waitFor(() => expect(announce).toHaveBeenLastCalledWith('Couldn’t copy'))
+    expect(onCopyError).toHaveBeenCalled()
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('setClipboard'))
+    warn.mockRestore()
+    await unmount()
+
+    const write = jest.fn((_text: string) => {})
+    setClipboard(write)
+    await renderNative(<CopyButton value="token-123">Copy token</CopyButton>)
+    await fireEvent.press(screen.getByRole('button', { name: 'Copy token' }))
+    expect(write).toHaveBeenCalledWith('token-123')
+    await waitFor(() => expect(announce).toHaveBeenLastCalledWith('Copied'))
+    expect(screen.getByRole('button', { name: 'Copied' })).toBeOnTheScreen()
+    setClipboard(undefined)
+    announce.mockRestore()
+  })
+
+  it('CodeBlock scrolls long lines sideways, hides line numbers and copies the code', async () => {
+    const write = jest.fn((_text: string) => {})
+    setClipboard(write)
+    const code = 'const a = 1\n\nreturn a'
+    await renderNative(
+      <>
+        <CodeBlock title="main.ts" code={code} lineNumbers />
+        <CodeBlock code="wrapped line" wrap copyable={false} />
+      </>,
+    )
+    const line = screen.getByText('const a = 1')
+    let scroll = line.parent
+    while (scroll && scroll.props.horizontal !== true) scroll = scroll.parent
+    expect(scroll).toBeTruthy()
+    expect(screen.queryByText('2')).toBeNull()
+    expect(screen.getByText('2', { includeHiddenElements: true })).toBeTruthy()
+    // Wrapped code needs no sideways scroll.
+    let wrapped = screen.getByText('wrapped line').parent
+    while (wrapped && wrapped.props.horizontal !== true) wrapped = wrapped.parent
+    expect(wrapped).toBeNull()
+    await fireEvent.press(screen.getByRole('button', { name: 'Copy code' }))
+    expect(write).toHaveBeenCalledWith(code)
+    setClipboard(undefined)
   })
 })
 

@@ -576,6 +576,20 @@
       ]
     },
     {
+      "name": "code-block",
+      "title": "Code Block",
+      "type": "registry:component",
+      "description": "Shows code or terminal commands in a monospace block with a copy button, and optionally a title, line numbers, marked lines and syntax colors.",
+      "category": "data-display",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": [
+        "copy-button",
+        "typography"
+      ]
+    },
+    {
       "name": "collapsible",
       "title": "Collapsible",
       "type": "registry:component",
@@ -675,6 +689,24 @@
       "dependencies": [],
       "registryDependencies": [
         "dropdown-menu"
+      ]
+    },
+    {
+      "name": "copy-button",
+      "title": "Copy Button",
+      "type": "registry:component",
+      "description": "A button that copies a value, such as a command, link or key, and confirms it with a check and a \"Copied\" announcement.",
+      "category": "buttons",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "button",
+        "icon-button",
+        "tooltip",
+        "utils"
       ]
     },
     {

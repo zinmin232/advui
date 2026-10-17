@@ -13,6 +13,7 @@ import {
 import { type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
 import { useControllableState } from '../../hooks/useControllableState'
 import { ariaState } from '../../utils/ariaState'
+import { visuallyHidden } from '../../utils/visuallyHidden'
 import { Chip } from '../chip/Chip'
 import { fieldBoxStyle } from '../input/Input'
 
@@ -72,16 +73,6 @@ const rowHeights = { sm: '$6', md: '$7', lg: '$8' } as const
 const fontSizes = { sm: '$2', md: '$2', lg: '$3' } as const
 // The text box's own inset, so its text and placeholder line up with an Input's.
 const textInsets = { sm: '$1.5', md: '$1.5', lg: '$2' } as const
-
-/** Hidden on screen, still read by screen readers (web). */
-const visuallyHidden = {
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  overflow: 'hidden',
-  opacity: 0.00000001,
-  pointerEvents: 'none',
-} as const
 
 export interface TagsInputLabels {
   /** Name of a tag's remove button. Default: "Remove {tag}". */
