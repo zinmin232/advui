@@ -65,23 +65,33 @@ export function usePublishLabel(htmlFor: string | undefined, text: string | unde
   return useSyncExternalStore(subscribe, used, () => false)
 }
 
+// The ids in an id list (`aria-labelledby`), or none.
+const idList = (ids: string | undefined) => (ids ? ids.split(/\s+/).filter(Boolean) : [])
+
 /**
  * Control side: the text of a Label that targets `id`, for a control without a
  * name of its own. Pass `undefined` on web or when the control is named. A
- * Label also publishes under its own id, so a control can pass the id in its
- * `aria-labelledby` instead.
+ * Label also publishes under its own id, so a control can pass its
+ * `aria-labelledby` instead: a list of ids gives their texts joined, as a
+ * browser names it (ids hold no spaces, so a single id is a list of one).
  */
 export function useLabelFor(id: string | undefined): string | undefined {
   useEffect(() => {
-    if (!id) return
-    const entry = entryFor(id)
-    entry.users += 1
+    const ids = idList(id)
+    const used = ids.map((each) => [each, entryFor(each)] as const)
+    if (!used.length) return
+    for (const [, entry] of used) entry.users += 1
     emit()
     return () => {
-      entry.users -= 1
-      release(id, entry)
+      for (const [each, entry] of used) {
+        entry.users -= 1
+        release(each, entry)
+      }
     }
   }, [id])
-  const text = () => (id ? entries.get(id)?.text : undefined)
+  const text = () => {
+    const texts = idList(id).flatMap((each) => entries.get(each)?.text ?? [])
+    return texts.length ? texts.join(' ') : undefined
+  }
   return useSyncExternalStore(subscribe, text, () => undefined)
 }

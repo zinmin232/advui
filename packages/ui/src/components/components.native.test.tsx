@@ -499,6 +499,9 @@ describe('native rendering', () => {
         <Slider id="bass" defaultValue={10} />
         <Label id="treble-label">Treble</Label>
         <Slider aria-labelledby="treble-label" defaultValue={20} />
+        <Label id="gain-label">Gain</Label>
+        <Label id="gain-unit">(dB)</Label>
+        <Slider aria-labelledby="gain-label gain-unit" defaultValue={0} />
         <Label>Price</Label>
         <Slider aria-label="Price" defaultValue={[20, 80]} />
       </>,
@@ -509,6 +512,8 @@ describe('native rendering', () => {
     expect(screen.getByRole('slider', { name: 'Bass' })).toBeOnTheScreen()
     expect(screen.getByRole('slider', { name: 'Treble' })).toBeOnTheScreen()
     expect(screen.getByText('Treble', { includeHiddenElements: true })).not.toBeVisible()
+    // A list of ids is named by their texts, joined as on web.
+    expect(screen.getByRole('slider', { name: 'Gain (dB)' })).toBeOnTheScreen()
     expect(screen.getByRole('slider', { name: 'Price, Minimum' })).toBeOnTheScreen()
   })
 
