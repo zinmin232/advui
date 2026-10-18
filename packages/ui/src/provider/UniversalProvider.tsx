@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { TamaguiProvider, type TamaguiInternalConfig, type TamaguiProviderProps } from 'tamagui'
 import { Toaster, type ToasterProps } from '../components/toast/Toaster'
 import type { ColorModePreference } from '../types'
+import { AppLayer } from './AppLayer'
 import { ColorModeProvider } from './ColorMode'
 import { GlobalStyles } from './GlobalStyles'
 
@@ -45,7 +46,7 @@ export function UniversalProvider({
 }: UniversalProviderProps) {
   const content = (
     <>
-      {children}
+      <AppLayer>{children}</AppLayer>
       {toaster === false ? null : <Toaster {...toaster} />}
     </>
   )

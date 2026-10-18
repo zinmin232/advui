@@ -14,7 +14,7 @@ import {
   toast,
 } from '@tamagui/toast/v2'
 import type { ReactNode } from 'react'
-import { View, isWeb } from 'tamagui'
+import { View, isWeb, useWindowDimensions } from 'tamagui'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 import { Spinner } from '../spinner'
@@ -137,11 +137,20 @@ function ToastContent({ item, onClose }: { item: ToastT; onClose: () => void }) 
  */
 export function Toaster({ position = 'bottom-right', duration = 4000, ...props }: ToasterProps) {
   const reducedMotion = useReducedMotion()
+  const { height } = useWindowDimensions()
   return (
     <Toast position={position} duration={duration} reducedMotion={reducedMotion} {...props}>
       {/* Tamagui defaults the portal to Number.MAX_SAFE_INTEGER, which overflows
           Android's 32-bit zIndex and draws the toasts beneath the screen. */}
-      <Toast.Viewport label="Notifications" portalZIndex={zIndex.toast}>
+      <Toast.Viewport
+        label="Notifications"
+        portalZIndex={zIndex.toast}
+        // Native: no keyboard shortcut to add to the label, and room for the
+        // toasts. They are placed absolutely inside the viewport, and Android
+        // reports a view outside its parent's bounds as off-screen, so TalkBack
+        // skipped them and their buttons. The viewport lets touches through.
+        {...(!isWeb && { hotkey: [], minHeight: height / 2 })}
+      >
         <Toast.List
           renderItem={({ toast: item, index, handleClose }) => (
             <Toast.Item

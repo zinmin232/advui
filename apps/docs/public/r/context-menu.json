@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "Actions for an area, opened with a right-click on desktop and a long-press on touch screens.",
   "category": "overlay",
-  "status": "beta",
+  "status": "stable",
   "since": "0.3.0",
   "platforms": [
     "web",

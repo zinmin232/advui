@@ -444,6 +444,14 @@ describe('native rendering', () => {
     }
     expect(zIndices).toContain(zIndex.toast)
     expect(Math.max(...zIndices)).toBeLessThanOrEqual(2 ** 31 - 1)
+    // The region's name has no web keyboard shortcut, and the region has room
+    // for its toasts: they sit inside it absolutely, and Android reports a view
+    // outside its parent as off-screen, so TalkBack skipped them.
+    const region = screen.getByLabelText('Notifications')
+    expect(String(region.props['aria-label']).trim()).toBe('Notifications')
+    expect(StyleSheet.flatten(region.props.style).minHeight).toBe(
+      Dimensions.get('window').height / 2,
+    )
 
     await act(async () => {
       toast.dismiss()
@@ -581,7 +589,10 @@ describe('native rendering', () => {
     )
     // The screen (which the sheet covers) less the top inset and 32 for the handle.
     const expected = Dimensions.get('screen').height - 40 - 32
-    await fireEvent.press(screen.getByRole('button', { name: 'Options' }))
+    // The Select is open from the start, so the page behind is hidden.
+    await fireEvent.press(
+      screen.getByRole('button', { name: 'Options', includeHiddenElements: true }),
+    )
     expect(maxHeightAbove('Rename')).toContain(expected)
     expect(maxHeightAbove('Apple')).toContain(expected)
     // Popover's sheet (Date Picker, Color Picker) too; Adapt renders its content twice.
@@ -622,7 +633,9 @@ describe('native rendering', () => {
     await fireEvent.press(file)
     expect(file).toBeExpanded()
     expect(screen.getByRole('menuitem', { name: 'New file' })).toBeOnTheScreen()
-    await fireEvent.press(screen.getByRole('button', { name: 'Edit' }))
+    // The bar stays under the sheet's scrim, hidden from screen readers while a
+    // menu is open; pressing another trigger moves to its menu.
+    await fireEvent.press(screen.getByRole('button', { name: 'Edit', includeHiddenElements: true }))
     expect(onValueChange).toHaveBeenLastCalledWith('edit')
     expect(screen.queryByRole('menuitem', { name: 'New file' })).toBeNull()
     await fireEvent.press(screen.getByRole('menuitem', { name: 'Undo' }))
@@ -784,6 +797,9 @@ describe('native rendering', () => {
     expect(screen.queryByRole('menuitem', { name: 'Rename' })).toBeNull()
     const row = screen.getByTestId('row')
     expect(row.props.accessibilityHint).toBe('Long press for options')
+    // On the host view itself: fireEvent would also find a handler further up.
+    expect(row.props.accessibilityActions).toEqual([{ name: 'longpress', label: 'Options' }])
+    expect(row.props.onAccessibilityAction).toEqual(expect.any(Function))
     await fireEvent(row, 'longPress')
     await fireEvent.press(screen.getByRole('menuitem', { name: 'Rename' }))
     expect(onRename).toHaveBeenCalledTimes(1)
@@ -792,6 +808,37 @@ describe('native rendering', () => {
     // VoiceOver / TalkBack users reach it through the "long press" action.
     await fireEvent(row, 'accessibilityAction', { nativeEvent: { actionName: 'longpress' } })
     expect(screen.getByRole('menuitem', { name: 'Rename' })).toBeOnTheScreen()
+  })
+
+  it('modal overlays hide the screen from screen readers, and close from the overlay', async () => {
+    await renderNative(
+      <>
+        <Text>Account page</Text>
+        <Dialog>
+          <Dialog.Trigger asChild>
+            <Button>Edit profile</Button>
+          </Dialog.Trigger>
+          <Dialog.Content>
+            <Dialog.Title>Profile</Dialog.Title>
+          </Dialog.Content>
+        </Dialog>
+      </>,
+    )
+    expect(screen.getByText('Account page')).toBeVisible()
+    await fireEvent.press(screen.getByRole('button', { name: 'Edit profile' }))
+    let dialog: { props: { role?: string }; parent: unknown } | null =
+      await screen.findByText('Profile')
+    while (dialog && dialog.props.role !== 'dialog') dialog = dialog.parent as typeof dialog
+    // TalkBack and VoiceOver stay in the dialog: the screen behind is hidden.
+    expect(screen.getByText('Account page', { includeHiddenElements: true })).not.toBeVisible()
+    // The dialog fades in; under load the check can land before it finishes.
+    await waitFor(() => expect(screen.getByText('Profile')).toBeVisible())
+    // The overlay is the dialog's sibling in the portal. Tamagui closes from an
+    // outside press on web only.
+    const layer = (dialog as unknown as { parent: { children: unknown[] } }).parent
+    await fireEvent.press(layer.children[0] as never)
+    await waitFor(() => expect(screen.queryByText('Profile')).toBeNull())
+    expect(screen.getByText('Account page')).toBeVisible()
   })
 
   it('Drawer opens a dialog from the trigger and closes from the × button', async () => {
@@ -1228,7 +1275,12 @@ describe('native rendering', () => {
     const accent = screen.getByRole('button', { name: 'Accent' })
     expect(accent).toHaveAccessibilityValue({ text: '#00ff00' })
     await fireEvent.press(accent)
-    expect(await screen.findAllByRole('slider', { name: 'Color' })).toHaveLength(2)
+    // The sheet's area is readable; the inline picker behind it is hidden from
+    // screen readers while the sheet is open.
+    expect(await screen.findAllByRole('slider', { name: 'Color' })).toHaveLength(1)
+    expect(
+      screen.getAllByRole('slider', { name: 'Color', includeHiddenElements: true }),
+    ).toHaveLength(2)
   })
 
   it('ColorPicker keeps a sheet around it out of its drags', async () => {
@@ -2334,7 +2386,10 @@ describe('AppShell and AutoGrid on native', () => {
 
   it('pads the safe areas, except with safeArea={false}; the drawer always does', async () => {
     const padding = (testID: string) => {
-      const style = StyleSheet.flatten(screen.getByTestId(testID).props.style)
+      // The open drawer hides the screen behind it from screen readers.
+      const style = StyleSheet.flatten(
+        screen.getByTestId(testID, { includeHiddenElements: true }).props.style,
+      )
       return { top: style.paddingTop, bottom: style.paddingBottom }
     }
     const drawerPadding = async () => {

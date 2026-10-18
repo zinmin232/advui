@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "An always-visible list of actions or destinations, with icons, groups and a selected item.",
   "category": "navigation",
-  "status": "beta",
+  "status": "stable",
   "since": "0.3.0",
   "platforms": [
     "web",

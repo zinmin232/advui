@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'feedback',
   description:
     'A brief message at the bottom of the screen about something the app did, with an optional action like Undo.',
-  status: 'beta',
+  status: 'stable',
   since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Snackbar'],

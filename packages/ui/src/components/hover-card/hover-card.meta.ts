@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'overlay',
   description:
     'A preview card that appears when a pointer rests on a link or keyboard focus reaches it.',
-  status: 'beta',
+  status: 'stable',
   since: '0.3.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['HoverCard'],

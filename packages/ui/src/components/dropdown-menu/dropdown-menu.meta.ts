@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'dropdown-menu',
   category: 'navigation',
   description: 'A list of actions or options that opens from a button.',
-  status: 'beta',
+  status: 'stable',
   since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['DropdownMenu'],

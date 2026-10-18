@@ -24,6 +24,7 @@ import {
   overlayStyle,
   titleStyle,
 } from './styles'
+import { useOverlayPress } from './useOverlayPress'
 
 const Overlay = styled(TamaguiDialog.Overlay, { name: 'DialogOverlay', ...overlayStyle })
 
@@ -59,9 +60,10 @@ const Content = forwardRef<TamaguiElement, DialogContentProps>(function DialogCo
 ) {
   const reducedMotion = useReducedMotion()
   const transition = reducedMotion ? null : 'quick'
+  const overlayPress = useOverlayPress()
   return (
     <TamaguiDialog.Portal>
-      <Overlay key="overlay" transition={transition} />
+      <Overlay key="overlay" {...overlayPress} transition={transition} />
       <ContentFrame
         key="content"
         ref={ref}

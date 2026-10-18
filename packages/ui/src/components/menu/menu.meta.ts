@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'navigation',
   description:
     'An always-visible list of actions or destinations, with icons, groups and a selected item.',
-  status: 'beta',
+  status: 'stable',
   since: '0.3.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Menu'],

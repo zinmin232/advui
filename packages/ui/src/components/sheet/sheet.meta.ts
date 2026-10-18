@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'overlay',
   description:
     'A panel that slides up from the bottom of the screen for extra actions, details or a short form.',
-  status: 'beta',
+  status: 'stable',
   since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Sheet'],

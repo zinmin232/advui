@@ -26,6 +26,7 @@ import {
   overlayStyle,
   titleStyle,
 } from '../dialog/styles'
+import { useOverlayPress } from '../dialog/useOverlayPress'
 
 // A modal panel pinned to one edge of the screen. It is a Dialog underneath
 // (focus trap, Escape, overlay, labelling), so it shares Dialog's styles.
@@ -121,6 +122,7 @@ const Content = forwardRef<TamaguiElement, DrawerContentProps>(function DrawerCo
 ) {
   const reducedMotion = useReducedMotion()
   const transition = reducedMotion ? null : 'medium'
+  const overlayPress = useOverlayPress()
   // Slide in from just past the edge. Window size (not a percentage) because
   // the native animation driver only interpolates numbers.
   const viewport = useWindowDimensions()
@@ -148,7 +150,7 @@ const Content = forwardRef<TamaguiElement, DrawerContentProps>(function DrawerCo
 
   return (
     <TamaguiDialog.Portal>
-      <Overlay key="overlay" transition={reducedMotion ? null : 'quick'} />
+      <Overlay key="overlay" {...overlayPress} transition={reducedMotion ? null : 'quick'} />
       <ContentFrame
         key="content"
         ref={ref}

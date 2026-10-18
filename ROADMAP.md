@@ -172,6 +172,44 @@ cannot do them. Tick them off here as they are done.
       Picker. Rich Text Editor stays beta until its decision above. The
       earlier components still marked beta (phases 1–3, Field, Filter Bar)
       have no recorded phone check here yet.
+- [ ] **Phone check for the remaining beta components.** The 45 still
+      marked beta get the same Android phone check, in batches, then the
+      ones that pass are promoted in the batch's pull request. For each
+      component: every example works (presses, typing, sheets, the back
+      button) in light and dark mode, and in landscape where it is a sheet
+      or a layout; names, roles and states (checked, disabled, expanded,
+      selected) are read from the accessibility tree; what is wrong is
+      fixed with a native test. iPhone and TalkBack by ear stay open, as
+      for the components already promoted.
+  - [x] Overlays: Alert Dialog, Confirm Dialog, Drawer, Sheet, Popover,
+        Hover Card, Menu, Context Menu, Dropdown Menu, Toast, Snackbar.
+        Checked on the Android phone on 2026-10-18 (light and dark mode,
+        Dialog, Drawer and Sheet in landscape) and promoted. Every example
+        works: Alert and Confirm Dialog stay open on a scrim press and while
+        busy ("Sign out, busy", Back ignored), Confirm Dialog opens from a
+        menu item, the drawers close on a choice, × and Back, Sheet snaps
+        and scrolls, Popover filters apply, Menu selects and skips its
+        disabled item, Context Menu opens on long-press (and has the
+        `longpress` action for TalkBack), Dropdown Menu's checkbox and radio
+        items update, and Toast and Snackbar actions run. Hover Card shows
+        only its trigger on touch, as designed. Fixes from it: the screen
+        behind an open overlay is hidden from screen readers (it was
+        reachable); Dialog and Drawer close from the scrim; Sheet and
+        Popover rise above the keyboard; toasts and their buttons are
+        reachable by TalkBack, in a region named "Notifications". Seen once
+        and not reproduced: "Maximum update depth exceeded" in Sheet's
+        content, after a color mode switch with two Sheet screens stacked
+        while the phone turned.
+  - [ ] Form controls: Field, Password Input, Number Input, OTP Input,
+        Select, Multi Select, Combobox, Autocomplete, Slider, Toggle, Toggle
+        Group, File Upload, File Dropzone, Time Picker, Calendar, Date
+        Picker, Date Range Picker.
+  - [ ] Navigation and layout: Breadcrumb, Button Group, Toolbar,
+        Navigation Bar, FAB, Accordion, Collapsible, Scroll Area, Aspect
+        Ratio, List Item.
+  - [ ] Display and feedback: Chip, Circular Progress, Empty State, Error
+        State, Loading State; and Filter Bar (`@advui/data`).
+  - Rich Text Editor waits for its decision above.
 - [x] **Release 0.6.0**: tag `v0.6.0` points at the release commit, and all
       eight public packages are published at 0.6.0.
 - [x] **Release 0.7.0** (Grid spans, Field): tagged `v0.7.0` and published.

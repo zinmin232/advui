@@ -122,7 +122,8 @@ function NavigationMenuRoot({
     onChange: onValueChange,
   })
   const rootRef = useRef<HTMLElement>(null)
-  useBackToClose(open !== null, () => setOpen(null))
+  // The panel opens in place under the bar, so the screen stays readable.
+  useBackToClose(open !== null, () => setOpen(null), { modal: false })
 
   // Web: a press outside the menu, or focus moving out of it, closes the panel.
   useEffect(() => {

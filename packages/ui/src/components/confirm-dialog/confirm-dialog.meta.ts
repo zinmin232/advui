@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'feedback',
   description:
     'Asks the user to confirm one action, in one element. An async action keeps it open and busy until it finishes.',
-  status: 'beta',
+  status: 'stable',
   since: '0.13.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['ConfirmDialog'],
