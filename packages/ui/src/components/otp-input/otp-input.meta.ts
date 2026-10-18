@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'otp-input',
   category: 'forms',
   description: 'A one-time-code field drawn as separate slots, with paste and SMS autofill.',
-  status: 'beta',
+  status: 'stable',
   since: '0.5.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['OtpInput'],

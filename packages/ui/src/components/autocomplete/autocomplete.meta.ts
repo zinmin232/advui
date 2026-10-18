@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'autocomplete',
   category: 'forms',
   description: 'A text field with suggestions; any text is a valid value.',
-  status: 'beta',
+  status: 'stable',
   since: '0.5.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Autocomplete'],

@@ -99,6 +99,11 @@ export type CalendarProps = FrameProps &
     /** Accessible names of the month buttons. */
     previousMonthLabel?: string
     nextMonthLabel?: string
+    /**
+     * Read after today's date on iOS and Android, as in "Tuesday, March 3,
+     * 2026, today": they have no `aria-current`. Default "today".
+     */
+    todayLabel?: string
   }
 
 const emptyRange: DateRange = { start: null, end: null }
@@ -125,6 +130,7 @@ export const Calendar = forwardRef<TamaguiElement, CalendarProps>(function Calen
     today: todayProp,
     previousMonthLabel = 'Previous month',
     nextMonthLabel = 'Next month',
+    todayLabel = 'today',
     ...frameProps
   } = props
   const today = startOfDay(todayProp ?? new Date())
@@ -305,7 +311,11 @@ export const Calendar = forwardRef<TamaguiElement, CalendarProps>(function Calen
                   role={(isWeb ? 'gridcell' : 'button') as never}
                   // Native views with a role need `accessible` to be announced.
                   {...(!isWeb && { accessible: true })}
-                  aria-label={formats.day.format(day)}
+                  aria-label={
+                    isToday && !isWeb
+                      ? `${formats.day.format(day)}, ${todayLabel}`
+                      : formats.day.format(day)
+                  }
                   aria-selected={selected}
                   aria-disabled={ariaState(disabled)}
                   aria-current={isToday ? 'date' : undefined}

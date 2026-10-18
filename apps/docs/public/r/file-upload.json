@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "A button that opens the file picker, with the picked files listed below.",
   "category": "advanced",
-  "status": "beta",
+  "status": "stable",
   "since": "0.5.0",
   "platforms": [
     "web",

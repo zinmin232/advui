@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'file-upload',
   category: 'advanced',
   description: 'A button that opens the file picker, with the picked files listed below.',
-  status: 'beta',
+  status: 'stable',
   since: '0.5.0',
   platforms: ['web', 'ios', 'android'],
   exports: [
@@ -33,9 +33,11 @@ import * as DocumentPicker from 'expo-document-picker'
 
 // Once, at app start (iOS / Android; web uses the browser's dialog):
 setFilePicker(async ({ multiple, accept }) => {
+  // The picker filters by MIME type only; extensions (".pdf") are checked after picking.
+  const rules = accept?.split(',').map((rule) => rule.trim()) ?? []
   const result = await DocumentPicker.getDocumentAsync({
     multiple,
-    type: accept?.split(',') ?? '*/*',
+    type: rules.length && rules.every((rule) => rule.includes('/')) ? rules : '*/*',
   })
   return result.canceled
     ? null

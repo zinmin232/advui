@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'number-input',
   category: 'forms',
   description: 'A numeric field with − and + buttons, limits and a step.',
-  status: 'beta',
+  status: 'stable',
   since: '0.4.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['NumberInput'],

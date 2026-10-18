@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'forms',
   description:
     'Choose one option from a list — a dropdown on desktop, a bottom sheet on touch devices.',
-  status: 'beta',
+  status: 'stable',
   since: '0.1.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Select'],

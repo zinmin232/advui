@@ -1,5 +1,5 @@
 import { shadows } from '@advui/theme'
-import { forwardRef, useCallback } from 'react'
+import { forwardRef, useCallback, useContext } from 'react'
 import {
   type GetProps,
   Slider as TamaguiSlider,
@@ -9,6 +9,8 @@ import {
   useDidFinishSSR,
 } from 'tamagui'
 import { useControllableState } from '../../hooks/useControllableState'
+import { FieldContext, useFieldControl } from '../../hooks/useFieldControl'
+import { useLabelFor } from '../../hooks/useLabelFor'
 import { ariaState } from '../../utils/ariaState'
 
 export type SliderValue = number | number[]
@@ -37,9 +39,15 @@ export interface SliderProps extends Omit<
   step?: number
   size?: SliderSize
   disabled?: boolean
-  /** Accessible name (or use `aria-labelledby`). */
+  /** Marks the value invalid. A Field with an error sets it. */
+  invalid?: boolean
+  /** Accessible name (or use `aria-labelledby`, or a Field or `<Label htmlFor>`). */
   'aria-label'?: string
   'aria-labelledby'?: string
+  'aria-describedby'?: string
+  'aria-required'?: boolean
+  /** Read after the name on native (a Field puts its help and error text here). */
+  accessibilityHint?: string
   /** Readable value for assistive technology, e.g. `(v) => \`${v}%\``. */
   getValueText?: (value: number) => string
   /** Names for range thumbs. Default: "Minimum" / "Maximum" after the label. */
@@ -52,8 +60,8 @@ const asArray = (value: SliderValue) => (Array.isArray(value) ? value : [value])
  * Pick a number, or a range, by dragging along a track. Arrow keys step,
  * Page Up / Page Down take bigger steps, Home / End jump to the ends.
  */
-export const Slider = forwardRef<TamaguiElement, SliderProps>(function Slider(
-  {
+export const Slider = forwardRef<TamaguiElement, SliderProps>(function Slider(sliderProps, ref) {
+  const {
     value: valueProp,
     defaultValue,
     onValueChange,
@@ -62,16 +70,30 @@ export const Slider = forwardRef<TamaguiElement, SliderProps>(function Slider(
     max = 100,
     step = 1,
     size = 'md',
-    disabled,
+    disabled = false,
+    invalid = false,
     orientation = 'horizontal',
-    'aria-label': ariaLabel,
-    'aria-labelledby': ariaLabelledBy,
+    'aria-label': ariaLabelProp,
+    'aria-labelledby': ariaLabelledByProp,
+    'aria-describedby': describedBy,
+    // aria-required is not allowed on a slider. The Field's label still shows
+    // the marker; say what is required in the help or error text.
+    'aria-required': _ariaRequired,
+    accessibilityHint,
     getValueText,
     thumbLabels,
     ...props
-  },
-  ref,
-) {
+  } = useFieldControl(sliderProps)
+  const field = useContext(FieldContext)
+  // A <label for> cannot name a div, so on web a Field's label is linked by id.
+  const ariaLabelledBy =
+    ariaLabelledByProp ?? (ariaLabelProp === undefined ? field?.labelId : undefined)
+  // Native: iOS ignores aria-labelledby, so the Label with that id gives its
+  // text (a Field or `<Label htmlFor>` already named the slider above).
+  const labelledByText = useLabelFor(
+    !isWeb && ariaLabelProp === undefined ? ariaLabelledByProp : undefined,
+  )
+  const ariaLabel = ariaLabelProp ?? labelledByText
   const range = Array.isArray(valueProp ?? defaultValue)
   const toShape = useCallback(
     (values: number[]): SliderValue => (range ? values : (values[0] ?? min)),
@@ -153,6 +175,8 @@ export const Slider = forwardRef<TamaguiElement, SliderProps>(function Slider(
             role="slider"
             aria-label={thumbLabel(index)}
             aria-labelledby={values.length === 1 ? ariaLabelledBy : undefined}
+            aria-describedby={describedBy}
+            aria-invalid={invalid || undefined}
             aria-valuemin={min}
             aria-valuemax={max}
             aria-valuenow={value}
@@ -164,7 +188,7 @@ export const Slider = forwardRef<TamaguiElement, SliderProps>(function Slider(
             borderRadius="$full"
             backgroundColor="$background"
             borderWidth={2}
-            borderColor="$primary"
+            borderColor={invalid ? '$error' : '$primary'}
             {...shadows.sm}
             // calc() positions are valid CSS but outside Tamagui's position types.
             {...((vertical ? { bottom: at(value) } : { left: at(value) }) as object)}
@@ -214,7 +238,7 @@ export const Slider = forwardRef<TamaguiElement, SliderProps>(function Slider(
           circular
           backgroundColor="$background"
           borderWidth={2}
-          borderColor="$primary"
+          borderColor={invalid ? '$error' : '$primary'}
           cursor={disabled ? 'not-allowed' : 'grab'}
           pressStyle={{ scale: 1.1 }}
           focusVisibleStyle={{
@@ -225,9 +249,15 @@ export const Slider = forwardRef<TamaguiElement, SliderProps>(function Slider(
           }}
           {...shadows.sm}
           aria-label={thumbLabel(index)}
-          aria-labelledby={values.length === 1 ? ariaLabelledBy : undefined}
           aria-valuetext={getValueText?.(value)}
           aria-disabled={ariaState(disabled)}
+          {...(isWeb
+            ? {
+                'aria-labelledby': values.length === 1 ? ariaLabelledBy : undefined,
+                'aria-describedby': describedBy,
+                'aria-invalid': invalid || undefined,
+              }
+            : { accessibilityHint })}
           {...(!isWeb && {
             // Screen readers adjust sliders with swipe gestures (increment / decrement).
             accessible: true,

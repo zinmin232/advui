@@ -51,7 +51,12 @@ export const Label = forwardRef<TamaguiTextElement, LabelProps>(function Label(
 ) {
   // Native: a control without a name of its own takes this text as its name,
   // and the label is then hidden from screen readers so it is not read twice.
-  const named = usePublishLabel(isWeb ? undefined : props.htmlFor, plainText(children) || undefined)
+  // A control finds it by its own id (`htmlFor`), or by this label's id when
+  // the control uses `aria-labelledby`, which iOS ignores.
+  const text = plainText(children) || undefined
+  const namedFor = usePublishLabel(isWeb ? undefined : props.htmlFor, text)
+  const namedById = usePublishLabel(isWeb ? undefined : props.id, text)
+  const named = namedFor || namedById
   return (
     <LabelFrame ref={ref} {...props} aria-hidden={props['aria-hidden'] ?? (named || undefined)}>
       {children}

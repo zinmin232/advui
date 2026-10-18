@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'password-input',
   category: 'forms',
   description: 'A password field with a button that shows and hides the text.',
-  status: 'beta',
+  status: 'stable',
   since: '0.4.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['PasswordInput'],

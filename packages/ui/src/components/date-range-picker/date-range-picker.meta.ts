@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'date-range-picker',
   category: 'forms',
   description: 'A field that opens a range calendar: pick a start, then an end.',
-  status: 'beta',
+  status: 'stable',
   since: '0.5.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['DateRangePicker'],

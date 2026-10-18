@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'time-picker',
   category: 'forms',
   description: 'Hour, minute and optional AM/PM selects that produce an "HH:mm" time.',
-  status: 'beta',
+  status: 'stable',
   since: '0.5.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['TimePicker'],

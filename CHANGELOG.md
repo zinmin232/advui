@@ -9,6 +9,13 @@ one version.
 
 ### Added
 
+- **Field** `requiredText` and **Calendar** `todayLabel`: the words iOS and
+  Android read for a required field ("Email, required") and for today
+  ("Tuesday, March 3, 2026, today"), where there is no required state or
+  `aria-current`. They default to "required" and "today".
+- **Slider** takes a Field's label, help text, error and disabled state like
+  the other form controls, a `<Label htmlFor>` names it on iOS and Android,
+  and `invalid` draws its thumbs in the error color (`aria-invalid` on web).
 - **Link**: a text link to another page, a section or an outside site,
   inside a sentence (nested in Text, it takes the text's size and font) or
   on its own (`size`, `weight`). On web it renders a real `<a href>`, or a
@@ -148,6 +155,13 @@ one version.
 - Stable after the Android phone check of the overlays: Alert Dialog,
   Confirm Dialog, Drawer, Sheet, Popover, Hover Card, Menu, Context Menu,
   Dropdown Menu, Toast and Snackbar.
+- Stable after the Android phone check of the form controls: Field, Password
+  Input, Number Input, OTP Input, Select, Multi Select, Combobox,
+  Autocomplete, Slider, Toggle, Toggle Group, File Upload, File Dropzone,
+  Time Picker, Calendar, Date Picker and Date Range Picker.
+- **Label** on iOS and Android also names a control that points at it with
+  `aria-labelledby` (its `id`), which iOS ignores and Android reads
+  unreliably.
 - **UniversalProvider** on iOS and Android wraps the app in a view that fills
   the screen, so it can hide the app from screen readers behind an open
   overlay (see Fixed).
@@ -163,6 +177,29 @@ one version.
 
 ### Fixed
 
+- **OTP Input** on Android: TalkBack reaches the field. Its hidden text box
+  had an opacity of 0, and Android leaves such views out of the
+  accessibility tree, so the code could not be entered with a screen reader.
+- **Select** on iOS and Android: the trigger and the options in its sheet are
+  reachable and work with a double-tap (they reacted to touches only), and
+  the trigger reads the chosen option, or the placeholder, as its value
+  ("Plan, Team"). Time Picker's selects too.
+- **Multi Select**, **Combobox** and **Autocomplete** on iOS and Android: the
+  field reads its picks as its value ("Labels, Bug, Docs" instead of "2
+  selected"), or its placeholder while empty, and an option's description is
+  part of its name ("Yangon, UTC+06:30"), as on web.
+- **Slider** on iOS and Android: one named with `aria-labelledby` read only
+  its value ("40%").
+- **Time Picker** on iOS and Android: each select's name starts with the
+  field's label ("Start time, Hour"), and the hour select reads the field's
+  help text. Screen readers there do not read group names, so the label was
+  never heard.
+- **Field** on iOS and Android: a required field says so in its name (see
+  `requiredText`). **Calendar** says which day is today (see `todayLabel`).
+- The `setFilePicker` example (getting-started guide, File Upload's usage
+  and the Expo playground): an `accept` with an extension, such as
+  `image/*,.pdf`, opens the picker unfiltered. It filtered by the MIME types
+  alone, so File Dropzone's PDFs could not be picked.
 - **Dialog**, **Alert Dialog**, **Confirm Dialog**, **Drawer**, **Sheet** and
   every overlay that opens a sheet (Dropdown Menu, Menubar, Context Menu,
   Select, Popover, Combobox, the pickers) on iOS and Android: while one is

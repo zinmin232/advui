@@ -67,7 +67,9 @@ export function usePublishLabel(htmlFor: string | undefined, text: string | unde
 
 /**
  * Control side: the text of a Label that targets `id`, for a control without a
- * name of its own. Pass `undefined` on web or when the control is named.
+ * name of its own. Pass `undefined` on web or when the control is named. A
+ * Label also publishes under its own id, so a control can pass the id in its
+ * `aria-labelledby` instead.
  */
 export function useLabelFor(id: string | undefined): string | undefined {
   useEffect(() => {

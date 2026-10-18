@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'combobox',
   category: 'forms',
   description: 'A select you can type in to filter long lists of options.',
-  status: 'beta',
+  status: 'stable',
   since: '0.5.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Combobox', 'ComboboxOption', 'ComboboxFilter'],

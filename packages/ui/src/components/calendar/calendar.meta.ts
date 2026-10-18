@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'calendar',
   category: 'data-display',
   description: 'A month grid for picking a day or a range, with limits and disabled days.',
-  status: 'beta',
+  status: 'stable',
   since: '0.5.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Calendar', 'DateRange'],
@@ -87,6 +87,13 @@ export default defineMeta({
           default: "'Next month'",
           description: 'Accessible name of the next-month button.',
         },
+        {
+          name: 'todayLabel',
+          type: 'string',
+          default: "'today'",
+          description:
+            'Read after today’s date on iOS and Android ("…, today"), which have no `aria-current`.',
+        },
       ],
       children: { accepts: 'none' },
     },
@@ -97,7 +104,7 @@ export default defineMeta({
   ],
   accessibility: [
     'On web it is a WAI-ARIA `grid` labelled by the month name, with one Tab stop.',
-    'Every day is named with its full date ("Monday, 28 September 2026"); the picked days have `aria-selected`, today has `aria-current="date"`, and days outside the limits have `aria-disabled`.',
+    'Every day is named with its full date ("Monday, 28 September 2026"); the picked days have `aria-selected`, today has `aria-current="date"` (on iOS and Android, where that is not read, its name ends in `todayLabel`), and days outside the limits have `aria-disabled`.',
     'The month name is a polite live region, so changing month is announced.',
   ],
   keyboard: [

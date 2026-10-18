@@ -54,8 +54,10 @@ const HiddenField = styled(TamaguiInput, {
   borderWidth: 0,
   backgroundColor: 'transparent',
   // Invisible but still focusable and pressable; Android ignores a
-  // transparent text color on TextInput.
-  opacity: 0,
+  // transparent text color on TextInput. Native keeps a trace of opacity:
+  // Android leaves a view with alpha 0 out of the accessibility tree, so
+  // TalkBack could not reach the field.
+  opacity: isWeb ? 0 : 0.01,
   fontSize: '$1',
   cursor: 'text',
   outlineWidth: 0,

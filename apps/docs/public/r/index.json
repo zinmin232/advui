@@ -377,7 +377,7 @@
       "type": "registry:component",
       "description": "A text field with suggestions; any text is a valid value.",
       "category": "forms",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
@@ -466,7 +466,7 @@
       "type": "registry:component",
       "description": "A month grid for picking a day or a range, with limits and disabled days.",
       "category": "data-display",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -631,7 +631,7 @@
       "type": "registry:component",
       "description": "A select you can type in to filter long lists of options.",
       "category": "forms",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
@@ -717,7 +717,7 @@
       "type": "registry:component",
       "description": "A field that opens a calendar in a popover, or a bottom sheet on phones.",
       "category": "forms",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -738,7 +738,7 @@
       "type": "registry:component",
       "description": "A field that opens a range calendar: pick a start, then an end.",
       "category": "forms",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -863,7 +863,7 @@
       "type": "registry:component",
       "description": "A label, a control, help text and an error message, wired together for screen readers. Validation stays with your app or form library.",
       "category": "forms",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
@@ -879,7 +879,7 @@
       "type": "registry:component",
       "description": "A large area to drop files on (web) or tap to pick them, with the files listed below.",
       "category": "advanced",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -897,7 +897,7 @@
       "type": "registry:component",
       "description": "A button that opens the file picker, with the picked files listed below.",
       "category": "advanced",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -1207,7 +1207,7 @@
       "type": "registry:component",
       "description": "Pick several options from a searchable list; picks show as chips.",
       "category": "forms",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
@@ -1263,7 +1263,7 @@
       "type": "registry:component",
       "description": "A numeric field with − and + buttons, limits and a step.",
       "category": "forms",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -1280,7 +1280,7 @@
       "type": "registry:component",
       "description": "A one-time-code field drawn as separate slots, with paste and SMS autofill.",
       "category": "forms",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
@@ -1312,7 +1312,7 @@
       "type": "registry:component",
       "description": "A password field with a button that shows and hides the text.",
       "category": "forms",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -1451,7 +1451,7 @@
       "type": "registry:component",
       "description": "Choose one option from a list — a dropdown on desktop, a bottom sheet on touch devices.",
       "category": "forms",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
@@ -1459,7 +1459,8 @@
       ],
       "registryDependencies": [
         "hooks",
-        "input"
+        "input",
+        "utils"
       ]
     },
     {
@@ -1543,7 +1544,7 @@
       "type": "registry:component",
       "description": "Pick a number, or a range, by dragging a thumb along a track.",
       "category": "forms",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/theme"
@@ -1682,7 +1683,7 @@
       "type": "registry:component",
       "description": "Hour, minute and optional AM/PM selects that produce an \"HH:mm\" time.",
       "category": "forms",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
@@ -1715,7 +1716,7 @@
       "type": "registry:component",
       "description": "A set of toggle buttons: pick one, like text alignment, or turn on several, like bold and italic.",
       "category": "buttons",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
@@ -1731,7 +1732,7 @@
       "type": "registry:component",
       "description": "A button that stays on or off, such as Bold in a text toolbar.",
       "category": "buttons",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"

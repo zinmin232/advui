@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'toggle',
   category: 'buttons',
   description: 'A button that stays on or off, such as Bold in a text toolbar.',
-  status: 'beta',
+  status: 'stable',
   since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Toggle'],

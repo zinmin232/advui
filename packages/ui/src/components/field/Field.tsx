@@ -52,6 +52,11 @@ export interface FieldProps extends Omit<FrameProps, 'children' | 'id' | 'gap' |
   error?: ReactNode
   /** Adds a required marker to the label and `aria-required` to the control. */
   required?: boolean
+  /**
+   * Read after the label on iOS and Android when `required` is set, as in
+   * "Email, required": they have no required state to announce.
+   */
+  requiredText?: string
   /** Adds "(optional)" to the label. Ignored when `required` is set. */
   optional?: boolean
   /** The text `optional` adds. */
@@ -84,6 +89,7 @@ export const Field = forwardRef<TamaguiElement, FieldProps>(function Field(
     description,
     error,
     required = false,
+    requiredText = 'required',
     optional = false,
     optionalText = '(optional)',
     disabled: disabledProp = false,
@@ -124,7 +130,13 @@ export const Field = forwardRef<TamaguiElement, FieldProps>(function Field(
     return {
       id,
       labelId: hasLabel ? labelId : undefined,
-      label: labelText ? (showOptional ? `${labelText} ${optionalText}` : labelText) : undefined,
+      label: labelText
+        ? required
+          ? `${labelText}, ${requiredText}`
+          : showOptional
+            ? `${labelText} ${optionalText}`
+            : labelText
+        : undefined,
       describedBy: describedBy || undefined,
       hint: hint || undefined,
       invalid: hasError,
@@ -145,6 +157,7 @@ export const Field = forwardRef<TamaguiElement, FieldProps>(function Field(
     showOptional,
     optionalText,
     required,
+    requiredText,
     disabled,
   ])
 

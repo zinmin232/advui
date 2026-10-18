@@ -46,7 +46,8 @@ function OptionRow({
     <View
       role={multiple ? 'checkbox' : 'button'}
       accessible
-      aria-label={option.label}
+      // The name holds the description too, as the row's text does on web.
+      aria-label={option.description ? `${option.label}, ${option.description}` : option.label}
       aria-checked={multiple ? selected : undefined}
       aria-selected={multiple ? undefined : selected}
       aria-disabled={ariaState(option.disabled)}
@@ -128,6 +129,11 @@ export const ComboboxField = forwardRef<TamaguiElement, ComboboxFieldProps>(
     const matches = query ? options.filter((option) => filter(option, query)) : options
     // Multi Select shows chips in the field; the others show the text.
     const summary = multiple ? null : inputValue
+    // The field is a named button, whose text and chips are not read: its
+    // value says what is picked, or gives the placeholder.
+    const valueText = multiple
+      ? selected.map((v) => options.find((option) => option.value === v)?.label ?? v).join(', ')
+      : inputValue
 
     return (
       <>
@@ -139,7 +145,7 @@ export const ComboboxField = forwardRef<TamaguiElement, ComboboxFieldProps>(
           aria-label={ariaLabel}
           aria-disabled={ariaState(disabled)}
           accessibilityHint={accessibilityHint}
-          accessibilityValue={{ text: multiple ? `${selected.length} selected` : inputValue }}
+          accessibilityValue={{ text: valueText || placeholder }}
           size={size}
           invalid={invalid}
           disabled={disabled}
