@@ -1518,6 +1518,18 @@ describe('native rendering', () => {
     })
   })
 
+  it('Select reads an option whose value is empty (Filter Bar’s "Any") as its value', async () => {
+    await renderNative(
+      <Select aria-label="Status" placeholder="Any" value="">
+        <Select.Item value="">All statuses</Select.Item>
+        <Select.Item value="open">Open</Select.Item>
+      </Select>,
+    )
+    expect(screen.getByRole('combobox', { name: 'Status' })).toHaveAccessibilityValue({
+      text: 'All statuses',
+    })
+  })
+
   it('Field puts "required" in the native name, which has no required state', async () => {
     await renderNative(
       <>

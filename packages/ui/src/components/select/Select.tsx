@@ -319,7 +319,7 @@ function SelectRoot(selectProps: SelectProps) {
   )
 
   if (!hydrated) {
-    const label = findLabel(children, value || undefined)
+    const label = findLabel(children, value)
     return (
       <StaticTrigger
         size={size}
@@ -377,7 +377,7 @@ function SelectRoot(selectProps: SelectProps) {
           // chosen option is its value.
           accessible: true,
           accessibilityValue: {
-            text: plainText(findLabel(children, value || undefined)) || placeholder,
+            text: plainText(findLabel(children, value)) || placeholder,
           },
           'aria-disabled': ariaState(disabled),
           accessibilityActions: [{ name: 'activate' }],
