@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'layout',
   description:
     'Keeps a header or a list heading in view while its container scrolls: CSS sticky on web, a pinned ScrollArea header on iOS and Android.',
-  status: 'beta',
+  status: 'stable',
   since: '0.10.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Sticky', 'StickyProps', 'StickyEdge'],

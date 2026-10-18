@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'data-display',
   description:
     'Shows code or terminal commands in a monospace block with a copy button, and optionally a title, line numbers, marked lines and syntax colors.',
-  status: 'beta',
+  status: 'stable',
   since: '0.14.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['CodeBlock', 'CodeBlockFrame'],

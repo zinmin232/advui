@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "Keeps a header or a list heading in view while its container scrolls: CSS sticky on web, a pinned ScrollArea header on iOS and Android.",
   "category": "layout",
-  "status": "beta",
+  "status": "stable",
   "since": "0.10.0",
   "platforms": [
     "web",

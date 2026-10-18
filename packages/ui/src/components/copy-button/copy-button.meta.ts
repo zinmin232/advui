@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'buttons',
   description:
     'A button that copies a value, such as a command, link or key, and confirms it with a check and a "Copied" announcement.',
-  status: 'beta',
+  status: 'stable',
   since: '0.14.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['CopyButton', 'useClipboard', 'setClipboard', 'writeClipboard'],

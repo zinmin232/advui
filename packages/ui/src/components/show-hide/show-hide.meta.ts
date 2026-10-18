@@ -23,7 +23,7 @@ export default defineMeta({
   category: 'layout',
   description:
     'Show or hide content by screen width, with CSS on web (no flash during SSR), plus useBreakpoint and useBreakpointValue.',
-  status: 'beta',
+  status: 'stable',
   since: '0.10.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

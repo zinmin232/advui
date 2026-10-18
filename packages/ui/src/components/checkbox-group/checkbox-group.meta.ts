@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'forms',
   description:
     'A labelled set of checkboxes that share one value, the list of checked options, with an optional Select All.',
-  status: 'beta',
+  status: 'stable',
   since: '0.14.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['CheckboxGroup'],

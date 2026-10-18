@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "A band of a page: a `<section>` with vertical spacing, a surface and a Container, for heroes, feature lists and calls to action.",
   "category": "layout",
-  "status": "beta",
+  "status": "stable",
   "since": "0.10.0",
   "platforms": [
     "web",

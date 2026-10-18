@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'forms',
   description:
     'A text field that turns typed or pasted text into removable tags, for free-form values such as topics or email addresses.',
-  status: 'beta',
+  status: 'stable',
   since: '0.14.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['TagsInput', 'TagsInputFrame'],

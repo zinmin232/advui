@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'navigation',
   description:
     'A text link to another page, a section or an outside site, inside a sentence or on its own.',
-  status: 'beta',
+  status: 'stable',
   since: '0.14.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Link'],

@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'layout',
   description:
     'Equal-width cells that pick their column count from the available width: as many as fit at a minimum width, with no breakpoints.',
-  status: 'beta',
+  status: 'stable',
   since: '0.11.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['AutoGrid', 'AutoGridProps', 'autoGridColumns'],

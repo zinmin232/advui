@@ -165,9 +165,13 @@ cannot do them. Tick them off here as they are done.
       from the published site, so they play once that is deployed.
 - [ ] **Promote to stable.** When a component passes the phone check, change
       its `status` from `beta` to `stable` in its `*.meta.ts` and run
-      `pnpm catalog`. Done on 2026-10-05 for 24 of the 26. Form can follow
-      now that its API is decided; Rich Text Editor stays beta until its
-      decision above.
+      `pnpm catalog`. Done on 2026-10-05 for 24 of the 26, and on
+      2026-10-18 for the 16 that passed since: Form, Wrap, Show / Hide,
+      Section, Sticky, AppShell, AutoGrid, Copy Button, Code Block,
+      Menubar, Link, Checkbox Group, Tags Input, Carousel, Rating and Color
+      Picker. Rich Text Editor stays beta until its decision above. The
+      earlier components still marked beta (phases 1–3, Field, Filter Bar)
+      have no recorded phone check here yet.
 - [x] **Release 0.6.0**: tag `v0.6.0` points at the release commit, and all
       eight public packages are published at 0.6.0.
 - [x] **Release 0.7.0** (Grid spans, Field): tagged `v0.7.0` and published.

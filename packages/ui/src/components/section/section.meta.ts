@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'layout',
   description:
     'A band of a page: a `<section>` with vertical spacing, a surface and a Container, for heroes, feature lists and calls to action.',
-  status: 'beta',
+  status: 'stable',
   since: '0.10.0',
   platforms: ['web', 'ios', 'android'],
   exports: [
