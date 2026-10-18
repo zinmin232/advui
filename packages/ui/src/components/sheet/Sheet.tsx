@@ -167,6 +167,8 @@ function SheetContent({
       open={open}
       onOpenChange={setOpen}
       modal
+      // Rise above the keyboard, so a field near the bottom stays in view.
+      moveOnKeyboardChange
       dismissOnSnapToBottom={dismissible}
       dismissOnOverlayPress={dismissible}
       snapPointsMode={snapPoints ? 'percent' : 'fit'}

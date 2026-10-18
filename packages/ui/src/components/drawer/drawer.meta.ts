@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'overlay',
   description:
     'A modal panel that slides in from an edge of the screen, for navigation, filters or details.',
-  status: 'beta',
+  status: 'stable',
   since: '0.3.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Drawer'],

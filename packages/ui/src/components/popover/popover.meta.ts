@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'overlay',
   description:
     'Rich, interactive content anchored to a trigger, such as quick settings, filters or a short form.',
-  status: 'beta',
+  status: 'stable',
   since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Popover'],

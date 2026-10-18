@@ -115,7 +115,11 @@ each edit.
 - **Android back button**: Tamagui overlays ignore it. A new overlay's root
   must hold its `open` state (`useControllableState`) and call
   `useBackToClose(open, close)`, then get a case in the native "Android back
-  button" tests.
+  button" tests. While open, that also hides the screen behind from
+  TalkBack and VoiceOver (UniversalProvider's `AppLayer`): overlays render in
+  a portal beside the app. A panel that opens in place passes
+  `{ modal: false }` (Navigation Menu). Tamagui's native Dialog overlay has
+  no press handler; dismissable dialogs use `useOverlayPress`.
 - **Platform files share an extension.** Pair `Foo.tsx` with
   `Foo.native.tsx` (or `.ts` with `.native.ts`). Metro tries every platform
   suffix for `.ts` before `.tsx`, so `Foo.ts` hides `Foo.native.tsx` on

@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "Interrupts the user to confirm an important or destructive action before it happens.",
   "category": "feedback",
-  "status": "beta",
+  "status": "stable",
   "since": "0.2.0",
   "platforms": [
     "web",

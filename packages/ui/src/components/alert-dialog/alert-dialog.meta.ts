@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'feedback',
   description:
     'Interrupts the user to confirm an important or destructive action before it happens.',
-  status: 'beta',
+  status: 'stable',
   since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['AlertDialog'],

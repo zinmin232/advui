@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'overlay',
   description:
     'Actions for an area, opened with a right-click on desktop and a long-press on touch screens.',
-  status: 'beta',
+  status: 'stable',
   since: '0.3.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['ContextMenu'],

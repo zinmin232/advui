@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'toast',
   category: 'feedback',
   description: 'Brief, non-blocking notifications triggered imperatively with `toast()`.',
-  status: 'beta',
+  status: 'stable',
   since: '0.1.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['toast', 'Toaster'],

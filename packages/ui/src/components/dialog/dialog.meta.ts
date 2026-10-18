@@ -12,6 +12,7 @@ export default defineMeta({
   files: [
     'components/dialog/Dialog.tsx',
     'components/dialog/styles.ts',
+    'components/dialog/useOverlayPress.ts',
     'components/dialog/index.ts',
   ],
   keywords: ['modal', 'popup', 'lightbox', 'overlay'],

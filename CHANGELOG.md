@@ -145,6 +145,12 @@ one version.
   Sticky, AppShell, AutoGrid, Copy Button, Code Block, Menubar, Link,
   Checkbox Group, Tags Input, Carousel, Rating and Color Picker. Rich Text
   Editor stays beta until its editor is decided.
+- Stable after the Android phone check of the overlays: Alert Dialog,
+  Confirm Dialog, Drawer, Sheet, Popover, Hover Card, Menu, Context Menu,
+  Dropdown Menu, Toast and Snackbar.
+- **UniversalProvider** on iOS and Android wraps the app in a view that fills
+  the screen, so it can hide the app from screen readers behind an open
+  overlay (see Fixed).
 - **Password Input** and **Search** are built on Input's slots instead of
   positioning their buttons and icon over the field. They behave as before;
   the text and buttons sit a few pixels differently, and Password Input
@@ -157,6 +163,23 @@ one version.
 
 ### Fixed
 
+- **Dialog**, **Alert Dialog**, **Confirm Dialog**, **Drawer**, **Sheet** and
+  every overlay that opens a sheet (Dropdown Menu, Menubar, Context Menu,
+  Select, Popover, Combobox, the pickers) on iOS and Android: while one is
+  open, the screen behind it is hidden from TalkBack and VoiceOver, so they
+  stay in the overlay. They could move on to the page under it, as overlays
+  render in a portal beside the app. Navigation Menu's panel, which opens in
+  place, leaves the screen readable.
+- **Dialog** and **Drawer** on iOS and Android: a press on the overlay
+  closes them, as on web and as their docs say. Tamagui closes a dialog from
+  an outside press on web only. Alert Dialog still needs a choice.
+- **Sheet** and **Popover** (and Date Picker, Date Range Picker and Color
+  Picker) on iOS and Android: the sheet rises above the keyboard, so a
+  focused field near the bottom stays in view.
+- **Toaster** on iOS and Android: TalkBack reaches the toasts and their
+  buttons (Undo, Dismiss). They sat outside their region's bounds, which
+  Android reports as off-screen. The region is named "Notifications", without
+  the web keyboard shortcut ("alt+T").
 - **Radio Group** spaces its items 12px apart (`gap="$3"`), as intended.
   The gap was set on a frame that Tamagui's radio group does not render, so
   items sat flush unless you passed `gap`.

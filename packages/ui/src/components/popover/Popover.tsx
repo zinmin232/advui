@@ -95,6 +95,8 @@ function PopoverRoot({
           <Adapt when={isWeb ? 'max-md' : true} platform="touch">
             <Sheet
               modal
+              // Rise above the keyboard: popovers hold fields (Color Picker's hex).
+              moveOnKeyboardChange
               dismissOnSnapToBottom
               snapPointsMode="fit"
               transition={reducedMotion ? undefined : 'medium'}
