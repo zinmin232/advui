@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'wrap',
   category: 'layout',
   description: 'A row that wraps onto new lines, for chips, tags and badges.',
-  status: 'beta',
+  status: 'stable',
   since: '0.9.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Wrap', 'WrapProps'],

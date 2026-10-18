@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'forms',
   description:
     'Pick a color by dragging over saturation and brightness, sliding hue and opacity, typing a hex or pressing a swatch, in a field that opens a popover or inline.',
-  status: 'beta',
+  status: 'stable',
   since: '0.14.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['ColorPicker'],

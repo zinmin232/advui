@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "A bar of menus that stays on screen, as at the top of a desktop app: File, Edit, View.",
   "category": "navigation",
-  "status": "beta",
+  "status": "stable",
   "since": "0.14.0",
   "platforms": [
     "web",

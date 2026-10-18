@@ -15,7 +15,7 @@ export default defineMeta({
   category: 'navigation',
   description:
     'A bar of menus that stays on screen, as at the top of a desktop app: File, Edit, View.',
-  status: 'beta',
+  status: 'stable',
   since: '0.14.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Menubar'],

@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'media',
   description:
     'A row of slides shown one or a few at a time, moved by swipes, previous and next buttons or dots, with optional autoplay.',
-  status: 'beta',
+  status: 'stable',
   since: '0.14.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Carousel', 'CarouselItem', 'CarouselLabels'],

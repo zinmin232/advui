@@ -141,6 +141,10 @@ one version.
 
 ### Changed
 
+- Stable after the Android phone check: Form, Wrap, Show / Hide, Section,
+  Sticky, AppShell, AutoGrid, Copy Button, Code Block, Menubar, Link,
+  Checkbox Group, Tags Input, Carousel, Rating and Color Picker. Rich Text
+  Editor stays beta until its editor is decided.
 - **Password Input** and **Search** are built on Input's slots instead of
   positioning their buttons and icon over the field. They behave as before;
   the text and buttons sit a few pixels differently, and Password Input

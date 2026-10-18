@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'forms',
   description:
     'A row of stars, or any icon, to give a score with a press or the keyboard, or to show one read-only, with half and part-filled icons.',
-  status: 'beta',
+  status: 'stable',
   since: '0.14.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Rating'],

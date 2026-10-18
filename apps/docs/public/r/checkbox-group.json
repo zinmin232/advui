@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "A labelled set of checkboxes that share one value, the list of checked options, with an optional Select All.",
   "category": "forms",
-  "status": "beta",
+  "status": "stable",
   "since": "0.14.0",
   "platforms": [
     "web",

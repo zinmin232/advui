@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'layout',
   description:
     'The frame of an app screen: header, sidebar, main content and footer. It fills the screen, Main scrolls between the bars, and the sidebar becomes a drawer on phones.',
-  status: 'beta',
+  status: 'stable',
   since: '0.11.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

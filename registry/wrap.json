@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "A row that wraps onto new lines, for chips, tags and badges.",
   "category": "layout",
-  "status": "beta",
+  "status": "stable",
   "since": "0.9.0",
   "platforms": [
     "web",

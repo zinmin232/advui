@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'forms',
   description:
     'Lays out a form, with an optional title, description and footer, and wires up submit, loading and disabled states. Field state and validation stay with your app or form library.',
-  status: 'beta',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [
