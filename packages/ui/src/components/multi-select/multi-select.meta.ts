@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'multi-select',
   category: 'forms',
   description: 'Pick several options from a searchable list; picks show as chips.',
-  status: 'beta',
+  status: 'stable',
   since: '0.5.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['MultiSelect'],

@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "A button that stays on or off, such as Bold in a text toolbar.",
   "category": "buttons",
-  "status": "beta",
+  "status": "stable",
   "since": "0.2.0",
   "platforms": [
     "web",

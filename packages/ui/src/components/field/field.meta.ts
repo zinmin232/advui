@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'forms',
   description:
     'A label, a control, help text and an error message, wired together for screen readers. Validation stays with your app or form library.',
-  status: 'beta',
+  status: 'stable',
   since: '0.4.0',
   platforms: ['web', 'ios', 'android'],
   exports: [
@@ -86,6 +86,13 @@ export default defineMeta({
           type: 'string',
           default: "'(optional)'",
           description: 'The text `optional` adds, e.g. for another language.',
+        },
+        {
+          name: 'requiredText',
+          type: 'string',
+          default: "'required'",
+          description:
+            'Read after the label on iOS and Android when `required` is set ("Email, required"): they have no required state.',
         },
         {
           name: 'disabled',
@@ -192,7 +199,7 @@ export default defineMeta({
     'The label targets the control (`htmlFor` ↔ `id`), so clicking it focuses the control. A Radio Group or Checkbox Group is named with `aria-labelledby` instead.',
     'Help and error text are linked with `aria-describedby` on web (error first). On native, the text of the label names the control, the help and error text become its hint, and the visible label is hidden from screen readers so it is not read twice.',
     'An error sets `aria-invalid` on the control; the message is text, not just a red border.',
-    '`required` sets `aria-required` on the control, so screen readers say "required"; the asterisk itself is hidden from them. "(optional)" is part of the label.',
+    '`required` sets `aria-required` on the control, so screen readers say "required"; the asterisk itself is hidden from them. iOS and Android have no required state, so there the control’s name ends in `requiredText` ("Email, required"). "(optional)" is part of the label.',
     'A disabled field disables its control, so it leaves the Tab order and is announced as dimmed.',
   ],
   responsive:

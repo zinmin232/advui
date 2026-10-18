@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'advanced',
   description:
     'A large area to drop files on (web) or tap to pick them, with the files listed below.',
-  status: 'beta',
+  status: 'stable',
   since: '0.5.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['FileDropzone'],

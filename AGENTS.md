@@ -138,9 +138,20 @@ each edit.
   `useFieldControl(props)` first, so a Field around it sets its id, state and
   descriptions. A control that renders other controls inside (Time Picker's
   selects) resets `FieldContext` to null for them, or they take the field's id.
-- **Hidden inputs on Android** ignore a transparent text color; hide them with
-  `opacity: 0` (see OTP Input). On web, `outline-style: auto` ignores
+- **Hidden inputs on Android** ignore a transparent text color, and Android
+  leaves a view with an opacity of 0 out of the accessibility tree, so
+  TalkBack never finds it. Hide them with a trace of opacity on native
+  (`0.01`, see OTP Input). On web, `outline-style: auto` ignores
   `outline-width: 0`; use `outlineStyle: 'none'`.
+- **Tamagui's Select reacts to touches only on native**: its trigger and
+  items are not `accessible` and have no activate action, so Select adds
+  both (see `Select.tsx`). A named view's text is not read on native, so a
+  field-shaped button gives its text as `accessibilityValue`.
+- **Group names and `aria-labelledby` are not read on native.** iOS ignores
+  `aria-labelledby` (a Label also publishes its text under its own `id`, so
+  read it with `useLabelFor`), and neither platform reads a group's name. Put
+  the group's label in each control's name (Time Picker) or hint (Radio
+  Group).
 - **Tamagui `activeStyle`** is not applied on native; derive active styles from
   state.
 - **Tamagui `asChild` drops `onFocus`** (web): `<View asChild onFocus>` never

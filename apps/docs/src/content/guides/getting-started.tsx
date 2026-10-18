@@ -239,11 +239,13 @@ export default function RootLayout() {
 import * as DocumentPicker from 'expo-document-picker'
 
 setFilePicker(async ({ multiple, accept }) => {
-  // The picker filters by MIME type; extensions (".pdf") are checked after picking.
-  const mimeTypes = accept?.split(',').filter((rule) => rule.includes('/'))
+  // The picker filters by MIME type only. Extensions (".pdf") are checked
+  // after picking, so a list with one opens the picker unfiltered: filtering
+  // by the rest ("image/*,.pdf") would hide the PDFs.
+  const rules = accept?.split(',').map((rule) => rule.trim()) ?? []
   const result = await DocumentPicker.getDocumentAsync({
     multiple,
-    type: mimeTypes?.length ? mimeTypes.map((rule) => rule.trim()) : '*/*',
+    type: rules.length && rules.every((rule) => rule.includes('/')) ? rules : '*/*',
   })
   if (result.canceled) return null
   return result.assets.map((asset) => ({

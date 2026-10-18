@@ -1,5 +1,5 @@
 import { forwardRef, useState } from 'react'
-import { type GetProps, type TamaguiElement, Text, XStack, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, Text, XStack, isWeb, styled } from 'tamagui'
 import { FieldContext, useFieldControl } from '../../hooks/useFieldControl'
 import { Select } from '../select/Select'
 
@@ -72,8 +72,14 @@ export const TimePicker = forwardRef<TamaguiElement, TimePickerProps>(
       hourLabel = 'Hour',
       minuteLabel = 'Minute',
       periodLabel = 'AM or PM',
+      'aria-label': ariaLabel,
+      accessibilityHint,
       ...props
     } = useFieldControl(pickerProps)
+    // Native: a group's name is never read (only focusable views are), so each
+    // select carries it, as in "Start time, Hour". The hour select takes the
+    // field's help text too.
+    const partLabel = (part: string) => (isWeb || !ariaLabel ? part : `${ariaLabel}, ${part}`)
     const twelveHour = hourCycle === 12
     // Parts are kept apart from the value: an hour alone is not a time yet.
     const [parts, setParts] = useState(() => toParts(value ?? defaultValue, twelveHour))
@@ -103,13 +109,14 @@ export const TimePicker = forwardRef<TamaguiElement, TimePickerProps>(
     const shared = { size, disabled, invalid, width: 'auto' as const }
 
     return (
-      <TimePickerFrame ref={ref} {...props}>
+      <TimePickerFrame ref={ref} aria-label={ariaLabel} {...props}>
         {/* The field's id and texts are on the hour select and this group already. */}
         <FieldContext.Provider value={null}>
           <Select
             {...shared}
             id={id}
-            aria-label={hourLabel}
+            aria-label={partLabel(hourLabel)}
+            accessibilityHint={accessibilityHint}
             placeholder="--"
             value={parts.hour ?? ''}
             onValueChange={(hour) => update({ hour })}
@@ -125,7 +132,7 @@ export const TimePicker = forwardRef<TamaguiElement, TimePickerProps>(
           </Text>
           <Select
             {...shared}
-            aria-label={minuteLabel}
+            aria-label={partLabel(minuteLabel)}
             placeholder="--"
             value={parts.minute ?? ''}
             onValueChange={(minute) => update({ minute })}
@@ -139,7 +146,7 @@ export const TimePicker = forwardRef<TamaguiElement, TimePickerProps>(
           {twelveHour ? (
             <Select
               {...shared}
-              aria-label={periodLabel}
+              aria-label={partLabel(periodLabel)}
               value={parts.period}
               onValueChange={(period) => update({ period: period as Parts['period'] })}
             >

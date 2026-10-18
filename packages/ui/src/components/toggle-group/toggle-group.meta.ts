@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'buttons',
   description:
     'A set of toggle buttons: pick one, like text alignment, or turn on several, like bold and italic.',
-  status: 'beta',
+  status: 'stable',
   since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['ToggleGroup'],

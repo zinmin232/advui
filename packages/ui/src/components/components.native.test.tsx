@@ -98,6 +98,7 @@ import { Snackbar } from './snackbar/Snackbar'
 import { Stepper } from './stepper/Stepper'
 import { Switch } from './switch/Switch'
 import { TagsInput } from './tags-input/TagsInput'
+import { TimePicker } from './time-picker/TimePicker'
 import { Textarea } from './textarea/Textarea'
 import { Toaster, toast } from './toast/Toaster'
 import { Toggle } from './toggle/Toggle'
@@ -485,6 +486,35 @@ describe('native rendering', () => {
     expect(onValueChange).toHaveBeenLastCalledWith(45)
     await fireEvent(thumb, 'accessibilityAction', { nativeEvent: { actionName: 'decrement' } })
     expect(onValueChange).toHaveBeenLastCalledWith(40)
+  })
+
+  it('Slider is named by a Field, a Label for its id, or a Label it is labelled by', async () => {
+    // aria-labelledby names nothing on iOS, so it used to read only the value.
+    await renderNative(
+      <>
+        <Field label="Volume" description="For alerts.">
+          <Slider defaultValue={40} />
+        </Field>
+        <Label htmlFor="bass">Bass</Label>
+        <Slider id="bass" defaultValue={10} />
+        <Label id="treble-label">Treble</Label>
+        <Slider aria-labelledby="treble-label" defaultValue={20} />
+        <Label id="gain-label">Gain</Label>
+        <Label id="gain-unit">(dB)</Label>
+        <Slider aria-labelledby="gain-label gain-unit" defaultValue={0} />
+        <Label>Price</Label>
+        <Slider aria-label="Price" defaultValue={[20, 80]} />
+      </>,
+    )
+    expect(screen.getByRole('slider', { name: 'Volume' }).props.accessibilityHint).toBe(
+      'For alerts.',
+    )
+    expect(screen.getByRole('slider', { name: 'Bass' })).toBeOnTheScreen()
+    expect(screen.getByRole('slider', { name: 'Treble' })).toBeOnTheScreen()
+    expect(screen.getByText('Treble', { includeHiddenElements: true })).not.toBeVisible()
+    // A list of ids is named by their texts, joined as on web.
+    expect(screen.getByRole('slider', { name: 'Gain (dB)' })).toBeOnTheScreen()
+    expect(screen.getByRole('slider', { name: 'Price, Minimum' })).toBeOnTheScreen()
   })
 
   it('Rating is an adjustable element that swipes and presses change', async () => {
@@ -1006,7 +1036,12 @@ describe('native rendering', () => {
   it('TagsInput: a disabled field’s remove buttons read as disabled and do nothing', async () => {
     const onValueChange = jest.fn()
     await renderNative(
-      <TagsInput aria-label="Topics" defaultValue={['web']} disabled onValueChange={onValueChange} />,
+      <TagsInput
+        aria-label="Topics"
+        defaultValue={['web']}
+        disabled
+        onValueChange={onValueChange}
+      />,
     )
     const remove = screen.getByRole('button', { name: 'Remove web' })
     expect(remove).toBeDisabled()
@@ -1186,6 +1221,9 @@ describe('native rendering', () => {
     )
     await fireEvent.changeText(screen.getByPlaceholderText('code'), '12a34')
     expect(onComplete).toHaveBeenCalledWith('1234')
+    // Android leaves a view with alpha 0 out of the accessibility tree, so
+    // TalkBack never found the field; it keeps a trace of opacity.
+    expect(screen.getByLabelText('Code')).toBeVisible()
   })
 
   it('Calendar days are labelled buttons that report the picked day', async () => {
@@ -1198,10 +1236,29 @@ describe('native rendering', () => {
         onValueChange={onValueChange}
       />,
     )
+    // Native has no aria-current, so today's name says so.
+    expect(screen.getByRole('button', { name: 'Sunday, March 1, 2026, today' })).toBeOnTheScreen()
     const day = screen.getByRole('button', { name: /March 12, 2026/ })
     await fireEvent.press(day)
     expect(onValueChange).toHaveBeenCalledWith(new Date(2026, 2, 12))
     expect(screen.getByRole('button', { name: /March 12, 2026/ })).toBeSelected()
+  })
+
+  it('TimePicker puts the field label in each select name, since a group name is not read', async () => {
+    await renderNative(
+      <Field label="Pickup" description="We wait 10 minutes.">
+        <TimePicker defaultValue="14:45" hourCycle={12} minuteStep={15} />
+      </Field>,
+    )
+    const hour = screen.getByRole('combobox', { name: 'Pickup, Hour' })
+    expect(hour).toHaveAccessibilityValue({ text: '2' })
+    expect(hour.props.accessibilityHint).toBe('We wait 10 minutes.')
+    expect(screen.getByRole('combobox', { name: 'Pickup, Minute' })).toHaveAccessibilityValue({
+      text: '45',
+    })
+    expect(screen.getByRole('combobox', { name: 'Pickup, AM or PM' })).toHaveAccessibilityValue({
+      text: 'PM',
+    })
   })
 
   it('DatePicker opens its calendar in a sheet and closes after a pick', async () => {
@@ -1419,6 +1476,82 @@ describe('native rendering', () => {
     expect(screen.getByLabelText('Plan').props.accessibilityHint).toBe('Billed monthly.')
   })
 
+  it('Select opens and picks for screen readers, and reads the choice as its value', async () => {
+    // Tamagui's trigger and items react to touches only; TalkBack could neither
+    // reach them nor activate them, and read "Plan" without the choice.
+    const onValueChange = jest.fn()
+    await renderNative(
+      <Field label="Plan">
+        <Select defaultValue="team" onValueChange={onValueChange}>
+          <Select.Item value="free">Free</Select.Item>
+          <Select.Item value="team">Team</Select.Item>
+          <Select.Item value="business" disabled>
+            Business
+          </Select.Item>
+        </Select>
+      </Field>,
+    )
+    const activate = { nativeEvent: { actionName: 'activate' } }
+    const trigger = screen.getByRole('combobox', { name: 'Plan' })
+    expect(trigger).toHaveAccessibilityValue({ text: 'Team' })
+    await fireEvent(trigger, 'accessibilityAction', activate)
+    expect(trigger).toBeExpanded()
+    const business = await screen.findByRole('option', { name: 'Business' })
+    expect(business).toBeDisabled()
+    await fireEvent(business, 'accessibilityAction', activate)
+    expect(onValueChange).not.toHaveBeenCalled()
+    expect(screen.getByRole('option', { name: 'Team' })).toBeSelected()
+    await fireEvent(screen.getByRole('option', { name: 'Free' }), 'accessibilityAction', activate)
+    expect(onValueChange).toHaveBeenCalledWith('free')
+    expect(trigger).toHaveAccessibilityValue({ text: 'Free' })
+    expect(trigger).toBeCollapsed()
+  })
+
+  it('Select reads its placeholder as the value until a choice', async () => {
+    await renderNative(
+      <Select aria-label="Timezone" placeholder="Select a timezone">
+        <Select.Item value="yangon">Yangon</Select.Item>
+      </Select>,
+    )
+    expect(screen.getByRole('combobox', { name: 'Timezone' })).toHaveAccessibilityValue({
+      text: 'Select a timezone',
+    })
+  })
+
+  it('Select reads an option whose value is empty (Filter Bar’s "Any") as its value', async () => {
+    await renderNative(
+      <Select aria-label="Status" placeholder="Any" value="">
+        <Select.Item value="">All statuses</Select.Item>
+        <Select.Item value="open">Open</Select.Item>
+      </Select>,
+    )
+    expect(screen.getByRole('combobox', { name: 'Status' })).toHaveAccessibilityValue({
+      text: 'All statuses',
+    })
+  })
+
+  it('Field puts "required" in the native name, which has no required state', async () => {
+    await renderNative(
+      <>
+        <Field label="Email" required>
+          <Input placeholder="email" />
+        </Field>
+        <Field label="Courriel" required requiredText="obligatoire">
+          <Input placeholder="courriel" />
+        </Field>
+        <Field label="Nickname" optional>
+          <Input placeholder="nickname" />
+        </Field>
+      </>,
+    )
+    expect(screen.getByPlaceholderText('email')).toHaveProp('aria-label', 'Email, required')
+    expect(screen.getByPlaceholderText('courriel')).toHaveProp(
+      'aria-label',
+      'Courriel, obligatoire',
+    )
+    expect(screen.getByPlaceholderText('nickname')).toHaveProp('aria-label', 'Nickname (optional)')
+  })
+
   it('Form submits from Form.Submit and blocks it while loading or disabled', async () => {
     const onSubmit = jest.fn<() => void>()
     const form = (state: { loading?: boolean; disabled?: boolean }) => (
@@ -1524,16 +1657,21 @@ describe('native rendering', () => {
         placeholder="Search"
         options={[
           { value: 'mm', label: 'Myanmar' },
-          { value: 'th', label: 'Thailand' },
+          { value: 'th', label: 'Thailand', description: 'UTC+07:00' },
         ]}
         onValueChange={onValueChange}
       />,
     )
-    await fireEvent.press(screen.getByRole('button', { name: 'Country' }))
+    // The field is a named button: its text is read only as its value.
+    const field = screen.getByRole('button', { name: 'Country' })
+    expect(field).toHaveAccessibilityValue({ text: 'Search' })
+    await fireEvent.press(field)
     await fireEvent.changeText(screen.getByPlaceholderText('Search'), 'thai')
     expect(screen.queryByRole('button', { name: 'Myanmar' })).toBeNull()
-    await fireEvent.press(screen.getByRole('button', { name: 'Thailand' }))
+    // The row's name holds its description, as its text does on web.
+    await fireEvent.press(screen.getByRole('button', { name: 'Thailand, UTC+07:00' }))
     expect(onValueChange).toHaveBeenCalledWith('th')
+    expect(field).toHaveAccessibilityValue({ text: 'Thailand' })
   })
 
   it('MultiSelect rows are checkboxes and the sheet stays open between picks', async () => {
@@ -1541,6 +1679,7 @@ describe('native rendering', () => {
     await renderNative(
       <MultiSelect
         aria-label="Labels"
+        placeholder="Add labels"
         options={[
           { value: 'bug', label: 'Bug' },
           { value: 'docs', label: 'Docs' },
@@ -1548,11 +1687,15 @@ describe('native rendering', () => {
         onValueChange={onValueChange}
       />,
     )
-    await fireEvent.press(screen.getByRole('button', { name: 'Labels' }))
+    const field = screen.getByRole('button', { name: 'Labels' })
+    expect(field).toHaveAccessibilityValue({ text: 'Add labels' })
+    await fireEvent.press(field)
     await fireEvent.press(screen.getByRole('checkbox', { name: 'Bug' }))
     await fireEvent.press(screen.getByRole('checkbox', { name: 'Docs' }))
     expect(onValueChange).toHaveBeenLastCalledWith(['bug', 'docs'])
     expect(screen.getByRole('checkbox', { name: 'Bug' })).toBeChecked()
+    // The chips are not read inside the named field; its value lists the picks.
+    expect(field).toHaveAccessibilityValue({ text: 'Bug, Docs' })
   })
 
   it('FileUpload and FileDropzone use the picker from setFilePicker', async () => {

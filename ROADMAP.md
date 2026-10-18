@@ -169,11 +169,11 @@ cannot do them. Tick them off here as they are done.
       2026-10-18 for the 16 that passed since: Form, Wrap, Show / Hide,
       Section, Sticky, AppShell, AutoGrid, Copy Button, Code Block,
       Menubar, Link, Checkbox Group, Tags Input, Carousel, Rating and Color
-      Picker. Rich Text Editor stays beta until its decision above. The
-      earlier components still marked beta (phases 1–3, Field, Filter Bar)
-      have no recorded phone check here yet.
-- [ ] **Phone check for the remaining beta components.** The 45 still
-      marked beta get the same Android phone check, in batches, then the
+      Picker; and on 2026-10-18 the overlays and form controls batches below.
+      Rich Text Editor stays beta until its decision above. The others
+      still marked beta wait for the batches below.
+- [ ] **Phone check for the remaining beta components.** The 45 that were
+      still marked beta get the same Android phone check, in batches, then the
       ones that pass are promoted in the batch's pull request. For each
       component: every example works (presses, typing, sheets, the back
       button) in light and dark mode, and in landscape where it is a sheet
@@ -200,10 +200,27 @@ cannot do them. Tick them off here as they are done.
         and not reproduced: "Maximum update depth exceeded" in Sheet's
         content, after a color mode switch with two Sheet screens stacked
         while the phone turned.
-  - [ ] Form controls: Field, Password Input, Number Input, OTP Input,
+  - [x] Form controls: Field, Password Input, Number Input, OTP Input,
         Select, Multi Select, Combobox, Autocomplete, Slider, Toggle, Toggle
         Group, File Upload, File Dropzone, Time Picker, Calendar, Date
-        Picker, Date Range Picker.
+        Picker, Date Range Picker. Checked on the Android phone on 2026-10-18
+        (light and dark mode; the Select, Multi Select and Date Picker sheets
+        in landscape) and promoted. Every example works: typing and
+        validation, steppers that stop at their limits, a typed decimal,
+        codes typed into OTP Input, sheets that pick, filter, rise above the
+        keyboard and close on Back, free text kept by Autocomplete, sliders
+        dragged, toggles pressed, files picked from the system picker and
+        removed, times, days and ranges picked. Fixes from it: OTP Input's
+        field was missing from the accessibility tree (opacity 0); Select's
+        trigger and options could not be reached or activated by TalkBack,
+        and the trigger did not read its choice; Multi Select read "2
+        selected" instead of its picks; option descriptions, Field's
+        required state, Calendar's today, Time Picker's field label and a
+        Slider named with `aria-labelledby` were not read on native; the
+        `setFilePicker` example hid PDFs from File Dropzone's picker. Group
+        names (Toggle Group) are not read on Android, as for Radio Group;
+        each item has its own name. Seen once: a sheet left open while a deep
+        link pushed another screen stayed on top of it until Back.
   - [ ] Navigation and layout: Breadcrumb, Button Group, Toolbar,
         Navigation Bar, FAB, Accordion, Collapsible, Scroll Area, Aspect
         Ratio, List Item.

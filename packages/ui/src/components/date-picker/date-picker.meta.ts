@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'date-picker',
   category: 'forms',
   description: 'A field that opens a calendar in a popover, or a bottom sheet on phones.',
-  status: 'beta',
+  status: 'stable',
   since: '0.5.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['DatePicker'],

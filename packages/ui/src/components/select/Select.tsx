@@ -28,6 +28,8 @@ import { FieldContext, useFieldControl } from '../../hooks/useFieldControl'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 import { useSheetMaxHeight } from '../../hooks/useSheetMaxHeight'
+import { ariaState } from '../../utils/ariaState'
+import { plainText } from '../../utils/plainText'
 import { fieldBoxStyle } from '../input/Input'
 
 const Trigger = styled(TamaguiSelect.Trigger, {
@@ -124,14 +126,23 @@ export interface SelectItemProps extends Omit<GetProps<typeof ItemFrame>, 'index
   index?: number
 }
 
+// Native screen readers activate a view through an action, not a touch.
+type ActionEvent = { nativeEvent: { actionName: string } }
+
+interface SelectItemInternalProps extends SelectItemProps {
+  /** Set by Select: picks this item when a screen reader activates it (native). */
+  pick?: () => void
+}
+
 function SelectItem({
   value,
   children,
   index = 0,
   onPressIn,
   onPressOut,
+  pick,
   ...props
-}: SelectItemProps) {
+}: SelectItemInternalProps) {
   const ripple = useRipple({
     color: '$popoverForeground',
     disabled: props.disabled ?? false,
@@ -143,6 +154,16 @@ function SelectItem({
       value={value}
       index={index}
       {...(ripple.active && { pressStyle: { backgroundColor: 'transparent' } })}
+      // Native: Tamagui's item reacts to touches only, so TalkBack could not
+      // reach or pick it. The sheet renders in a portal without our context,
+      // so Select hands each item its own `pick`.
+      {...(!isWeb && {
+        accessible: true,
+        accessibilityActions: [{ name: 'activate' }],
+        onAccessibilityAction: (event: ActionEvent) => {
+          if (!props.disabled && event.nativeEvent.actionName === 'activate') pick?.()
+        },
+      })}
       {...props}
       {...ripple.props}
     >
@@ -169,14 +190,20 @@ function SelectGroup({ label, children }: SelectGroupProps) {
   )
 }
 
-/** Assigns sequential `index` props (required for keyboard navigation) across groups. */
-function indexItems(children: ReactNode) {
+/**
+ * Assigns sequential `index` props (required for keyboard navigation) across
+ * groups, and each item's `pick`.
+ */
+function indexItems(children: ReactNode, pick: (value: string) => void) {
   let index = 0
   const walk = (nodes: ReactNode): ReactNode =>
     Children.map(nodes, (child) => {
       if (!isValidElement(child)) return child
-      const element = child as ReactElement<{ children?: ReactNode; index?: number }>
-      if (element.type === SelectItem) return cloneElement(element, { index: index++ })
+      const element = child as ReactElement<SelectItemInternalProps>
+      if (element.type === SelectItem) {
+        const { value } = element.props
+        return cloneElement(element, { index: index++, pick: () => pick(value) })
+      }
       if (element.type === SelectGroup || element.type === Fragment) {
         return cloneElement(element, { children: walk(element.props.children) })
       }
@@ -259,6 +286,9 @@ function SelectRoot(selectProps: SelectProps) {
     accessibilityHint,
     open: openProp,
     onOpenChange,
+    value: valueProp,
+    defaultValue,
+    onValueChange,
     ...props
   } = useFieldControl(selectProps)
   const field = useContext(FieldContext)
@@ -269,13 +299,27 @@ function SelectRoot(selectProps: SelectProps) {
     defaultValue: false,
     onChange: onOpenChange,
   })
+  // Held here as well as in Tamagui's Select, so the trigger can tell native
+  // screen readers the chosen option. Tamagui's empty value is ''.
+  const [value, setValue] = useControllableState({
+    value: valueProp,
+    defaultValue: defaultValue ?? '',
+    onChange: onValueChange,
+  })
   // Android: the back button closes the list instead of leaving the screen.
   useBackToClose(open, () => setOpen(false))
   const hydrated = useDidFinishSSR()
-  const items = useMemo(() => indexItems(children), [children])
+  const items = useMemo(
+    () =>
+      indexItems(children, (next) => {
+        setValue(next)
+        setOpen(false)
+      }),
+    [children, setValue, setOpen],
+  )
 
   if (!hydrated) {
-    const label = findLabel(children, props.value ?? props.defaultValue)
+    const label = findLabel(children, value)
     return (
       <StaticTrigger
         size={size}
@@ -312,6 +356,8 @@ function SelectRoot(selectProps: SelectProps) {
       disablePreventBodyScroll
       open={open}
       onOpenChange={setOpen}
+      value={value}
+      onValueChange={setValue}
       {...props}
     >
       <Trigger
@@ -324,7 +370,21 @@ function SelectRoot(selectProps: SelectProps) {
         aria-describedby={describedBy}
         aria-required={required}
         // Native only: on web it reaches the button, and React warns even when undefined.
-        {...(!isWeb && { accessibilityHint })}
+        {...(!isWeb && {
+          accessibilityHint,
+          // Tamagui's trigger reacts to touches only, so TalkBack could not
+          // reach or open it. A named view's text is not read either, so the
+          // chosen option is its value.
+          accessible: true,
+          accessibilityValue: {
+            text: plainText(findLabel(children, value)) || placeholder,
+          },
+          'aria-disabled': ariaState(disabled),
+          accessibilityActions: [{ name: 'activate' }],
+          onAccessibilityAction: (event: ActionEvent) => {
+            if (!disabled && event.nativeEvent.actionName === 'activate') setOpen(!open)
+          },
+        })}
         iconAfter={<ChevronDownIcon size={16} color="$mutedForeground" />}
       >
         <ValueText placeholder={placeholder} />
@@ -378,7 +438,8 @@ function SelectRoot(selectProps: SelectProps) {
  * on desktop web; a bottom sheet on touch devices and iOS/Android.
  */
 export const Select = withStaticProperties(SelectRoot, {
-  Item: SelectItem,
+  // `pick` is set by Select, not by apps.
+  Item: SelectItem as (props: SelectItemProps) => ReactElement,
   Group: SelectGroup,
   Separator: styled(View, {
     name: 'SelectSeparator',

@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'slider',
   category: 'forms',
   description: 'Pick a number, or a range, by dragging a thumb along a track.',
-  status: 'beta',
+  status: 'stable',
   since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Slider'],
