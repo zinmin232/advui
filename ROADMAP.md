@@ -2,8 +2,9 @@
 
 Components still to be built are listed in
 [`packages/catalog/src/roadmap.ts`](packages/catalog/src/roadmap.ts); the docs
-show them as "Planned". Phases 1 to 5 are built; phases 7 to 9 (at the end of
-this file) are planned.
+show them as "Planned". Phases 1 to 7 are done and phases 8 and 9 are
+planned. Phase 10, at the end of this file, holds the checks and decisions
+still open.
 
 ## Phases 1–5 (built)
 
@@ -13,313 +14,33 @@ this file) are planned.
 | 4     | Stat, KPI Card, List, Timeline, Image, Table, Pagination, Stepper, Data Table, Tree View, Navigation Menu, Sidebar                                                     |
 | 5     | Search, Command Palette, Image Gallery, Bar / Line / Area / Pie Chart, Resizable Panel, Data Grid, Video, Audio Player, Rich Text Editor, plus Loading Button and Form |
 
-Everything from phase 4 on is `beta` until the Phase 6 checks below pass on
-real devices.
+## Phase 6: maintainer checks (done)
 
-## Phase 6: maintainer checks
+Closed on 2026-10-19; what is still open moved to Phase 10.
 
-These need a person, a Windows machine or a real phone, so CI and AI agents
-cannot do them. Tick them off here as they are done.
+- **Android phone check.** Every component in `beta` was checked on an
+  Android phone (TECNO KM9, Expo Go 57) between 2026-10-04 and 2026-10-19,
+  in batches: every example in light and dark mode, sheets and layouts in
+  landscape, and names, roles and states read from the accessibility tree
+  (`uiautomator`). What the checks found is fixed, with native tests: the
+  fixes are in the CHANGELOG, and the platform pitfalls in AGENTS.md.
+- **Promoted to stable.** Every component except Rich Text Editor, as its
+  batch passed (2026-10-05 to 2026-10-19).
+- **Windows screenshots.** The missing `-win32.png` baselines were added on
+  2026-10-05.
+- **Form, decided** on 2026-10-05: a disabled Form disables every form
+  control inside it, in a Field or not; other buttons stay enabled. The hook
+  is `useParentForm`; `useFormStatus` is a deprecated alias.
+- **Demo media.** Video and Audio Player play clips made for the docs
+  (`apps/docs/public/media`, made by
+  `scripts/demo-media/make-demo-media.ps1`).
+- **Releases 0.6.0 to 0.13.0** are tagged on `main`, and all eight public
+  packages are on npm at 0.13.0 (0.8.0 and 0.9.0 are git tags only; the
+  0.5.0 of `@advui/data`, `@advui/charts` and `@advui/editor` is
+  deprecated). Within a day of a release, pnpm 11 and later install the
+  previous version: its `minimumReleaseAge` default skips newer ones.
 
-- [x] **Windows screenshots.** The 146 missing `-win32.png` baselines (the
-      examples added in phases 4 and 5, Form and Grid) were added on 2026-10-05.
-- [ ] **Real phones.** Run `pnpm install` (the Expo playground uses `expo-video`
-      and `expo-audio`; Expo Go SDK 57 includes both, a development build needs
-      rebuilding), then start `pnpm --filter @advui/expo-playground android:emulator`.
-  - The 26 components from phases 4 and 5 passed on an Android phone on
-    2026-10-05, after the fixes listed under Unreleased in the CHANGELOG.
-    Labels and states were read from the accessibility tree (`uiautomator`),
-    not by ear: Loading Button and Form report "Saving…, busy" on a disabled
-    button and save once on a double press, Form's title is a heading, its
-    Disabled fields cannot be edited and its Horizontal row fits. Video
-    plays and seeks; Audio Player plays, seeks and changes speed (the phone's
-    media volume was 0, so the sound itself was not heard). Still to check:
-    an iPhone, and TalkBack / VoiceOver by ear.
-  - Grid (0.7.0 spans): passed on the Android phone in landscape (914pt) on
-    2026-10-05: Two columns splits 8 / 4, Sidebar 3 / 9, the first Offset row
-    is centered, and rotating back to portrait stacks them. Still to check:
-    an iPhone.
-  - Stack, Wrap, Container and Separator (0.9.0): the Android phone was
-    checked on 2026-10-04 (column layouts, Wrap, gutter, labelled separator).
-    In landscape (2026-10-05) Responsive direction is a row and Toolbar a
-    single line. Still to check: an iPhone, and by ear that TalkBack /
-    VoiceOver read a labelled Separator with `decorative={false}` once, as
-    its label.
-  - Show / Hide, Section and Sticky (0.10.0): the Android phone was checked
-    on 2026-10-04 (Show / Hide at phone width, inverse and primary Sections,
-    Sticky headers pinned and pushed in a ScrollArea). In landscape
-    (2026-10-05) Show / Hide shows the links from md and Section spaces out
-    with three feature columns. Still to check: an iPhone, and by ear
-    TalkBack / VoiceOver reading a named Section.
-  - AppShell and AutoGrid (0.11.0): the Android phone was checked on
-    2026-10-04 (both examples open their sidebar in a drawer that clears
-    the status bar; the back button, the × and an item close it; Main
-    scrolls inside the Expo example; AutoGrid is one column). In landscape
-    (2026-10-05) the sidebar sits beside Main from md (the Docs example stays
-    a drawer below lg), AutoGrid has three columns, and the drawer is named
-    "Docs" in the accessibility tree. Still to check: an iPhone, and the
-    drawer's name by ear.
-  - The components that moved to `@advui/data`, `@advui/charts` and
-    `@advui/editor` still open in the Expo app (it now loads them from those
-    packages).
-  - Copy Button and Code Block (0.14.0): passed on the Android phone on
-    2026-10-17, in light and dark mode. A press copies through
-    `expo-clipboard` (pasted back into a field to confirm), shows the check
-    and Android's own "Copied" preview, and a labelled button keeps its
-    width. Code scrolls sideways, wraps with `wrap`, and a `maxHeight` log
-    scrolls inside the screen; marked lines show their tint and bar. Two
-    fixes came from it: an unwrapped line ending in italic lost its last
-    word on Android, and "Link copied" moved the button beside it. This
-    phone's system font replaces monospace in every app (a plain React
-    Native `fontFamily: 'monospace'` is proportional too), so code is not
-    monospaced on it. Still to check: a phone with the stock font, an
-    iPhone, and the announcements by ear.
-  - Menubar (0.14.0): passed on the Android phone on 2026-10-17 (light
-    mode, portrait). Each menu opens as a bottom sheet with its trigger
-    highlighted; separators, the dimmed disabled item and the red
-    destructive item show; choosing an item closes the sheet and runs it;
-    a disabled item and the disabled Tools trigger do nothing; the back
-    button and a tap on the scrim close the sheet without leaving the
-    screen; checkbox items keep their value and radio items move the
-    selection. Shortcuts are web only. Dark mode passed later that day
-    (the sheets, the dimmed disabled item, the red destructive item, the
-    check and radio marks). Landscape (2400×1080) passed too: the bar keeps
-    one row, each menu's sheet fits its items, choosing an item runs it
-    and closes the sheet, radio items move the selection, and the back
-    button closes the sheet. The Format menu is nearly as tall as the
-    screen, so its sheet's top edge and handle went under the status bar;
-    menu, Select and Popover sheets now stop below it and their content
-    scrolls (checked in landscape with a 12-option Select, Date Picker's
-    six-week August, and a vertical drag in Color Picker's sheet, which
-    still closes cleanly).
-    Still to check: an iPhone, and TalkBack by ear.
-  - Link, Input slots, Checkbox Group, Tags Input, Carousel, Rating and
-    Color Picker (0.14.0): checked on the Android phone on 2026-10-17
-    (light mode, portrait), with names and states read from the
-    accessibility tree. Inline links, standalone links and the `href`
-    links work (`https:` opens the browser, `tel:` the dialer); slot icons
-    and addons focus their field and the ring covers the whole box;
-    Checkbox Group toggles items and Select All, and its Field error
-    clears; Tags Input adds tags with return, commas and spaces, refuses
-    an invalid address with the error, and removes tags with their
-    buttons; Carousel moves with swipes, arrows and dots, loops, and its
-    autoplay pauses; Rating takes whole and half presses and reads its
-    value; Color Picker drags, takes a hex, picks swatches and opens in a
-    sheet that the back button closes. Fixes from it: a disabled checkbox
-    now reads as disabled; Select All no longer says "mixed" once it is
-    checked; pressing a disabled item's label no longer logs a warning;
-    the Color Picker sheet no longer stays on screen after a vertical drag
-    in the color area (a Tamagui Sheet bug, worked around); the Link
-    example's standalone link takes presses only on its text; and Backspace
-    in Tags Input's empty text box removes the last tag on Android too
-    (Tamagui dropped key presses on native, so its text box there is React
-    Native's TextInput). Dark mode passed later that day for all seven.
-    The long placeholder ("name@example.com" beside a tag) still wrapped
-    onto a cut-off second line, in light mode too: Android wraps every
-    TextInput placeholder wider than its box (plain React Native ones as
-    well; `numberOfLines` is already 1). The text box now draws a one-line
-    copy that ends in "…" and keeps the real placeholder, transparent, for
-    TalkBack; checked on the phone. Still to check: an iPhone (Backspace
-    included), and the announcements by ear.
-  - Form's disabled state, Radio Group items, Password Input and Search
-    (on Input's slots), and Date Picker and Date Range Picker after the
-    Popover change (0.14.0): checked on the Android phone on 2026-10-17 in
-    dark mode. A disabled Form's fields cannot be focused and Save is
-    disabled; with a probe added to the example (not committed), a
-    checkbox, switch, radio group, rating and Tags Input outside a Field
-    ignored presses while Cancel stayed enabled. Radio Group items are
-    named by their labels and a press on the label selects the item;
-    Password Input shows and hides the text; Search filters as you type
-    and its clear button empties the field and keeps focus; both pickers
-    open their sheet and close it with the picked date or range. Fixes
-    from it, checked again on the phone: a Switch reports on/off and
-    disabled (Tamagui's switch sent neither state on native); disabled
-    radio items and a disabled chip's remove button, Tags Input's
-    included, read as disabled; and Password Input's toggle is a toggle
-    button that reads as checked while the password shows (it used
-    `aria-pressed`, which React Native ignores). The Switch example's
-    switches had no name on Android (a `Label`'s `htmlFor` only moved
-    focus); a Label now names the control it targets, read from the
-    accessibility tree on the phone for Switch, Checkbox and Input. Hints
-    (descriptions, the group's name) go to Android's tooltip text, which
-    `uiautomator` does not show, so they are left for TalkBack by ear.
-    Still to check: an iPhone, and the announcements by ear.
-- [ ] **Rich Text Editor: decide.** It is a Markdown editor (toolbar,
-      shortcuts, preview), the same on every platform with no extra
-      dependencies. Keep it, or ask for a WYSIWYG editor, which needs new
-      libraries (TipTap on web, a WebView-based editor on iOS and Android).
-- [x] **Form: decided** on 2026-10-05. Nothing else holds Form back from
-      `stable`. Its disabled behavior passed on the Android phone on
-      2026-10-17 (see Real phones), after the Switch and Radio Group fixes
-      that check led to.
-  - A disabled Form disables every form control inside it, in a Field or
-    not (through `useFieldControl`); other buttons, such as Cancel, stay
-    enabled.
-  - The hook is `useParentForm` (type `FormContextValue`); `useFormStatus`
-    stays as a deprecated alias for now.
-  - The docs page has a Form playground, next to the eight examples.
-- [x] **Demo media.** The Video and Audio Player examples play clips made for
-      the docs (`apps/docs/public/media`, made by
-      `scripts/demo-media/make-demo-media.ps1` with the Windows voices and
-      ffmpeg); the handwashing video has an English captions file. They load
-      from the published site, so they play once that is deployed.
-- [ ] **Promote to stable.** When a component passes the phone check, change
-      its `status` from `beta` to `stable` in its `*.meta.ts` and run
-      `pnpm catalog`. Done on 2026-10-05 for 24 of the 26, and on
-      2026-10-18 for the 16 that passed since: Form, Wrap, Show / Hide,
-      Section, Sticky, AppShell, AutoGrid, Copy Button, Code Block,
-      Menubar, Link, Checkbox Group, Tags Input, Carousel, Rating and Color
-      Picker; on 2026-10-18 the overlays and form controls batches below;
-      and on 2026-10-19 the navigation and layout batch and the display
-      and feedback batch. Rich Text Editor stays beta until its decision
-      above; every other component is stable.
-- [x] **Phone check for the remaining beta components.** The 45 that were
-      still marked beta get the same Android phone check, in batches, then the
-      ones that pass are promoted in the batch's pull request. For each
-      component: every example works (presses, typing, sheets, the back
-      button) in light and dark mode, and in landscape where it is a sheet
-      or a layout; names, roles and states (checked, disabled, expanded,
-      selected) are read from the accessibility tree; what is wrong is
-      fixed with a native test. iPhone and TalkBack by ear stay open, as
-      for the components already promoted.
-  - [x] Overlays: Alert Dialog, Confirm Dialog, Drawer, Sheet, Popover,
-        Hover Card, Menu, Context Menu, Dropdown Menu, Toast, Snackbar.
-        Checked on the Android phone on 2026-10-18 (light and dark mode,
-        Dialog, Drawer and Sheet in landscape) and promoted. Every example
-        works: Alert and Confirm Dialog stay open on a scrim press and while
-        busy ("Sign out, busy", Back ignored), Confirm Dialog opens from a
-        menu item, the drawers close on a choice, × and Back, Sheet snaps
-        and scrolls, Popover filters apply, Menu selects and skips its
-        disabled item, Context Menu opens on long-press (and has the
-        `longpress` action for TalkBack), Dropdown Menu's checkbox and radio
-        items update, and Toast and Snackbar actions run. Hover Card shows
-        only its trigger on touch, as designed. Fixes from it: the screen
-        behind an open overlay is hidden from screen readers (it was
-        reachable); Dialog and Drawer close from the scrim; Sheet and
-        Popover rise above the keyboard; toasts and their buttons are
-        reachable by TalkBack, in a region named "Notifications". Seen once
-        and not reproduced: "Maximum update depth exceeded" in Sheet's
-        content, after a color mode switch with two Sheet screens stacked
-        while the phone turned.
-  - [x] Form controls: Field, Password Input, Number Input, OTP Input,
-        Select, Multi Select, Combobox, Autocomplete, Slider, Toggle, Toggle
-        Group, File Upload, File Dropzone, Time Picker, Calendar, Date
-        Picker, Date Range Picker. Checked on the Android phone on 2026-10-18
-        (light and dark mode; the Select, Multi Select and Date Picker sheets
-        in landscape) and promoted. Every example works: typing and
-        validation, steppers that stop at their limits, a typed decimal,
-        codes typed into OTP Input, sheets that pick, filter, rise above the
-        keyboard and close on Back, free text kept by Autocomplete, sliders
-        dragged, toggles pressed, files picked from the system picker and
-        removed, times, days and ranges picked. Fixes from it: OTP Input's
-        field was missing from the accessibility tree (opacity 0); Select's
-        trigger and options could not be reached or activated by TalkBack,
-        and the trigger did not read its choice; Multi Select read "2
-        selected" instead of its picks; option descriptions, Field's
-        required state, Calendar's today, Time Picker's field label and a
-        Slider named with `aria-labelledby` were not read on native; the
-        `setFilePicker` example hid PDFs from File Dropzone's picker. Group
-        names (Toggle Group) are not read on Android, as for Radio Group;
-        each item has its own name. Seen once: a sheet left open while a deep
-        link pushed another screen stayed on top of it until Back.
-  - [x] Navigation and layout: Breadcrumb, Button Group, Toolbar,
-        Navigation Bar, FAB, Accordion, Collapsible, Scroll Area, Aspect
-        Ratio, List Item. Checked on the Android phone on 2026-10-19 (light
-        and dark mode, all ten in landscape) and promoted. Every example
-        works: breadcrumb links run and "Show 4 more" expands the trail,
-        the current page says so; Navigation Bar tabs select and read their
-        badges ("Inbox, 3 new"); FABs and List Item rows press, a disabled
-        row does nothing, selectable rows report checked and row actions
-        press on their own; Accordion and Collapsible sections open and
-        close; Scroll Areas scroll inside the scrolling screen; Aspect
-        Ratio boxes measure 1:1, 4:3 and 16:9. Fixes from it: Toolbar's
-        Search example squeezed its "Users" title to a letter or two a line
-        (Yoga sized the growing center at the whole bar); the Groups
-        example ran past a 360pt screen, so its buttons are text only now;
-        a disabled Accordion item read as enabled, and its open sections
-        were regions that React Native labels with their own text; Scroll
-        Area's name was dropped (React Native's ScrollView ignores
-        `aria-label`); Navigation Bar items had no `activate` action for
-        TalkBack, which Android does not mark tabs clickable for; the small
-        FAB took touches only 40 high. For TalkBack by ear: a List whose
-        rows are not buttons gets their text as its own label from React
-        Native (as the Accordion region did), so check it is not read
-        twice. Seen on every press view: see the slide-off item below.
-  - [x] Display and feedback: Chip, Circular Progress, Empty State, Error
-        State, Loading State; and Filter Bar (`@advui/data`). Checked on the
-        Android phone on 2026-10-19 (light and dark mode, all six in
-        landscape) and promoted. Every example works: filter chips toggle
-        and report checked, input chips remove, action chips press and a
-        disabled one does nothing; rings read their name and value, and the
-        spinning one reads busy; Error State's retry shows its spinner;
-        Loading State reads its text as one element, with the spinner
-        hidden; Filter Bar's search, selects, multi-select, date and number
-        filters change the state, the data table filters its rows, chips
-        remove a filter, the count and Reset follow, Apply applies a draft,
-        "More filters" opens the advanced ones and keeps their values, and
-        the `responsive` bar is a column on the phone and a row in
-        landscape. Fixes from it: TalkBack heard a progress ring's name
-        without its value (Android reads a value only as text; linear
-        Progress too); bordered Empty and Loading States, and File
-        Dropzone, drew solid borders on Android (Tamagui splits the border
-        into sides, which Android does not dash); a small Select was 40 tall
-        beside 32-tall fields, on web too (Filter Bar's compact example,
-        Time Picker at `sm`); an empty Multi Select's placeholder sat above
-        the middle of the field. Left as designed: Error State and Loading
-        State are not announced on iOS and Android (their notes say to move
-        focus or announce), and Multi Select's chips are removed in its
-        sheet there. For TalkBack by ear: where focus goes after a chip's
-        remove button is pressed (web moves it to the next chip).
-  - Rich Text Editor waits for its decision above.
-- [ ] **Known issue: presses fire after a slide-off on iOS and Android.**
-      Seen on 2026-10-19 on the Android phone: a finger that lands on a
-      press view (Button, FAB, Accordion trigger, List Item row) and slides
-      off before lifting still presses it. A scrolling screen takes vertical
-      drags first, so it shows on screens that do not scroll and with
-      sideways drags. Tamagui 2.7.7, the last 2.x, delivers presses on
-      native through `useMainThreadPressEvents`, which calls `onPress` on
-      every release; react-native-gesture-handler does not change that.
-      Tamagui 3 hands presses to React Native's `usePressability`, which
-      cancels them. Decided on 2026-10-19 to leave it until AdvUI moves to
-      Tamagui 3: that move is a breaking release (no `$` tokens, no
-      `hoverStyle` / `pressStyle` props, kebab-case theme keys, no
-      `styleable()`), and a pnpm patch here would fix only the docs and the
-      Expo playground, not AdvUI's users.
-- [x] **Release 0.6.0**: tag `v0.6.0` points at the release commit, and all
-      eight public packages are published at 0.6.0.
-- [x] **Release 0.7.0** (Grid spans, Field): tagged `v0.7.0` and published.
-- [x] **Releases 0.8.0, 0.9.0 and 0.10.0** (Builder metadata; responsive
-      Stack props, Wrap, Container gutter, labelled Separator; Show / Hide,
-      Section, Sticky and the sub-themes), merged on 2026-10-04 with merge
-      commits so the stacked pull requests kept their commits. Tags `v0.8.0`,
-      `v0.9.0` and `v0.10.0` point at the merge commits on `main`, for the
-      AdvUI Builder. Only 0.10.0 was published to npm (after 0.7.0); 0.8.0 and
-      0.9.0 are git tags only.
-- [x] **Release 0.11.0** (AppShell, AutoGrid): published on 2026-10-04 and
-      merged on 2026-10-05 with a merge commit. Tag `v0.11.0` points at the
-      pull request's last commit, which `main` contains, so the AdvUI Builder
-      can sync metadata from it.
-- [x] **Release 0.12.0** (metadata on npm at `<package>/meta`, Combobox
-      fields that open on a click, the Form and accessibility fixes):
-      published on 2026-10-06; all eight public packages are on npm at 0.12.0.
-      Tag `v0.12.0` points at the merge commit on `main`. The AdvUI Builder
-      can now import `components` from `@advui/core/meta` (bundled by Vite)
-      instead of syncing `*.meta.ts` from the git tag.
-- [x] **Release 0.13.0** (Toolbar, Filter Bar, List Item, Confirm Dialog,
-      Loading State, Alert as a callout, the Date Picker fixes): published on
-      2026-10-15; all eight public packages are on npm at 0.13.0. Tag
-      `v0.13.0` points at the merge commit on `main`. The AdvUI Builder can
-      move to 0.13.0 and register Toolbar and Filter Bar.
-- [x] **Try the new packages.** 0.6.0 is the first working release of
-      `@advui/data`, `@advui/charts` and `@advui/editor`; their 0.5.0,
-      published by mistake before the version bump, is deprecated. On
-      2026-10-05 a fresh Next.js app with all six packages at 0.11.0 built and
-      rendered `DataTable`, `BarChart` and `RichTextEditor` once
-      `react-native-web` was added (the install guide now says to add it).
-      Within a day of a release, pnpm 11 and later install the previous
-      version: its `minimumReleaseAge` default skips newer ones.
-
-## Phases 7–9 (planned)
+## Phases 7–9 (7 built, 8 and 9 planned)
 
 Common components that other libraries (shadcn/ui, MUI, Mantine, Chakra, Ant
 Design) have and Adv UI does not yet. Scaffold one with
@@ -351,3 +72,46 @@ Notes for whoever picks these up:
   dot mode today.
 - **Visually Hidden** and **Portal** exist in Tamagui; they may only need to be
   re-exported and documented, with the native portal pitfalls in AGENTS.md.
+
+## Phase 10: open checks and decisions
+
+Carried over from Phase 6. They need a person, an iPhone or a decision, so
+CI and AI agents cannot close them. To run the Expo playground on a phone:
+`pnpm install`, then `pnpm --filter @advui/expo-playground android:emulator`
+(Android over USB or an emulator) or `pnpm --filter @advui/expo-playground ios`
+(macOS).
+
+- [ ] **Rich Text Editor: decide.** It is a Markdown editor (toolbar,
+      shortcuts, preview), the same on every platform with no extra
+      dependencies. Keep it, or ask for a WYSIWYG editor, which needs new
+      libraries (TipTap on web, a WebView-based editor on iOS and Android).
+      It stays `beta` until then; it is the last component in `beta`.
+- [ ] **iPhone.** Nothing has been checked on iOS yet. Look closely at Tags
+      Input's Backspace, the sheets that stop below the status bar, and the
+      announcements made with `AccessibilityInfo`.
+- [ ] **TalkBack and VoiceOver by ear.** The Android checks read the
+      accessibility tree, not speech, and Android puts hints (descriptions,
+      help text, group names) in tooltip text, which `uiautomator` does not
+      show. Listen for:
+  - announcements: Copy Button's result, Tags Input's added and removed
+    tags, Carousel's position;
+  - names: a labelled Separator with `decorative={false}`, read once; a
+    named Section; AppShell's drawer ("Docs");
+  - double reads: a List whose rows are not buttons gets their text as its
+    own label from React Native;
+  - focus after a chip's remove button is pressed (web moves it to the next
+    chip);
+  - Video and Audio Player's sound (the Android phone's media volume was 0).
+- [ ] **A phone with the stock font.** The TECNO's system font replaces
+      monospace in every app, so Code Block, `Text mono` and Kbd were never
+      seen monospaced on Android.
+- [ ] **Known issue: presses fire after a slide-off on iOS and Android.** A
+      finger that lands on a press view (Button, FAB, Accordion trigger,
+      List Item row) and slides off before lifting still presses it, on
+      screens that do not scroll and with sideways drags. Tamagui 2.7.7, the
+      last 2.x, calls `onPress` on every release; Tamagui 3 hands presses to
+      React Native's `usePressability`, which cancels them. Decided on
+      2026-10-19 to leave it until AdvUI moves to Tamagui 3: that move is a
+      breaking release (no `$` tokens, no `hoverStyle` / `pressStyle` props,
+      kebab-case theme keys, no `styleable()`), and a pnpm patch here would
+      fix only the docs and the Expo playground, not AdvUI's users.
