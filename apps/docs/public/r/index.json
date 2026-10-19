@@ -281,7 +281,7 @@
       "type": "registry:component",
       "description": "Vertically stacked sections that expand to reveal their content, such as FAQs or grouped settings.",
       "category": "data-display",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -347,7 +347,7 @@
       "type": "registry:component",
       "description": "Keeps content at a fixed width-to-height ratio as the width changes, for images, video and maps.",
       "category": "layout",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": []
@@ -423,7 +423,7 @@
       "type": "registry:component",
       "description": "Shows where the current page sits in the hierarchy, with links back up to each level.",
       "category": "navigation",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -436,7 +436,7 @@
       "type": "registry:component",
       "description": "Groups related buttons, joined into one control or spaced apart, such as a split button or a set of actions.",
       "category": "buttons",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
@@ -596,7 +596,7 @@
       "type": "registry:component",
       "description": "Shows and hides a section with one trigger, such as \"Show 3 more\" or \"Advanced options\".",
       "category": "data-display",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
@@ -846,7 +846,7 @@
       "type": "registry:component",
       "description": "The primary action of a screen, such as Compose or New, floating above the content.",
       "category": "buttons",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons",
@@ -1111,7 +1111,7 @@
       "type": "registry:component",
       "description": "One row of content: a leading visual, a title and description, trailing meta and actions. Pressable, selectable or a link.",
       "category": "data-display",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -1229,7 +1229,7 @@
       "type": "registry:component",
       "description": "Switches between three to five top-level destinations of an app, at the bottom of the screen on phones.",
       "category": "navigation",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -1403,7 +1403,7 @@
       "type": "registry:component",
       "description": "A box that scrolls its content within a set height or width. On web its scrollbars are thin and in the theme colors.",
       "category": "layout",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/theme"
@@ -1748,7 +1748,7 @@
       "type": "registry:component",
       "description": "A row or column of related controls, such as actions, filters or formatting, with optional leading, center and trailing regions.",
       "category": "layout",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [

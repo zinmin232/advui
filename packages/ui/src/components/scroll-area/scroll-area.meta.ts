@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'layout',
   description:
     'A box that scrolls its content within a set height or width. On web its scrollbars are thin and in the theme colors.',
-  status: 'beta',
+  status: 'stable',
   since: '0.3.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['ScrollArea'],

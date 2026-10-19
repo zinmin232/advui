@@ -152,6 +152,23 @@ each edit.
   read it with `useLabelFor`), and neither platform reads a group's name. Put
   the group's label in each control's name (Time Picker) or hint (Radio
   Group).
+- **React Native names an unnamed view with a role from its children.** On
+  Android a view with a `role`, a state or `aria-labelledby` but no label
+  gets its non-focusable children's text as its description, so TalkBack can
+  read that text twice. Keep landmark roles (`region`) web only (Accordion
+  content, Carousel). React Native's ScrollView ignores `aria-label`; pass
+  `accessibilityLabel` (`ScrollArea.native.tsx`).
+- **Android does not mark tab and radio views clickable**: give them an
+  `activate` action for TalkBack's double-tap (Navigation Bar, Toggle Group).
+- **Yoga sizes a parent at its child's max while measuring**: a center
+  region holding `flex={1}` content took the whole bar and squeezed its
+  neighbours, as native has no `min-width: auto`. Toolbar gives its center
+  `flexBasis: 0` on native.
+- **Native presses are not cancelled by a slide-off** (Tamagui 2.7.7): a
+  finger that slides off a press view before lifting still fires `onPress`.
+  Known and left for the Tamagui 3 move (ROADMAP); don't chase it per
+  component. When testing with `adb shell input swipe`, swipe from blank
+  space, or a swipe on a screen that cannot scroll lands as a press.
 - **Tamagui `activeStyle`** is not applied on native; derive active styles from
   state.
 - **Tamagui `asChild` drops `onFocus`** (web): `<View asChild onFocus>` never

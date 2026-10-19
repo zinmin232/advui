@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'navigation',
   description:
     'Switches between three to five top-level destinations of an app, at the bottom of the screen on phones.',
-  status: 'beta',
+  status: 'stable',
   since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['NavigationBar'],

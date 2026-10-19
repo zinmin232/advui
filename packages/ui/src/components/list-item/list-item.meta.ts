@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'data-display',
   description:
     'One row of content: a leading visual, a title and description, trailing meta and actions. Pressable, selectable or a link.',
-  status: 'beta',
+  status: 'stable',
   since: '0.13.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

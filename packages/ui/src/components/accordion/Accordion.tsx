@@ -16,6 +16,7 @@ import {
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 import { Text } from '../typography/Text'
+import { ariaState } from '../../utils/ariaState'
 import { isTextContent } from '../../utils/isTextContent'
 
 export type AccordionVariant = 'default' | 'card'
@@ -121,8 +122,9 @@ const AccordionTrigger = forwardRef<TamaguiElement, AccordionTriggerProps>(
           outlineWidth: 2,
           outlineOffset: -2,
         }}
-        // On web the trigger renders a <button>; native needs the role spelled out.
-        {...(!isWeb && { role: 'button', accessible: true })}
+        // On web the trigger renders a <button>; native needs the role spelled
+        // out, and the disabled state, which Tamagui sets on web only.
+        {...(!isWeb && { role: 'button', accessible: true, 'aria-disabled': ariaState(disabled) })}
         {...props}
         {...ripple.props}
       >
@@ -178,6 +180,10 @@ const AccordionContent = forwardRef<TamaguiElement, AccordionContentProps>(
         <TamaguiAccordion.Content
           ref={ref as never}
           id={contentId}
+          // A region is a web landmark. React Native gives a view with a role
+          // or aria-labelledby its children's text as a label, so TalkBack
+          // would read the section twice.
+          {...(!isWeb && { role: undefined, 'aria-labelledby': undefined })}
           unstyled
           paddingBottom="$4"
           paddingHorizontal={variant === 'card' ? '$4' : '$1'}

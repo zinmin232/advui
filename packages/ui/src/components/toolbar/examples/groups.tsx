@@ -1,23 +1,23 @@
 import { Button, Toolbar } from '@advui/core'
-import { CopyIcon, FileIcon, RotateCcwIcon, RotateCwIcon } from '@advui/icons'
 
+// Text-only buttons, so the bar fits a 360pt phone.
 export default function ToolbarGroups() {
   return (
     <Toolbar aria-label="Edit" variant="outline">
       <Toolbar.Group aria-label="History">
-        <Button size="sm" variant="ghost" icon={<RotateCcwIcon />}>
+        <Button size="sm" variant="ghost">
           Undo
         </Button>
-        <Button size="sm" variant="ghost" icon={<RotateCwIcon />}>
+        <Button size="sm" variant="ghost">
           Redo
         </Button>
       </Toolbar.Group>
       <Toolbar.Separator />
       <Toolbar.Group aria-label="Clipboard">
-        <Button size="sm" variant="ghost" icon={<CopyIcon />}>
+        <Button size="sm" variant="ghost">
           Copy
         </Button>
-        <Button size="sm" variant="ghost" icon={<FileIcon />}>
+        <Button size="sm" variant="ghost">
           Paste
         </Button>
       </Toolbar.Group>

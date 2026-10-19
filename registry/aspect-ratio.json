@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "Keeps content at a fixed width-to-height ratio as the width changes, for images, video and maps.",
   "category": "layout",
-  "status": "beta",
+  "status": "stable",
   "since": "0.3.0",
   "platforms": [
     "web",

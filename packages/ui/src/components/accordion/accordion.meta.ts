@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'data-display',
   description:
     'Vertically stacked sections that expand to reveal their content, such as FAQs or grouped settings.',
-  status: 'beta',
+  status: 'stable',
   since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Accordion'],

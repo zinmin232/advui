@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "Groups related buttons, joined into one control or spaced apart, such as a split button or a set of actions.",
   "category": "buttons",
-  "status": "beta",
+  "status": "stable",
   "since": "0.3.0",
   "platforms": [
     "web",

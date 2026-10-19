@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'layout',
   description:
     'A row or column of related controls, such as actions, filters or formatting, with optional leading, center and trailing regions.',
-  status: 'beta',
+  status: 'stable',
   since: '0.13.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Toolbar'],

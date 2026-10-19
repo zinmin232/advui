@@ -74,7 +74,8 @@ export const ScrollArea = forwardRef<TamaguiElement, ScrollAreaProps>(function S
       // Android: without it, a ScrollArea inside a scrolling screen never
       // scrolls; the screen takes every vertical drag.
       nestedScrollEnabled
-      aria-label={label}
+      // React Native maps aria-label on View only; its ScrollView drops it.
+      accessibilityLabel={label}
       {...(pinned && {
         stickyHeaderIndices: pinned.indices,
         contentContainerStyle: pinned.style,

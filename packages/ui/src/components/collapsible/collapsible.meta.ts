@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'data-display',
   description:
     'Shows and hides a section with one trigger, such as "Show 3 more" or "Advanced options".',
-  status: 'beta',
+  status: 'stable',
   since: '0.3.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Collapsible'],
