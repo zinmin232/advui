@@ -1142,6 +1142,7 @@ describe('native rendering', () => {
         <CircularProgress value={40} label="Storage used" showValue />
         <CircularProgress label="Syncing" />
         <Progress value={15} max={60} label="Upload" />
+        <Progress value={0} max={0} label="Queue" />
       </>,
     )
     // Android reads only the text: min, max and now are range info, which
@@ -1154,6 +1155,10 @@ describe('native rendering', () => {
     })
     expect(screen.getByRole('progressbar', { name: 'Upload' })).toHaveAccessibilityValue({
       text: '25%',
+    })
+    // A max of 0, before there is any work, reads 0% and not NaN%.
+    expect(screen.getByRole('progressbar', { name: 'Queue' })).toHaveAccessibilityValue({
+      text: '0%',
     })
     // The percentage is visible but hidden from screen readers, which get the value.
     expect(screen.queryByText('40%')).toBeNull()
