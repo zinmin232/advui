@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'data-display',
   description:
     'A compact element for a filter, an entered value such as a recipient, or a suggested action.',
-  status: 'beta',
+  status: 'stable',
   since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Chip'],

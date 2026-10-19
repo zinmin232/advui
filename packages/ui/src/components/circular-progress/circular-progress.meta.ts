@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'feedback',
   description:
     'A ring that fills as a task completes, for tight spaces and dashboards. Without a value it spins.',
-  status: 'beta',
+  status: 'stable',
   since: '0.3.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['CircularProgress'],
@@ -87,7 +87,8 @@ export default defineMeta({
   platformNotes: {
     web: 'An inline SVG; the value animates with a CSS transition.',
     ios: 'Drawn with react-native-svg; the indeterminate ring spins on the native driver.',
-    android: 'Same as iOS.',
+    android:
+      'Same as iOS. The percentage is also given as value text ("Storage used, 82%"): TalkBack reads a value only as text for a progress bar role.',
   },
   related: ['progress', 'spinner'],
 })

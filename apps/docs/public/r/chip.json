@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "A compact element for a filter, an entered value such as a recipient, or a suggested action.",
   "category": "data-display",
-  "status": "beta",
+  "status": "stable",
   "since": "0.2.0",
   "platforms": [
     "web",

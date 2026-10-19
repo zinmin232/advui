@@ -31,6 +31,7 @@ export function CircularProgress({
   const reducedMotion = useReducedMotion()
   const spin = useRef(new Animated.Value(0)).current
   const spinning = fraction === null
+  const percent = fraction === null ? null : Math.round(fraction * 100)
 
   useEffect(() => {
     if (!spinning) return
@@ -62,6 +63,10 @@ export function CircularProgress({
       aria-valuemin={0}
       aria-valuemax={max}
       aria-valuenow={clamped ?? undefined}
+      // Android reads a value only as text: min, max and now become range
+      // info, which TalkBack reads for a ProgressBar class but not for the
+      // plain view a progressbar role gets.
+      aria-valuetext={percent === null ? undefined : `${percent}%`}
       aria-busy={ariaState(spinning)}
       width={geometry.diameter}
       height={geometry.diameter}
@@ -98,7 +103,7 @@ export function CircularProgress({
           ) : null}
         </Svg>
       </Animated.View>
-      {showValue && fontSize && fraction !== null ? (
+      {showValue && fontSize && percent !== null ? (
         <Text
           aria-hidden
           position="absolute"
@@ -108,7 +113,7 @@ export function CircularProgress({
           fontWeight="600"
           color="$foreground"
         >
-          {Math.round(fraction * 100)}%
+          {percent}%
         </Text>
       ) : null}
     </View>

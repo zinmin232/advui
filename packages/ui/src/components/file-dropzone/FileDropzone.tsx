@@ -1,6 +1,7 @@
 import { IconDefaults, UploadIcon } from '@advui/icons'
 import { type ReactNode, forwardRef, useRef } from 'react'
 import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
+import { useDashedBorder } from '../../hooks/useDashedBorder'
 import { FileList } from '../file-upload/FileList'
 import { type FileSelectionProps, useFileSelection } from '../file-upload/useFileSelection'
 import { Text } from '../typography/Text'
@@ -84,6 +85,7 @@ export const FileDropzone = forwardRef<TamaguiElement, FileDropzoneProps>(functi
     removeLabel = (name) => `Remove ${name}`,
     disabled = false,
     invalid = false,
+    style,
     ...props
   },
   ref,
@@ -102,6 +104,7 @@ export const FileDropzone = forwardRef<TamaguiElement, FileDropzoneProps>(functi
   })
   const inactive = disabled || !canPick
   const dragging = useDropTarget(areaRef, { onFiles: add, disabled })
+  const dashed = useDashedBorder(dragging ? null : invalid ? '$error' : '$borderStrong')
   const defaultTitle = isWeb
     ? `Drop ${multiple ? 'files' : 'a file'} here or click to browse`
     : `Tap to choose ${multiple ? 'files' : 'a file'}`
@@ -132,6 +135,7 @@ export const FileDropzone = forwardRef<TamaguiElement, FileDropzoneProps>(functi
             }
           : { accessible: true })}
         onPress={inactive ? undefined : () => void open()}
+        style={dashed ? [dashed, style] : style}
         {...props}
       >
         <View backgroundColor="$muted" borderRadius="$full" padding="$3" aria-hidden>

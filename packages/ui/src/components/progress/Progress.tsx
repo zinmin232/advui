@@ -54,11 +54,18 @@ export function Progress({
   ...props
 }: ProgressProps) {
   const clamped = value === null ? null : Math.min(max, Math.max(0, value))
-  const percent = clamped === null ? 35 : (clamped / max) * 100
+  // A max of 0 (nothing to do yet) is empty, not NaN.
+  const percent = clamped === null ? 35 : max > 0 ? (clamped / max) * 100 : 0
   return (
     <Track
       role="progressbar"
-      {...(isWeb ? null : { accessible: true })}
+      // Android reads a value only as text (see CircularProgress.native.tsx).
+      {...(isWeb
+        ? null
+        : {
+            accessible: true,
+            'aria-valuetext': clamped === null ? undefined : `${Math.round(percent)}%`,
+          })}
       aria-label={label}
       aria-valuemin={0}
       aria-valuemax={max}

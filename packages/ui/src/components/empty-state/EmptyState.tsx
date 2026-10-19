@@ -1,6 +1,7 @@
 import { IconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
 import { type GetProps, type TamaguiElement, View, XStack, styled } from 'tamagui'
+import { useDashedBorder } from '../../hooks/useDashedBorder'
 import { Heading, type HeadingProps } from '../typography/Heading'
 import { Text } from '../typography/Text'
 
@@ -55,13 +56,20 @@ export const EmptyState = forwardRef<TamaguiElement, EmptyStateProps>(function E
     tone = 'default',
     bordered = false,
     children,
+    style,
     ...props
   },
   ref,
 ) {
   const colors = tones[tone]
+  const dashed = useDashedBorder(bordered ? '$border' : null)
   return (
-    <EmptyStateFrame ref={ref} bordered={bordered} {...props}>
+    <EmptyStateFrame
+      ref={ref}
+      bordered={bordered}
+      style={dashed ? [dashed, style] : style}
+      {...props}
+    >
       {icon ? (
         <View
           aria-hidden
