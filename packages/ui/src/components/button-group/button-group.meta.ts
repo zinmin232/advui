@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'buttons',
   description:
     'Groups related buttons, joined into one control or spaced apart, such as a split button or a set of actions.',
-  status: 'beta',
+  status: 'stable',
   since: '0.3.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['ButtonGroup'],

@@ -159,6 +159,11 @@ one version.
   Input, Number Input, OTP Input, Select, Multi Select, Combobox,
   Autocomplete, Slider, Toggle, Toggle Group, File Upload, File Dropzone,
   Time Picker, Calendar, Date Picker and Date Range Picker.
+- Stable after the Android phone check of the navigation and layout
+  components: Breadcrumb, Button Group, Toolbar, Navigation Bar, FAB,
+  Accordion, Collapsible, Scroll Area, Aspect Ratio and List Item.
+- **FAB** `size="sm"` on iOS and Android takes touches 2 points around it,
+  so it is 44 high to a finger, like a small Button.
 - **Label** on iOS and Android also names a control that points at it with
   `aria-labelledby` (its `id`), which iOS ignores and Android reads
   unreliably.
@@ -177,6 +182,20 @@ one version.
 
 ### Fixed
 
+- **Toolbar** on iOS and Android: a `center` that grows (a search field
+  with `flex={1}`) takes only the space beside `leading` and `trailing`.
+  Yoga sized it at the whole bar, so a title in `leading` shrank to a
+  letter or two a line. A bar with `wrap` lays out as before.
+- **Accordion** on iOS and Android: a disabled item's trigger reads as
+  disabled (Tamagui set the state on web only). An open section is no longer
+  a region named by its trigger there: React Native labels a view with a
+  role and no name with its children's text, so TalkBack could read the
+  section twice. On web it stays a region.
+- **Scroll Area** on iOS and Android: `aria-label` names the scroll view.
+  React Native's ScrollView drops `aria-label`, so it had no name.
+- **Navigation Bar** on iOS and Android: items take the `activate` action,
+  as Toggle Group's do. Android does not mark tab views clickable, so a
+  screen reader's double-tap arrives as that action.
 - **OTP Input** on Android: TalkBack reaches the field. Its hidden text box
   had an opacity of 0, and Android leaves such views out of the
   accessibility tree, so the code could not be entered with a screen reader.

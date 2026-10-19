@@ -171,6 +171,11 @@ const ToolbarRoot = forwardRef<TamaguiElement, ToolbarProps>(function Toolbar(
         {...(slot === 'trailing' && {
           [horizontal ? 'marginInlineStart' : 'marginBlockStart']: 'auto',
         })}
+        // Native has no `min-width: auto`, and Yoga sizes a center holding a
+        // growing field (`flex={1}`) at the whole bar, so shrinking took the
+        // title down to a letter a line. On one line the center gets only
+        // the free space; with `wrap` its size still decides the line breaks.
+        {...(!isWeb && slot === 'center' && !wrap && { flexBasis: 0 })}
         {...(isWeb &&
           (slot !== 'center' || isTextContent(content)) && {
             minWidth: 'auto',

@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'navigation',
   description:
     'Shows where the current page sits in the hierarchy, with links back up to each level.',
-  status: 'beta',
+  status: 'stable',
   since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Breadcrumb'],

@@ -1,5 +1,6 @@
 import { IconDefaults } from '@advui/icons'
 import { type ReactNode, createContext, forwardRef, useContext } from 'react'
+import type { GestureResponderEvent } from 'react-native'
 import {
   type GetProps,
   type TamaguiElement,
@@ -109,6 +110,12 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
       onPressOut,
     })
 
+    const choose = (event: GestureResponderEvent) => {
+      if (disabled) return
+      onPress?.(event)
+      bar.select(value)
+    }
+
     const semantics = isWeb
       ? {
           render: render ?? 'button',
@@ -119,6 +126,12 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
           accessible: true,
           role: 'tab' as const,
           accessibilityState: { selected: active, disabled },
+          // Android does not mark tab views clickable; TalkBack's double-tap
+          // then arrives as the "activate" action.
+          accessibilityActions: [{ name: 'activate' }],
+          onAccessibilityAction: (event: { nativeEvent: { actionName: string } }) => {
+            if (event.nativeEvent.actionName === 'activate') choose(event as never)
+          },
         }
 
     return (
@@ -145,11 +158,7 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
           outlineOffset: 2,
           borderRadius: '$lg',
         }}
-        onPress={(event) => {
-          if (disabled) return
-          onPress?.(event)
-          bar.select(value)
-        }}
+        onPress={choose}
         {...props}
         {...ripple.props}
       >

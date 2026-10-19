@@ -476,6 +476,32 @@ describe('native rendering', () => {
     expect(screen.getByText('Three to five days')).toBeOnTheScreen()
   })
 
+  it('Accordion: a disabled trigger says so, and content is not a labelled region', async () => {
+    await renderNative(
+      <Accordion type="multiple" defaultValue={['one']}>
+        <Accordion.Item value="one">
+          <Accordion.Trigger>Shipping</Accordion.Trigger>
+          <Accordion.Content testID="content">Three to five days</Accordion.Content>
+        </Accordion.Item>
+        <Accordion.Item value="two" disabled>
+          <Accordion.Trigger>Billing</Accordion.Trigger>
+          <Accordion.Content>Invoices</Accordion.Content>
+        </Accordion.Item>
+      </Accordion>,
+    )
+    // Tamagui sets the disabled state on web only.
+    expect(screen.getByRole('button', { name: 'Billing' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Shipping' })).toBeEnabled()
+    // React Native labels a view with a role or aria-labelledby with its
+    // children's text, so TalkBack read the section twice.
+    const content = screen.getByTestId('content')
+    expect(content.props.role).toBeUndefined()
+    expect(content.props.accessibilityRole).toBeUndefined()
+    expect(
+      content.props['aria-labelledby'] ?? content.props.accessibilityLabelledBy,
+    ).toBeUndefined()
+  })
+
   it('Slider thumbs respond to screen-reader increment / decrement actions', async () => {
     const onValueChange = jest.fn()
     await renderNative(
@@ -994,6 +1020,17 @@ describe('native rendering', () => {
     warn.mockRestore()
   })
 
+  it('Fab: the small one takes touches 44 high, as Button does', async () => {
+    await renderNative(
+      <>
+        <Fab size="sm" icon={<PlusIcon />} aria-label="Add" />
+        <Fab icon={<PlusIcon />} aria-label="Compose" />
+      </>,
+    )
+    expect(screen.getByRole('button', { name: 'Add' }).props.hitSlop).toBe(2)
+    expect(screen.getByRole('button', { name: 'Compose' }).props.hitSlop).toBeUndefined()
+  })
+
   it('Fab is a button named by its label', async () => {
     const onPress = jest.fn()
     await renderNative(<Fab icon={<PlusIcon />} aria-label="New project" onPress={onPress} />)
@@ -1077,6 +1114,12 @@ describe('native rendering', () => {
     await fireEvent.press(search)
     expect(onValueChange).toHaveBeenLastCalledWith('search')
     expect(screen.getByRole('tab', { name: 'Search, 2 new' })).toBeSelected()
+    // Android does not mark tabs clickable: TalkBack's double-tap is "activate".
+    await fireEvent(screen.getByRole('tab', { name: 'Home' }), 'accessibilityAction', {
+      nativeEvent: { actionName: 'activate' },
+    })
+    expect(onValueChange).toHaveBeenLastCalledWith('home')
+    expect(screen.getByRole('tab', { name: 'Home' })).toBeSelected()
   })
 
   it('wraps text made of several JSX pieces ("Status ({count})") in Text', async () => {
@@ -1199,6 +1242,23 @@ describe('native rendering', () => {
     expect(screen.getByRole('button', { name: 'Rotate' })).toBeOnTheScreen()
   })
 
+  it('Toolbar: a center that grows takes only the free space, unless the bar wraps', async () => {
+    // Yoga sized a center holding a growing field at the whole bar, so the
+    // title beside it shrank to a letter a line.
+    await renderNative(
+      <>
+        <Toolbar leading="Users" center={<XStack testID="field" flex={1} />} />
+        <Toolbar wrap leading="Orders" center={<XStack testID="wrapped" flex={1} />} />
+      </>,
+    )
+    const region = (testID: string) =>
+      StyleSheet.flatten(screen.getByTestId(testID).parent?.props.style)
+    expect(region('field')).toMatchObject({ flexGrow: 1, flexBasis: 0 })
+    // With wrap, the center's size decides where the line breaks.
+    expect(region('wrapped').flexGrow).toBe(1)
+    expect(region('wrapped').flexBasis).toBeUndefined()
+  })
+
   it('AspectRatio and ScrollArea use the native aspectRatio and ScrollView', async () => {
     await renderNative(
       <>
@@ -1211,6 +1271,8 @@ describe('native rendering', () => {
     expect(StyleSheet.flatten(screen.getByTestId('ratio').props.style).aspectRatio).toBe(2)
     const scroll = screen.getByTestId('scroll')
     expect(scroll.props.horizontal).toBe(true)
+    // React Native's ScrollView drops aria-label; Android read no name.
+    expect(scroll.props.accessibilityLabel).toBe('Albums')
     expect(screen.getByText('Nightfall')).toBeOnTheScreen()
   })
 

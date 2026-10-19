@@ -144,7 +144,8 @@ export const Fab = forwardRef<TamaguiElement, FabProps>(function Fab(
       placement={placement}
       disabled={disabled}
       aria-disabled={ariaState(disabled)}
-      {...(isWeb ? { type: 'button' } : null)}
+      // The small FAB is 40 high; touches reach 44, as Button's do.
+      {...(isWeb ? { type: 'button' } : size === 'sm' && !extended && { hitSlop: 2 })}
       {...(ripple.active && { pressStyle: { backgroundColor: background[variant] } })}
       {...props}
       {...ripple.props}

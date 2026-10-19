@@ -169,7 +169,8 @@ cannot do them. Tick them off here as they are done.
       2026-10-18 for the 16 that passed since: Form, Wrap, Show / Hide,
       Section, Sticky, AppShell, AutoGrid, Copy Button, Code Block,
       Menubar, Link, Checkbox Group, Tags Input, Carousel, Rating and Color
-      Picker; and on 2026-10-18 the overlays and form controls batches below.
+      Picker; on 2026-10-18 the overlays and form controls batches below;
+      and on 2026-10-19 the navigation and layout batch.
       Rich Text Editor stays beta until its decision above. The others
       still marked beta wait for the batches below.
 - [ ] **Phone check for the remaining beta components.** The 45 that were
@@ -221,12 +222,46 @@ cannot do them. Tick them off here as they are done.
         names (Toggle Group) are not read on Android, as for Radio Group;
         each item has its own name. Seen once: a sheet left open while a deep
         link pushed another screen stayed on top of it until Back.
-  - [ ] Navigation and layout: Breadcrumb, Button Group, Toolbar,
+  - [x] Navigation and layout: Breadcrumb, Button Group, Toolbar,
         Navigation Bar, FAB, Accordion, Collapsible, Scroll Area, Aspect
-        Ratio, List Item.
+        Ratio, List Item. Checked on the Android phone on 2026-10-19 (light
+        and dark mode, all ten in landscape) and promoted. Every example
+        works: breadcrumb links run and "Show 4 more" expands the trail,
+        the current page says so; Navigation Bar tabs select and read their
+        badges ("Inbox, 3 new"); FABs and List Item rows press, a disabled
+        row does nothing, selectable rows report checked and row actions
+        press on their own; Accordion and Collapsible sections open and
+        close; Scroll Areas scroll inside the scrolling screen; Aspect
+        Ratio boxes measure 1:1, 4:3 and 16:9. Fixes from it: Toolbar's
+        Search example squeezed its "Users" title to a letter or two a line
+        (Yoga sized the growing center at the whole bar); the Groups
+        example ran past a 360pt screen, so its buttons are text only now;
+        a disabled Accordion item read as enabled, and its open sections
+        were regions that React Native labels with their own text; Scroll
+        Area's name was dropped (React Native's ScrollView ignores
+        `aria-label`); Navigation Bar items had no `activate` action for
+        TalkBack, which Android does not mark tabs clickable for; the small
+        FAB took touches only 40 high. For TalkBack by ear: a List whose
+        rows are not buttons gets their text as its own label from React
+        Native (as the Accordion region did), so check it is not read
+        twice. Seen on every press view: see the slide-off item below.
   - [ ] Display and feedback: Chip, Circular Progress, Empty State, Error
         State, Loading State; and Filter Bar (`@advui/data`).
   - Rich Text Editor waits for its decision above.
+- [ ] **Known issue: presses fire after a slide-off on iOS and Android.**
+      Seen on 2026-10-19 on the Android phone: a finger that lands on a
+      press view (Button, FAB, Accordion trigger, List Item row) and slides
+      off before lifting still presses it. A scrolling screen takes vertical
+      drags first, so it shows on screens that do not scroll and with
+      sideways drags. Tamagui 2.7.7, the last 2.x, delivers presses on
+      native through `useMainThreadPressEvents`, which calls `onPress` on
+      every release; react-native-gesture-handler does not change that.
+      Tamagui 3 hands presses to React Native's `usePressability`, which
+      cancels them. Decided on 2026-10-19 to leave it until AdvUI moves to
+      Tamagui 3: that move is a breaking release (no `$` tokens, no
+      `hoverStyle` / `pressStyle` props, kebab-case theme keys, no
+      `styleable()`), and a pnpm patch here would fix only the docs and the
+      Expo playground, not AdvUI's users.
 - [x] **Release 0.6.0**: tag `v0.6.0` points at the release commit, and all
       eight public packages are published at 0.6.0.
 - [x] **Release 0.7.0** (Grid spans, Field): tagged `v0.7.0` and published.

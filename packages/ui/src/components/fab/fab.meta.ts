@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'buttons',
   description:
     'The primary action of a screen, such as Compose or New, floating above the content.',
-  status: 'beta',
+  status: 'stable',
   since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Fab'],

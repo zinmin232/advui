@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'layout',
   description:
     'Keeps content at a fixed width-to-height ratio as the width changes, for images, video and maps.',
-  status: 'beta',
+  status: 'stable',
   since: '0.3.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['AspectRatio'],
