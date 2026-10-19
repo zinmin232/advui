@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'empty-state',
   category: 'feedback',
   description: 'A placeholder for an empty list, search or page, with the action that fills it.',
-  status: 'beta',
+  status: 'stable',
   since: '0.4.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['EmptyState'],

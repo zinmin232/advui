@@ -1136,17 +1136,24 @@ describe('native rendering', () => {
     expect(screen.getByText('2 new').type).toBe('Text')
   })
 
-  it('CircularProgress exposes its value, and spins busy without one', async () => {
+  it('CircularProgress and Progress read their value as text, and spin busy without one', async () => {
     await renderNative(
       <>
         <CircularProgress value={40} label="Storage used" showValue />
         <CircularProgress label="Syncing" />
+        <Progress value={15} max={60} label="Upload" />
       </>,
     )
+    // Android reads only the text: min, max and now are range info, which
+    // TalkBack reads for a ProgressBar class, not a progressbar role's view.
     expect(screen.getByRole('progressbar', { name: 'Storage used' })).toHaveAccessibilityValue({
       min: 0,
       max: 100,
       now: 40,
+      text: '40%',
+    })
+    expect(screen.getByRole('progressbar', { name: 'Upload' })).toHaveAccessibilityValue({
+      text: '25%',
     })
     // The percentage is visible but hidden from screen readers, which get the value.
     expect(screen.queryByText('40%')).toBeNull()
@@ -1592,6 +1599,18 @@ describe('native rendering', () => {
     })
   })
 
+  it('Select’s small trigger is as tall as a small field', async () => {
+    await renderNative(
+      <Select size="sm" aria-label="Level">
+        <Select.Item value="info">Info</Select.Item>
+      </Select>,
+    )
+    // Tamagui's trigger is a ListItem with a 40px minimum height of its own.
+    expect(
+      StyleSheet.flatten(screen.getByRole('combobox', { name: 'Level' }).props.style),
+    ).toMatchObject({ height: 32, minHeight: 0 })
+  })
+
   it('Field puts "required" in the native name, which has no required state', async () => {
     await renderNative(
       <>
@@ -1711,6 +1730,28 @@ describe('native rendering', () => {
     expect(onCancel).toHaveBeenCalled()
   })
 
+  it('EmptyState, LoadingState and FileDropzone keep a dashed border dashed on Android', async () => {
+    await renderNative(
+      <>
+        <EmptyState testID="empty" bordered title="No results" />
+        <LoadingState testID="loading" bordered />
+        <FileDropzone invalid />
+      </>,
+    )
+    // Android dashes a rounded border only from `borderWidth` and `borderColor`
+    // for all sides, and Tamagui splits both into per-side props.
+    for (const frame of [
+      screen.getByTestId('empty'),
+      screen.getByTestId('loading'),
+      screen.getByRole('button', { name: /Tap to choose files/ }),
+    ]) {
+      const style = StyleSheet.flatten(frame.props.style)
+      expect(style).toMatchObject({ borderWidth: 1, borderStyle: 'dashed' })
+      // Each side's own color must match, or Android draws the sides solid.
+      expect(style.borderColor).toBe(style.borderTopColor)
+    }
+  })
+
   it('Combobox opens a searchable sheet and picks a labelled row', async () => {
     const onValueChange = jest.fn()
     await renderNative(
@@ -1751,6 +1792,8 @@ describe('native rendering', () => {
     )
     const field = screen.getByRole('button', { name: 'Labels' })
     expect(field).toHaveAccessibilityValue({ text: 'Add labels' })
+    // Yoga starts a wrapping row's lines at the top; the placeholder is centered.
+    expect(StyleSheet.flatten(field.props.style).alignContent).toBe('center')
     await fireEvent.press(field)
     await fireEvent.press(screen.getByRole('checkbox', { name: 'Bug' }))
     await fireEvent.press(screen.getByRole('checkbox', { name: 'Docs' }))

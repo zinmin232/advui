@@ -1,5 +1,6 @@
 import { type ReactNode, forwardRef, useEffect, useState } from 'react'
 import { type GetProps, type TamaguiElement, View, XStack, isWeb, styled } from 'tamagui'
+import { useDashedBorder } from '../../hooks/useDashedBorder'
 import { Spinner } from '../spinner/Spinner'
 import { Text } from '../typography/Text'
 
@@ -43,7 +44,7 @@ export interface LoadingStateProps extends Omit<GetProps<typeof LoadingStateFram
  * announced politely.
  */
 export const LoadingState = forwardRef<TamaguiElement, LoadingStateProps>(function LoadingState(
-  { title = 'Loading…', description, delay = 0, bordered = false, children, ...props },
+  { title = 'Loading…', description, delay = 0, bordered = false, children, style, ...props },
   ref,
 ) {
   const [elapsed, setElapsed] = useState(false)
@@ -53,6 +54,7 @@ export const LoadingState = forwardRef<TamaguiElement, LoadingStateProps>(functi
     return () => clearTimeout(timer)
   }, [delay])
   const shown = delay <= 0 || elapsed
+  const dashed = useDashedBorder(bordered && shown ? '$border' : null)
 
   // Web: the status element is rendered empty during the delay, because
   // screen readers announce text added to a live region more reliably than a
@@ -64,7 +66,12 @@ export const LoadingState = forwardRef<TamaguiElement, LoadingStateProps>(functi
       : null
 
   return (
-    <LoadingStateFrame ref={ref} bordered={bordered && shown} {...props}>
+    <LoadingStateFrame
+      ref={ref}
+      bordered={bordered && shown}
+      style={dashed ? [dashed, style] : style}
+      {...props}
+    >
       {/* The text says what the spinner shows; a second "Loading" is noise. */}
       {shown ? <Spinner size="lg" color="$primary" aria-hidden /> : null}
       <View gap="$1" alignItems="center" {...textSemantics}>

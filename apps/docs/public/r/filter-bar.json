@@ -5,7 +5,7 @@
   "type": "registry:component",
   "description": "Search, filter controls built from definitions, active-filter chips, and Apply and Reset, above a table, list or dashboard.",
   "category": "advanced",
-  "status": "beta",
+  "status": "stable",
   "since": "0.13.0",
   "platforms": [
     "web",

@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'feedback',
   description:
     'Shown in place of content while it loads: a spinner, what is loading and a way to cancel.',
-  status: 'beta',
+  status: 'stable',
   since: '0.13.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['LoadingState'],

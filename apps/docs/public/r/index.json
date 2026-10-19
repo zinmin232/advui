@@ -148,7 +148,7 @@
       "type": "registry:component",
       "description": "Search, filter controls built from definitions, active-filter chips, and Apply and Reset, above a table, list or dashboard.",
       "category": "advanced",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/data",
       "dependencies": [
         "@advui/icons"
@@ -550,7 +550,7 @@
       "type": "registry:component",
       "description": "A compact element for a filter, an entered value such as a recipient, or a suggested action.",
       "category": "data-display",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -566,7 +566,7 @@
       "type": "registry:component",
       "description": "A ring that fills as a task completes, for tight spaces and dashboards. Without a value it spins.",
       "category": "feedback",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -814,12 +814,13 @@
       "type": "registry:component",
       "description": "A placeholder for an empty list, search or page, with the action that fills it.",
       "category": "feedback",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
       ],
       "registryDependencies": [
+        "hooks",
         "typography"
       ]
     },
@@ -829,7 +830,7 @@
       "type": "registry:component",
       "description": "Shown in place of content that failed to load, with a retry button.",
       "category": "feedback",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [
         "@advui/icons"
@@ -837,6 +838,7 @@
       "registryDependencies": [
         "button",
         "empty-state",
+        "hooks",
         "typography"
       ]
     },
@@ -1157,10 +1159,11 @@
       "type": "registry:component",
       "description": "Shown in place of content while it loads: a spinner, what is loading and a way to cancel.",
       "category": "feedback",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/core",
       "dependencies": [],
       "registryDependencies": [
+        "hooks",
         "spinner",
         "typography"
       ]

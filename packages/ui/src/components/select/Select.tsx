@@ -41,6 +41,11 @@ const Trigger = styled(TamaguiSelect.Trigger, {
   justifyContent: 'space-between',
   gap: '$2',
   cursor: 'pointer',
+  // Tamagui's trigger is a ListItem that keeps its own size styles, a 40px
+  // minimum height and vertical padding, so `sm` was 40 tall (32 before
+  // hydration). The size variants set the height.
+  minHeight: 0,
+  paddingVertical: 0,
 
   variants: {
     size: {

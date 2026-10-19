@@ -58,7 +58,13 @@ export function Progress({
   return (
     <Track
       role="progressbar"
-      {...(isWeb ? null : { accessible: true })}
+      // Android reads a value only as text (see CircularProgress.native.tsx).
+      {...(isWeb
+        ? null
+        : {
+            accessible: true,
+            'aria-valuetext': clamped === null ? undefined : `${Math.round(percent)}%`,
+          })}
       aria-label={label}
       aria-valuemin={0}
       aria-valuemax={max}

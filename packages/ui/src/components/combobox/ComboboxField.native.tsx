@@ -15,6 +15,9 @@ const FieldBox = styled(XStack, {
   ...fieldBoxStyle,
   alignItems: 'center',
   flexWrap: 'wrap',
+  // Yoga starts wrapped lines at the top, so a line of text shorter than the
+  // minimum height sat above the middle.
+  alignContent: 'center',
   gap: '$1.5',
 
   variants: {

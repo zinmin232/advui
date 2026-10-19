@@ -163,7 +163,19 @@ each edit.
 - **Yoga sizes a parent at its child's max while measuring**: a center
   region holding `flex={1}` content took the whole bar and squeezed its
   neighbours, as native has no `min-width: auto`. Toolbar gives its center
-  `flexBasis: 0` on native.
+  `flexBasis: 0` on native. Yoga also starts wrapped lines at the top
+  (`alignContent` defaults to `flex-start`), so a wrapping field with a
+  `minHeight` needs `alignContent: 'center'` (`ComboboxField.native.tsx`).
+- **Dashed borders turn solid on Android** with a radius: Android dashes a
+  rounded border only from `borderWidth` and `borderColor` for all sides,
+  and Tamagui splits both into per-side props on native. Pass them as a
+  style with `useDashedBorder` (Empty State, File Dropzone).
+- **Android reads a value only as text.** `aria-valuenow/min/max` become
+  range info, which TalkBack reads for its ProgressBar and SeekBar classes;
+  a `progressbar` role is a plain view there. Give `aria-valuetext` on
+  native ("40%", see `CircularProgress.native.tsx`).
+- **Tamagui's Select trigger is a ListItem** that keeps its own size styles
+  (a 40px `minHeight`, vertical padding) under ours; `Select.tsx` resets them.
 - **Native presses are not cancelled by a slide-off** (Tamagui 2.7.7): a
   finger that slides off a press view before lifting still fires `onPress`.
   Known and left for the Tamagui 3 move (ROADMAP); don't chase it per

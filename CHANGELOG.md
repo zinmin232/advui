@@ -182,6 +182,23 @@ one version.
 
 ### Fixed
 
+- **Circular Progress** and **Progress** on Android: TalkBack reads the
+  value ("Storage used, 82%"). Android reads a value only as text: the
+  minimum, maximum and current value became range info, which TalkBack reads
+  for its own progress bar class but not for the view a `progressbar` role
+  gets, so it heard only the name.
+- **Empty State** and **Loading State** with `bordered`, and **File
+  Dropzone**, on Android: the border is dashed. Android dashes a rounded
+  border only when it has `borderWidth` and `borderColor` for all sides, and
+  Tamagui splits both into per-side props, so it was drawn solid.
+- **Select** at `size="sm"`: the trigger is 32px tall, like the other small
+  fields. Tamagui's trigger kept its own 40px minimum height, so it was
+  taller than a small Input or Date Picker beside it (Filter Bar's compact
+  example, Time Picker at `sm`) and grew from 32 to 40 when the page
+  hydrated.
+- **Multi Select**, **Combobox** and **Autocomplete** on iOS and Android:
+  the placeholder or value is centered in the field. Yoga starts wrapping
+  lines at the top, so text shorter than the field sat above the middle.
 - **Toolbar** on iOS and Android: a `center` that grows (a search field
   with `flex={1}`) takes only the space beside `leading` and `trailing`.
   Yoga sized it at the whole bar, so a title in `leading` shrank to a

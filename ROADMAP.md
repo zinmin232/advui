@@ -170,10 +170,10 @@ cannot do them. Tick them off here as they are done.
       Section, Sticky, AppShell, AutoGrid, Copy Button, Code Block,
       Menubar, Link, Checkbox Group, Tags Input, Carousel, Rating and Color
       Picker; on 2026-10-18 the overlays and form controls batches below;
-      and on 2026-10-19 the navigation and layout batch.
-      Rich Text Editor stays beta until its decision above. The others
-      still marked beta wait for the batches below.
-- [ ] **Phone check for the remaining beta components.** The 45 that were
+      and on 2026-10-19 the navigation and layout batch and the display
+      and feedback batch. Rich Text Editor stays beta until its decision
+      above; every other component is stable.
+- [x] **Phone check for the remaining beta components.** The 45 that were
       still marked beta get the same Android phone check, in batches, then the
       ones that pass are promoted in the batch's pull request. For each
       component: every example works (presses, typing, sheets, the back
@@ -245,8 +245,31 @@ cannot do them. Tick them off here as they are done.
         rows are not buttons gets their text as its own label from React
         Native (as the Accordion region did), so check it is not read
         twice. Seen on every press view: see the slide-off item below.
-  - [ ] Display and feedback: Chip, Circular Progress, Empty State, Error
-        State, Loading State; and Filter Bar (`@advui/data`).
+  - [x] Display and feedback: Chip, Circular Progress, Empty State, Error
+        State, Loading State; and Filter Bar (`@advui/data`). Checked on the
+        Android phone on 2026-10-19 (light and dark mode, all six in
+        landscape) and promoted. Every example works: filter chips toggle
+        and report checked, input chips remove, action chips press and a
+        disabled one does nothing; rings read their name and value, and the
+        spinning one reads busy; Error State's retry shows its spinner;
+        Loading State reads its text as one element, with the spinner
+        hidden; Filter Bar's search, selects, multi-select, date and number
+        filters change the state, the data table filters its rows, chips
+        remove a filter, the count and Reset follow, Apply applies a draft,
+        "More filters" opens the advanced ones and keeps their values, and
+        the `responsive` bar is a column on the phone and a row in
+        landscape. Fixes from it: TalkBack heard a progress ring's name
+        without its value (Android reads a value only as text; linear
+        Progress too); bordered Empty and Loading States, and File
+        Dropzone, drew solid borders on Android (Tamagui splits the border
+        into sides, which Android does not dash); a small Select was 40 tall
+        beside 32-tall fields, on web too (Filter Bar's compact example,
+        Time Picker at `sm`); an empty Multi Select's placeholder sat above
+        the middle of the field. Left as designed: Error State and Loading
+        State are not announced on iOS and Android (their notes say to move
+        focus or announce), and Multi Select's chips are removed in its
+        sheet there. For TalkBack by ear: where focus goes after a chip's
+        remove button is pressed (web moves it to the next chip).
   - Rich Text Editor waits for its decision above.
 - [ ] **Known issue: presses fire after a slide-off on iOS and Android.**
       Seen on 2026-10-19 on the Android phone: a finger that lands on a

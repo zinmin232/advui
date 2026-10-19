@@ -6,7 +6,7 @@ export default defineMeta({
   category: 'advanced',
   description:
     'Search, filter controls built from definitions, active-filter chips, and Apply and Reset, above a table, list or dashboard.',
-  status: 'beta',
+  status: 'stable',
   since: '0.13.0',
   platforms: ['web', 'ios', 'android'],
   exports: [

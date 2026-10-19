@@ -5,7 +5,7 @@ export default defineMeta({
   slug: 'error-state',
   category: 'feedback',
   description: 'Shown in place of content that failed to load, with a retry button.',
-  status: 'beta',
+  status: 'stable',
   since: '0.4.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['ErrorState'],
