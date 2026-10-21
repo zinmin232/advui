@@ -75,13 +75,13 @@ export const config = createUniversalConfig({
             material-color-utilities
           </A>{' '}
           (the “tonal spot” scheme Android uses for dynamic color). Material roles map onto ours:{' '}
-          <C>primaryContainer</C> → <C>$primarySoft</C>, <C>secondaryContainer</C> →{' '}
-          <C>$secondary</C> (the tonal button), <C>outline</C> → <C>$input</C>. Success, warning and
-          info are harmonized toward the seed.
+          <C>primaryContainer</C> → <C>primarySoft</C>, <C>secondaryContainer</C> → <C>secondary</C>{' '}
+          (the tonal button), <C>outline</C> → <C>input</C>. Success, warning and info are
+          harmonized toward the seed.
         </LI>
         <LI>
           <strong>Shape:</strong> pill buttons and icon buttons, 4px fields, 12px cards and 28px
-          dialogs and sheets, through the <C>$button</C>, <C>$buttonLg</C> and <C>$dialog</C> radius
+          dialogs and sheets, through the <C>button</C>, <C>buttonLg</C> and <C>dialog</C> radius
           tokens.
         </LI>
         <LI>
@@ -113,20 +113,20 @@ export const config = createUniversalConfig({
       </P>
       <UL>
         <LI>
-          <C>$background</C> <C>$foreground</C> <C>$card</C> <C>$popover</C> <C>$muted</C>{' '}
-          <C>$mutedForeground</C>
+          <C>background</C> <C>foreground</C> <C>card</C> <C>popover</C> <C>muted</C>{' '}
+          <C>mutedForeground</C>
         </LI>
         <LI>
-          <C>$primary</C> <C>$primaryForeground</C> <C>$primaryHover</C> <C>$primarySoft</C>{' '}
-          <C>$secondary</C> <C>$accent</C>
+          <C>primary</C> <C>primaryForeground</C> <C>primaryHover</C> <C>primarySoft</C>{' '}
+          <C>secondary</C> <C>accent</C>
         </LI>
         <LI>
-          <C>$success</C> <C>$warning</C> <C>$error</C> <C>$info</C> <C>$destructive</C> (+{' '}
-          <C>Soft</C>, <C>Foreground</C>, <C>Border</C> variants)
+          <C>success</C> <C>warning</C> <C>error</C> <C>info</C> <C>destructive</C> (+ <C>Soft</C>,{' '}
+          <C>Foreground</C>, <C>Border</C> variants)
         </LI>
         <LI>
-          <C>$border</C> <C>$borderStrong</C> <C>$input</C> <C>$ring</C> <C>$overlay</C>{' '}
-          <C>$shadowColor</C>
+          <C>border</C> <C>borderStrong</C> <C>input</C> <C>ring</C> <C>overlay</C>{' '}
+          <C>shadow-color</C>
         </LI>
       </UL>
       <P>
@@ -217,8 +217,8 @@ export async function SpacingGuide() {
     <>
       <H2 id="space">Space</H2>
       <P>
-        A 4px scale: <C>$1</C> = 4px, <C>$4</C> = 16px. Negative tokens (<C>$-2</C>) exist for
-        margins. Prefer <C>padding="4"</C> over raw numbers.
+        A 4px scale: <C>1</C> = 4px, <C>4</C> = 16px. Negative tokens (<C>-2</C>) exist for margins.
+        Prefer <C>padding="4"</C> over raw numbers.
       </P>
       <SpaceScale />
       <H2 id="size">Size</H2>
@@ -235,7 +235,7 @@ export async function SpacingGuide() {
       />
       <H2 id="breakpoints">Breakpoints</H2>
       <P>
-        Mobile-first media props: <C>{'<Stack $md={{ flexDirection: "row" }} />'}</C>. On web they
+        Mobile-first flat values: <C>{'<Stack flexDirection="column md:row" />'}</C>. On web they
         compile to CSS media queries, so SSR output is stable.
       </P>
       <P>

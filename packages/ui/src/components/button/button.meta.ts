@@ -134,7 +134,7 @@ export function SaveButton() {
     { keys: 'Tab', action: 'Moves focus to the next focusable element.' },
   ],
   responsive:
-    'Use `fullWidth` (or `$max-sm={{ width: "100%" }}`) for primary actions on phones. Sizes can change per breakpoint via media props.',
+    'Use `fullWidth` (or `width="max-sm:100%"`) for primary actions on phones. Sizes can change per breakpoint with flat values such as `size="md sm:lg"`.',
   platformNotes: {
     web: 'Hover and press states use CSS; `render={<a href="/pricing" />}` turns it into a link.',
     ios: 'Pressable area is extended with `hitSlop` to meet the 44pt minimum touch target.',

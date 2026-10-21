@@ -160,7 +160,7 @@ import { HomeIcon } from '@advui/icons'
     { keys: 'Enter', action: 'Follows the focused link.' },
   ],
   responsive:
-    'Give it the full height of the layout. In an AppShell, put it in `AppShell.Sidebar`: below the breakpoint it moves into the shell’s drawer, where it fills the width, does not collapse, and closes the drawer when an item is pressed. Elsewhere, hide it on phones (`$max-md={{ display: "none" }}`) and put the same items in a Drawer.',
+    'Give it the full height of the layout. In an AppShell, put it in `AppShell.Sidebar`: below the breakpoint it moves into the shell’s drawer, where it fills the width, does not collapse, and closes the drawer when an item is pressed. Elsewhere, hide it on phones (`display="max-md:none"`) and put the same items in a Drawer.',
   platformNotes: {
     web: '`Sidebar.Content` scrolls when the items overflow.',
     ios: 'Wrap long content in a ScrollArea to scroll it.',

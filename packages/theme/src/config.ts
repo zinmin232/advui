@@ -1,3 +1,4 @@
+import type { InferTamaguiConfig } from '@tamagui/web'
 import { createTamagui } from 'tamagui'
 import { animations } from './animations'
 import { type FontFamilies, type FontScale, createUniversalFonts } from './fonts'
@@ -45,21 +46,14 @@ export function getUniversalSettings(config: object): UniversalSettings {
   return (config as { advui?: UniversalSettings }).advui ?? defaultSettings
 }
 
-/**
- * Builds a complete Tamagui config (tokens, light/dark themes, fonts, media
- * queries, animations). Call once at app startup and pass to `UniversalProvider`.
- *
- * @example
- * export const config = createUniversalConfig({ preset: 'violet', radius: 'lg' })
- */
-export function createUniversalConfig(options: UniversalConfigOptions = {}) {
+/** What `createUniversalConfig` hands to Tamagui's `createTamagui`. */
+function createProps(options: UniversalConfigOptions) {
   const { preset = 'indigo', colors, radius = 'md', fontScale = 'default', fonts } = options
   // Hand-made light and dark themes get the primary and inverse sub-themes too.
   const themes = options.themes
     ? withSubThemes(options.themes)
     : createThemeColors({ ...themePresets[preset].colors, ...colors })
-
-  const config = createTamagui({
+  return {
     tokens: createUniversalTokens({ radius }),
     themes,
     fonts: createUniversalFonts({ scale: fontScale, families: fonts }),
@@ -67,7 +61,7 @@ export function createUniversalConfig(options: UniversalConfigOptions = {}) {
     shorthands,
     animations,
     settings: {
-      selectionStyles: (theme) =>
+      selectionStyles: (theme: Record<string, string>) =>
         theme.primarySoft ? { backgroundColor: theme.primarySoft, color: theme.foreground } : null,
       defaultFont: 'body',
       mediaQueryDefaultActive,
@@ -78,11 +72,29 @@ export function createUniversalConfig(options: UniversalConfigOptions = {}) {
       onlyAllowShorthands: false,
       styleCompat: 'web',
     },
-  })
+  } as const
+}
+
+/**
+ * The config `createUniversalConfig` returns. Named, not inferred: Tamagui 3's
+ * inferred config type refers to types it does not export, so declaration
+ * files could not name it.
+ */
+export type UniversalConfig = InferTamaguiConfig<ReturnType<typeof createProps>> & {
+  advui: UniversalSettings
+}
+
+/**
+ * Builds a complete Tamagui config (tokens, light/dark themes, fonts, media
+ * queries, animations). Call once at app startup and pass to `UniversalProvider`.
+ *
+ * @example
+ * export const config = createUniversalConfig({ preset: 'violet', radius: 'lg' })
+ */
+export function createUniversalConfig(options: UniversalConfigOptions = {}): UniversalConfig {
+  const config = createTamagui(createProps(options))
   // Stored on the config object, which components reach from anywhere with
   // getConfig(), including native portals that do not carry React context.
   const advui: UniversalSettings = { androidRipple: options.androidRipple ?? false }
   return Object.assign(config, { advui })
 }
-
-export type UniversalConfig = ReturnType<typeof createUniversalConfig>

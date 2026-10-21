@@ -108,7 +108,7 @@ Paths are under `packages/ui/src/`.
 - Redefining a variant key in `styled(Text, …)` merges per value, so
   `size: { md }` adds `md` and keeps Text's other sizes.
 - Icons take a string `color`; type a color prop as `ColorTokens`.
-- Token pixels depend on the preset (`$lg` radius is 8px in the default one).
+- Token pixels depend on the preset (the `lg` radius is 8px in the default one).
   Do not assert exact radii from memory.
 
 **Accessibility on native**

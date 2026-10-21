@@ -6,6 +6,7 @@ import {
   type DialogProps as TamaguiDialogProps,
   type GetProps,
   ScrollView,
+  type ScrollViewProps,
   Dialog as TamaguiDialog,
   type TamaguiElement,
   View,
@@ -83,13 +84,20 @@ const Description = styled(TamaguiDialog.Description, {
 })
 
 /** Scrolls long content between the header and footer. */
-const Body = styled(ScrollView, {
+const BodyFrame = styled(ScrollView, {
   displayName: 'DrawerBody',
   flexGrow: 1,
   flexShrink: 1,
   // Room for focus rings of full-width controls inside.
   marginHorizontal: '-1',
   contentContainerStyle: { gap: '3', paddingHorizontal: '1' },
+})
+
+// A component typed with ScrollViewProps: the styled ScrollView's inferred
+// type names Tamagui types that are not exported, which a declaration file
+// cannot refer to.
+const Body = forwardRef<TamaguiElement, ScrollViewProps>(function DrawerBody(props, ref) {
+  return <BodyFrame ref={ref as never} {...(props as object)} />
 })
 
 export interface DrawerProps extends Omit<TamaguiDialogProps, 'modal'> {

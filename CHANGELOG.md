@@ -7,6 +7,56 @@ one version.
 
 ## [Unreleased]
 
+### Breaking: Tamagui 3
+
+Adv UI now runs on Tamagui 3 (`tamagui` `^3.0.18` as the peer dependency).
+Install it with Adv UI, and update your own styles as below; Tamagui's
+`@tamagui/codemod-flat-values` converts most of them.
+
+- **Tokens and theme keys have no `# Changelog
+
+All notable changes to this project are documented here. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the packages
+follow [Semantic Versioning](https://semver.org). All published packages share
+one version.
+
+**: `padding="4"`, `color="mutedForeground"`,
+`borderRadius="lg"`. Half steps are named with a hyphen: `0-5`, `1-5`, `2-5`,
+`3-5` (and `-0-5` for margins). The `true` space, size and radius tokens and
+the `transparent` color token are gone (Tamagui 3 reserves those names;
+`transparent` still works as CSS).
+
+- **States and breakpoints are flat values**: `hoverStyle`, `pressStyle`,
+  `focusVisibleStyle`, `enterStyle`, `exitStyle` and media props such as
+  `$md={{ … }}` become clauses in the value, `backgroundColor="muted hover:accent"`,
+  `padding="4 md:6"`, or the object form `{ default: 1, enter: 0 }`.
+- **Tamagui's own theme keys are kebab-case** and the neutral ramp has 11 steps:
+  `background-hover`, `border-color`, `placeholder-color`, `shadow-color`,
+  `color-1`…`color-11` (Tamagui's mapping: `color7` merges into `color-6`, and
+  `color8`–`color12` become `color-7`–`color-11`). Adv UI's semantic keys
+  (`primary`, `mutedForeground`…) keep their names. Hand-made `themes` passed to
+  `createUniversalConfig` need the new names.
+- **`responsiveStyle`** returns a conditional value (`{ flexDirection: { default:
+'column', md: 'row' } }`) instead of `$md` objects, and
+  `gridCellLayout` and `sectionPadding` do the same.
+- **Stack**: where a raw style prop and `direction` (or `align`…) both set the
+  same breakpoint, the prop written later wins; at the base the raw prop still
+  wins in either order. A raw value equal to the stack's own default now counts.
+- **Toaster** loses `offset`, which Tamagui 3's toaster no longer takes.
+- **Select.Item** takes no `index`: Tamagui 3 tracks the item order itself.
+- **Types**: add `"customConditions": ["react-native-legacy-deep-imports"]` to
+  your tsconfig if you type press or layout handlers with React Native's
+  `GestureResponderEvent` or `LayoutChangeEvent`: it gives Tamagui 3's
+  props the same event types.
+
+### Fixed with Tamagui 3
+
+- **A press that slides off is cancelled on iOS and Android.** A finger that
+  landed on a Button, FAB, Accordion trigger, List Item row or any other
+  pressable and slid off before lifting still pressed it. Tamagui 3 hands
+  presses to React Native's Pressability, which cancels them outside the view.
+- **Toasts** need no patched `@tamagui/toast` for their label on web.
+
 ### Added
 
 - **Field** `requiredText` and **Calendar** `todayLabel`: the words iOS and

@@ -156,7 +156,7 @@ export default defineMeta({
     {
       name: 'Stack',
       description:
-        'Flex column. `direction`, `wrap`, `align` and `distribute` take a value or a mobile-first map (0.9.0). The regular style props work too, with media props such as `$md={{ flexDirection: "row" }}`, and win when both set the same style.',
+        'Flex column. `direction`, `wrap`, `align` and `distribute` take a value or a mobile-first map (0.9.0). The regular style props work too, with flat values such as `flexDirection="column md:row"`, and win when both set the same style.',
       props: stackProps({ direction: "'column'", align: "'stretch'", alignItems: "'stretch'" }),
       children: { accepts: 'any' },
     },
@@ -188,7 +188,7 @@ export default defineMeta({
       name: 'responsiveStyle(prop, value, map?)',
       kind: 'function',
       description:
-        'The helper behind these props, for your own components: `responsiveStyle("flexDirection", { base: "column", md: "row" })` returns `{ flexDirection: "column", $md: { flexDirection: "row" } }`. Only the breakpoints given are emitted; `map` (a record or a function) converts each value. `Responsive<T>` is the type of such a value.',
+        'The helper behind these props, for your own components: `responsiveStyle("flexDirection", { base: "column", md: "row" })` returns `{ flexDirection: { default: "column", md: "row" } }`, a Tamagui 3 conditional value. Only the breakpoints given are emitted; `map` (a record or a function) converts each value. `Responsive<T>` is the type of such a value.',
       props: [],
     },
   ],
@@ -215,7 +215,7 @@ export default defineMeta({
     {
       name: 'responsive',
       title: 'Media props',
-      description: 'The same layout with the raw style prop: `$md={{ flexDirection: "row" }}`.',
+      description: 'The same layout with the raw style prop: `flexDirection="column md:row"`.',
     },
   ],
   accessibility: [
@@ -223,7 +223,7 @@ export default defineMeta({
     'Changing `direction` changes only the visual order’s axis; reading order still follows the source, so keep the source order meaningful. `row-reverse` and `column-reverse` show children in the opposite order from how screen readers read them.',
   ],
   responsive:
-    '`direction`, `wrap`, `align` and `distribute` take a value or a mobile-first map `{ base, xs, sm, md, lg, xl, xxl }` (from 460, 640, 768, 1024, 1280 and 1536 px). Only the breakpoints you give are emitted, as media props, so on web they are CSS media queries (no flash during SSR) and on native they follow the window size. A raw style prop wins over its responsive prop: `flexDirection` (or `$md={{ flexDirection }}`) beats `direction` at the base (or at md), whichever comes first. A raw value equal to the stack’s own default, such as `flexDirection="column"` on a Stack, does not count. Responsive `gap` is not a prop: use media props, `$md={{ gap: "6" }}`.',
+    '`direction`, `wrap`, `align` and `distribute` take a value or a mobile-first map `{ base, xs, sm, md, lg, xl, xxl }` (from 460, 640, 768, 1024, 1280 and 1536 px). Only the breakpoints you give are emitted, as conditional values, so on web they are CSS media queries (no flash during SSR) and on native they follow the window size. A raw style prop wins over its responsive prop at the base: `flexDirection` beats `direction`, whichever comes first. Where both set a breakpoint (`flexDirection="md:row-reverse"` and a `direction` map with `md`), the prop written later wins. Responsive `gap` is not a prop: use a flat value, `gap="4 md:6"`.',
   tables: [
     {
       id: 'values',

@@ -71,7 +71,7 @@ const StackFrame = styled(View, {
  * Flex container (column by default). Lay it out with `direction`, `wrap`,
  * `align` and `distribute`, each a value or a map such as
  * `{ base: 'column', md: 'row' }`, or with the regular style props
- * (`flexDirection`, `alignItems`, `$md={{ … }}`, `items`…), which win when both
+ * (`flexDirection`, `alignItems`, `"column md:row"`, `items`…), which win when both
  * set the same style.
  */
 export const Stack = StackFrame as WithoutDirectionStyle<typeof StackFrame>

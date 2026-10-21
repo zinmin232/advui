@@ -24,7 +24,7 @@ panel builds this call interactively, and **Copy theme** gives you the code.
 
 ```
 palettes (12-step scales)  →  semantic theme values  →  components
-indigo, slate, #0ea5e9…        $primary, $mutedForeground…   Button, Card…
+indigo, slate, #0ea5e9…        primary, mutedForeground…     Button, Card…
 ```
 
 Components use **only semantic values and tokens**, never palette steps or
@@ -125,17 +125,17 @@ createUniversalConfig({
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Surfaces           | `background`, `foreground`, `muted`, `mutedForeground`, `card`, `cardForeground`, `popover`, `popoverForeground`, `overlay`                                 | Page, text, subdued areas, cards, menus, modal scrim                                                                                                                                        |
 | Lines              | `border`, `borderStrong`, `input`, `ring`                                                                                                                   | Dividers, control borders, focus rings                                                                                                                                                      |
-| Brand              | `primary`, `primaryHover`, `primaryPress`, `primaryForeground`, `primaryText`, `inversePrimary`, `primarySoft`, `primarySoftHover`, `primarySoftForeground` | `primary` is a **fill**; use `primaryText` for colored text and links, `inversePrimary` on inverse surfaces (`$foreground` backgrounds such as a snackbar)                                  |
+| Brand              | `primary`, `primaryHover`, `primaryPress`, `primaryForeground`, `primaryText`, `inversePrimary`, `primarySoft`, `primarySoftHover`, `primarySoftForeground` | `primary` is a **fill**; use `primaryText` for colored text and links, `inversePrimary` on inverse surfaces (`foreground` backgrounds such as a snackbar)                                   |
 | Secondary / accent | `secondary*`, `accent*`                                                                                                                                     | Secondary buttons, hovered menu items, ghost buttons                                                                                                                                        |
 | Intent             | `destructive*`, `success*`, `warning*`, `error*`, `info*` (each with `Foreground`, `Soft`, `SoftForeground`, `Border`)                                      | Status, validation, alerts, badges                                                                                                                                                          |
 | Charts             | `chart1`–`chart8`                                                                                                                                           | Chart series in their fixed order. The order keeps neighbors apart for color-blind readers; dark mode has its own steps. Not themed by the presets; change with `overrides` and re-validate |
-| Tamagui            | `background*`, `color*`, `borderColor*`, `color1`–`color12`, `placeholderColor`, `shadowColor*`                                                             | Used by Tamagui primitives; mapped from the neutral scale                                                                                                                                   |
+| Tamagui            | `background-*`, `color-*`, `border-color-*`, `color-1`–`color-11`, `placeholder-color`, `shadow-color*`                                                     | Used by Tamagui primitives; mapped from the neutral scale                                                                                                                                   |
 
-Use them with a `$` prefix in any style prop:
+Use them by name in any style prop (Tamagui 3 has no `$` prefix):
 
 ```tsx
-<View backgroundColor="$muted" borderColor="$border" />
-<Text color="$primaryText">Link-colored text</Text>
+<View backgroundColor="muted" borderColor="border" />
+<Text color="primaryText">Link-colored text</Text>
 ```
 
 `useTheme()` gives you the resolved values in JavaScript, for example for a
@@ -143,20 +143,20 @@ native header: `theme.background.val`.
 
 ## Tokens
 
-| Token     | Scale                                                                                                                          |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `space`   | 4px grid: `$0.5`=2, `$1`=4, `$2`=8, `$3`=12, `$4`=16, `$6`=24, `$8`=32 … `$32`=128; negative keys (`$-2`) for margins          |
-| `size`    | Same steps as space, extended to large sizes (`$96` = 384) for widths and heights                                              |
-| `radius`  | `$xs` `$sm` `$md` `$lg` `$xl` `$2xl` `$3xl` `$full` from the `radius` option, plus role tokens `$button` `$buttonLg` `$dialog` |
-| `zIndex`  | named layers: `dropdown` 1000, `sticky` 1100, `overlay` 1200, `modal` 1300, `popover` 1400, `toast` 1500, `tooltip` 1600       |
-| fonts     | `body`, `heading`, `mono`; sizes `$1`–`$10` (12 → 60px) multiplied by `fontScale`                                              |
-| `shadows` | `none`, `xs`, `sm`, `md`, `lg`: spread into styles; the colors come from the theme, and `elevation` is used on Android         |
+| Token     | Scale                                                                                                                    |
+| --------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `space`   | 4px grid: `0-5`=2, `1`=4, `2`=8, `3`=12, `4`=16, `6`=24, `8`=32 … `32`=128; negative keys (`-2`) for margins             |
+| `size`    | Same steps as space, extended to large sizes (`96` = 384) for widths and heights                                         |
+| `radius`  | `xs` `sm` `md` `lg` `xl` `2xl` `3xl` `full` from the `radius` option, plus role tokens `button` `buttonLg` `dialog`      |
+| `zIndex`  | named layers: `dropdown` 1000, `sticky` 1100, `overlay` 1200, `modal` 1300, `popover` 1400, `toast` 1500, `tooltip` 1600 |
+| fonts     | `body`, `heading`, `mono`; sizes `1`–`10` (12 → 60px) multiplied by `fontScale`                                          |
+| `shadows` | `none`, `xs`, `sm`, `md`, `lg`: spread into styles; the colors come from the theme, and `elevation` is used on Android   |
 
 Media queries (mobile-first): `xs` 460, `sm` 640, `md` 768, `lg` 1024, `xl` 1280,
 `xxl` 1536, plus `max-*`, `touchable` and `hoverable`:
 
 ```tsx
-<VStack padding="$4" $md={{ padding: '$8' }} />
+<VStack padding="4 md:8" />
 <Grid columns={{ base: 1, md: 2, lg: 3 }}>{cards}</Grid>
 ```
 
@@ -201,8 +201,8 @@ overriding the token CSS variables, which only works on web.
 Every config has two sub-themes of light and dark, for surfaces that need
 other text colors (since 0.10.0):
 
-- `primary` (`light_primary`, `dark_primary`): content on a `$primary`
-  surface. Its `$background` is `primary`, its text `primaryForeground`;
+- `primary` (`light_primary`, `dark_primary`): content on a `primary`
+  surface. Its `background` is `primary`, its text `primaryForeground`;
   muted text, cards and borders are mixed toward that text color, and a primary
   button inverts. `primarySurfaceTheme()` builds it from any theme.
 - `inverse` (`light_inverse`, `dark_inverse`): the other mode, so a band is
@@ -245,13 +245,13 @@ createUniversalConfig({
 
 - Never hard-code colors, spacing, radii or z-index values. ESLint rejects
   color literals in `packages/*`.
-- Buttons, icon buttons and toggles use `$button` (`$buttonLg` for the large
-  size); dialogs and sheets use `$dialog`. Design systems such as Material
+- Buttons, icon buttons and toggles use `button` (`buttonLg` for the large
+  size); dialogs and sheets use `dialog`. Design systems such as Material
   reshape those without touching other controls.
-- Pick the role by meaning, not by looks. Don't use `$primary` as text; use
-  `$primaryText`.
-- Pair every surface with its foreground (`$card` + `$cardForeground`,
-  `$successSoft` + `$successSoftForeground`).
+- Pick the role by meaning, not by looks. Don't use `primary` as text; use
+  `primaryText`.
+- Pair every surface with its foreground (`card` + `cardForeground`,
+  `successSoft` + `successSoftForeground`).
 - If you need a new semantic value, add it to `ThemeValues` in
   `packages/theme/src/themes.ts`, generate it for both modes and add a contrast
   test.

@@ -33,7 +33,7 @@ export async function Introduction() {
         </LI>
         <LI>
           <strong>Real design tokens.</strong> Space, size, radius, colors and fonts are tokens (
-          <C>$4</C>,<C>$primary</C>) checked by TypeScript — no magic numbers.
+          <C>4</C>,<C>primary</C>) checked by TypeScript — no magic numbers.
         </LI>
         <LI>
           <strong>Themes without re-renders.</strong> Light/dark switching on web swaps CSS

@@ -15,7 +15,7 @@ export interface RippleOptions {
 
 export interface Ripple {
   /**
-   * The ripple replaces the pressed style, so drop your `pressStyle`
+   * The ripple replaces the pressed style, so drop your `press:`
    * background while this is true. It is clipped inside the border, so drop
    * a transparent border too.
    */

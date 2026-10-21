@@ -60,6 +60,8 @@
     "@tamagui/floating": "3.0.18",
     "@tamagui/focus-scope": "3.0.18",
     "@tamagui/focusable": "3.0.18",
+    "@tamagui/get-font-sized": "3.0.18",
+    "@tamagui/react-native-types": "3.0.18",
     "@tamagui/roving-focus": "3.0.18",
     "@tamagui/toast": "3.0.18",
     "@tamagui/web": "3.0.18",

@@ -124,7 +124,7 @@ points to `dist/` for npm.
    keys. Solid fills get an accessible foreground, and text colors are pushed
    to ≥ 4.5:1 with `ensureContrast`.
 3. `createTokens` builds the radius scale from one base value (with role tokens
-   `$button`, `$buttonLg` and `$dialog` that a design system can override).
+   `button`, `buttonLg` and `dialog` that a design system can override).
    Fonts are scaled by a single factor. `@advui/theme/material` swaps steps 1–3
    for Material 3: themes from a seed color, Material's shapes and Roboto.
 4. The result goes to `createTamagui` with media queries, shorthands and
@@ -218,6 +218,6 @@ The docs publish the registry at `/r/<name>.json`.
   native test per overlay guards this.
 - **Tamagui `activeStyle`** is not applied on native. Tabs derive the active
   style from their own context.
-- **Tamagui `create*` factories** (Checkbox, Switch, RadioGroup) force
-  `unstyled={false}`. Our styles live in the `unstyled.false` variant so they
-  are not overridden.
+- **Tamagui 3 styled HOCs** (Checkbox, RadioGroup) and `createSwitch` (Switch)
+  come from `tamagui/unstyled`, so they bring no styles of their own: ours are
+  the base styles, as in any `styled()` component.

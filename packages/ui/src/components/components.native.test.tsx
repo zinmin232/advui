@@ -10,6 +10,7 @@ import {
   Linking,
   StyleSheet,
   processColor,
+  type ViewStyle,
 } from 'react-native'
 import { XStack } from 'tamagui/unstyled'
 import { renderNative, touchAt } from '../../test/native-utils'
@@ -1761,7 +1762,7 @@ describe('native rendering', () => {
         }
       }
       const overlay = find(frame as unknown as Node)
-      const style = StyleSheet.flatten(overlay?.props.style)
+      const style = StyleSheet.flatten(overlay?.props.style as ViewStyle)
       expect(style).toMatchObject({ borderWidth: 1, borderStyle: 'dashed' })
       expect(style.borderColor).toMatch(/^#/)
       expect(style.borderRadius).toBeGreaterThan(0)

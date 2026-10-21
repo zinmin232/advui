@@ -5,7 +5,7 @@ read [CONTRIBUTING.md](CONTRIBUTING.md) first; the rules are the same.
 
 ## What this is
 
-A cross-platform React component library built on Tamagui 2, plus its docs
+A cross-platform React component library built on Tamagui 3, plus its docs
 (Next.js 16) and an Expo playground. Components ship in four packages:
 `@advui/core` (general-purpose), `@advui/data`, `@advui/charts` and
 `@advui/editor`. It is a pnpm 12 + Turborepo monorepo on
@@ -50,10 +50,10 @@ file: `pnpm --filter @advui/core exec vitest run src/components/button`.
 ## Rules
 
 1. **Tokens only.** No hex, rgb or hsl literals and no magic pixel values in
-   `packages/*`. Use theme keys (`$primary`), tokens (`$4`, `$md`) and
+   `packages/*`. Use theme keys (`primary`), tokens (`4`, `md`) and
    `zIndex`/`shadows` from `@advui/theme`. ESLint enforces color
    literals.
-2. **Color roles have meaning.** `$primary` is a fill, `$primaryText` is text.
+2. **Color roles have meaning.** `primary` is a fill, `primaryText` is text.
    Pair surfaces with their `*Foreground`. Contrast tests will fail otherwise.
 3. **Accessibility is part of the feature.** Every control needs a role, an
    accessible name, state attributes and keyboard support. Native views with a
@@ -106,10 +106,43 @@ each edit.
 
 ## Known pitfalls
 
-- **Tamagui `create*` factories** (Checkbox, Switch, RadioGroup) force
-  `unstyled={false}`. Put styles in the `unstyled.false` variant.
-- **Passing `prop={undefined}`** to a styled component overrides its
-  `defaultVariants`. Give props explicit defaults.
+- **Tamagui 3 has no `$` prefix.** Tokens and theme keys are bare names
+  (`padding="4"`, `color="mutedForeground"`); a `$4` is dropped silently in
+  production. A dot means `category.name`, so half steps are `0-5`, `1-5`…
+  Tamagui reserves `true` and CSS-wide keywords (`transparent`) as token names.
+
+- **States and breakpoints are flat values** in the property itself:
+  `backgroundColor="transparent hover:accent press:accentHover"`,
+  `padding="4 md:6"`, or the object form `{ default: 1, enter: 0, exit: 0 }`
+  (it keeps numbers as numbers on native). There is no `hoverStyle` or
+  `$md={{ … }}`. Build a conditional one with `flatValue(...)`, `when(...)`
+  or `mergeResponsiveStyles(...)` (`utils/responsive.ts`). A later spread that
+  sets the same prop replaces its base and all its states; between styled
+  defaults and call-site props Tamagui merges per state, and where two props
+  set the same breakpoint the later one wins.
+- **Conditions take scalar values.** A `shadowOffset` or transform array cannot
+  go in a `hover:` clause (Fab deepens `shadowRadius` only).
+- **Import primitives from `tamagui/unstyled`.** The root `tamagui` entry has
+  Tamagui's default skin; only the provider and `createTamagui` come from it.
+  Checkbox and RadioGroup are styled HOCs (`styled(Checkbox, …)`), Switch
+  still uses `createSwitch`.
+- **Name components with `displayName`.** An unknown `styled()` option such
+  as `name` becomes a default prop, and on an `<input>` that is a form field's
+  name. Tamagui 3 adds no `is_<Name>` class either; set `className` where a
+  stylesheet or test needs one (Button, InputGroup).
+- **Function variants are ignored** unless they are `styled.dynamic<T>(fn)`:
+  give the type argument (an annotated parameter breaks variant inference),
+  and read props through `.resolve`, not the variant's second argument.
+- **`prop={undefined}` keeps a styled default** in Tamagui 3. Clear one with
+  `null` (`role: null` in PasswordInput and Accordion).
+- **New style props can clash with component props**: `page`, `offset`,
+  `background`, `container`, `columns`. Omit them from the frame's props.
+- **Tamagui's Dialog portal is a `<dialog aria-modal>`**, a second, unnamed
+  dialog around ours. Dialog, AlertDialog and Drawer render it as a `div`.
+- **Declaration files must name every type.** Tamagui 3's inferred types refer
+  to types it does not export; give such exports an explicit type
+  (`UniversalConfig`, Drawer's `Body`) and depend directly on
+  `@tamagui/get-font-sized` and `@tamagui/react-native-types`.
 - **Android `TextInput`** rejects animated styles, so fields must not have a
   `transition`.
 - **Android back button**: Tamagui overlays ignore it. A new overlay's root
@@ -168,19 +201,20 @@ each edit.
   `minHeight` needs `alignContent: 'center'` (`ComboboxField.native.tsx`).
 - **Dashed borders turn solid on Android** with a radius: Android dashes a
   rounded border only from `borderWidth` and `borderColor` for all sides,
-  and Tamagui splits both into per-side props on native. Pass them as a
-  style with `useDashedBorder` (Empty State, File Dropzone).
+  and Tamagui splits both into per-side props on native, its `style` prop
+  included. `useDashedBorder` makes the frame border transparent and draws the
+  dashes on a plain React Native view (Empty State, Loading State, File Dropzone).
 - **Android reads a value only as text.** `aria-valuenow/min/max` become
   range info, which TalkBack reads for its ProgressBar and SeekBar classes;
   a `progressbar` role is a plain view there. Give `aria-valuetext` on
   native ("40%", see `CircularProgress.native.tsx`).
-- **Tamagui's Select trigger is a ListItem** that keeps its own size styles
-  (a 40px `minHeight`, vertical padding) under ours; `Select.tsx` resets them.
-- **Native presses are not cancelled by a slide-off** (Tamagui 2.7.7): a
-  finger that slides off a press view before lifting still fires `onPress`.
-  Known and left for the Tamagui 3 move (ROADMAP); don't chase it per
-  component. When testing with `adb shell input swipe`, swipe from blank
-  space, or a swipe on a screen that cannot scroll lands as a press.
+- **Tamagui's native Select items are buttons**; Select gives them `role:
+'option'`, which wins on Android.
+- **Native presses go through React Native's Pressability** (Tamagui 3): a
+  finger that slides off a press view cancels the press, as in a Pressable.
+  Pressability measures `currentTarget` and persists the event, so native
+  tests fire responder events built with `touchAt()` (`test/native-utils`),
+  not bare objects (see `press.native.test.tsx`).
 - **Tamagui `activeStyle`** is not applied on native; derive active styles from
   state.
 - **Tamagui `asChild` drops `onFocus`** (web): `<View asChild onFocus>` never
@@ -198,7 +232,7 @@ each edit.
   TalkBack misses them. Set them yourself on native (`accessible`,
   `aria-checked`, `aria-disabled` through `ariaState`; see `Switch.tsx`). On
   Android `role` wins over `accessibilityRole`, so a toggle built on Button
-  clears `role` to become a `togglebutton` (see `PasswordInput`).
+  clears `role` (with `null`) to become a `togglebutton` (see `PasswordInput`).
 - **Android wraps a TextInput placeholder** wider than its box onto a cut-off
   second line, whatever the props (`numberOfLines` is already 1). Tags Input
   draws its own one-line copy over a transparent real placeholder
@@ -209,7 +243,10 @@ each edit.
   claims moves while it drags (see `useColorDrag`'s `guard`).
 - **RNTL 14**: `render`, `fireEvent` and `act` are async, so always `await` them.
 - **Vitest uses happy-dom** (jsdom was too slow to start on Windows). Polyfills
-  are in `packages/ui/test/setup.ts`.
+  are in `packages/ui/test/setup.ts`. Tamagui 3 writes logical properties
+  (`padding-inline`, `margin-inline`, `padding-block`), which happy-dom does
+  not expand into sides, and joins a direction and wrap into `flex-flow`,
+  which it does not parse: read those properties, not `padding-left`.
 - **pnpm stores scoped packages** as `.pnpm/@scope+name`. The jest
   `transformIgnorePatterns` account for this.
 - **Windows + Android emulator**: use
