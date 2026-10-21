@@ -12,7 +12,7 @@ import {
   processColor,
 } from 'react-native'
 import { XStack } from 'tamagui/unstyled'
-import { renderNative } from '../../test/native-utils'
+import { renderNative, touchAt } from '../../test/native-utils'
 import { Accordion } from './accordion/Accordion'
 import { AppShell } from './app-shell/AppShell'
 import { AlertDialog } from './alert-dialog/AlertDialog'
@@ -495,10 +495,11 @@ describe('native rendering', () => {
     // React Native labels a view with a role or aria-labelledby with its
     // children's text, so TalkBack read the section twice.
     const content = screen.getByTestId('content')
-    expect(content.props.role).toBeUndefined()
-    expect(content.props.accessibilityRole).toBeUndefined()
+    // Cleared with null (Tamagui 3 keeps a default over undefined): no role either way.
+    expect(content.props.role ?? undefined).toBeUndefined()
+    expect(content.props.accessibilityRole ?? undefined).toBeUndefined()
     expect(
-      content.props['aria-labelledby'] ?? content.props.accessibilityLabelledBy,
+      content.props['aria-labelledby'] ?? content.props.accessibilityLabelledBy ?? undefined,
     ).toBeUndefined()
   })
 
@@ -1422,18 +1423,13 @@ describe('native rendering', () => {
     while (guard && !(guard.props.onMoveShouldSetResponder && !guard.props.onResponderGrant)) {
       guard = guard.parent
     }
-    const touch = {
-      nativeEvent: { locationX: 0, locationY: 0, touches: [], changedTouches: [] },
-      touchHistory: { touchBank: [], numberActiveTouches: 0, indexOfSingleActiveTouch: 0 },
-      currentTarget: {},
-      persist() {},
-    }
+    const touch = touchAt(10, 10)
     expect(guard!.props.onMoveShouldSetResponder()).toBe(false)
     await fireEvent(area, 'responderGrant', touch)
     // Tamagui's Sheet, if asked about a vertical move, marks itself as
     // dragging even though the area keeps the gesture, and then stays open.
     expect(guard!.props.onMoveShouldSetResponder()).toBe(true)
-    await fireEvent(area, 'responderRelease', touch)
+    await fireEvent(area, 'responderRelease', touchAt(10, 10, { lifted: true }))
     expect(guard!.props.onMoveShouldSetResponder()).toBe(false)
   })
 
@@ -1746,16 +1742,31 @@ describe('native rendering', () => {
       </>,
     )
     // Android dashes a rounded border only from `borderWidth` and `borderColor`
-    // for all sides, and Tamagui splits both into per-side props.
+    // for all sides, and Tamagui splits both into per-side props (its `style`
+    // prop too, since Tamagui 3). So the frame's own border is transparent and
+    // a plain view on top draws the dashes with one width, color and radius.
     for (const frame of [
       screen.getByTestId('empty'),
       screen.getByTestId('loading'),
       screen.getByRole('button', { name: /Tap to choose files/ }),
     ]) {
-      const style = StyleSheet.flatten(frame.props.style)
+      expect(StyleSheet.flatten(frame.props.style).borderTopColor).toBe('transparent')
+      type Node = { props: Record<string, unknown>; children: (Node | string)[] }
+      const find = (node: Node): Node | undefined => {
+        for (const child of node.children) {
+          if (typeof child === 'string') continue
+          if (child.props.pointerEvents === 'none') return child
+          const found = find(child)
+          if (found) return found
+        }
+      }
+      const overlay = find(frame as unknown as Node)
+      const style = StyleSheet.flatten(overlay?.props.style)
       expect(style).toMatchObject({ borderWidth: 1, borderStyle: 'dashed' })
-      // Each side's own color must match, or Android draws the sides solid.
-      expect(style.borderColor).toBe(style.borderTopColor)
+      expect(style.borderColor).toMatch(/^#/)
+      expect(style.borderRadius).toBeGreaterThan(0)
+      expect(style).not.toHaveProperty('borderTopWidth')
+      expect(style).not.toHaveProperty('borderTopColor')
     }
   })
 

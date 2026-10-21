@@ -49,7 +49,9 @@ export function touchAt(pageX: number, pageY: number, { lifted = false } = {}) {
     currentTarget: pressTarget,
     target: pressTarget,
     nativeEvent: { ...touch, touches: lifted ? [] : [touch], changedTouches: [touch] },
-    touchHistory: { touchBank: [], numberActiveTouches: lifted ? 0 : 1, indexOfSingleActiveTouch: 0 },
+    // Pressability does not read the history; an empty one keeps PanResponders
+    // (which compute centroids from it) out of the way.
+    touchHistory: { touchBank: [], numberActiveTouches: 0, indexOfSingleActiveTouch: 0 },
     persist() {},
   }
 }

@@ -162,6 +162,9 @@ function SelectItem({
       // so Select hands each item its own `pick`.
       {...(!isWeb && {
         accessible: true,
+        // Tamagui 3 makes native items buttons; `role` wins on Android, so
+        // screen readers still hear options in a list.
+        role: 'option' as const,
         accessibilityActions: [{ name: 'activate' }],
         onAccessibilityAction: (event: ActionEvent) => {
           if (!props.disabled && event.nativeEvent.actionName === 'activate') pick?.()

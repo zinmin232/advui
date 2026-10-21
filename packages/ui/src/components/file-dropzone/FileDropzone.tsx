@@ -99,7 +99,7 @@ export const FileDropzone = forwardRef<TamaguiElement, FileDropzoneProps>(functi
   })
   const inactive = disabled || !canPick
   const dragging = useDropTarget(areaRef, { onFiles: add, disabled })
-  const dashed = useDashedBorder(dragging ? null : invalid ? 'error' : 'borderStrong')
+  const dashed = useDashedBorder(dragging ? null : invalid ? 'error' : 'borderStrong', 'lg')
   const defaultTitle = isWeb
     ? `Drop ${multiple ? 'files' : 'a file'} here or click to browse`
     : `Tap to choose ${multiple ? 'files' : 'a file'}`
@@ -130,9 +130,10 @@ export const FileDropzone = forwardRef<TamaguiElement, FileDropzoneProps>(functi
             }
           : { accessible: true })}
         onPress={inactive ? undefined : () => void open()}
-        style={dashed ? [dashed, style] : style}
+        style={dashed.frame ? [dashed.frame, style] : style}
         {...props}
       >
+        {dashed.overlay}
         <View backgroundColor="muted" borderRadius="full" padding="3" aria-hidden>
           <IconDefaults size={20} color="mutedForeground">
             <UploadIcon />

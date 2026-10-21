@@ -177,7 +177,7 @@ const AccordionContent = forwardRef<TamaguiElement, AccordionContentProps>(
         <TamaguiAccordion.Content
           ref={ref as never}
           id={contentId}
-          {...(!isWeb && { role: undefined, 'aria-labelledby': undefined })}
+          {...(!isWeb && { role: null as never, 'aria-labelledby': null as never })}
           paddingBottom="4"
           paddingHorizontal={variant === 'card' ? "4" : "1"}
           opacity="exit:0"

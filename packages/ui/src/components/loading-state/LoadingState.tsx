@@ -53,7 +53,7 @@ export const LoadingState = forwardRef<TamaguiElement, LoadingStateProps>(functi
     return () => clearTimeout(timer)
   }, [delay])
   const shown = delay <= 0 || elapsed
-  const dashed = useDashedBorder(bordered && shown ? 'border' : null)
+  const dashed = useDashedBorder(bordered && shown ? 'border' : null, 'lg')
 
   // Web: the status element is rendered empty during the delay, because
   // screen readers announce text added to a live region more reliably than a
@@ -68,9 +68,10 @@ export const LoadingState = forwardRef<TamaguiElement, LoadingStateProps>(functi
     <LoadingStateFrame
       ref={ref}
       bordered={bordered && shown}
-      style={dashed ? [dashed, style] : style}
+      style={dashed.frame ? [dashed.frame, style] : style}
       {...props}
     >
+      {dashed.overlay}
       {/* The text says what the spinner shows; a second "Loading" is noise. */}
       {shown ? <Spinner size="lg" color="primary" aria-hidden /> : null}
       <View gap="1" alignItems="center" {...textSemantics}>

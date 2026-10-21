@@ -61,14 +61,15 @@ export const EmptyState = forwardRef<TamaguiElement, EmptyStateProps>(function E
   ref,
 ) {
   const colors = tones[tone]
-  const dashed = useDashedBorder(bordered ? 'border' : null)
+  const dashed = useDashedBorder(bordered ? 'border' : null, 'lg')
   return (
     <EmptyStateFrame
       ref={ref}
       bordered={bordered}
-      style={dashed ? [dashed, style] : style}
+      style={dashed.frame ? [dashed.frame, style] : style}
       {...props}
     >
+      {dashed.overlay}
       {icon ? (
         <View
           aria-hidden
