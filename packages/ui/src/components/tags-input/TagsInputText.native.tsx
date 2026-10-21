@@ -45,9 +45,9 @@ const Box = styled(KeyTextInput, textBoxStyle, {
 
 const Placeholder = styled(Text, {
   name: 'TagsInputPlaceholder',
-  fontFamily: '$body',
-  color: '$placeholderColor',
-  pointerEvents: 'none',
+  fontFamily: "body",
+  color: "placeholder-color",
+  pointerEvents: 'none'
 })
 
 /**
@@ -58,12 +58,11 @@ const Placeholder = styled(Text, {
  */
 export const TagsInputText = Box.styleable<{ onKeyDown?: KeyHandler }>(
   ({ onKeyDown, placeholder, height, paddingHorizontal, fontSize, ...props }, ref) => (
-    <View flex={1} minWidth="$20" height={height} justifyContent="center">
+    <View flex={1} minWidth="20" height={height} justifyContent="center">
       <Box
         ref={ref}
         {...props}
-        placeholder={placeholder}
-        placeholderTextColor="$transparent"
+        placeholderTextColor="transparent"
         position="absolute"
         top={0}
         right={0}
@@ -72,6 +71,7 @@ export const TagsInputText = Box.styleable<{ onKeyDown?: KeyHandler }>(
         height={height}
         paddingHorizontal={paddingHorizontal}
         fontSize={fontSize}
+        placeholder={placeholder}
         onKey={onKeyDown}
       />
       {placeholder && !props.value ? (

@@ -28,13 +28,13 @@ export default function SectionFeatures() {
       aria-labelledby="features-title"
       width="100%"
     >
-      <VStack gap="$6">
+      <VStack gap="6">
         <Heading id="features-title" level={2}>
           Features
         </Heading>
-        <Grid columns={{ base: 1, md: 3 }} gap="$4">
+        <Grid columns={{ base: 1, md: 3 }} gap="4">
           {features.map((feature) => (
-            <Card key={feature.title} padding="$4" gap="$2">
+            <Card key={feature.title} padding="4" gap="2">
               {feature.icon}
               <Text weight="semibold">{feature.title}</Text>
               <Text size="sm" tone="muted">

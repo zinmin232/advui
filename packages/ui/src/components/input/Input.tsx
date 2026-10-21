@@ -16,16 +16,16 @@ import { isTextContent } from '../../utils/isTextContent'
 
 /** Box styles shared by text fields and field-like triggers (Select). */
 export const fieldBoxStyle = {
-  backgroundColor: '$background',
+  backgroundColor: 'background',
   borderWidth: 1,
-  borderColor: '$input',
-  borderRadius: '$md',
+  borderColor: 'input',
+  borderRadius: 'md',
   // No `transition` on fields: the native animation driver would pass animated
   // style objects to TextInput, which Android rejects.
-  hoverStyle: { borderColor: '$borderStrong' },
-  focusStyle: { borderColor: '$ring' },
+  hoverStyle: { borderColor: 'borderStrong' },
+  focusStyle: { borderColor: 'ring' },
   focusVisibleStyle: {
-    outlineColor: '$ring',
+    outlineColor: 'ring',
     outlineStyle: 'solid',
     outlineWidth: 2,
     outlineOffset: 0,
@@ -34,9 +34,9 @@ export const fieldBoxStyle = {
 
 export const inputBaseStyle = {
   ...fieldBoxStyle,
-  fontFamily: '$body',
-  color: '$foreground',
-  placeholderTextColor: '$placeholderColor',
+  fontFamily: 'body',
+  color: 'foreground',
+  placeholderTextColor: 'placeholder-color',
 } as const
 
 export type InputSize = 'sm' | 'md' | 'lg'
@@ -50,16 +50,26 @@ const InputFrame = styled(TamaguiInput, {
 
   variants: {
     size: {
-      sm: { height: '$8', paddingHorizontal: '$2.5', fontSize: '$2' },
-      md: { height: '$10', paddingHorizontal: '$3', fontSize: '$2' },
-      lg: { height: '$12', paddingHorizontal: '$4', fontSize: '$3' },
+      sm: {
+        height: "8",
+        paddingHorizontal: "2-5",
+        fontSize: "2"
+      },
+      md: {
+        height: "10",
+        paddingHorizontal: "3",
+        fontSize: "2"
+      },
+      lg: {
+        height: "12",
+        paddingHorizontal: "4",
+        fontSize: "3"
+      },
     },
     invalid: {
       true: {
-        borderColor: '$error',
-        hoverStyle: { borderColor: '$error' },
-        focusStyle: { borderColor: '$error' },
-        focusVisibleStyle: { outlineColor: '$error' },
+        borderColor: "error hover:error focus:error",
+        outlineColor: "focus-visible:error"
       },
     },
     disabled: {
@@ -75,7 +85,8 @@ const InputFrame = styled(TamaguiInput, {
         borderRadius: 0,
         backgroundColor: 'transparent',
         opacity: 1,
-        focusVisibleStyle: { outlineWidth: 0, outlineStyle: 'none' },
+        outlineWidth: "focus-visible:0px",
+        outlineStyle: "focus-visible:none"
       },
     },
   } as const,
@@ -85,47 +96,49 @@ const InputFrame = styled(TamaguiInput, {
 
 const InputGroupFrame = styled(View, {
   name: 'InputGroup',
-  backgroundColor: '$background',
+  backgroundColor: "background",
   borderWidth: 1,
-  borderColor: '$input',
-  borderRadius: '$md',
+  // Addon backgrounds stop at the rounded corners.
+borderColor: "input hover:borderStrong",
+  borderRadius: "md",
   flexDirection: 'row',
   alignItems: 'stretch',
   // Addon backgrounds stop at the rounded corners.
   overflow: 'hidden',
-  hoverStyle: { borderColor: '$borderStrong' },
-
   variants: {
     size: {
-      sm: { height: '$8' },
-      md: { height: '$10' },
-      lg: { height: '$12' },
+      sm: {
+        height: "8"
+      },
+      md: {
+        height: "10"
+      },
+      lg: {
+        height: "12"
+      },
     },
     focused: {
       true: {
-        borderColor: '$ring',
-        hoverStyle: { borderColor: '$ring' },
+        borderColor: "ring hover:ring"
       },
     },
     invalid: {
       true: {
-        borderColor: '$error',
-        hoverStyle: { borderColor: '$error' },
+        borderColor: "error hover:error"
       },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed' },
     },
   } as const,
-
-  defaultVariants: { size: 'md' },
+  defaultVariants: { size: 'md' }
 })
 
 // The input's own side padding, and the square an icon or icon button sits in.
-const sidePadding = { sm: '$2.5', md: '$3', lg: '$4' } as const
-const squareSizes = { sm: '$8', md: '$10', lg: '$12' } as const
+const sidePadding = { sm: '2.5', md: '3', lg: '4' } as const
+const squareSizes = { sm: '8', md: '10', lg: '12' } as const
 const iconSizes = { sm: 14, md: 16, lg: 18 } as const
-const fontSizes = { sm: '$2', md: '$2', lg: '$3' } as const
+const fontSizes = { sm: '2', md: '2', lg: '3' } as const
 
 // With slots, these props size and place the group's box rather than the text field.
 const boxProps = new Set([
@@ -262,9 +275,9 @@ export const Input = forwardRef<TamaguiElement, InputProps>(function Input(input
   ) => (
     <Text
       {...(isWeb ? { id: `${textId}-${part}` } : { 'aria-hidden': true })}
-      fontFamily="$body"
+      fontFamily="body"
       fontSize={fontSizes[size]}
-      color="$mutedForeground"
+      color="mutedForeground"
       numberOfLines={1}
     >
       {node}
@@ -275,11 +288,11 @@ export const Input = forwardRef<TamaguiElement, InputProps>(function Input(input
     <View
       justifyContent="center"
       paddingHorizontal={sidePadding[size]}
-      backgroundColor="$muted"
-      borderColor="$input"
+      backgroundColor="muted"
+      borderColor="input"
       {...(part === 'leading-addon' ? { borderRightWidth: 1 } : { borderLeftWidth: 1 })}
-      onPress={focusInput}
       {...(!isWeb && { accessible: false })}
+      onPress={focusInput}
     >
       {isTextContent(node) ? text(part, node) : node}
     </View>
@@ -290,8 +303,8 @@ export const Input = forwardRef<TamaguiElement, InputProps>(function Input(input
       <View
         justifyContent="center"
         {...(part === 'leading'
-          ? { paddingLeft: sidePadding[size], paddingRight: '$1' }
-          : { paddingLeft: '$1', paddingRight: sidePadding[size] })}
+          ? { paddingLeft: sidePadding[size], paddingRight: '1' }
+          : { paddingLeft: '1', paddingRight: sidePadding[size] })}
         onPress={focusInput}
         {...(!isWeb && { accessible: false })}
       >
@@ -299,14 +312,14 @@ export const Input = forwardRef<TamaguiElement, InputProps>(function Input(input
       </View>
     ) : (
       <View
-        alignItems="center"
-        justifyContent="center"
-        minWidth={squareSizes[size]}
-        paddingHorizontal="$1"
-        onPress={focusInput}
-        {...(!isWeb && { accessible: false })}
-      >
-        <IconDefaults size={iconSizes[size]} color="$mutedForeground">
+          alignItems="center"
+          justifyContent="center"
+          minWidth={squareSizes[size]}
+          paddingHorizontal="1"
+          {...(!isWeb && { accessible: false })}
+          onPress={focusInput}
+        >
+        <IconDefaults size={iconSizes[size]} color="mutedForeground">
           {node}
         </IconDefaults>
       </View>
@@ -321,7 +334,7 @@ export const Input = forwardRef<TamaguiElement, InputProps>(function Input(input
       // The ring a plain field draws on focus (web only, like its focusVisibleStyle).
       {...(isWeb &&
         focused && {
-          outlineColor: invalid ? '$error' : '$ring',
+          outlineColor: invalid ? 'error' : 'ring',
           outlineStyle: 'solid',
           outlineWidth: 2,
         })}

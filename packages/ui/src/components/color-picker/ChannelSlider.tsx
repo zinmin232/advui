@@ -95,10 +95,9 @@ export function ChannelSlider({
   const surface = (
     <View
       position="relative"
-      // As tall as the thumb, so the whole strip takes a press.
       height={THUMB}
       justifyContent="center"
-      borderRadius="$full"
+      borderRadius="full"
       cursor={disabled ? 'not-allowed' : 'pointer'}
       focusVisibleStyle={focusRing}
       {...semantics}
@@ -106,8 +105,8 @@ export function ChannelSlider({
     >
       <View
         position="relative"
-        height="$3"
-        borderRadius="$full"
+        height="3"
+        borderRadius="full"
         overflow="hidden"
         pointerEvents="none"
       >

@@ -132,7 +132,7 @@ describe('gridCellLayout', () => {
 function LegacyGrid({
   children,
   columns = 1,
-  gap = '$4',
+  gap = '4',
   ...props
 }: Omit<ViewProps, 'gap'> & {
   columns?: ResponsiveColumns
@@ -190,8 +190,8 @@ describe('Grid', () => {
   it('renders plain children exactly like 0.6.0', () => {
     const cases: { columns: ResponsiveColumns; gap?: SpaceTokens }[] = [
       { columns: 3 },
-      { columns: { base: 1, sm: 2, lg: 4 }, gap: '$2' },
-      { columns: { md: 3 }, gap: '$6' },
+      { columns: { base: 1, sm: 2, lg: 4 }, gap: '2' },
+      { columns: { md: 3 }, gap: '6' },
     ]
     for (const props of cases) {
       const cells = ['One', 'Two', 'Three', 'Four'].map((label) => <Text key={label}>{label}</Text>)
@@ -289,13 +289,13 @@ describe('Grid', () => {
 
   it('pads cells by half the column gap and keeps rowGap separate', () => {
     renderWithProvider(
-      <Grid columns={2} gap="$2" columnGap="$6" rowGap="$8" testID="grid">
+      <Grid columns={2} columnGap="6" rowGap="8" testID="grid">
         <Grid.Item testID="cell">
           <Text>One</Text>
         </Grid.Item>
       </Grid>,
     )
-    const half = (getTokenValue('$6' as Token, 'space') as number) / 2
+    const half = (getTokenValue('6' as Token, 'space') as number) / 2
     const grid = cssFor(screen.getByTestId('grid'))['']
     expect(grid).toMatchObject({ 'margin-left': `-${half}px`, 'margin-right': `-${half}px` })
     expect(grid?.['row-gap']).toContain('space-8')

@@ -38,18 +38,18 @@ export function CodeBlock({
   return (
     <View
       borderWidth={1}
-      borderColor="$border"
-      borderRadius="$lg"
-      backgroundColor="$muted"
+      borderColor="border"
+      borderRadius="lg"
+      backgroundColor="muted"
       overflow="hidden"
     >
       <HStack
         justifyContent="space-between"
-        paddingLeft="$4"
-        paddingRight="$1.5"
-        height="$10"
+        paddingLeft="4"
+        paddingRight="1-5"
+        height="10"
         borderBottomWidth={title ? 1 : 0}
-        borderColor="$border"
+        borderColor="border"
         position={title ? 'relative' : 'absolute'}
         right={0}
         top={0}

@@ -40,8 +40,8 @@ export function AdminScreen() {
   )
 
   return (
-    <VStack gap="$6" padding="$4" width="100%" $md={{ padding: '$8' }}>
-      <HStack justifyContent="space-between" flexWrap="wrap" gap="$3">
+    <VStack gap="6" padding="4 md:8" width="100%">
+      <HStack justifyContent="space-between" flexWrap="wrap" gap="3">
         <VStack>
           <Text size="3xl" weight="bold">
             Team
@@ -59,7 +59,7 @@ export function AdminScreen() {
                 They will receive an email with a sign-up link.
               </Dialog.Description>
             </Dialog.Header>
-            <VStack gap="$2">
+            <VStack gap="2">
               <Label htmlFor="invite-email">Email</Label>
               <Input
                 id="invite-email"
@@ -69,7 +69,7 @@ export function AdminScreen() {
                 autoCapitalize="none"
               />
             </VStack>
-            <VStack gap="$2">
+            <VStack gap="2">
               <Label htmlFor="invite-role">Role</Label>
               <Select id="invite-role" value={inviteRole} onValueChange={setInviteRole}>
                 <Select.Item value="Admin">Admin</Select.Item>
@@ -111,27 +111,27 @@ export function AdminScreen() {
           <Tabs.Trigger value="members">Members</Tabs.Trigger>
           <Tabs.Trigger value="security">Security</Tabs.Trigger>
         </Tabs.List>
-        <Tabs.Content value="members" gap="$4" paddingTop="$2">
-          <HStack position="relative" maxWidth="$96">
+        <Tabs.Content value="members" gap="4" paddingTop="2">
+          <HStack position="relative" maxWidth="96">
             <Input
               aria-label="Search members"
               placeholder="Search members…"
               flex={1}
               value={query}
               onChangeText={setQuery}
-              paddingLeft="$9"
+              paddingLeft="9"
             />
             <InputIcon>
-              <SearchIcon size={16} color="$mutedForeground" />
+              <SearchIcon size={16} color="mutedForeground" />
             </InputIcon>
           </HStack>
           <Card>
             {filtered.map((user, index) => (
               <VStack key={user.email}>
                 {index > 0 ? <Separator /> : null}
-                <HStack gap="$3" padding="$4" flexWrap="wrap">
+                <HStack gap="3" padding="4" flexWrap="wrap">
                   <Avatar alt={user.name} src={avatarUrl(user.img)} />
-                  <VStack flex={1} minWidth="$40">
+                  <VStack flex={1} minWidth="40">
                     <Text weight="medium">{user.name}</Text>
                     <Text size="sm" tone="muted">
                       {user.email}
@@ -143,7 +143,7 @@ export function AdminScreen() {
                   >
                     {user.role}
                   </Badge>
-                  <HStack gap="$1">
+                  <HStack gap="1">
                     <Tooltip content={`Edit ${user.name}`}>
                       <IconButton
                         aria-label={`Edit ${user.name}`}
@@ -174,18 +174,18 @@ export function AdminScreen() {
               </VStack>
             ))}
             {filtered.length === 0 ? (
-              <Text tone="muted" padding="$6" textAlign="center">
+              <Text tone="muted" padding="6" textAlign="center">
                 No members match “{query}”.
               </Text>
             ) : null}
           </Card>
         </Tabs.Content>
-        <Tabs.Content value="security" paddingTop="$2">
+        <Tabs.Content value="security" paddingTop="2">
           <Card>
             <Card.Header>
               <SectionTitle title="Security" description="Policies that apply to every member." />
             </Card.Header>
-            <Card.Content gap="$4">
+            <Card.Content gap="4">
               {[
                 {
                   id: 'sec-2fa',
@@ -206,7 +206,7 @@ export function AdminScreen() {
                   on: true,
                 },
               ].map((policy) => (
-                <HStack key={policy.id} justifyContent="space-between" gap="$4">
+                <HStack key={policy.id} justifyContent="space-between" gap="4">
                   <VStack flex={1}>
                     <Label htmlFor={policy.id}>{policy.label}</Label>
                     <Text size="sm" tone="muted">

@@ -68,7 +68,7 @@ export default defineMeta({
           name: 'gap',
           type: 'SpaceTokens',
           token: 'space',
-          default: "'$4'",
+          default: "'4'",
           description: 'Space between slides.',
         },
         {

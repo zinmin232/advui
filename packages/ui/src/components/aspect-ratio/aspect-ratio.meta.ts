@@ -14,7 +14,7 @@ export default defineMeta({
   keywords: ['ratio', '16:9', 'image', 'video', 'embed', 'responsive media'],
   usage: `import { AspectRatio } from '@advui/core'
 
-<AspectRatio ratio={16 / 9} borderRadius="$lg">
+<AspectRatio ratio={16 / 9} borderRadius="lg">
   <Image source={{ uri }} style={{ width: '100%', height: '100%' }} accessibilityLabel="…" />
 </AspectRatio>`,
   parts: [

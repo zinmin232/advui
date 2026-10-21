@@ -15,7 +15,7 @@ See the [MIMU township profiles](https://themimu.info) for baseline data.`
 export default function RichTextEditorBasic() {
   const [value, setValue] = useState(initial)
   return (
-    <VStack width="100%" maxWidth="$144">
+    <VStack width="100%" maxWidth="144">
       <Field label="Report" description="Markdown is supported. Use Preview to check it.">
         <RichTextEditor value={value} onValueChange={setValue} maxLength={1000} />
       </Field>

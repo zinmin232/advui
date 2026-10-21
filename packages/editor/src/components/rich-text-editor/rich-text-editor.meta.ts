@@ -62,7 +62,7 @@ export default defineMeta({
           name: 'minHeight',
           type: 'number | SizeTokens',
           token: 'size',
-          default: "'$32'",
+          default: "'32'",
           description: 'Height of the text area before it grows.',
         },
         {

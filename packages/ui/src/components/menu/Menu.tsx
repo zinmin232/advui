@@ -72,10 +72,10 @@ const MenuRoot = forwardRef<TamaguiElement, MenuProps>(function Menu(
         aria-orientation="vertical"
         orientation="vertical"
         loop
-        gap="$0.5"
+        gap="0-5"
         width="100%"
-        onFocus={composeEventHandlers(onFocus, forwardFocusToItem)}
         {...props}
+        onFocus={composeEventHandlers(onFocus, forwardFocusToItem)}
       >
         {children}
       </RovingFocusGroup>
@@ -127,10 +127,10 @@ const MenuItem = forwardRef<TamaguiElement, MenuItemProps>(function MenuItem(
   const selected = selectedProp ?? (value !== undefined && menu.value === value)
   const isLink = isWeb && (href !== undefined || render !== undefined)
   const color = selected
-    ? '$secondaryForeground'
+    ? 'secondaryForeground'
     : destructive
-      ? '$errorSoftForeground'
-      : '$foreground'
+      ? 'errorSoftForeground'
+      : 'foreground'
   const ripple = useRipple({ color, disabled, onPressIn, onPressOut })
 
   const activate = () => {
@@ -160,48 +160,42 @@ const MenuItem = forwardRef<TamaguiElement, MenuItemProps>(function MenuItem(
   return (
     <RovingFocusGroup.Item
       ref={ref}
-      // Arrow keys skip disabled items; the menu itself is the Tab stop.
       focusable={!disabled}
       active={selected}
       tabIndex={-1}
       role="menuitem"
       {...semantics}
-      aria-current={selected ? (isLink ? 'page' : 'true') : undefined}
-      aria-disabled={ariaState(disabled)}
       position="relative"
       flexDirection="row"
       alignItems="center"
-      minHeight="$10"
-      paddingHorizontal="$3"
+      minHeight="10"
+      paddingHorizontal="3"
       paddingVertical={0}
       borderWidth={0}
-      borderRadius="$md"
+      borderRadius="md"
       backgroundColor="transparent"
       cursor={disabled ? 'not-allowed' : 'pointer'}
       opacity={disabled ? 0.5 : 1}
       userSelect="none"
-      hoverStyle={disabled || selected ? undefined : { backgroundColor: '$accent' }}
-      pressStyle={
-        disabled || selected || ripple.active ? undefined : { backgroundColor: '$accentHover' }
-      }
-      focusVisibleStyle={{
-        outlineColor: '$ring',
-        outlineStyle: 'solid',
-        outlineWidth: 2,
-        outlineOffset: -2,
-      }}
-      // Finger-sized rows on touch screens.
-      $touchable={{ minHeight: '$12' }}
-      onPress={(event) => {
-        if (disabled) {
-          event?.preventDefault?.()
-          return
-        }
-        onPress?.(event)
-        activate()
-      }}
+      hoverStyle={disabled || selected ? undefined : { backgroundColor: 'accent' }}
+      pressStyle={ disabled || selected || ripple.active ? undefined : { backgroundColor: 'accentHover' } }
+      outlineColor="focus-visible:ring"
+      outlineStyle="focus-visible:solid"
+      outlineWidth="focus-visible:2px"
+      outlineOffset="focus-visible:-2px"
+      $touchable={{ minHeight: '12' }}
       {...props}
       {...ripple.props}
+      aria-current={selected ? (isLink ? 'page' : 'true') : undefined}
+      aria-disabled={ariaState(disabled)}
+      onPress={(event) => {
+            if (disabled) {
+              event?.preventDefault?.()
+              return
+            }
+            onPress?.(event)
+            activate()
+          }}
     >
       {/* The selected fill is always painted and faded in, because Android
           does not round a background that is added after the view mounts. */}
@@ -212,16 +206,16 @@ const MenuItem = forwardRef<TamaguiElement, MenuItemProps>(function MenuItem(
         right={0}
         bottom={0}
         left={0}
-        borderRadius="$md"
-        backgroundColor="$secondary"
+        borderRadius="md"
+        backgroundColor="secondary"
         opacity={selected ? 1 : 0}
         pointerEvents="none"
       />
       {ripple.element}
       {/* Positioned so it paints above the fill on web. */}
-      <View position="relative" flex={1} flexDirection="row" alignItems="center" gap="$3">
+      <View position="relative" flex={1} flexDirection="row" alignItems="center" gap="3">
         {icon ? (
-          <IconDefaults size={18} color={selected || destructive ? color : '$mutedForeground'}>
+          <IconDefaults size={18} color={selected || destructive ? color : 'mutedForeground'}>
             {icon}
           </IconDefaults>
         ) : null}
@@ -269,19 +263,19 @@ const MenuGroup = forwardRef<TamaguiElement, MenuGroupProps>(function MenuGroup(
       ref={ref}
       role="group"
       aria-labelledby={label ? labelId : undefined}
-      gap="$0.5"
+      gap="0-5"
       {...props}
     >
       {label ? (
         <Text
           id={labelId}
           size="xs"
+          paddingHorizontal="3"
+          paddingTop="2"
+          paddingBottom="1"
+          {...(!isWeb && { role: 'heading' as const })}
           weight="semibold"
           tone="muted"
-          paddingHorizontal="$3"
-          paddingTop="$2"
-          paddingBottom="$1"
-          {...(!isWeb && { role: 'heading' as const })}
         >
           {label}
         </Text>
@@ -296,8 +290,8 @@ const MenuSeparator = styled(View, {
   role: isWeb ? 'separator' : 'none',
   'aria-hidden': !isWeb,
   height: 1,
-  backgroundColor: '$border',
-  marginVertical: '$2',
+  backgroundColor: "border",
+  marginVertical: "2"
 })
 
 /**

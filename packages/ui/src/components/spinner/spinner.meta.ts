@@ -34,7 +34,7 @@ export default defineMeta({
           name: 'color',
           type: 'string',
           token: 'color',
-          description: 'Theme token (e.g. `$primary`) or color. Defaults to the text color.',
+          description: 'Theme token (e.g. `primary`) or color. Defaults to the text color.',
         },
         { name: 'label', type: 'string', default: "'Loading'", description: 'Accessible name.' },
       ],

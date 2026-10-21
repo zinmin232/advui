@@ -40,34 +40,34 @@ const AlertDescriptionContext = createStyledContext<{ size: AlertSize; color: Al
 })
 
 const accent = {
-  default: '$foreground',
-  info: '$infoSoftForeground',
-  success: '$successSoftForeground',
-  warning: '$warningSoftForeground',
-  error: '$errorSoftForeground',
-  destructive: '$destructiveForeground',
+  default: 'foreground',
+  info: 'infoSoftForeground',
+  success: 'successSoftForeground',
+  warning: 'warningSoftForeground',
+  error: 'errorSoftForeground',
+  destructive: 'destructiveForeground',
 } as const satisfies Record<AlertVariant, `$${string}`>
 
 const descriptionColor = {
   ...accent,
-  default: '$mutedForeground',
+  default: 'mutedForeground',
 } as const satisfies Record<AlertVariant, `$${string}`>
 
 // The dismiss button sits on the alert's own surface, so it tints with the
 // variant's border color rather than the neutral accent.
 const dismissHover = {
-  default: '$accent',
-  info: '$infoBorder',
-  success: '$successBorder',
-  warning: '$warningBorder',
-  error: '$errorBorder',
-  destructive: '$destructiveHover',
+  default: 'accent',
+  info: 'infoBorder',
+  success: 'successBorder',
+  warning: 'warningBorder',
+  error: 'errorBorder',
+  destructive: 'destructiveHover',
 } as const satisfies Record<AlertVariant, `$${string}`>
 
 const dismissPress = {
   ...dismissHover,
-  default: '$accentHover',
-  destructive: '$destructivePress',
+  default: 'accentHover',
+  destructive: 'destructivePress',
 } as const satisfies Record<AlertVariant, `$${string}`>
 
 const defaultIcons = {
@@ -83,26 +83,26 @@ const defaultIcons = {
 const sizes = {
   sm: {
     icon: 14,
-    iconOffset: '$1',
-    textGap: '$0.5',
-    sectionGap: '$2',
-    dismiss: '$6',
-    dismissOffset: '$-0.5',
+    iconOffset: '1',
+    textGap: '0.5',
+    sectionGap: '2',
+    dismiss: '6',
+    dismissOffset: '-0.5',
   },
   md: {
     icon: 16,
-    iconOffset: '$0.5',
-    textGap: '$1',
-    sectionGap: '$3',
-    dismiss: '$6',
-    dismissOffset: '$-0.5',
+    iconOffset: '0.5',
+    textGap: '1',
+    sectionGap: '3',
+    dismiss: '6',
+    dismissOffset: '-0.5',
   },
   lg: {
     icon: 20,
-    iconOffset: '$1',
-    textGap: '$1.5',
-    sectionGap: '$3',
-    dismiss: '$7',
+    iconOffset: '1',
+    textGap: '1.5',
+    sectionGap: '3',
+    dismiss: '7',
     dismissOffset: 0,
   },
 } as const satisfies Record<AlertSize, object>
@@ -110,26 +110,51 @@ const sizes = {
 const AlertFrame = styled(View, {
   name: 'Alert',
   flexDirection: 'row',
-  borderRadius: '$lg',
+  borderRadius: "lg",
   borderWidth: 1,
-
   variants: {
     variant: {
-      default: { backgroundColor: '$card', borderColor: '$border' },
-      info: { backgroundColor: '$infoSoft', borderColor: '$infoBorder' },
-      success: { backgroundColor: '$successSoft', borderColor: '$successBorder' },
-      warning: { backgroundColor: '$warningSoft', borderColor: '$warningBorder' },
-      error: { backgroundColor: '$errorSoft', borderColor: '$errorBorder' },
-      destructive: { backgroundColor: '$destructive', borderColor: '$destructive' },
+      default: {
+        backgroundColor: "card",
+        borderColor: "border"
+      },
+      info: {
+        backgroundColor: "infoSoft",
+        borderColor: "infoBorder"
+      },
+      success: {
+        backgroundColor: "successSoft",
+        borderColor: "successBorder"
+      },
+      warning: {
+        backgroundColor: "warningSoft",
+        borderColor: "warningBorder"
+      },
+      error: {
+        backgroundColor: "errorSoft",
+        borderColor: "errorBorder"
+      },
+      destructive: {
+        backgroundColor: "destructive",
+        borderColor: "destructive"
+      },
     },
     size: {
-      sm: { padding: '$3', gap: '$2' },
-      md: { padding: '$4', gap: '$3' },
-      lg: { padding: '$5', gap: '$4' },
+      sm: {
+        padding: "3",
+        gap: "2"
+      },
+      md: {
+        padding: "4",
+        gap: "3"
+      },
+      lg: {
+        padding: "5",
+        gap: "4"
+      },
     },
   } as const,
-
-  defaultVariants: { variant: 'default', size: 'md' },
+  defaultVariants: { variant: 'default', size: 'md' }
 })
 
 // `size` follows the alert's; sm and lg match Text's own sm and lg.
@@ -139,9 +164,18 @@ const AlertTitle = styled(Text, {
   weight: 'semibold',
   variants: {
     size: {
-      sm: { fontSize: '$2', lineHeight: '$2' },
-      md: { fontSize: '$2', lineHeight: '$2' },
-      lg: { fontSize: '$4', lineHeight: '$4' },
+      sm: {
+        fontSize: "2",
+        lineHeight: "2"
+      },
+      md: {
+        fontSize: "2",
+        lineHeight: "2"
+      },
+      lg: {
+        fontSize: "4",
+        lineHeight: "4"
+      },
     },
   } as const,
 })
@@ -151,9 +185,18 @@ const AlertDescription = styled(Text, {
   context: AlertDescriptionContext,
   variants: {
     size: {
-      sm: { fontSize: '$1', lineHeight: '$1' },
-      md: { fontSize: '$2', lineHeight: '$2' },
-      lg: { fontSize: '$3', lineHeight: '$3' },
+      sm: {
+        fontSize: "1",
+        lineHeight: "1"
+      },
+      md: {
+        fontSize: "2",
+        lineHeight: "2"
+      },
+      lg: {
+        fontSize: "3",
+        lineHeight: "3"
+      },
     },
   } as const,
 })
@@ -259,7 +302,7 @@ const AlertImpl = forwardRef<TamaguiElement, AlertProps>(function Alert(
           </AlertDescriptionContext.Provider>
         </AlertTitleContext.Provider>
         {actions == null ? null : (
-          <View flexDirection="row" flexWrap="wrap" gap="$2">
+          <View flexDirection="row" flexWrap="wrap" gap="2">
             {actions}
           </View>
         )}
@@ -276,20 +319,22 @@ const AlertImpl = forwardRef<TamaguiElement, AlertProps>(function Alert(
           marginTop={metrics.dismissOffset}
           alignItems="center"
           justifyContent="center"
-          borderRadius="$sm"
+          borderRadius="sm"
           cursor="pointer"
           hoverStyle={{ backgroundColor: dismissHover[variant] }}
           pressStyle={dismissRipple.active ? undefined : { backgroundColor: dismissPress[variant] }}
-          focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
+          outlineColor="focus-visible:ring"
+          outlineStyle="focus-visible:solid"
+          outlineWidth="focus-visible:2px"
           {...(isWeb
-            ? { type: 'button', padding: 0, borderWidth: 0, backgroundColor: 'transparent' }
-            : { accessible: true, hitSlop: 10 })}
-          onPress={(event) => {
-            // Keep the press from reaching a pressable card or row around the alert.
-            event.stopPropagation()
-            setOpen(false)
-          }}
+                    ? { type: 'button', padding: 0, borderWidth: 0, backgroundColor: 'transparent' }
+                    : { accessible: true, hitSlop: 10 })}
           {...dismissRipple.props}
+          onPress={(event) => {
+                    // Keep the press from reaching a pressable card or row around the alert.
+                    event.stopPropagation()
+                    setOpen(false)
+                  }}
         >
           {dismissRipple.element}
           <XIcon size={size === 'lg' ? 16 : 14} color={accentColor} />

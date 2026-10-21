@@ -7,19 +7,19 @@ export default function ScrollAreaBasic() {
   return (
     <ScrollArea
       aria-label="Release tags"
-      height="$72"
-      width="$48"
+      height="72"
+      width="48"
       borderWidth={1}
-      borderColor="$border"
-      borderRadius="$md"
+      borderColor="border"
+      borderRadius="md"
     >
-      <VStack padding="$4" gap="$2">
+      <VStack padding="4" gap="2">
         <Text size="sm" weight="medium">
           Tags
         </Text>
         {tags.map((tag) => (
           <Fragment key={tag}>
-            <Text size="sm" fontFamily="$mono">
+            <Text size="sm" fontFamily="mono">
               {tag}
             </Text>
             <Separator />

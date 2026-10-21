@@ -26,7 +26,7 @@ export function CircularProgress({
   const { clamped, fraction } = progressFraction(value, max)
   const geometry = ring(size, fraction)
   const indicator = useIconColor(toneColor[tone])
-  const track = useIconColor('$muted')
+  const track = useIconColor('muted')
   const fontSize = valueFontSize[size]
   const reducedMotion = useReducedMotion()
   const spin = useRef(new Animated.Value(0)).current
@@ -107,11 +107,11 @@ export function CircularProgress({
         <Text
           aria-hidden
           position="absolute"
-          fontFamily="$body"
+          fontFamily="body"
           fontSize={fontSize}
           lineHeight={fontSize}
           fontWeight="600"
-          color="$foreground"
+          color="foreground"
         >
           {percent}%
         </Text>

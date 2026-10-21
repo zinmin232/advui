@@ -37,7 +37,7 @@ describe('Form', () => {
 
   it('puts the fields in a wrapping row when horizontal', () => {
     renderWithProvider(
-      <Form direction="horizontal" gap="$2">
+      <Form direction="horizontal" gap="2">
         <Input aria-label="Search" />
       </Form>,
     )
@@ -111,10 +111,10 @@ describe('Form', () => {
   it('accepts style props and a theme like any view', () => {
     renderWithProvider(
       <>
-        <Form testID="light" padding="$4" borderRadius="$lg" maxWidth={400} bg="$background">
+        <Form testID="light" padding="4" borderRadius="lg" maxWidth={400} bg="background">
           <Input aria-label="Name" />
         </Form>
-        <Form testID="dark" theme="dark" bg="$background">
+        <Form testID="dark" theme="dark" bg="background">
           <Input aria-label="Name" />
         </Form>
       </>,

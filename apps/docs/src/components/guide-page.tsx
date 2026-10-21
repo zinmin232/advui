@@ -32,7 +32,7 @@ export function GuidePage({
       <PageHeader title={title} description={description} />
       {children}
       <a href={editUrl} className="prose-link" target="_blank" rel="noreferrer">
-        <Text size="xs" color="$primaryText" paddingTop="$6">
+        <Text size="xs" color="primaryText" paddingTop="6">
           Edit this page on GitHub
         </Text>
       </a>

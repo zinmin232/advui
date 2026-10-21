@@ -9,7 +9,7 @@ export default function ToolbarDataTable() {
       width="100%"
       wrap
       leading={
-        <HStack gap="$2">
+        <HStack gap="2">
           <Heading level={3} size="lg">
             Users
           </Heading>
@@ -18,7 +18,7 @@ export default function ToolbarDataTable() {
       }
       trailing={
         <>
-          <Input size="sm" width="$56" placeholder="Filter users…" aria-label="Filter users" />
+          <Input size="sm" width="56" placeholder="Filter users…" aria-label="Filter users" />
           <Button size="sm" variant="outline" icon={<DownloadIcon />}>
             Export
           </Button>

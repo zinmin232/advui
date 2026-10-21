@@ -59,7 +59,7 @@ export const clamp = (value: number, min: number, max: number) =>
   Math.min(max, Math.max(min, value))
 
 export const focusRing = {
-  outlineColor: '$ring',
+  outlineColor: 'ring',
   outlineStyle: 'solid',
   outlineWidth: 2,
   outlineOffset: 2,

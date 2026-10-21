@@ -55,24 +55,24 @@ const lg = '(min-width: 1024px)'
 describe('Stack responsive props', () => {
   it('renders exactly as before when they are not used', () => {
     const child = <Text>Item</Text>
-    expect(html(<Stack gap="$2">{child}</Stack>)).toBe(
-      html(<LegacyStack gap="$2">{child}</LegacyStack>),
+    expect(html(<Stack gap="2">{child}</Stack>)).toBe(
+      html(<LegacyStack gap="2">{child}</LegacyStack>),
     )
-    expect(html(<HStack gap="$2">{child}</HStack>)).toBe(
-      html(<LegacyHStack gap="$2">{child}</LegacyHStack>),
+    expect(html(<HStack gap="2">{child}</HStack>)).toBe(
+      html(<LegacyHStack gap="2">{child}</LegacyHStack>),
     )
-    expect(html(<VStack padding="$4">{child}</VStack>)).toBe(
-      html(<LegacyVStack padding="$4">{child}</LegacyVStack>),
+    expect(html(<VStack padding="4">{child}</VStack>)).toBe(
+      html(<LegacyVStack padding="4">{child}</LegacyVStack>),
     )
     expect(
       html(
-        <Stack flexDirection="row" $md={{ flexDirection: 'column' }} items="center">
+        <Stack flexDirection="row md:column" items="center">
           {child}
         </Stack>,
       ),
     ).toBe(
       html(
-        <LegacyStack flexDirection="row" $md={{ flexDirection: 'column' }} items="center">
+        <LegacyStack flexDirection="row md:column" items="center">
           {child}
         </LegacyStack>,
       ),
@@ -81,7 +81,7 @@ describe('Stack responsive props', () => {
 
   it('direction map renders the same as flexDirection with a media prop', () => {
     expect(css(<Stack testID="stack" direction={{ base: 'column', md: 'row' }} />)).toEqual(
-      css(<Stack testID="stack" flexDirection="column" $md={{ flexDirection: 'row' }} />),
+      css(<Stack testID="stack" flexDirection="column md:row" />),
     )
   })
 
@@ -127,7 +127,7 @@ describe('Stack responsive props', () => {
     const style = css(
       <Stack
         testID="stack"
-        $md={{ flexDirection: 'column-reverse' }}
+        flexDirection="md:column-reverse"
         direction={{ base: 'column', md: 'row', lg: 'row-reverse' }}
       />,
     )
@@ -170,7 +170,7 @@ describe('Wrap', () => {
   })
 
   it('takes align, distribute and its own gap', () => {
-    const style = css(<Wrap testID="stack" align="start" distribute="center" gap="$4" />)['']
+    const style = css(<Wrap testID="stack" align="start" distribute="center" gap="4" />)['']
     expect(style).toMatchObject({ 'align-items': 'flex-start', 'justify-content': 'center' })
   })
 })

@@ -7,7 +7,7 @@ const TimePickerFrame = styled(XStack, {
   name: 'TimePicker',
   role: 'group',
   alignItems: 'center',
-  gap: '$2',
+  gap: "2"
 })
 
 type Parts = { hour: string | null; minute: string | null; period: 'AM' | 'PM' }
@@ -127,7 +127,7 @@ export const TimePicker = forwardRef<TamaguiElement, TimePickerProps>(
               </Select.Item>
             ))}
           </Select>
-          <Text aria-hidden color="$mutedForeground" fontWeight="600">
+          <Text aria-hidden color="mutedForeground" fontWeight="600">
             :
           </Text>
           <Select

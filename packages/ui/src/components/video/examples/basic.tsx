@@ -7,7 +7,7 @@ const media = 'https://zinmin232.github.io/advui/media'
 export default function VideoBasic() {
   return (
     <Video
-      maxWidth="$144"
+      maxWidth="144"
       src={`${media}/handwashing.mp4`}
       poster={`${media}/handwashing.jpg`}
       title="Handwashing in five steps"

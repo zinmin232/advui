@@ -1,7 +1,7 @@
 import { isWeb, useTheme } from 'tamagui'
 
 /**
- * Resolves a theme token (`$primary`) to a value usable by SVG. On web we keep
+ * Resolves a theme token (`primary`) to a value usable by SVG. On web we keep
  * the CSS variable so the icon follows light/dark switches without a re-render.
  */
 export function useIconColor(color: string | undefined): string | undefined {

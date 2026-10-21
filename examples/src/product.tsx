@@ -33,21 +33,21 @@ export function ProductScreen() {
 
   return (
     <VStack
-      padding="$4"
-      gap="$8"
+      padding="4 md:8"
+      gap="8"
       width="100%"
-      maxWidth="$224"
+      maxWidth="224"
       marginHorizontal="auto"
-      $md={{ padding: '$8', flexDirection: 'row' }}
+      flexDirection="md:row"
     >
       {/* flex only in the md row: in the phone column its 0px basis collapses
           the gallery and details in containers without a fixed height. */}
-      <VStack gap="$3" $md={{ flex: 1 }}>
+      <VStack gap="3" flex="md:1">
         <View
           position="relative"
-          borderRadius="$xl"
+          borderRadius="xl"
           overflow="hidden"
-          backgroundColor="$muted"
+          backgroundColor="muted"
           aspectRatio={1}
         >
           <Image
@@ -55,11 +55,11 @@ export function ProductScreen() {
             style={{ width: '100%', height: '100%' }}
             accessibilityLabel="Red running shoe, side view"
           />
-          <Badge variant="destructive" position="absolute" top="$3" left="$3">
+          <Badge variant="destructive" position="absolute" top="3" left="3">
             -20%
           </Badge>
         </View>
-        <HStack gap="$2">
+        <HStack gap="2">
           {images.map((uri, index) => (
             <View
               key={uri}
@@ -68,12 +68,12 @@ export function ProductScreen() {
               aria-label={`Show image ${index + 1}`}
               aria-pressed={image === index}
               onPress={() => setImage(index)}
-              width="$20"
-              height="$20"
-              borderRadius="$lg"
+              width="20"
+              height="20"
+              borderRadius="lg"
               overflow="hidden"
               borderWidth={2}
-              borderColor={image === index ? '$ring' : 'transparent'}
+              borderColor={`${image === index ? "ring" : "transparent"}`}
               padding={0}
               cursor="pointer"
             >
@@ -83,24 +83,24 @@ export function ProductScreen() {
         </HStack>
       </VStack>
 
-      <VStack gap="$5" $md={{ flex: 1 }}>
-        <VStack gap="$2">
+      <VStack gap="5" flex="md:1">
+        <VStack gap="2">
           <Text size="sm" tone="muted">
             Running · Men
           </Text>
           <Text render="h1" size="3xl" weight="bold" margin={0}>
             Velocity Runner 3
           </Text>
-          <HStack gap="$1" aria-label="Rated 4.6 out of 5 from 128 reviews" role="img">
+          <HStack gap="1" aria-label="Rated 4.6 out of 5 from 128 reviews" role="img">
             {[0, 1, 2, 3, 4].map((i) => (
-              <StarIcon key={i} size={16} color={i < 4 ? '$warning' : '$borderStrong'} />
+              <StarIcon key={i} size={16} color={i < 4 ? 'warning' : 'borderStrong'} />
             ))}
-            <Text size="sm" tone="muted" marginLeft="$1">
+            <Text size="sm" marginLeft="1" tone="muted">
               4.6 (128)
             </Text>
           </HStack>
         </VStack>
-        <HStack gap="$3" alignItems="baseline">
+        <HStack gap="3" alignItems="baseline">
           <Text size="3xl" weight="bold">
             $119.00
           </Text>
@@ -112,7 +112,7 @@ export function ProductScreen() {
           A responsive everyday trainer with a breathable knit upper and a cushioned midsole for
           long runs.
         </Text>
-        <VStack gap="$3">
+        <VStack gap="3">
           <Text size="sm" weight="medium" id="size-label">
             Size (EU)
           </Text>
@@ -122,17 +122,17 @@ export function ProductScreen() {
             orientation="horizontal"
             aria-labelledby="size-label"
             flexWrap="wrap"
-            gap="$2"
+            gap="2"
           >
             {sizes.map((s) => (
               <HStack
                 key={s}
-                gap="$1.5"
+                gap="1-5"
                 borderWidth={1}
-                borderColor={size === s ? '$ring' : '$border'}
-                borderRadius="$md"
-                paddingHorizontal="$3"
-                height="$10"
+                borderColor={`${size === s ? "ring" : "border"}`}
+                borderRadius="md"
+                paddingHorizontal="3"
+                height="10"
               >
                 <RadioGroup.Item value={s} id={`size-${s}`} size="sm" />
                 <Text render="label" htmlFor={`size-${s}`} size="sm">
@@ -142,8 +142,8 @@ export function ProductScreen() {
             ))}
           </RadioGroup>
         </VStack>
-        <HStack gap="$3" flexWrap="wrap">
-          <HStack borderWidth={1} borderColor="$input" borderRadius="$md" alignItems="center">
+        <HStack gap="3" flexWrap="wrap">
+          <HStack borderWidth={1} borderColor="input" borderRadius="md" alignItems="center">
             <IconButton
               aria-label="Decrease quantity"
               icon={<MinusIcon />}
@@ -152,7 +152,7 @@ export function ProductScreen() {
             />
             <Text
               weight="medium"
-              width="$8"
+              width="8"
               textAlign="center"
               aria-live="polite"
               aria-label={`Quantity ${quantity}`}
@@ -182,7 +182,7 @@ export function ProductScreen() {
             aria-pressed={favorite}
             variant="outline"
             size="lg"
-            icon={<HeartIcon color={favorite ? '$destructive' : undefined} />}
+            icon={<HeartIcon color={favorite ? 'destructive' : undefined} />}
             onPress={() => setFavorite((f) => !f)}
           />
         </HStack>
@@ -192,15 +192,15 @@ export function ProductScreen() {
             <Tabs.Trigger value="details">Details</Tabs.Trigger>
             <Tabs.Trigger value="reviews">Reviews</Tabs.Trigger>
           </Tabs.List>
-          <Tabs.Content value="details" gap="$1">
+          <Tabs.Content value="details" gap="1">
             <Text size="sm">• Knit upper, recycled materials</Text>
             <Text size="sm">• 8 mm heel-to-toe drop</Text>
             <Text size="sm">• Free returns within 30 days</Text>
           </Tabs.Content>
           <Tabs.Content value="reviews">
             <Card variant="filled">
-              <Card.Content gap="$2">
-                <HStack gap="$2">
+              <Card.Content gap="2">
+                <HStack gap="2">
                   <Avatar size="sm" alt="Jackson Lee" src={avatarUrl(12)} />
                   <Text weight="medium" size="sm">
                     Jackson Lee

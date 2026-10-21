@@ -8,16 +8,16 @@ import { ScrollView } from 'react-native'
 export default function ComponentScreen() {
   const { slug } = useLocalSearchParams<{ slug: string }>()
   const meta = getComponent(slug)
-  if (!meta) return <Text padding="$4">Unknown component “{slug}”.</Text>
+  if (!meta) return <Text padding="4">Unknown component “{slug}”.</Text>
   const componentExamples = examples[meta.slug] ?? {}
 
   return (
     <ScrollView contentInsetAdjustmentBehavior="automatic" keyboardShouldPersistTaps="handled">
       <Stack.Screen options={{ title: meta.name }} />
-      <VStack padding="$4" gap="$5" paddingBottom="$12">
-        <VStack gap="$2">
+      <VStack paddingTop="4" paddingRight="4" paddingLeft="4" paddingBottom="12" gap="5">
+        <VStack gap="2">
           <Text tone="muted">{meta.description}</Text>
-          <HStack gap="$1.5">
+          <HStack gap="1-5">
             <Badge size="sm" variant={meta.status === 'stable' ? 'success' : 'warning'}>
               {meta.status}
             </Badge>
@@ -36,7 +36,7 @@ export default function ComponentScreen() {
         {meta.examples.map((example) => {
           const Example = componentExamples[example.name]
           return (
-            <VStack key={example.name} gap="$2">
+            <VStack key={example.name} gap="2">
               <Text weight="semibold">{example.title}</Text>
               {example.description ? (
                 <Text size="sm" tone="muted">

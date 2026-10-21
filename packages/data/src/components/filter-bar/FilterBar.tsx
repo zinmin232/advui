@@ -98,26 +98,33 @@ const defaultLabels: FilterBarLabels = {
 
 const FilterBarFrame = styled(Stack, {
   name: 'FilterBar',
-  borderRadius: '$lg',
-
+  borderRadius: "lg",
   variants: {
     variant: {
-      default: { backgroundColor: '$background' },
-      outline: { backgroundColor: '$background', borderWidth: 1, borderColor: '$border' },
-      filled: { backgroundColor: '$muted' },
+      default: {
+        backgroundColor: "background"
+      },
+      outline: {
+        backgroundColor: "background",
+        borderWidth: 1,
+        borderColor: "border"
+      },
+      filled: {
+        backgroundColor: "muted"
+      },
       // No fill, border or padding: for a bar inside a card or above a table.
       ghost: {},
     },
-  } as const,
+  } as const
 })
 
 // `field` and `wide` are the widths of controls in a row (multi-select and
 // date-range filters, and the search field, take `wide`); `control` is their
 // height, which leading content is centered on.
 const sizes = {
-  sm: { gap: '$2', padding: '$2', field: '$40', wide: '$56', control: '$8', clear: '$8' },
-  md: { gap: '$3', padding: '$3', field: '$48', wide: '$64', control: '$10', clear: '$9' },
-  lg: { gap: '$4', padding: '$4', field: '$56', wide: '$72', control: '$12', clear: '$10' },
+  sm: { gap: '2', padding: '2', field: '40', wide: '56', control: '8', clear: '8' },
+  md: { gap: '3', padding: '3', field: '48', wide: '64', control: '10', clear: '9' },
+  lg: { gap: '4', padding: '4', field: '56', wide: '72', control: '12', clear: '10' },
 } as const
 
 type Sizes = (typeof sizes)[FilterBarSize]
@@ -181,7 +188,7 @@ function Clearable({
     <View position="relative" justifyContent="center">
       {children}
       {label !== null ? (
-        <View position="absolute" right="$1" top={0} bottom={0} justifyContent="center">
+        <View position="absolute" right="1" top={0} bottom={0} justifyContent="center">
           <IconButton size="sm" icon={<XIcon />} aria-label={label} onPress={onClear} />
         </View>
       ) : null}
@@ -745,7 +752,7 @@ export const FilterBar = forwardRef<TamaguiElement, FilterBarProps>(function Fil
         main
       )}
       {showActiveFilters && active.length ? (
-        <Wrap ref={chipsRef} role="group" aria-label={labels.activeFilters} gap="$2">
+        <Wrap ref={chipsRef} role="group" aria-label={labels.activeFilters} gap="2">
           {active.map((filter, index) => {
             const text = `${filter.label}: ${formatFilterValue(filter, committed[filter.key] ?? null, labels, dates)}`
             return (

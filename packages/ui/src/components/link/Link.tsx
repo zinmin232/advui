@@ -54,27 +54,26 @@ const LinkText = styled(TamaguiText, {
   padding: 0,
   borderWidth: 0,
   backgroundColor: 'transparent',
-  focusVisibleStyle: {
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: 2,
-    borderRadius: '$sm',
-  },
-
+  outlineColor: "focus-visible:ring",
+  outlineStyle: "focus-visible:solid",
+  outlineWidth: "focus-visible:2px",
+  outlineOffset: "focus-visible:2px",
+  borderRadius: "focus-visible:sm",
   variants: {
     tone: {
-      primary: { color: '$primaryText' },
-      muted: { color: '$mutedForeground', hoverStyle: { color: '$foreground' } },
+      primary: {
+        color: "primaryText"
+      },
+      muted: {
+        color: "mutedForeground hover:foreground"
+      },
       // Takes the surrounding text's color, for links inside a sentence.
       inherit: {},
     },
     underline: {
       always: { textDecorationLine: 'underline' },
       hover: {
-        textDecorationLine: 'none',
-        hoverStyle: { textDecorationLine: 'underline' },
-        focusVisibleStyle: { textDecorationLine: 'underline' },
+        textDecorationLine: "none hover:underline focus-visible:underline"
       },
       none: { textDecorationLine: 'none' },
     },
@@ -82,9 +81,11 @@ const LinkText = styled(TamaguiText, {
     size: textSizes,
     weight: textWeights,
     pressable: {
-      true: { pressStyle: { opacity: 0.7 } },
+      true: {
+        opacity: "press:0.7"
+      },
     },
-  } as const,
+  } as const
 })
 
 type LinkTextProps = GetProps<typeof LinkText>
@@ -230,5 +231,5 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
 
 // Native icons do not inherit the text color.
 function color(tone: Exclude<LinkTone, 'inherit'>) {
-  return tone === 'primary' ? '$primaryText' : '$mutedForeground'
+  return tone === 'primary' ? 'primaryText' : 'mutedForeground'
 }

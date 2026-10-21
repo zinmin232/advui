@@ -35,8 +35,8 @@ export default function TreeViewControlled() {
   const [expanded, setExpanded] = useState<string[]>(['MMR013'])
   const [selected, setSelected] = useState<string | null>(null)
   return (
-    <VStack gap="$3" width="100%" maxWidth="$80">
-      <HStack gap="$2">
+    <VStack gap="3" width="100%" maxWidth="80">
+      <HStack gap="2">
         <Button size="sm" variant="outline" onPress={() => setExpanded(branchIds)}>
           Expand all
         </Button>

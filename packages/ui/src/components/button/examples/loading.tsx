@@ -8,7 +8,7 @@ export default function ButtonLoading() {
     setTimeout(() => setLoading(false), 1500)
   }
   return (
-    <HStack gap="$2" flexWrap="wrap">
+    <HStack gap="2" flexWrap="wrap">
       <Button loading={loading} onPress={submit}>
         {loading ? 'Saving…' : 'Save'}
       </Button>

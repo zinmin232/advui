@@ -395,54 +395,48 @@ function ResizableHandle({
   return (
     <View
       {...(isWeb
-        ? {
-            role: 'separator',
-            tabIndex: disabled ? -1 : 0,
-            'aria-orientation': horizontal ? 'vertical' : 'horizontal',
-            'aria-valuenow': Math.round(size),
-            'aria-valuemin': min,
-            'aria-valuemax': max,
-            'aria-valuetext': `${Math.round(size)}%`,
-            'aria-controls': panelId(index),
-            'aria-disabled': disabled || undefined,
-            onKeyDown: disabled ? undefined : onKeyDown,
-          }
-        : {
-            accessible: true,
-            accessibilityRole: 'adjustable',
-            accessibilityValue: { min, max, now: Math.round(size), text: `${Math.round(size)}%` },
-            accessibilityActions: [
-              { name: 'increment' },
-              { name: 'decrement' },
-              ...(a?.collapsible ? [{ name: 'activate' }] : []),
-            ],
-            onAccessibilityAction: (event: { nativeEvent: { actionName: string } }) => {
-              const action = event.nativeEvent.actionName
-              if (action === 'activate') toggle(index)
-              else step(action === 'increment' ? keyboardStep : -keyboardStep)
-            },
-            // A 1px line is too thin to grab: widen the touch target.
-            hitSlop: horizontal ? { left: 16, right: 16 } : { top: 16, bottom: 16 },
-          })}
-      aria-label={label}
+            ? {
+                role: 'separator',
+                tabIndex: disabled ? -1 : 0,
+                'aria-orientation': horizontal ? 'vertical' : 'horizontal',
+                'aria-valuenow': Math.round(size),
+                'aria-valuemin': min,
+                'aria-valuemax': max,
+                'aria-valuetext': `${Math.round(size)}%`,
+                'aria-controls': panelId(index),
+                'aria-disabled': disabled || undefined,
+                onKeyDown: disabled ? undefined : onKeyDown,
+              }
+            : {
+                accessible: true,
+                accessibilityRole: 'adjustable',
+                accessibilityValue: { min, max, now: Math.round(size), text: `${Math.round(size)}%` },
+                accessibilityActions: [
+                  { name: 'increment' },
+                  { name: 'decrement' },
+                  ...(a?.collapsible ? [{ name: 'activate' }] : []),
+                ],
+                onAccessibilityAction: (event: { nativeEvent: { actionName: string } }) => {
+                  const action = event.nativeEvent.actionName
+                  if (action === 'activate') toggle(index)
+                  else step(action === 'increment' ? keyboardStep : -keyboardStep)
+                },
+                // A 1px line is too thin to grab: widen the touch target.
+                hitSlop: horizontal ? { left: 16, right: 16 } : { top: 16, bottom: 16 },
+              })}
       {...(disabled ? {} : drag(horizontal))}
       position="relative"
       flexShrink={0}
       alignItems="center"
       justifyContent="center"
-      backgroundColor={dragging ? '$ring' : '$border'}
+      backgroundColor={`${dragging ? "ring" : "border"}`}
       {...(horizontal ? { width: 1 } : { height: 1 })}
       cursor={disabled ? 'default' : horizontal ? 'col-resize' : 'row-resize'}
-      hoverStyle={disabled ? {} : { backgroundColor: '$ring' }}
-      focusVisibleStyle={{
-        backgroundColor: '$ring',
-        outlineColor: '$ring',
-        outlineStyle: 'solid',
-        outlineWidth: 2,
-        outlineOffset: 2,
-      }}
-      style={isWeb ? ({ touchAction: 'none' } as never) : undefined}
+      hoverStyle={disabled ? {} : { backgroundColor: 'ring' }}
+      focusVisibleStyle={{ backgroundColor: 'ring', outlineColor: 'ring', outlineStyle: 'solid', outlineWidth: 2, outlineOffset: 2, }}
       zIndex={1}
+      aria-label={label}
+      style={isWeb ? ({ touchAction: 'none' } as never) : undefined}
     >
       {/* A wider, invisible grab area on web; native uses hitSlop. */}
       {isWeb ? (
@@ -459,13 +453,13 @@ function ResizableHandle({
           aria-hidden
           alignItems="center"
           justifyContent="center"
-          borderRadius="$sm"
+          borderRadius="sm"
           borderWidth={1}
-          borderColor="$border"
-          backgroundColor="$background"
-          {...(horizontal ? { width: '$3', height: '$5' } : { width: '$5', height: '$3' })}
+          borderColor="border"
+          backgroundColor="background"
+          {...(horizontal ? { width: '3', height: '5' } : { width: '5', height: '3' })}
         >
-          <Grip size={10} color="$mutedForeground" />
+          <Grip size={10} color="mutedForeground" />
         </View>
       ) : null}
     </View>

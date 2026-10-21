@@ -77,24 +77,28 @@ const Cell = styled(View, {
   flexShrink: 0,
   borderRightWidth: 1,
   borderBottomWidth: 1,
-  borderColor: '$border',
-  paddingHorizontal: '$3',
+  borderColor: "border",
+  paddingHorizontal: "3",
   outlineStyle: 'none',
-
   variants: {
     size: {
-      sm: { height: '$8' },
-      md: { height: '$10', $touchable: { height: '$11' } },
+      sm: {
+        height: "8"
+      },
+      md: {
+        height: "10 touchable:11"
+      },
     },
     header: {
-      true: { backgroundColor: '$muted' },
+      true: {
+        backgroundColor: "muted"
+      },
     },
     editing: {
       true: { paddingHorizontal: 0 },
     },
   } as const,
-
-  defaultVariants: { size: 'md' },
+  defaultVariants: { size: 'md' }
 })
 
 const valueOf = <T,>(column: DataGridColumn<T>, row: T): DataGridValue =>
@@ -302,16 +306,15 @@ export function DataGrid<T>({
   }
 
   return (
-    <View gap="$2" width="100%">
+    <View gap="2" width="100%">
       <ScrollView
         ref={scrollRef as never}
         horizontal
-        // Hugs the columns when they are narrower than the page; scrolls when wider.
         alignSelf="flex-start"
         maxWidth="100%"
         borderWidth={1}
-        borderColor="$border"
-        borderRadius="$md"
+        borderColor="border"
+        borderRadius="md"
         keyboardShouldPersistTaps="handled"
       >
         <View
@@ -372,7 +375,7 @@ export function DataGrid<T>({
                     {...(isActive &&
                       gridFocused &&
                       !isEditing && {
-                        outlineColor: '$ring',
+                        outlineColor: 'ring',
                         outlineStyle: 'solid',
                         outlineWidth: 2,
                         outlineOffset: -2,
@@ -410,8 +413,8 @@ export function DataGrid<T>({
                         width="100%"
                         borderRadius={0}
                         borderWidth={2}
-                        borderColor={error ? '$error' : '$ring'}
-                        backgroundColor="$background"
+                        borderColor={error ? 'error' : 'ring'}
+                        backgroundColor="background"
                         textAlign={
                           align === 'end' ? 'right' : align === 'center' ? 'center' : 'left'
                         }
@@ -452,7 +455,7 @@ export function DataGrid<T>({
           ))}
         </View>
       </ScrollView>
-      <Text id={statusId} size="sm" tone="error" aria-live="polite" minHeight="$5">
+      <Text id={statusId} size="sm" minHeight="5" tone="error" aria-live="polite">
         {error ?? ''}
       </Text>
     </View>

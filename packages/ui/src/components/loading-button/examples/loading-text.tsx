@@ -2,7 +2,7 @@ import { HStack, LoadingButton } from '@advui/core'
 
 export default function LoadingButtonLoadingText() {
   return (
-    <HStack gap="$2" flexWrap="wrap">
+    <HStack gap="2" flexWrap="wrap">
       <LoadingButton loading loadingText="Saving…">
         Save
       </LoadingButton>

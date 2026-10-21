@@ -11,9 +11,9 @@ describe('responsiveStyle', () => {
       flexDirection: 'column',
       $md: { flexDirection: 'row' },
     })
-    expect(responsiveStyle('gap', { sm: '$2', xl: '$6' })).toEqual({
-      $sm: { gap: '$2' },
-      $xl: { gap: '$6' },
+    expect(responsiveStyle('gap', { sm: '2', xl: '6' })).toEqual({
+      $sm: { gap: '2' },
+      $xl: { gap: '6' },
     })
   })
 

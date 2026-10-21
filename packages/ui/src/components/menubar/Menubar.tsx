@@ -218,7 +218,7 @@ function MenubarTrigger({ children, disabled = false }: MenubarTriggerProps) {
         open={menu.open}
         disabled={disabled}
       >
-        <Text size="sm" weight="medium" color="$foreground" userSelect="none">
+        <Text size="sm" color="foreground" userSelect="none" weight="medium">
           {children}
         </Text>
       </MenubarTriggerFrame>

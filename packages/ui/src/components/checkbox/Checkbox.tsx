@@ -25,23 +25,26 @@ const Frame = styled(TamaguiCheckboxFrame, {
     unstyled: {
       false: {
         borderWidth: 1,
-        borderColor: '$input',
-        backgroundColor: '$background',
-        borderRadius: '$sm',
-        hoverStyle: { borderColor: '$borderStrong' },
-        pressStyle: { borderColor: '$borderStrong' },
-        focusStyle: { borderColor: '$input' },
-        focusVisibleStyle: {
-          outlineColor: '$ring',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineOffset: 2,
-        },
+        borderColor: "input hover:borderStrong press:borderStrong focus:input",
+        backgroundColor: "background",
+        borderRadius: "sm",
+        outlineColor: "focus-visible:ring",
+        outlineStyle: "focus-visible:solid",
+        outlineWidth: "focus-visible:2px",
+        outlineOffset: "focus-visible:2px"
       },
     },
     size: {
-      sm: { width: '$4', height: '$4', borderRadius: '$xs' },
-      md: { width: '$5', height: '$5', borderRadius: '$sm' },
+      sm: {
+        width: "4",
+        height: "4",
+        borderRadius: "xs"
+      },
+      md: {
+        width: "5",
+        height: "5",
+        borderRadius: "sm"
+      },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: 'none' },
@@ -80,7 +83,7 @@ export interface CheckboxProps extends Omit<
 const nativeA11y = (disabled: boolean | undefined) =>
   isWeb ? null : { accessible: true, 'aria-disabled': ariaState(disabled), 'aria-busy': false }
 
-const checkedStyle = { backgroundColor: '$primary', borderColor: '$primary' } as const
+const checkedStyle = { backgroundColor: 'primary', borderColor: 'primary' } as const
 
 /**
  * Binary (or indeterminate) choice. Pair with `<Label htmlFor>` using the same `id`.
@@ -96,15 +99,15 @@ export const Checkbox = forwardRef<TamaguiElement, CheckboxProps>(
         size={size as never}
         {...nativeA11y(props.disabled)}
         aria-invalid={invalid || undefined}
-        {...(invalid ? { borderColor: '$error' as const } : null)}
+        {...(invalid ? { borderColor: 'error' as const } : null)}
         activeStyle={checkedStyle}
         {...(props as TamaguiCheckboxProps)}
       >
         <BaseCheckbox.Indicator>
           {props.checked === 'indeterminate' ? (
-            <MinusIcon size={iconSize} color="$primaryForeground" strokeWidth={3} />
+            <MinusIcon size={iconSize} color="primaryForeground" strokeWidth={3} />
           ) : (
-            <CheckIcon size={iconSize} color="$primaryForeground" strokeWidth={3} />
+            <CheckIcon size={iconSize} color="primaryForeground" strokeWidth={3} />
           )}
         </BaseCheckbox.Indicator>
       </BaseCheckbox>

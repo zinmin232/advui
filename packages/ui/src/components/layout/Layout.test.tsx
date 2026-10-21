@@ -9,7 +9,7 @@ import { Center, HStack, Spacer, VStack } from './Stack'
 describe('layout primitives', () => {
   it('wraps each grid child in an equal-width cell', () => {
     renderWithProvider(
-      <Grid columns={{ base: 1, md: 3 }} gap="$4" testID="grid">
+      <Grid columns={{ base: 1, md: 3 }} gap="4" testID="grid">
         <Text>One</Text>
         <Text>Two</Text>
         <Text>Three</Text>
@@ -22,8 +22,8 @@ describe('layout primitives', () => {
   it('renders stacks, spacer and container without extra semantics', () => {
     renderWithProvider(
       <Container>
-        <VStack gap="$2">
-          <HStack gap="$2">
+        <VStack gap="2">
+          <HStack gap="2">
             <Text>Left</Text>
             <Spacer testID="spacer" />
             <Text>Right</Text>

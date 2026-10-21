@@ -38,7 +38,7 @@ describe('AutoGrid on web', () => {
   it('is a CSS grid in the server markup, with the gap token in the template', () => {
     const html = renderToString(
       <UniversalProvider config={testConfig}>
-        <AutoGrid testID="grid" minChildWidth={200} gap="$2" maxColumns={3}>
+        <AutoGrid testID="grid" minChildWidth={200} gap="2" maxColumns={3}>
           <Text>One</Text>
         </AutoGrid>
       </UniversalProvider>,

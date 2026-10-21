@@ -21,7 +21,7 @@ const tips = [
 
 export default function CarouselBasic() {
   return (
-    <VStack width="100%" maxWidth="$96">
+    <VStack width="100%" maxWidth="96">
       <Carousel aria-label="Getting started">
         {tips.map((tip) => (
           <Card key={tip.title} flexGrow={1}>

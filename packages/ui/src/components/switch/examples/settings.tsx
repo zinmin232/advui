@@ -5,8 +5,8 @@ export default function SwitchSettings() {
   const [push, setPush] = useState(true)
   const [marketing, setMarketing] = useState(false)
   return (
-    <VStack gap="$3" width="100%" maxWidth="$96">
-      <HStack justifyContent="space-between" gap="$4">
+    <VStack gap="3" width="100%" maxWidth="96">
+      <HStack justifyContent="space-between" gap="4">
         <VStack flex={1}>
           <Label htmlFor="sw-push">Push notifications</Label>
           <Text size="sm" tone="muted">
@@ -16,7 +16,7 @@ export default function SwitchSettings() {
         <Switch id="sw-push" checked={push} onCheckedChange={setPush} />
       </HStack>
       <Separator />
-      <HStack justifyContent="space-between" gap="$4">
+      <HStack justifyContent="space-between" gap="4">
         <VStack flex={1}>
           <Label htmlFor="sw-marketing">Marketing emails</Label>
           <Text size="sm" tone="muted">

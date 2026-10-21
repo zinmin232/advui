@@ -9,7 +9,7 @@ export default function FieldCompound() {
       width="100%"
       maxWidth={400}
     >
-      <HStack gap="$2">
+      <HStack gap="2">
         <Input flex={1} placeholder="ABC-123" autoCapitalize="characters" />
         <Button variant="outline">Send code</Button>
       </HStack>

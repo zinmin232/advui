@@ -4,7 +4,7 @@ const variants = ['outline', 'elevated', 'filled', 'ghost'] as const
 
 export default function CardVariants() {
   return (
-    <Grid columns={{ base: 1, sm: 2 }} gap="$4" width="100%">
+    <Grid columns={{ base: 1, sm: 2 }} gap="4" width="100%">
       {variants.map((variant) => (
         <Card key={variant} variant={variant}>
           <Card.Header>

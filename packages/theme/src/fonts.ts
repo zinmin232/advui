@@ -8,7 +8,7 @@ export const fontScales = {
 
 export type FontScale = keyof typeof fontScales
 
-/** Type scale in px: `$1` xs(12) · `$2` sm(14) · `$3` base(16) · … · `$10` 6xl(60). */
+/** Type scale in px: `1` xs(12) · `2` sm(14) · `3` base(16) · … · `10` 6xl(60). */
 const baseSizes = {
   1: 12,
   2: 14,

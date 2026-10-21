@@ -103,21 +103,17 @@ export const CarouselTrack = forwardRef<CarouselTrackHandle, CarouselTrackProps>
       <View
         ref={trackRef as never}
         id={id}
-        // Hides the scrollbar (GlobalStyles); the buttons, dots and swipes move it.
         className="aui-carousel-track"
-        // Keyboard users reach slides without links this way, and page with the arrow keys.
         tabIndex={0}
         flexDirection="row"
         gap={gap}
         overflowX="auto"
         overflowY="hidden"
+        outlineColor="focus-visible:ring"
+        outlineStyle="focus-visible:solid"
+        outlineWidth="focus-visible:2px"
+        outlineOffset="focus-visible:2px"
         style={{ scrollSnapType: 'x mandatory', overscrollBehaviorX: 'contain' }}
-        focusVisibleStyle={{
-          outlineColor: '$ring',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineOffset: 2,
-        }}
         onKeyDown={onKeyDown as never}
       >
         <SlideStyleContext.Provider value={slideStyle}>{children}</SlideStyleContext.Provider>

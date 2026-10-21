@@ -8,17 +8,17 @@ export default function ScrollAreaHorizontal() {
       orientation="horizontal"
       aria-label="New albums"
       width="100%"
-      maxWidth="$96"
+      maxWidth="96"
       borderWidth={1}
-      borderColor="$border"
-      borderRadius="$md"
+      borderColor="border"
+      borderRadius="md"
     >
-      <HStack gap="$4" padding="$4">
+      <HStack gap="4" padding="4">
         {albums.map((album) => (
-          <VStack key={album} width="$32" gap="$2">
-            <AspectRatio borderRadius="$md" backgroundColor="$primarySoft">
+          <VStack key={album} width="32" gap="2">
+            <AspectRatio borderRadius="md" backgroundColor="primarySoft">
               <Center flex={1}>
-                <Text size="lg" weight="semibold" color="$primarySoftForeground">
+                <Text size="lg" color="primarySoftForeground" weight="semibold">
                   {album[0]}
                 </Text>
               </Center>

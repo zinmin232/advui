@@ -18,11 +18,11 @@ const ListFrame = styled(View, {
     variant: {
       plain: {},
       outline: {
-        backgroundColor: '$card',
+        backgroundColor: "card",
         borderWidth: 1,
-        borderColor: '$border',
-        borderRadius: '$lg',
-        overflow: 'hidden',
+        borderColor: "border",
+        borderRadius: "lg",
+        overflow: 'hidden'
       },
     },
     size: {

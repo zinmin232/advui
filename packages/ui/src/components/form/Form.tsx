@@ -23,18 +23,17 @@ export type FormDirection = 'vertical' | 'horizontal'
 const FormFrame = styled(TamaguiForm, {
   name: 'Form',
   flexDirection: 'column',
-  gap: '$6',
-
+  gap: "6",
   variants: {
     fullWidth: {
       true: { width: '100%', alignSelf: 'stretch' },
     },
-  } as const,
+  } as const
 })
 
 const FormHeader = styled(View, {
   name: 'FormHeader',
-  gap: '$1.5',
+  gap: "1-5"
 })
 
 const FormContent = styled(View, {
@@ -55,13 +54,12 @@ const FormFooter = styled(View, {
   flexWrap: 'wrap',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  gap: '$2',
-
+  gap: "2",
   variants: {
     fullWidth: {
       true: { flexDirection: 'column', alignItems: 'stretch' },
     },
-  } as const,
+  } as const
 })
 
 type FrameProps = GetProps<typeof FormFrame>
@@ -72,7 +70,7 @@ export interface FormProps extends Omit<
 > {
   /** Fields and anything else. The form does not change them. */
   children?: ReactNode
-  /** Space between the fields. Default: `$4`. */
+  /** Space between the fields. Default: `4`. */
   gap?: GetProps<typeof FormContent>['gap']
   /** Text becomes a level-2 heading that names the form. Pass an element for another level. */
   title?: ReactNode
@@ -105,7 +103,7 @@ const hasContent = (node: ReactNode) => node != null && node !== false && node !
 const FormImpl = forwardRef<TamaguiElement, FormProps>(function Form(
   {
     children,
-    gap = '$4',
+    gap = '4',
     title,
     description,
     footer,

@@ -15,5 +15,5 @@ export function useSheetMaxHeight(): number | undefined {
   // against (as Tamagui does).
   useWindowDimensions()
   const top = useConfiguration().insets?.top ?? 0
-  return Dimensions.get('screen').height - top - (getTokenValue('$8', 'space') as number)
+  return Dimensions.get('screen').height - top - (getTokenValue('8', 'space') as number)
 }

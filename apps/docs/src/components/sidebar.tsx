@@ -14,20 +14,20 @@ const STORAGE_KEY = 'aui-sidebar-sections'
 
 // `color` is used for small status dots (non-text); `text` meets 4.5:1 for labels.
 export const statusMeta: Record<ComponentStatus, { label: string; color: string; text: string }> = {
-  stable: { label: 'Stable', color: '$success', text: '$successSoftForeground' },
-  beta: { label: 'Beta', color: '$warning', text: '$warningSoftForeground' },
-  experimental: { label: 'Experimental', color: '$info', text: '$infoSoftForeground' },
-  deprecated: { label: 'Deprecated', color: '$error', text: '$errorSoftForeground' },
-  planned: { label: 'Planned', color: '$borderStrong', text: '$mutedForeground' },
+  stable: { label: 'Stable', color: 'success', text: 'successSoftForeground' },
+  beta: { label: 'Beta', color: 'warning', text: 'warningSoftForeground' },
+  experimental: { label: 'Experimental', color: 'info', text: 'infoSoftForeground' },
+  deprecated: { label: 'Deprecated', color: 'error', text: 'errorSoftForeground' },
+  planned: { label: 'Planned', color: 'borderStrong', text: 'mutedForeground' },
 }
 
 export function StatusDot({ status }: { status: ComponentStatus }) {
   const meta = statusMeta[status]
   return (
     <View
-      width="$1.5"
-      height="$1.5"
-      borderRadius="$full"
+      width="1-5"
+      height="1-5"
+      borderRadius="full"
       backgroundColor={meta.color as never}
       role="img"
       aria-label={meta.label}
@@ -36,17 +36,17 @@ export function StatusDot({ status }: { status: ComponentStatus }) {
 }
 
 const badgeTones = {
-  beta: { bg: '$warningSoft', border: '$warningBorder', text: '$warningSoftForeground' },
-  experimental: { bg: '$infoSoft', border: '$infoBorder', text: '$infoSoftForeground' },
-  deprecated: { bg: '$errorSoft', border: '$errorBorder', text: '$errorSoftForeground' },
+  beta: { bg: 'warningSoft', border: 'warningBorder', text: 'warningSoftForeground' },
+  experimental: { bg: 'infoSoft', border: 'infoBorder', text: 'infoSoftForeground' },
+  deprecated: { bg: 'errorSoft', border: 'errorBorder', text: 'errorSoftForeground' },
 } as const
 
 function StatusBadge({ status }: { status: keyof typeof badgeTones }) {
   const tone = badgeTones[status]
   return (
     <View
-      paddingHorizontal="$1.5"
-      borderRadius="$full"
+      paddingHorizontal="1-5"
+      borderRadius="full"
       borderWidth={1}
       borderColor={tone.border}
       backgroundColor={tone.bg}
@@ -160,35 +160,32 @@ function NavLink({
       <HStack
         position="relative"
         alignItems="center"
-        gap="$2"
-        paddingLeft="$8"
-        paddingRight="$2"
-        paddingVertical="$1.5"
-        borderRadius="$md"
-        backgroundColor={active ? '$primarySoft' : emphasis ? '$muted' : 'transparent'}
-        hoverStyle={{ backgroundColor: active ? '$primarySoftHover' : '$accent' }}
+        gap="2"
+        paddingLeft="8"
+        paddingRight="2"
+        paddingVertical="1-5"
+        borderRadius="md"
+        backgroundColor={`${active ? "primarySoft" : emphasis ? "muted" : "transparent"} hover:${active ? "primarySoftHover" : "accent"}`}
       >
         {active ? (
           // Accent bar drawn over the section's guide line.
           <View
             aria-hidden
             position="absolute"
-            left="$4"
+            left="4"
             marginLeft={-1}
-            top="$1"
-            bottom="$1"
+            top="1"
+            bottom="1"
             width={3}
-            borderRadius="$full"
-            backgroundColor="$primary"
+            borderRadius="full"
+            backgroundColor="primary"
           />
         ) : null}
         <Text
           size="sm"
           flex={1}
+          color={`${active ? "primarySoftForeground" : item.planned ? "mutedForeground" : "foreground"}`}
           weight={active || emphasis ? 'semibold' : 'normal'}
-          color={
-            active ? '$primarySoftForeground' : item.planned ? '$mutedForeground' : '$foreground'
-          }
         >
           {item.title}
         </Text>
@@ -211,22 +208,22 @@ function CategoryLinks({
 }) {
   const headingId = `nav-category-${category.id}`
   return (
-    <VStack gap="$0.5" paddingTop={category.title ? '$3' : 0}>
+    <VStack gap="0-5" paddingTop={category.title ? '3' : 0}>
       {category.title ? (
-        <HStack position="relative" alignItems="center" paddingLeft="$8" paddingVertical="$1.5">
+        <HStack position="relative" alignItems="center" paddingLeft="8" paddingVertical="1-5">
           {/* Marker sitting on the guide line. */}
           <View
             aria-hidden
             position="absolute"
-            left="$3"
+            left="3"
             top="50%"
-            marginTop="$-1"
-            width="$2"
-            height="$2"
-            borderRadius="$xs"
+            marginTop="-1"
+            width="2"
+            height="2"
+            borderRadius="xs"
             borderWidth={1}
-            borderColor="$borderStrong"
-            backgroundColor="$muted"
+            borderColor="borderStrong"
+            backgroundColor="muted"
           />
           <Text
             id={headingId}
@@ -245,7 +242,7 @@ function CategoryLinks({
         aria-labelledby={category.title ? headingId : sectionLabelId}
         margin={0}
         padding={0}
-        gap="$0.5"
+        gap="0-5"
       >
         {category.items.map((item) => (
           <View key={item.href} render="li" className="plain-list-item">
@@ -274,8 +271,8 @@ export function SidebarNav({
       ref={navRef as never}
       render="nav"
       aria-label="Documentation"
-      gap="$1"
-      paddingBottom="$10"
+      gap="1"
+      paddingBottom="10"
     >
       {sections.map((section) => {
         const open = isOpen(section)
@@ -290,34 +287,35 @@ export function SidebarNav({
               aria-controls={listId}
               onPress={() => toggle(section)}
               alignItems="center"
-              gap="$2"
-              paddingHorizontal="$2"
-              paddingVertical="$2"
-              borderRadius="$md"
+              gap="2"
+              paddingHorizontal="2"
+              paddingVertical="2"
+              borderRadius="md"
               borderWidth={0}
-              backgroundColor="transparent"
+              backgroundColor="transparent hover:accent"
               cursor="pointer"
-              hoverStyle={{ backgroundColor: '$accent' }}
-              focusVisibleStyle={{ outlineColor: '$ring', outlineWidth: 2, outlineStyle: 'solid' }}
+              outlineColor="focus-visible:ring"
+              outlineWidth="focus-visible:2px"
+              outlineStyle="focus-visible:solid"
             >
               <View transition="quick" rotate={open ? '90deg' : '0deg'}>
-                <ChevronRightIcon size={16} color="$primaryText" />
+                <ChevronRightIcon size={16} color="primaryText" />
               </View>
               <Text size="base" weight="semibold">
                 {section.title}
               </Text>
             </HStack>
             {open ? (
-              <VStack id={listId} position="relative" gap="$0.5" paddingTop="$1" paddingBottom="$3">
+              <VStack id={listId} position="relative" gap="0-5" paddingTop="1" paddingBottom="3">
                 {/* Guide line connecting the section's links. */}
                 <View
                   aria-hidden
                   position="absolute"
-                  left="$4"
+                  left="4"
                   top={0}
-                  bottom="$3"
+                  bottom="3"
                   width={1}
-                  backgroundColor="$border"
+                  backgroundColor="border"
                 />
                 {section.overview ? (
                   <NavLink
@@ -350,18 +348,17 @@ export function DesktopSidebar({ sections }: { sections: NavSection[] }) {
     <View
       render="aside"
       className="sidebar-scroll"
-      display="none"
-      $lg={{ display: 'flex' }}
-      width="$64"
+      display="none lg:flex"
+      width="64"
       flexShrink={0}
       position="sticky"
-      top="$14"
+      top="14"
       height="calc(100vh - 56px)"
       overflowY="auto"
-      paddingVertical="$5"
-      paddingHorizontal="$2"
+      paddingVertical="5"
+      paddingHorizontal="2"
       borderRightWidth={1}
-      borderColor="$border"
+      borderColor="border"
     >
       <SidebarNav sections={sections} />
     </View>

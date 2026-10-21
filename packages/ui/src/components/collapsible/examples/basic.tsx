@@ -4,16 +4,16 @@ import { ChevronsUpDownIcon, FolderIcon } from '@advui/icons'
 function Repo({ name }: { name: string }) {
   return (
     <HStack
-      gap="$2"
+      gap="2"
       alignItems="center"
-      paddingHorizontal="$3"
-      paddingVertical="$2"
+      paddingHorizontal="3"
+      paddingVertical="2"
       borderWidth={1}
-      borderColor="$border"
-      borderRadius="$md"
+      borderColor="border"
+      borderRadius="md"
     >
-      <FolderIcon size={16} color="$mutedForeground" />
-      <Text size="sm" fontFamily="$mono">
+      <FolderIcon size={16} color="mutedForeground" />
+      <Text size="sm" fontFamily="mono">
         {name}
       </Text>
     </HStack>
@@ -22,7 +22,7 @@ function Repo({ name }: { name: string }) {
 
 export default function CollapsibleBasic() {
   return (
-    <Collapsible gap="$2" width="100%" maxWidth="$80">
+    <Collapsible gap="2" width="100%" maxWidth="80">
       <HStack justifyContent="space-between" alignItems="center">
         <Text size="sm" weight="semibold">
           Ada starred 3 repositories
@@ -33,7 +33,7 @@ export default function CollapsibleBasic() {
       </HStack>
       <Repo name="advui/core" />
       <Collapsible.Content>
-        <VStack gap="$2">
+        <VStack gap="2">
           <Repo name="advui/theme" />
           <Repo name="advui/icons" />
         </VStack>

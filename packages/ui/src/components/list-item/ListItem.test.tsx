@@ -77,7 +77,7 @@ describe('ListItem', () => {
   it('draws the variant surfaces', () => {
     renderWithProvider(
       <>
-        <View testID="muted" backgroundColor="$muted" />
+        <View testID="muted" backgroundColor="muted" />
         <ListItem testID="plain" title="Plain" />
         <ListItem testID="filled" variant="filled" title="Filled" />
         <ListItem testID="outline" variant="outline" title="Outline" />
@@ -113,7 +113,7 @@ describe('ListItem', () => {
   it('lets style props override the variant and size', () => {
     renderWithProvider(
       <>
-        <Text testID="reference" color="$primaryText">
+        <Text testID="reference" color="primaryText">
           Reference
         </Text>
         <ListItem testID="default" variant="outline" title="Default" onPress={() => {}} />
@@ -124,12 +124,12 @@ describe('ListItem', () => {
           description="Tinted"
           onPress={() => {}}
           actions={<Button size="sm">Act</Button>}
-          backgroundColor="$primarySoft"
-          borderColor="$primary"
-          borderRadius="$sm"
-          color="$primaryText"
-          padding="$2"
-          gap="$1"
+          backgroundColor="primarySoft"
+          borderColor="primary"
+          borderRadius="sm"
+          color="primaryText"
+          padding="2"
+          gap="1"
         />
       </>,
     )

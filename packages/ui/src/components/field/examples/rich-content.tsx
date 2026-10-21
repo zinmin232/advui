@@ -7,7 +7,7 @@ export default function FieldRichContent() {
     <Field
       label={
         <>
-          API key <LockIcon size={14} color="$mutedForeground" />
+          API key <LockIcon size={14} color="mutedForeground" />
         </>
       }
       description={

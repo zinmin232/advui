@@ -12,7 +12,7 @@ import { SiteHeader } from './site-header'
 export function DocsShell({ children }: { children: ReactNode }) {
   const sections = useMemo(() => buildNavigation(), [])
   return (
-    <View minHeight="100vh" backgroundColor="$background">
+    <View minHeight="100vh" backgroundColor="background">
       <SiteHeader />
       <HStack alignItems="flex-start" maxWidth={1440} marginHorizontal="auto" width="100%">
         <DesktopSidebar sections={sections} />
@@ -55,15 +55,14 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
     <View
       render="nav"
       aria-label="On this page"
-      display="none"
-      $xl={{ display: 'flex' }}
-      width="$56"
+      display="none xl:flex"
+      width="56"
       flexShrink={0}
       position="sticky"
-      top="$14"
-      paddingVertical="$8"
-      paddingRight="$4"
-      gap="$2"
+      top="14"
+      paddingVertical="8"
+      paddingRight="4"
+      gap="2"
     >
       <Text size="xs" weight="semibold" tone="muted" textTransform="uppercase" letterSpacing={0.6}>
         On this page
@@ -77,9 +76,8 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
         >
           <Text
             size="sm"
-            paddingLeft={item.level === 3 ? '$3' : 0}
-            color={active === item.id ? '$primaryText' : '$mutedForeground'}
-            hoverStyle={{ color: '$foreground' }}
+            paddingLeft={item.level === 3 ? '3' : 0}
+            color={`${active === item.id ? "primaryText" : "mutedForeground"} hover:foreground`}
           >
             {item.title}
           </Text>
@@ -92,12 +90,12 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
 export function Breadcrumbs({ items }: { items: Array<{ title: string; href?: string }> }) {
   return (
     <View render="nav" aria-label="Breadcrumb">
-      <HStack render="ol" gap="$1.5" flexWrap="wrap" margin={0} padding={0}>
+      <HStack render="ol" gap="1-5" flexWrap="wrap" margin={0} padding={0}>
         {items.map((item, index) => (
-          <HStack key={item.title} render="li" gap="$1.5" className="plain-list-item">
+          <HStack key={item.title} render="li" gap="1-5" className="plain-list-item">
             {item.href ? (
               <Link href={item.href} className="plain-link">
-                <Text size="sm" tone="muted" hoverStyle={{ color: '$foreground' }}>
+                <Text size="sm" color="hover:foreground" tone="muted">
                   {item.title}
                 </Text>
               </Link>
@@ -107,7 +105,7 @@ export function Breadcrumbs({ items }: { items: Array<{ title: string; href?: st
               </Text>
             )}
             {index < items.length - 1 ? (
-              <ChevronRightIcon size={14} color="$mutedForeground" />
+              <ChevronRightIcon size={14} color="mutedForeground" />
             ) : null}
           </HStack>
         ))}
@@ -126,16 +124,16 @@ export function PrevNext({
   return (
     <HStack
       justifyContent="space-between"
-      gap="$3"
-      paddingTop="$8"
-      marginTop="$8"
+      gap="3"
+      paddingTop="8"
+      marginTop="8"
       borderTopWidth={1}
-      borderColor="$border"
+      borderColor="border"
     >
       {prev ? (
         <Link href={prev.href} className="plain-link">
-          <HStack gap="$2" paddingVertical="$2">
-            <ChevronLeftIcon size={16} color="$mutedForeground" />
+          <HStack gap="2" paddingVertical="2">
+            <ChevronLeftIcon size={16} color="mutedForeground" />
             <VStack>
               <Text size="xs" tone="muted">
                 Previous
@@ -149,14 +147,14 @@ export function PrevNext({
       )}
       {next ? (
         <Link href={next.href} className="plain-link">
-          <HStack gap="$2" paddingVertical="$2">
+          <HStack gap="2" paddingVertical="2">
             <VStack alignItems="flex-end">
               <Text size="xs" tone="muted">
                 Next
               </Text>
               <Text weight="medium">{next.title}</Text>
             </VStack>
-            <ChevronRightIcon size={16} color="$mutedForeground" />
+            <ChevronRightIcon size={16} color="mutedForeground" />
           </HStack>
         </Link>
       ) : null}
@@ -174,10 +172,9 @@ export function DocPage({ children, toc }: { children: ReactNode; toc?: TocItem[
         minWidth={0}
         maxWidth={860}
         marginHorizontal="auto"
-        paddingHorizontal="$4"
-        paddingVertical="$8"
-        gap="$4"
-        $md={{ paddingHorizontal: '$8' }}
+        paddingHorizontal="4 md:8"
+        paddingVertical="8"
+        gap="4"
       >
         {children}
       </VStack>

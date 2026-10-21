@@ -3,7 +3,7 @@ import { Field, IconButton, Input, VStack, toast } from '@advui/core'
 
 export default function InputSlots() {
   return (
-    <VStack gap="$4" width="100%" maxWidth="$80">
+    <VStack gap="4" width="100%" maxWidth="80">
       <Field label="Email">
         <Input leading={<MailIcon />} placeholder="you@example.com" inputMode="email" />
       </Field>

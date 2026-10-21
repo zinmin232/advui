@@ -1,8 +1,8 @@
 import { createTokens } from 'tamagui'
 
 /**
- * 4px-based spacing scale: `$1` = 4px, `$4` = 16px, `$10` = 40px.
- * Negative keys (`$-2`) exist for margins.
+ * 4px-based spacing scale: `1` = 4px, `4` = 16px, `10` = 40px.
+ * Negative keys (`-2`) exist for margins.
  */
 const spaceScale = {
   0: 0,
@@ -82,9 +82,9 @@ export type RadiusInput = RadiusScale | number | RadiusOverrides
 /**
  * Radius tokens derived from a single base value so the whole library can be
  * made sharper or rounder at once. Components pick semantic steps:
- * controls `$md`, menus/popovers `$lg`, cards `$xl`, pills `$full`, and role
- * tokens a design system can reshape on their own: `$button` / `$buttonLg`
- * (buttons, icon buttons, toggles) and `$dialog` (dialogs and sheets).
+ * controls `md`, menus/popovers `lg`, cards `xl`, pills `full`, and role
+ * tokens a design system can reshape on their own: `button` / `buttonLg`
+ * (buttons, icon buttons, toggles) and `dialog` (dialogs and sheets).
  */
 export function createRadius(input: RadiusInput = 'md') {
   const overrides = typeof input === 'object' ? input : {}

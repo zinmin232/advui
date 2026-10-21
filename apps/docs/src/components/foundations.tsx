@@ -58,13 +58,13 @@ export function ColorTokens() {
     { val: string; get: () => string } | undefined
   >
   return (
-    <VStack gap="$6">
+    <VStack gap="6">
       {colorGroups.map((group) => (
-        <VStack key={group.title} gap="$3">
+        <VStack key={group.title} gap="3">
           <Heading level={3} size="lg">
             {group.title}
           </Heading>
-          <Grid columns={{ base: 1, sm: 2, lg: 3 }} gap="$3">
+          <Grid columns={{ base: 1, sm: 2, lg: 3 }} gap="3">
             {group.tokens.map(([bg, fg]) => {
               const bgVal = theme[bg]?.val ?? ''
               const fgVal = fg ? (theme[fg]?.val ?? '') : ''
@@ -73,15 +73,15 @@ export function ColorTokens() {
                 <View
                   key={bg}
                   borderWidth={1}
-                  borderColor="$border"
-                  borderRadius="$lg"
+                  borderColor="border"
+                  borderRadius="lg"
                   overflow="hidden"
                 >
                   <View
-                    height="$16"
-                    style={{ backgroundColor: theme[bg]?.get() }}
+                    height="16"
                     justifyContent="center"
-                    paddingHorizontal="$3"
+                    paddingHorizontal="3"
+                    style={{ backgroundColor: theme[bg]?.get() }}
                   >
                     {fg ? (
                       <Text weight="medium" style={{ color: theme[fg]?.get() }}>
@@ -89,7 +89,7 @@ export function ColorTokens() {
                       </Text>
                     ) : null}
                   </View>
-                  <VStack padding="$3" gap="$0.5">
+                  <VStack padding="3" gap="0-5">
                     <Text mono size="sm" weight="medium">
                       ${bg}
                     </Text>
@@ -109,31 +109,31 @@ export function ColorTokens() {
 }
 
 const typeScale = [
-  ['xs', '$1'],
-  ['sm', '$2'],
-  ['base', '$3'],
-  ['lg', '$4'],
-  ['xl', '$5'],
-  ['2xl', '$6'],
-  ['3xl', '$7'],
-  ['4xl', '$8'],
-  ['5xl', '$9'],
-  ['6xl', '$10'],
+  ['xs', '1'],
+  ['sm', '2'],
+  ['base', '3'],
+  ['lg', '4'],
+  ['xl', '5'],
+  ['2xl', '6'],
+  ['3xl', '7'],
+  ['4xl', '8'],
+  ['5xl', '9'],
+  ['6xl', '10'],
 ] as const
 
 export function TypeScale() {
   return (
-    <VStack gap="$3">
+    <VStack gap="3">
       {typeScale.map(([name, token]) => (
         <HStack
           key={name}
-          gap="$4"
+          gap="4"
           alignItems="baseline"
           borderBottomWidth={1}
-          borderColor="$border"
-          paddingBottom="$2"
+          borderColor="border"
+          paddingBottom="2"
         >
-          <Text mono size="xs" tone="muted" width="$20" flexShrink={0}>
+          <Text mono size="xs" width="20" flexShrink={0} tone="muted">
             {name} · {token}
           </Text>
           <Text size={name} truncate>
@@ -152,15 +152,15 @@ const numericEntries = (record: Record<string, number>) =>
 
 export function SpaceScale() {
   return (
-    <VStack gap="$1.5">
+    <VStack gap="1-5">
       {numericEntries(space as unknown as Record<string, number>)
         .filter(([, v]) => v <= 128)
         .map(([key, value]) => (
-          <HStack key={key} gap="$3">
-            <Text mono size="xs" tone="muted" width="$16">
+          <HStack key={key} gap="3">
+            <Text mono size="xs" width="16" tone="muted">
               ${key}
             </Text>
-            <View height="$3" width={value} backgroundColor="$primary" borderRadius="$xs" />
+            <View height="3" width={value} backgroundColor="primary" borderRadius="xs" />
             <Text mono size="xs" tone="muted">
               {value}px
             </Text>
@@ -177,7 +177,7 @@ export function SizeTable() {
   return (
     <Text size="sm" tone="muted">
       Sizes reuse the spacing scale and add larger steps for layout boxes:{' '}
-      {entries.map(([k, v]) => `$${k} = ${v}px`).join(' · ')}. `$true` = 40px (default control
+      {entries.map(([k, v]) => `$${k} = ${v}px`).join(' · ')}. `true` = 40px (default control
       height).
     </Text>
   )
@@ -186,16 +186,16 @@ export function SizeTable() {
 export function RadiusScale() {
   const keys = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', 'full'] as const
   return (
-    <VStack gap="$3">
-      <HStack gap="$4" flexWrap="wrap">
+    <VStack gap="3">
+      <HStack gap="4" flexWrap="wrap">
         {keys.map((key) => (
-          <VStack key={key} gap="$2" alignItems="center">
+          <VStack key={key} gap="2" alignItems="center">
             <View
-              width="$16"
-              height="$16"
-              backgroundColor="$primarySoft"
+              width="16"
+              height="16"
+              backgroundColor="primarySoft"
               borderWidth={2}
-              borderColor="$primary"
+              borderColor="primary"
               borderRadius={`$${key}` as never}
             />
             <Text mono size="xs" tone="muted">
@@ -217,13 +217,13 @@ export function RadiusScale() {
 
 export function ShadowScale() {
   return (
-    <Grid columns={{ base: 2, md: 4 }} gap="$4">
+    <Grid columns={{ base: 2, md: 4 }} gap="4">
       {(['xs', 'sm', 'md', 'lg'] as const).map((name) => (
         <View
           key={name}
-          height="$24"
-          borderRadius="$lg"
-          backgroundColor="$card"
+          height="24"
+          borderRadius="lg"
+          backgroundColor="card"
           alignItems="center"
           justifyContent="center"
           {...shadows[name]}
@@ -239,7 +239,7 @@ export function ShadowScale() {
 
 export function BreakpointsTable() {
   return (
-    <View overflowX="auto" borderWidth={1} borderColor="$border" borderRadius="$lg">
+    <View overflowX="auto" borderWidth={1} borderColor="border" borderRadius="lg">
       <table className="props-table">
         <thead>
           <tr>
@@ -293,16 +293,16 @@ export function IconGallery() {
     [query],
   )
   return (
-    <VStack gap="$4">
+    <VStack gap="4">
       <Input
         aria-label="Filter icons"
         placeholder={`Filter ${iconNames.length} icons…`}
         value={query}
         onChangeText={setQuery}
       />
-      <Grid columns={{ base: 3, sm: 4, md: 6 }} gap="$2">
+      <Grid columns={{ base: 3, sm: 4, md: 6 }} gap="2">
         {filtered.map((name) => (
-          <Card key={name} variant="filled" alignItems="center" paddingVertical="$4" gap="$2">
+          <Card key={name} variant="filled" alignItems="center" paddingVertical="4" gap="2">
             <Icon name={name} size={22} />
             <Text size="xs" tone="muted" textAlign="center">
               {name}

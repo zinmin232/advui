@@ -27,11 +27,11 @@ export default function DrawerFilters() {
           <Text size="sm" weight="semibold">
             Category
           </Text>
-          <VStack gap="$3">
+          <VStack gap="3">
             {categories.map((name) => {
               const id = `drawer-${name.toLowerCase()}`
               return (
-                <HStack key={name} gap="$2" alignItems="center">
+                <HStack key={name} gap="2" alignItems="center">
                   <Checkbox
                     id={id}
                     checked={selected.includes(name)}

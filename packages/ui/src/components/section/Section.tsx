@@ -22,11 +22,11 @@ export type SectionContainer = NonNullable<ContainerProps['size']> | 'none'
 
 /** Vertical padding of each spacing step: on phones, and from md. */
 const spacingScale: Record<SectionSpacing, [SpaceTokens, SpaceTokens]> = {
-  none: ['$0', '$0'],
-  sm: ['$6', '$8'],
-  md: ['$12', '$16'],
-  lg: ['$16', '$24'],
-  xl: ['$24', '$32'],
+  none: ['0', '0'],
+  sm: ['6', '8'],
+  md: ['12', '16'],
+  lg: ['16', '24'],
+  xl: ['24', '32'],
 }
 
 const fromMd = breakpointKeys.indexOf('md')
@@ -60,7 +60,7 @@ type SubTheme = 'primary' | 'inverse'
 /**
  * Configs from `createUniversalConfig` have the sub-themes; a hand-built one
  * may not, and Tamagui's missing-theme warning crashes on native. Without
- * them, the band keeps the colors it can: the surface (`$primary`) or none.
+ * them, the band keeps the colors it can: the surface (`primary`) or none.
  */
 function hasSubTheme(name: SubTheme) {
   const themes = getConfig().themes as Record<string, unknown>
@@ -70,14 +70,14 @@ function hasSubTheme(name: SubTheme) {
 const surfaces: Record<SectionBackground, { theme?: SubTheme; color?: string; fallback?: string }> =
   {
     none: {},
-    background: { color: '$background' },
-    card: { color: '$card' },
-    muted: { color: '$muted' },
-    primarySoft: { color: '$primarySoft' },
-    // These change the text color too: the sub-theme's `$background` is the
-    // surface and its `$foreground` reads on it, in light and dark mode.
-    primary: { theme: 'primary', color: '$background', fallback: '$primary' },
-    inverse: { theme: 'inverse', color: '$background' },
+    background: { color: 'background' },
+    card: { color: 'card' },
+    muted: { color: 'muted' },
+    primarySoft: { color: 'primarySoft' },
+    // These change the text color too: the sub-theme's `background` is the
+    // surface and its `foreground` reads on it, in light and dark mode.
+    primary: { theme: 'primary', color: 'background', fallback: 'primary' },
+    inverse: { theme: 'inverse', color: 'background' },
   }
 
 export interface SectionProps extends Omit<GetProps<typeof View>, 'children'> {

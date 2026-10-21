@@ -6,16 +6,17 @@ import { type GetProps, View, styled } from 'tamagui'
  */
 export const Skeleton = styled(View, {
   name: 'Skeleton',
-  backgroundColor: '$muted',
-  borderRadius: '$md',
+  backgroundColor: "muted",
+  borderRadius: "md",
   'aria-hidden': true,
   className: 'aui-skeleton',
-
   variants: {
     circle: {
-      true: { borderRadius: '$full' },
+      true: {
+        borderRadius: "full"
+      },
     },
-  } as const,
+  } as const
 })
 
 export type SkeletonProps = GetProps<typeof Skeleton>

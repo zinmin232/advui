@@ -20,7 +20,7 @@ describe('DatePicker', () => {
     renderWithProvider(
       <>
         <DatePicker aria-label="Due date" placeholder="Pick a date" />
-        <Text color="$mutedForeground">Reference</Text>
+        <Text color="mutedForeground">Reference</Text>
       </>,
     )
     // Real text, not an input placeholder, so it must meet 4.5:1 like any text.

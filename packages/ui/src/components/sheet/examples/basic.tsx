@@ -16,11 +16,11 @@ export default function SheetBasic() {
           <Sheet.Title>Edit profile</Sheet.Title>
           <Sheet.Description>Your name and username are visible to your team.</Sheet.Description>
         </Sheet.Header>
-        <VStack gap="$2">
+        <VStack gap="2">
           <Label htmlFor="sheet-name">Name</Label>
           <Input id="sheet-name" defaultValue="Ada Lovelace" />
         </VStack>
-        <VStack gap="$2">
+        <VStack gap="2">
           <Label htmlFor="sheet-username">Username</Label>
           <Input id="sheet-username" defaultValue="ada" autoCapitalize="none" />
         </VStack>

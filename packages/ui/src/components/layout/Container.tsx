@@ -3,7 +3,7 @@ import { type GetProps, type SpaceTokens, View, styled } from 'tamagui'
 import { type Responsive, responsiveStyle } from '../../utils/responsive'
 
 /** Side padding by default: 16px on phones, 24px from md and 32px from lg. */
-const defaultGutter: Responsive<SpaceTokens> = { base: '$4', md: '$6', lg: '$8' }
+const defaultGutter: Responsive<SpaceTokens> = { base: '4', md: '6', lg: '8' }
 
 /**
  * Horizontally centered, width-capped page container with responsive padding.

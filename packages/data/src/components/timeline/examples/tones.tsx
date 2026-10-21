@@ -3,7 +3,7 @@ import { CheckIcon, CircleIcon, PackageIcon, XIcon } from '@advui/icons'
 
 export default function TimelineTones() {
   return (
-    <Timeline width="100%" maxWidth="$96">
+    <Timeline width="100%" maxWidth="96">
       <Timeline.Item
         tone="success"
         icon={<CheckIcon />}

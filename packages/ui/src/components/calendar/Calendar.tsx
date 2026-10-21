@@ -20,46 +20,44 @@ import { ariaState } from '../../utils/ariaState'
 
 const CalendarFrame = styled(View, {
   name: 'Calendar',
-  gap: '$3',
-  alignSelf: 'flex-start',
+  gap: "3",
+  alignSelf: 'flex-start'
 })
 
 const DayCell = styled(View, {
   name: 'CalendarDay',
-  width: '$9',
-  height: '$9',
+  width: "9",
+  height: "9",
   alignItems: 'center',
   justifyContent: 'center',
-  borderRadius: '$md',
+  borderRadius: "md",
   cursor: 'pointer',
-  hoverStyle: { backgroundColor: '$muted' },
-  focusVisibleStyle: {
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: 1,
-  },
-
+  backgroundColor: "hover:muted",
+  outlineColor: "focus-visible:ring",
+  outlineStyle: "focus-visible:solid",
+  outlineWidth: "focus-visible:2px",
+  outlineOffset: "focus-visible:1px",
   variants: {
     selection: {
       none: {},
       // Ends of a range and the single selected day.
       end: {
-        backgroundColor: '$primary',
-        hoverStyle: { backgroundColor: '$primary' },
+        backgroundColor: "primary hover:primary"
       },
       middle: {
-        backgroundColor: '$accent',
-        borderRadius: 0,
-        hoverStyle: { backgroundColor: '$accent' },
+        backgroundColor: "accent hover:accent",
+        borderRadius: 0
       },
     },
     disabled: {
-      true: { opacity: 0.4, cursor: 'not-allowed', hoverStyle: { backgroundColor: 'transparent' } },
+      true: {
+        opacity: 0.4,
+        cursor: 'not-allowed',
+        backgroundColor: "hover:transparent"
+      },
     },
   } as const,
-
-  defaultVariants: { selection: 'none' },
+  defaultVariants: { selection: 'none' }
 })
 
 type SingleProps = {
@@ -265,14 +263,14 @@ export const Calendar = forwardRef<TamaguiElement, CalendarProps>(function Calen
         />
       </XStack>
 
-      <View role={isWeb ? 'grid' : undefined} aria-labelledby={captionId} gap="$1">
+      <View role={isWeb ? 'grid' : undefined} aria-labelledby={captionId} gap="1">
         <XStack role={isWeb ? 'row' : undefined}>
           {weeks[0]!.map((day) => (
             <View
               key={day.getDay()}
               role={isWeb ? 'columnheader' : undefined}
               aria-label={formats.weekdayLong.format(day)}
-              width="$9"
+              width="9"
               alignItems="center"
             >
               <Text size="xs" tone="muted" aria-hidden>
@@ -290,8 +288,8 @@ export const Calendar = forwardRef<TamaguiElement, CalendarProps>(function Calen
                   <View
                     key={iso}
                     role={(isWeb ? 'gridcell' : undefined) as never}
-                    width="$9"
-                    height="$9"
+                    width="9"
+                    height="9"
                   />
                 )
               }
@@ -329,15 +327,7 @@ export const Calendar = forwardRef<TamaguiElement, CalendarProps>(function Calen
                   <Text
                     size="sm"
                     {...(isToday && { weight: 'semibold' as const })}
-                    color={
-                      selection === 'end'
-                        ? '$primaryForeground'
-                        : selection === 'middle'
-                          ? '$accentForeground'
-                          : isToday
-                            ? '$primaryText'
-                            : '$foreground'
-                    }
+                    color={`${selection === 'end' ? "primaryForeground" : selection === 'middle' ? "accentForeground" : isToday ? "primaryText" : "foreground"}`}
                   >
                     {day.getDate()}
                   </Text>

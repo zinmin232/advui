@@ -2,7 +2,7 @@ import { Box, Grid, Text } from '@advui/core'
 
 function Cell({ label }: { label: string }) {
   return (
-    <Box flexGrow={1} padding="$3" borderRadius="$md" backgroundColor="$muted">
+    <Box flexGrow={1} padding="3" borderRadius="md" backgroundColor="muted">
       <Text size="sm" weight="medium">
         {label}
       </Text>
@@ -12,7 +12,7 @@ function Cell({ label }: { label: string }) {
 
 export default function GridOffset() {
   return (
-    <Grid columns={12} gap="$3" width="100%">
+    <Grid columns={12} gap="3" width="100%">
       <Grid.Item span={{ base: 12, md: 6 }} offset={{ md: 3 }}>
         <Cell label="md: span 6, offset 3" />
       </Grid.Item>

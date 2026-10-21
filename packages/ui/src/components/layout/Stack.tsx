@@ -110,7 +110,7 @@ const StackFrame = styled(View, {
  */
 export const Stack = StackFrame as WithoutDirectionStyle<typeof StackFrame>
 
-/** Horizontal stack. Use `gap="$2"` for spacing. */
+/** Horizontal stack. Use `gap="2"` for spacing. */
 export const HStack = styled(Stack, {
   name: 'HStack',
   flexDirection: 'row',
@@ -118,7 +118,7 @@ export const HStack = styled(Stack, {
   variants: flexVariants({ flexDirection: 'row', alignItems: 'center' }),
 })
 
-/** Vertical stack. Use `gap="$2"` for spacing. */
+/** Vertical stack. Use `gap="2"` for spacing. */
 export const VStack = styled(Stack, {
   name: 'VStack',
   flexDirection: 'column',
@@ -130,8 +130,8 @@ export const Wrap = styled(Stack, {
   flexDirection: 'row',
   flexWrap: 'wrap',
   alignItems: 'center',
-  gap: '$2',
-  variants: flexVariants({ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center' }),
+  gap: "2",
+  variants: flexVariants({ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center' })
 })
 
 /** Centers its children on both axes. */

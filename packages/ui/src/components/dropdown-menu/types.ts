@@ -21,8 +21,8 @@ export interface DropdownMenuTriggerProps {
 
 export interface DropdownMenuContentProps {
   children: ReactNode
-  /** Minimum menu width (web). Default `$48`. */
-  minWidth?: '$40' | '$48' | '$56' | '$64'
+  /** Minimum menu width (web). Default `48`. */
+  minWidth?: '40' | '48' | '56' | '64'
 }
 
 export interface DropdownMenuItemProps {

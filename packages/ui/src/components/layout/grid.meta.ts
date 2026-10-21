@@ -26,13 +26,13 @@ export default defineMeta({
   ],
   usage: `import { Grid } from '@advui/core'
 
-<Grid columns={12} gap="$4">
+<Grid columns={12} gap="4">
   <Grid.Item span={{ base: 12, md: 8 }}>…main…</Grid.Item>
   <Grid.Item span={{ base: 12, md: 4 }}>…side…</Grid.Item>
 </Grid>
 
 // Equal columns: plain children are one column each
-<Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="$4">
+<Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="4">
   {items.map((item) => <Card key={item.id}>…</Card>)}
 </Grid>`,
   parts: [
@@ -55,7 +55,7 @@ export default defineMeta({
           name: 'gap',
           type: 'SpaceTokens',
           token: 'space',
-          default: "'$4'",
+          default: "'4'",
           description: 'Gap between cells.',
         },
         {
@@ -139,7 +139,7 @@ export default defineMeta({
     component: 'Grid',
     controls: [
       { prop: 'columns', type: 'number', default: 1, min: 1, max: 12, step: 1 },
-      { prop: 'gap', type: 'select', options: ['$0', '$2', '$4', '$6', '$8'], default: '$4' },
+      { prop: 'gap', type: 'select', options: ['0', '2', '4', '6', '8'], default: '4' },
       {
         prop: 'alignItems',
         type: 'select',
@@ -184,8 +184,8 @@ export default defineMeta({
         ['`.offset-md-2`', '`offset={{ md: 2 }}`', 'Mirrors in right-to-left layouts.'],
         [
           '`.g-3` (1rem)',
-          '`gap="$4"` (16px)',
-          '`.g-1` → `$1`, `.g-2` → `$2`, `.g-4` → `$6`, `.g-5` → `$12`.',
+          '`gap="4"` (16px)',
+          '`.g-1` → `1`, `.g-2` → `2`, `.g-4` → `6`, `.g-5` → `12`.',
         ],
         ['`.gx-*` / `.gy-*`', '`columnGap` / `rowGap`', 'Both default to `gap`.'],
         ['`.align-items-center` on `.row`', '`<Grid alignItems="center">`', ''],

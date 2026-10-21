@@ -4,7 +4,7 @@ import { useState } from 'react'
 export default function AlertDismissible() {
   const [open, setOpen] = useState(true)
   return (
-    <VStack gap="$3" width="100%" alignItems="flex-start">
+    <VStack gap="3" width="100%" alignItems="flex-start">
       <Alert
         variant="error"
         title="Connection failed"

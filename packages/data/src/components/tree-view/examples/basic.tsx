@@ -36,7 +36,7 @@ export default function TreeViewBasic() {
       defaultExpanded={['reports']}
       defaultSelected="q3"
       width="100%"
-      maxWidth="$72"
+      maxWidth="72"
     />
   )
 }

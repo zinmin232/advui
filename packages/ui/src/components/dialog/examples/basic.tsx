@@ -11,12 +11,12 @@ export default function DialogBasic() {
           <Dialog.Title>Edit profile</Dialog.Title>
           <Dialog.Description>Make changes to your profile here.</Dialog.Description>
         </Dialog.Header>
-        <VStack gap="$3">
-          <VStack gap="$2">
+        <VStack gap="3">
+          <VStack gap="2">
             <Label htmlFor="dlg-name">Name</Label>
             <Input id="dlg-name" defaultValue="Ada Lovelace" />
           </VStack>
-          <VStack gap="$2">
+          <VStack gap="2">
             <Label htmlFor="dlg-username">Username</Label>
             <Input id="dlg-username" defaultValue="@ada" />
           </VStack>

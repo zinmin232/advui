@@ -39,48 +39,58 @@ const Trigger = styled(TamaguiSelect.Trigger, {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  gap: '$2',
+  gap: "2",
   cursor: 'pointer',
   // Tamagui's trigger is a ListItem that keeps its own size styles, a 40px
   // minimum height and vertical padding, so `sm` was 40 tall (32 before
   // hydration). The size variants set the height.
   minHeight: 0,
   paddingVertical: 0,
-
   variants: {
     size: {
-      sm: { height: '$8', paddingHorizontal: '$2.5' },
-      md: { height: '$10', paddingHorizontal: '$3' },
-      lg: { height: '$12', paddingHorizontal: '$4' },
+      sm: {
+        height: "8",
+        paddingHorizontal: "2-5"
+      },
+      md: {
+        height: "10",
+        paddingHorizontal: "3"
+      },
+      lg: {
+        height: "12",
+        paddingHorizontal: "4"
+      },
     },
     invalid: {
-      true: { borderColor: '$error', hoverStyle: { borderColor: '$error' } },
+      true: {
+        borderColor: "error hover:error"
+      },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: 'none' },
     },
-  } as const,
+  } as const
 })
 
 const ValueText = styled(TamaguiSelect.Value, {
   name: 'SelectValue',
-  fontFamily: '$body',
-  fontSize: '$2',
-  color: '$foreground',
+  fontFamily: "body",
+  fontSize: "2",
+  color: "foreground",
   numberOfLines: 1,
-  flexShrink: 1,
+  flexShrink: 1
 })
 
 const Viewport = styled(TamaguiSelect.Viewport, {
   name: 'SelectViewport',
   unstyled: true,
-  backgroundColor: '$popover',
+  backgroundColor: "popover",
   borderWidth: 1,
-  borderColor: '$border',
-  borderRadius: '$lg',
-  padding: '$1',
-  minWidth: '$48',
-  ...shadows.md,
+  borderColor: "border",
+  borderRadius: "lg",
+  padding: "1",
+  minWidth: "48",
+  ...shadows.md
 })
 
 const ItemFrame = styled(TamaguiSelect.Item, {
@@ -89,39 +99,35 @@ const ItemFrame = styled(TamaguiSelect.Item, {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  gap: '$2',
-  minHeight: '$9',
-  paddingHorizontal: '$2.5',
-  borderRadius: '$md',
+  gap: "2",
+  minHeight: "9 touchable:11",
+  paddingHorizontal: "2-5",
+  borderRadius: "md",
   cursor: 'pointer',
-  hoverStyle: { backgroundColor: '$accent' },
-  focusStyle: { backgroundColor: '$accent' },
-  pressStyle: { backgroundColor: '$accentHover' },
-  $touchable: { minHeight: '$11' },
-
+  backgroundColor: "hover:accent press:accentHover focus:accent",
   variants: {
     disabled: {
       true: { opacity: 0.5, pointerEvents: 'none' },
     },
-  } as const,
+  } as const
 })
 
 const ItemText = styled(TamaguiSelect.ItemText, {
   name: 'SelectItemText',
-  fontFamily: '$body',
-  fontSize: '$2',
-  color: '$popoverForeground',
+  fontFamily: "body",
+  fontSize: "2",
+  color: "popoverForeground"
 })
 
 const GroupLabel = styled(TamaguiSelect.Label, {
   name: 'SelectLabel',
   unstyled: true,
-  paddingHorizontal: '$2.5',
-  paddingVertical: '$1.5',
-  fontFamily: '$body',
-  fontSize: '$1',
+  paddingHorizontal: "2-5",
+  paddingVertical: "1-5",
+  fontFamily: "body",
+  fontSize: "1",
   fontWeight: '600',
-  color: '$mutedForeground',
+  color: "mutedForeground"
 })
 
 export interface SelectItemProps extends Omit<GetProps<typeof ItemFrame>, 'index' | 'value'> {
@@ -149,7 +155,7 @@ function SelectItem({
   ...props
 }: SelectItemInternalProps) {
   const ripple = useRipple({
-    color: '$popoverForeground',
+    color: 'popoverForeground',
     disabled: props.disabled ?? false,
     onPressIn,
     onPressOut,
@@ -175,7 +181,7 @@ function SelectItem({
       {ripple.element}
       <ItemText>{children}</ItemText>
       <TamaguiSelect.ItemIndicator>
-        <CheckIcon size={16} color="$primary" />
+        <CheckIcon size={16} color="primary" />
       </TamaguiSelect.ItemIndicator>
     </ItemFrame>
   )
@@ -242,14 +248,23 @@ const StaticTrigger = styled(View, {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  gap: '$2',
+  gap: "2",
   variants: {
     size: {
-      sm: { height: '$8', paddingHorizontal: '$2.5' },
-      md: { height: '$10', paddingHorizontal: '$3' },
-      lg: { height: '$12', paddingHorizontal: '$4' },
+      sm: {
+        height: "8",
+        paddingHorizontal: "2-5"
+      },
+      md: {
+        height: "10",
+        paddingHorizontal: "3"
+      },
+      lg: {
+        height: "12",
+        paddingHorizontal: "4"
+      },
     },
-  } as const,
+  } as const
 })
 
 export interface SelectProps {
@@ -339,17 +354,17 @@ function SelectRoot(selectProps: SelectProps) {
         aria-required={required}
         id={id}
         opacity={disabled ? 0.5 : 1}
-        {...(invalid ? { borderColor: '$error' as const } : null)}
+        {...(invalid ? { borderColor: 'error' as const } : null)}
       >
         <Text
-          fontFamily="$body"
-          fontSize="$2"
-          color={label ? '$foreground' : '$placeholderColor'}
+          fontFamily="body"
+          fontSize="2"
+          color={`${label ? "foreground" : "placeholder-color"}`}
           numberOfLines={1}
         >
           {label ?? placeholder}
         </Text>
-        <ChevronDownIcon size={16} color="$mutedForeground" />
+        <ChevronDownIcon size={16} color="mutedForeground" />
       </StaticTrigger>
     )
   }
@@ -390,7 +405,7 @@ function SelectRoot(selectProps: SelectProps) {
             if (!disabled && event.nativeEvent.actionName === 'activate') setOpen(!open)
           },
         })}
-        iconAfter={<ChevronDownIcon size={16} color="$mutedForeground" />}
+        iconAfter={<ChevronDownIcon size={16} color="mutedForeground" />}
       >
         <ValueText placeholder={placeholder} />
       </Trigger>
@@ -404,33 +419,32 @@ function SelectRoot(selectProps: SelectProps) {
           transition={reducedMotion ? undefined : 'medium'}
         >
           <Sheet.Overlay
-            backgroundColor="$overlay"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
+            backgroundColor="overlay"
+            opacity="enter:0 exit:0"
             transition={reducedMotion ? undefined : 'quick'}
           />
-          <Sheet.Handle backgroundColor="$borderStrong" />
-          <Sheet.Frame
-            backgroundColor="$popover"
-            borderTopLeftRadius="$dialog"
-            borderTopRightRadius="$dialog"
-            padding="$2"
-            paddingBottom="$6"
+          <Sheet.Handle backgroundColor="borderStrong" />
+          <Sheet.Container
+            paddingTop="2"
+            paddingRight="2"
+            paddingLeft="2"
+            paddingBottom="6"
             maxHeight={sheetMaxHeight}
           >
+            <Sheet.Background backgroundColor="popover" borderTopLeftRadius="dialog" borderTopRightRadius="dialog" />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
         </Sheet>
       </Adapt>
 
       <TamaguiSelect.Content>
-        <TamaguiSelect.ScrollUpButton alignItems="center" justifyContent="center" height="$6">
+        <TamaguiSelect.ScrollUpButton alignItems="center" justifyContent="center" height="6">
           <ChevronUpIcon size={16} />
         </TamaguiSelect.ScrollUpButton>
         <Viewport>{items}</Viewport>
-        <TamaguiSelect.ScrollDownButton alignItems="center" justifyContent="center" height="$6">
+        <TamaguiSelect.ScrollDownButton alignItems="center" justifyContent="center" height="6">
           <ChevronDownIcon size={16} />
         </TamaguiSelect.ScrollDownButton>
       </TamaguiSelect.Content>
@@ -449,8 +463,8 @@ export const Select = withStaticProperties(SelectRoot, {
   Separator: styled(View, {
     name: 'SelectSeparator',
     height: 1,
-    backgroundColor: '$border',
-    marginVertical: '$1',
+    backgroundColor: "border",
+    marginVertical: "1"
   }),
   Text,
 })

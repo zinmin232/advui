@@ -9,8 +9,8 @@ import { type FileSelectionProps, useFileSelection } from './useFileSelection'
 
 const FileUploadFrame = styled(View, {
   name: 'FileUpload',
-  gap: '$2',
-  alignItems: 'flex-start',
+  gap: "2",
+  alignItems: 'flex-start'
 })
 
 export interface FileUploadProps
@@ -82,7 +82,7 @@ export const FileUpload = forwardRef<TamaguiElement, FileUploadProps>(
           aria-describedby={describedBy}
           aria-invalid={invalid || undefined}
           aria-required={required}
-          {...(invalid && { borderColor: '$error' })}
+          {...(invalid && { borderColor: 'error' })}
           onPress={open}
         >
           {buttonLabel}

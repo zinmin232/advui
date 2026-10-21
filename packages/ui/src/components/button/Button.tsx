@@ -26,21 +26,21 @@ export const ButtonContext = createStyledContext<{ variant: ButtonVariant; size:
 
 /** Label color per variant — shared by text, icons and the loading spinner. */
 export const buttonForeground = {
-  default: '$primaryForeground',
-  secondary: '$secondaryForeground',
-  outline: '$foreground',
-  ghost: '$foreground',
-  destructive: '$destructiveForeground',
-  link: '$primaryText',
+  default: 'primaryForeground',
+  secondary: 'secondaryForeground',
+  outline: 'foreground',
+  ghost: 'foreground',
+  destructive: 'destructiveForeground',
+  link: 'primaryText',
 } as const satisfies Record<ButtonVariant, `${string}`>
 
 // Resting fill per variant, kept while pressed when the Android ripple is on.
 const buttonBackground = {
-  default: '$primary',
-  secondary: '$secondary',
-  outline: '$background',
+  default: 'primary',
+  secondary: 'secondary',
+  outline: 'background',
   ghost: 'transparent',
-  destructive: '$destructive',
+  destructive: 'destructive',
   link: 'transparent',
 } as const satisfies Record<ButtonVariant, string>
 
@@ -52,67 +52,67 @@ export const ButtonFrame = styled(View, {
   role: 'button',
   render: 'button',
   tabIndex: 0,
-
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
   flexShrink: 0,
-  gap: '$2',
+  gap: "2",
   borderWidth: 1,
   borderColor: 'transparent',
-  borderRadius: '$button',
+  borderRadius: "button",
   cursor: 'pointer',
   userSelect: 'none',
   transition: 'quick',
-  focusVisibleStyle: {
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: 2,
-  },
-
+  outlineColor: "focus-visible:ring",
+  outlineStyle: "focus-visible:solid",
+  outlineWidth: "focus-visible:2px",
+  outlineOffset: "focus-visible:2px",
   variants: {
     variant: {
       default: {
-        backgroundColor: '$primary',
-        hoverStyle: { backgroundColor: '$primaryHover' },
-        pressStyle: { backgroundColor: '$primaryPress' },
+        backgroundColor: "primary hover:primaryHover press:primaryPress"
       },
       secondary: {
-        backgroundColor: '$secondary',
-        hoverStyle: { backgroundColor: '$secondaryHover' },
-        pressStyle: { backgroundColor: '$secondaryPress' },
+        backgroundColor: "secondary hover:secondaryHover press:secondaryPress"
       },
       outline: {
-        backgroundColor: '$background',
-        borderColor: '$input',
-        hoverStyle: { backgroundColor: '$accent', borderColor: '$borderStrong' },
-        pressStyle: { backgroundColor: '$accentHover' },
+        backgroundColor: "background hover:accent press:accentHover",
+        borderColor: "input hover:borderStrong"
       },
       ghost: {
-        backgroundColor: 'transparent',
-        hoverStyle: { backgroundColor: '$accent' },
-        pressStyle: { backgroundColor: '$accentHover' },
+        backgroundColor: "transparent hover:accent press:accentHover"
       },
       destructive: {
-        backgroundColor: '$destructive',
-        hoverStyle: { backgroundColor: '$destructiveHover' },
-        pressStyle: { backgroundColor: '$destructivePress' },
+        backgroundColor: "destructive hover:destructiveHover press:destructivePress"
       },
       link: {
         backgroundColor: 'transparent',
         paddingHorizontal: 0,
         height: 'auto',
-        hoverStyle: { opacity: 0.8 },
-        pressStyle: { opacity: 0.7 },
+        opacity: "hover:0.8 press:0.7"
       },
     },
 
     size: {
-      sm: { height: '$8', paddingHorizontal: '$3', gap: '$1.5' },
-      md: { height: '$10', paddingHorizontal: '$4' },
-      lg: { height: '$12', paddingHorizontal: '$6', borderRadius: '$buttonLg' },
-      icon: { height: '$10', width: '$10', paddingHorizontal: 0 },
+      sm: {
+        height: "8",
+        paddingHorizontal: "3",
+        gap: "1-5"
+      },
+      md: {
+        height: "10",
+        paddingHorizontal: "4"
+      },
+      lg: {
+        height: "12",
+        paddingHorizontal: "6",
+        borderRadius: "buttonLg"
+      },
+      icon: {
+        height: "10",
+        width: "10",
+        paddingHorizontal: 0
+      },
     },
 
     fullWidth: {
@@ -123,22 +123,20 @@ export const ButtonFrame = styled(View, {
       true: { opacity: 0.5, pointerEvents: 'none', cursor: 'default' },
     },
   } as const,
-
   defaultVariants: {
     variant: 'default',
     size: 'md',
-  },
+  }
 })
 
 export const ButtonText = styled(Text, {
   name: 'ButtonText',
   context: ButtonContext,
-  fontFamily: '$body',
+  fontFamily: "body",
   fontWeight: '500',
   userSelect: 'none',
   flexShrink: 1,
   numberOfLines: 1,
-
   variants: {
     variant: {
       default: { color: buttonForeground.default },
@@ -149,12 +147,24 @@ export const ButtonText = styled(Text, {
       link: { color: buttonForeground.link, textDecorationLine: 'underline' },
     },
     size: {
-      sm: { fontSize: '$2', lineHeight: '$2' },
-      md: { fontSize: '$2', lineHeight: '$2' },
-      lg: { fontSize: '$3', lineHeight: '$3' },
-      icon: { fontSize: '$2', lineHeight: '$2' },
+      sm: {
+        fontSize: "2",
+        lineHeight: "2"
+      },
+      md: {
+        fontSize: "2",
+        lineHeight: "2"
+      },
+      lg: {
+        fontSize: "3",
+        lineHeight: "3"
+      },
+      icon: {
+        fontSize: "2",
+        lineHeight: "2"
+      },
     },
-  } as const,
+  } as const
 })
 
 type FrameProps = GetProps<typeof ButtonFrame>

@@ -6,7 +6,7 @@ export default function ToggleGroupMultiple() {
   const [styles, setStyles] = useState<string[]>(['bold'])
   const [view, setView] = useState('grid')
   return (
-    <VStack gap="$4" alignItems="center">
+    <VStack gap="4" alignItems="center">
       <ToggleGroup
         type="multiple"
         variant="outline"

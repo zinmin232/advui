@@ -43,10 +43,10 @@ const TableFrame = styled(View, {
       plain: {},
       outline: {
         borderWidth: 1,
-        borderColor: '$border',
-        borderRadius: '$lg',
+        borderColor: "border",
+        borderRadius: "lg",
         overflow: 'hidden',
-        backgroundColor: '$card',
+        backgroundColor: "card"
       },
     },
     size: {
@@ -62,15 +62,15 @@ const TableHeader = styled(View, {
   name: 'TableHeader',
   role: 'rowgroup',
   borderBottomWidth: 1,
-  borderColor: '$border',
+  borderColor: "border"
 })
 
 const TableFooterFrame = styled(View, {
   name: 'TableFooter',
   role: 'rowgroup',
   borderTopWidth: 1,
-  borderColor: '$border',
-  backgroundColor: '$muted',
+  borderColor: "border",
+  backgroundColor: "muted"
 })
 
 const TableRowFrame = styled(View, {
@@ -81,16 +81,25 @@ const TableRowFrame = styled(View, {
 
   variants: {
     divider: {
-      true: { borderBottomWidth: 1, borderColor: '$border' },
+      true: {
+        borderBottomWidth: 1,
+        borderColor: "border"
+      },
     },
     striped: {
-      true: { backgroundColor: '$muted' },
+      true: {
+        backgroundColor: "muted"
+      },
     },
     selected: {
-      true: { backgroundColor: '$accent' },
+      true: {
+        backgroundColor: "accent"
+      },
     },
     interactive: {
-      true: { hoverStyle: { backgroundColor: '$accent' } },
+      true: {
+        backgroundColor: "hover:accent"
+      },
     },
   } as const,
 })
@@ -104,8 +113,8 @@ const cellBase = {
 
   variants: {
     size: {
-      sm: { paddingHorizontal: '$2', paddingVertical: '$1.5', minHeight: '$9' },
-      md: { paddingHorizontal: '$4', paddingVertical: '$3', minHeight: '$12' },
+      sm: { paddingHorizontal: '2', paddingVertical: '1.5', minHeight: '9' },
+      md: { paddingHorizontal: '4', paddingVertical: '3', minHeight: '12' },
     },
     align: {
       start: { alignItems: 'flex-start' },
@@ -168,20 +177,21 @@ const TableImpl = forwardRef<TamaguiElement, TableProps>(function Table(
     </StripedContext.Provider>
   )
   return (
-    <View gap="$2" width="100%">
+    <View gap="2" width="100%">
       {minWidth != null ? (
         <ScrollView
           horizontal
           width="100%"
-          contentContainerStyle={{ minWidth: '100%' }}
-          // Keyboard users scroll it with the arrow keys once it has focus.
           {...(isWeb
-            ? { tabIndex: 0 }
-            : {
-                onLayout: (event: { nativeEvent: { layout: { width: number } } }) =>
-                  setVisibleWidth(event.nativeEvent.layout.width),
-              })}
-          focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
+                    ? { tabIndex: 0 }
+                    : {
+                        onLayout: (event: { nativeEvent: { layout: { width: number } } }) =>
+                          setVisibleWidth(event.nativeEvent.layout.width),
+                      })}
+          outlineColor="focus-visible:ring"
+          outlineStyle="focus-visible:solid"
+          outlineWidth="focus-visible:2px"
+          contentContainerStyle={{ minWidth: '100%' }}
         >
           {table}
         </ScrollView>
@@ -313,31 +323,31 @@ const TableHead = forwardRef<TamaguiElement, TableHeadProps>(function TableHead(
       {SortIcon ? (
         <View
           {...(isWeb ? { render: 'button', type: 'button' } : { accessible: true, role: 'button' })}
-          // Native has no aria-sort, so the button says how the column is sorted.
           {...(!isWeb &&
-            isTextContent(children) && {
-              'aria-label': `${[children].flat().join('')}${
-                sortDirection === 'none' ? '' : `, sorted ${sortDirection}`
-              }`,
-            })}
+                    isTextContent(children) && {
+                      'aria-label': `${[children].flat().join('')}${
+                        sortDirection === 'none' ? '' : `, sorted ${sortDirection}`
+                      }`,
+                    })}
           flexDirection={align === 'end' ? 'row-reverse' : 'row'}
           alignItems="center"
-          gap="$1"
-          padding="$1"
-          margin="$-1"
+          gap="1"
+          padding="1"
+          margin="-1"
           borderWidth={0}
-          borderRadius="$sm"
-          backgroundColor="transparent"
+          borderRadius="sm"
+          backgroundColor="transparent hover:accent"
           cursor="pointer"
-          hoverStyle={{ backgroundColor: '$accent' }}
-          focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
+          outlineColor="focus-visible:ring"
+          outlineStyle="focus-visible:solid"
+          outlineWidth="focus-visible:2px"
           onPress={onSort}
         >
           {label}
           <View aria-hidden>
             <SortIcon
               size={14}
-              color={sortDirection === 'none' ? '$mutedForeground' : '$foreground'}
+              color={sortDirection === 'none' ? 'mutedForeground' : 'foreground'}
             />
           </View>
         </View>

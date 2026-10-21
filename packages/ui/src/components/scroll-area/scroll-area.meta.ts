@@ -18,8 +18,8 @@ export default defineMeta({
   keywords: ['scroll', 'overflow', 'scrollbar', 'list', 'carousel', 'scroll view'],
   usage: `import { ScrollArea, VStack } from '@advui/core'
 
-<ScrollArea aria-label="Release tags" height="$72">
-  <VStack padding="$4" gap="$2">…</VStack>
+<ScrollArea aria-label="Release tags" height="72">
+  <VStack padding="4" gap="2">…</VStack>
 </ScrollArea>`,
   parts: [
     {

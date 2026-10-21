@@ -17,7 +17,7 @@ const variants: FilterBarVariant[] = ['default', 'outline', 'filled', 'ghost']
 
 export default function FilterBarVariants() {
   return (
-    <VStack gap="$4" width="100%">
+    <VStack gap="4" width="100%">
       {variants.map((variant) => (
         <FilterBar
           key={variant}

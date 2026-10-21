@@ -61,7 +61,7 @@ describe('icons', () => {
 
   it('inherits size and color from IconDefaults and resolves theme tokens to CSS variables', () => {
     wrap(
-      <IconDefaults size={24} color="$primary">
+      <IconDefaults size={24} color="primary">
         <SearchIcon testID="inherited" />
       </IconDefaults>,
     )
@@ -74,7 +74,7 @@ describe('icons', () => {
     wrap(
       <>
         <SearchIcon testID="outline" />
-        <SearchIcon testID="filled" fill="$warning" />
+        <SearchIcon testID="filled" fill="warning" />
       </>,
     )
     expect(screen.getByTestId('outline')).toHaveAttribute('fill', 'none')

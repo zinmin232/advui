@@ -13,7 +13,7 @@ export default defineMeta({
   keywords: ['loading', 'placeholder', 'shimmer'],
   usage: `import { Skeleton } from '@advui/core'
 
-<Skeleton height="$4" width="60%" />`,
+<Skeleton height="4" width="60%" />`,
   parts: [
     {
       name: 'Skeleton',

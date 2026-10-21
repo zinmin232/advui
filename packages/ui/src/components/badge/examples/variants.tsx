@@ -2,7 +2,7 @@ import { Badge, HStack } from '@advui/core'
 
 export default function BadgeVariants() {
   return (
-    <HStack gap="$2" flexWrap="wrap">
+    <HStack gap="2" flexWrap="wrap">
       <Badge>Default</Badge>
       <Badge variant="secondary">Secondary</Badge>
       <Badge variant="outline">Outline</Badge>

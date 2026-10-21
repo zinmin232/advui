@@ -8,7 +8,7 @@ export type ColorMode = 'light' | 'dark'
 /**
  * Every value a Adv UI theme defines. The first block is Tamagui's
  * standard theme contract (used by Tamagui primitives); the rest are the
- * semantic tokens our components use (`$primary`, `$mutedForeground`, …).
+ * semantic tokens our components use (`primary`, `mutedForeground`, …).
  */
 export type ThemeValues = {
   // Tamagui standard keys
@@ -66,7 +66,7 @@ export type ThemeValues = {
   primaryForeground: string
   /** Primary-colored text/links on the page background (≥4.5:1). `primary` is a fill color. */
   primaryText: string
-  /** Primary-colored text on inverse surfaces (`$foreground` as a background), e.g. a snackbar action. */
+  /** Primary-colored text on inverse surfaces (`foreground` as a background), e.g. a snackbar action. */
   inversePrimary: string
   primarySoft: string
   primarySoftHover: string

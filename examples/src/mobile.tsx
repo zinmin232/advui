@@ -40,9 +40,9 @@ const actions = [
 
 export function MobileHomeScreen() {
   return (
-    <VStack gap="$5" padding="$4" width="100%">
+    <VStack gap="5" padding="4" width="100%">
       <HStack justifyContent="space-between">
-        <HStack gap="$3">
+        <HStack gap="3">
           <Avatar alt="Isabella Nguyen" src={avatarUrl(47)} />
           <VStack>
             <Text size="sm" tone="muted">
@@ -68,29 +68,29 @@ export function MobileHomeScreen() {
           placeholder="Search products"
           flex={1}
           size="lg"
-          paddingLeft="$10"
-          borderRadius="$full"
+          paddingLeft="10"
+          borderRadius="full"
         />
         <InputIcon>
-          <SearchIcon size={18} color="$mutedForeground" />
+          <SearchIcon size={18} color="mutedForeground" />
         </InputIcon>
       </HStack>
 
-      <Card backgroundColor="$primary" borderWidth={0}>
-        <Card.Content gap="$2">
+      <Card backgroundColor="primary" borderWidth={0}>
+        <Card.Content gap="2">
           <Badge variant="secondary" size="sm">
             Weekend deal
           </Badge>
-          <Text size="xl" weight="bold" color="$primaryForeground">
+          <Text size="xl" color="primaryForeground" weight="bold">
             20% off running gear
           </Text>
-          <Text size="sm" color="$primaryForeground" opacity={0.85}>
+          <Text size="sm" color="primaryForeground" opacity={0.85}>
             Ends Sunday at midnight.
           </Text>
         </Card.Content>
       </Card>
 
-      <Grid columns={4} gap="$2">
+      <Grid columns={4} gap="2">
         {actions.map((action) => (
           <VStack
             key={action.label}
@@ -98,13 +98,12 @@ export function MobileHomeScreen() {
             role="button"
             aria-label={action.badge ? `${action.label}, ${action.badge} new` : action.label}
             alignItems="center"
-            gap="$1.5"
-            paddingVertical="$3"
-            borderRadius="$lg"
-            backgroundColor="$muted"
+            gap="1-5"
+            paddingVertical="3"
+            borderRadius="lg"
+            backgroundColor="muted press:accentHover"
             borderWidth={0}
             cursor="pointer"
-            pressStyle={{ backgroundColor: '$accentHover' }}
             onPress={() => toast(action.label)}
           >
             <View position="relative">
@@ -112,16 +111,16 @@ export function MobileHomeScreen() {
               {action.badge ? (
                 <View
                   position="absolute"
-                  top="$-1.5"
-                  right="$-2"
-                  backgroundColor="$destructive"
-                  borderRadius="$full"
-                  minWidth="$4"
-                  height="$4"
+                  top="-1-5"
+                  right="-2"
+                  backgroundColor="destructive"
+                  borderRadius="full"
+                  minWidth="4"
+                  height="4"
                   alignItems="center"
                   justifyContent="center"
                 >
-                  <Text size="xs" color="$destructiveForeground" fontSize={10} lineHeight={12}>
+                  <Text size="xs" color="destructiveForeground" fontSize={10} lineHeight="12px">
                     {action.badge}
                   </Text>
                 </View>
@@ -134,7 +133,7 @@ export function MobileHomeScreen() {
         ))}
       </Grid>
 
-      <VStack gap="$3">
+      <VStack gap="3">
         <HStack justifyContent="space-between">
           <Text weight="semibold" size="lg">
             Recent orders
@@ -160,12 +159,12 @@ export function MobileHomeScreen() {
             onPress={() => toast(`Order ${order.id}`)}
           >
             <Card.Content>
-              <HStack gap="$3">
+              <HStack gap="3">
                 <View
-                  width="$10"
-                  height="$10"
-                  borderRadius="$md"
-                  backgroundColor="$muted"
+                  width="10"
+                  height="10"
+                  borderRadius="md"
+                  backgroundColor="muted"
                   alignItems="center"
                   justifyContent="center"
                 >
@@ -205,12 +204,12 @@ function SettingsRow({
   id?: string
 }) {
   const content = (
-    <HStack gap="$3" minHeight="$12" paddingHorizontal="$4" paddingVertical="$2">
+    <HStack gap="3" minHeight="12" paddingHorizontal="4" paddingVertical="2">
       <View
-        width="$8"
-        height="$8"
-        borderRadius="$md"
-        backgroundColor="$muted"
+        width="8"
+        height="8"
+        borderRadius="md"
+        backgroundColor="muted"
         alignItems="center"
         justifyContent="center"
       >
@@ -228,7 +227,7 @@ function SettingsRow({
           {value}
         </Text>
       ) : null}
-      {control ?? <ChevronRightIcon size={18} color="$mutedForeground" />}
+      {control ?? <ChevronRightIcon size={18} color="mutedForeground" />}
     </HStack>
   )
   if (!onPress) return content
@@ -240,9 +239,8 @@ function SettingsRow({
       onPress={onPress}
       cursor="pointer"
       borderWidth={0}
-      backgroundColor="transparent"
+      backgroundColor="transparent press:accent"
       padding={0}
-      pressStyle={{ backgroundColor: '$accent' }}
     >
       {content}
     </View>
@@ -251,14 +249,14 @@ function SettingsRow({
 
 function SettingsGroup({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <VStack gap="$2">
+    <VStack gap="2">
       <Text
         size="xs"
-        weight="semibold"
-        tone="muted"
         textTransform="uppercase"
         letterSpacing={0.6}
-        paddingHorizontal="$4"
+        paddingHorizontal="4"
+        weight="semibold"
+        tone="muted"
       >
         {title}
       </Text>
@@ -271,14 +269,14 @@ export function MobileSettingsScreen() {
   const [dark, setDark] = useState(false)
   const [push, setPush] = useState(true)
   return (
-    <VStack gap="$6" padding="$4" width="100%">
+    <VStack gap="6" padding="4" width="100%">
       <HStack
-        gap="$3"
-        padding="$4"
-        backgroundColor="$card"
-        borderRadius="$xl"
+        gap="3"
+        padding="4"
+        backgroundColor="card"
+        borderRadius="xl"
         borderWidth={1}
-        borderColor="$border"
+        borderColor="border"
       >
         <Avatar size="lg" alt="Isabella Nguyen" src={avatarUrl(47)} />
         <VStack flex={1}>
@@ -340,7 +338,7 @@ export function MobileSettingsScreen() {
 
       <SettingsGroup title="Session">
         <SettingsRow
-          icon={<LogOutIcon size={16} color="$destructive" />}
+          icon={<LogOutIcon size={16} color="destructive" />}
           label="Sign out"
           onPress={() => toast('Signed out')}
         />

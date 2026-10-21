@@ -54,8 +54,7 @@ const PaginationFrame = styled(View, {
   flexDirection: 'row',
   alignItems: 'center',
   flexWrap: 'wrap',
-  gap: '$1',
-  '$max-xs': { gap: '$0.5' },
+  gap: "1 max-xs:0-5"
 })
 
 export interface PaginationLabels {
@@ -125,11 +124,11 @@ export const Pagination = forwardRef<TamaguiElement, PaginationProps>(function P
     onChange: onPageChange,
   })
   const page = Math.min(Math.max(1, rawPage), pages)
-  const buttonSize = size === 'sm' ? '$8' : '$10'
+  const buttonSize = size === 'sm' ? '8' : '10'
   // On narrow phones the default size drops to the small one, so a full
   // pager fits on one line. Media props are CSS on web: safe to server-render.
-  const narrow = { '$max-xs': { width: '$8', height: '$8' } } as const
-  const narrowPage = { '$max-xs': { minWidth: '$8', height: '$8' } } as const
+  const narrow = { '$max-xs': { width: '8', height: '8' } } as const
+  const narrowPage = { '$max-xs': { minWidth: '8', height: '8' } } as const
 
   return (
     <View ref={ref} render="nav" aria-label={ariaLabel} {...(!isWeb && { role: 'navigation' })}>
@@ -145,7 +144,7 @@ export const Pagination = forwardRef<TamaguiElement, PaginationProps>(function P
           />
         </View>
         {variant === 'compact' ? (
-          <View render="li" paddingHorizontal="$2">
+          <View render="li" paddingHorizontal="2">
             <Text size="sm" tone="muted" aria-live="polite">
               {labels.status(page, pages)}
             </Text>
@@ -156,16 +155,15 @@ export const Pagination = forwardRef<TamaguiElement, PaginationProps>(function P
               <View key={item} render="li">
                 <Button
                   size={size === 'sm' ? 'sm' : 'md'}
-                  variant={item === page ? 'outline' : 'ghost'}
                   minWidth={buttonSize}
                   {...narrowPage}
-                  paddingHorizontal="$2"
+                  paddingHorizontal="2"
+                  {...(isWeb
+                                    ? item === page && { 'aria-current': 'page' as const }
+                                    : { 'aria-selected': item === page })}
+                  variant={item === page ? 'outline' : 'ghost'}
                   aria-label={labels.page(item)}
                   disabled={disabled}
-                  // Native has no aria-current; a selected button says "selected".
-                  {...(isWeb
-                    ? item === page && { 'aria-current': 'page' as const }
-                    : { 'aria-selected': item === page })}
                   onPress={() => setPage(item)}
                 >
                   {String(item)}
@@ -182,7 +180,7 @@ export const Pagination = forwardRef<TamaguiElement, PaginationProps>(function P
                 alignItems="center"
                 justifyContent="center"
               >
-                <MoreHorizontalIcon size={16} color="$mutedForeground" />
+                <MoreHorizontalIcon size={16} color="mutedForeground" />
               </View>
             ),
           )

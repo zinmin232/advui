@@ -73,7 +73,7 @@ export function BarChart<T extends object>({
   labels,
 }: BarChartProps<T>) {
   const colors = useChartColors()
-  const ink = useChartInk('$background')
+  const ink = useChartInk('background')
   const horizontal = layout === 'horizontal'
   const height = heightProp ?? (horizontal ? Math.max(120, data.length * 36 + 32) : 240)
   const categories = data.map((row) => String(row[index] ?? ''))

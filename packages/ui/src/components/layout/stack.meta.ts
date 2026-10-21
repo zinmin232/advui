@@ -46,7 +46,7 @@ function stackProps({ direction, align, alignItems }: StackDefaults): PropDoc[] 
       name: 'gap',
       type: 'SpaceTokens',
       token: 'space',
-      description: 'Space between children, e.g. `$2`. Responsive with media props.',
+      description: 'Space between children, e.g. `2`. Responsive with media props.',
     },
     { name: 'rowGap', type: 'SpaceTokens', token: 'space', description: 'Space between rows.' },
     {
@@ -136,12 +136,12 @@ export default defineMeta({
   usage: `import { HStack, Spacer, Stack, Text } from '@advui/core'
 
 // A column on phones, a row from md
-<Stack direction={{ base: 'column', md: 'row' }} align="center" distribute="between" gap="$4">
+<Stack direction={{ base: 'column', md: 'row' }} align="center" distribute="between" gap="4">
   <Text>Left</Text>
   <Text>Right</Text>
 </Stack>
 
-<HStack gap="$2">
+<HStack gap="2">
   <Text>Left</Text>
   <Spacer />
   <Text>Right</Text>
@@ -223,7 +223,7 @@ export default defineMeta({
     'Changing `direction` changes only the visual order’s axis; reading order still follows the source, so keep the source order meaningful. `row-reverse` and `column-reverse` show children in the opposite order from how screen readers read them.',
   ],
   responsive:
-    '`direction`, `wrap`, `align` and `distribute` take a value or a mobile-first map `{ base, xs, sm, md, lg, xl, xxl }` (from 460, 640, 768, 1024, 1280 and 1536 px). Only the breakpoints you give are emitted, as media props, so on web they are CSS media queries (no flash during SSR) and on native they follow the window size. A raw style prop wins over its responsive prop: `flexDirection` (or `$md={{ flexDirection }}`) beats `direction` at the base (or at md), whichever comes first. A raw value equal to the stack’s own default, such as `flexDirection="column"` on a Stack, does not count. Responsive `gap` is not a prop: use media props, `$md={{ gap: "$6" }}`.',
+    '`direction`, `wrap`, `align` and `distribute` take a value or a mobile-first map `{ base, xs, sm, md, lg, xl, xxl }` (from 460, 640, 768, 1024, 1280 and 1536 px). Only the breakpoints you give are emitted, as media props, so on web they are CSS media queries (no flash during SSR) and on native they follow the window size. A raw style prop wins over its responsive prop: `flexDirection` (or `$md={{ flexDirection }}`) beats `direction` at the base (or at md), whichever comes first. A raw value equal to the stack’s own default, such as `flexDirection="column"` on a Stack, does not count. Responsive `gap` is not a prop: use media props, `$md={{ gap: "6" }}`.',
   tables: [
     {
       id: 'values',

@@ -201,13 +201,13 @@ describe('Alert', () => {
           testID="custom"
           variant="info"
           size="lg"
-          title="Custom"
-          padding="$2"
-          gap="$1"
-          borderRadius="$sm"
+          padding="2"
+          gap="1"
+          borderRadius="sm"
           borderWidth={0}
-          backgroundColor="$primary"
-          borderColor="$primary"
+          backgroundColor="primary"
+          borderColor="primary"
+          title="Custom"
         />
       </>,
     )
@@ -224,11 +224,11 @@ describe('Alert', () => {
   it('colors the title, description and composed parts with color', () => {
     renderWithProvider(
       <>
-        <Text testID="reference" color="$primaryText">
+        <Text testID="reference" color="primaryText">
           Reference
         </Text>
         <Alert variant="info" title="Plain title" />
-        <Alert variant="info" color="$primaryText" title="Tinted title" description="Tinted body">
+        <Alert variant="info" color="primaryText" title="Tinted title" description="Tinted body">
           <Alert.Description>Tinted part</Alert.Description>
         </Alert>
       </>,

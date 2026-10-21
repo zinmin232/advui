@@ -2317,7 +2317,7 @@ describe('Grid layout', () => {
   }
   const style = (testID: string) => StyleSheet.flatten(screen.getByTestId(testID).props.style)
   const layout = () => (
-    <Grid columns={12} gap="$4" testID="grid">
+    <Grid columns={12} gap="4" testID="grid">
       <Grid.Item span={{ base: 12, md: 8 }} testID="main">
         <Text>Main</Text>
       </Grid.Item>
@@ -2402,7 +2402,7 @@ describe('responsive layout props', () => {
         <Stack
           testID="media"
           direction={{ base: 'column', md: 'row' }}
-          $md={{ flexDirection: 'row-reverse' }}
+          flexDirection="md:row-reverse"
         />
         <HStack testID="hstack" direction="column" distribute="between" />
       </>,
@@ -2432,7 +2432,7 @@ describe('responsive layout props', () => {
     await renderNative(
       <>
         <Container testID="default" />
-        <Container testID="flush" gutter="$0" centerContent />
+        <Container testID="flush" gutter="0" centerContent />
       </>,
     )
     expect(style('default')).toMatchObject({ paddingLeft: 32, paddingRight: 32 })
@@ -2525,7 +2525,7 @@ describe('Show, Hide, Section and Sticky on native', () => {
   it('pins top Stickys in a ScrollArea, looking through fragments', async () => {
     await renderNative(
       <ScrollArea aria-label="Townships" height={300}>
-        <VStack padding="$4" gap="$2">
+        <VStack padding="4" gap="2">
           {['Kachin', 'Shan'].map((region) => (
             <Fragment key={region}>
               <Sticky>
@@ -2550,7 +2550,7 @@ describe('Show, Hide, Section and Sticky on native', () => {
   it('leaves a ScrollArea without Stickys as it was', async () => {
     await renderNative(
       <ScrollArea aria-label="Plain" height={300}>
-        <VStack padding="$4">
+        <VStack padding="4">
           <Text>Row</Text>
         </VStack>
       </ScrollArea>,
@@ -2685,7 +2685,7 @@ describe('AppShell and AutoGrid on native', () => {
 
   it('AutoGrid shows one column until it is measured, then the same count as web', async () => {
     await renderNative(
-      <AutoGrid testID="grid" minChildWidth={240} gap="$4">
+      <AutoGrid testID="grid" minChildWidth={240} gap="4">
         {['A', 'B', 'C', 'D'].map((name) => (
           <Text key={name} testID={name}>
             {name}

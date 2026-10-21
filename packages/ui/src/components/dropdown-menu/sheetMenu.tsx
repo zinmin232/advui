@@ -61,21 +61,18 @@ function Content({ children }: DropdownMenuContentProps) {
       transition={reducedMotion ? undefined : 'medium'}
     >
       <Sheet.Overlay
-        backgroundColor="$overlay"
-        enterStyle={{ opacity: 0 }}
-        exitStyle={{ opacity: 0 }}
+        backgroundColor="overlay"
+        opacity="enter:0 exit:0"
         transition={reducedMotion ? undefined : 'quick'}
       />
-      <Sheet.Handle backgroundColor="$borderStrong" />
-      <Sheet.Frame
-        backgroundColor="$popover"
-        borderTopLeftRadius="$dialog"
-        borderTopRightRadius="$dialog"
-        paddingHorizontal="$2"
-        paddingTop="$2"
-        paddingBottom="$8"
+      <Sheet.Handle backgroundColor="borderStrong" />
+      <Sheet.Container
+        paddingHorizontal="2"
+        paddingTop="2"
+        paddingBottom="8"
         maxHeight={maxHeight}
       >
+        <Sheet.Background backgroundColor="popover" borderTopLeftRadius="dialog" borderTopRightRadius="dialog" />
         <Sheet.ScrollView>
           {/* The sheet renders in a portal, which does not carry React context. */}
           <MenuContext.Provider value={menu}>
@@ -86,7 +83,7 @@ function Content({ children }: DropdownMenuContentProps) {
             </View>
           </MenuContext.Provider>
         </Sheet.ScrollView>
-      </Sheet.Frame>
+      </Sheet.Container>
     </Sheet>
   )
 }
@@ -104,7 +101,7 @@ function Row({
   onPress: () => void
   children: ReactNode
 }) {
-  const ripple = useRipple({ color: '$popoverForeground', disabled })
+  const ripple = useRipple({ color: 'popoverForeground', disabled })
   return (
     <View
       role={role}
@@ -113,20 +110,18 @@ function Row({
       aria-disabled={ariaState(disabled)}
       flexDirection="row"
       alignItems="center"
-      gap="$3"
-      minHeight="$12"
-      paddingHorizontal="$3"
-      borderRadius="$md"
+      gap="3"
+      minHeight="12"
+      paddingHorizontal="3"
+      borderRadius="md"
       opacity={disabled ? 0.5 : 1}
-      pressStyle={disabled || ripple.active ? undefined : { backgroundColor: '$accent' }}
+      pressStyle={disabled || ripple.active ? undefined : { backgroundColor: 'accent' }}
+      {...ripple.props}
       onPress={disabled ? undefined : onPress}
-      // VoiceOver / TalkBack double-tap sends "activate"; a plain onPress on a
-      // non-button view is not guaranteed to receive it.
       accessibilityActions={[{ name: 'activate' }]}
       onAccessibilityAction={(event: { nativeEvent: { actionName: string } }) => {
-        if (!disabled && event.nativeEvent.actionName === 'activate') onPress()
-      }}
-      {...ripple.props}
+            if (!disabled && event.nativeEvent.actionName === 'activate') onPress()
+          }}
     >
       {ripple.element}
       {children}
@@ -136,7 +131,7 @@ function Row({
 
 function Title({ children, destructive }: { children: ReactNode; destructive?: boolean }) {
   return (
-    <Text flex={1} color={destructive ? '$errorSoftForeground' : '$popoverForeground'}>
+    <Text flex={1} color={`${destructive ? "errorSoftForeground" : "popoverForeground"}`}>
       {children}
     </Text>
   )
@@ -145,7 +140,7 @@ function Title({ children, destructive }: { children: ReactNode; destructive?: b
 function Icon({ icon, destructive }: { icon?: ReactNode; destructive?: boolean }) {
   if (!icon) return null
   return (
-    <IconDefaults size={20} color={destructive ? '$errorSoftForeground' : '$mutedForeground'}>
+    <IconDefaults size={20} color={destructive ? 'errorSoftForeground' : 'mutedForeground'}>
       {icon}
     </IconDefaults>
   )
@@ -170,7 +165,7 @@ function Item({ children, icon, destructive, disabled, onSelect }: DropdownMenuI
 
 function Indicator({ visible, children }: { visible: boolean; children: ReactNode }) {
   return (
-    <View width="$5" alignItems="center" justifyContent="center">
+    <View width="5" alignItems="center" justifyContent="center">
       {visible ? children : null}
     </View>
   )
@@ -195,7 +190,7 @@ function CheckboxItem({
       }}
     >
       <Indicator visible={checked}>
-        <CheckIcon size={18} color="$popoverForeground" />
+        <CheckIcon size={18} color="popoverForeground" />
       </Indicator>
       <Icon icon={icon} />
       <Title>{children}</Title>
@@ -222,7 +217,7 @@ function RadioItem({ children, value, icon, disabled }: DropdownMenuRadioItemPro
       }}
     >
       <Indicator visible={checked}>
-        <View width="$2" height="$2" borderRadius="$full" backgroundColor="$popoverForeground" />
+        <View width="2" height="2" borderRadius="full" backgroundColor="popoverForeground" />
       </Indicator>
       <Icon icon={icon} />
       <Title>{children}</Title>
@@ -235,11 +230,11 @@ function Label({ children }: DropdownMenuLabelProps) {
     <Text
       role="heading"
       size="xs"
+      paddingHorizontal="3"
+      paddingTop="3"
+      paddingBottom="1"
       weight="semibold"
       tone="muted"
-      paddingHorizontal="$3"
-      paddingTop="$3"
-      paddingBottom="$1"
     >
       {children}
     </Text>
@@ -247,7 +242,7 @@ function Label({ children }: DropdownMenuLabelProps) {
 }
 
 function Separator() {
-  return <View height={1} backgroundColor="$border" marginVertical="$1" />
+  return <View height={1} backgroundColor="border" marginVertical="1" />
 }
 
 function Group({ children }: DropdownMenuGroupProps) {

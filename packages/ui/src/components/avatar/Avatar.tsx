@@ -16,7 +16,7 @@ const AvatarContext = createStyledContext<{ size: AvatarSize }>({ size: 'md' })
 
 // Tamagui's Avatar sizes itself from its own `size` prop, which must be a size
 // token: passing our names ('xs') fell back to 40 on native.
-const frameSizes = { xs: '$6', sm: '$8', md: '$10', lg: '$12', xl: '$16' } as const
+const frameSizes = { xs: '6', sm: '8', md: '10', lg: '12', xl: '16' } as const
 
 const AvatarFrame = styled(TamaguiAvatar, {
   name: 'Avatar',
@@ -26,8 +26,12 @@ const AvatarFrame = styled(TamaguiAvatar, {
 
   variants: {
     shape: {
-      circle: { borderRadius: '$full' },
-      square: { borderRadius: '$md' },
+      circle: {
+        borderRadius: "full"
+      },
+      square: {
+        borderRadius: "md"
+      },
     },
   } as const,
 
@@ -42,26 +46,36 @@ const AvatarImage = styled(TamaguiAvatar.Image, {
 
 const AvatarFallbackFrame = styled(TamaguiAvatar.Fallback, {
   name: 'AvatarFallback',
-  backgroundColor: '$muted',
+  backgroundColor: "muted",
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'center'
 })
 
 const AvatarFallbackText = styled(Text, {
   name: 'AvatarFallbackText',
   context: AvatarContext,
-  color: '$mutedForeground',
-  fontFamily: '$body',
+  color: "mutedForeground",
+  fontFamily: "body",
   fontWeight: '500',
   variants: {
     size: {
-      xs: { fontSize: '$1' },
-      sm: { fontSize: '$1' },
-      md: { fontSize: '$2' },
-      lg: { fontSize: '$3' },
-      xl: { fontSize: '$5' },
+      xs: {
+        fontSize: "1"
+      },
+      sm: {
+        fontSize: "1"
+      },
+      md: {
+        fontSize: "2"
+      },
+      lg: {
+        fontSize: "3"
+      },
+      xl: {
+        fontSize: "5"
+      },
     },
-  } as const,
+  } as const
 })
 
 export type AvatarProps = Omit<GetProps<typeof AvatarFrame>, 'size'> & {

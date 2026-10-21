@@ -10,13 +10,12 @@ export type FieldOrientation = 'vertical' | 'horizontal'
 
 const FieldFrame = styled(View, {
   name: 'Field',
-  gap: '$2',
-
+  gap: "2",
   variants: {
     fullWidth: {
       true: { width: '100%', alignSelf: 'stretch' },
     },
-  } as const,
+  } as const
 })
 
 // Horizontal fields: the label is centered on the control beside it, and the
@@ -25,7 +24,7 @@ const FieldRow = styled(View, {
   name: 'FieldRow',
   flexDirection: 'row',
   alignItems: 'center',
-  columnGap: '$4',
+  columnGap: "4"
 })
 
 const FieldLabelColumn = styled(View, {
@@ -94,7 +93,7 @@ export const Field = forwardRef<TamaguiElement, FieldProps>(function Field(
     optionalText = '(optional)',
     disabled: disabledProp = false,
     orientation = 'vertical',
-    gap = '$2',
+    gap = '2',
     fullWidth = false,
     id: idProp,
     children,

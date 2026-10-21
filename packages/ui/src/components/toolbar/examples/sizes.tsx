@@ -7,7 +7,7 @@ const sizes = ['sm', 'md', 'lg'] as const
 // own size, so give them the same one.
 export default function ToolbarSizes() {
   return (
-    <VStack gap="$3" align="start">
+    <VStack gap="3" align="start">
       {sizes.map((size) => (
         <Toolbar key={size} aria-label={`${size} toolbar`} size={size} variant="outline">
           <Button size={size} variant="ghost" icon={<RotateCwIcon />}>

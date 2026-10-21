@@ -44,26 +44,29 @@ const SidebarFrame = styled(View, {
   name: 'Sidebar',
   flexDirection: 'column',
   height: '100%',
-  backgroundColor: '$card',
+  backgroundColor: "card",
   borderRightWidth: 1,
-  borderColor: '$border',
+  borderColor: "border",
   flexShrink: 0,
-
   variants: {
     collapsed: {
-      true: { width: '$16' },
-      false: { width: '$64' },
+      true: {
+        width: "16"
+      },
+      false: {
+        width: "64"
+      },
     },
-  } as const,
+  } as const
 })
 
 const SidebarHeader = styled(View, {
   name: 'SidebarHeader',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: '$2',
-  padding: '$3',
-  minHeight: '$14',
+  gap: "2",
+  padding: "3",
+  minHeight: "14"
 })
 
 const SidebarContent = styled(View, {
@@ -71,51 +74,51 @@ const SidebarContent = styled(View, {
   flex: 1,
   minHeight: 0,
   overflowY: 'auto',
-  paddingHorizontal: '$2',
-  paddingVertical: '$2',
-  gap: '$4',
+  paddingHorizontal: "2",
+  paddingVertical: "2",
+  gap: "4"
 })
 
 const SidebarFooter = styled(View, {
   name: 'SidebarFooter',
-  padding: '$3',
+  padding: "3",
   borderTopWidth: 1,
-  borderColor: '$border',
-  gap: '$2',
+  borderColor: "border",
+  gap: "2"
 })
 
 const SidebarItemFrame = styled(View, {
   name: 'SidebarItem',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: '$3',
-  minHeight: '$9',
-  $touchable: { minHeight: '$11' },
-  paddingHorizontal: '$3',
-  borderRadius: '$md',
+  gap: "3",
+  minHeight: "9 touchable:11",
+  paddingHorizontal: "3",
+  borderRadius: "md",
   borderWidth: 0,
-  backgroundColor: 'transparent',
+  backgroundColor: "transparent hover:accent press:accentHover",
   cursor: 'pointer',
-  hoverStyle: { backgroundColor: '$accent' },
-  pressStyle: { backgroundColor: '$accentHover' },
-  focusVisibleStyle: {
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: -2,
-  },
-
+  outlineColor: "focus-visible:ring",
+  outlineStyle: "focus-visible:solid",
+  outlineWidth: "focus-visible:2px",
+  outlineOffset: "focus-visible:-2px",
   variants: {
     active: {
-      true: { backgroundColor: '$accent' },
+      true: {
+        backgroundColor: "accent"
+      },
     },
     collapsed: {
       true: { justifyContent: 'center', paddingHorizontal: 0 },
     },
     disabled: {
-      true: { opacity: 0.5, cursor: 'not-allowed', hoverStyle: { backgroundColor: 'transparent' } },
+      true: {
+        opacity: 0.5,
+        cursor: 'not-allowed',
+        backgroundColor: "hover:transparent"
+      },
     },
-  } as const,
+  } as const
 })
 
 export interface SidebarProps extends Omit<GetProps<typeof SidebarFrame>, 'collapsed'> {
@@ -175,16 +178,16 @@ function SidebarGroup({ label, children, ...props }: SidebarGroupProps) {
   const { collapsed } = useContext(SidebarContext)
   const labelId = useId()
   return (
-    <View gap="$1" {...props}>
+    <View gap="1" {...props}>
       {label ? (
         <Text
           id={labelId}
           size="xs"
+          paddingHorizontal="3"
+          paddingVertical="1"
+          {...(collapsed && visuallyHidden)}
           weight="medium"
           tone="muted"
-          paddingHorizontal="$3"
-          paddingVertical="$1"
-          {...(collapsed && visuallyHidden)}
         >
           {label}
         </Text>
@@ -195,7 +198,7 @@ function SidebarGroup({ label, children, ...props }: SidebarGroupProps) {
         {...(label && { 'aria-labelledby': labelId })}
         margin={0}
         padding={0}
-        gap="$0.5"
+        gap="0-5"
       >
         {children}
       </View>
@@ -226,7 +229,7 @@ const SidebarItem = forwardRef<TamaguiElement, SidebarItemProps>(function Sideba
   const { collapsed } = useContext(SidebarContext)
   const shell = useContext(AppShellContext)
   const inDrawer = useContext(AppShellSlotContext) === 'drawer'
-  const ripple = useRipple({ color: '$foreground', disabled })
+  const ripple = useRipple({ color: 'foreground', disabled })
   const text = isTextContent(children) ? [children].flat().join('') : undefined
   const badgeText = isTextContent(badge) ? [badge].flat().join('') : undefined
   // Native: one name with everything a screen reader would read on web.
@@ -261,7 +264,7 @@ const SidebarItem = forwardRef<TamaguiElement, SidebarItemProps>(function Sideba
         {ripple.element}
         {icon ? (
           <View aria-hidden>
-            <IconDefaults size={18} color={active ? '$foreground' : '$mutedForeground'}>
+            <IconDefaults size={18} color={active ? 'foreground' : 'mutedForeground'}>
               {icon}
             </IconDefaults>
           </View>
@@ -270,7 +273,7 @@ const SidebarItem = forwardRef<TamaguiElement, SidebarItemProps>(function Sideba
           flex={1}
           size="sm"
           numberOfLines={1}
-          color="$foreground"
+          color="foreground"
           {...(active && { weight: 'medium' as const })}
           {...(collapsed && visuallyHidden)}
         >

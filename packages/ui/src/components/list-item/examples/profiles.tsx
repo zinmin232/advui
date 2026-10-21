@@ -9,7 +9,7 @@ const people = [
 
 export default function ListItemProfiles() {
   return (
-    <List divided width="100%" maxWidth="$128">
+    <List divided width="100%" maxWidth="128">
       {people.map((person) => (
         <ListItem
           key={person.name}

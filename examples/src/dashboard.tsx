@@ -19,8 +19,8 @@ const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D']
 
 export function DashboardScreen() {
   return (
-    <VStack gap="$6" padding="$4" width="100%" $md={{ padding: '$8' }}>
-      <HStack justifyContent="space-between" flexWrap="wrap" gap="$3">
+    <VStack gap="6" padding="4 md:8" width="100%">
+      <HStack justifyContent="space-between" flexWrap="wrap" gap="3">
         <VStack>
           <Text size="3xl" weight="bold">
             Dashboard
@@ -36,34 +36,34 @@ export function DashboardScreen() {
           <Tabs.Trigger value="analytics">Analytics</Tabs.Trigger>
           <Tabs.Trigger value="reports">Reports</Tabs.Trigger>
         </Tabs.List>
-        <Tabs.Content value="overview" gap="$4">
-          <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="$4">
+        <Tabs.Content value="overview" gap="4">
+          <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="4">
             <Kpi
               label="Total revenue"
               value="$45,231.89"
               delta="+20.1% from last month"
-              icon={<CreditCardIcon size={16} color="$mutedForeground" />}
+              icon={<CreditCardIcon size={16} color="mutedForeground" />}
             />
             <Kpi
               label="Subscriptions"
               value="+2,350"
               delta="+180.1% from last month"
-              icon={<UsersIcon size={16} color="$mutedForeground" />}
+              icon={<UsersIcon size={16} color="mutedForeground" />}
             />
             <Kpi
               label="Sales"
               value="+12,234"
               delta="+19% from last month"
-              icon={<PackageIcon size={16} color="$mutedForeground" />}
+              icon={<PackageIcon size={16} color="mutedForeground" />}
             />
             <Kpi
               label="Active now"
               value="573"
               delta="+201 since last hour"
-              icon={<BarChartIcon size={16} color="$mutedForeground" />}
+              icon={<BarChartIcon size={16} color="mutedForeground" />}
             />
           </Grid>
-          <Grid columns={{ base: 1, lg: 2 }} gap="$4">
+          <Grid columns={{ base: 1, lg: 2 }} gap="4">
             <Card>
               <Card.Header>
                 <Card.Title>Overview</Card.Title>
@@ -71,9 +71,9 @@ export function DashboardScreen() {
               </Card.Header>
               <Card.Content>
                 <HStack
-                  height="$48"
+                  height="48"
                   alignItems="flex-end"
-                  gap="$2"
+                  gap="2"
                   role="img"
                   aria-label="Bar chart of monthly revenue, peaking in November"
                 >
@@ -82,16 +82,16 @@ export function DashboardScreen() {
                       key={index}
                       flex={1}
                       alignItems="center"
-                      gap="$1"
+                      gap="1"
                       height="100%"
                       justifyContent="flex-end"
                     >
                       <View
                         width="100%"
                         height={`${value}%`}
-                        backgroundColor="$primary"
-                        borderTopLeftRadius="$sm"
-                        borderTopRightRadius="$sm"
+                        backgroundColor="primary"
+                        borderTopLeftRadius="sm"
+                        borderTopRightRadius="sm"
                         opacity={index === 10 ? 1 : 0.75}
                       />
                       <Text size="xs" tone="muted" aria-hidden>
@@ -107,9 +107,9 @@ export function DashboardScreen() {
                 <Card.Title>Recent sales</Card.Title>
                 <Card.Description>You made 265 sales this month.</Card.Description>
               </Card.Header>
-              <Card.Content gap="$4">
+              <Card.Content gap="4">
                 {people.map((p) => (
-                  <HStack key={p.email} gap="$3">
+                  <HStack key={p.email} gap="3">
                     <Avatar size="sm" alt={p.name} src={avatarUrl(p.img)} />
                     <VStack flex={1} minWidth={0}>
                       <Text size="sm" weight="medium" truncate>
@@ -131,13 +131,13 @@ export function DashboardScreen() {
             <Card.Header>
               <SectionTitle title="Goals" description="Quarterly targets" />
             </Card.Header>
-            <Card.Content gap="$4">
+            <Card.Content gap="4">
               {[
                 { label: 'Revenue', value: 72, tone: 'primary' as const },
                 { label: 'New customers', value: 91, tone: 'success' as const },
                 { label: 'Churn reduction', value: 38, tone: 'warning' as const },
               ].map((goal) => (
-                <VStack key={goal.label} gap="$2">
+                <VStack key={goal.label} gap="2">
                   <HStack justifyContent="space-between">
                     <Text size="sm">{goal.label}</Text>
                     <Badge size="sm" variant="secondary">

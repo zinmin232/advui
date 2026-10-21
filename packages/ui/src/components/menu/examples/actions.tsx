@@ -3,7 +3,7 @@ import { CopyIcon, DownloadIcon, EditIcon, LockIcon, TrashIcon } from '@advui/ic
 
 export default function MenuActions() {
   return (
-    <Card padding="$1.5" maxWidth="$64" width="100%">
+    <Card padding="1-5" maxWidth="64" width="100%">
       <Menu aria-label="Document actions">
         <Menu.Item icon={<EditIcon />} onSelect={() => toast('Renamed')}>
           Rename

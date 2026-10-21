@@ -34,7 +34,7 @@ export interface LinePlotProps<T extends object = Record<string, unknown>> {
   startAtZero?: boolean
   /**
    * Color of the surface the chart sits on, for the ring around markers.
-   * Default: `$background`; use `$card` inside a Card.
+   * Default: `background`; use `card` inside a Card.
    */
   surface?: string
   labels?: Partial<ChartLabels>
@@ -52,7 +52,7 @@ export function LinePlot<T extends object>({
   width,
   valueFormatter = formatFull,
   startAtZero,
-  surface = '$background',
+  surface = 'background',
   labels,
   area = false,
   stacked = false,

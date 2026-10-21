@@ -5,8 +5,8 @@
  * `@advui/theme/material`, so apps that do not use it never ship the library.
  *
  * Material roles are mapped onto Adv UI's roles, so every component works
- * unchanged: `primaryContainer` → `$primarySoft`, `secondaryContainer` →
- * `$secondary` (Material's tonal button), `outline` → `$input`, and so on.
+ * unchanged: `primaryContainer` → `primarySoft`, `secondaryContainer` →
+ * `secondary` (Material's tonal button), `outline` → `input`, and so on.
  */
 import {
   type DynamicScheme,

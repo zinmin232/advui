@@ -102,30 +102,29 @@ function PopoverRoot({
               transition={reducedMotion ? undefined : 'medium'}
             >
               <Sheet.Overlay
-                backgroundColor="$overlay"
-                enterStyle={{ opacity: 0 }}
-                exitStyle={{ opacity: 0 }}
+                backgroundColor="overlay"
+                opacity="enter:0 exit:0"
                 transition={reducedMotion ? undefined : 'quick'}
               />
-              <Sheet.Handle backgroundColor="$borderStrong" />
-              <Sheet.Frame
-                backgroundColor="$popover"
-                borderTopLeftRadius="$dialog"
-                borderTopRightRadius="$dialog"
-                padding="$5"
-                paddingBottom="$8"
+              <Sheet.Handle backgroundColor="borderStrong" />
+              <Sheet.Container
+                paddingTop="5"
+                paddingRight="5"
+                paddingLeft="5"
+                paddingBottom="8"
                 maxHeight={sheetMaxHeight}
               >
+                <Sheet.Background backgroundColor="popover" borderTopLeftRadius="dialog" borderTopRightRadius="dialog" />
                 {/* Scrolls when the content is taller than the sheet may be (a
                     calendar on a phone in landscape). Color Picker's drag area
                     keeps its gesture from it. */}
                 <Sheet.ScrollView>
                   {/* Not on Sheet.Frame: Tamagui copies its props onto a decorative cover view. */}
-                  <View role="dialog" aria-labelledby={titleId} gap="$3">
+                  <View role="dialog" aria-labelledby={titleId} gap="3">
                     <Adapt.Contents />
                   </View>
                 </Sheet.ScrollView>
-              </Sheet.Frame>
+              </Sheet.Container>
             </Sheet>
           </Adapt>
         </TamaguiPopover>
@@ -158,44 +157,39 @@ const PopoverContent = forwardRef<TamaguiElement, PopoverContentProps>(function 
     <TamaguiPopover.Content
       ref={ref as never}
       unstyled
-      backgroundColor="$popover"
+      backgroundColor="popover"
       borderWidth={1}
-      borderColor="$border"
-      borderRadius="$lg"
-      padding="$4"
-      gap="$3"
-      width="$72"
+      borderColor="border"
+      borderRadius="lg"
+      padding="4"
+      gap="3"
+      width="72"
       maxWidth="100%"
       {...shadows.md}
-      enterStyle={{ opacity: 0, scale: 0.96, y: -4 }}
-      exitStyle={{ opacity: 0, scale: 0.96, y: -4 }}
-      opacity={1}
-      scale={1}
-      y={0}
+      opacity="1 enter:0 exit:0"
+      scale="1 enter:0.96 exit:0.96"
+      y="0 enter:-4px exit:-4px"
       transition={reducedMotion ? null : 'quick'}
+      {...props}
       animateOnly={['transform', 'opacity']}
       onPointerDownOutside={composeEventHandlers(
-        onPointerDownOutside,
-        (event) => {
-          const { button, ctrlKey } = event.detail.originalEvent
-          rightClick.current = button === 2 || (button === 0 && ctrlKey)
-        },
-        { checkDefaultPrevented: false },
-      )}
-      // Tamagui's trigger learns its element from pointer and focus events,
-      // but `asChild` drops its onFocus: after an open from the keyboard alone
-      // it had no element, and focus fell to the body on close.
+            onPointerDownOutside,
+            (event) => {
+              const { button, ctrlKey } = event.detail.originalEvent
+              rightClick.current = button === 2 || (button === 0 && ctrlKey)
+            },
+            { checkDefaultPrevented: false },
+          )}
       onCloseAutoFocus={
-        onCloseAutoFocus === false
-          ? false
-          : composeEventHandlers(onCloseAutoFocus, (event) => {
-              const trigger = triggerRef?.current
-              if (!trigger) return
-              event.preventDefault()
-              if (!rightClick.current) trigger.focus()
-            })
-      }
-      {...props}
+            onCloseAutoFocus === false
+              ? false
+              : composeEventHandlers(onCloseAutoFocus, (event) => {
+                  const trigger = triggerRef?.current
+                  if (!trigger) return
+                  event.preventDefault()
+                  if (!rightClick.current) trigger.focus()
+                })
+          }
     >
       {children}
     </TamaguiPopover.Content>

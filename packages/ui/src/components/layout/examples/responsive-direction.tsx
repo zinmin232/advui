@@ -2,9 +2,9 @@ import { Box, Stack, Text } from '@advui/core'
 
 export default function StackResponsiveDirection() {
   return (
-    <Stack direction={{ base: 'column', md: 'row' }} align="stretch" gap="$3" width="100%">
+    <Stack direction={{ base: 'column', md: 'row' }} gap="3" width="100%" align="stretch">
       {['Plan', 'Build', 'Ship'].map((step, index) => (
-        <Box key={step} $md={{ flex: 1 }} padding="$4" backgroundColor="$muted" borderRadius="$lg">
+        <Box key={step} flex="md:1" padding="4" backgroundColor="muted" borderRadius="lg">
           <Text size="sm" tone="muted">
             Step {index + 1}
           </Text>

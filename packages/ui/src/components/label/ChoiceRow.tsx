@@ -69,9 +69,9 @@ export function ChoiceRow({
   const hideLabel = !isWeb && textOf(label) !== undefined
   const hideDescription = !isWeb && textOf(description) !== undefined
   return (
-    <XStack gap="$2" alignItems="flex-start">
+    <XStack gap="2" alignItems="flex-start">
       {children}
-      <YStack flexShrink={1} gap="$0.5" opacity={disabled ? 0.6 : 1}>
+      <YStack flexShrink={1} gap="0-5" opacity={disabled ? 0.6 : 1}>
         {hasContent(label) ? (
           <Label
             // Native: a disabled control is not registered to be focused, and
@@ -100,5 +100,5 @@ export function ChoiceRow({
 /** Style for the control in a ChoiceRow: it keeps its size and lines up with the label's first line. */
 export const choiceControlStyle = (
   size: 'sm' | 'md',
-): { flexShrink: number; marginTop?: '$0.5' } =>
-  size === 'sm' ? { flexShrink: 0, marginTop: '$0.5' } : { flexShrink: 0 }
+): { flexShrink: number; marginTop?: '0.5' } =>
+  size === 'sm' ? { flexShrink: 0, marginTop: '0.5' } : { flexShrink: 0 }

@@ -105,26 +105,22 @@ const HoverCardContent = forwardRef<TamaguiElement, HoverCardContentProps>(
     return (
       <TamaguiTooltip.Content
         ref={ref as never}
-        // Unstyled also keeps pointer events on, so the pointer can move into
-        // the card to select text or follow a link inside it.
         unstyled
-        backgroundColor="$popover"
+        backgroundColor="popover"
         borderWidth={1}
-        borderColor="$border"
-        borderRadius="$lg"
-        padding="$4"
-        gap="$3"
-        width="$72"
+        borderColor="border"
+        borderRadius="lg"
+        padding="4"
+        gap="3"
+        width="72"
         maxWidth="100%"
         {...shadows.md}
-        enterStyle={{ opacity: 0, scale: 0.96, y: -4 }}
-        exitStyle={{ opacity: 0, scale: 0.96, y: -4 }}
-        opacity={1}
-        scale={1}
-        y={0}
+        opacity="1 enter:0 exit:0"
+        scale="1 enter:0.96 exit:0.96"
+        y="0 enter:-4px exit:-4px"
         transition={reducedMotion ? null : 'quick'}
-        animateOnly={['transform', 'opacity']}
         {...props}
+        animateOnly={['transform', 'opacity']}
       >
         {children}
       </TamaguiTooltip.Content>

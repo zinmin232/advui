@@ -9,7 +9,7 @@ export default function PaginationControlled() {
   const first = (page - 1) * perPage + 1
   const last = Math.min(page * perPage, total)
   return (
-    <VStack gap="$3" alignItems="center">
+    <VStack gap="3" alignItems="center">
       <Pagination count={Math.ceil(total / perPage)} page={page} onPageChange={setPage} size="sm" />
       <Text size="sm" tone="muted">
         Showing {first}–{last} of {total} projects

@@ -11,11 +11,11 @@ const photos = [
 
 export default function CarouselImages() {
   return (
-    <VStack width="100%" maxWidth="$128">
+    <VStack width="100%" maxWidth="128">
       <Carousel aria-label="Trip photos" loop>
         {photos.map(([id, alt, caption]) => (
-          <Carousel.Item key={id} gap="$2">
-            <Image src={photo(id)} alt={alt} ratio={16 / 9} width="100%" borderRadius="$lg" />
+          <Carousel.Item key={id} gap="2">
+            <Image src={photo(id)} alt={alt} ratio={16 / 9} width="100%" borderRadius="lg" />
             <Text size="sm" tone="muted">
               {caption}
             </Text>

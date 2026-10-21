@@ -2,7 +2,7 @@ import { Button, HStack } from '@advui/core'
 
 export default function ButtonVariants() {
   return (
-    <HStack gap="$2" flexWrap="wrap">
+    <HStack gap="2" flexWrap="wrap">
       <Button>Default</Button>
       <Button variant="secondary">Secondary</Button>
       <Button variant="outline">Outline</Button>

@@ -32,11 +32,11 @@ export const Heading = forwardRef<TamaguiTextElement, HeadingProps>(function Hea
       role="heading"
       aria-level={level}
       render={`h${level}`}
-      fontFamily="$heading"
+      fontFamily="heading"
       size={size ?? defaultSizes[level]}
-      weight={weight}
       margin={0}
       {...props}
+      weight={weight}
     />
   )
 })

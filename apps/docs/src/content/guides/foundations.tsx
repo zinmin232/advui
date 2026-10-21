@@ -185,7 +185,7 @@ export async function TypographyGuide() {
       <H2 id="scale">Scale</H2>
       <P>
         Ten sizes shared by the <C>body</C>, <C>heading</C> and <C>mono</C> fonts. Use{' '}
-        <C>{'<Text size="lg">'}</C> or font tokens like <C>fontSize="$4"</C>.
+        <C>{'<Text size="lg">'}</C> or font tokens like <C>fontSize="4"</C>.
       </P>
       <TypeScale />
       <H2 id="fonts">Fonts</H2>
@@ -218,7 +218,7 @@ export async function SpacingGuide() {
       <H2 id="space">Space</H2>
       <P>
         A 4px scale: <C>$1</C> = 4px, <C>$4</C> = 16px. Negative tokens (<C>$-2</C>) exist for
-        margins. Prefer <C>padding="$4"</C> over raw numbers.
+        margins. Prefer <C>padding="4"</C> over raw numbers.
       </P>
       <SpaceScale />
       <H2 id="size">Size</H2>
@@ -265,7 +265,7 @@ export async function IconsGuide() {
       <Code
         code={`import { Icon, SearchIcon } from '@advui/icons'
 
-<SearchIcon size={20} color="$mutedForeground" />   // tree-shakable named import
+<SearchIcon size={20} color="mutedForeground" />   // tree-shakable named import
 <Icon name="search" />                              // by name (resolved through IconProvider)`}
       />
       <UL>

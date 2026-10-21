@@ -2,7 +2,7 @@ import { Accordion } from '@advui/core'
 
 export default function AccordionBasic() {
   return (
-    <Accordion type="single" collapsible defaultValue="accessible" maxWidth="$128">
+    <Accordion type="single" collapsible defaultValue="accessible" maxWidth="128">
       <Accordion.Item value="accessible">
         <Accordion.Trigger>Is it accessible?</Accordion.Trigger>
         <Accordion.Content>

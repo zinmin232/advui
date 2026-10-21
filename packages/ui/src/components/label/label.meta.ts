@@ -17,7 +17,7 @@ export default defineMeta({
   keywords: ['form', 'caption', 'field name'],
   usage: `import { Checkbox, HStack, Label } from '@advui/core'
 
-<HStack gap="$2">
+<HStack gap="2">
   <Checkbox id="newsletter" />
   <Label htmlFor="newsletter">Subscribe to the newsletter</Label>
 </HStack>`,

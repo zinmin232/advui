@@ -31,12 +31,12 @@ const typeIcon: Partial<Record<ToastType, ReactNode>> = {
 }
 
 const typeColor: Record<ToastType, `$${string}`> = {
-  default: '$foreground',
-  success: '$success',
-  error: '$error',
-  warning: '$warningSoftForeground',
-  info: '$info',
-  loading: '$mutedForeground',
+  default: 'foreground',
+  success: 'success',
+  error: 'error',
+  warning: 'warningSoftForeground',
+  info: 'info',
+  loading: 'mutedForeground',
 }
 
 export type ToasterProps = Pick<
@@ -49,22 +49,22 @@ function ToastContent({ item, onClose }: { item: ToastT; onClose: () => void }) 
   const title = typeof item.title === 'function' ? item.title() : item.title
   const description = typeof item.description === 'function' ? item.description() : item.description
   const icon = item.icon ?? typeIcon[type]
-  const actionRipple = useRipple({ color: '$primaryForeground', disabled: !item.action })
+  const actionRipple = useRipple({ color: 'primaryForeground', disabled: !item.action })
   const closeRipple = useRipple({
-    color: '$mutedForeground',
+    color: 'mutedForeground',
     disabled: item.dismissible === false,
   })
 
   return (
-    <View flexDirection="row" alignItems="flex-start" gap="$3">
+    <View flexDirection="row" alignItems="flex-start" gap="3">
       {icon ? (
-        <View paddingTop="$0.5">
+        <View paddingTop="0-5">
           <IconDefaults size={18} color={typeColor[type]}>
             {icon}
           </IconDefaults>
         </View>
       ) : null}
-      <View flex={1} gap="$1">
+      <View flex={1} gap="1">
         {title ? (
           <Text size="sm" weight="semibold">
             {title}
@@ -76,25 +76,22 @@ function ToastContent({ item, onClose }: { item: ToastT; onClose: () => void }) 
           </Text>
         ) : null}
         {item.action ? (
-          <View flexDirection="row" marginTop="$2">
+          <View flexDirection="row" marginTop="2">
             <Toast.Action
-              backgroundColor="$primary"
-              borderRadius="$md"
-              paddingHorizontal="$3"
-              height="$8"
+              backgroundColor={`primary hover:primaryHover press:${actionRipple.active ? "primary" : "primaryPress"}`}
+              borderRadius="md"
+              paddingHorizontal="3"
+              height="8"
               justifyContent="center"
               cursor="pointer"
-              hoverStyle={{ backgroundColor: '$primaryHover' }}
-              // Tamagui's action frame presses to a neutral gray; keep it primary.
-              pressStyle={{ backgroundColor: actionRipple.active ? '$primary' : '$primaryPress' }}
-              onPress={(event) => {
-                item.action?.onClick?.(event as never)
-                onClose()
-              }}
               {...actionRipple.props}
+              onPress={(event) => {
+                            item.action?.onClick?.(event as never)
+                            onClose()
+                          }}
             >
               {actionRipple.element}
-              <Text size="sm" weight="medium" color="$primaryForeground">
+              <Text size="sm" color="primaryForeground" weight="medium">
                 {item.action.label}
               </Text>
             </Toast.Action>
@@ -108,23 +105,25 @@ function ToastContent({ item, onClose }: { item: ToastT; onClose: () => void }) 
           render="button"
           role="button"
           aria-label="Dismiss notification"
-          width="$6"
-          height="$6"
+          width="6"
+          height="6"
           alignItems="center"
           justifyContent="center"
-          borderRadius="$sm"
+          borderRadius="sm"
           cursor="pointer"
-          hoverStyle={{ backgroundColor: '$accent' }}
-          pressStyle={closeRipple.active ? undefined : { backgroundColor: '$accentHover' }}
-          focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
+          backgroundColor="hover:accent"
+          pressStyle={closeRipple.active ? undefined : { backgroundColor: 'accentHover' }}
+          outlineColor="focus-visible:ring"
+          outlineStyle="focus-visible:solid"
+          outlineWidth="focus-visible:2px"
           {...(isWeb
-            ? { type: 'button', padding: 0, borderWidth: 0, backgroundColor: 'transparent' }
-            : { accessible: true, hitSlop: 10 })}
-          onPress={onClose}
+                    ? { type: 'button', padding: 0, borderWidth: 0, backgroundColor: 'transparent' }
+                    : { accessible: true, hitSlop: 10 })}
           {...closeRipple.props}
+          onPress={onClose}
         >
           {closeRipple.element}
-          <XIcon size={14} color="$mutedForeground" />
+          <XIcon size={14} color="mutedForeground" />
         </View>
       )}
     </View>
@@ -156,13 +155,13 @@ export function Toaster({ position = 'bottom-right', duration = 4000, ...props }
             <Toast.Item
               toast={item}
               index={index}
-              backgroundColor="$popover"
-              borderColor="$border"
+              backgroundColor="popover"
+              borderColor="border"
               borderWidth={1}
-              borderRadius="$lg"
-              padding="$4"
+              borderRadius="lg"
+              padding="4"
               width="100%"
-              maxWidth="$96"
+              maxWidth="96"
               {...shadows.md}
             >
               <ToastContent item={item} onClose={handleClose} />

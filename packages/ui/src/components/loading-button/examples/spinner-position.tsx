@@ -3,7 +3,7 @@ import { ArrowRightIcon, DownloadIcon } from '@advui/icons'
 
 export default function LoadingButtonSpinnerPosition() {
   return (
-    <HStack gap="$2" flexWrap="wrap">
+    <HStack gap="2" flexWrap="wrap">
       {/* The spinner takes the icon's place on its side. */}
       <LoadingButton variant="outline" loading icon={<DownloadIcon />}>
         Export

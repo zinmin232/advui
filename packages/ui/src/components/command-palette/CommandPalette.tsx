@@ -61,37 +61,37 @@ const SearchInput = styled(TamaguiInput, {
   name: 'CommandPaletteInput',
   unstyled: true,
   flex: 1,
-  height: '$12',
+  height: "12",
   padding: 0,
   borderWidth: 0,
   backgroundColor: 'transparent',
-  fontFamily: '$body',
-  fontSize: '$3',
-  color: '$foreground',
-  placeholderTextColor: '$placeholderColor',
+  fontFamily: "body",
+  fontSize: "3",
+  color: "foreground",
+  placeholderTextColor: "placeholder-color",
   // The dialog is the focus context; the row has no ring of its own.
-  outlineStyle: 'none',
+  outlineStyle: 'none'
 })
 
 const OptionRow = styled(View, {
   name: 'CommandPaletteOption',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: '$3',
-  minHeight: '$10',
-  $touchable: { minHeight: '$11' },
-  paddingHorizontal: '$3',
-  borderRadius: '$md',
+  gap: "3",
+  minHeight: "10 touchable:11",
+  paddingHorizontal: "3",
+  borderRadius: "md",
   cursor: 'pointer',
-
   variants: {
     active: {
-      true: { backgroundColor: '$accent' },
+      true: {
+        backgroundColor: "accent"
+      },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed' },
     },
-  } as const,
+  } as const
 })
 
 export interface CommandPaletteProps {
@@ -224,13 +224,13 @@ export function CommandPalette({
         <View
           flexDirection="row"
           alignItems="center"
-          gap="$2"
-          paddingHorizontal="$4"
+          gap="2"
+          paddingHorizontal="4"
           borderBottomWidth={1}
-          borderColor="$border"
+          borderColor="border"
         >
           <View aria-hidden>
-            <SearchIcon size={18} color="$mutedForeground" />
+            <SearchIcon size={18} color="mutedForeground" />
           </View>
           <SearchInput
             autoFocus
@@ -256,28 +256,25 @@ export function CommandPalette({
           />
         </View>
         <ScrollView
-          maxHeight="$80"
-          keyboardShouldPersistTaps="handled"
-          // The arrow keys in the text box scroll it too, but a long list must
-          // also be reachable as a scroll area on its own (axe scrollable-region-focusable).
+          maxHeight="80"
           {...(isWeb && { tabIndex: 0, role: 'region' as never, 'aria-label': labels.title })}
+          keyboardShouldPersistTaps="handled"
         >
           <View
             id={listId}
             {...(isWeb && { role: 'listbox' as never, 'aria-label': labels.title })}
-            padding="$2"
-            gap="$1"
-            // Keep focus in the text box when an option is clicked.
+            padding="2"
+            gap="1"
             {...(isWeb && {
-              onMouseDown: (event: { preventDefault: () => void }) => event.preventDefault(),
-            })}
+                        onMouseDown: (event: { preventDefault: () => void }) => event.preventDefault(),
+                      })}
           >
             {ordered.length === 0 ? (
               <Text
                 size="sm"
-                tone="muted"
                 textAlign="center"
-                paddingVertical="$6"
+                paddingVertical="6"
+                tone="muted"
                 aria-live="polite"
               >
                 {labels.empty}
@@ -294,10 +291,10 @@ export function CommandPalette({
                       <Text
                         id={headingId}
                         size="xs"
+                        paddingHorizontal="3"
+                        paddingVertical="1-5"
                         weight="medium"
                         tone="muted"
-                        paddingHorizontal="$3"
-                        paddingVertical="$1.5"
                       >
                         {group.name}
                       </Text>
@@ -327,12 +324,12 @@ export function CommandPalette({
                         >
                           {command.icon ? (
                             <View aria-hidden>
-                              <IconDefaults size={16} color="$mutedForeground">
+                              <IconDefaults size={16} color="mutedForeground">
                                 {command.icon}
                               </IconDefaults>
                             </View>
                           ) : null}
-                          <Text size="sm" flex={1} color="$popoverForeground">
+                          <Text size="sm" flex={1} color="popoverForeground">
                             {command.label}
                           </Text>
                           {command.shortcut && isWeb ? (

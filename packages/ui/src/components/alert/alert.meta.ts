@@ -100,7 +100,7 @@ export default defineMeta({
           token: 'color',
           default: 'from `variant`',
           description:
-            'Color of the title, description and icons. Pair it with a background: `$primaryForeground` on `$primary`.',
+            'Color of the title, description and icons. Pair it with a background: `primaryForeground` on `primary`.',
         },
         {
           name: 'backgroundColor',
@@ -129,7 +129,7 @@ export default defineMeta({
           name: 'borderRadius',
           type: 'RadiusTokens | number',
           token: 'radius',
-          default: "'$lg'",
+          default: "'lg'",
           description: 'Corner radius.',
         },
         {

@@ -13,7 +13,7 @@ export default defineMeta({
   keywords: ['toggle', 'on off', 'setting', 'preference'],
   usage: `import { HStack, Label, Switch } from '@advui/core'
 
-<HStack gap="$3">
+<HStack gap="3">
   <Switch id="notifications" checked={enabled} onCheckedChange={setEnabled} />
   <Label htmlFor="notifications">Notifications</Label>
 </HStack>`,

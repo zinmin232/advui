@@ -15,10 +15,10 @@ export default function TabsUnderline() {
           Advanced
         </Tabs.Trigger>
       </Tabs.List>
-      <Tabs.Content value="profile" paddingVertical="$3">
+      <Tabs.Content value="profile" paddingVertical="3">
         <Text>Public profile settings.</Text>
       </Tabs.Content>
-      <Tabs.Content value="notifications" paddingVertical="$3">
+      <Tabs.Content value="notifications" paddingVertical="3">
         <Text>Choose what you get notified about.</Text>
       </Tabs.Content>
     </Tabs>

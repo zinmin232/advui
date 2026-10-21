@@ -17,7 +17,7 @@ export default function ToolbarRegions() {
         <Input
           size="sm"
           flex={1}
-          maxWidth="$96"
+          maxWidth="96"
           placeholder="Search users…"
           aria-label="Search users"
         />

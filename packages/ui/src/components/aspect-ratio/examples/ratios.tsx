@@ -8,17 +8,17 @@ const ratios = [
 
 export default function AspectRatioRatios() {
   return (
-    <HStack gap="$3" flexWrap="wrap" alignItems="flex-start">
+    <HStack gap="3" flexWrap="wrap" alignItems="flex-start">
       {ratios.map((item) => (
         // Same width, so the height alone shows the ratio.
         <AspectRatio
           key={item.label}
           ratio={item.ratio}
-          width="$32"
-          borderRadius="$md"
+          width="32"
+          borderRadius="md"
           borderWidth={1}
-          borderColor="$border"
-          backgroundColor="$muted"
+          borderColor="border"
+          backgroundColor="muted"
         >
           <Center flex={1}>
             <Text size="sm" weight="medium">

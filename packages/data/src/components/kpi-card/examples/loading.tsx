@@ -5,7 +5,7 @@ export default function KpiCardLoading() {
   return (
     <KpiCard
       width="100%"
-      maxWidth="$80"
+      maxWidth="80"
       loading
       label="New customers"
       value="1,204"

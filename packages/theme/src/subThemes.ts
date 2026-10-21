@@ -17,7 +17,7 @@ export type ModeThemes = {
  * including during SSR.
  */
 export type SubThemes = {
-  /** Content on a `$primary` surface, such as a call-to-action band. */
+  /** Content on a `primary` surface, such as a call-to-action band. */
   light_primary: ThemeValues
   dark_primary: ThemeValues
   /** Content on the other mode's surface: dark in light mode, light in dark mode. */

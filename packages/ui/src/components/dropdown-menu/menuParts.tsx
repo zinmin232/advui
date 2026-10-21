@@ -23,17 +23,17 @@ const itemFrame = {
   unstyled: true,
   flexDirection: 'row',
   alignItems: 'center',
-  gap: '$2',
-  minHeight: '$8',
-  paddingHorizontal: '$2',
-  borderRadius: '$sm',
+  gap: '2',
+  minHeight: '8',
+  paddingHorizontal: '2',
+  borderRadius: 'sm',
   cursor: 'pointer',
   // Pointer movement focuses items, so one style covers mouse and keyboard.
-  focusStyle: { backgroundColor: '$accent' },
-  pressStyle: { backgroundColor: '$accentHover' },
+  focusStyle: { backgroundColor: 'accent' },
+  pressStyle: { backgroundColor: 'accentHover' },
   focusVisibleStyle: { outlineWidth: 0 },
   // Finger-sized rows on touch screens.
-  $touchable: { minHeight: '$11' },
+  $touchable: { minHeight: '11' },
 } as const
 
 const disabledFrame = { opacity: 0.5, cursor: 'not-allowed' } as const
@@ -59,7 +59,7 @@ export type MenuContentOptions = {
 export function createMenuContent(Primitive: typeof Menu) {
   return function Content({
     children,
-    minWidth = '$48',
+    minWidth = '48',
     ...options
   }: DropdownMenuContentProps & MenuContentOptions) {
     const reducedMotion = useReducedMotion()
@@ -68,11 +68,11 @@ export function createMenuContent(Primitive: typeof Menu) {
         <Primitive.Content
           {...(options as object)}
           unstyled
-          backgroundColor="$popover"
+          backgroundColor="popover"
           borderWidth={1}
-          borderColor="$border"
-          borderRadius="$lg"
-          padding="$1"
+          borderColor="border"
+          borderRadius="lg"
+          padding="1"
           minWidth={minWidth}
           {...shadows.md}
           enterStyle={{ opacity: 0, scale: 0.97, y: -4 }}
@@ -100,21 +100,21 @@ export function createMenuParts(Primitive: typeof Menu) {
   }: Pick<DropdownMenuItemProps, 'children' | 'icon' | 'shortcut' | 'destructive'> & {
     leading?: ReactNode
   }) {
-    const color = destructive ? '$errorSoftForeground' : '$popoverForeground'
+    const color = destructive ? 'errorSoftForeground' : 'popoverForeground'
     return (
       <>
         {leading}
         {icon ? (
-          <IconDefaults size={16} color={destructive ? color : '$mutedForeground'}>
+          <IconDefaults size={16} color={destructive ? color : 'mutedForeground'}>
             {icon}
           </IconDefaults>
         ) : null}
         <Primitive.ItemTitle
           unstyled
           flex={1}
-          fontFamily="$body"
-          fontSize="$2"
-          lineHeight="$2"
+          fontFamily="body"
+          fontSize="2"
+          lineHeight="2"
           color={color}
         >
           {children}
@@ -122,10 +122,10 @@ export function createMenuParts(Primitive: typeof Menu) {
         {shortcut ? (
           <Text
             size="xs"
-            tone="muted"
             letterSpacing={0.5}
+            display="touchable:none"
+            tone="muted"
             aria-hidden
-            $touchable={{ display: 'none' }}
           >
             {shortcut}
           </Text>
@@ -163,7 +163,7 @@ export function createMenuParts(Primitive: typeof Menu) {
   /** Fixed-width slot so checked and unchecked items line up. */
   function IndicatorSlot({ children }: { children: ReactNode }) {
     return (
-      <View width="$4" alignItems="center" justifyContent="center">
+      <View width="4" alignItems="center" justifyContent="center">
         <Primitive.ItemIndicator unstyled>{children}</Primitive.ItemIndicator>
       </View>
     )
@@ -192,7 +192,7 @@ export function createMenuParts(Primitive: typeof Menu) {
           shortcut={shortcut}
           leading={
             <IndicatorSlot>
-              <CheckIcon size={14} color="$popoverForeground" />
+              <CheckIcon size={14} color="popoverForeground" />
             </IndicatorSlot>
           }
         >
@@ -232,10 +232,10 @@ export function createMenuParts(Primitive: typeof Menu) {
           leading={
             <IndicatorSlot>
               <View
-                width="$2"
-                height="$2"
-                borderRadius="$full"
-                backgroundColor="$popoverForeground"
+                width="2"
+                height="2"
+                borderRadius="full"
+                backgroundColor="popoverForeground"
               />
             </IndicatorSlot>
           }
@@ -250,13 +250,13 @@ export function createMenuParts(Primitive: typeof Menu) {
     return (
       <Primitive.Label
         unstyled
-        paddingHorizontal="$2"
-        paddingVertical="$1.5"
-        fontFamily="$body"
-        fontSize="$1"
-        lineHeight="$1"
+        paddingHorizontal="2"
+        paddingVertical="1.5"
+        fontFamily="body"
+        fontSize="1"
+        lineHeight="1"
         fontWeight="600"
-        color="$mutedForeground"
+        color="mutedForeground"
       >
         {children}
       </Primitive.Label>
@@ -268,9 +268,9 @@ export function createMenuParts(Primitive: typeof Menu) {
       <Primitive.Separator
         unstyled
         height={1}
-        backgroundColor="$border"
-        marginVertical="$1"
-        marginHorizontal="$-1"
+        backgroundColor="border"
+        marginVertical="1"
+        marginHorizontal="-1"
       />
     )
   }

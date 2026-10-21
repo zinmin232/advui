@@ -14,7 +14,7 @@ function Inline({ nodes, size }: { nodes: InlineNode[]; size: TextSize }): React
         return <Fragment key={i}>{node.text}</Fragment>
       case 'code':
         return (
-          <Text key={i} mono size={size} backgroundColor="$muted" borderRadius="$xs">
+          <Text key={i} mono size={size} backgroundColor="muted" borderRadius="xs">
             {` ${node.text} `}
           </Text>
         )
@@ -79,16 +79,16 @@ function Blocks({ blocks, headingOffset }: { blocks: BlockNode[]; headingOffset:
         )
       case 'quote':
         return (
-          <View key={i} borderLeftWidth={3} borderColor="$border" paddingLeft="$3" gap="$2">
+          <View key={i} borderLeftWidth={3} borderColor="border" paddingLeft="3" gap="2">
             <Blocks blocks={block.children} headingOffset={headingOffset} />
           </View>
         )
       case 'list':
         return (
-          <View key={i} gap="$1" {...(isWeb && { role: 'list' })}>
+          <View key={i} gap="1" {...(isWeb && { role: 'list' })}>
             {block.items.map((item, j) => (
-              <XStack key={j} gap="$2" {...(isWeb && { role: 'listitem' })}>
-                <Text aria-hidden size="sm" tone="muted" minWidth="$4" textAlign="right">
+              <XStack key={j} gap="2" {...(isWeb && { role: 'listitem' })}>
+                <Text aria-hidden size="sm" minWidth="4" textAlign="right" tone="muted">
                   {block.ordered ? `${block.start + j}.` : '•'}
                 </Text>
                 <Text size="sm" flex={1}>
@@ -112,7 +112,7 @@ export interface RichTextContentProps extends Omit<GetProps<typeof View>, 'child
 /** Shows Markdown written with Rich Text Editor, with the same styles on every platform. */
 export function RichTextContent({ children, headingOffset = 1, ...props }: RichTextContentProps) {
   return (
-    <View gap="$3" {...props}>
+    <View gap="3" {...props}>
       <Blocks blocks={parseMarkdown(children)} headingOffset={headingOffset} />
     </View>
   )

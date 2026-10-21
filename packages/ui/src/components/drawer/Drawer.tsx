@@ -38,17 +38,16 @@ const Overlay = styled(TamaguiDialog.Overlay, { name: 'DrawerOverlay', ...overla
 const ContentFrame = styled(TamaguiDialog.Content, {
   name: 'DrawerContent',
   position: 'absolute',
-  backgroundColor: '$popover',
-  borderColor: '$border',
+  backgroundColor: "popover",
+  borderColor: "border",
   borderWidth: 0,
   borderRadius: 0,
-  padding: '$6',
-  gap: '$4',
+  padding: "6",
+  gap: "4",
   ...shadows.lg,
   opacity: 1,
   x: 0,
   y: 0,
-
   variants: {
     side: {
       left: { top: 0, bottom: 0, left: 0, borderRightWidth: 1, maxWidth: '85%' },
@@ -61,13 +60,17 @@ const ContentFrame = styled(TamaguiDialog.Content, {
       md: {},
       lg: {},
     },
-  } as const,
+  } as const
 })
 
 // Panel width for left and right drawers; top and bottom ones fit their content.
-const widths = { sm: '$72', md: '$96', lg: '$128' } as const
+const widths = { sm: '72', md: '96', lg: '128' } as const
 
-const Header = styled(View, { name: 'DrawerHeader', ...headerStyle, paddingRight: '$8' })
+const Header = styled(View, {
+  name: 'DrawerHeader',
+  ...headerStyle,
+  paddingRight: "8"
+})
 
 const Footer = styled(View, { name: 'DrawerFooter', ...footerStyle })
 
@@ -84,8 +87,8 @@ const Body = styled(ScrollView, {
   flexGrow: 1,
   flexShrink: 1,
   // Room for focus rings of full-width controls inside.
-  marginHorizontal: '$-1',
-  contentContainerStyle: { gap: '$3', paddingHorizontal: '$1' },
+marginHorizontal: "-1",
+  contentContainerStyle: { gap: '3', paddingHorizontal: '1' }
 })
 
 export interface DrawerProps extends Omit<TamaguiDialogProps, 'modal'> {
@@ -136,7 +139,7 @@ const Content = forwardRef<TamaguiElement, DrawerContentProps>(function DrawerCo
   // Keep the edge that touches the screen clear of the notch, status bar and
   // home indicator (native; insets come from UniversalProvider).
   const insets = useConfiguration().insets
-  const pad = getTokenValue('$6', 'space') as number
+  const pad = getTokenValue('6', 'space') as number
   const safe = insets
     ? {
         paddingTop: side === 'bottom' ? pad : pad + insets.top,
@@ -172,8 +175,8 @@ const Content = forwardRef<TamaguiElement, DrawerContentProps>(function DrawerCo
               icon={<XIcon />}
               size="sm"
               position="absolute"
-              top={safe ? safe.paddingTop - pad + getTokenValue('$4', 'space') : '$4'}
-              right={safe ? safe.paddingRight - pad + getTokenValue('$4', 'space') : '$4'}
+              top={safe ? safe.paddingTop - pad + getTokenValue('4', 'space') : '4'}
+              right={safe ? safe.paddingRight - pad + getTokenValue('4', 'space') : '4'}
             />
           </Close>
         )}

@@ -3,7 +3,7 @@ import { CheckIcon, StarIcon } from '@advui/icons'
 
 export default function BadgeWithIcon() {
   return (
-    <HStack gap="$2">
+    <HStack gap="2">
       <Badge variant="success" icon={<CheckIcon />}>
         Verified
       </Badge>

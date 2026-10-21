@@ -57,7 +57,7 @@ describe('RadioGroup', () => {
         <RadioGroup aria-label="Plan">
           <RadioGroup.Item value="free" label="Free" />
         </RadioGroup>
-        <View gap="$3" testID="reference" />
+        <View gap="3" testID="reference" />
       </>,
     )
     const gap = getComputedStyle(screen.getByRole('radiogroup')).gap

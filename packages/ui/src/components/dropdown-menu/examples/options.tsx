@@ -8,7 +8,7 @@ export default function DropdownMenuOptions() {
   const [sort, setSort] = useState('newest')
 
   return (
-    <VStack gap="$2" alignItems="center">
+    <VStack gap="2" alignItems="center">
       <DropdownMenu align="end">
         <DropdownMenu.Trigger>
           <IconButton aria-label="View options" variant="outline" icon={<MoreHorizontalIcon />} />

@@ -34,7 +34,11 @@ const ContentFrame = styled(TamaguiDialog.Content, {
   variants: { size: contentSizes } as const,
 })
 
-const Header = styled(View, { name: 'DialogHeader', ...headerStyle, paddingRight: '$6' })
+const Header = styled(View, {
+  name: 'DialogHeader',
+  ...headerStyle,
+  paddingRight: "6"
+})
 
 const Footer = styled(View, { name: 'DialogFooter', ...footerStyle })
 
@@ -80,8 +84,8 @@ const Content = forwardRef<TamaguiElement, DialogContentProps>(function DialogCo
               icon={<XIcon />}
               size="sm"
               position="absolute"
-              top="$3"
-              right="$3"
+              top="3"
+              right="3"
             />
           </Close>
         )}
@@ -125,6 +129,9 @@ export const Dialog = withStaticProperties(DialogRoot, {
   Title,
   Description,
   Close,
-  Body: styled(View, { name: 'DialogBody', gap: '$3' }),
+  Body: styled(View, {
+    name: 'DialogBody',
+    gap: "3"
+  }),
   Text,
 })

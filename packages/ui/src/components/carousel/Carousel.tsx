@@ -71,7 +71,7 @@ const defaultLabels: CarouselLabels = {
 }
 
 const focusRing = {
-  outlineColor: '$ring',
+  outlineColor: 'ring',
   outlineStyle: 'solid',
   outlineWidth: 2,
   outlineOffset: 2,
@@ -80,11 +80,11 @@ const focusRing = {
 const CarouselFrame = styled(View, {
   name: 'Carousel',
   width: '100%',
-  gap: '$3',
+  gap: "3",
   // The controls come first in the tree, so keyboard and screen-reader users
   // meet the pause button before the slides move under them (WAI-ARIA APG),
   // and show under the slides.
-  flexDirection: 'column-reverse',
+  flexDirection: 'column-reverse'
 })
 
 export interface CarouselProps extends Omit<GetProps<typeof CarouselFrame>, 'children' | 'gap'> {
@@ -100,7 +100,7 @@ export interface CarouselProps extends Omit<GetProps<typeof CarouselFrame>, 'chi
   onIndexChange?: (index: number) => void
   /** Slides in view at once, or a mobile-first map. Fractions show part of the next one. Default: 1. */
   slidesPerView?: Responsive<number>
-  /** Space between slides (token). Default: `$4`. */
+  /** Space between slides (token). Default: `4`. */
   gap?: SpaceTokens
   /** Next on the last slide goes back to the first, and Previous on the first to the last. */
   loop?: boolean
@@ -162,39 +162,37 @@ function Dot({
   controls: string
   onPress: () => void
 }) {
-  const ripple = useRipple({ color: '$foreground' })
+  const ripple = useRipple({ color: 'foreground' })
   return (
     <View
       {...(isWeb
-        ? {
-            render: 'button',
-            type: 'button',
-            padding: 0,
-            borderWidth: 0,
-            'aria-current': active || undefined,
-            'aria-controls': controls,
-          }
-        : { accessible: true, role: 'button', 'aria-selected': ariaState(active) })}
-      aria-label={label}
-      // A 24px target around an 8px dot (WCAG 2.5.8).
-      width="$6"
-      height="$6"
+            ? {
+                render: 'button',
+                type: 'button',
+                padding: 0,
+                borderWidth: 0,
+                'aria-current': active || undefined,
+                'aria-controls': controls,
+              }
+            : { accessible: true, role: 'button', 'aria-selected': ariaState(active) })}
+      width="6"
+      height="6"
       alignItems="center"
       justifyContent="center"
-      borderRadius="$full"
-      backgroundColor="transparent"
+      borderRadius="full"
+      backgroundColor="transparent hover:accent"
       cursor="pointer"
-      hoverStyle={{ backgroundColor: '$accent' }}
       focusVisibleStyle={focusRing}
-      onPress={onPress}
       {...ripple.props}
+      aria-label={label}
+      onPress={onPress}
     >
       {ripple.element}
       <View
-        width={active ? '$5' : '$2'}
-        height="$2"
-        borderRadius="$full"
-        backgroundColor={active ? '$primary' : '$mutedForeground'}
+        width={`${active ? "5" : "2"}`}
+        height="2"
+        borderRadius="full"
+        backgroundColor={`${active ? "primary" : "mutedForeground"}`}
       />
     </View>
   )
@@ -212,7 +210,7 @@ const CarouselRoot = forwardRef<TamaguiElement, CarouselProps>(function Carousel
     defaultIndex = 0,
     onIndexChange,
     slidesPerView = 1,
-    gap = '$4',
+    gap = '4',
     loop = false,
     autoplay = false,
     showArrows = true,
@@ -330,7 +328,7 @@ const CarouselRoot = forwardRef<TamaguiElement, CarouselProps>(function Carousel
   const controlled = isWeb ? { 'aria-controls': trackId } : null
   const controls =
     lastIndex > 0 && (delay > 0 || showArrows || showDots) ? (
-      <XStack alignItems="center" justifyContent="center" gap="$2" flexWrap="wrap">
+      <XStack alignItems="center" justifyContent="center" gap="2" flexWrap="wrap">
         {delay > 0 ? (
           <IconButton
             size="sm"

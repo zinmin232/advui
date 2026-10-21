@@ -8,16 +8,16 @@ const news = [
 
 export default function CarouselAutoplay() {
   return (
-    <VStack width="100%" maxWidth="$96">
+    <VStack width="100%" maxWidth="96">
       {/* It waits while the pointer or focus is on it; the first button pauses it. */}
       <Carousel aria-label="News" autoplay={6000} loop>
         {news.map((item) => (
           <Carousel.Item
             key={item.title}
-            gap="$1"
-            padding="$5"
-            borderRadius="$lg"
-            backgroundColor="$muted"
+            gap="1"
+            padding="5"
+            borderRadius="lg"
+            backgroundColor="muted"
           >
             <Heading level={3} size="lg">
               {item.title}

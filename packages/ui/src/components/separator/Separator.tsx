@@ -5,17 +5,15 @@ import { Text } from '../typography/Text'
 
 const SeparatorFrame = styled(View, {
   name: 'Separator',
-  backgroundColor: '$border',
+  backgroundColor: "border",
   flexShrink: 0,
-
   variants: {
     orientation: {
       horizontal: { height: 1, width: '100%' },
       vertical: { width: 1, alignSelf: 'stretch' },
     },
   } as const,
-
-  defaultVariants: { orientation: 'horizontal' },
+  defaultVariants: { orientation: 'horizontal' }
 })
 
 /** The row that holds the two lines and the label. */
@@ -23,24 +21,25 @@ const LabelledFrame = styled(View, {
   name: 'SeparatorLabelled',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: '$3',
-  width: '100%',
+  gap: "3",
+  width: '100%'
 })
 
 /** One line of a labelled separator; `short` is the 16px end at the start or end. */
 const Line = styled(View, {
   name: 'SeparatorLine',
   height: 1,
-  backgroundColor: '$border',
-
+  backgroundColor: "border",
   variants: {
     short: {
-      true: { width: '$4', flexShrink: 0 },
+      true: {
+        width: "4",
+        flexShrink: 0
+      },
       false: { flexGrow: 1, flexBasis: 0 },
     },
   } as const,
-
-  defaultVariants: { short: false },
+  defaultVariants: { short: false }
 })
 
 export type SeparatorLabelPosition = 'start' | 'center' | 'end'

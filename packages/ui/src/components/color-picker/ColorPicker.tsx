@@ -201,17 +201,17 @@ export const ColorPicker = forwardRef<TamaguiElement, ColorPickerProps>(
       return (
         <View
           ref={ref}
-          width="$64"
+          width="64"
           maxWidth="100%"
           opacity={disabled ? 0.5 : 1}
           {...(isWeb && {
-            role: 'group',
-            'aria-label': groupLabel,
-            // A <label for> cannot name a group, so a Field's label is linked by id.
-            ...(field?.labelId &&
-              groupLabel === undefined &&
-              props['aria-labelledby'] === undefined && { 'aria-labelledby': field.labelId }),
-          })}
+                    role: 'group',
+                    'aria-label': groupLabel,
+                    // A <label for> cannot name a group, so a Field's label is linked by id.
+                    ...(field?.labelId &&
+                      groupLabel === undefined &&
+                      props['aria-labelledby'] === undefined && { 'aria-labelledby': field.labelId }),
+                  })}
           {...frameProps}
         >
           {panel}
@@ -228,7 +228,7 @@ export const ColorPicker = forwardRef<TamaguiElement, ColorPickerProps>(
               ref={ref}
               valueText={hex}
               placeholder={hex}
-              leading={<Swatch color={hex} size="$5" />}
+              leading={<Swatch color={hex} size="5" />}
               icon={<ChevronDownIcon />}
               disabled={disabled}
               invalid={invalid}
@@ -319,7 +319,7 @@ function ColorPanel({
   return (
     // The field's id and texts are on the picker; its own controls get none.
     <FieldContext.Provider value={null}>
-      <View gap="$3" width="100%">
+      <View gap="3" width="100%">
         <ColorArea
           hsv={hsv}
           disabled={disabled}
@@ -332,8 +332,8 @@ function ColorPanel({
           onChange={(s, v) => onChange({ ...hsv, s, v })}
           onCommit={onCommit}
         />
-        <View flexDirection="row" alignItems="center" gap="$3">
-          <View flex={1} gap="$3">
+        <View flexDirection="row" alignItems="center" gap="3">
+          <View flex={1} gap="3">
             <ChannelSlider
               value={hsv.h}
               max={360}
@@ -372,15 +372,15 @@ function ColorPanel({
               />
             ) : null}
           </View>
-          <Swatch color={hex} size={alpha ? '$12' : '$8'} radius="$md" />
+          <Swatch color={hex} size={alpha ? '12' : '8'} radius="md" />
         </View>
         {showInput || canPick ? (
-          <View flexDirection="row" alignItems="center" gap="$2">
+          <View flexDirection="row" alignItems="center" gap="2">
             {showInput ? (
               <Input
                 flex={1}
                 size="sm"
-                fontFamily="$mono"
+                fontFamily="mono"
                 aria-label={labels.input}
                 accessibilityHint={hint}
                 disabled={disabled}
@@ -416,7 +416,7 @@ function ColorPanel({
             aria-label={labels.swatches}
             flexDirection="row"
             flexWrap="wrap"
-            gap="$1.5"
+            gap="1-5"
           >
             {items.map((item, index) => (
               <SwatchButton

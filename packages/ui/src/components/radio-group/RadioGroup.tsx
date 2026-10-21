@@ -50,22 +50,29 @@ const Item = styled(TamaguiItemFrame, {
   variants: {
     unstyled: {
       false: {
-        borderRadius: '$full',
+        borderRadius: "full",
         borderWidth: 1,
-        borderColor: '$input',
-        backgroundColor: '$background',
-        hoverStyle: { borderColor: '$borderStrong' },
-        focusVisibleStyle: {
-          outlineColor: '$ring',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineOffset: 2,
-        },
+        borderColor: "input hover:borderStrong",
+        backgroundColor: "background",
+        outlineColor: "focus-visible:ring",
+        outlineStyle: "focus-visible:solid",
+        outlineWidth: "focus-visible:2px",
+        outlineOffset: "focus-visible:2px"
       },
     },
     size: {
-      sm: { width: '$4', height: '$4', minHeight: '$4', padding: 0 },
-      md: { width: '$5', height: '$5', minHeight: '$5', padding: 0 },
+      sm: {
+        width: "4",
+        height: "4",
+        minHeight: "4",
+        padding: 0
+      },
+      md: {
+        width: "5",
+        height: "5",
+        minHeight: "5",
+        padding: 0
+      },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: 'none' },
@@ -82,8 +89,8 @@ const Indicator = styled(TamaguiIndicatorFrame, {
       false: {
         width: '50%',
         height: '50%',
-        borderRadius: '$full',
-        backgroundColor: '$primary',
+        borderRadius: "full",
+        backgroundColor: "primary"
       },
     },
   } as const,
@@ -115,7 +122,7 @@ const RadioGroupItem = forwardRef<TamaguiElement, RadioGroupItemProps>(function 
       size={size as never}
       // Tamagui sets `disabled` on web only, so native gets it as a state here.
       {...(isWeb ? null : { accessible: true, 'aria-disabled': ariaState(disabled) })}
-      {...(group.value === props.value ? { borderColor: '$primary' as const } : null)}
+      {...(group.value === props.value ? { borderColor: 'primary' as const } : null)}
       {...(withText && choiceControlStyle(size))}
       {...props}
       {...choiceProps(id, text, props, group.hint)}
@@ -139,7 +146,7 @@ const RadioGroupRoot = forwardRef<TamaguiElement, RadioGroupProps>(
       defaultValue,
       onValueChange,
       invalid,
-      gap = '$3',
+      gap = '3',
       ...props
     } = useFieldControl<RadioGroupProps & FieldControlProps>(groupProps)
     const [value, setValue] = useControllableState({

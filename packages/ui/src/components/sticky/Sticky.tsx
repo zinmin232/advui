@@ -15,7 +15,7 @@ export interface StickyProps extends Omit<GetProps<typeof View>, 'children' | 'z
   edge?: StickyEdge
   /** Distance from that edge, such as the height of a header above it. Default `0`. */
   offset?: SpaceTokens | number
-  /** Stacking level. Default `$sticky` (above content, below dropdowns and dialogs). */
+  /** Stacking level. Default `sticky` (above content, below dropdowns and dialogs). */
   zIndex?: ZIndexTokens | number
   children?: ReactNode
 }
@@ -30,7 +30,7 @@ export interface StickyProps extends Omit<GetProps<typeof View>, 'children' | 'z
  * ScrollArea (`stickyHeaderIndices`); anywhere else it is a plain View.
  */
 export const Sticky = forwardRef<TamaguiElement, StickyProps>(function Sticky(
-  { edge = 'top', offset = 0, zIndex = '$sticky', ...props },
+  { edge = 'top', offset = 0, zIndex = 'sticky', ...props },
   ref,
 ) {
   return (

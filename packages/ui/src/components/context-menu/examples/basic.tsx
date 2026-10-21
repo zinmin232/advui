@@ -9,14 +9,14 @@ export default function ContextMenuBasic() {
     <ContextMenu>
       <ContextMenu.Trigger
         width="100%"
-        maxWidth="$96"
-        height="$40"
+        maxWidth="96"
+        height="40"
         alignItems="center"
         justifyContent="center"
         borderWidth={1}
         borderStyle="dashed"
-        borderColor="$borderStrong"
-        borderRadius="$lg"
+        borderColor="borderStrong"
+        borderRadius="lg"
       >
         <Text size="sm" tone="muted">
           Right-click here (long-press on touch)

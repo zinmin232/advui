@@ -43,13 +43,13 @@ export function LoginScreen() {
       flexGrow={1}
       alignItems="center"
       justifyContent="center"
-      padding="$4"
-      gap="$6"
+      padding="4"
+      gap="6"
       width="100%"
     >
-      <VStack alignItems="center" gap="$3">
+      <VStack alignItems="center" gap="3">
         <LogoMark size={40} />
-        <VStack alignItems="center" gap="$1">
+        <VStack alignItems="center" gap="1">
           <Text size="2xl" weight="bold">
             Welcome back
           </Text>
@@ -59,8 +59,8 @@ export function LoginScreen() {
         </VStack>
       </VStack>
 
-      <Card width="100%" maxWidth="$96">
-        <Card.Content gap="$4">
+      <Card width="100%" maxWidth="96">
+        <Card.Content gap="4">
           <Button
             variant="outline"
             fullWidth
@@ -68,14 +68,14 @@ export function LoginScreen() {
           >
             Continue with SSO
           </Button>
-          <HStack gap="$3">
+          <HStack gap="3">
             <Separator flex={1} width="auto" />
             <Text size="xs" tone="muted">
               OR
             </Text>
             <Separator flex={1} width="auto" />
           </HStack>
-          <VStack gap="$2">
+          <VStack gap="2">
             <Label htmlFor="login-email">Email</Label>
             <HStack position="relative">
               <Input
@@ -89,10 +89,10 @@ export function LoginScreen() {
                 onChangeText={setEmail}
                 invalid={!!emailError}
                 aria-describedby={emailError ? 'login-email-error' : undefined}
-                paddingLeft="$9"
+                paddingLeft="9"
               />
               <InputIcon>
-                <MailIcon size={16} color="$mutedForeground" />
+                <MailIcon size={16} color="mutedForeground" />
               </InputIcon>
             </HStack>
             {emailError ? (
@@ -101,7 +101,7 @@ export function LoginScreen() {
               </Text>
             ) : null}
           </VStack>
-          <VStack gap="$2">
+          <VStack gap="2">
             <HStack justifyContent="space-between">
               <Label htmlFor="login-password">Password</Label>
               <Button
@@ -123,11 +123,11 @@ export function LoginScreen() {
                 onChangeText={setPassword}
                 invalid={!!passwordError}
                 aria-describedby={passwordError ? 'login-password-error' : undefined}
-                paddingLeft="$9"
+                paddingLeft="9"
                 onSubmitEditing={submit}
               />
               <InputIcon>
-                <LockIcon size={16} color="$mutedForeground" />
+                <LockIcon size={16} color="mutedForeground" />
               </InputIcon>
             </HStack>
             {passwordError ? (
@@ -136,7 +136,7 @@ export function LoginScreen() {
               </Text>
             ) : null}
           </VStack>
-          <HStack gap="$2">
+          <HStack gap="2">
             <Checkbox id="login-remember" defaultChecked />
             <Label htmlFor="login-remember">Keep me signed in</Label>
           </HStack>

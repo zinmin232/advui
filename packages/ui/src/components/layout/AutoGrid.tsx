@@ -6,7 +6,7 @@ export interface AutoGridProps extends Omit<ViewProps, 'children' | 'gap'> {
   children?: ReactNode
   /** Narrowest a cell gets, in px; the column count follows from it. Default `240`. */
   minChildWidth?: number
-  /** Space between cells, across and down (token). Default `$4`. */
+  /** Space between cells, across and down (token). Default `4`. */
   gap?: SpaceTokens
   /** Most columns, however wide the grid gets. */
   maxColumns?: number
@@ -34,7 +34,7 @@ export function autoGridTemplate(minChildWidth: number, gap: number, maxColumns?
  * AutoGrid.native.tsx measures instead.
  */
 export const AutoGrid = forwardRef<TamaguiElement, AutoGridProps>(function AutoGrid(
-  { minChildWidth = 240, gap = '$4', maxColumns, style, ...props },
+  { minChildWidth = 240, gap = '4', maxColumns, style, ...props },
   ref,
 ) {
   const template = autoGridTemplate(minChildWidth, spaceValue(gap), maxColumns)

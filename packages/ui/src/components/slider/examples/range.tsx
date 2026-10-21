@@ -6,7 +6,7 @@ const price = (value: number) => `$${value}`
 export default function SliderRange() {
   const [range, setRange] = useState([40, 160])
   return (
-    <VStack gap="$3" width="100%" maxWidth="$80">
+    <VStack gap="3" width="100%" maxWidth="80">
       <HStack justifyContent="space-between">
         <Label>Price</Label>
         <Text size="sm" tone="muted">

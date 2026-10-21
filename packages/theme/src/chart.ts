@@ -1,7 +1,7 @@
 import type { ColorMode } from './themes'
 
 /**
- * Categorical colors for chart series, in their fixed order (`$chart1` is the
+ * Categorical colors for chart series, in their fixed order (`chart1` is the
  * first series). The order is part of the palette: neighbors stay apart under
  * protanopia and deuteranopia (OKLab ΔE ≥ 8) and for full-color vision (≥ 15).
  * Dark mode uses its own steps of the same eight hues, not an inverted light

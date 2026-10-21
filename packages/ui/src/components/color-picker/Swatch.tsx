@@ -14,7 +14,7 @@ export interface SwatchProps {
 }
 
 /** A square of a color, over the transparency grid when it is translucent. */
-export function Swatch({ color, size, radius = '$sm', children }: SwatchProps) {
+export function Swatch({ color, size, radius = 'sm', children }: SwatchProps) {
   const translucent = (parseColor(color)?.a ?? 1) < 1
   return (
     <View
@@ -23,9 +23,8 @@ export function Swatch({ color, size, radius = '$sm', children }: SwatchProps) {
       height={size}
       borderRadius={radius}
       overflow="hidden"
-      // Keeps white swatches visible on a white background.
       borderWidth={1}
-      borderColor="$border"
+      borderColor="border"
       alignItems="center"
       justifyContent="center"
       pointerEvents="none"
@@ -59,23 +58,23 @@ export function SwatchButton({ color, label, selected, disabled, onPress }: Swat
   return (
     <View
       {...(isWeb
-        ? {
-            render: 'button',
-            type: 'button',
-            padding: 0,
-            borderWidth: 0,
-            backgroundColor: 'transparent',
-            'aria-pressed': selected,
-          }
-        : { accessible: true, role: 'button', 'aria-selected': ariaState(selected) })}
-      aria-label={label}
-      aria-disabled={ariaState(disabled)}
-      borderRadius="$sm"
+            ? {
+                render: 'button',
+                type: 'button',
+                padding: 0,
+                borderWidth: 0,
+                backgroundColor: 'transparent',
+                'aria-pressed': selected,
+              }
+            : { accessible: true, role: 'button', 'aria-selected': ariaState(selected) })}
+      borderRadius="sm"
       cursor={disabled ? 'not-allowed' : 'pointer'}
       focusVisibleStyle={focusRing}
+      aria-label={label}
+      aria-disabled={ariaState(disabled)}
       onPress={disabled ? undefined : onPress}
     >
-      <Swatch color={color} size="$6">
+      <Swatch color={color} size="6">
         {selected ? <CheckIcon size={14} color={readableForeground(shownOverWhite(color))} /> : null}
       </Swatch>
     </View>

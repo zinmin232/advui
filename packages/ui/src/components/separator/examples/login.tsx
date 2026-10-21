@@ -2,7 +2,7 @@ import { Button, Field, Input, Separator, Text, VStack } from '@advui/core'
 
 export default function SeparatorLogin() {
   return (
-    <VStack gap="$4" width="100%" maxWidth="$80">
+    <VStack gap="4" width="100%" maxWidth="80">
       <Button variant="outline" fullWidth>
         Continue with Google
       </Button>

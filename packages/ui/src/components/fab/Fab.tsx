@@ -10,18 +10,18 @@ export type FabSize = 'sm' | 'md' | 'lg'
 export type FabPlacement = 'bottom-end' | 'bottom-start' | 'bottom-center'
 
 const foreground = {
-  soft: '$primarySoftForeground',
-  primary: '$primaryForeground',
-  secondary: '$secondaryForeground',
-  surface: '$primaryText',
+  soft: 'primarySoftForeground',
+  primary: 'primaryForeground',
+  secondary: 'secondaryForeground',
+  surface: 'primaryText',
 } as const satisfies Record<FabVariant, `$${string}`>
 
 // Resting fill per variant, kept while pressed when the Android ripple is on.
 const background = {
-  soft: '$primarySoft',
-  primary: '$primary',
-  secondary: '$secondary',
-  surface: '$card',
+  soft: 'primarySoft',
+  primary: 'primary',
+  secondary: 'secondary',
+  surface: 'card',
 } as const satisfies Record<FabVariant, `$${string}`>
 
 const iconSizes: Record<FabSize, number> = { sm: 20, md: 24, lg: 36 }
@@ -31,66 +31,83 @@ const FabFrame = styled(View, {
   role: 'button',
   render: 'button',
   tabIndex: 0,
-
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: '$3',
+  gap: "3",
   borderWidth: 0,
   cursor: 'pointer',
   userSelect: 'none',
   transition: 'quick',
   ...shadows.md,
   hoverStyle: { ...shadows.lg },
-  focusVisibleStyle: {
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: 2,
-  },
-
+  outlineColor: "focus-visible:ring",
+  outlineStyle: "focus-visible:solid",
+  outlineWidth: "focus-visible:2px",
+  outlineOffset: "focus-visible:2px",
   variants: {
     variant: {
       soft: {
-        backgroundColor: '$primarySoft',
-        pressStyle: { backgroundColor: '$primarySoftHover' },
+        backgroundColor: "primarySoft press:primarySoftHover"
       },
       primary: {
-        backgroundColor: '$primary',
-        hoverStyle: { backgroundColor: '$primaryHover' },
-        pressStyle: { backgroundColor: '$primaryPress' },
+        backgroundColor: "primary hover:primaryHover press:primaryPress"
       },
       secondary: {
-        backgroundColor: '$secondary',
-        hoverStyle: { backgroundColor: '$secondaryHover' },
-        pressStyle: { backgroundColor: '$secondaryPress' },
+        backgroundColor: "secondary hover:secondaryHover press:secondaryPress"
       },
       surface: {
-        backgroundColor: '$card',
-        hoverStyle: { backgroundColor: '$accent' },
-        pressStyle: { backgroundColor: '$accentHover' },
+        backgroundColor: "card hover:accent press:accentHover"
       },
     },
     // Material sizes: 40, 56 and 96, with 12, 16 and 28px corners in the Material theme.
     size: {
-      sm: { width: '$10', height: '$10', borderRadius: '$xl' },
-      md: { width: '$14', height: '$14', borderRadius: '$2xl' },
-      lg: { width: '$24', height: '$24', borderRadius: '$3xl' },
+      sm: {
+        width: "10",
+        height: "10",
+        borderRadius: "xl"
+      },
+      md: {
+        width: "14",
+        height: "14",
+        borderRadius: "2xl"
+      },
+      lg: {
+        width: "24",
+        height: "24",
+        borderRadius: "3xl"
+      },
     },
     extended: {
-      true: { width: 'auto', height: '$14', paddingHorizontal: '$4', borderRadius: '$2xl' },
+      true: {
+        width: 'auto',
+        height: "14",
+        paddingHorizontal: "4",
+        borderRadius: "2xl"
+      },
     },
     placement: {
-      'bottom-end': { position: 'absolute', bottom: '$4', right: '$4' },
-      'bottom-start': { position: 'absolute', bottom: '$4', left: '$4' },
-      'bottom-center': { position: 'absolute', bottom: '$4', alignSelf: 'center' },
+      'bottom-end': {
+        position: 'absolute',
+        bottom: "4",
+        right: "4"
+      },
+      'bottom-start': {
+        position: 'absolute',
+        bottom: "4",
+        left: "4"
+      },
+      'bottom-center': {
+        position: 'absolute',
+        bottom: "4",
+        alignSelf: 'center'
+      },
     },
     disabled: {
       true: { opacity: 0.5, pointerEvents: 'none', cursor: 'default' },
     },
   } as const,
-
-  defaultVariants: { variant: 'soft', size: 'md' },
+  defaultVariants: { variant: 'soft', size: 'md' }
 })
 
 type FrameProps = GetProps<typeof FabFrame>
@@ -155,9 +172,9 @@ export const Fab = forwardRef<TamaguiElement, FabProps>(function Fab(
         {icon}
         {extended ? (
           <Text
-            fontFamily="$body"
-            fontSize="$2"
-            lineHeight="$2"
+            fontFamily="body"
+            fontSize="2"
+            lineHeight="2"
             fontWeight="500"
             color={color}
             userSelect="none"

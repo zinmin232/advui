@@ -26,7 +26,7 @@ export default defineMeta({
           name: 'gap',
           type: 'SpaceTokens',
           token: 'space',
-          default: "'$2'",
+          default: "'2'",
           description: 'Space between items, across and down.',
         },
         {

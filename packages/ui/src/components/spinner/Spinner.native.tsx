@@ -6,7 +6,7 @@ import type { SpinnerProps } from './Spinner'
 
 /** Native: the platform ActivityIndicator, tinted with a theme color. */
 export function Spinner({ size = 'md', color, label = 'Loading', ...props }: SpinnerProps) {
-  const resolved = useIconColor(color ?? '$color')
+  const resolved = useIconColor(color ?? 'color')
   return (
     <View
       accessible

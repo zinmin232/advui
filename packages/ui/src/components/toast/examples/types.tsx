@@ -2,7 +2,7 @@ import { Button, HStack, toast } from '@advui/core'
 
 export default function ToastTypes() {
   return (
-    <HStack gap="$2" flexWrap="wrap">
+    <HStack gap="2" flexWrap="wrap">
       <Button variant="outline" onPress={() => toast('Event created')}>
         Default
       </Button>

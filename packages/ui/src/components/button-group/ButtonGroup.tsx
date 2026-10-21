@@ -41,7 +41,7 @@ export const ButtonGroup = forwardRef<TamaguiElement, ButtonGroupProps>(function
         flexDirection={horizontal ? 'row' : 'column'}
         alignItems={horizontal ? 'center' : 'stretch'}
         alignSelf="flex-start"
-        gap={attached ? 0 : '$2'}
+        gap={attached ? 0 : '2'}
         {...props}
       >
         {items.map((child, index) => (

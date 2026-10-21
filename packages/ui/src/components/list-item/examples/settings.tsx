@@ -7,7 +7,7 @@ export default function ListItemSettings() {
 
   // ListItem and List.Item are the same component; List adds the dividers.
   return (
-    <List variant="outline" divided width="100%" maxWidth="$128">
+    <List variant="outline" divided width="100%" maxWidth="128">
       <ListItem
         leading={<BellIcon />}
         title="Email notifications"

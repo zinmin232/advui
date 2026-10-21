@@ -25,7 +25,7 @@ export function positionOf(index: number, count: number): Position {
 }
 
 const ring = {
-  outlineColor: '$ring',
+  outlineColor: 'ring',
   outlineStyle: 'solid',
   outlineWidth: 2,
   outlineOffset: 2,

@@ -35,16 +35,16 @@ export function Thumb({
       height={THUMB}
       marginLeft={-THUMB / 2}
       marginTop={-THUMB / 2}
-      borderRadius="$full"
+      borderRadius="full"
       borderWidth={1}
       borderColor={rawColor(THUMB_RING)}
       pointerEvents="none"
     >
       <View
         flex={1}
-        borderRadius="$full"
+        borderRadius="full"
         borderWidth={2}
-        borderColor="$white"
+        borderColor="white"
         backgroundColor={rawColor(color)}
       />
     </View>
@@ -157,8 +157,8 @@ export function ColorArea({
   const surface = (
     <View
       position="relative"
-      height="$40"
-      borderRadius="$md"
+      height="40"
+      borderRadius="md"
       cursor={disabled ? 'not-allowed' : 'crosshair'}
       focusVisibleStyle={focusRing}
       {...semantics}
@@ -167,7 +167,7 @@ export function ColorArea({
       <View
         position="absolute"
         inset={0}
-        borderRadius="$md"
+        borderRadius="md"
         overflow="hidden"
         pointerEvents="none"
         backgroundColor={rawColor(fromHsv({ h: hsv.h, s: 1, v: 1 }))}

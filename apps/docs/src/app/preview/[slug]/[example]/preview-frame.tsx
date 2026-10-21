@@ -8,10 +8,10 @@ export function PreviewFrame({ slug, name }: { slug: string; name: string }) {
     <View
       render="main"
       minHeight="100vh"
-      padding="$4"
+      padding="4"
       alignItems="center"
       justifyContent="center"
-      backgroundColor="$background"
+      backgroundColor="background"
     >
       <View width="100%" alignItems="center">
         <ExampleRenderer slug={slug} name={name} />

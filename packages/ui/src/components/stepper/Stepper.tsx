@@ -75,38 +75,61 @@ const StepperFrame = styled(View, {
 
 const StepIndicator = styled(View, {
   name: 'StepIndicator',
-  width: '$8',
-  height: '$8',
-  borderRadius: '$full',
+  width: "8",
+  height: "8",
+  borderRadius: "full",
   alignItems: 'center',
   justifyContent: 'center',
   flexShrink: 0,
   borderWidth: 2,
-
   variants: {
     status: {
-      complete: { backgroundColor: '$primary', borderColor: '$primary' },
-      current: { backgroundColor: '$background', borderColor: '$primary' },
-      upcoming: { backgroundColor: '$background', borderColor: '$border' },
-      error: { backgroundColor: '$error', borderColor: '$error' },
+      complete: {
+        backgroundColor: "primary",
+        borderColor: "primary"
+      },
+      current: {
+        backgroundColor: "background",
+        borderColor: "primary"
+      },
+      upcoming: {
+        backgroundColor: "background",
+        borderColor: "border"
+      },
+      error: {
+        backgroundColor: "error",
+        borderColor: "error"
+      },
     },
-  } as const,
+  } as const
 })
 
 const StepConnector = styled(View, {
   name: 'StepConnector',
-  borderRadius: '$full',
-
+  borderRadius: "full",
   variants: {
     orientation: {
-      horizontal: { flex: 1, height: 2, marginHorizontal: '$2' },
-      vertical: { flex: 1, width: 2, minHeight: '$4', marginVertical: '$1' },
+      horizontal: {
+        flex: 1,
+        height: 2,
+        marginHorizontal: "2"
+      },
+      vertical: {
+        flex: 1,
+        width: 2,
+        minHeight: "4",
+        marginVertical: "1"
+      },
     },
     done: {
-      true: { backgroundColor: '$primary' },
-      false: { backgroundColor: '$border' },
+      true: {
+        backgroundColor: "primary"
+      },
+      false: {
+        backgroundColor: "border"
+      },
     },
-  } as const,
+  } as const
 })
 
 const StepTitle = styled(Text, {
@@ -131,8 +154,8 @@ const visuallyHidden = {
 } as const
 
 const numberColors = {
-  current: '$primaryText',
-  upcoming: '$mutedForeground',
+  current: 'primaryText',
+  upcoming: 'mutedForeground',
 } as const
 
 export interface StepperProps extends Omit<GetProps<typeof StepperFrame>, 'orientation'> {
@@ -210,15 +233,15 @@ const StepperStep = forwardRef<TamaguiElement, StepperStepProps>(function Steppe
   const last = index === count - 1
   const vertical = orientation === 'vertical'
   const pressable = !!onStepPress && (!linear || index <= activeStep)
-  const ripple = useRipple({ color: '$foreground', disabled: !pressable })
+  const ripple = useRipple({ color: 'foreground', disabled: !pressable })
   const current = index === activeStep
 
   const indicator = (
     <StepIndicator status={status} aria-hidden>
       {status === 'complete' ? (
-        <CheckIcon size={16} color="$primaryForeground" />
+        <CheckIcon size={16} color="primaryForeground" />
       ) : status === 'error' ? (
-        <XIcon size={16} color="$errorForeground" />
+        <XIcon size={16} color="errorForeground" />
       ) : (
         <Text size="sm" weight="semibold" color={numberColors[status]}>
           {String(index + 1)}
@@ -231,9 +254,7 @@ const StepperStep = forwardRef<TamaguiElement, StepperStepProps>(function Steppe
     <View
       flexShrink={1}
       minWidth={0}
-      gap="$0.5"
-      // Horizontal on a phone there is only room for the current step's text;
-      // the others keep theirs for screen readers.
+      gap="0-5"
       {...(!vertical && !current && { '$max-xs': visuallyHidden })}
     >
       <StepTitle {...(status === 'error' && { tone: 'error' as const })}>
@@ -255,7 +276,7 @@ const StepperStep = forwardRef<TamaguiElement, StepperStepProps>(function Steppe
       : undefined
 
   const head = (
-    <View flexDirection="row" gap="$2.5" alignItems="center" minWidth={0}>
+    <View flexDirection="row" gap="2-5" alignItems="center" minWidth={0}>
       {indicator}
       {text}
     </View>
@@ -264,21 +285,22 @@ const StepperStep = forwardRef<TamaguiElement, StepperStepProps>(function Steppe
   const target = pressable ? (
     <View
       {...(isWeb
-        ? { render: 'button', type: 'button', style: { textAlign: 'start' } }
-        : { accessible: true, role: 'button', 'aria-label': nativeName })}
-      aria-current={current && isWeb ? 'step' : undefined}
+            ? { render: 'button', type: 'button', style: { textAlign: 'start' } }
+            : { accessible: true, role: 'button', 'aria-label': nativeName })}
       alignSelf="flex-start"
-      padding="$1"
-      margin="$-1"
+      padding="1"
+      margin="-1"
       borderWidth={0}
-      borderRadius="$md"
-      backgroundColor="transparent"
+      borderRadius="md"
+      backgroundColor="transparent hover:accent"
       cursor="pointer"
-      hoverStyle={{ backgroundColor: '$accent' }}
-      pressStyle={ripple.active ? undefined : { backgroundColor: '$accentHover' }}
-      focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
-      onPress={() => onStepPress?.(index)}
+      pressStyle={ripple.active ? undefined : { backgroundColor: 'accentHover' }}
+      outlineColor="focus-visible:ring"
+      outlineStyle="focus-visible:solid"
+      outlineWidth="focus-visible:2px"
       {...ripple.props}
+      aria-current={current && isWeb ? 'step' : undefined}
+      onPress={() => onStepPress?.(index)}
     >
       {ripple.element}
       {head}
@@ -296,11 +318,11 @@ const StepperStep = forwardRef<TamaguiElement, StepperStepProps>(function Steppe
     return (
       <View ref={ref} render="li" flexDirection="column" {...props}>
         {target}
-        <View flexDirection="row" gap="$3">
-          <View width="$8" alignItems="center" aria-hidden>
+        <View flexDirection="row" gap="3">
+          <View width="8" alignItems="center" aria-hidden>
             {last ? null : <StepConnector orientation="vertical" done={status === 'complete'} />}
           </View>
-          <View flex={1} minWidth={0} paddingBottom={last ? '$0' : '$4'} gap="$3">
+          <View flex={1} minWidth={0} paddingBottom={`${last ? "0" : "4"}`} gap="3">
             {current ? children : null}
           </View>
         </View>
@@ -314,22 +336,21 @@ const StepperStep = forwardRef<TamaguiElement, StepperStepProps>(function Steppe
       render="li"
       flexDirection="row"
       alignItems="flex-start"
-      // The last step keeps its width; the lines between steps give way.
       flexGrow={last ? 0 : 1}
       flexShrink={last ? 0 : 1}
       flexBasis="auto"
       minWidth={0}
-      maxWidth={last ? '$40' : undefined}
+      maxWidth={`${last ? "40" : undefined}`}
       {...props}
     >
-      <View flexShrink={1} minWidth={0} maxWidth="$40">
+      <View flexShrink={1} minWidth={0} maxWidth="40">
         {target}
       </View>
       {last ? null : (
         <View
           flex={1}
-          minWidth="$4"
-          height="$8"
+          minWidth="4"
+          height="8"
           flexDirection="row"
           alignItems="center"
           aria-hidden

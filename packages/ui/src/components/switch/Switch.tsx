@@ -25,22 +25,28 @@ const Frame = styled(TamaguiSwitchFrame, {
   variants: {
     unstyled: {
       false: {
-        borderRadius: '$full',
+        borderRadius: "full",
         borderWidth: 2,
         borderColor: 'transparent',
-        backgroundColor: '$input',
+        backgroundColor: "input",
         transition: 'quick',
-        focusVisibleStyle: {
-          outlineColor: '$ring',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineOffset: 2,
-        },
+        outlineColor: "focus-visible:ring",
+        outlineStyle: "focus-visible:solid",
+        outlineWidth: "focus-visible:2px",
+        outlineOffset: "focus-visible:2px"
       },
     },
     size: {
-      sm: { width: '$9', height: '$5', minHeight: '$5' },
-      md: { width: '$11', height: '$6', minHeight: '$6' },
+      sm: {
+        width: "9",
+        height: "5",
+        minHeight: "5"
+      },
+      md: {
+        width: "11",
+        height: "6",
+        minHeight: "6"
+      },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: 'none' },
@@ -56,15 +62,21 @@ const Thumb = styled(TamaguiSwitchThumb, {
   variants: {
     unstyled: {
       false: {
-        backgroundColor: '$background',
-        borderRadius: '$full',
+        backgroundColor: "background",
+        borderRadius: "full",
         transition: 'quick',
-        ...shadows.xs,
+        ...shadows.xs
       },
     },
     size: {
-      sm: { width: '$4', height: '$4' },
-      md: { width: '$5', height: '$5' },
+      sm: {
+        width: "4",
+        height: "4"
+      },
+      md: {
+        width: "5",
+        height: "5"
+      },
     },
   } as const,
 
@@ -103,7 +115,7 @@ export const Switch = forwardRef<TamaguiElement, SwitchProps>(function Switch(sw
       ref={ref}
       role="switch"
       size={size as never}
-      activeStyle={{ backgroundColor: '$primary' }}
+      activeStyle={{ backgroundColor: 'primary' }}
       aria-invalid={invalid || undefined}
       {...props}
       checked={checked}

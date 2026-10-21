@@ -113,7 +113,7 @@ export default defineMeta({
           name: 'gap',
           type: 'SpaceTokens | number',
           token: 'space',
-          default: "'$2'",
+          default: "'2'",
           description: 'Space between the label, control and messages.',
         },
         {

@@ -9,7 +9,7 @@ export default function ToolbarBulkActions() {
       width="100%"
       size="sm"
       leading={
-        <Text size="sm" weight="medium" paddingHorizontal="$2">
+        <Text size="sm" paddingHorizontal="2" weight="medium">
           3 selected
         </Text>
       }

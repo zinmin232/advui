@@ -11,19 +11,19 @@ export function LogoMark({ size = 32 }: { size?: number }) {
       height={size}
       minWidth={size}
       paddingHorizontal={size * 0.18}
-      borderRadius="$lg"
-      backgroundColor="$primary"
+      borderRadius="lg"
+      backgroundColor="primary"
       alignItems="center"
       justifyContent="center"
       aria-hidden
     >
       <Text
-        color="$primaryForeground"
-        weight="bold"
+        color="primaryForeground"
         fontSize={size * 0.5}
-        lineHeight={size}
+        lineHeight={`${size}px`}
         letterSpacing={-0.3}
         userSelect="none"
+        weight="bold"
       >
         {brandMark}
       </Text>
@@ -45,7 +45,7 @@ export function Kpi({
 }) {
   return (
     <Card>
-      <Card.Content gap="$2">
+      <Card.Content gap="2">
         <HStack justifyContent="space-between">
           <Text size="sm" tone="muted" weight="medium">
             {label}
@@ -56,8 +56,8 @@ export function Kpi({
           {value}
         </Text>
         {delta ? (
-          <HStack gap="$1">
-            <TrendingUpIcon size={14} color="$success" />
+          <HStack gap="1">
+            <TrendingUpIcon size={14} color="success" />
             <Text size="xs" tone="success">
               {delta}
             </Text>
@@ -70,7 +70,7 @@ export function Kpi({
 
 export function SectionTitle({ title, description }: { title: string; description?: string }) {
   return (
-    <VStack gap="$1">
+    <VStack gap="1">
       <Text render="h2" size="lg" weight="semibold" margin={0} role="heading" aria-level={2}>
         {title}
       </Text>
@@ -117,12 +117,12 @@ export const people = [
 
 export const avatarUrl = (img: number) => `https://i.pravatar.cc/128?img=${img}`
 
-/** Decorative icon overlaid at the start of an Input (add paddingLeft="$9" to the Input). */
+/** Decorative icon overlaid at the start of an Input (add paddingLeft="9" to the Input). */
 export function InputIcon({ children }: { children: ReactNode }) {
   return (
     <View
       position="absolute"
-      left="$3"
+      left="3"
       top={0}
       bottom={0}
       justifyContent="center"

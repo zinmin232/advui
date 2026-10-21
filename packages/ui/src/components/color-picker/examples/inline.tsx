@@ -6,7 +6,7 @@ export default function ColorPickerInline() {
   const [color, setColor] = useState('#10b981')
   const [saved, setSaved] = useState('#10b981')
   return (
-    <HStack gap="$5" flexWrap="wrap" alignItems="flex-start">
+    <HStack gap="5" flexWrap="wrap" alignItems="flex-start">
       <ColorPicker
         inline
         aria-label="Highlight color"
@@ -14,7 +14,7 @@ export default function ColorPickerInline() {
         onValueChange={setColor}
         onValueCommit={setSaved}
       />
-      <VStack gap="$1">
+      <VStack gap="1">
         <Text size="sm" tone="muted">
           Current: {color}
         </Text>

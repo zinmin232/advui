@@ -158,13 +158,12 @@ const ToggleGroupRoot = forwardRef<TamaguiElement, ToggleGroupProps>(function To
       <View
         ref={composedRef}
         role={single ? 'radiogroup' : 'group'}
-        // aria-orientation is only valid on radiogroup, not on group.
         aria-orientation={single ? orientation : undefined}
         aria-disabled={ariaState(disabled)}
         flexDirection={orientation === 'vertical' ? 'column' : 'row'}
         alignItems={orientation === 'vertical' ? 'stretch' : 'center'}
         flexWrap="wrap"
-        gap="$1"
+        gap="1"
         {...(isWeb && { onKeyDown })}
         {...props}
       >

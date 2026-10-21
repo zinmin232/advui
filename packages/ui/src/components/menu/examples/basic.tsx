@@ -3,7 +3,7 @@ import { FileIcon, MailIcon, StarIcon, TrashIcon, UploadIcon } from '@advui/icon
 
 export default function MenuBasic() {
   return (
-    <Menu aria-label="Mailboxes" defaultValue="inbox" maxWidth="$64">
+    <Menu aria-label="Mailboxes" defaultValue="inbox" maxWidth="64">
       <Menu.Group label="Mail">
         <Menu.Item value="inbox" icon={<MailIcon />} trailing={12}>
           Inbox

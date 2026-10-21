@@ -11,18 +11,18 @@ export default function PopoverFilter() {
     setSelected((prev) => (checked ? [...prev, status] : prev.filter((s) => s !== status)))
 
   return (
-    <VStack gap="$2" alignItems="center">
+    <VStack gap="2" alignItems="center">
       <Popover open={open} onOpenChange={setOpen} side="bottom" align="start">
         <Popover.Trigger asChild>
           <Button variant="outline" size="sm" icon={<FilterIcon />}>
             Status ({selected.length})
           </Button>
         </Popover.Trigger>
-        <Popover.Content width="$64">
+        <Popover.Content width="64">
           <Popover.Title>Filter by status</Popover.Title>
-          <VStack gap="$2.5">
+          <VStack gap="2-5">
             {statuses.map((status) => (
-              <HStack key={status} gap="$2" alignItems="center">
+              <HStack key={status} gap="2" alignItems="center">
                 <Checkbox
                   id={`filter-${status}`}
                   checked={selected.includes(status)}
@@ -32,7 +32,7 @@ export default function PopoverFilter() {
               </HStack>
             ))}
           </VStack>
-          <HStack gap="$2" justifyContent="flex-end">
+          <HStack gap="2" justifyContent="flex-end">
             <Button variant="ghost" size="sm" onPress={() => setSelected([])}>
               Clear
             </Button>

@@ -28,25 +28,32 @@ export type ToolbarRole = 'group' | 'toolbar'
 
 const ToolbarFrame = styled(Stack, {
   name: 'Toolbar',
-  borderRadius: '$lg',
-
+  borderRadius: "lg",
   variants: {
     variant: {
-      default: { backgroundColor: '$background' },
-      outline: { backgroundColor: '$background', borderWidth: 1, borderColor: '$border' },
-      filled: { backgroundColor: '$muted' },
+      default: {
+        backgroundColor: "background"
+      },
+      outline: {
+        backgroundColor: "background",
+        borderWidth: 1,
+        borderColor: "border"
+      },
+      filled: {
+        backgroundColor: "muted"
+      },
       // No fill, border or padding: for a bar inside a card or panel.
       ghost: {},
     },
-  } as const,
+  } as const
 })
 
 // `min` is a control's height plus the padding on both sides, so a bar that
 // holds only text is as tall as one with buttons of the same size.
 const sizes = {
-  sm: { gap: '$1', groupGap: '$0.5', padding: '$1', control: '$8', min: '$10' },
-  md: { gap: '$2', groupGap: '$1', padding: '$2', control: '$10', min: '$14' },
-  lg: { gap: '$3', groupGap: '$2', padding: '$4', control: '$12', min: '$20' },
+  sm: { gap: '1', groupGap: '0.5', padding: '1', control: '8', min: '10' },
+  md: { gap: '2', groupGap: '1', padding: '2', control: '10', min: '14' },
+  lg: { gap: '3', groupGap: '2', padding: '4', control: '12', min: '20' },
 } as const
 
 type ToolbarState = {

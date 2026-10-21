@@ -5,7 +5,7 @@ export default function KpiCardWithProgress() {
   return (
     <KpiCard
       width="100%"
-      maxWidth="$80"
+      maxWidth="80"
       variant="elevated"
       label="Quarterly target"
       value="$182,400"

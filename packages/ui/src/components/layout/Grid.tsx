@@ -66,7 +66,7 @@ const percent = (part: number, count: number) => `${(100 * part) / count}%` as P
 /**
  * Width and offset of one cell at each breakpoint. Missing breakpoints inherit
  * the nearest smaller one, and only the values that change are returned, as
- * media props (`$md`), so web output is plain CSS media queries. A `span` map
+ * media props (`md`), so web output is plain CSS media queries. A `span` map
  * without `base` starts at the full row, so `{ md: 8 }` stacks on phones.
  */
 export function gridCellLayout(
@@ -163,7 +163,7 @@ export function GridItem({ children, span = 1, offset = 0, ...props }: GridItemP
 function GridRoot({
   children,
   columns = 1,
-  gap = '$4',
+  gap = '4',
   rowGap = gap,
   columnGap = gap,
   ...props

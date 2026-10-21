@@ -8,9 +8,9 @@ const storage = [
 
 export default function CircularProgressBasic() {
   return (
-    <HStack gap="$6" flexWrap="wrap" justifyContent="center">
+    <HStack gap="6" flexWrap="wrap" justifyContent="center">
       {storage.map((item) => (
-        <VStack key={item.name} gap="$2" alignItems="center">
+        <VStack key={item.name} gap="2" alignItems="center">
           <CircularProgress
             size="lg"
             value={item.used}

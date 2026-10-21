@@ -45,17 +45,16 @@ const NavigationBarRoot = forwardRef<TamaguiElement, NavigationBarProps>(functio
       <View
         ref={ref}
         render="nav"
-        // Web: a navigation landmark of links; native: a tab bar, as screen readers expect.
         {...(!isWeb && { role: 'tablist' })}
         flexDirection="row"
         alignItems="stretch"
         width="100%"
-        minHeight="$20"
-        paddingVertical="$3"
-        gap="$2"
-        backgroundColor="$card"
+        minHeight="20"
+        paddingVertical="3"
+        gap="2"
+        backgroundColor="card"
         borderTopWidth={1}
-        borderColor="$border"
+        borderColor="border"
         {...props}
       >
         {children}
@@ -104,7 +103,7 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
     const count = badgeText(badge)
     const name = count === null ? label : count === '' ? `${label}, new` : `${label}, ${count} new`
     const ripple = useRipple({
-      color: active ? '$secondaryForeground' : '$foreground',
+      color: active ? 'secondaryForeground' : 'foreground',
       disabled,
       onPressIn,
       onPressOut,
@@ -138,12 +137,10 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
       <View
         ref={ref}
         {...semantics}
-        aria-label={name}
-        aria-disabled={ariaState(disabled)}
         flex={1}
         alignItems="center"
         justifyContent="flex-start"
-        gap="$1"
+        gap="1"
         minWidth={0}
         paddingVertical={0}
         borderWidth={0}
@@ -151,20 +148,20 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
         cursor={disabled ? 'default' : 'pointer'}
         opacity={disabled ? 0.5 : 1}
         userSelect="none"
-        focusVisibleStyle={{
-          outlineColor: '$ring',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineOffset: 2,
-          borderRadius: '$lg',
-        }}
-        onPress={choose}
+        outlineColor="focus-visible:ring"
+        outlineStyle="focus-visible:solid"
+        outlineWidth="focus-visible:2px"
+        outlineOffset="focus-visible:2px"
+        borderRadius="focus-visible:lg"
         {...props}
         {...ripple.props}
+        aria-label={name}
+        aria-disabled={ariaState(disabled)}
+        onPress={choose}
       >
         <View
-          width="$16"
-          height="$8"
+          width="16"
+          height="8"
           alignItems="center"
           justifyContent="center"
           position="relative"
@@ -179,10 +176,9 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
             right={0}
             bottom={0}
             left={0}
-            borderRadius="$full"
-            backgroundColor="$secondary"
-            opacity={active ? 1 : 0}
-            hoverStyle={{ opacity: active ? 1 : 0.6 }}
+            borderRadius="full"
+            backgroundColor="secondary"
+            opacity={`${active ? 1 : 0} hover:${active ? 1 : 0.6}`}
           />
           {/* Material draws the press ripple in the indicator's pill shape. */}
           {ripple.element ? (
@@ -193,36 +189,36 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
               right={0}
               bottom={0}
               left={0}
-              borderRadius="$full"
+              borderRadius="full"
               overflow="hidden"
             >
               {ripple.element}
             </View>
           ) : null}
-          <IconDefaults size={24} color={active ? '$secondaryForeground' : '$mutedForeground'}>
+          <IconDefaults size={24} color={active ? 'secondaryForeground' : 'mutedForeground'}>
             {icon}
           </IconDefaults>
           {count !== null ? (
             <View
               aria-hidden
               position="absolute"
-              top={count === '' ? '$1' : 0}
-              left="$9"
-              minWidth={count === '' ? '$1.5' : '$4'}
-              height={count === '' ? '$1.5' : '$4'}
-              paddingHorizontal={count === '' ? 0 : '$1'}
-              borderRadius="$full"
-              backgroundColor="$error"
+              top={count === '' ? '1' : 0}
+              left="9"
+              minWidth={`${count === '' ? "1-5" : "4"}`}
+              height={`${count === '' ? "1-5" : "4"}`}
+              paddingHorizontal={count === '' ? 0 : '1'}
+              borderRadius="full"
+              backgroundColor="error"
               alignItems="center"
               justifyContent="center"
             >
               {count === '' ? null : (
                 <Text
-                  fontFamily="$body"
-                  fontSize="$1"
-                  lineHeight="$1"
+                  fontFamily="body"
+                  fontSize="1"
+                  lineHeight="1"
                   fontWeight="600"
-                  color="$errorForeground"
+                  color="errorForeground"
                 >
                   {count}
                 </Text>
@@ -232,11 +228,11 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
         </View>
         <Text
           aria-hidden
-          fontFamily="$body"
-          fontSize="$1"
-          lineHeight="$1"
+          fontFamily="body"
+          fontSize="1"
+          lineHeight="1"
           fontWeight={active ? '700' : '500'}
-          color={active ? '$foreground' : '$mutedForeground'}
+          color={`${active ? "foreground" : "mutedForeground"}`}
           numberOfLines={1}
         >
           {label}

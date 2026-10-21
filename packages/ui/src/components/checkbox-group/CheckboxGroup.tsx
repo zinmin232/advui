@@ -173,8 +173,8 @@ const CheckboxGroupRoot = forwardRef<TamaguiElement, CheckboxGroupProps>(
           {...(gap !== undefined
             ? { gap }
             : orientation === 'horizontal'
-              ? { columnGap: '$5', rowGap: '$3' }
-              : { gap: '$3' })}
+              ? { columnGap: '5', rowGap: '3' }
+              : { gap: '3' })}
           // A <label for> cannot name a group, so a Field's label is linked by id.
           {...(isWeb &&
             field?.labelId &&

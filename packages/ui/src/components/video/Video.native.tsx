@@ -39,9 +39,9 @@ export function Video({
     <View
       width="100%"
       aspectRatio={ratio}
-      borderRadius="$lg"
+      borderRadius="lg"
       overflow="hidden"
-      backgroundColor="$muted"
+      backgroundColor="muted"
       {...props}
     >
       {Player && !failed ? (

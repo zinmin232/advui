@@ -11,9 +11,7 @@ const LegacyContainer = styled(View, {
   name: 'Container',
   width: '100%',
   marginHorizontal: 'auto',
-  paddingHorizontal: '$4',
-  $md: { paddingHorizontal: '$6' },
-  $lg: { paddingHorizontal: '$8' },
+  paddingHorizontal: "4 md:6 lg:8",
   variants: {
     size: {
       sm: { maxWidth: breakpoints.sm },
@@ -23,7 +21,7 @@ const LegacyContainer = styled(View, {
       full: { maxWidth: '100%' },
     },
   } as const,
-  defaultVariants: { size: 'xl' },
+  defaultVariants: { size: 'xl' }
 })
 
 /** CSS declarations that apply to an element, keyed by media query (`''` without one). */
@@ -74,12 +72,12 @@ describe('Container', () => {
   })
 
   it('takes a gutter token or map, replacing the default at every breakpoint', () => {
-    const none = css(<Container testID="container" gutter="$0" />)
+    const none = css(<Container testID="container" gutter="0" />)
     expect(padding(none[''])).toEqual(space(0))
     expect(none[md]).toBeUndefined()
     expect(none[lg]).toBeUndefined()
 
-    const custom = css(<Container testID="container" gutter={{ base: '$2', md: '$12' }} />)
+    const custom = css(<Container testID="container" gutter={{ base: '2', md: '12' }} />)
     expect(padding(custom[''])).toEqual(space(2))
     expect(padding(custom[md])).toEqual(space(12))
     expect(custom[lg]).toBeUndefined()

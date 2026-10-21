@@ -38,44 +38,38 @@ const TreeFrame = styled(View, {
   name: 'TreeView',
   role: 'tree',
   flexDirection: 'column',
-  gap: '$0.5',
+  gap: "0-5"
 })
 
 const TreeItemFrame = styled(View, {
   name: 'TreeItem',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: '$1.5',
-  minHeight: '$9',
+  gap: "1-5",
   // 44pt touch targets on phones and tablets.
-  $touchable: { minHeight: '$11' },
-  paddingHorizontal: '$2',
-  borderRadius: '$md',
+minHeight: "9 touchable:11",
+  paddingHorizontal: "2",
+  borderRadius: "md",
   cursor: 'pointer',
-  hoverStyle: { backgroundColor: '$accent' },
-  pressStyle: { backgroundColor: '$accentHover' },
-  focusVisibleStyle: {
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: -2,
-  },
-
+  backgroundColor: "hover:accent press:accentHover",
+  outlineColor: "focus-visible:ring",
+  outlineStyle: "focus-visible:solid",
+  outlineWidth: "focus-visible:2px",
+  outlineOffset: "focus-visible:-2px",
   variants: {
     selected: {
       true: {
-        backgroundColor: '$primarySoft',
-        hoverStyle: { backgroundColor: '$primarySoftHover' },
+        backgroundColor: "primarySoft hover:primarySoftHover"
       },
     },
     disabled: {
       true: {
         opacity: 0.5,
         cursor: 'not-allowed',
-        hoverStyle: { backgroundColor: 'transparent' },
+        backgroundColor: "hover:transparent"
       },
     },
-  } as const,
+  } as const
 })
 
 export interface TreeViewProps extends Omit<GetProps<typeof TreeFrame>, 'children' | 'onPress'> {
@@ -259,7 +253,7 @@ function TreeItem({
   const { node, level, posInSet, setSize } = item
   const hasChildren = !!node.children?.length
   const disabled = !!node.disabled
-  const ripple = useRipple({ color: '$foreground', disabled })
+  const ripple = useRipple({ color: 'foreground', disabled })
   return (
     <TreeItemFrame
       ref={itemRef as never}
@@ -288,14 +282,14 @@ function TreeItem({
       {ripple.element}
       {/* One indent per level, from the spacing scale. */}
       {Array.from({ length: level - 1 }, (_, i) => (
-        <View key={i} width="$4" aria-hidden />
+        <View key={i} width="4" aria-hidden />
       ))}
-      <View width="$4" alignItems="center" aria-hidden {...(open && { rotate: '90deg' })}>
-        {hasChildren ? <ChevronRightIcon size={14} color="$mutedForeground" /> : null}
+      <View width="4" alignItems="center" {...(open && { rotate: '90deg' })} aria-hidden>
+        {hasChildren ? <ChevronRightIcon size={14} color="mutedForeground" /> : null}
       </View>
       {node.icon ? (
         <View aria-hidden>
-          <IconDefaults size={16} color={selected ? '$primarySoftForeground' : '$mutedForeground'}>
+          <IconDefaults size={16} color={selected ? 'primarySoftForeground' : 'mutedForeground'}>
             {node.icon}
           </IconDefaults>
         </View>
@@ -304,7 +298,7 @@ function TreeItem({
         size="sm"
         flexShrink={1}
         numberOfLines={1}
-        color={selected ? '$primarySoftForeground' : '$foreground'}
+        color={`${selected ? "primarySoftForeground" : "foreground"}`}
         {...(selected && { weight: 'medium' as const })}
       >
         {node.label}

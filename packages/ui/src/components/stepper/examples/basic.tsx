@@ -10,13 +10,13 @@ const steps = [
 export default function StepperBasic() {
   const [active, setActive] = useState(1)
   return (
-    <VStack gap="$6" width="100%">
+    <VStack gap="6" width="100%">
       <Stepper activeStep={active} onStepPress={setActive} aria-label="Registration progress">
         {steps.map((step) => (
           <Stepper.Step key={step.title} title={step.title} description={step.description} />
         ))}
       </Stepper>
-      <HStack gap="$2" justifyContent="flex-end">
+      <HStack gap="2" justifyContent="flex-end">
         <Button variant="outline" disabled={active === 0} onPress={() => setActive(active - 1)}>
           Back
         </Button>

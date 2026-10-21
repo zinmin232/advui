@@ -68,7 +68,7 @@ export const NumberInput = forwardRef<TamaguiElement, NumberInputProps>(
     const atMax = value != null && max != null && value >= max
 
     return (
-      <XStack gap="$2" alignItems="center">
+      <XStack gap="2" alignItems="center">
         <IconButton
           variant="outline"
           size={size}

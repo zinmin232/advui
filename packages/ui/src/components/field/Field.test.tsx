@@ -240,7 +240,7 @@ describe('Field', () => {
 
   it('stacks the label, control and messages, with a token gap and full width', () => {
     renderWithProvider(
-      <Field testID="field" label="Email" gap="$4" fullWidth padding="$2">
+      <Field testID="field" label="Email" gap="4" fullWidth padding="2">
         <Input />
       </Field>,
     )
