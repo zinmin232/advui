@@ -66,9 +66,9 @@ export function createUniversalConfig(options: UniversalConfigOptions = {}) {
     media,
     shorthands,
     animations,
-    selectionStyles: (theme) =>
-      theme.primarySoft ? { backgroundColor: theme.primarySoft, color: theme.foreground } : null,
     settings: {
+      selectionStyles: (theme) =>
+        theme.primarySoft ? { backgroundColor: theme.primarySoft, color: theme.foreground } : null,
       defaultFont: 'body',
       mediaQueryDefaultActive,
       fastSchemeChange: true,

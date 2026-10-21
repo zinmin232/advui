@@ -24,7 +24,7 @@
   "peerDependencies": {
     "react": ">=19",
     "react-native": "*",
-    "tamagui": "^2.7.7"
+    "tamagui": "^3.0.18"
   },
   "devDependencies": {
     "@advui/eslint-config": "workspace:*",
@@ -32,7 +32,7 @@
     "@types/react": "~19.2.2",
     "react": "19.2.3",
     "react-native": "0.86.3",
-    "tamagui": "2.7.7",
+    "tamagui": "3.0.18",
     "vitest": "^5.0.2"
   }
 }
