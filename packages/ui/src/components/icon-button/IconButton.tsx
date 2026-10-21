@@ -1,5 +1,5 @@
 import { type ReactElement, forwardRef, useContext } from 'react'
-import type { TamaguiElement } from 'tamagui'
+import type { TamaguiElement } from 'tamagui/unstyled'
 import { Button, type ButtonProps } from '../button/Button'
 import { ButtonGroupContext } from '../button/groupContext'
 

@@ -1,4 +1,4 @@
-import { type SpaceTokens, type Token, getTokenValue } from 'tamagui'
+import { type SpaceTokens, type Token, getTokenValue } from 'tamagui/unstyled'
 
 /**
  * How many columns at least `minChildWidth` wide fit in `width`, with `gap`

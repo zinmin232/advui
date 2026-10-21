@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { View } from 'tamagui'
+import { View } from 'tamagui/unstyled'
 import { type VideoProps, VideoFallback, defaultVideoLabels } from './shared'
 
 /**

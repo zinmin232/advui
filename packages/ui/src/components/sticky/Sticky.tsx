@@ -6,11 +6,12 @@ import {
   View,
   type ZIndexTokens,
   isWeb,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 
 export type StickyEdge = 'top' | 'bottom'
 
-export interface StickyProps extends Omit<GetProps<typeof View>, 'children' | 'zIndex'> {
+// `offset` is also a CSS style prop in Tamagui 3; here it is the distance from the edge.
+export interface StickyProps extends Omit<GetProps<typeof View>, 'children' | 'zIndex' | 'offset'> {
   /** The edge it sticks to while its container scrolls. `bottom` is web only. Default `top`. */
   edge?: StickyEdge
   /** Distance from that edge, such as the height of a header above it. Default `0`. */

@@ -10,7 +10,7 @@ import {
   View,
   XStack,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useFieldControl } from '../../hooks/useFieldControl'
 import { fieldBoxStyle } from '../input/Input'
 import { Text } from '../typography/Text'
@@ -63,7 +63,6 @@ borderColor: "focus-within:ring",
 
 const BareInput = styled(TamaguiInput, {
   name: 'ComboboxInput',
-  unstyled: true,
   flex: 1,
   minWidth: "16",
   padding: 0,

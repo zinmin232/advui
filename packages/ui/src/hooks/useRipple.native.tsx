@@ -1,7 +1,7 @@
 import { getUniversalSettings } from '@advui/theme'
 import { type ComponentRef, forwardRef, useMemo, useRef } from 'react'
 import { Platform, StyleSheet, View, codegenNativeCommands, processColor } from 'react-native'
-import { type ColorTokens, getConfig, useTheme } from 'tamagui'
+import { type ColorTokens, getConfig, useTheme } from 'tamagui/unstyled'
 import type { Ripple, RippleOptions } from './useRipple'
 
 type Host = ComponentRef<typeof View>
@@ -41,7 +41,8 @@ function hotspot(view: Host, event: unknown) {
 
 const RippleHost = forwardRef<Host, { color: ColorTokens }>(function RippleHost({ color }, ref) {
   const theme = useTheme()
-  const value = (theme[color.slice(1) as keyof typeof theme] as { val: string } | undefined)?.val
+  const name = color.startsWith('$') ? color.slice(1) : color
+  const value = (theme[name as keyof typeof theme] as { val: string } | undefined)?.val
   const background = useMemo(
     () => ({
       type: 'RippleAndroid',

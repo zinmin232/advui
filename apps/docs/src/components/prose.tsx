@@ -23,7 +23,7 @@ export function PageHeader({
 }) {
   return (
     <VStack gap="3" paddingBottom="4">
-      <Heading level={1} size="4xl" $max-sm={{ fontSize: '7', lineHeight: '7' }}>
+      <Heading level={1} size="4xl" fontSize="max-sm:7" lineHeight="max-sm:7">
         {title}
       </Heading>
       {description ? (

@@ -15,8 +15,9 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useRipple } from '../../hooks/useRipple'
+import { when } from '../../utils/responsive'
 import { Text } from '../typography/Text'
 
 export type StepStatus = 'complete' | 'current' | 'upcoming' | 'error'
@@ -255,7 +256,7 @@ const StepperStep = forwardRef<TamaguiElement, StepperStepProps>(function Steppe
       flexShrink={1}
       minWidth={0}
       gap="0-5"
-      {...(!vertical && !current && { '$max-xs': visuallyHidden })}
+      {...(!vertical && !current && when('max-xs', visuallyHidden))}
     >
       <StepTitle {...(status === 'error' && { tone: 'error' as const })}>
         {/* Inside the title, so it reads as one phrase: "Step 1 of 3: Account, completed". */}
@@ -292,9 +293,8 @@ const StepperStep = forwardRef<TamaguiElement, StepperStepProps>(function Steppe
       margin="-1"
       borderWidth={0}
       borderRadius="md"
-      backgroundColor="transparent hover:accent"
+      backgroundColor={ripple.active ? 'transparent hover:accent' : 'transparent hover:accent press:accentHover'}
       cursor="pointer"
-      pressStyle={ripple.active ? undefined : { backgroundColor: 'accentHover' }}
       outlineColor="focus-visible:ring"
       outlineStyle="focus-visible:solid"
       outlineWidth="focus-visible:2px"
@@ -322,7 +322,7 @@ const StepperStep = forwardRef<TamaguiElement, StepperStepProps>(function Steppe
           <View width="8" alignItems="center" aria-hidden>
             {last ? null : <StepConnector orientation="vertical" done={status === 'complete'} />}
           </View>
-          <View flex={1} minWidth={0} paddingBottom={`${last ? "0" : "4"}`} gap="3">
+          <View flex={1} minWidth={0} paddingBottom={last ? "0" : "4"} gap="3">
             {current ? children : null}
           </View>
         </View>
@@ -340,7 +340,7 @@ const StepperStep = forwardRef<TamaguiElement, StepperStepProps>(function Steppe
       flexShrink={last ? 0 : 1}
       flexBasis="auto"
       minWidth={0}
-      maxWidth={`${last ? "40" : undefined}`}
+      maxWidth={last ? "40" : undefined}
       {...props}
     >
       <View flexShrink={1} minWidth={0} maxWidth="40">

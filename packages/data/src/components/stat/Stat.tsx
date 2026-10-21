@@ -9,7 +9,7 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { Text, isTextContent } from '@advui/core'
 
 export type StatSize = 'sm' | 'md' | 'lg'

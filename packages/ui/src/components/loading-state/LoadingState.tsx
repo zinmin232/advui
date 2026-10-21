@@ -1,5 +1,5 @@
 import { type ReactNode, forwardRef, useEffect, useState } from 'react'
-import { type GetProps, type TamaguiElement, View, XStack, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, XStack, isWeb, styled } from 'tamagui/unstyled'
 import { useDashedBorder } from '../../hooks/useDashedBorder'
 import { Spinner } from '../spinner/Spinner'
 import { Text } from '../typography/Text'

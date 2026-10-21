@@ -15,10 +15,11 @@ import {
   Tooltip as TamaguiTooltip,
   type TooltipProps as TamaguiTooltipProps,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import type { HoverCardProps, HoverCardTriggerProps } from './types'
+import { transformOpacity } from '../../utils/transition'
 
 // Web: built on Tamagui's tooltip rather than its popover, because the trigger
 // is a link — a popover would announce it as a button that expands a dialog.
@@ -105,7 +106,6 @@ const HoverCardContent = forwardRef<TamaguiElement, HoverCardContentProps>(
     return (
       <TamaguiTooltip.Content
         ref={ref as never}
-        unstyled
         backgroundColor="popover"
         borderWidth={1}
         borderColor="border"
@@ -118,9 +118,8 @@ const HoverCardContent = forwardRef<TamaguiElement, HoverCardContentProps>(
         opacity="1 enter:0 exit:0"
         scale="1 enter:0.96 exit:0.96"
         y="0 enter:-4px exit:-4px"
-        transition={reducedMotion ? null : 'quick'}
+        transition={transformOpacity(reducedMotion ? null : 'quick')}
         {...props}
-        animateOnly={['transform', 'opacity']}
       >
         {children}
       </TamaguiTooltip.Content>

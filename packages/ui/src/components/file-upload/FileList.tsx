@@ -1,5 +1,5 @@
 import { FileIcon, IconDefaults, XIcon } from '@advui/icons'
-import { View, XStack } from 'tamagui'
+import { View, XStack } from 'tamagui/unstyled'
 import { IconButton } from '../icon-button/IconButton'
 import { Text } from '../typography/Text'
 import { type PickedFile, formatBytes } from './files'

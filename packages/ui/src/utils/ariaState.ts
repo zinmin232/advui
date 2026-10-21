@@ -1,4 +1,4 @@
-import { isWeb } from 'tamagui'
+import { isWeb } from 'tamagui/unstyled'
 
 /**
  * A boolean ARIA state that turns on and off: `aria-disabled`, `aria-busy`,

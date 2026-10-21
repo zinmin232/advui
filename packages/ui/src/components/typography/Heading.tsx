@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import type { TamaguiTextElement } from 'tamagui'
+import type { TamaguiTextElement } from 'tamagui/unstyled'
 import { Text, type TextProps, type TextSize } from './Text'
 
 type Level = 1 | 2 | 3 | 4 | 5 | 6

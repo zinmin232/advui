@@ -9,7 +9,7 @@ import {
   XStack,
   isWeb,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { CopyButton, type CopyButtonLabels } from '../copy-button/CopyButton'
 import { Text } from '../typography/Text'
 
@@ -256,7 +256,7 @@ export const CodeBlock = forwardRef<TamaguiElement, CodeBlockProps>(function Cod
                   {lineNumber(number)}
                 </CodeText>
               ) : null}
-              <CodeText selectable flexShrink={wrap ? 1 : 0}>
+              <CodeText userSelect="text" flexShrink={wrap ? 1 : 0}>
                 {/* An empty Text has no height. */}
                 {line.some((token) => token.content) ? <Tokens line={line} wrap={wrap} /> : ' '}
                 {/*

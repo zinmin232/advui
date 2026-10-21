@@ -1,7 +1,7 @@
 import { CalendarIcon, IconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef, useId } from 'react'
-import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
-import { useFieldControl } from '../../hooks/useFieldControl'
+import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui/unstyled'
+import { useFieldControl, type ControlStateProps } from '../../hooks/useFieldControl'
 import { fieldBoxStyle } from '../input/Input'
 import { Text } from '../typography/Text'
 import { ariaState } from '../../utils/ariaState'
@@ -44,7 +44,9 @@ const TriggerFrame = styled(View, {
   defaultVariants: { size: 'md' }
 })
 
-export interface PickerTriggerProps extends Omit<GetProps<typeof TriggerFrame>, 'children'> {
+export interface PickerTriggerProps
+  extends Omit<GetProps<typeof TriggerFrame>, 'children' | 'disabled' | 'invalid'>,
+    ControlStateProps {
   /** The formatted value, or null to show the placeholder. */
   valueText: string | null
   placeholder: string
@@ -78,7 +80,7 @@ export const PickerTrigger = forwardRef<TamaguiElement, PickerTriggerProps>(
         size="sm"
         numberOfLines={1}
         flexShrink={1}
-        color={`${valueText ? "foreground" : "mutedForeground"}`}
+        color={valueText ? "foreground" : "mutedForeground"}
       >
         {valueText ?? placeholder}
       </Text>

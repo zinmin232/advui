@@ -1,4 +1,4 @@
-import { getConfig, useDidFinishSSR, useMedia } from 'tamagui'
+import { getConfig, useDidFinishSSR, useMedia } from 'tamagui/unstyled'
 import {
   type Breakpoint,
   type Responsive,

@@ -1,5 +1,5 @@
 import { type ReactNode, forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, View, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, styled } from 'tamagui/unstyled'
 
 export type ScrollAreaOrientation = 'vertical' | 'horizontal'
 

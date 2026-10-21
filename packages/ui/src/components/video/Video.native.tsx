@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { View } from 'tamagui'
+import { View } from 'tamagui/unstyled'
 import { type VideoProps, VideoFallback, defaultVideoLabels, getVideoView } from './shared'
 
 let warned = false

@@ -14,7 +14,7 @@ import {
   useConfiguration,
   useWindowDimensions,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
@@ -27,6 +27,7 @@ import {
   titleStyle,
 } from '../dialog/styles'
 import { useOverlayPress } from '../dialog/useOverlayPress'
+import { transformOpacity } from '../../utils/transition'
 
 // A modal panel pinned to one edge of the screen. It is a Dialog underneath
 // (focus trap, Escape, overlay, labelling), so it shares Dialog's styles.
@@ -129,12 +130,13 @@ const Content = forwardRef<TamaguiElement, DrawerContentProps>(function DrawerCo
   // Slide in from just past the edge. Window size (not a percentage) because
   // the native animation driver only interpolates numbers.
   const viewport = useWindowDimensions()
-  const offscreen = {
-    left: { x: -viewport.width },
-    right: { x: viewport.width },
-    top: { y: -viewport.height },
-    bottom: { y: viewport.height },
-  }[side]
+  const [axis, distance] = {
+    left: ['x', -viewport.width],
+    right: ['x', viewport.width],
+    top: ['y', -viewport.height],
+    bottom: ['y', viewport.height],
+  }[side] as ['x' | 'y', number]
+  const offscreen = { [axis]: { default: 0, enter: distance, exit: distance } }
 
   // Keep the edge that touches the screen clear of the notch, status bar and
   // home indicator (native; insets come from UniversalProvider).
@@ -160,10 +162,8 @@ const Content = forwardRef<TamaguiElement, DrawerContentProps>(function DrawerCo
         side={side}
         size={size}
         width={horizontal ? widths[size] : undefined}
-        enterStyle={offscreen}
-        exitStyle={offscreen}
-        transition={transition}
-        animateOnly={['transform', 'opacity']}
+        {...offscreen}
+        transition={transformOpacity(transition)}
         {...safe}
         {...props}
       >

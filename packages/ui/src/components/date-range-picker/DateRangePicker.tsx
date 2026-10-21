@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import type { TamaguiElement } from 'tamagui'
+import type { TamaguiElement } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { plainSpaces } from '../../utils/plainSpaces'
 import { Calendar } from '../calendar/Calendar'

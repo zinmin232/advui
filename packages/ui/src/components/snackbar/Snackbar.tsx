@@ -2,7 +2,7 @@ import { XIcon } from '@advui/icons'
 import { shadows, zIndex } from '@advui/theme'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
 import { AccessibilityInfo, Platform } from 'react-native'
-import { Portal, Text, View, isWeb } from 'tamagui'
+import { Portal, Text, View, isWeb } from 'tamagui/unstyled'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 
@@ -87,7 +87,7 @@ export function Snackbar({
             maxWidth="144"
             minHeight="12"
             paddingLeft="4"
-            paddingRight={`${action || closable ? "2" : "4"}`}
+            paddingRight={action || closable ? "2" : "4"}
             paddingVertical="2"
             borderRadius="sm"
             backgroundColor="foreground"
@@ -122,8 +122,7 @@ export function Snackbar({
                 justifyContent="center"
                 borderRadius="button"
                 cursor="pointer"
-                opacity="hover:0.85"
-                pressStyle={actionRipple.active ? undefined : { opacity: 0.7 }}
+                opacity={actionRipple.active ? 'hover:0.85' : 'hover:0.85 press:0.7'}
                 outlineColor="focus-visible:inversePrimary"
                 outlineStyle="focus-visible:solid"
                 outlineWidth="focus-visible:2px"

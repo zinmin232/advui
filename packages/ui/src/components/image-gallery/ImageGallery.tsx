@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon, XIcon } from '@advui/icons'
 import { useEffect, useRef } from 'react'
-import { View, XStack, isWeb } from 'tamagui'
+import { View, XStack, isWeb } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { Dialog } from '../dialog/Dialog'
@@ -166,8 +166,7 @@ export function ImageGallery({
               fit="contain"
               width="100%"
               // A set height keeps the caption and buttons on screen, whatever the photo's shape.
-              height="96"
-              $max-sm={{ height: '64' }}
+              height="96 max-sm:64"
               borderRadius="md"
             />
             {image.caption ? <Dialog.Description>{image.caption}</Dialog.Description> : null}

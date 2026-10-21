@@ -1,5 +1,5 @@
 import { type KeyboardEvent, forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
-import { type Token, View, type ViewProps, getTokenValue } from 'tamagui'
+import { type Token, View, type ViewProps, getTokenValue } from 'tamagui/unstyled'
 import { responsiveStyle } from '../../utils/responsive'
 import {
   type CarouselTrackHandle,

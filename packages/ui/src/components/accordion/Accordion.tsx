@@ -12,11 +12,12 @@ import {
   createStyledContext,
   isWeb,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 import { Text } from '../typography/Text'
 import { ariaState } from '../../utils/ariaState'
+import { flatValue } from '../../utils/responsive'
 import { isTextContent } from '../../utils/isTextContent'
 
 export type AccordionVariant = 'default' | 'card'
@@ -99,7 +100,6 @@ const AccordionTrigger = forwardRef<TamaguiElement, AccordionTriggerProps>(
       <TamaguiAccordion.Trigger
         ref={ref as never}
         aria-controls={contentId}
-        unstyled
         flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
@@ -107,14 +107,16 @@ const AccordionTrigger = forwardRef<TamaguiElement, AccordionTriggerProps>(
         width="100%"
         minHeight="11"
         paddingVertical="3"
-        paddingHorizontal={`${variant === 'card' ? "4" : "1"}`}
+        paddingHorizontal={variant === 'card' ? "4" : "1"}
         borderWidth={0}
         borderRadius={variant === 'card' ? 0 : 'sm'}
-        backgroundColor="transparent"
+        backgroundColor={flatValue(
+          'transparent',
+          !disabled && 'hover:muted',
+          !disabled && !ripple.active && 'press:accent',
+        )}
         cursor={disabled ? 'not-allowed' : 'pointer'}
         opacity={disabled ? 0.5 : 1}
-        hoverStyle={disabled ? undefined : { backgroundColor: 'muted' }}
-        pressStyle={disabled || ripple.active ? undefined : { backgroundColor: 'accent' }}
         outlineColor="focus-visible:ring"
         outlineStyle="focus-visible:solid"
         outlineWidth="focus-visible:2px"
@@ -177,11 +179,10 @@ const AccordionContent = forwardRef<TamaguiElement, AccordionContentProps>(
           id={contentId}
           {...(!isWeb && { role: undefined, 'aria-labelledby': undefined })}
           paddingBottom="4"
-          paddingHorizontal={`${variant === 'card' ? "4" : "1"}`}
+          paddingHorizontal={variant === 'card' ? "4" : "1"}
           opacity="exit:0"
           transition={reducedMotion ? undefined : 'medium'}
           {...props}
-          unstyled
         >
           {isTextContent(children) ? <Text size="sm">{children}</Text> : children}
         </TamaguiAccordion.Content>

@@ -1,7 +1,7 @@
 import { ExternalLinkIcon } from '@advui/icons'
 import { type CSSProperties, type ReactNode, forwardRef } from 'react'
 import { type GestureResponderEvent, Linking } from 'react-native'
-import { type GetProps, type TamaguiTextElement, Text as TamaguiText, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiTextElement, Text as TamaguiText, isWeb, styled } from 'tamagui/unstyled'
 import { type TextSize, textSizes, textWeights } from '../typography/Text'
 
 export type LinkTone = 'primary' | 'muted' | 'inherit'
@@ -191,9 +191,7 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
   return (
     <LinkText
       ref={ref}
-      // Tamagui's Text sets the theme's text color unless unstyled. Before
-      // tone, which must win: later variant props override earlier ones.
-      unstyled={tone === 'inherit'}
+      // The unstyled Text has no color of its own, so `inherit` keeps the parent's.
       tone={tone}
       underline={underline}
       size={size}
@@ -208,7 +206,6 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
           {'\u00A0'}
           <TamaguiText
             // Unstyled, so the icon's currentColor is the link's.
-            unstyled
             {...(isWeb && { display: 'inline-flex', verticalAlign: 'middle' })}
             {...(!isWeb && { accessible: false })}
           >
@@ -219,7 +216,7 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
           </TamaguiText>
           {/* Text, not the icon's label: every browser puts text in the link's name. */}
           {isWeb ? (
-            <TamaguiText unstyled {...visuallyHidden}>
+            <TamaguiText {...visuallyHidden}>
               {` ${labels.external}`}
             </TamaguiText>
           ) : null}

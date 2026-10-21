@@ -1,4 +1,4 @@
-import { View, withStaticProperties } from 'tamagui'
+import { View, withStaticProperties } from 'tamagui/unstyled'
 import { sheetMenu, useSheetMenu } from '../dropdown-menu/sheetMenu'
 import type { ContextMenuProps, ContextMenuTriggerProps } from './types'
 

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { isWeb } from 'tamagui'
+import { isWeb } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import {
   type FileRejection,

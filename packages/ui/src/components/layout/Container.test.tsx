@@ -1,6 +1,6 @@
 import { breakpoints } from '@advui/theme'
 import type { ReactElement } from 'react'
-import { View, styled } from 'tamagui'
+import { View, styled } from 'tamagui/unstyled'
 import { describe, expect, it } from 'vitest'
 import { renderWithProvider } from '../../../test/utils'
 import { Text } from '../typography/Text'

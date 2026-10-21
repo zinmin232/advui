@@ -7,7 +7,7 @@ import {
   View,
   isWeb,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { FieldContext, type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
 import { ariaState } from '../../utils/ariaState'

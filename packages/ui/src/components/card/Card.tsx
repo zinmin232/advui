@@ -7,7 +7,7 @@ import {
   View,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useRipple } from '../../hooks/useRipple'
 import { Text } from '../typography/Text'
 
@@ -110,7 +110,8 @@ const CardImpl = forwardRef<TamaguiElement, GetProps<typeof CardFrame>>(function
       ref={ref}
       {...(ripple.active && {
         // The ripple is the press feedback, so the card does not also shrink.
-        pressStyle: { scale: 1, opacity: 1 },
+        scale: 'press:1',
+        opacity: 'press:1',
         // It is clipped inside the border: drop a transparent one.
         ...((props.variant === 'filled' || props.variant === 'ghost') && { borderWidth: 0 }),
       })}

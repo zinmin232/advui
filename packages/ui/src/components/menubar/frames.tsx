@@ -1,4 +1,4 @@
-import { View, styled } from 'tamagui'
+import { View, styled } from 'tamagui/unstyled'
 
 // The bar and its triggers, shared by the web and native menubars.
 

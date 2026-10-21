@@ -1,6 +1,6 @@
 import { CheckIcon, IconDefaults } from '@advui/icons'
 import { type ReactNode, createContext, useContext } from 'react'
-import { Sheet, View } from 'tamagui'
+import { Sheet, View } from 'tamagui/unstyled'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
@@ -115,7 +115,7 @@ function Row({
       paddingHorizontal="3"
       borderRadius="md"
       opacity={disabled ? 0.5 : 1}
-      pressStyle={disabled || ripple.active ? undefined : { backgroundColor: 'accent' }}
+      backgroundColor={disabled || ripple.active ? undefined : 'press:accent'}
       {...ripple.props}
       onPress={disabled ? undefined : onPress}
       accessibilityActions={[{ name: 'activate' }]}
@@ -131,7 +131,7 @@ function Row({
 
 function Title({ children, destructive }: { children: ReactNode; destructive?: boolean }) {
   return (
-    <Text flex={1} color={`${destructive ? "errorSoftForeground" : "popoverForeground"}`}>
+    <Text flex={1} color={destructive ? "errorSoftForeground" : "popoverForeground"}>
       {children}
     </Text>
   )

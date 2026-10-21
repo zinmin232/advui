@@ -1,4 +1,4 @@
-import { useMedia } from 'tamagui'
+import { useMedia } from 'tamagui/unstyled'
 import { type BreakpointRange, type HideProps, type ShowProps, isEmptyRange } from './range'
 
 // Native has no CSS: read the window size and leave the hidden content out,

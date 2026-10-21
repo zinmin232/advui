@@ -1,4 +1,4 @@
-import { View, type ViewProps, styled } from 'tamagui'
+import { View, type ViewProps, styled } from 'tamagui/unstyled'
 import {
   type BreakpointRange,
   type HideProps,
@@ -26,13 +26,11 @@ function displayStyle(range: BreakpointRange, show: boolean): ViewProps {
     }
     return { display: show ? 'none' : 'contents' }
   }
-  const style: Record<string, unknown> = {}
+  const display: Record<string, string> = {}
   for (const [key, inRange] of Object.entries(rangeSteps(range))) {
-    const display = inRange === show ? 'contents' : 'none'
-    if (key === 'base') style.display = display
-    else style[`$${key}`] = { display }
+    display[key === 'base' ? 'default' : key] = inRange === show ? 'contents' : 'none'
   }
-  return style as ViewProps
+  return { display } as unknown as ViewProps
 }
 
 /** Renders its children only while the window is in the range: `above="md"` is md and up. */

@@ -6,9 +6,9 @@ import {
   Theme,
   View,
   getConfig,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import {
-  type Breakpoint,
+  type ConditionalValue,
   type Responsive,
   breakpointKeys,
   responsiveValue,
@@ -31,9 +31,7 @@ const spacingScale: Record<SectionSpacing, [SpaceTokens, SpaceTokens]> = {
 
 const fromMd = breakpointKeys.indexOf('md')
 
-type PaddingStyle = { paddingVertical?: SpaceTokens } & Partial<
-  Record<`$${Breakpoint}`, { paddingVertical: SpaceTokens }>
->
+type PaddingStyle = { paddingVertical?: ConditionalValue<SpaceTokens> }
 
 /**
  * Vertical padding for a spacing value or map. Each step grows at md, so the
@@ -41,7 +39,7 @@ type PaddingStyle = { paddingVertical?: SpaceTokens } & Partial<
  * whether it is md or wider; only the breakpoints where it changes are emitted.
  */
 export function sectionPadding(spacing: Responsive<SectionSpacing>): PaddingStyle {
-  const style: PaddingStyle = {}
+  const paddingVertical: ConditionalValue<SpaceTokens> = {}
   let step: SectionSpacing = 'md'
   let current: SpaceTokens | undefined
   for (const [index, key] of (['base', ...breakpointKeys] as const).entries()) {
@@ -49,10 +47,9 @@ export function sectionPadding(spacing: Responsive<SectionSpacing>): PaddingStyl
     const padding = spacingScale[step][index - 1 >= fromMd ? 1 : 0]
     if (padding === current) continue
     current = padding
-    if (key === 'base') style.paddingVertical = padding
-    else style[`$${key}`] = { paddingVertical: padding }
+    paddingVertical[key === 'base' ? 'default' : key] = padding
   }
-  return style
+  return { paddingVertical }
 }
 
 type SubTheme = 'primary' | 'inverse'
@@ -80,7 +77,10 @@ const surfaces: Record<SectionBackground, { theme?: SubTheme; color?: string; fa
     inverse: { theme: 'inverse', color: 'background' },
   }
 
-export interface SectionProps extends Omit<GetProps<typeof View>, 'children'> {
+// `background` and `container` are also Tamagui 3 style props; here they pick
+// the surface and the inner Container.
+export interface SectionProps
+  extends Omit<GetProps<typeof View>, 'children' | 'background' | 'container'> {
   /** Vertical padding, a step or a mobile-first map. Default `md`. */
   spacing?: Responsive<SectionSpacing>
   /** The surface. `primary` and `inverse` switch to a sub-theme, so text stays readable. */

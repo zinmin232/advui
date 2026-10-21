@@ -1,7 +1,7 @@
 import { CheckIcon, IconDefaults } from '@advui/icons'
 import { shadows, zIndex } from '@advui/theme'
 import type { ReactElement, ReactNode } from 'react'
-import { type Menu, View } from 'tamagui'
+import { type Menu, View } from 'tamagui/unstyled'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { Text } from '../typography/Text'
 import {
@@ -14,31 +14,32 @@ import {
   type DropdownMenuRadioItemProps,
   textOf,
 } from './types'
+import { transformOpacity } from '../../utils/transition'
 
 // Web menu surface and items, shared by Dropdown Menu and Context Menu. Each
 // wraps its own Tamagui primitive (they use separate contexts) with the same
 // parts API, so the parts are built once per primitive.
 
 const itemFrame = {
-  unstyled: true,
   flexDirection: 'row',
   alignItems: 'center',
   gap: '2',
-  minHeight: '8',
+  // Finger-sized rows on touch screens.
+  minHeight: '8 touchable:11',
   paddingHorizontal: '2',
   borderRadius: 'sm',
   cursor: 'pointer',
   // Pointer movement focuses items, so one style covers mouse and keyboard.
-  focusStyle: { backgroundColor: 'accent' },
-  pressStyle: { backgroundColor: 'accentHover' },
-  focusVisibleStyle: { outlineWidth: 0 },
-  // Finger-sized rows on touch screens.
-  $touchable: { minHeight: '11' },
+  backgroundColor: 'focus:accent press:accentHover',
+  outlineWidth: 'focus-visible:0',
 } as const
 
 const disabledFrame = { opacity: 0.5, cursor: 'not-allowed' } as const
 
 /** What a menu built on these parts passes to the content beyond its props (Menubar). */
+/** What Tamagui 3 passes to focus and dismiss handlers: the event, and a way to cancel. */
+export type FocusDetails = { event?: Event | undefined; cancel(): void }
+
 export type MenuContentOptions = {
   id?: string
   /**
@@ -48,11 +49,11 @@ export type MenuContentOptions = {
   pointerEvents?: 'auto'
   onKeyDown?: (event: { key: string; preventDefault: () => void }) => void
   /** Tamagui's menu takes it at runtime; its types leave it out. */
-  onOpenAutoFocus?: (event: Event) => void
-  onCloseAutoFocus?: (event: Event) => void
-  onEscapeKeyDown?: (event: KeyboardEvent) => void
+  onOpenAutoFocus?: (details: FocusDetails) => void
+  onCloseAutoFocus?: (details: FocusDetails) => void
+  onEscapeKeyDown?: () => void
   onPointerDownOutside?: () => void
-  onFocusOutside?: (event: CustomEvent<{ originalEvent: FocusEvent }>) => void
+  onFocusOutside?: (details: FocusDetails) => void
 }
 
 /** The menu surface. Menus take it from `createMenuParts`, without the options. */
@@ -67,7 +68,6 @@ export function createMenuContent(Primitive: typeof Menu) {
       <Primitive.Portal zIndex={zIndex.popover}>
         <Primitive.Content
           {...(options as object)}
-          unstyled
           backgroundColor="popover"
           borderWidth={1}
           borderColor="border"
@@ -75,13 +75,10 @@ export function createMenuContent(Primitive: typeof Menu) {
           padding="1"
           minWidth={minWidth}
           {...shadows.md}
-          enterStyle={{ opacity: 0, scale: 0.97, y: -4 }}
-          exitStyle={{ opacity: 0, scale: 0.97, y: -4 }}
-          opacity={1}
-          scale={1}
-          y={0}
-          transition={reducedMotion ? null : 'quicker'}
-          animateOnly={['transform', 'opacity']}
+          opacity={{ default: 1, enter: 0, exit: 0 }}
+          scale={{ default: 1, enter: 0.97, exit: 0.97 }}
+          y={{ default: 0, enter: -4, exit: -4 }}
+          transition={transformOpacity(reducedMotion ? null : 'quicker')}
         >
           {children}
         </Primitive.Content>
@@ -110,7 +107,6 @@ export function createMenuParts(Primitive: typeof Menu) {
           </IconDefaults>
         ) : null}
         <Primitive.ItemTitle
-          unstyled
           flex={1}
           fontFamily="body"
           fontSize="2"
@@ -164,7 +160,7 @@ export function createMenuParts(Primitive: typeof Menu) {
   function IndicatorSlot({ children }: { children: ReactNode }) {
     return (
       <View width="4" alignItems="center" justifyContent="center">
-        <Primitive.ItemIndicator unstyled>{children}</Primitive.ItemIndicator>
+        <Primitive.ItemIndicator>{children}</Primitive.ItemIndicator>
       </View>
     )
   }
@@ -249,9 +245,8 @@ export function createMenuParts(Primitive: typeof Menu) {
   function Label({ children }: DropdownMenuLabelProps) {
     return (
       <Primitive.Label
-        unstyled
         paddingHorizontal="2"
-        paddingVertical="1.5"
+        paddingVertical="1-5"
         fontFamily="body"
         fontSize="1"
         lineHeight="1"
@@ -266,7 +261,6 @@ export function createMenuParts(Primitive: typeof Menu) {
   function Separator() {
     return (
       <Primitive.Separator
-        unstyled
         height={1}
         backgroundColor="border"
         marginVertical="1"

@@ -10,15 +10,16 @@ import { shadows, zIndex } from '@advui/theme'
 import {
   Toast,
   type ToastT,
-  type ToasterProps as TamaguiToasterProps,
+  type ToastRootProps as TamaguiToasterProps,
   toast,
-} from '@tamagui/toast/v2'
+} from '@tamagui/toast'
 import type { ReactNode } from 'react'
-import { View, isWeb, useWindowDimensions } from 'tamagui'
+import { View, isWeb, useWindowDimensions } from 'tamagui/unstyled'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 import { Spinner } from '../spinner'
 import { Text } from '../typography/Text'
+import { flatValue } from '../../utils/responsive'
 
 type ToastType = NonNullable<ToastT['type']>
 
@@ -30,7 +31,7 @@ const typeIcon: Partial<Record<ToastType, ReactNode>> = {
   loading: <Spinner size="sm" />,
 }
 
-const typeColor: Record<ToastType, `$${string}`> = {
+const typeColor: Record<ToastType, string> = {
   default: 'foreground',
   success: 'success',
   error: 'error',
@@ -41,7 +42,7 @@ const typeColor: Record<ToastType, `$${string}`> = {
 
 export type ToasterProps = Pick<
   TamaguiToasterProps,
-  'position' | 'duration' | 'visibleToasts' | 'expand' | 'closeButton' | 'swipeDirection' | 'offset'
+  'position' | 'duration' | 'visibleToasts' | 'expand' | 'closeButton' | 'swipeDirection'
 >
 
 function ToastContent({ item, onClose }: { item: ToastT; onClose: () => void }) {
@@ -111,13 +112,16 @@ function ToastContent({ item, onClose }: { item: ToastT; onClose: () => void }) 
           justifyContent="center"
           borderRadius="sm"
           cursor="pointer"
-          backgroundColor="hover:accent"
-          pressStyle={closeRipple.active ? undefined : { backgroundColor: 'accentHover' }}
+          backgroundColor={flatValue(
+            isWeb && 'transparent',
+            'hover:accent',
+            !closeRipple.active && 'press:accentHover',
+          )}
           outlineColor="focus-visible:ring"
           outlineStyle="focus-visible:solid"
           outlineWidth="focus-visible:2px"
           {...(isWeb
-                    ? { type: 'button', padding: 0, borderWidth: 0, backgroundColor: 'transparent' }
+                    ? { type: 'button', padding: 0, borderWidth: 0 }
                     : { accessible: true, hitSlop: 10 })}
           {...closeRipple.props}
           onPress={onClose}

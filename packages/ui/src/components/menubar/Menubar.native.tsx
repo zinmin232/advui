@@ -1,5 +1,5 @@
 import { createContext, forwardRef, useContext, useId } from 'react'
-import { type TamaguiElement, withStaticProperties } from 'tamagui'
+import { type TamaguiElement, withStaticProperties } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { ariaState } from '../../utils/ariaState'

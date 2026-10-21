@@ -1,7 +1,7 @@
 import { ChevronDownIcon, PipetteIcon } from '@advui/icons'
 import { type HSVA, fromHsv, toHex, withAlpha } from '@advui/utils'
 import { forwardRef, useContext, useEffect, useRef, useState } from 'react'
-import { type TamaguiElement, View, isWeb } from 'tamagui'
+import { type TamaguiElement, View, isWeb } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { FieldContext, type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
 import { sentences } from '../../utils/plainText'

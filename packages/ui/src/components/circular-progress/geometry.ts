@@ -13,7 +13,7 @@ export const toneColor = {
   success: 'success',
   warning: 'warning',
   error: 'error',
-} as const satisfies Record<CircularProgressTone, `$${string}`>
+} as const satisfies Record<CircularProgressTone, string>
 
 // The percentage label is only legible from `md` up.
 export const valueFontSize = { sm: null, md: '1', lg: '3' } as const

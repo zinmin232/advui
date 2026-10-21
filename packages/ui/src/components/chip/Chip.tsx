@@ -1,10 +1,11 @@
 import { CheckIcon, IconDefaults, XIcon } from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
 import { ariaState } from '../../utils/ariaState'
+import { flatValue } from '../../utils/responsive'
 
 const ChipFrame = styled(View, {
   name: 'Chip',
@@ -144,14 +145,17 @@ export const Chip = forwardRef<TamaguiElement, ChipProps>(function Chip(
           height="6"
           borderRadius="full"
           cursor={disabled ? 'not-allowed' : 'pointer'}
-          hoverStyle={disabled ? undefined : { backgroundColor: 'accent' }}
-          pressStyle={ removeRipple.active || disabled ? undefined : { backgroundColor: 'accentHover' } }
+          backgroundColor={flatValue(
+            isWeb && 'transparent',
+            !disabled && 'hover:accent',
+            !disabled && !removeRipple.active && 'press:accentHover',
+          )}
           outlineColor="focus-visible:ring"
           outlineStyle="focus-visible:solid"
           outlineWidth="focus-visible:2px"
           {...(isWeb
-                    ? { type: 'button', padding: 0, borderWidth: 0, backgroundColor: 'transparent' }
-                    : { accessible: true, hitSlop: 10 })}
+            ? { type: 'button', padding: 0, borderWidth: 0 }
+            : { accessible: true, hitSlop: 10 })}
           {...removeRipple.props}
           aria-disabled={ariaState(disabled)}
           onPress={() => !disabled && onRemove()}
@@ -200,7 +204,7 @@ export const Chip = forwardRef<TamaguiElement, ChipProps>(function Chip(
           : undefined
       }
       {...(ripple.active && {
-        pressStyle: { backgroundColor: on ? 'secondary' : 'transparent' },
+        backgroundColor: on ? 'press:secondary' : 'press:transparent',
         // The ripple is clipped inside the border; a selected chip's border
         // matches its fill, so drop it and let the ripple reach the edge.
         ...(on && { borderWidth: 0 }),

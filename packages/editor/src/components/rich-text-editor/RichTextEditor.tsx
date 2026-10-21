@@ -10,7 +10,7 @@ import {
   StrikethroughIcon,
 } from '@advui/icons'
 import { type ReactElement, useId, useLayoutEffect, useRef, useState } from 'react'
-import { type GetProps, type TamaguiElement, View, XStack, isWeb } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, XStack, isWeb } from 'tamagui/unstyled'
 import {
   Button,
   IconButton,
@@ -308,7 +308,7 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
           borderWidth={0}
           borderRadius={0}
           backgroundColor="transparent"
-          focusVisibleStyle={{ outlineWidth: 0, outlineStyle: 'none' }}
+          outlineWidth="focus-visible:0px" outlineStyle="focus-visible:none"
           onSelectionChange={(event: { nativeEvent: { selection: TextSelection } }) => {
             selection.current = event.nativeEvent.selection
           }}

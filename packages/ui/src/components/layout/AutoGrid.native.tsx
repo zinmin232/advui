@@ -1,5 +1,5 @@
 import { Children, forwardRef, isValidElement, useState } from 'react'
-import { type TamaguiElement, View } from 'tamagui'
+import { type TamaguiElement, View } from 'tamagui/unstyled'
 import type { AutoGridProps } from './AutoGrid'
 import { autoGridColumns, spaceValue } from './autoGridColumns'
 

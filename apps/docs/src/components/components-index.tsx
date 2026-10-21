@@ -68,7 +68,7 @@ export function ComponentsIndex({
           flex={1}
           borderWidth={0}
           paddingHorizontal="0"
-          focusVisibleStyle={{ outlineWidth: 0 }}
+          outlineWidth="focus-visible:0px"
           placeholder="Filter components…"
           aria-label="Filter components"
           value={query}

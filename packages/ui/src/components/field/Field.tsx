@@ -1,5 +1,5 @@
 import { type ReactNode, forwardRef, isValidElement, useId, useMemo } from 'react'
-import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui/unstyled'
 import { FieldContext, type FieldState } from '../../hooks/useFieldControl'
 import { useParentForm } from '../../hooks/useParentForm'
 import { plainText } from '../../utils/plainText'

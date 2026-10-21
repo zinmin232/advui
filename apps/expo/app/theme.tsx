@@ -61,7 +61,7 @@ export default function ThemeScreen() {
               <Button
                 key={name}
                 size="sm"
-                borderColor={`${preset === name ? "ring" : "input"}`}
+                borderColor={preset === name ? "ring" : "input"}
                 borderWidth={preset === name ? 2 : 1}
                 variant="outline"
                 role="radio"
@@ -81,7 +81,7 @@ export default function ThemeScreen() {
             ))}
             <Button
               size="sm"
-              borderColor={`${preset === 'material' ? "ring" : "input"}`}
+              borderColor={preset === 'material' ? "ring" : "input"}
               borderWidth={preset === 'material' ? 2 : 1}
               variant="outline"
               role="radio"

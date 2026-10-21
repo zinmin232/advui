@@ -1,6 +1,6 @@
 import { useIconColor } from '@advui/icons'
 import { type ReactNode, useId, useRef, useState } from 'react'
-import { type GetProps, View, VisuallyHidden, XStack, isWeb } from 'tamagui'
+import { type GetProps, View, VisuallyHidden, XStack, isWeb } from 'tamagui/unstyled'
 import { Button, Text } from '@advui/core'
 import { Table } from '@advui/data'
 
@@ -168,9 +168,9 @@ export function ChartFrame({
               <View
                 aria-hidden
                 backgroundColor={item.color as never}
-                width={`${item.shape === 'line' ? "3" : "2-5"}`}
-                height={item.shape === 'line' ? 2 : '2.5'}
-                borderRadius={`${item.shape === 'line' ? "full" : "xs"}`}
+                width={item.shape === 'line' ? "3" : "2-5"}
+                height={item.shape === 'line' ? 2 : '2-5'}
+                borderRadius={item.shape === 'line' ? "full" : "xs"}
               />
               <Text size="xs" tone="muted">
                 {item.label}
@@ -239,8 +239,8 @@ export function ChartFrame({
                 <View
                   backgroundColor={row.color as never}
                   width="2-5"
-                  height={row.shape === 'line' ? 2 : '2.5'}
-                  borderRadius={`${row.shape === 'line' ? "full" : "xs"}`}
+                  height={row.shape === 'line' ? 2 : '2-5'}
+                  borderRadius={row.shape === 'line' ? "full" : "xs"}
                 />
                 <Text size="sm" weight="semibold">
                   {row.value}

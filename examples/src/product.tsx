@@ -73,7 +73,7 @@ export function ProductScreen() {
               borderRadius="lg"
               overflow="hidden"
               borderWidth={2}
-              borderColor={`${image === index ? "ring" : "transparent"}`}
+              borderColor={image === index ? "ring" : "transparent"}
               padding={0}
               cursor="pointer"
             >
@@ -129,7 +129,7 @@ export function ProductScreen() {
                 key={s}
                 gap="1-5"
                 borderWidth={1}
-                borderColor={`${size === s ? "ring" : "border"}`}
+                borderColor={size === s ? "ring" : "border"}
                 borderRadius="md"
                 paddingHorizontal="3"
                 height="10"

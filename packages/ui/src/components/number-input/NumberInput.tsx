@@ -1,6 +1,6 @@
 import { MinusIcon, PlusIcon } from '@advui/icons'
 import { forwardRef, useState } from 'react'
-import { type TamaguiElement, XStack, isWeb } from 'tamagui'
+import { type TamaguiElement, XStack, isWeb } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useFieldControl } from '../../hooks/useFieldControl'
 import { IconButton } from '../icon-button/IconButton'

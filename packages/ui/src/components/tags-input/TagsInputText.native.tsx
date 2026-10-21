@@ -1,7 +1,14 @@
 import { registerFocusable } from '@tamagui/focusable'
 import { forwardRef, useEffect, useRef } from 'react'
 import { TextInput, type TextInputProps } from 'react-native'
-import { Text, View, styled, useComposedRefs } from 'tamagui'
+import {
+  type GetProps,
+  Text,
+  View,
+  createStyledHOC,
+  styled,
+  useComposedRefs,
+} from 'tamagui/unstyled'
 import { textBoxStyle } from './textBoxStyle'
 
 type KeyHandler = (event: { key: string }) => void
@@ -51,13 +58,24 @@ const Placeholder = styled(Text, {
 })
 
 /**
- * Native: takes `onKeyDown` like the web box, as a styleable that keeps it.
+ * Native: takes `onKeyDown` like the web box, as a styled HOC that keeps it.
  * Android wraps a placeholder wider than the box onto a cut-off second line,
  * whatever the TextInput's props, so the box shows its own one-line copy and
  * keeps the real placeholder, transparent, for screen readers.
  */
-export const TagsInputText = Box.styleable<{ onKeyDown?: KeyHandler }>(
-  ({ onKeyDown, placeholder, height, paddingHorizontal, fontSize, ...props }, ref) => (
+export const TagsInputText = createStyledHOC(
+  Box,
+  (
+    {
+      onKeyDown,
+      placeholder,
+      height,
+      paddingHorizontal,
+      fontSize,
+      ...props
+    }: GetProps<typeof Box> & { onKeyDown?: KeyHandler },
+    ref,
+  ) => (
     <View flex={1} minWidth="20" height={height} justifyContent="center">
       <Box
         ref={ref}

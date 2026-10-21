@@ -6,7 +6,7 @@ import {
   Text,
   isWeb,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { usePublishLabel } from '../../hooks/useLabelFor'
 import { plainText } from '../../utils/plainText'
 

@@ -1,6 +1,6 @@
 import { ChevronRightIcon, IconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef, useEffect, useRef, useState } from 'react'
-import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui/unstyled'
 import { Text, ariaState, useControllableState, useRipple } from '@advui/core'
 
 export interface TreeNode {
@@ -276,7 +276,7 @@ function TreeItem({
       aria-selected={selected}
       aria-disabled={ariaState(disabled)}
       onPress={onPress}
-      {...(ripple.active && { pressStyle: { backgroundColor: 'transparent' } })}
+      {...(ripple.active && { backgroundColor: 'press:transparent' })}
       {...ripple.props}
     >
       {ripple.element}
@@ -298,7 +298,7 @@ function TreeItem({
         size="sm"
         flexShrink={1}
         numberOfLines={1}
-        color={`${selected ? "primarySoftForeground" : "foreground"}`}
+        color={selected ? "primarySoftForeground" : "foreground"}
         {...(selected && { weight: 'medium' as const })}
       >
         {node.label}

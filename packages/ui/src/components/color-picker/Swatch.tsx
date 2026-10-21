@@ -1,7 +1,7 @@
 import { CheckIcon } from '@advui/icons'
 import { mix, parseColor, readableForeground, toHex } from '@advui/utils'
 import type { ReactNode } from 'react'
-import { type RadiusTokens, type SizeTokens, View, isWeb } from 'tamagui'
+import { type RadiusTokens, type SizeTokens, View, isWeb } from 'tamagui/unstyled'
 import { ariaState } from '../../utils/ariaState'
 import { Checkerboard } from './Checkerboard'
 import { WHITE, focusRing, rawColor } from './shared'
@@ -69,7 +69,7 @@ export function SwatchButton({ color, label, selected, disabled, onPress }: Swat
             : { accessible: true, role: 'button', 'aria-selected': ariaState(selected) })}
       borderRadius="sm"
       cursor={disabled ? 'not-allowed' : 'pointer'}
-      focusVisibleStyle={focusRing}
+      {...focusRing}
       aria-label={label}
       aria-disabled={ariaState(disabled)}
       onPress={disabled ? undefined : onPress}

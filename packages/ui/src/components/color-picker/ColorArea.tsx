@@ -1,6 +1,6 @@
 import { type HSVA, fromHsv } from '@advui/utils'
 import type { KeyboardEvent } from 'react'
-import { View, isWeb } from 'tamagui'
+import { View, isWeb } from 'tamagui/unstyled'
 import { ariaState } from '../../utils/ariaState'
 import {
   type AccessibilityActionEvent,
@@ -160,7 +160,7 @@ export function ColorArea({
       height="40"
       borderRadius="md"
       cursor={disabled ? 'not-allowed' : 'crosshair'}
-      focusVisibleStyle={focusRing}
+      {...focusRing}
       {...semantics}
       {...drag.surface}
     >

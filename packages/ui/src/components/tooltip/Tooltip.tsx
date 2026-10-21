@@ -7,9 +7,10 @@ import {
   cloneElement,
   useId,
 } from 'react'
-import { Text, Tooltip as TamaguiTooltip, type TooltipProps as TamaguiTooltipProps } from 'tamagui'
+import { Text, Tooltip as TamaguiTooltip, type TooltipProps as TamaguiTooltipProps } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { transformOpacity } from '../../utils/transition'
 
 export interface TooltipProps extends Omit<
   TamaguiTooltipProps,
@@ -111,8 +112,7 @@ export function Tooltip({
         opacity="1 enter:0 exit:0"
         scale="1 enter:0.96 exit:0.96"
         y={`0 enter:${side === 'bottom' ? -4 : 4}px`}
-        transition={reducedMotion ? null : 'quicker'}
-        animateOnly={['transform', 'opacity']}
+        transition={transformOpacity(reducedMotion ? null : 'quicker')}
       >
         {typeof content === 'string' ? (
           <Text fontSize="1" lineHeight="1" color="background">

@@ -14,7 +14,7 @@ import {
   XStack,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { Text } from '@advui/core'
 
 export type TimelineTone = 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info'
@@ -141,7 +141,7 @@ const TimelineItem = forwardRef<TamaguiElement, TimelineItemProps>(function Time
         </View>
         {last ? null : <TimelineConnector />}
       </View>
-      <View flex={1} minWidth={0} gap="1" paddingBottom={`${last ? "0" : "6"}`}>
+      <View flex={1} minWidth={0} gap="1" paddingBottom={last ? "0" : "6"}>
         <XStack
           minHeight="6"
           alignItems="center"

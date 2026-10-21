@@ -1,6 +1,6 @@
 import { useId } from 'react'
 import Svg, { Defs, Pattern, Rect } from 'react-native-svg'
-import { View } from 'tamagui'
+import { View } from 'tamagui/unstyled'
 import { CHECKER, CHECKER_CELL } from './shared'
 
 /**

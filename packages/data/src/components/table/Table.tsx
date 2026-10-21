@@ -18,7 +18,7 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { Text, isTextContent } from '@advui/core'
 
 export type TableSize = 'sm' | 'md'
@@ -113,7 +113,7 @@ const cellBase = {
 
   variants: {
     size: {
-      sm: { paddingHorizontal: '2', paddingVertical: '1.5', minHeight: '9' },
+      sm: { paddingHorizontal: '2', paddingVertical: '1-5', minHeight: '9' },
       md: { paddingHorizontal: '4', paddingVertical: '3', minHeight: '12' },
     },
     align: {

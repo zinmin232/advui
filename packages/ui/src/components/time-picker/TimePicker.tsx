@@ -1,5 +1,5 @@
 import { forwardRef, useState } from 'react'
-import { type GetProps, type TamaguiElement, Text, XStack, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, Text, XStack, isWeb, styled } from 'tamagui/unstyled'
 import { FieldContext, useFieldControl } from '../../hooks/useFieldControl'
 import { Select } from '../select/Select'
 

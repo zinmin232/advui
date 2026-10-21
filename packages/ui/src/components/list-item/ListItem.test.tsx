@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { View } from 'tamagui'
+import { View } from 'tamagui/unstyled'
 import { describe, expect, it, vi } from 'vitest'
 import { renderWithProvider, screen } from '../../../test/utils'
 import { Button } from '../button/Button'

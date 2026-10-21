@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react'
 import { type LayoutChangeEvent, PanResponder } from 'react-native'
-import { isWeb } from 'tamagui'
+import { isWeb } from 'tamagui/unstyled'
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value))
 

@@ -9,11 +9,12 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { Text } from '../typography/Text'
 import { ariaState } from '../../utils/ariaState'
+import { flatValue } from '../../utils/responsive'
 
 type MenuState = { value: string; select: (value: string) => void }
 
@@ -160,30 +161,31 @@ const MenuItem = forwardRef<TamaguiElement, MenuItemProps>(function MenuItem(
   return (
     <RovingFocusGroup.Item
       ref={ref}
-      focusable={!disabled}
       active={selected}
-      tabIndex={-1}
+      // Tamagui 3 reads eligibility from tabIndex; the group picks the one tab stop.
+      tabIndex={disabled ? -1 : 0}
       role="menuitem"
       {...semantics}
       position="relative"
       flexDirection="row"
       alignItems="center"
-      minHeight="10"
+      minHeight="10 touchable:12"
       paddingHorizontal="3"
       paddingVertical={0}
       borderWidth={0}
       borderRadius="md"
-      backgroundColor="transparent"
       cursor={disabled ? 'not-allowed' : 'pointer'}
       opacity={disabled ? 0.5 : 1}
       userSelect="none"
-      hoverStyle={disabled || selected ? undefined : { backgroundColor: 'accent' }}
-      pressStyle={ disabled || selected || ripple.active ? undefined : { backgroundColor: 'accentHover' } }
+      backgroundColor={flatValue(
+        'transparent',
+        !disabled && !selected && 'hover:accent',
+        !disabled && !selected && !ripple.active && 'press:accentHover',
+      )}
       outlineColor="focus-visible:ring"
       outlineStyle="focus-visible:solid"
       outlineWidth="focus-visible:2px"
       outlineOffset="focus-visible:-2px"
-      $touchable={{ minHeight: '12' }}
       {...props}
       {...ripple.props}
       aria-current={selected ? (isLink ? 'page' : 'true') : undefined}

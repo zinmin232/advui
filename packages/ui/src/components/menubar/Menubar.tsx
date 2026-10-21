@@ -8,10 +8,10 @@ import {
   useLayoutEffect,
   useRef,
 } from 'react'
-import { Menu, type TamaguiElement, useComposedRefs, withStaticProperties } from 'tamagui'
+import { Menu, type TamaguiElement, useComposedRefs, withStaticProperties } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { ariaState } from '../../utils/ariaState'
-import { createMenuContent, createMenuParts } from '../dropdown-menu/menuParts'
+import { type FocusDetails, createMenuContent, createMenuParts } from '../dropdown-menu/menuParts'
 import { useArrowKeys } from '../toolbar/arrowKeys'
 import { Text } from '../typography/Text'
 import { MenubarFrame, MenubarTriggerFrame } from './frames'
@@ -252,10 +252,10 @@ function MenubarContent(props: MenubarContentProps) {
       {...props}
       id={menu.contentId}
       pointerEvents="auto"
-      onOpenAutoFocus={(event: Event) => {
+      onOpenAutoFocus={(details: FocusDetails) => {
         // Tamagui focuses the first menu in the page, which is the previous
         // one while it animates out.
-        event.preventDefault()
+        details.cancel()
         focusMenu()
       }}
       onEscapeKeyDown={() => {
@@ -268,10 +268,10 @@ function MenubarContent(props: MenubarContentProps) {
       onPointerDownOutside={() => {
         pressedOutside.current = true
       }}
-      onCloseAutoFocus={(event: Event) => {
+      onCloseAutoFocus={(details: FocusDetails) => {
         // Replaces Tamagui's, which keeps focus where it is after any focus
         // outside, even one before the menu was reopened.
-        event.preventDefault()
+        details.cancel()
         // Focus goes back to the trigger when the bar closed from this menu
         // (Escape, a choice), not when another menu took its place.
         if (pressedOutside.current || bar.valueRef.current !== null) return
@@ -282,10 +282,10 @@ function MenubarContent(props: MenubarContentProps) {
           if (!active || active === document.body) menu.triggerRef.current?.focus()
         })
       }}
-      onFocusOutside={(event: CustomEvent<{ originalEvent: FocusEvent }>) => {
+      onFocusOutside={(details: FocusDetails) => {
         // Focus on a trigger in the bar is the bar's to handle (hover, a press).
-        const target = event.detail.originalEvent.target as Node | null
-        if (target && bar.rootRef.current?.contains(target)) event.preventDefault()
+        const target = (details.event?.target ?? null) as Node | null
+        if (target && bar.rootRef.current?.contains(target)) details.cancel()
       }}
       onKeyDown={(event: { key: string; preventDefault: () => void }) => {
         const root = bar.rootRef.current

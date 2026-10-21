@@ -9,8 +9,8 @@ import {
   isWeb,
   styled,
   useComposedRefs,
-} from 'tamagui'
-import { useFieldControl } from '../../hooks/useFieldControl'
+} from 'tamagui/unstyled'
+import { useFieldControl, type ControlStateProps } from '../../hooks/useFieldControl'
 import { ariaState } from '../../utils/ariaState'
 import { isTextContent } from '../../utils/isTextContent'
 
@@ -18,18 +18,14 @@ import { isTextContent } from '../../utils/isTextContent'
 export const fieldBoxStyle = {
   backgroundColor: 'background',
   borderWidth: 1,
-  borderColor: 'input',
+  borderColor: 'input hover:borderStrong focus:ring',
   borderRadius: 'md',
   // No `transition` on fields: the native animation driver would pass animated
   // style objects to TextInput, which Android rejects.
-  hoverStyle: { borderColor: 'borderStrong' },
-  focusStyle: { borderColor: 'ring' },
-  focusVisibleStyle: {
-    outlineColor: 'ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: 0,
-  },
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:0px',
 } as const
 
 export const inputBaseStyle = {
@@ -135,7 +131,7 @@ borderColor: "input hover:borderStrong",
 })
 
 // The input's own side padding, and the square an icon or icon button sits in.
-const sidePadding = { sm: '2.5', md: '3', lg: '4' } as const
+const sidePadding = { sm: '2-5', md: '3', lg: '4' } as const
 const squareSizes = { sm: '8', md: '10', lg: '12' } as const
 const iconSizes = { sm: 14, md: 16, lg: 18 } as const
 const fontSizes = { sm: '2', md: '2', lg: '3' } as const
@@ -176,7 +172,9 @@ const boxProps = new Set([
 // Presses that land on a control inside a slot belong to that control.
 const INTERACTIVE = 'button, a, input, select, textarea, [role="button"]'
 
-export interface InputProps extends Omit<GetProps<typeof InputFrame>, 'grouped' | 'size'> {
+export interface InputProps
+  extends Omit<GetProps<typeof InputFrame>, 'grouped' | 'size' | 'disabled' | 'invalid'>,
+    ControlStateProps {
   size?: InputSize
   /**
    * Inside the field, before the text: an icon, a small button, or short text
@@ -331,7 +329,7 @@ export const Input = forwardRef<TamaguiElement, InputProps>(function Input(input
       focused={focused}
       invalid={invalid}
       disabled={disabled}
-      // The ring a plain field draws on focus (web only, like its focusVisibleStyle).
+      // The ring a plain field draws on focus (web only, like its focus-visible outline).
       {...(isWeb &&
         focused && {
           outlineColor: invalid ? 'error' : 'ring',

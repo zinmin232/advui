@@ -1,6 +1,6 @@
 import { PauseIcon, PlayIcon, RotateCcwIcon, RotateCwIcon } from '@advui/icons'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
-import { type GetProps, View, XStack, isWeb } from 'tamagui'
+import { type GetProps, View, XStack, isWeb } from 'tamagui/unstyled'
 import { Button } from '../button/Button'
 import { IconButton } from '../icon-button/IconButton'
 import { Slider } from '../slider/Slider'

@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@advui/icons'
 import { forwardRef, useEffect, useId, useMemo, useRef, useState } from 'react'
-import { type GetProps, type TamaguiElement, View, XStack, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, XStack, isWeb, styled } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { IconButton } from '../icon-button/IconButton'
 import { Text } from '../typography/Text'
@@ -327,7 +327,7 @@ export const Calendar = forwardRef<TamaguiElement, CalendarProps>(function Calen
                   <Text
                     size="sm"
                     {...(isToday && { weight: 'semibold' as const })}
-                    color={`${selection === 'end' ? "primaryForeground" : selection === 'middle' ? "accentForeground" : isToday ? "primaryText" : "foreground"}`}
+                    color={selection === 'end' ? "primaryForeground" : selection === 'middle' ? "accentForeground" : isToday ? "primaryText" : "foreground"}
                   >
                     {day.getDate()}
                   </Text>

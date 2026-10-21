@@ -1,6 +1,5 @@
-import { shorthands } from '@advui/theme'
-import { type GetProps, type TamaguiComponent, View, styled } from 'tamagui'
-import { type Responsive, breakpointKeys, responsiveStyle } from '../../utils/responsive'
+import { type GetProps, type TamaguiComponent, View, styled } from 'tamagui/unstyled'
+import { type Responsive, responsiveStyle } from '../../utils/responsive'
 
 /** The base layout primitive — a `View` that accepts every style prop and token. */
 export const Box = styled(View, {
@@ -11,10 +10,6 @@ export type StackDirection = 'row' | 'column' | 'row-reverse' | 'column-reverse'
 export type StackWrap = 'nowrap' | 'wrap' | 'wrap-reverse'
 export type StackAlign = 'start' | 'center' | 'end' | 'stretch' | 'baseline'
 export type StackDistribute = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'
-
-type FlexKey = 'flexDirection' | 'flexWrap' | 'alignItems' | 'justifyContent'
-type FlexDefaults = Partial<Record<FlexKey, string>>
-type StyleProps = Record<string, unknown>
 
 const alignValues = { start: 'flex-start', end: 'flex-end' } as const
 // Before 0.9.0 `direction` was React Native's text-direction style; those
@@ -28,58 +23,29 @@ const distributeValues = {
   evenly: 'space-evenly',
 } as const
 
-/** Every prop name that sets a flex key: the key and its shorthands, such as `items`. */
-const propNames = (key: FlexKey) => [
-  key,
-  ...Object.entries(shorthands)
-    .filter(([, longhand]) => longhand === key)
-    .map(([shorthand]) => shorthand),
-]
-
-/**
- * The style for one responsive flex prop, minus what the raw style props set:
- * `flexDirection` (or its shorthand) wins at the base, and `$md={{ … }}` wins
- * at md. A variant can't tell a raw prop from the component's own default
- * (both are in `props`), so a raw value equal to that default doesn't count.
- * Dropping the overlap, rather than relying on prop order, keeps web and
- * native the same: a repeated media style wins last on web but first on native.
- */
-function flexStyle<T extends string>(
-  key: FlexKey,
-  value: Responsive<T> | undefined,
-  props: StyleProps,
-  defaults: FlexDefaults,
-  map?: Partial<Record<T, string>>,
-) {
-  const style: StyleProps = responsiveStyle(key, value, map)
-  const names = propNames(key)
-  const raw = names.map((name) => props[name]).find((v) => v !== undefined)
-  if (raw !== undefined && raw !== defaults[key]) delete style[key]
-  for (const breakpoint of breakpointKeys) {
-    const media = props[`$${breakpoint}`] as StyleProps | undefined
-    if (media && names.some((name) => media[name] !== undefined)) delete style[`$${breakpoint}`]
-  }
-  return style
-}
-
 /**
  * `direction`, `wrap`, `align` and `distribute`, each a value or a mobile-first
- * map. Function variants keep `styled(Stack, …)` working and compile media
- * props to CSS media queries on web. `defaults` are the component's own base
- * styles, so its default is not mistaken for a raw prop.
+ * map. `styled.dynamic` keeps `styled(Stack, …)` working, and responsive maps
+ * become conditional values, which compile to CSS media queries on web. Raw
+ * style props (`flexDirection`, `items`, `"column md:row"`) are call-site
+ * props, which Tamagui 3 applies above variants, so they win when both set
+ * the same style.
  */
-function flexVariants(defaults: FlexDefaults) {
+function flexVariants() {
   return {
-    direction: (value: Responsive<StackDirection>, { props }: { props: StyleProps }) =>
+    // The type argument, not an annotated parameter, keeps Tamagui's variant inference.
+    direction: styled.dynamic<Responsive<StackDirection>>((value) =>
       textDirections.has(value as string)
         ? { direction: value }
-        : flexStyle('flexDirection', value, props, defaults),
-    wrap: (value: Responsive<StackWrap>, { props }: { props: StyleProps }) =>
-      flexStyle('flexWrap', value, props, defaults),
-    align: (value: Responsive<StackAlign>, { props }: { props: StyleProps }) =>
-      flexStyle('alignItems', value, props, defaults, alignValues),
-    distribute: (value: Responsive<StackDistribute>, { props }: { props: StyleProps }) =>
-      flexStyle('justifyContent', value, props, defaults, distributeValues),
+        : responsiveStyle('flexDirection', value),
+    ),
+    wrap: styled.dynamic<Responsive<StackWrap>>((value) => responsiveStyle('flexWrap', value)),
+    align: styled.dynamic<Responsive<StackAlign>>((value) =>
+      responsiveStyle('alignItems', value, alignValues),
+    ),
+    distribute: styled.dynamic<Responsive<StackDistribute>>((value) =>
+      responsiveStyle('justifyContent', value, distributeValues),
+    ),
   } as const
 }
 
@@ -98,7 +64,7 @@ type WithoutDirectionStyle<C> = C extends {
 const StackFrame = styled(View, {
   name: 'Stack',
   flexDirection: 'column',
-  variants: flexVariants({ flexDirection: 'column' }),
+  variants: flexVariants(),
 })
 
 /**
@@ -115,7 +81,7 @@ export const HStack = styled(Stack, {
   name: 'HStack',
   flexDirection: 'row',
   alignItems: 'center',
-  variants: flexVariants({ flexDirection: 'row', alignItems: 'center' }),
+  variants: flexVariants(),
 })
 
 /** Vertical stack. Use `gap="2"` for spacing. */
@@ -131,7 +97,7 @@ export const Wrap = styled(Stack, {
   flexWrap: 'wrap',
   alignItems: 'center',
   gap: "2",
-  variants: flexVariants({ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center' })
+  variants: flexVariants()
 })
 
 /** Centers its children on both axes. */

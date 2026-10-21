@@ -7,7 +7,7 @@ import {
   View,
   isWeb,
   useDidFinishSSR,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { FieldContext, useFieldControl } from '../../hooks/useFieldControl'
 import { useLabelFor } from '../../hooks/useLabelFor'
@@ -188,7 +188,7 @@ export const Slider = forwardRef<TamaguiElement, SliderProps>(function Slider(sl
             borderRadius="full"
             backgroundColor="background"
             borderWidth={2}
-            borderColor={`${invalid ? "error" : "primary"}`}
+            borderColor={invalid ? "error" : "primary"}
             {...shadows.sm}
             {...((vertical ? { bottom: at(value) } : { left: at(value) }) as object)}
           />
@@ -216,27 +216,25 @@ export const Slider = forwardRef<TamaguiElement, SliderProps>(function Slider(sl
       {...props}
     >
       <TamaguiSlider.Track
-        unstyled
         overflow="hidden"
         borderRadius="full"
         backgroundColor="border"
         {...trackPosition}
       >
-        <TamaguiSlider.TrackActive unstyled backgroundColor="primary" borderRadius="full" />
+        <TamaguiSlider.TrackActive backgroundColor="primary" borderRadius="full" />
       </TamaguiSlider.Track>
       {values.map((value, index) => (
         <TamaguiSlider.Thumb
                   // Thumbs keep their identity while dragging past each other.
           key={index}
           index={index}
-          unstyled
           position="absolute"
           size={thumb}
           width={thumb}
           height={thumb}
           backgroundColor="background"
           borderWidth={2}
-          borderColor={`${invalid ? "error" : "primary"}`}
+          borderColor={invalid ? "error" : "primary"}
           cursor={disabled ? 'not-allowed' : 'grab'}
           scale="press:1.1"
           outlineColor="focus-visible:ring"

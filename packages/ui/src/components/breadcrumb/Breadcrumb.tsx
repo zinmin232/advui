@@ -8,7 +8,7 @@ import {
   useContext,
   useState,
 } from 'react'
-import { type GetProps, Text, View, isWeb, withStaticProperties } from 'tamagui'
+import { type GetProps, Text, View, isWeb, withStaticProperties } from 'tamagui/unstyled'
 
 type ItemState = { current: boolean; separator: ReactNode }
 
@@ -179,7 +179,7 @@ function BreadcrumbItem({
             fontFamily="body"
             fontSize="2"
             lineHeight="2"
-            color={`${current ? "foreground" : "mutedForeground"}`}
+            color={current ? "foreground" : "mutedForeground"}
             fontWeight={current ? '500' : '400'}
             numberOfLines={1}
             {...props}

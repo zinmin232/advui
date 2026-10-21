@@ -5,9 +5,7 @@ import { shadows } from '@advui/theme'
 
 export const overlayStyle = {
   backgroundColor: 'overlay',
-  opacity: 1,
-  enterStyle: { opacity: 0 },
-  exitStyle: { opacity: 0 },
+  opacity: { default: 1, enter: 0, exit: 0 },
 } as const
 
 export const contentStyle = {
@@ -21,11 +19,9 @@ export const contentStyle = {
   maxWidth: '128',
   maxHeight: '90%',
   ...shadows.lg,
-  opacity: 1,
-  scale: 1,
-  y: 0,
-  enterStyle: { opacity: 0, scale: 0.96, y: 8 },
-  exitStyle: { opacity: 0, scale: 0.98, y: 4 },
+  opacity: { default: 1, enter: 0, exit: 0 },
+  scale: { default: 1, enter: 0.96, exit: 0.98 },
+  y: { default: 0, enter: 8, exit: 4 },
 } as const
 
 export const contentSizes = {
@@ -35,12 +31,12 @@ export const contentSizes = {
   xl: { maxWidth: '224' },
 } as const
 
-export const headerStyle = { gap: '1.5' } as const
+export const headerStyle = { gap: '1-5' } as const
 
 export const footerStyle = {
-  flexDirection: 'column-reverse',
+  flexDirection: 'column-reverse sm:row',
+  justifyContent: 'sm:flex-end',
   gap: '2',
-  $sm: { flexDirection: 'row', justifyContent: 'flex-end' },
 } as const
 
 export const titleStyle = {

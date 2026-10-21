@@ -1,16 +1,13 @@
 import { createContext, forwardRef, useContext, useId, useMemo } from 'react'
 import {
-  RadioGroupFrame as TamaguiRadioGroupFrame,
-  RadioGroupIndicatorFrame as TamaguiIndicatorFrame,
-  RadioGroupItemFrame as TamaguiItemFrame,
+  RadioGroup as TamaguiRadioGroup,
   type RadioGroupItemProps as TamaguiItemProps,
   type RadioGroupProps as TamaguiRadioGroupProps,
   type TamaguiElement,
-  createRadioGroup,
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { FieldContext, type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
 import { ariaState } from '../../utils/ariaState'
@@ -32,34 +29,28 @@ interface GroupState {
 
 const GroupContext = createContext<GroupState>({ value: '', disabled: false })
 
-// createRadioGroup renders Tamagui's own frame, so styles set here are dropped;
-// the gap is a prop default instead (see RadioGroupRoot).
-const Frame = styled(TamaguiRadioGroupFrame, {
+// Tamagui 3's RadioGroup parts are styled HOCs: styling them keeps their
+// behavior. The gap is a prop default (see RadioGroupRoot).
+const Frame = styled(TamaguiRadioGroup, {
   name: 'RadioGroup',
 })
 
-// Visual styles live in the `unstyled: false` variant so they override the
-// defaults Tamagui's createRadioGroup applies through the same variant.
-const Item = styled(TamaguiItemFrame, {
+const Item = styled(TamaguiRadioGroup.Item, {
   name: 'RadioGroupItem',
   padding: 0,
   alignItems: 'center',
   justifyContent: 'center',
   cursor: 'pointer',
+  borderRadius: 'full',
+  borderWidth: 1,
+  borderColor: 'input hover:borderStrong',
+  backgroundColor: 'background',
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
 
   variants: {
-    unstyled: {
-      false: {
-        borderRadius: "full",
-        borderWidth: 1,
-        borderColor: "input hover:borderStrong",
-        backgroundColor: "background",
-        outlineColor: "focus-visible:ring",
-        outlineStyle: "focus-visible:solid",
-        outlineWidth: "focus-visible:2px",
-        outlineOffset: "focus-visible:2px"
-      },
-    },
     size: {
       sm: {
         width: "4",
@@ -82,21 +73,13 @@ const Item = styled(TamaguiItemFrame, {
   defaultVariants: { size: 'md' },
 })
 
-const Indicator = styled(TamaguiIndicatorFrame, {
+const Indicator = styled(TamaguiRadioGroup.Indicator, {
   name: 'RadioGroupIndicator',
-  variants: {
-    unstyled: {
-      false: {
-        width: '50%',
-        height: '50%',
-        borderRadius: "full",
-        backgroundColor: "primary"
-      },
-    },
-  } as const,
+  width: '50%',
+  height: '50%',
+  borderRadius: 'full',
+  backgroundColor: 'primary',
 })
-
-const BaseRadioGroup = createRadioGroup({ Frame, Item, Indicator, disableActiveTheme: true })
 
 export type RadioGroupProps = TamaguiRadioGroupProps
 
@@ -116,7 +99,7 @@ const RadioGroupItem = forwardRef<TamaguiElement, RadioGroupItemProps>(function 
   const withText = hasChoiceText(text)
   const disabled = group.disabled || Boolean(props.disabled)
   const item = (
-    <BaseRadioGroup.Item
+    <Item
       ref={ref}
       id={id}
       size={size as never}
@@ -127,8 +110,8 @@ const RadioGroupItem = forwardRef<TamaguiElement, RadioGroupItemProps>(function 
       {...props}
       {...choiceProps(id, text, props, group.hint)}
     >
-      <BaseRadioGroup.Indicator />
-    </BaseRadioGroup.Item>
+      <Indicator />
+    </Item>
   )
   if (!withText) return item
   return (
@@ -169,7 +152,7 @@ const RadioGroupRoot = forwardRef<TamaguiElement, RadioGroupProps>(
     )
     return (
       <GroupContext.Provider value={state}>
-        <BaseRadioGroup
+        <Frame
           ref={ref}
           value={value}
           onValueChange={setValue}

@@ -1,6 +1,6 @@
 import { SearchIcon, XIcon } from '@advui/icons'
 import { forwardRef, useRef } from 'react'
-import { type TamaguiElement, View, isWeb } from 'tamagui'
+import { type TamaguiElement, View, isWeb } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { IconButton } from '../icon-button/IconButton'
 import { Input, type InputProps } from '../input/Input'

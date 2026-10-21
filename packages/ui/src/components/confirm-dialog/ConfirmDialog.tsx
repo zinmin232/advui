@@ -1,5 +1,5 @@
 import { type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react'
-import { type TamaguiElement, isWeb } from 'tamagui'
+import { type TamaguiElement, isWeb } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { AlertDialog } from '../alert-dialog/AlertDialog'
 import { Button } from '../button/Button'

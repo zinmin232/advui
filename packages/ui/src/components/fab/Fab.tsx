@@ -1,7 +1,7 @@
 import { IconDefaults } from '@advui/icons'
 import { shadows } from '@advui/theme'
 import { type ReactNode, forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui/unstyled'
 import { useRipple } from '../../hooks/useRipple'
 import { ariaState } from '../../utils/ariaState'
 
@@ -14,7 +14,7 @@ const foreground = {
   primary: 'primaryForeground',
   secondary: 'secondaryForeground',
   surface: 'primaryText',
-} as const satisfies Record<FabVariant, `$${string}`>
+} as const satisfies Record<FabVariant, string>
 
 // Resting fill per variant, kept while pressed when the Android ripple is on.
 const background = {
@@ -22,7 +22,7 @@ const background = {
   primary: 'primary',
   secondary: 'secondary',
   surface: 'card',
-} as const satisfies Record<FabVariant, `$${string}`>
+} as const satisfies Record<FabVariant, string>
 
 const iconSizes: Record<FabSize, number> = { sm: 20, md: 24, lg: 36 }
 
@@ -40,7 +40,10 @@ const FabFrame = styled(View, {
   userSelect: 'none',
   transition: 'quick',
   ...shadows.md,
-  hoverStyle: { ...shadows.lg },
+  // Tamagui 3 conditions take scalar values, so hover deepens the blur while
+  // `shadowOffset` (an object) stays at md's. Hover is web-only, where
+  // Android's `elevation` does not apply.
+  shadowRadius: { default: shadows.md.shadowRadius, hover: shadows.lg.shadowRadius },
   outlineColor: "focus-visible:ring",
   outlineStyle: "focus-visible:solid",
   outlineWidth: "focus-visible:2px",
@@ -163,7 +166,7 @@ export const Fab = forwardRef<TamaguiElement, FabProps>(function Fab(
       aria-disabled={ariaState(disabled)}
       // The small FAB is 40 high; touches reach 44, as Button's do.
       {...(isWeb ? { type: 'button' } : size === 'sm' && !extended && { hitSlop: 2 })}
-      {...(ripple.active && { pressStyle: { backgroundColor: background[variant] } })}
+      {...(ripple.active && { backgroundColor: `press:${background[variant]}` })}
       {...props}
       {...ripple.props}
     >

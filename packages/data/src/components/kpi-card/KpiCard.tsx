@@ -1,6 +1,6 @@
 import { IconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
-import { type TamaguiElement, View, XStack, isWeb } from 'tamagui'
+import { type TamaguiElement, View, XStack, isWeb } from 'tamagui/unstyled'
 import { Card, type CardProps, Skeleton } from '@advui/core'
 import { Stat, type StatTone, type StatTrend } from '../stat/Stat'
 

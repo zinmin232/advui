@@ -1,6 +1,6 @@
 import { AlertCircleIcon } from '@advui/icons'
 import type { ComponentType } from 'react'
-import { type GetProps, View } from 'tamagui'
+import { type GetProps, View } from 'tamagui/unstyled'
 import { Text } from '../typography/Text'
 
 export interface VideoCaptionTrack {

@@ -184,7 +184,7 @@ function NavLink({
         <Text
           size="sm"
           flex={1}
-          color={`${active ? "primarySoftForeground" : item.planned ? "mutedForeground" : "foreground"}`}
+          color={active ? "primarySoftForeground" : item.planned ? "mutedForeground" : "foreground"}
           weight={active || emphasis ? 'semibold' : 'normal'}
         >
           {item.title}

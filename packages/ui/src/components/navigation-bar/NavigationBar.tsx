@@ -8,7 +8,7 @@ import {
   View,
   isWeb,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { ariaState } from '../../utils/ariaState'
@@ -204,8 +204,8 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
               position="absolute"
               top={count === '' ? '1' : 0}
               left="9"
-              minWidth={`${count === '' ? "1-5" : "4"}`}
-              height={`${count === '' ? "1-5" : "4"}`}
+              minWidth={count === '' ? "1-5" : "4"}
+              height={count === '' ? "1-5" : "4"}
               paddingHorizontal={count === '' ? 0 : '1'}
               borderRadius="full"
               backgroundColor="error"
@@ -232,7 +232,7 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
           fontSize="1"
           lineHeight="1"
           fontWeight={active ? '700' : '500'}
-          color={`${active ? "foreground" : "mutedForeground"}`}
+          color={active ? "foreground" : "mutedForeground"}
           numberOfLines={1}
         >
           {label}

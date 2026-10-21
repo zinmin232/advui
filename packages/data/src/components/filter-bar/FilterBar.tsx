@@ -33,7 +33,7 @@ import {
   isWeb,
   styled,
   useComposedRefs,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import {
   type FilterDefinition,
   type FilterFormatLabels,
@@ -132,14 +132,14 @@ type Sizes = (typeof sizes)[FilterBarSize]
 /** A control's box: its width in a row, the full width in a column. */
 function controlBox(layout: FilterBarLayout, width: Sizes['field'] | Sizes['wide']): ViewProps {
   if (layout === 'vertical') return { width: '100%' }
-  if (layout === 'responsive') return { width: '100%', $md: { width } }
+  if (layout === 'responsive') return { width: { default: '100%', md: width } } as ViewProps
   return { width, maxWidth: '100%' }
 }
 
 /** The search field takes the free space of the row. */
 function searchBox(layout: FilterBarLayout, spacing: Sizes): ViewProps {
   if (layout === 'vertical') return { width: '100%' }
-  if (layout === 'responsive') return { width: '100%', $md: { width: spacing.wide, flexGrow: 1 } }
+  if (layout === 'responsive') return { width: { default: '100%', md: spacing.wide }, flexGrow: { md: 1 } } as ViewProps
   return { width: spacing.wide, flexGrow: 1, maxWidth: '100%' }
 }
 
@@ -718,7 +718,7 @@ export const FilterBar = forwardRef<TamaguiElement, FilterBarProps>(function Fil
             ? { marginInlineStart: 'auto' }
             : layout === 'vertical'
               ? { distribute: 'end' }
-              : { distribute: 'end', $md: { marginInlineStart: 'auto' } })}
+              : { distribute: 'end', marginInlineStart: 'md:auto' })}
         >
           {actions}
         </Stack>

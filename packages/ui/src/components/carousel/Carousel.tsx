@@ -23,7 +23,7 @@ import {
   styled,
   useComposedRefs,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useBreakpointValue } from '../../hooks/useBreakpoint'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
@@ -71,10 +71,10 @@ const defaultLabels: CarouselLabels = {
 }
 
 const focusRing = {
-  outlineColor: 'ring',
-  outlineStyle: 'solid',
-  outlineWidth: 2,
-  outlineOffset: 2,
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
 } as const
 
 const CarouselFrame = styled(View, {
@@ -182,17 +182,17 @@ function Dot({
       borderRadius="full"
       backgroundColor="transparent hover:accent"
       cursor="pointer"
-      focusVisibleStyle={focusRing}
+      {...focusRing}
       {...ripple.props}
       aria-label={label}
       onPress={onPress}
     >
       {ripple.element}
       <View
-        width={`${active ? "5" : "2"}`}
+        width={active ? "5" : "2"}
         height="2"
         borderRadius="full"
-        backgroundColor={`${active ? "primary" : "mutedForeground"}`}
+        backgroundColor={active ? "primary" : "mutedForeground"}
       />
     </View>
   )

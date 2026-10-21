@@ -21,10 +21,10 @@ import {
   styled,
   useDidFinishSSR,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
-import { FieldContext, useFieldControl } from '../../hooks/useFieldControl'
+import { FieldContext, useFieldControl, type ControlStateProps } from '../../hooks/useFieldControl'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 import { useSheetMaxHeight } from '../../hooks/useSheetMaxHeight'
@@ -34,16 +34,13 @@ import { fieldBoxStyle } from '../input/Input'
 
 const Trigger = styled(TamaguiSelect.Trigger, {
   name: 'SelectTrigger',
-  unstyled: true,
   ...fieldBoxStyle,
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
   gap: "2",
   cursor: 'pointer',
-  // Tamagui's trigger is a ListItem that keeps its own size styles, a 40px
-  // minimum height and vertical padding, so `sm` was 40 tall (32 before
-  // hydration). The size variants set the height.
+  // The size variants set the height.
   minHeight: 0,
   paddingVertical: 0,
   variants: {
@@ -83,7 +80,6 @@ const ValueText = styled(TamaguiSelect.Value, {
 
 const Viewport = styled(TamaguiSelect.Viewport, {
   name: 'SelectViewport',
-  unstyled: true,
   backgroundColor: "popover",
   borderWidth: 1,
   borderColor: "border",
@@ -95,7 +91,6 @@ const Viewport = styled(TamaguiSelect.Viewport, {
 
 const ItemFrame = styled(TamaguiSelect.Item, {
   name: 'SelectItem',
-  unstyled: true,
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -121,7 +116,6 @@ const ItemText = styled(TamaguiSelect.ItemText, {
 
 const GroupLabel = styled(TamaguiSelect.Label, {
   name: 'SelectLabel',
-  unstyled: true,
   paddingHorizontal: "2-5",
   paddingVertical: "1-5",
   fontFamily: "body",
@@ -130,11 +124,11 @@ const GroupLabel = styled(TamaguiSelect.Label, {
   color: "mutedForeground"
 })
 
-export interface SelectItemProps extends Omit<GetProps<typeof ItemFrame>, 'index' | 'value'> {
+export interface SelectItemProps
+  extends Omit<GetProps<typeof ItemFrame>, 'value' | 'disabled'>,
+    Pick<ControlStateProps, 'disabled'> {
   value: string
   children: ReactNode
-  /** Set automatically from the item order. */
-  index?: number
 }
 
 // Native screen readers activate a view through an action, not a touch.
@@ -148,7 +142,6 @@ interface SelectItemInternalProps extends SelectItemProps {
 function SelectItem({
   value,
   children,
-  index = 0,
   onPressIn,
   onPressOut,
   pick,
@@ -163,8 +156,7 @@ function SelectItem({
   return (
     <ItemFrame
       value={value}
-      index={index}
-      {...(ripple.active && { pressStyle: { backgroundColor: 'transparent' } })}
+      {...(ripple.active && { backgroundColor: 'press:transparent' })}
       // Native: Tamagui's item reacts to touches only, so TalkBack could not
       // reach or pick it. The sheet renders in a portal without our context,
       // so Select hands each item its own `pick`.
@@ -202,18 +194,17 @@ function SelectGroup({ label, children }: SelectGroupProps) {
 }
 
 /**
- * Assigns sequential `index` props (required for keyboard navigation) across
- * groups, and each item's `pick`.
+ * Gives each item, inside groups too, its `pick`. Tamagui 3 tracks the item
+ * order for keyboard navigation itself.
  */
 function indexItems(children: ReactNode, pick: (value: string) => void) {
-  let index = 0
   const walk = (nodes: ReactNode): ReactNode =>
     Children.map(nodes, (child) => {
       if (!isValidElement(child)) return child
       const element = child as ReactElement<SelectItemInternalProps>
       if (element.type === SelectItem) {
         const { value } = element.props
-        return cloneElement(element, { index: index++, pick: () => pick(value) })
+        return cloneElement(element, { pick: () => pick(value) })
       }
       if (element.type === SelectGroup || element.type === Fragment) {
         return cloneElement(element, { children: walk(element.props.children) })
@@ -359,7 +350,7 @@ function SelectRoot(selectProps: SelectProps) {
         <Text
           fontFamily="body"
           fontSize="2"
-          color={`${label ? "foreground" : "placeholder-color"}`}
+          color={label ? "foreground" : "placeholder-color"}
           numberOfLines={1}
         >
           {label ?? placeholder}
@@ -405,9 +396,10 @@ function SelectRoot(selectProps: SelectProps) {
             if (!disabled && event.nativeEvent.actionName === 'activate') setOpen(!open)
           },
         })}
-        iconAfter={<ChevronDownIcon size={16} color="mutedForeground" />}
       >
         <ValueText placeholder={placeholder} />
+        {/* Tamagui 3's trigger is a plain View (no ListItem `iconAfter`). */}
+        <ChevronDownIcon size={16} color="mutedForeground" />
       </Trigger>
 
       {/* Touch devices get a native-feeling bottom sheet instead of a dropdown. */}

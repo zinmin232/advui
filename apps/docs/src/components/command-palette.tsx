@@ -210,7 +210,7 @@ export function CommandPalette({ entries }: { entries: SearchEntry[] }) {
             borderWidth={0}
             paddingHorizontal="0"
             backgroundColor="transparent"
-            focusVisibleStyle={{ outlineWidth: 0 }}
+            outlineWidth="focus-visible:0px"
             placeholder="Search components, docs, props…"
             value={query}
             onChangeText={setQuery}
@@ -269,7 +269,7 @@ export function CommandPalette({ entries }: { entries: SearchEntry[] }) {
                   paddingVertical="2"
                   borderRadius="md"
                   cursor="pointer"
-                  backgroundColor={`${isActive ? "accent" : "transparent"}`}
+                  backgroundColor={isActive ? "accent" : "transparent"}
                   onMouseEnter={() => setActive(index)}
                   onPress={() => select(result)}
                 >

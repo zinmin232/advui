@@ -13,10 +13,11 @@ import {
   createStyledContext,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
+import type { ControlStateProps } from '../../hooks/useFieldControl'
 
 type TabsVariant = 'pills' | 'underline'
 
@@ -59,7 +60,6 @@ const ListFrame = styled(TamaguiTabs.List, {
 const TriggerFrame = styled(TamaguiTabs.Tab, {
   name: 'TabsTrigger',
   context: TabsStyleContext,
-  unstyled: true,
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
@@ -150,7 +150,9 @@ const TabsList = forwardRef<TamaguiElement, TabsListProps>(function TabsList(pro
   return <ListFrame ref={ref} variant={variant} {...props} />
 })
 
-export interface TabsTriggerProps extends Omit<TamaguiTabsTabProps, 'children'> {
+export interface TabsTriggerProps
+  extends Omit<TamaguiTabsTabProps, 'children' | 'disabled'>,
+    Pick<ControlStateProps, 'disabled'> {
   value: string
   children?: ReactNode
   icon?: ReactNode
@@ -190,7 +192,7 @@ const TabsTrigger = forwardRef<TamaguiElement, TabsTriggerProps>(function TabsTr
       <IconDefaults size={16} color={active ? 'foreground' : 'mutedForeground'}>
         {icon}
         {isTextContent(children) ? (
-          <TriggerText color={`${active ? "foreground" : "mutedForeground"}`}>{children}</TriggerText>
+          <TriggerText color={active ? "foreground" : "mutedForeground"}>{children}</TriggerText>
         ) : (
           children
         )}

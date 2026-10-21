@@ -1,4 +1,4 @@
-import { type GetProps, View, styled } from 'tamagui'
+import { type GetProps, View, styled } from 'tamagui/unstyled'
 
 /**
  * Placeholder shown while content loads. Hidden from assistive technology —

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
-import { View } from 'tamagui'
+import { View } from 'tamagui/unstyled'
 import { describe, expect, it, vi } from 'vitest'
 import { fireEvent, renderWithProvider, screen, waitFor } from '../../../test/utils'
 import { Button } from '../button/Button'

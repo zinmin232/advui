@@ -11,7 +11,7 @@ import {
   StyleSheet,
   processColor,
 } from 'react-native'
-import { XStack } from 'tamagui'
+import { XStack } from 'tamagui/unstyled'
 import { renderNative } from '../../test/native-utils'
 import { Accordion } from './accordion/Accordion'
 import { AppShell } from './app-shell/AppShell'

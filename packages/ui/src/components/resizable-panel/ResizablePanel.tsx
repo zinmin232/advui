@@ -12,8 +12,9 @@ import {
   useState,
 } from 'react'
 import { PanResponder } from 'react-native'
-import { type GetProps, View, isWeb, withStaticProperties } from 'tamagui'
+import { type GetProps, View, isWeb, withStaticProperties } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
+import { flatValue } from '../../utils/responsive'
 
 export type ResizableDirection = 'horizontal' | 'vertical'
 
@@ -429,11 +430,17 @@ function ResizableHandle({
       flexShrink={0}
       alignItems="center"
       justifyContent="center"
-      backgroundColor={`${dragging ? "ring" : "border"}`}
+      backgroundColor={flatValue(
+        dragging ? 'ring' : 'border',
+        !disabled && 'hover:ring',
+        'focus-visible:ring',
+      )}
       {...(horizontal ? { width: 1 } : { height: 1 })}
       cursor={disabled ? 'default' : horizontal ? 'col-resize' : 'row-resize'}
-      hoverStyle={disabled ? {} : { backgroundColor: 'ring' }}
-      focusVisibleStyle={{ backgroundColor: 'ring', outlineColor: 'ring', outlineStyle: 'solid', outlineWidth: 2, outlineOffset: 2, }}
+      outlineColor="focus-visible:ring"
+      outlineStyle="focus-visible:solid"
+      outlineWidth="focus-visible:2px"
+      outlineOffset="focus-visible:2px"
       zIndex={1}
       aria-label={label}
       style={isWeb ? ({ touchAction: 'none' } as never) : undefined}

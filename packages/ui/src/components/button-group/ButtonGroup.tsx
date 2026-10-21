@@ -1,5 +1,5 @@
 import { Children, type ReactNode, forwardRef, isValidElement } from 'react'
-import { type GetProps, type TamaguiElement, View } from 'tamagui'
+import { type GetProps, type TamaguiElement, View } from 'tamagui/unstyled'
 import type { ButtonVariant } from '../button/Button'
 import {
   ButtonGroupContext,

@@ -16,11 +16,12 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
 import { Text } from '../typography/Text'
+import { flatValue } from '../../utils/responsive'
 
 export type AlertVariant = 'default' | 'info' | 'success' | 'warning' | 'error' | 'destructive'
 export type AlertSize = 'sm' | 'md' | 'lg'
@@ -46,12 +47,12 @@ const accent = {
   warning: 'warningSoftForeground',
   error: 'errorSoftForeground',
   destructive: 'destructiveForeground',
-} as const satisfies Record<AlertVariant, `$${string}`>
+} as const satisfies Record<AlertVariant, string>
 
 const descriptionColor = {
   ...accent,
   default: 'mutedForeground',
-} as const satisfies Record<AlertVariant, `$${string}`>
+} as const satisfies Record<AlertVariant, string>
 
 // The dismiss button sits on the alert's own surface, so it tints with the
 // variant's border color rather than the neutral accent.
@@ -62,13 +63,13 @@ const dismissHover = {
   warning: 'warningBorder',
   error: 'errorBorder',
   destructive: 'destructiveHover',
-} as const satisfies Record<AlertVariant, `$${string}`>
+} as const satisfies Record<AlertVariant, string>
 
 const dismissPress = {
   ...dismissHover,
   default: 'accentHover',
   destructive: 'destructivePress',
-} as const satisfies Record<AlertVariant, `$${string}`>
+} as const satisfies Record<AlertVariant, string>
 
 const defaultIcons = {
   default: <InfoIcon />,
@@ -84,23 +85,23 @@ const sizes = {
   sm: {
     icon: 14,
     iconOffset: '1',
-    textGap: '0.5',
+    textGap: '0-5',
     sectionGap: '2',
     dismiss: '6',
-    dismissOffset: '-0.5',
+    dismissOffset: '-0-5',
   },
   md: {
     icon: 16,
-    iconOffset: '0.5',
+    iconOffset: '0-5',
     textGap: '1',
     sectionGap: '3',
     dismiss: '6',
-    dismissOffset: '-0.5',
+    dismissOffset: '-0-5',
   },
   lg: {
     icon: 20,
     iconOffset: '1',
-    textGap: '1.5',
+    textGap: '1-5',
     sectionGap: '3',
     dismiss: '7',
     dismissOffset: 0,
@@ -321,14 +322,17 @@ const AlertImpl = forwardRef<TamaguiElement, AlertProps>(function Alert(
           justifyContent="center"
           borderRadius="sm"
           cursor="pointer"
-          hoverStyle={{ backgroundColor: dismissHover[variant] }}
-          pressStyle={dismissRipple.active ? undefined : { backgroundColor: dismissPress[variant] }}
+          backgroundColor={flatValue(
+            isWeb && 'transparent',
+            `hover:${dismissHover[variant]}`,
+            !dismissRipple.active && `press:${dismissPress[variant]}`,
+          )}
           outlineColor="focus-visible:ring"
           outlineStyle="focus-visible:solid"
           outlineWidth="focus-visible:2px"
           {...(isWeb
-                    ? { type: 'button', padding: 0, borderWidth: 0, backgroundColor: 'transparent' }
-                    : { accessible: true, hitSlop: 10 })}
+            ? { type: 'button', padding: 0, borderWidth: 0 }
+            : { accessible: true, hitSlop: 10 })}
           {...dismissRipple.props}
           onPress={(event) => {
                     // Keep the press from reaching a pressable card or row around the alert.

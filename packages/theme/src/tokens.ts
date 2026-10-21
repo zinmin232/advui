@@ -1,18 +1,19 @@
 import { createTokens } from 'tamagui'
 
 /**
- * 4px-based spacing scale: `1` = 4px, `4` = 16px, `10` = 40px.
- * Negative keys (`-2`) exist for margins.
+ * 4px-based spacing scale: `1` = 4px, `4` = 16px, `10` = 40px. Half steps are
+ * named with a hyphen (`1-5` = 6px): Tamagui 3 reads a dot as `category.name`.
+ * Negative keys (`-2`, `-0-5`) exist for margins.
  */
 const spaceScale = {
   0: 0,
-  0.5: 2,
+  '0-5': 2,
   1: 4,
-  1.5: 6,
+  '1-5': 6,
   2: 8,
-  2.5: 10,
+  '2-5': 10,
   3: 12,
-  3.5: 14,
+  '3-5': 14,
   4: 16,
   5: 20,
   6: 24,

@@ -1,6 +1,6 @@
 import { useIconColor } from '@advui/icons'
 import { ActivityIndicator } from 'react-native'
-import { View } from 'tamagui'
+import { View } from 'tamagui/unstyled'
 import { spinnerSizes } from './sizes'
 import type { SpinnerProps } from './Spinner'
 

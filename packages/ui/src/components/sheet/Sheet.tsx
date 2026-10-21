@@ -16,7 +16,7 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
@@ -177,15 +177,12 @@ function SheetContent({
         transition={reducedMotion ? undefined : 'quick'}
       />
       <TamaguiSheet.Handle backgroundColor="borderStrong" />
-      <TamaguiSheet.Frame
-        backgroundColor="popover"
-        borderTopLeftRadius="dialog"
-        borderTopRightRadius="dialog"
-        paddingTop="6"
-        paddingRight="6"
-        paddingLeft="6"
-        paddingBottom="8"
-      >
+      <TamaguiSheet.Container paddingTop="6" paddingRight="6" paddingLeft="6" paddingBottom="8">
+        <TamaguiSheet.Background
+          backgroundColor="popover"
+          borderTopLeftRadius="dialog"
+          borderTopRightRadius="dialog"
+        />
         {/* The native sheet renders in a portal, which does not carry React context. */}
         <SheetContext.Provider value={sheet}>
           {isWeb ? (
@@ -194,8 +191,8 @@ function SheetContent({
             <Dismissable
               forceUnmount={!open}
               disableOutsidePointerEvents={open}
-              onPointerDownOutside={(event) => {
-                if (!dismissible) event.preventDefault()
+              onPointerDownOutside={(details) => {
+                if (!dismissible) details.cancel()
               }}
               onDismiss={() => setOpen(false)}
             >
@@ -207,7 +204,7 @@ function SheetContent({
             body
           )}
         </SheetContext.Provider>
-      </TamaguiSheet.Frame>
+      </TamaguiSheet.Container>
     </TamaguiSheet>
   )
 }

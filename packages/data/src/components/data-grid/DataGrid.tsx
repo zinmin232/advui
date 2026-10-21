@@ -1,5 +1,5 @@
 import { type ReactNode, useEffect, useId, useRef, useState } from 'react'
-import { ScrollView, View, XStack, isWeb, styled } from 'tamagui'
+import { ScrollView, View, XStack, isWeb, styled } from 'tamagui/unstyled'
 import { Input, Text, useControllableState } from '@advui/core'
 
 export type DataGridValue = string | number | null | undefined
@@ -407,7 +407,6 @@ export function DataGrid<T>({
                       <Input
                         ref={editorRef as never}
                         autoFocus
-                        unstyled
                         size={size}
                         height="100%"
                         width="100%"

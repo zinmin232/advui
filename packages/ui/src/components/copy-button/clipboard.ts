@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { isWeb } from 'tamagui'
+import { isWeb } from 'tamagui/unstyled'
 
 /** Writes text to the clipboard; throws (or rejects) when it cannot. */
 export type WriteClipboard = (text: string) => Promise<unknown> | void

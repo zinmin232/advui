@@ -13,7 +13,7 @@ import {
   styled,
   useComposedRefs,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { isTextContent } from '../../utils/isTextContent'
 import type { Responsive } from '../../utils/responsive'
 import { Stack, type StackAlign, type StackDistribute } from '../layout/Stack'
@@ -51,7 +51,7 @@ const ToolbarFrame = styled(Stack, {
 // `min` is a control's height plus the padding on both sides, so a bar that
 // holds only text is as tall as one with buttons of the same size.
 const sizes = {
-  sm: { gap: '1', groupGap: '0.5', padding: '1', control: '8', min: '10' },
+  sm: { gap: '1', groupGap: '0-5', padding: '1', control: '8', min: '10' },
   md: { gap: '2', groupGap: '1', padding: '2', control: '10', min: '14' },
   lg: { gap: '3', groupGap: '2', padding: '4', control: '12', min: '20' },
 } as const

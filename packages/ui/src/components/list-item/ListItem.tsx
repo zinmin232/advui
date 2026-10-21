@@ -8,7 +8,7 @@ import {
   createStyledContext,
   isWeb,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { ariaState } from '../../utils/ariaState'
@@ -420,7 +420,7 @@ export const ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListI
               if (selectable) setSelected(!selected)
             }}
             {...spacing}
-            {...(ripple.active && { pressStyle: { backgroundColor: 'transparent' } })}
+            {...(ripple.active && { backgroundColor: 'press:transparent' })}
             {...ripple.props}
           >
             {ripple.element}

@@ -14,7 +14,7 @@ import {
   isWeb,
   useComposedRefs,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import {
   ToggleFrame,

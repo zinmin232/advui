@@ -1,5 +1,5 @@
 import { type ReactNode, forwardRef } from 'react'
-import { type SpaceTokens, type TamaguiElement, View, type ViewProps } from 'tamagui'
+import { type SpaceTokens, type TamaguiElement, View, type ViewProps } from 'tamagui/unstyled'
 import { spaceValue } from './autoGridColumns'
 
 export interface AutoGridProps extends Omit<ViewProps, 'children' | 'gap'> {

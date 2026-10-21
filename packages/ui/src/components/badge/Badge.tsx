@@ -8,7 +8,7 @@ import {
   createStyledContext,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { isTextContent } from '../../utils/isTextContent'
 
 export type BadgeVariant =
@@ -27,7 +27,7 @@ const foreground = {
   success: 'successSoftForeground',
   warning: 'warningSoftForeground',
   info: 'infoSoftForeground',
-} as const satisfies Record<BadgeVariant, `$${string}`>
+} as const satisfies Record<BadgeVariant, string>
 
 export const BadgeFrame = styled(View, {
   name: 'Badge',

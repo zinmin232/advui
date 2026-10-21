@@ -1,4 +1,4 @@
-import { Menu, withStaticProperties } from 'tamagui'
+import { Menu, withStaticProperties } from 'tamagui/unstyled'
 import { createMenuParts } from './menuParts'
 import type { DropdownMenuProps, DropdownMenuTriggerProps } from './types'
 

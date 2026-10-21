@@ -1,5 +1,5 @@
 import { useIconColor } from '@advui/icons'
-import { Text, View, type ViewProps } from 'tamagui'
+import { Text, View, type ViewProps } from 'tamagui/unstyled'
 import {
   type CircularProgressSize,
   type CircularProgressTone,

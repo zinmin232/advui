@@ -19,7 +19,7 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
@@ -38,10 +38,10 @@ const MenuContext = createContext<MenuContextValue>({ open: null, setOpen: () =>
 const InPanel = createContext(false)
 
 const focusRing = {
-  outlineColor: 'ring',
-  outlineStyle: 'solid',
-  outlineWidth: 2,
-  outlineOffset: 2,
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
 } as const
 
 const TopLevelFrame = styled(View, {
@@ -55,7 +55,7 @@ const TopLevelFrame = styled(View, {
   borderWidth: 0,
   backgroundColor: "transparent hover:accent press:accentHover",
   cursor: 'pointer',
-  focusVisibleStyle: focusRing,
+  ...focusRing,
   variants: {
     active: {
       true: {
@@ -75,7 +75,8 @@ const PanelLinkFrame = styled(View, {
   borderWidth: 0,
   backgroundColor: "transparent hover:accent press:accentHover",
   cursor: 'pointer',
-  focusVisibleStyle: { ...focusRing, outlineOffset: -2 },
+  ...focusRing,
+  outlineOffset: 'focus-visible:-2px',
   variants: {
     active: {
       true: {

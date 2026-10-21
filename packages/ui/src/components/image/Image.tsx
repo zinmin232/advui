@@ -17,7 +17,7 @@ import {
   isWeb,
   styled,
   useEvent,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 
 type Status = 'loading' | 'loaded' | 'error'
 

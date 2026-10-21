@@ -1,4 +1,4 @@
-import { type GetProps, Text as TamaguiText, styled } from 'tamagui'
+import { type GetProps, Text as TamaguiText, styled } from 'tamagui/unstyled'
 
 /** Keyboard key or shortcut hint, e.g. `<Kbd>Ctrl K</Kbd>`. Renders `<kbd>` on web. */
 export const Kbd = styled(TamaguiText, {

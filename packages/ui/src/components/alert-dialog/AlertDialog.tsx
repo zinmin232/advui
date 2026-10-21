@@ -8,7 +8,7 @@ import {
   View,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
@@ -21,6 +21,7 @@ import {
   overlayStyle,
   titleStyle,
 } from '../dialog/styles'
+import { transformOpacity } from '../../utils/transition'
 
 const Overlay = styled(TamaguiAlertDialog.Overlay, { name: 'AlertDialogOverlay', ...overlayStyle })
 
@@ -58,8 +59,7 @@ const Content = forwardRef<TamaguiElement, AlertDialogContentProps>(function Ale
         ref={ref}
         {...contentStyle}
         {...contentSizes[size]}
-        transition={transition}
-        animateOnly={['transform', 'opacity']}
+        transition={transformOpacity(transition)}
         {...props}
       >
         {children}

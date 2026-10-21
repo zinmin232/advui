@@ -8,7 +8,7 @@ import {
   XStack,
   isWeb,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
 import { useControllableState } from '../../hooks/useControllableState'
 import { ariaState } from '../../utils/ariaState'
@@ -64,7 +64,7 @@ export const TagsInputFrame = styled(XStack, {
 const rowHeights = { sm: '6', md: '7', lg: '8' } as const
 const fontSizes = { sm: '2', md: '2', lg: '3' } as const
 // The text box's own inset, so its text and placeholder line up with an Input's.
-const textInsets = { sm: '1.5', md: '1.5', lg: '2' } as const
+const textInsets = { sm: '1-5', md: '1-5', lg: '2' } as const
 
 export interface TagsInputLabels {
   /** Name of a tag's remove button. Default: "Remove {tag}". */
@@ -262,7 +262,7 @@ export const TagsInput = forwardRef<TamaguiElement, TagsInputProps>(
         invalid={invalid}
         disabled={disabled}
         {...props}
-        // The ring an Input draws on focus (web only, like its focusVisibleStyle).
+        // The ring an Input draws on focus (web only, like its focus-visible outline).
         {...(isWeb &&
           focused && {
             outlineColor: invalid ? 'error' : 'ring',

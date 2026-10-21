@@ -1,6 +1,6 @@
 import { colorTokens } from '@advui/theme'
 import { type HSVA, fromHsv, parseColor, toHex, toHsv, withAlpha } from '@advui/utils'
-import type { ColorTokens } from 'tamagui'
+import type { ColorTokens } from 'tamagui/unstyled'
 
 // The spectrum, its white and black ends and the transparency grid are the
 // colors being picked, not theme roles, so they stay the same in every theme.
@@ -59,10 +59,10 @@ export const clamp = (value: number, min: number, max: number) =>
   Math.min(max, Math.max(min, value))
 
 export const focusRing = {
-  outlineColor: 'ring',
-  outlineStyle: 'solid',
-  outlineWidth: 2,
-  outlineOffset: 2,
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
 } as const
 
 /** Screen reader actions on native. */

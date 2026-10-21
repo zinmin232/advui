@@ -1,4 +1,4 @@
-import { type GetProps, View, isWeb, styled } from 'tamagui'
+import { type GetProps, View, isWeb, styled } from 'tamagui/unstyled'
 
 const Track = styled(View, {
   name: 'Progress',

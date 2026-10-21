@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { type GetProps, View, isWeb, styled } from 'tamagui'
+import { type GetProps, View, isWeb, styled } from 'tamagui/unstyled'
 import { isTextContent } from '../../utils/isTextContent'
 import { Text } from '../typography/Text'
 

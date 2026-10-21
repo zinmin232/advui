@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { ColorTokens, GetProps, View } from 'tamagui'
+import type { ColorTokens, GetProps, View } from 'tamagui/unstyled'
 
 type PressHandler = GetProps<typeof View>['onPressIn']
 

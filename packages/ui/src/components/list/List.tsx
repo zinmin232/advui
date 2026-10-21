@@ -1,5 +1,5 @@
 import { Children, forwardRef, isValidElement } from 'react'
-import { type GetProps, type TamaguiElement, View, styled, withStaticProperties } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, styled, withStaticProperties } from 'tamagui/unstyled'
 import {
   ListContext,
   ListItem,

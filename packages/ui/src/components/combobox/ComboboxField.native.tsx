@@ -1,6 +1,6 @@
 import { CheckIcon, ChevronDownIcon, IconDefaults } from '@advui/icons'
 import { forwardRef, useState } from 'react'
-import { Sheet, type TamaguiElement, View, XStack, styled } from 'tamagui'
+import { Sheet, type TamaguiElement, View, XStack, styled } from 'tamagui/unstyled'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { FieldContext, useFieldControl } from '../../hooks/useFieldControl'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
@@ -72,7 +72,7 @@ function OptionRow({
       paddingHorizontal="3"
       borderRadius="md"
       opacity={option.disabled ? 0.5 : 1}
-      pressStyle={option.disabled || ripple.active ? undefined : { backgroundColor: 'accent' }}
+      backgroundColor={option.disabled || ripple.active ? undefined : 'press:accent'}
       {...ripple.props}
       onPress={option.disabled ? undefined : onPress}
       accessibilityActions={[{ name: 'activate' }]}
@@ -171,7 +171,7 @@ export const ComboboxField = forwardRef<TamaguiElement, ComboboxFieldProps>(
             flex={1}
             size="sm"
             numberOfLines={1}
-            color={`${summary ? "foreground" : "placeholder-color"}`}
+            color={summary ? "foreground" : "placeholder-color"}
           >
             {summary || (multiple && selected.length ? '' : placeholder)}
           </Text>

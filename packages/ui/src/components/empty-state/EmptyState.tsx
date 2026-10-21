@@ -1,6 +1,6 @@
 import { IconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, View, XStack, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, XStack, styled } from 'tamagui/unstyled'
 import { useDashedBorder } from '../../hooks/useDashedBorder'
 import { Heading, type HeadingProps } from '../typography/Heading'
 import { Text } from '../typography/Text'

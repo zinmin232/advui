@@ -21,12 +21,13 @@ import {
   isWeb,
   useComposedRefs,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useSheetMaxHeight } from '../../hooks/useSheetMaxHeight'
 import { Text } from '../typography/Text'
+import { transformOpacity } from '../../utils/transition'
 
 type Side = 'top' | 'right' | 'bottom' | 'left'
 type Align = 'start' | 'center' | 'end'
@@ -156,7 +157,6 @@ const PopoverContent = forwardRef<TamaguiElement, PopoverContentProps>(function 
   return (
     <TamaguiPopover.Content
       ref={ref as never}
-      unstyled
       backgroundColor="popover"
       borderWidth={1}
       borderColor="border"
@@ -169,24 +169,23 @@ const PopoverContent = forwardRef<TamaguiElement, PopoverContentProps>(function 
       opacity="1 enter:0 exit:0"
       scale="1 enter:0.96 exit:0.96"
       y="0 enter:-4px exit:-4px"
-      transition={reducedMotion ? null : 'quick'}
+      transition={transformOpacity(reducedMotion ? null : 'quick')}
       {...props}
-      animateOnly={['transform', 'opacity']}
       onPointerDownOutside={composeEventHandlers(
             onPointerDownOutside,
-            (event) => {
-              const { button, ctrlKey } = event.detail.originalEvent
-              rightClick.current = button === 2 || (button === 0 && ctrlKey)
+            (details) => {
+              const pointer = details.event
+              rightClick.current = !!pointer && (pointer.button === 2 || (pointer.button === 0 && pointer.ctrlKey))
             },
             { checkDefaultPrevented: false },
           )}
       onCloseAutoFocus={
             onCloseAutoFocus === false
               ? false
-              : composeEventHandlers(onCloseAutoFocus, (event) => {
+              : composeEventHandlers(onCloseAutoFocus, (details) => {
                   const trigger = triggerRef?.current
                   if (!trigger) return
-                  event.preventDefault()
+                  details.cancel()
                   if (!rightClick.current) trigger.focus()
                 })
           }

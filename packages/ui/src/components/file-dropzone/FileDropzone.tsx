@@ -1,6 +1,6 @@
 import { IconDefaults, UploadIcon } from '@advui/icons'
 import { type ReactNode, forwardRef, useRef } from 'react'
-import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui/unstyled'
 import { useDashedBorder } from '../../hooks/useDashedBorder'
 import { FileList } from '../file-upload/FileList'
 import { type FileSelectionProps, useFileSelection } from '../file-upload/useFileSelection'

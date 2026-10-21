@@ -9,7 +9,7 @@ import {
   View,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
@@ -25,6 +25,7 @@ import {
   titleStyle,
 } from './styles'
 import { useOverlayPress } from './useOverlayPress'
+import { transformOpacity } from '../../utils/transition'
 
 const Overlay = styled(TamaguiDialog.Overlay, { name: 'DialogOverlay', ...overlayStyle })
 
@@ -72,8 +73,7 @@ const Content = forwardRef<TamaguiElement, DialogContentProps>(function DialogCo
         key="content"
         ref={ref}
         size={size}
-        transition={transition}
-        animateOnly={['transform', 'opacity']}
+        transition={transformOpacity(transition)}
         {...props}
       >
         {children}

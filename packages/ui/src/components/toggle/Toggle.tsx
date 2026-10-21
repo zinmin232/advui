@@ -1,6 +1,6 @@
 import { IconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { type RippleOptions, useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
@@ -130,7 +130,7 @@ export function useToggleRipple(
 ) {
   const ripple = useRipple({ color: on ? 'primarySoftForeground' : 'foreground', ...options })
   const style = {
-    pressStyle: { backgroundColor: on ? 'primarySoft' : 'transparent' },
+    backgroundColor: on ? 'press:primarySoft' : 'press:transparent',
     // The ripple is clipped inside the border, so drop the transparent one.
     ...(variant === 'default' && { borderWidth: 0 }),
   } as const

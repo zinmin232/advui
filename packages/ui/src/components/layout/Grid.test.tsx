@@ -1,5 +1,5 @@
 import { Children, type ReactNode, isValidElement } from 'react'
-import { type SpaceTokens, type Token, View, type ViewProps, getTokenValue } from 'tamagui'
+import { type SpaceTokens, type Token, View, type ViewProps, getTokenValue } from 'tamagui/unstyled'
 import { describe, expect, it } from 'vitest'
 import { renderWithProvider, screen } from '../../../test/utils'
 import { Text } from '../typography/Text'

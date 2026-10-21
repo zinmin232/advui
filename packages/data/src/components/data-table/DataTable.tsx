@@ -1,6 +1,6 @@
 import { SearchIcon } from '@advui/icons'
 import type { ReactNode } from 'react'
-import { type GetProps, View, XStack, isWeb } from 'tamagui'
+import { type GetProps, View, XStack, isWeb } from 'tamagui/unstyled'
 import { Checkbox, Input, Pagination, Skeleton, Text, useControllableState } from '@advui/core'
 import { Table, type TableAlign, type TableProps } from '../table/Table'
 

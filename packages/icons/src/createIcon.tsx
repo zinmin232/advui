@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { isWeb, useTheme } from 'tamagui'
+import { isWeb, useTheme } from 'tamagui/unstyled'
 import { useIconDefaults } from './context'
 import { SvgIcon } from './SvgIcon'
 import type { IconComponent, IconNode, IconProps } from './types'

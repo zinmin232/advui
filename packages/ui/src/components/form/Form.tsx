@@ -9,7 +9,7 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { FormContext, type FormContextValue, useParentForm } from '../../hooks/useParentForm'
 import { isTextContent } from '../../utils/isTextContent'
 import { LoadingButton, type LoadingButtonProps } from '../loading-button/LoadingButton'

@@ -9,12 +9,13 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useRipple } from '../../hooks/useRipple'
 import { ButtonGroupContext, ButtonGroupItemContext, attachedStyle } from './groupContext'
 import { Spinner } from '../spinner'
 import { isTextContent } from '../../utils/isTextContent'
 import { ariaState } from '../../utils/ariaState'
+import type { ControlStateProps } from '../../hooks/useFieldControl'
 
 export type ButtonVariant = 'default' | 'secondary' | 'outline' | 'ghost' | 'destructive' | 'link'
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'icon'
@@ -169,7 +170,9 @@ export const ButtonText = styled(Text, {
 
 type FrameProps = GetProps<typeof ButtonFrame>
 
-export interface ButtonProps extends Omit<FrameProps, 'variant' | 'size'> {
+export interface ButtonProps
+  extends Omit<FrameProps, 'variant' | 'size' | 'disabled'>,
+    Pick<ControlStateProps, 'disabled'> {
   variant?: ButtonVariant
   size?: ButtonSize
   /** Shows a spinner, sets `aria-busy` and blocks presses while keeping the label for layout. */
@@ -231,7 +234,7 @@ const ButtonImpl = forwardRef<TamaguiElement, ButtonProps>(function Button(
       {...(nativeLabel && { 'aria-label': nativeLabel })}
       {...(group?.attached && position && attachedStyle(position, group.orientation, variant))}
       {...(ripple.active && {
-        pressStyle: { backgroundColor: buttonBackground[variant] },
+        backgroundColor: `press:${buttonBackground[variant]}`,
         // The ripple is clipped inside the border: drop the transparent one
         // so it reaches the edge. Outline buttons keep their visible border.
         ...(variant !== 'outline' && { borderWidth: 0 }),

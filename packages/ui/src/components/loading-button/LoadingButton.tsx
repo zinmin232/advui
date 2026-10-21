@@ -1,6 +1,6 @@
 import { useIconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
-import { type TamaguiElement, View } from 'tamagui'
+import { type TamaguiElement, View } from 'tamagui/unstyled'
 import { Button, type ButtonProps } from '../button/Button'
 import { Spinner } from '../spinner'
 

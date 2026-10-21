@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, TextArea, isWeb, styled } from 'tamagui'
-import { useFieldControl } from '../../hooks/useFieldControl'
+import { type GetProps, type TamaguiElement, TextArea, isWeb, styled } from 'tamagui/unstyled'
+import { useFieldControl, type ControlStateProps } from '../../hooks/useFieldControl'
 import { inputBaseStyle } from '../input/Input'
 import { ariaState } from '../../utils/ariaState'
 
@@ -31,7 +31,8 @@ const TextareaFrame = styled(TextArea, {
   defaultVariants: { resize: 'vertical' }
 })
 
-export type TextareaProps = GetProps<typeof TextareaFrame>
+export type TextareaProps = Omit<GetProps<typeof TextareaFrame>, 'disabled' | 'invalid'> &
+  ControlStateProps
 
 /** Multi-line text field. Grows with `rows`/`minHeight`; set `invalid` for errors. */
 export const Textarea = forwardRef<TamaguiElement, TextareaProps>(

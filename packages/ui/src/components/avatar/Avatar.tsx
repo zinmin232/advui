@@ -8,7 +8,7 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 
 type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 

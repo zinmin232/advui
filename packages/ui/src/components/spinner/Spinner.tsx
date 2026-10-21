@@ -1,8 +1,8 @@
 import { useIconColor } from '@advui/icons'
-import { View, type ViewProps } from 'tamagui'
+import { View, type ViewProps } from 'tamagui/unstyled'
 import { spinnerSizes } from './sizes'
 
-export interface SpinnerProps extends Omit<ViewProps, 'children'> {
+export interface SpinnerProps extends Omit<ViewProps, 'children' | 'color'> {
   /** `sm` 16px · `md` 20px · `lg` 28px. */
   size?: 'sm' | 'md' | 'lg'
   /** Theme token or color. Defaults to the current text color. */

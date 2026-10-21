@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from '@advui/icons'
 import { forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { Button } from '../button/Button'
 import { IconButton } from '../icon-button/IconButton'
@@ -73,7 +73,8 @@ const defaultLabels: PaginationLabels = {
   status: (page, count) => `Page ${page} of ${count}`,
 }
 
-export interface PaginationProps extends Omit<GetProps<typeof PaginationFrame>, 'children'> {
+// `page` is also a CSS style prop in Tamagui 3; here it is the current page.
+export interface PaginationProps extends Omit<GetProps<typeof PaginationFrame>, 'children' | 'page'> {
   /** Number of pages. */
   count: number
   /** Current page, from 1 (controlled). */
@@ -127,8 +128,7 @@ export const Pagination = forwardRef<TamaguiElement, PaginationProps>(function P
   const buttonSize = size === 'sm' ? '8' : '10'
   // On narrow phones the default size drops to the small one, so a full
   // pager fits on one line. Media props are CSS on web: safe to server-render.
-  const narrow = { '$max-xs': { width: '8', height: '8' } } as const
-  const narrowPage = { '$max-xs': { minWidth: '8', height: '8' } } as const
+  const narrow = { width: 'max-xs:8', height: 'max-xs:8' } as const
 
   return (
     <View ref={ref} render="nav" aria-label={ariaLabel} {...(!isWeb && { role: 'navigation' })}>
@@ -155,8 +155,8 @@ export const Pagination = forwardRef<TamaguiElement, PaginationProps>(function P
               <View key={item} render="li">
                 <Button
                   size={size === 'sm' ? 'sm' : 'md'}
-                  minWidth={buttonSize}
-                  {...narrowPage}
+                  minWidth={`${buttonSize} max-xs:8`}
+                  height="max-xs:8"
                   paddingHorizontal="2"
                   {...(isWeb
                                     ? item === page && { 'aria-current': 'page' as const }
@@ -174,9 +174,8 @@ export const Pagination = forwardRef<TamaguiElement, PaginationProps>(function P
                 key={item}
                 render="li"
                 aria-hidden
-                width={buttonSize}
-                height={buttonSize}
-                {...narrow}
+                width={`${buttonSize} max-xs:8`}
+                height={`${buttonSize} max-xs:8`}
                 alignItems="center"
                 justifyContent="center"
               >

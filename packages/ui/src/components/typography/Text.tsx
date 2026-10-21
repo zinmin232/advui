@@ -1,4 +1,4 @@
-import { type GetProps, Text as TamaguiText, styled } from 'tamagui'
+import { type GetProps, Text as TamaguiText, styled } from 'tamagui/unstyled'
 
 const tones = {
   default: { color: 'foreground' },

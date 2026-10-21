@@ -1,6 +1,6 @@
 import { UploadIcon } from '@advui/icons'
 import { forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, View, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, styled } from 'tamagui/unstyled'
 import { useFieldControl } from '../../hooks/useFieldControl'
 import { Button } from '../button/Button'
 import { Text } from '../typography/Text'

@@ -8,34 +8,28 @@ import {
   createSwitch,
   isWeb,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
 import { ariaState } from '../../utils/ariaState'
 
-// Visual styles live in the `unstyled: false` variant so they override the
-// defaults Tamagui's createSwitch applies through the same variant.
 const Frame = styled(TamaguiSwitchFrame, {
   name: 'Switch',
   justifyContent: 'center',
   // reset the UA <button> padding so the thumb travel is exact
   padding: 0,
   cursor: 'pointer',
+  borderRadius: 'full',
+  borderWidth: 2,
+  borderColor: 'transparent',
+  backgroundColor: 'input',
+  transition: 'quick',
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
 
   variants: {
-    unstyled: {
-      false: {
-        borderRadius: "full",
-        borderWidth: 2,
-        borderColor: 'transparent',
-        backgroundColor: "input",
-        transition: 'quick',
-        outlineColor: "focus-visible:ring",
-        outlineStyle: "focus-visible:solid",
-        outlineWidth: "focus-visible:2px",
-        outlineOffset: "focus-visible:2px"
-      },
-    },
     size: {
       sm: {
         width: "9",
@@ -58,16 +52,12 @@ const Frame = styled(TamaguiSwitchFrame, {
 
 const Thumb = styled(TamaguiSwitchThumb, {
   name: 'SwitchThumb',
+  backgroundColor: 'background',
+  borderRadius: 'full',
+  transition: 'quick',
+  ...shadows.xs,
 
   variants: {
-    unstyled: {
-      false: {
-        backgroundColor: "background",
-        borderRadius: "full",
-        transition: 'quick',
-        ...shadows.xs
-      },
-    },
     size: {
       sm: {
         width: "4",

@@ -1,6 +1,6 @@
 import { Fragment, type ReactNode } from 'react'
 import { Linking } from 'react-native'
-import { type GetProps, View, XStack, isWeb } from 'tamagui'
+import { type GetProps, View, XStack, isWeb } from 'tamagui/unstyled'
 import { Text, type TextSize } from '@advui/core'
 import { type BlockNode, type InlineNode, parseMarkdown } from './markdown'
 

@@ -21,7 +21,7 @@ import {
   useConfiguration,
   useMedia,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import {
   AppShellContext,
   type AppShellContextValue,

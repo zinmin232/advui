@@ -1,6 +1,6 @@
 import { IconDefaults, SearchIcon } from '@advui/icons'
 import { type ReactNode, useEffect, useId, useRef, useState } from 'react'
-import { Input as TamaguiInput, ScrollView, View, isWeb, styled } from 'tamagui'
+import { Input as TamaguiInput, ScrollView, View, isWeb, styled } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { Dialog } from '../dialog/Dialog'
 import { Kbd } from '../typography/Kbd'
@@ -59,7 +59,6 @@ export function rankCommand(command: Command, query: string): number {
 
 const SearchInput = styled(TamaguiInput, {
   name: 'CommandPaletteInput',
-  unstyled: true,
   flex: 1,
   height: "12",
   padding: 0,

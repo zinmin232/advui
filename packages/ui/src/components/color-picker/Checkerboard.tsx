@@ -1,4 +1,4 @@
-import { View } from 'tamagui'
+import { View } from 'tamagui/unstyled'
 import { CHECKER, CHECKER_CELL } from './shared'
 
 /** The grid behind translucent colors. Web: a repeating CSS gradient. */

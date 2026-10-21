@@ -157,7 +157,7 @@ export function CustomizerControls({ compact = false }: { compact?: boolean }) {
               <Button
                 key={name}
                 size="sm"
-                borderColor={`${selected ? "ring" : "input"}`}
+                borderColor={selected ? "ring" : "input"}
                 borderWidth={selected ? 2 : 1}
                 variant="outline"
                 role="radio"
