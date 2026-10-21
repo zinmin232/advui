@@ -131,7 +131,10 @@ export const Pagination = forwardRef<TamaguiElement, PaginationProps>(function P
   const buttonSize = size === 'sm' ? '8' : '10'
   // On narrow phones the default size drops to the small one, so a full
   // pager fits on one line. Media props are CSS on web: safe to server-render.
-  const narrow = { width: 'max-xs:8', height: 'max-xs:8' } as const
+  // With the base size too: IconButton sets its own width and height, which
+  // these replace as props, states and all.
+  const narrowSize = `${buttonSize} max-xs:8` as const
+  const narrow = { width: narrowSize, height: narrowSize }
 
   return (
     <View ref={ref} render="nav" aria-label={ariaLabel} {...(!isWeb && { role: 'navigation' })}>

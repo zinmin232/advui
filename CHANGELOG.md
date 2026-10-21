@@ -13,23 +13,19 @@ Adv UI now runs on Tamagui 3 (`tamagui` `^3.0.18` as the peer dependency).
 Install it with Adv UI, and update your own styles as below; Tamagui's
 `@tamagui/codemod-flat-values` converts most of them.
 
-- **Tokens and theme keys have no `# Changelog
-
-All notable changes to this project are documented here. The format follows
-[Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the packages
-follow [Semantic Versioning](https://semver.org). All published packages share
-one version.
-
-**: `padding="4"`, `color="mutedForeground"`,
-`borderRadius="lg"`. Half steps are named with a hyphen: `0-5`, `1-5`, `2-5`,
-`3-5` (and `-0-5` for margins). The `true` space, size and radius tokens and
-the `transparent` color token are gone (Tamagui 3 reserves those names;
-`transparent` still works as CSS).
-
+- **Tokens and theme keys have no `$` prefix**: `padding="4"`,
+  `color="mutedForeground"`, `borderRadius="lg"`. Half steps are named with a
+  hyphen: `0-5`, `1-5`, `2-5`, `3-5` (and `-0-5` for margins). The `true`
+  space, size and radius tokens and the `transparent` color token are gone
+  (Tamagui 3 reserves those names; `transparent` still works as CSS).
 - **States and breakpoints are flat values**: `hoverStyle`, `pressStyle`,
   `focusVisibleStyle`, `enterStyle`, `exitStyle` and media props such as
   `$md={{ … }}` become clauses in the value, `backgroundColor="muted hover:accent"`,
   `padding="4 md:6"`, or the object form `{ default: 1, enter: 0 }`.
+- **A plain style prop now holds at every breakpoint.** A component's own
+  breakpoint styles used to win over it: `<Card.Content padding="3">` was 12px
+  on phones and Card's 24px from `sm`. It is now 12px everywhere; write
+  `padding="3 sm:6"` to keep the old result.
 - **Tamagui's own theme keys are kebab-case** and the neutral ramp has 11 steps:
   `background-hover`, `border-color`, `placeholder-color`, `shadow-color`,
   `color-1`…`color-11` (Tamagui's mapping: `color7` merges into `color-6`, and

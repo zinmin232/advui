@@ -170,8 +170,8 @@ function MenubarTrigger({ children, disabled = false }: MenubarTriggerProps) {
   const pointer = useRef('')
   const toggle = () => bar.setValue(menu.open ? null : menu.value)
 
-  // Given to Menu.Trigger, these replace Tamagui's own open handlers (the
-  // child's would run after them): the bar decides which menu is open.
+  // Menu.Trigger runs these before its own open handlers and skips those for
+  // a prevented event: the bar decides which menu is open.
   const handlers = {
     onPointerDown: (event: TriggerPointerEvent) => {
       pointer.current = event.pointerType
@@ -180,7 +180,11 @@ function MenubarTrigger({ children, disabled = false }: MenubarTriggerProps) {
       if (!menu.open) event.preventDefault()
       toggle()
     },
-    onClick: () => {
+    onClick: (event: { preventDefault: () => void }) => {
+      // Tamagui opens on click instead of pointerdown wherever the screen
+      // takes touch (navigator.maxTouchPoints), mouse presses included, and
+      // toggles after us unless the event is prevented.
+      event.preventDefault()
       if (disabled || (pointer.current !== 'touch' && pointer.current !== 'pen')) return
       pointer.current = ''
       toggle()

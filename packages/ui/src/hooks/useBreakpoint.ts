@@ -1,4 +1,4 @@
-import { getConfig, useDidFinishSSR, useMedia } from 'tamagui/unstyled'
+import { useMedia } from 'tamagui/unstyled'
 import {
   type Breakpoint,
   type Responsive,
@@ -11,19 +11,17 @@ import {
  * It re-renders when that changes.
  *
  * The server can't know the width, so it renders for a phone (the config's
- * `mediaQueryDefaultActive`, `xs` here). Until hydration finishes the client
- * returns the same, so the markup matches and React logs no hydration error,
- * then it re-renders with the real breakpoint. Lay pages out with Show / Hide
+ * `mediaQueryDefaultActive`, `xs` here). Tamagui's `useMedia` renders the
+ * same on the client first, so the markup matches and React logs no hydration
+ * error, then corrects it before paint. Lay pages out with Show / Hide
  * or responsive props, which are CSS on web, and keep this for behavior.
  */
 export function useBreakpoint(): 'base' | Breakpoint {
-  const media = useMedia()
-  const hydrated = useDidFinishSSR()
-  const active: Record<string, boolean | undefined> = hydrated
-    ? media
-    : (getConfig().settings.mediaQueryDefaultActive ?? {})
+  // Read every key on every render: Tamagui 3 updates a component only for
+  // the media keys it read while rendering.
+  const media = useMedia() as Record<string, boolean | undefined>
   let current: 'base' | Breakpoint = 'base'
-  for (const key of breakpointKeys) if (active[key]) current = key
+  for (const key of breakpointKeys) if (media[key]) current = key
   return current
 }
 

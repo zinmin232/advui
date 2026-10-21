@@ -49,6 +49,9 @@ export const Textarea = forwardRef<TamaguiElement, TextareaProps>(
         // TextInput through Tamagui's TextArea, which stayed editable.
         {...(!isWeb && disabled && { readOnly: true })}
         multiline
+        // Tamagui 3 fixes the height at `rows` times its guess of the line
+        // height; auto lets `rows` and `minHeight` size it, as before.
+        height="auto"
         {...props}
       />
     )

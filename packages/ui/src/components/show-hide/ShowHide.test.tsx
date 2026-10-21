@@ -4,7 +4,7 @@ import { act } from 'react'
 import { hydrateRoot } from 'react-dom/client'
 import { renderToString } from 'react-dom/server'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { renderWithProvider, screen, testConfig } from '../../../test/utils'
+import { renderWithProvider, screen, testConfig, within } from '../../../test/utils'
 import { UniversalProvider } from '../../provider/UniversalProvider'
 import { useBreakpoint, useBreakpointValue } from '../../hooks/useBreakpoint'
 import { Text } from '../typography/Text'
@@ -119,15 +119,20 @@ describe('useBreakpoint and useBreakpointValue', () => {
     return <Text>{`${breakpoint} ${columns}`}</Text>
   }
 
-  it('report the largest matching breakpoint and its value', () => {
+  /** What Probe shows at the test window's width. */
+  function expectedText() {
     const width = window.innerWidth
     const expected =
       (Object.entries(breakpoints) as [keyof typeof breakpoints, number][])
         .filter(([, min]) => width >= min)
         .pop()?.[0] ?? 'base'
     const columns = { base: 1, xs: 1, sm: 2, md: 2, lg: 4, xl: 4, xxl: 4 }[expected]
+    return `${expected} ${columns}`
+  }
+
+  it('report the largest matching breakpoint and its value', () => {
     renderWithProvider(<Probe />)
-    expect(screen.getByText(`${expected} ${columns}`)).toBeInTheDocument()
+    expect(screen.getByText(expectedText())).toBeInTheDocument()
   })
 
   it('hydrate without a mismatch: a phone first, then the real breakpoint', async () => {
@@ -149,7 +154,9 @@ describe('useBreakpoint and useBreakpointValue', () => {
     })
     expect(recoverable).not.toHaveBeenCalled()
     expect(errors.mock.calls.flat().join(' ')).not.toMatch(/hydrat/i)
-    expect(container.textContent).not.toBe('xs 1')
+    // Tamagui 3 updates only for the media keys read while rendering, so the
+    // phone-first render must read them too.
+    expect(within(container).getByText(expectedText())).toBeInTheDocument()
     container.remove()
   })
 })
