@@ -48,11 +48,11 @@ export function Segmented<T extends string>({
   onChange: (value: T) => void
 }) {
   return (
-    <VStack gap="$2">
+    <VStack gap="2">
       <Text size="sm" weight="medium" id={`seg-${label}`}>
         {label}
       </Text>
-      <HStack role="radiogroup" aria-labelledby={`seg-${label}`} gap="$1" flexWrap="wrap">
+      <HStack role="radiogroup" aria-labelledby={`seg-${label}`} gap="1" flexWrap="wrap">
         {options.map((option) => {
           const selected = option.value === value
           return (
@@ -88,9 +88,9 @@ function ColorField({
   const id = useId()
   const current = value ?? fallback
   return (
-    <VStack gap="$2" flex={1} minWidth="$40">
+    <VStack gap="2" flex={1} minWidth="40">
       <Label htmlFor={id}>{label}</Label>
-      <HStack gap="$2">
+      <HStack gap="2">
         <input
           type="color"
           aria-label={`${label} color picker`}
@@ -125,7 +125,7 @@ export function CustomizerControls({ compact = false }: { compact?: boolean }) {
     setTheme({ preset, primary: undefined, secondary: undefined, accent: undefined })
 
   return (
-    <VStack gap="$5">
+    <VStack gap="5">
       <Segmented<DesignStyle>
         label="Style"
         value={theme.style}
@@ -145,11 +145,11 @@ export function CustomizerControls({ compact = false }: { compact?: boolean }) {
         </Text>
       ) : null}
 
-      <VStack gap="$2" display={material ? 'none' : 'flex'}>
+      <VStack gap="2" display={material ? 'none' : 'flex'}>
         <Text size="sm" weight="medium" id="preset-label">
           Preset
         </Text>
-        <HStack role="radiogroup" aria-labelledby="preset-label" flexWrap="wrap" gap="$2">
+        <HStack role="radiogroup" aria-labelledby="preset-label" flexWrap="wrap" gap="2">
           {themePresetNames.map((name) => {
             const swatch = createThemeColors(themePresets[name].colors).light.primary
             const selected = theme.preset === name && !theme.primary
@@ -157,17 +157,17 @@ export function CustomizerControls({ compact = false }: { compact?: boolean }) {
               <Button
                 key={name}
                 size="sm"
+                borderColor={selected ? 'ring' : 'input'}
+                borderWidth={selected ? 2 : 1}
                 variant="outline"
                 role="radio"
                 aria-checked={selected}
-                borderColor={selected ? '$ring' : '$input'}
-                borderWidth={selected ? 2 : 1}
                 onPress={() => choosePreset(name)}
                 icon={
                   <View
-                    width="$3.5"
-                    height="$3.5"
-                    borderRadius="$full"
+                    width="3-5"
+                    height="3-5"
+                    borderRadius="full"
                     style={{ backgroundColor: swatch }}
                   />
                 }
@@ -179,7 +179,7 @@ export function CustomizerControls({ compact = false }: { compact?: boolean }) {
         </HStack>
       </VStack>
 
-      <HStack gap="$3" flexWrap="wrap">
+      <HStack gap="3" flexWrap="wrap">
         <ColorField
           label={material ? 'Seed color' : 'Primary'}
           value={theme.primary}
@@ -229,7 +229,7 @@ export function CustomizerControls({ compact = false }: { compact?: boolean }) {
         onChange={(mode) => setting.setSetting(mode)}
       />
 
-      <HStack gap="$2" flexWrap="wrap">
+      <HStack gap="2" flexWrap="wrap">
         <Button
           icon={<CopyIcon />}
           onPress={async () => {
@@ -280,23 +280,23 @@ export function CustomizerPanel({ open, onClose }: { open: boolean; onClose: () 
       aria-modal={false}
       aria-labelledby="customizer-title"
       position="fixed"
-      zIndex="$popover"
-      top="$16"
-      right="$3"
-      left="$3"
+      zIndex="popover"
+      top="16"
+      right="3"
+      left="3 sm:auto"
       maxHeight="80vh"
       overflowY="auto"
-      backgroundColor="$popover"
+      backgroundColor="popover"
       borderWidth={1}
-      borderColor="$border"
-      borderRadius="$xl"
-      padding="$5"
-      gap="$4"
-      shadowColor="$shadowColorStrong"
+      borderColor="border"
+      borderRadius="xl"
+      padding="5"
+      gap="4"
+      shadowColor="shadow-color-strong"
       shadowOffset={{ width: 0, height: 12 }}
       shadowOpacity={1}
       shadowRadius={32}
-      $sm={{ left: 'auto', width: '$112' }}
+      width="sm:112"
     >
       <HStack justifyContent="space-between">
         <VStack>
@@ -310,8 +310,8 @@ export function CustomizerPanel({ open, onClose }: { open: boolean; onClose: () 
         <IconButton aria-label="Close customizer" size="sm" icon={<XIcon />} onPress={onClose} />
       </HStack>
       <CustomizerControls />
-      <HStack gap="$1.5" alignItems="center">
-        <CheckIcon size={14} color="$success" />
+      <HStack gap="1-5" alignItems="center">
+        <CheckIcon size={14} color="success" />
         <Text size="xs" tone="muted">
           Every preset meets WCAG AA contrast in light and dark mode.
         </Text>

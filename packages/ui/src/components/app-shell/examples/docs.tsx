@@ -14,10 +14,10 @@ export default function AppShellDocs() {
     <AppShell
       layout="sidebar-full"
       sidebarBreakpoint="lg"
-      height="$112"
+      height="112"
       borderWidth={1}
-      borderColor="$border"
-      borderRadius="$lg"
+      borderColor="border"
+      borderRadius="lg"
       safeArea={false}
     >
       <AppShell.Sidebar aria-label="Docs">
@@ -47,7 +47,7 @@ export default function AppShellDocs() {
           GitHub
         </Button>
       </AppShell.Header>
-      <AppShell.Main padding="$6" gap="$3" maxWidth="$192">
+      <AppShell.Main padding="6" gap="3" maxWidth="192">
         <Text size="2xl" weight="bold">
           {page}
         </Text>

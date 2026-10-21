@@ -9,7 +9,7 @@ type Meta = Pick<ComponentMeta, 'slug' | 'parts'>
 
 const QUOTED = /^'([^']*)'$/
 const NUMBER = /^-?\d+(\.\d+)?$/
-// One prop per row: `value`, `aria-label`, `$sm` are names; `a / b` and `…Props` are not.
+// One prop per row: `value`, `aria-label`, `sm` are names; `a / b` and `…Props` are not.
 const PROP_NAME = /^[A-Za-z_$][\w$-]*$/
 
 const isComponent = (part: PartDoc) => (part.kind ?? 'component') === 'component'

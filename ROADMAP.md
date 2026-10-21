@@ -105,13 +105,16 @@ CI and AI agents cannot close them. To run the Expo playground on a phone:
 - [ ] **A phone with the stock font.** The TECNO's system font replaces
       monospace in every app, so Code Block, `Text mono` and Kbd were never
       seen monospaced on Android.
-- [ ] **Known issue: presses fire after a slide-off on iOS and Android.** A
-      finger that lands on a press view (Button, FAB, Accordion trigger,
-      List Item row) and slides off before lifting still presses it, on
-      screens that do not scroll and with sideways drags. Tamagui 2.7.7, the
-      last 2.x, calls `onPress` on every release; Tamagui 3 hands presses to
-      React Native's `usePressability`, which cancels them. Decided on
-      2026-10-19 to leave it until AdvUI moves to Tamagui 3: that move is a
-      breaking release (no `$` tokens, no `hoverStyle` / `pressStyle` props,
-      kebab-case theme keys, no `styleable()`), and a pnpm patch here would
-      fix only the docs and the Expo playground, not AdvUI's users.
+- [x] **Presses that fire after a slide-off on iOS and Android.** Fixed by
+      the move to Tamagui 3 (unreleased): it hands presses to React Native's
+      Pressability, which cancels a press when the finger leaves the view.
+      Native tests cover Button, FAB, Accordion trigger and List Item row
+      (`press.native.test.tsx`). Still to see on a phone; see the next item.
+- [ ] **Tamagui 3 on a phone.** The move changed how every component styles
+      itself (flat values, unstyled primitives, Pressability), and only the
+      web and Jest suites have run on it. Go through the components again on
+      Android and an iPhone, in light and dark mode: press, hover-free touch
+      feedback and the ripple, dashed borders (Empty State, Loading State,
+      File Dropzone), sheets (Select, Dropdown Menu, Combobox), Drawer and
+      Dialog motion, and TalkBack names and roles (Select options, Password
+      Input's toggle).

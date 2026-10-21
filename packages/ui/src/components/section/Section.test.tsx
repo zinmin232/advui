@@ -6,24 +6,17 @@ import { Section, sectionPadding } from './Section'
 
 describe('sectionPadding', () => {
   it('grows each step at md', () => {
-    expect(sectionPadding('md')).toEqual({
-      paddingVertical: '$12',
-      $md: { paddingVertical: '$16' },
-    })
-    expect(sectionPadding('none')).toEqual({ paddingVertical: '$0' })
+    expect(sectionPadding('md')).toEqual({ paddingVertical: { default: '12', md: '16' } })
+    expect(sectionPadding('none')).toEqual({ paddingVertical: { default: '0' } })
   })
 
   it('combines a map with the md step, emitting only changes', () => {
     expect(sectionPadding({ base: 'sm', lg: 'xl' })).toEqual({
-      paddingVertical: '$6',
-      $md: { paddingVertical: '$8' },
-      $lg: { paddingVertical: '$32' },
+      paddingVertical: { default: '6', md: '8', lg: '32' },
     })
     // A map without base starts at the default step.
     expect(sectionPadding({ xl: 'lg' })).toEqual({
-      paddingVertical: '$12',
-      $md: { paddingVertical: '$16' },
-      $xl: { paddingVertical: '$24' },
+      paddingVertical: { default: '12', md: '16', xl: '24' },
     })
   })
 })

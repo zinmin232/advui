@@ -20,7 +20,7 @@ export default defineMeta({
     {
       name: 'CodeBlock',
       description:
-        'A bordered block on `$muted`. With a `title` or `language` it has a header with the copy button; without, the button sits at the top right. Layout and box props go to the block.',
+        'A bordered block on `muted`. With a `title` or `language` it has a header with the copy button; without, the button sits at the top right. Layout and box props go to the block.',
       props: [
         {
           name: 'code',
@@ -43,7 +43,7 @@ export default defineMeta({
           name: 'tokens',
           type: 'CodeToken[][]',
           description:
-            'The same code as lines of `{ content, color?, italic?, bold? }`, from your highlighter. From Shiki’s `codeToTokensBase`: `({ content, color, fontStyle = 0 }) => ({ content, color, italic: (fontStyle & 1) > 0, bold: (fontStyle & 2) > 0 })`. Theme colors (`$infoSoftForeground`) follow dark mode; check a highlighter theme’s contrast on `$muted`.',
+            'The same code as lines of `{ content, color?, italic?, bold? }`, from your highlighter. From Shiki’s `codeToTokensBase`: `({ content, color, fontStyle = 0 }) => ({ content, color, italic: (fontStyle & 1) > 0, bold: (fontStyle & 2) > 0 })`. Theme colors (`infoSoftForeground`) follow dark mode; check a highlighter theme’s contrast on `muted`.',
         },
         {
           name: 'lineNumbers',

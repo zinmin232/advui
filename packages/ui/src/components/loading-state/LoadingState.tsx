@@ -1,25 +1,24 @@
 import { type ReactNode, forwardRef, useEffect, useState } from 'react'
-import { type GetProps, type TamaguiElement, View, XStack, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, XStack, isWeb, styled } from 'tamagui/unstyled'
 import { useDashedBorder } from '../../hooks/useDashedBorder'
 import { Spinner } from '../spinner/Spinner'
 import { Text } from '../typography/Text'
 
 // Same layout as Empty State and Error State, so the three can swap in place.
 const LoadingStateFrame = styled(View, {
-  name: 'LoadingState',
+  displayName: 'LoadingState',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: '$3',
-  paddingVertical: '$10',
-  paddingHorizontal: '$6',
-
+  gap: '3',
+  paddingVertical: '10',
+  paddingHorizontal: '6',
   variants: {
     bordered: {
       true: {
         borderWidth: 1,
         borderStyle: 'dashed',
-        borderColor: '$border',
-        borderRadius: '$lg',
+        borderColor: 'border',
+        borderRadius: 'lg',
       },
     },
   } as const,
@@ -54,7 +53,7 @@ export const LoadingState = forwardRef<TamaguiElement, LoadingStateProps>(functi
     return () => clearTimeout(timer)
   }, [delay])
   const shown = delay <= 0 || elapsed
-  const dashed = useDashedBorder(bordered && shown ? '$border' : null)
+  const dashed = useDashedBorder(bordered && shown ? 'border' : null, 'lg')
 
   // Web: the status element is rendered empty during the delay, because
   // screen readers announce text added to a live region more reliably than a
@@ -69,12 +68,13 @@ export const LoadingState = forwardRef<TamaguiElement, LoadingStateProps>(functi
     <LoadingStateFrame
       ref={ref}
       bordered={bordered && shown}
-      style={dashed ? [dashed, style] : style}
+      style={dashed.frame ? [dashed.frame, style] : style}
       {...props}
     >
+      {dashed.overlay}
       {/* The text says what the spinner shows; a second "Loading" is noise. */}
-      {shown ? <Spinner size="lg" color="$primary" aria-hidden /> : null}
-      <View gap="$1" alignItems="center" {...textSemantics}>
+      {shown ? <Spinner size="lg" color="primary" aria-hidden /> : null}
+      <View gap="1" alignItems="center" {...textSemantics}>
         {shown ? (
           <>
             <Text weight="medium" textAlign="center">
@@ -89,7 +89,7 @@ export const LoadingState = forwardRef<TamaguiElement, LoadingStateProps>(functi
         ) : null}
       </View>
       {shown && children ? (
-        <XStack gap="$2" marginTop="$2" flexWrap="wrap" justifyContent="center">
+        <XStack gap="2" marginTop="2" flexWrap="wrap" justifyContent="center">
           {children}
         </XStack>
       ) : null}

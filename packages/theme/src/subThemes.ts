@@ -17,7 +17,7 @@ export type ModeThemes = {
  * including during SSR.
  */
 export type SubThemes = {
-  /** Content on a `$primary` surface, such as a call-to-action band. */
+  /** Content on a `primary` surface, such as a call-to-action band. */
   light_primary: ThemeValues
   dark_primary: ThemeValues
   /** Content on the other mode's surface: dark in light mode, light in dark mode. */
@@ -56,22 +56,22 @@ export function primarySurfaceTheme(t: ThemeValues): ThemeValues {
   return {
     ...t,
     background: surface,
-    backgroundHover: t.primaryHover,
-    backgroundPress: t.primaryPress,
-    backgroundFocus: t.primaryHover,
-    backgroundStrong: t.primaryPress,
-    backgroundTransparent: withAlpha(surface, 0),
+    'background-hover': t.primaryHover,
+    'background-press': t.primaryPress,
+    'background-focus': t.primaryHover,
+    'background-strong': t.primaryPress,
+    'background-transparent': withAlpha(surface, 0),
     color: text,
-    colorHover: text,
-    colorPress: muted,
-    colorFocus: text,
-    colorTransparent: withAlpha(text, 0),
-    borderColor: line,
-    borderColorHover: mix(surface, text, 0.5),
-    borderColorPress: mix(surface, text, 0.5),
-    borderColorFocus: text,
-    placeholderColor: muted,
-    outlineColor: text,
+    'color-hover': text,
+    'color-press': muted,
+    'color-focus': text,
+    'color-transparent': withAlpha(text, 0),
+    'border-color': line,
+    'border-color-hover': mix(surface, text, 0.5),
+    'border-color-press': mix(surface, text, 0.5),
+    'border-color-focus': text,
+    'placeholder-color': muted,
+    'outline-color': text,
 
     foreground: text,
     muted: raised,

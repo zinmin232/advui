@@ -1,6 +1,6 @@
 import { AlertCircleIcon } from '@advui/icons'
 import type { ComponentType } from 'react'
-import { type GetProps, View } from 'tamagui'
+import { type GetProps, View } from 'tamagui/unstyled'
 import { Text } from '../typography/Text'
 
 export interface VideoCaptionTrack {
@@ -84,9 +84,9 @@ export function getVideoView() {
 /** Shown in place of the video when it fails, or when native has no player. */
 export function VideoFallback({ message }: { message: string }) {
   return (
-    <View flex={1} alignItems="center" justifyContent="center" gap="$2" padding="$4">
+    <View flex={1} alignItems="center" justifyContent="center" gap="2" padding="4">
       <View aria-hidden>
-        <AlertCircleIcon size={24} color="$mutedForeground" />
+        <AlertCircleIcon size={24} color="mutedForeground" />
       </View>
       <Text size="sm" tone="muted" textAlign="center">
         {message}

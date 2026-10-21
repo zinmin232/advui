@@ -5,7 +5,7 @@ import { ScrollArea } from './ScrollArea'
 describe('ScrollArea', () => {
   it('is a named, focusable region that scrolls vertically', async () => {
     const { user } = renderWithProvider(
-      <ScrollArea aria-label="Release tags" height="$72">
+      <ScrollArea aria-label="Release tags" height="72">
         <p>v1.0.0</p>
       </ScrollArea>,
     )

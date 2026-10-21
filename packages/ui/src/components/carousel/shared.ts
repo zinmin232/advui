@@ -1,5 +1,5 @@
 import { type ReactNode, createContext } from 'react'
-import type { SpaceTokens, ViewProps } from 'tamagui'
+import type { SpaceTokens, ViewProps } from 'tamagui/unstyled'
 import type { Responsive } from '../../utils/responsive'
 
 /** What Carousel asks of the platform's track. */

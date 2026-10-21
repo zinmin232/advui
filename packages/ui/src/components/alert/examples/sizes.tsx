@@ -2,7 +2,7 @@ import { Alert, VStack } from '@advui/core'
 
 export default function AlertSizes() {
   return (
-    <VStack gap="$3" width="100%">
+    <VStack gap="3" width="100%">
       <Alert
         size="sm"
         variant="info"

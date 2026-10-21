@@ -38,12 +38,12 @@ describe('AutoGrid on web', () => {
   it('is a CSS grid in the server markup, with the gap token in the template', () => {
     const html = renderToString(
       <UniversalProvider config={testConfig}>
-        <AutoGrid testID="grid" minChildWidth={200} gap="$2" maxColumns={3}>
+        <AutoGrid testID="grid" minChildWidth={200} gap="2" maxColumns={3}>
           <Text>One</Text>
         </AutoGrid>
       </UniversalProvider>,
     )
-    expect(html).toContain('_dsp-grid')
+    expect(html).toContain('display:grid')
     expect(html).toContain(
       'grid-template-columns:repeat(auto-fill, minmax(min(max(200px, calc((100% - 16px) / 3)), 100%), 1fr))',
     )

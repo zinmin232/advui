@@ -1,6 +1,6 @@
 import { IconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { type RippleOptions, useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
@@ -11,67 +11,82 @@ export type ToggleSize = 'sm' | 'md' | 'lg'
 
 // Shared with ToggleGroup items so both look and size the same.
 export const ToggleFrame = styled(View, {
-  name: 'Toggle',
+  displayName: 'Toggle',
   render: 'button',
-
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
   flexShrink: 0,
-  gap: '$2',
+  gap: '2',
   borderWidth: 1,
   borderColor: 'transparent',
-  borderRadius: '$button',
-  backgroundColor: 'transparent',
+  borderRadius: 'button',
+  backgroundColor: 'transparent hover:accent press:accentHover',
   cursor: 'pointer',
   userSelect: 'none',
   transition: 'quick',
-  hoverStyle: { backgroundColor: '$accent' },
-  pressStyle: { backgroundColor: '$accentHover' },
-  focusVisibleStyle: {
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: 2,
-  },
-
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
   variants: {
     variant: {
       default: {},
-      outline: { borderColor: '$input' },
+      outline: {
+        borderColor: 'input',
+      },
     },
     size: {
-      sm: { height: '$8', minWidth: '$8', paddingHorizontal: '$2', gap: '$1.5' },
-      md: { height: '$10', minWidth: '$10', paddingHorizontal: '$2.5' },
-      lg: { height: '$12', minWidth: '$12', paddingHorizontal: '$3' },
+      sm: {
+        height: '8',
+        minWidth: '8',
+        paddingHorizontal: '2',
+        gap: '1-5',
+      },
+      md: {
+        height: '10',
+        minWidth: '10',
+        paddingHorizontal: '2-5',
+      },
+      lg: {
+        height: '12',
+        minWidth: '12',
+        paddingHorizontal: '3',
+      },
     },
     // A variant rather than activeStyle: Tamagui does not apply activeStyle on native.
     on: {
       true: {
-        backgroundColor: '$primarySoft',
-        hoverStyle: { backgroundColor: '$primarySoftHover' },
-        pressStyle: { backgroundColor: '$primarySoftHover' },
+        backgroundColor: 'primarySoft hover:primarySoftHover press:primarySoftHover',
       },
     },
     disabled: {
       true: { opacity: 0.5, pointerEvents: 'none', cursor: 'default' },
     },
   } as const,
-
   defaultVariants: { variant: 'default', size: 'md' },
 })
 
 export const ToggleText = styled(Text, {
-  name: 'ToggleText',
-  fontFamily: '$body',
+  displayName: 'ToggleText',
+  fontFamily: 'body',
   fontWeight: '500',
   userSelect: 'none',
   numberOfLines: 1,
   variants: {
     size: {
-      sm: { fontSize: '$2', lineHeight: '$2' },
-      md: { fontSize: '$2', lineHeight: '$2' },
-      lg: { fontSize: '$3', lineHeight: '$3' },
+      sm: {
+        fontSize: '2',
+        lineHeight: '2',
+      },
+      md: {
+        fontSize: '2',
+        lineHeight: '2',
+      },
+      lg: {
+        fontSize: '3',
+        lineHeight: '3',
+      },
     },
   } as const,
 })
@@ -92,7 +107,7 @@ export function ToggleLabel({
   icon?: ReactNode
   children?: ReactNode
 }) {
-  const color = on ? '$primarySoftForeground' : '$foreground'
+  const color = on ? 'primarySoftForeground' : 'foreground'
   return (
     <IconDefaults size={iconSizes[size]} color={color}>
       {icon}
@@ -113,9 +128,9 @@ export function useToggleRipple(
   variant: ToggleVariant,
   options: Omit<RippleOptions, 'color'>,
 ) {
-  const ripple = useRipple({ color: on ? '$primarySoftForeground' : '$foreground', ...options })
+  const ripple = useRipple({ color: on ? 'primarySoftForeground' : 'foreground', ...options })
   const style = {
-    pressStyle: { backgroundColor: on ? '$primarySoft' : 'transparent' },
+    backgroundColor: on ? 'press:primarySoft' : 'press:transparent',
     // The ripple is clipped inside the border, so drop the transparent one.
     ...(variant === 'default' && { borderWidth: 0 }),
   } as const

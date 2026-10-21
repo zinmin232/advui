@@ -3,7 +3,7 @@ import { EditIcon, PlusIcon, StarIcon } from '@advui/icons'
 
 export default function FabBasic() {
   return (
-    <HStack gap="$4" alignItems="center" flexWrap="wrap">
+    <HStack gap="4" alignItems="center" flexWrap="wrap">
       <Fab size="sm" icon={<PlusIcon />} aria-label="Add item" onPress={() => toast('Add item')} />
       <Fab icon={<EditIcon />} aria-label="Compose" onPress={() => toast('Compose')} />
       <Fab

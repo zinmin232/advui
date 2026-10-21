@@ -8,7 +8,7 @@ import {
   createStyledContext,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { isTextContent } from '../../utils/isTextContent'
 
 export type BadgeVariant =
@@ -20,59 +20,86 @@ const BadgeContext = createStyledContext<{ variant: BadgeVariant; size: 'sm' | '
 })
 
 const foreground = {
-  default: '$primaryForeground',
-  secondary: '$secondaryForeground',
-  outline: '$foreground',
-  destructive: '$destructiveForeground',
-  success: '$successSoftForeground',
-  warning: '$warningSoftForeground',
-  info: '$infoSoftForeground',
-} as const satisfies Record<BadgeVariant, `$${string}`>
+  default: 'primaryForeground',
+  secondary: 'secondaryForeground',
+  outline: 'foreground',
+  destructive: 'destructiveForeground',
+  success: 'successSoftForeground',
+  warning: 'warningSoftForeground',
+  info: 'infoSoftForeground',
+} as const satisfies Record<BadgeVariant, string>
 
 export const BadgeFrame = styled(View, {
-  name: 'Badge',
+  displayName: 'Badge',
   context: BadgeContext,
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf: 'flex-start',
-  gap: '$1',
+  gap: '1',
   borderWidth: 1,
   borderColor: 'transparent',
-  borderRadius: '$full',
-
+  borderRadius: 'full',
   variants: {
     variant: {
-      default: { backgroundColor: '$primary' },
-      secondary: { backgroundColor: '$secondary' },
-      outline: { backgroundColor: 'transparent', borderColor: '$border' },
-      destructive: { backgroundColor: '$destructive' },
-      success: { backgroundColor: '$successSoft', borderColor: '$successBorder' },
-      warning: { backgroundColor: '$warningSoft', borderColor: '$warningBorder' },
-      info: { backgroundColor: '$infoSoft', borderColor: '$infoBorder' },
+      default: {
+        backgroundColor: 'primary',
+      },
+      secondary: {
+        backgroundColor: 'secondary',
+      },
+      outline: {
+        backgroundColor: 'transparent',
+        borderColor: 'border',
+      },
+      destructive: {
+        backgroundColor: 'destructive',
+      },
+      success: {
+        backgroundColor: 'successSoft',
+        borderColor: 'successBorder',
+      },
+      warning: {
+        backgroundColor: 'warningSoft',
+        borderColor: 'warningBorder',
+      },
+      info: {
+        backgroundColor: 'infoSoft',
+        borderColor: 'infoBorder',
+      },
     },
     size: {
-      sm: { paddingHorizontal: '$1.5', paddingVertical: 0 },
-      md: { paddingHorizontal: '$2.5', paddingVertical: '$0.5' },
+      sm: {
+        paddingHorizontal: '1-5',
+        paddingVertical: 0,
+      },
+      md: {
+        paddingHorizontal: '2-5',
+        paddingVertical: '0-5',
+      },
     },
   } as const,
-
   defaultVariants: { variant: 'default', size: 'md' },
 })
 
 export const BadgeText = styled(Text, {
-  name: 'BadgeText',
+  displayName: 'BadgeText',
   context: BadgeContext,
-  fontFamily: '$body',
+  fontFamily: 'body',
   fontWeight: '500',
   numberOfLines: 1,
-
   variants: {
     variant: Object.fromEntries(
       Object.entries(foreground).map(([key, color]) => [key, { color }]),
     ) as { [K in BadgeVariant]: { color: (typeof foreground)[K] } },
     size: {
-      sm: { fontSize: '$1', lineHeight: '$1' },
-      md: { fontSize: '$1', lineHeight: '$1' },
+      sm: {
+        fontSize: '1',
+        lineHeight: '1',
+      },
+      md: {
+        fontSize: '1',
+        lineHeight: '1',
+      },
     },
   } as const,
 })

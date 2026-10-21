@@ -5,7 +5,7 @@ const go = (page: string) => () => toast(`Go to ${page}`)
 
 export default function BreadcrumbCollapsed() {
   return (
-    <VStack gap="$4">
+    <VStack gap="4">
       {/* Deep paths: keep the first item and the last two; the rest are one press away. */}
       <Breadcrumb maxItems={3}>
         {path.map((page, index) => (

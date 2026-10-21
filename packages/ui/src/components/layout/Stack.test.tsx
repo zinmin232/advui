@@ -1,18 +1,18 @@
 import type { ReactElement } from 'react'
-import { View, styled } from 'tamagui'
+import { View, styled } from 'tamagui/unstyled'
 import { describe, expect, it } from 'vitest'
 import { renderWithProvider } from '../../../test/utils'
 import { Text } from '../typography/Text'
 import { HStack, Stack, VStack, Wrap } from './Stack'
 
 // The 0.8.0 stacks, before the responsive props: output must not change.
-const LegacyStack = styled(View, { name: 'Stack', flexDirection: 'column' })
+const LegacyStack = styled(View, { displayName: 'Stack', flexDirection: 'column' })
 const LegacyHStack = styled(LegacyStack, {
-  name: 'HStack',
+  displayName: 'HStack',
   flexDirection: 'row',
   alignItems: 'center',
 })
-const LegacyVStack = styled(LegacyStack, { name: 'VStack', flexDirection: 'column' })
+const LegacyVStack = styled(LegacyStack, { displayName: 'VStack', flexDirection: 'column' })
 
 function html(element: ReactElement) {
   const view = renderWithProvider(element)
@@ -55,24 +55,24 @@ const lg = '(min-width: 1024px)'
 describe('Stack responsive props', () => {
   it('renders exactly as before when they are not used', () => {
     const child = <Text>Item</Text>
-    expect(html(<Stack gap="$2">{child}</Stack>)).toBe(
-      html(<LegacyStack gap="$2">{child}</LegacyStack>),
+    expect(html(<Stack gap="2">{child}</Stack>)).toBe(
+      html(<LegacyStack gap="2">{child}</LegacyStack>),
     )
-    expect(html(<HStack gap="$2">{child}</HStack>)).toBe(
-      html(<LegacyHStack gap="$2">{child}</LegacyHStack>),
+    expect(html(<HStack gap="2">{child}</HStack>)).toBe(
+      html(<LegacyHStack gap="2">{child}</LegacyHStack>),
     )
-    expect(html(<VStack padding="$4">{child}</VStack>)).toBe(
-      html(<LegacyVStack padding="$4">{child}</LegacyVStack>),
+    expect(html(<VStack padding="4">{child}</VStack>)).toBe(
+      html(<LegacyVStack padding="4">{child}</LegacyVStack>),
     )
     expect(
       html(
-        <Stack flexDirection="row" $md={{ flexDirection: 'column' }} items="center">
+        <Stack flexDirection="row md:column" items="center">
           {child}
         </Stack>,
       ),
     ).toBe(
       html(
-        <LegacyStack flexDirection="row" $md={{ flexDirection: 'column' }} items="center">
+        <LegacyStack flexDirection="row md:column" items="center">
           {child}
         </LegacyStack>,
       ),
@@ -81,23 +81,23 @@ describe('Stack responsive props', () => {
 
   it('direction map renders the same as flexDirection with a media prop', () => {
     expect(css(<Stack testID="stack" direction={{ base: 'column', md: 'row' }} />)).toEqual(
-      css(<Stack testID="stack" flexDirection="column" $md={{ flexDirection: 'row' }} />),
+      css(<Stack testID="stack" flexDirection="column md:row" />),
     )
   })
 
   it('maps align and distribute to flex values', () => {
+    // No `wrap` here: with a direction, Tamagui 3 writes both as `flex-flow`,
+    // which happy-dom does not parse.
     const style = css(
       <Stack
         testID="stack"
         direction="row"
-        wrap="wrap"
         align={{ base: 'start', md: 'baseline' }}
         distribute={{ base: 'between', lg: 'evenly' }}
       />,
     )
     expect(style['']).toMatchObject({
       'flex-direction': 'row',
-      'flex-wrap': 'wrap',
       'align-items': 'flex-start',
       'justify-content': 'space-between',
     })
@@ -123,12 +123,13 @@ describe('Stack responsive props', () => {
     expect(css(<Stack testID="stack" items="flex-end" align="center" />)['']?.['align-items']).toBe(
       'flex-end',
     )
-    // A media prop wins at its breakpoint; the responsive value keeps the others.
+    // A media value set after the map wins at its breakpoint; the map keeps
+    // the others. (Tamagui 3: the later prop wins where both set a breakpoint.)
     const style = css(
       <Stack
         testID="stack"
-        $md={{ flexDirection: 'column-reverse' }}
         direction={{ base: 'column', md: 'row', lg: 'row-reverse' }}
+        flexDirection="md:column-reverse"
       />,
     )
     expect(style[md]).toEqual({ 'flex-direction': 'column-reverse' })
@@ -150,7 +151,11 @@ describe('Stack responsive props', () => {
   })
 
   it('works through styled()', () => {
-    const Toolbar = styled(Stack, { name: 'Toolbar', direction: 'row', distribute: 'between' })
+    const Toolbar = styled(Stack, {
+      displayName: 'Toolbar',
+      direction: 'row',
+      distribute: 'between',
+    })
     expect(css(<Toolbar testID="stack" />)['']).toMatchObject({
       'flex-direction': 'row',
       'justify-content': 'space-between',
@@ -170,7 +175,7 @@ describe('Wrap', () => {
   })
 
   it('takes align, distribute and its own gap', () => {
-    const style = css(<Wrap testID="stack" align="start" distribute="center" gap="$4" />)['']
+    const style = css(<Wrap testID="stack" align="start" distribute="center" gap="4" />)['']
     expect(style).toMatchObject({ 'align-items': 'flex-start', 'justify-content': 'center' })
   })
 })

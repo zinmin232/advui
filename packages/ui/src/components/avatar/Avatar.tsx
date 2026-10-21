@@ -8,7 +8,7 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 
 type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
@@ -16,18 +16,22 @@ const AvatarContext = createStyledContext<{ size: AvatarSize }>({ size: 'md' })
 
 // Tamagui's Avatar sizes itself from its own `size` prop, which must be a size
 // token: passing our names ('xs') fell back to 40 on native.
-const frameSizes = { xs: '$6', sm: '$8', md: '$10', lg: '$12', xl: '$16' } as const
+const frameSizes = { xs: '6', sm: '8', md: '10', lg: '12', xl: '16' } as const
 
 const AvatarFrame = styled(TamaguiAvatar, {
-  name: 'Avatar',
+  displayName: 'Avatar',
   circular: true,
   overflow: 'hidden',
   flexShrink: 0,
 
   variants: {
     shape: {
-      circle: { borderRadius: '$full' },
-      square: { borderRadius: '$md' },
+      circle: {
+        borderRadius: 'full',
+      },
+      square: {
+        borderRadius: 'md',
+      },
     },
   } as const,
 
@@ -35,31 +39,41 @@ const AvatarFrame = styled(TamaguiAvatar, {
 })
 
 const AvatarImage = styled(TamaguiAvatar.Image, {
-  name: 'AvatarImage',
+  displayName: 'AvatarImage',
   width: '100%',
   height: '100%',
 })
 
 const AvatarFallbackFrame = styled(TamaguiAvatar.Fallback, {
-  name: 'AvatarFallback',
-  backgroundColor: '$muted',
+  displayName: 'AvatarFallback',
+  backgroundColor: 'muted',
   alignItems: 'center',
   justifyContent: 'center',
 })
 
 const AvatarFallbackText = styled(Text, {
-  name: 'AvatarFallbackText',
+  displayName: 'AvatarFallbackText',
   context: AvatarContext,
-  color: '$mutedForeground',
-  fontFamily: '$body',
+  color: 'mutedForeground',
+  fontFamily: 'body',
   fontWeight: '500',
   variants: {
     size: {
-      xs: { fontSize: '$1' },
-      sm: { fontSize: '$1' },
-      md: { fontSize: '$2' },
-      lg: { fontSize: '$3' },
-      xl: { fontSize: '$5' },
+      xs: {
+        fontSize: '1',
+      },
+      sm: {
+        fontSize: '1',
+      },
+      md: {
+        fontSize: '2',
+      },
+      lg: {
+        fontSize: '3',
+      },
+      xl: {
+        fontSize: '5',
+      },
     },
   } as const,
 })

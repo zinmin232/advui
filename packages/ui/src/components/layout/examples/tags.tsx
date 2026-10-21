@@ -9,7 +9,7 @@ export default function WrapTags() {
     setPicked((prev) => (on ? [...prev, topic] : prev.filter((t) => t !== topic)))
 
   return (
-    <VStack gap="$4" maxWidth="$96" width="100%">
+    <VStack gap="4" maxWidth="96" width="100%">
       <Wrap role="group" aria-label="Topics">
         {topics.map((topic) => (
           <Chip
@@ -21,11 +21,11 @@ export default function WrapTags() {
           </Chip>
         ))}
       </Wrap>
-      <VStack gap="$2">
+      <VStack gap="2">
         <Text size="sm" tone="muted">
           Shown on the report
         </Text>
-        <Wrap gap="$1.5">
+        <Wrap gap="1-5">
           {picked.length ? (
             picked.map((topic) => (
               <Badge key={topic} variant="secondary">

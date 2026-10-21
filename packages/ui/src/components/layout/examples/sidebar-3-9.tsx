@@ -4,9 +4,9 @@ const sections = ['Overview', 'Members', 'Billing', 'Settings']
 
 export default function GridSidebar() {
   return (
-    <Grid columns={12} gap="$4" width="100%">
+    <Grid columns={12} gap="4" width="100%">
       <Grid.Item span={{ base: 12, md: 3 }}>
-        <VStack gap="$1">
+        <VStack gap="1">
           {sections.map((section, index) => (
             <Button
               key={section}

@@ -1,55 +1,78 @@
 import { Children, type ReactNode, isValidElement } from 'react'
-import { type SpaceTokens, type Token, View, type ViewProps, getTokenValue } from 'tamagui'
+import { type SpaceTokens, type Token, View, type ViewProps, getTokenValue } from 'tamagui/unstyled'
 import { describe, expect, it } from 'vitest'
 import { renderWithProvider, screen } from '../../../test/utils'
 import { Text } from '../typography/Text'
 import { Grid, GridItem, type ResponsiveColumns, gridCellLayout } from './Grid'
+
+/**
+ * The layout in the 0.x shape — base styles plus `$md` objects — so these
+ * expectations read per breakpoint. Tamagui 3 takes conditional values
+ * (`{ width: { default: '100%', md: '50%' } }`), which this flattens back.
+ */
+function legacyShape(layout: Record<string, unknown>) {
+  const shaped: Record<string, Record<string, unknown> | unknown> = {}
+  for (const [prop, value] of Object.entries(layout)) {
+    if (typeof value !== 'object' || value === null) {
+      shaped[prop] = value
+      continue
+    }
+    for (const [key, entry] of Object.entries(value)) {
+      if (key === 'default') shaped[prop] = entry
+      else ((shaped[`$${key}`] ??= {}) as Record<string, unknown>)[prop] = entry
+    }
+  }
+  return shaped as { width?: string; marginInlineStart?: string | 0; [key: string]: unknown }
+}
 
 const third = `${100 / 3}%`
 const twoThirds = `${200 / 3}%`
 
 describe('gridCellLayout', () => {
   it('gives a cell span / columns of the row', () => {
-    expect(gridCellLayout(12)).toEqual({ width: `${100 / 12}%` })
-    expect(gridCellLayout(12, 8)).toEqual({ width: twoThirds })
-    expect(gridCellLayout(12, 4)).toEqual({ width: third })
-    expect(gridCellLayout(3, 1)).toEqual({ width: third })
+    expect(legacyShape(gridCellLayout(12))).toEqual({ width: `${100 / 12}%` })
+    expect(legacyShape(gridCellLayout(12, 8))).toEqual({ width: twoThirds })
+    expect(legacyShape(gridCellLayout(12, 4))).toEqual({ width: third })
+    expect(legacyShape(gridCellLayout(3, 1))).toEqual({ width: third })
   })
 
   it('cascades mobile-first and emits only the breakpoints that change', () => {
-    expect(gridCellLayout(12, { base: 12, md: 8 })).toEqual({
+    expect(legacyShape(gridCellLayout(12, { base: 12, md: 8 }))).toEqual({
       width: '100%',
       $md: { width: twoThirds },
     })
     // A map without base is the full row below its first breakpoint, like Bootstrap's col-md-6.
-    expect(gridCellLayout(12, { md: 6 })).toEqual({ width: '100%', $md: { width: '50%' } })
-    expect(gridCellLayout(12, { sm: 6, lg: 4 })).toEqual({
+    expect(legacyShape(gridCellLayout(12, { md: 6 }))).toEqual({
+      width: '100%',
+      $md: { width: '50%' },
+    })
+    expect(legacyShape(gridCellLayout(12, { sm: 6, lg: 4 }))).toEqual({
       width: '100%',
       $sm: { width: '50%' },
       $lg: { width: third },
     })
     // A number, or no span at all, is the same at every breakpoint.
-    expect(gridCellLayout(12, 6)).toEqual({ width: '50%' })
-    expect(gridCellLayout(12)).toEqual({ width: `${100 / 12}%` })
+    expect(legacyShape(gridCellLayout(12, 6))).toEqual({ width: '50%' })
+    expect(legacyShape(gridCellLayout(12))).toEqual({ width: `${100 / 12}%` })
     // sm repeats base and xl repeats lg, so neither is emitted.
-    expect(gridCellLayout(12, { base: 12, sm: 12, lg: 3, xl: 3 })).toEqual({
+    expect(legacyShape(gridCellLayout(12, { base: 12, sm: 12, lg: 3, xl: 3 }))).toEqual({
       width: '100%',
       $lg: { width: '25%' },
     })
   })
 
   it("covers every column with 'full', at each breakpoint's column count", () => {
-    expect(gridCellLayout(12, 'full')).toEqual({ width: '100%' })
-    expect(gridCellLayout({ base: 4, md: 12 }, 'full')).toEqual({ width: '100%' })
-    expect(gridCellLayout({ base: 4, md: 12 }, { base: 'full', md: 4 })).toEqual({
+    expect(legacyShape(gridCellLayout(12, 'full'))).toEqual({ width: '100%' })
+    expect(legacyShape(gridCellLayout({ base: 4, md: 12 }, 'full'))).toEqual({ width: '100%' })
+    expect(legacyShape(gridCellLayout({ base: 4, md: 12 }, { base: 'full', md: 4 }))).toEqual({
       width: '100%',
       $md: { width: third },
     })
   })
 
   it("sizes 'auto' cells to their content, capped at the row", () => {
-    expect(gridCellLayout(12, 'auto')).toEqual({ width: 'auto', maxWidth: '100%' })
-    expect(gridCellLayout(12, { base: 12, md: 'auto', lg: 6, xl: 'auto' })).toEqual({
+    expect(legacyShape(gridCellLayout(12, 'auto'))).toEqual({ width: 'auto', maxWidth: '100%' })
+    expect(legacyShape(gridCellLayout(12, { base: 12, md: 'auto', lg: 6, xl: 'auto' }))).toEqual({
       width: '100%',
       $md: { width: 'auto', maxWidth: '100%' },
       $lg: { width: '50%' },
@@ -59,28 +82,33 @@ describe('gridCellLayout', () => {
   })
 
   it('recomputes the width where only the column count changes', () => {
-    expect(gridCellLayout({ base: 4, md: 12 }, 2)).toEqual({
+    expect(legacyShape(gridCellLayout({ base: 4, md: 12 }, 2))).toEqual({
       width: '50%',
       $md: { width: `${200 / 12}%` },
     })
     // Same share at both counts: nothing to emit at md.
-    expect(gridCellLayout({ base: 2, md: 4 }, { base: 1, md: 2 })).toEqual({ width: '50%' })
+    expect(legacyShape(gridCellLayout({ base: 2, md: 4 }, { base: 1, md: 2 }))).toEqual({
+      width: '50%',
+    })
   })
 
   it('clamps span and offset to the column count', () => {
-    expect(gridCellLayout(4, 8)).toEqual({ width: '100%' })
-    expect(gridCellLayout({ base: 4, md: 12 }, 8)).toEqual({
+    expect(legacyShape(gridCellLayout(4, 8))).toEqual({ width: '100%' })
+    expect(legacyShape(gridCellLayout({ base: 4, md: 12 }, 8))).toEqual({
       width: '100%',
       $md: { width: twoThirds },
     })
-    expect(gridCellLayout(12, 0)).toEqual({ width: `${100 / 12}%` })
-    expect(gridCellLayout(12, -3)).toEqual({ width: `${100 / 12}%` })
-    expect(gridCellLayout(12, Number.NaN)).toEqual({ width: `${100 / 12}%` })
+    expect(legacyShape(gridCellLayout(12, 0))).toEqual({ width: `${100 / 12}%` })
+    expect(legacyShape(gridCellLayout(12, -3))).toEqual({ width: `${100 / 12}%` })
+    expect(legacyShape(gridCellLayout(12, Number.NaN))).toEqual({ width: `${100 / 12}%` })
     // The offset leaves room for the span in the same row.
-    expect(gridCellLayout(12, 8, 6)).toEqual({ width: twoThirds, marginInlineStart: third })
-    expect(gridCellLayout(12, 4, -2)).toEqual({ width: third })
-    expect(gridCellLayout(12, 'full', 3)).toEqual({ width: '100%' })
-    expect(gridCellLayout(12, 'auto', 20)).toEqual({
+    expect(legacyShape(gridCellLayout(12, 8, 6))).toEqual({
+      width: twoThirds,
+      marginInlineStart: third,
+    })
+    expect(legacyShape(gridCellLayout(12, 4, -2))).toEqual({ width: third })
+    expect(legacyShape(gridCellLayout(12, 'full', 3))).toEqual({ width: '100%' })
+    expect(legacyShape(gridCellLayout(12, 'auto', 20))).toEqual({
       width: 'auto',
       maxWidth: '100%',
       marginInlineStart: `${1100 / 12}%`,
@@ -92,7 +120,7 @@ describe('gridCellLayout', () => {
     for (const columns of [1, 2, 5, 12, 0, -1]) {
       for (const span of values) {
         for (const offset of [-4, 0, 2, 11, 30]) {
-          const layout = gridCellLayout(columns, span, offset)
+          const layout = legacyShape(gridCellLayout(columns, span, offset))
           const width = layout.width === 'auto' ? 0 : Number.parseFloat(layout.width ?? '')
           const margin = Number.parseFloat(String(layout.marginInlineStart ?? 0))
           expect(width).toBeGreaterThanOrEqual(0)
@@ -105,26 +133,29 @@ describe('gridCellLayout', () => {
   })
 
   it('offsets with marginInlineStart, per breakpoint, back to zero', () => {
-    expect(gridCellLayout(12, 6, 3)).toEqual({ width: '50%', marginInlineStart: '25%' })
-    expect(gridCellLayout(12, { base: 12, md: 6 }, { md: 3, lg: 0 })).toEqual({
+    expect(legacyShape(gridCellLayout(12, 6, 3))).toEqual({
+      width: '50%',
+      marginInlineStart: '25%',
+    })
+    expect(legacyShape(gridCellLayout(12, { base: 12, md: 6 }, { md: 3, lg: 0 }))).toEqual({
       width: '100%',
       $md: { width: '50%', marginInlineStart: '25%' },
       $lg: { marginInlineStart: 0 },
     })
     // Clamped at base (no room), applied from md where the span shrinks.
-    expect(gridCellLayout(12, { base: 'full', md: 8 }, 2)).toEqual({
+    expect(legacyShape(gridCellLayout(12, { base: 'full', md: 8 }, 2))).toEqual({
       width: '100%',
       $md: { width: twoThirds, marginInlineStart: `${200 / 12}%` },
     })
   })
 
   it('keeps the old equal-column widths for plain cells', () => {
-    expect(gridCellLayout({ base: 1, sm: 2, lg: 4 })).toEqual({
+    expect(legacyShape(gridCellLayout({ base: 1, sm: 2, lg: 4 }))).toEqual({
       width: '100%',
       $sm: { width: '50%' },
       $lg: { width: '25%' },
     })
-    expect(gridCellLayout({ md: 3 })).toEqual({ width: '100%', $md: { width: third } })
+    expect(legacyShape(gridCellLayout({ md: 3 }))).toEqual({ width: '100%', $md: { width: third } })
   })
 })
 
@@ -132,9 +163,9 @@ describe('gridCellLayout', () => {
 function LegacyGrid({
   children,
   columns = 1,
-  gap = '$4',
+  gap = '4',
   ...props
-}: Omit<ViewProps, 'gap'> & {
+}: Omit<ViewProps, 'gap' | 'columns'> & {
   columns?: ResponsiveColumns
   gap?: SpaceTokens
   children?: ReactNode
@@ -142,11 +173,13 @@ function LegacyGrid({
   const half = (getTokenValue(gap as Token, 'space') as number) / 2
   const map: Record<string, number | undefined> =
     typeof columns === 'number' ? { base: columns } : columns
-  const cellWidth: Record<string, unknown> = { width: `${100 / Math.max(1, map.base ?? 1)}%` }
+  // In Tamagui 3's conditional form; 0.6.0 used `$md` objects for the same CSS.
+  const width: Record<string, string> = { default: `${100 / Math.max(1, map.base ?? 1)}%` }
   for (const bp of ['xs', 'sm', 'md', 'lg', 'xl', 'xxl']) {
     const count = map[bp]
-    if (count !== undefined) cellWidth[`$${bp}`] = { width: `${100 / Math.max(1, count)}%` }
+    if (count !== undefined) width[bp] = `${100 / Math.max(1, count)}%`
   }
+  const cellWidth = { width }
   return (
     <View flexDirection="row" flexWrap="wrap" marginHorizontal={-half} rowGap={gap} {...props}>
       {Children.toArray(children).map((child, index) => (
@@ -190,8 +223,8 @@ describe('Grid', () => {
   it('renders plain children exactly like 0.6.0', () => {
     const cases: { columns: ResponsiveColumns; gap?: SpaceTokens }[] = [
       { columns: 3 },
-      { columns: { base: 1, sm: 2, lg: 4 }, gap: '$2' },
-      { columns: { md: 3 }, gap: '$6' },
+      { columns: { base: 1, sm: 2, lg: 4 }, gap: '2' },
+      { columns: { md: 3 }, gap: '6' },
     ]
     for (const props of cases) {
       const cells = ['One', 'Two', 'Three', 'Four'].map((label) => <Text key={label}>{label}</Text>)
@@ -289,21 +322,21 @@ describe('Grid', () => {
 
   it('pads cells by half the column gap and keeps rowGap separate', () => {
     renderWithProvider(
-      <Grid columns={2} gap="$2" columnGap="$6" rowGap="$8" testID="grid">
+      <Grid columns={2} columnGap="6" rowGap="8" testID="grid">
         <Grid.Item testID="cell">
           <Text>One</Text>
         </Grid.Item>
       </Grid>,
     )
-    const half = (getTokenValue('$6' as Token, 'space') as number) / 2
+    const half = (getTokenValue('6' as Token, 'space') as number) / 2
     const grid = cssFor(screen.getByTestId('grid'))['']
-    expect(grid).toMatchObject({ 'margin-left': `-${half}px`, 'margin-right': `-${half}px` })
+    // Tamagui 3 writes the horizontal sides as logical properties.
+    expect(grid).toMatchObject({ 'margin-inline': `-${half}px` })
     expect(grid?.['row-gap']).toContain('space-8')
     expect(grid).not.toHaveProperty('column-gap')
     expect(cssFor(screen.getByTestId('cell'))['']).toMatchObject({
       width: '50%',
-      'padding-left': `${half}px`,
-      'padding-right': `${half}px`,
+      'padding-inline': `${half}px`,
     })
   })
 
@@ -319,7 +352,7 @@ describe('Grid', () => {
   it("keeps an item's own media styles next to its width", () => {
     renderWithProvider(
       <Grid columns={12}>
-        <GridItem span={{ base: 12, md: 6 }} $md={{ opacity: 0.5 }} testID="cell">
+        <GridItem span={{ base: 12, md: 6 }} opacity="md:0.5" testID="cell">
           <Text>Styled</Text>
         </GridItem>
       </Grid>,

@@ -148,7 +148,7 @@ import { ChevronRightIcon, LockIcon } from '@advui/icons'
           token: 'color',
           default: 'from the theme',
           description:
-            'Color of the title, description, trailing text and icons. Pair it with a `backgroundColor`: `$primarySoftForeground` on `$primarySoft`.',
+            'Color of the title, description, trailing text and icons. Pair it with a `backgroundColor`: `primarySoftForeground` on `primarySoft`.',
         },
         {
           name: 'backgroundColor',
@@ -168,7 +168,7 @@ import { ChevronRightIcon, LockIcon } from '@advui/icons'
           name: 'borderRadius',
           type: 'RadiusTokens | number',
           token: 'radius',
-          default: "'$md' (plain), '$lg' (filled, outline), none in a List",
+          default: "'md' (plain), 'lg' (filled, outline), none in a List",
           description: 'Corner radius. Hover and selected fills follow it.',
         },
         {
@@ -183,7 +183,7 @@ import { ChevronRightIcon, LockIcon } from '@advui/icons'
           name: 'gap',
           type: 'SpaceTokens | number',
           token: 'space',
-          default: "'$3'",
+          default: "'3'",
           description: 'Space between the leading visual, the text and the trailing content.',
         },
         {

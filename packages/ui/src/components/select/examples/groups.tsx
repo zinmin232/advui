@@ -2,7 +2,7 @@ import { Select, VStack } from '@advui/core'
 
 export default function SelectGroups() {
   return (
-    <VStack width="100%" maxWidth="$64">
+    <VStack width="100%" maxWidth="64">
       <Select aria-label="Timezone" placeholder="Select a timezone">
         <Select.Group label="Asia">
           <Select.Item value="yangon">Yangon (UTC+6:30)</Select.Item>

@@ -13,7 +13,7 @@ export default defineMeta({
   keywords: ['image', 'img', 'picture', 'photo', 'media', 'fallback', 'placeholder', 'object-fit'],
   usage: `import { Image } from '@advui/core'
 
-<Image src={photo.url} alt="A desert road between red rock canyons" ratio={16 / 9} borderRadius="$lg" />`,
+<Image src={photo.url} alt="A desert road between red rock canyons" ratio={16 / 9} borderRadius="lg" />`,
   parts: [
     {
       name: 'Image',

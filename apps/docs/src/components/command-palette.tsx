@@ -194,24 +194,17 @@ export function CommandPalette({ entries }: { entries: SearchEntry[] }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Dialog.Content
-        size="lg"
-        padding="$0"
-        gap="$0"
-        hideCloseButton
-        top="10%"
-        $sm={{ top: '15%' }}
-      >
+      <Dialog.Content size="lg" padding="0" gap="0" top="10% sm:15%" hideCloseButton>
         <Dialog.Title className="sr-only">Search documentation</Dialog.Title>
-        <HStack gap="$2" paddingHorizontal="$4" borderBottomWidth={1} borderColor="$border">
-          <SearchIcon size={18} color="$mutedForeground" />
+        <HStack gap="2" paddingHorizontal="4" borderBottomWidth={1} borderColor="border">
+          <SearchIcon size={18} color="mutedForeground" />
           <Input
             flex={1}
             size="lg"
             borderWidth={0}
-            paddingHorizontal="$0"
+            paddingHorizontal="0"
             backgroundColor="transparent"
-            focusVisibleStyle={{ outlineWidth: 0 }}
+            outlineWidth="focus-visible:0px"
             placeholder="Search components, docs, props…"
             value={query}
             onChangeText={setQuery}
@@ -247,7 +240,7 @@ export function CommandPalette({ entries }: { entries: SearchEntry[] }) {
           style={{ maxHeight: 384, overflowY: 'auto', padding: 8 }}
         >
           {results.length === 0 ? (
-            <Text tone="muted" size="sm" padding="$6" textAlign="center">
+            <Text tone="muted" size="sm" padding="6" textAlign="center">
               No results for “{query}”.
             </Text>
           ) : (
@@ -265,12 +258,12 @@ export function CommandPalette({ entries }: { entries: SearchEntry[] }) {
                   id={optionId(index)}
                   role="option"
                   aria-selected={isActive}
-                  gap="$3"
-                  paddingHorizontal="$3"
-                  paddingVertical="$2"
-                  borderRadius="$md"
+                  gap="3"
+                  paddingHorizontal="3"
+                  paddingVertical="2"
+                  borderRadius="md"
                   cursor="pointer"
-                  backgroundColor={isActive ? '$accent' : 'transparent'}
+                  backgroundColor={isActive ? 'accent' : 'transparent'}
                   onMouseEnter={() => setActive(index)}
                   onPress={() => select(result)}
                 >
@@ -294,13 +287,12 @@ export function CommandPalette({ entries }: { entries: SearchEntry[] }) {
           )}
         </div>
         <HStack
-          gap="$4"
-          paddingHorizontal="$4"
-          paddingVertical="$2"
+          gap="4"
+          paddingHorizontal="4"
+          paddingVertical="2"
           borderTopWidth={1}
-          borderColor="$border"
-          display="none"
-          $sm={{ display: 'flex' }}
+          borderColor="border"
+          display="none sm:flex"
         >
           <Text size="xs" tone="muted">
             ↑↓ to navigate

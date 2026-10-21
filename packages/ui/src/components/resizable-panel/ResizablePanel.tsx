@@ -12,8 +12,9 @@ import {
   useState,
 } from 'react'
 import { PanResponder } from 'react-native'
-import { type GetProps, View, isWeb, withStaticProperties } from 'tamagui'
+import { type GetProps, View, isWeb, withStaticProperties } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
+import { flatValue } from '../../utils/responsive'
 
 export type ResizableDirection = 'horizontal' | 'vertical'
 
@@ -424,25 +425,25 @@ function ResizableHandle({
             // A 1px line is too thin to grab: widen the touch target.
             hitSlop: horizontal ? { left: 16, right: 16 } : { top: 16, bottom: 16 },
           })}
-      aria-label={label}
       {...(disabled ? {} : drag(horizontal))}
       position="relative"
       flexShrink={0}
       alignItems="center"
       justifyContent="center"
-      backgroundColor={dragging ? '$ring' : '$border'}
+      backgroundColor={flatValue(
+        dragging ? 'ring' : 'border',
+        !disabled && 'hover:ring',
+        'focus-visible:ring',
+      )}
       {...(horizontal ? { width: 1 } : { height: 1 })}
       cursor={disabled ? 'default' : horizontal ? 'col-resize' : 'row-resize'}
-      hoverStyle={disabled ? {} : { backgroundColor: '$ring' }}
-      focusVisibleStyle={{
-        backgroundColor: '$ring',
-        outlineColor: '$ring',
-        outlineStyle: 'solid',
-        outlineWidth: 2,
-        outlineOffset: 2,
-      }}
-      style={isWeb ? ({ touchAction: 'none' } as never) : undefined}
+      outlineColor="focus-visible:ring"
+      outlineStyle="focus-visible:solid"
+      outlineWidth="focus-visible:2px"
+      outlineOffset="focus-visible:2px"
       zIndex={1}
+      aria-label={label}
+      style={isWeb ? ({ touchAction: 'none' } as never) : undefined}
     >
       {/* A wider, invisible grab area on web; native uses hitSlop. */}
       {isWeb ? (
@@ -459,13 +460,13 @@ function ResizableHandle({
           aria-hidden
           alignItems="center"
           justifyContent="center"
-          borderRadius="$sm"
+          borderRadius="sm"
           borderWidth={1}
-          borderColor="$border"
-          backgroundColor="$background"
-          {...(horizontal ? { width: '$3', height: '$5' } : { width: '$5', height: '$3' })}
+          borderColor="border"
+          backgroundColor="background"
+          {...(horizontal ? { width: '3', height: '5' } : { width: '5', height: '3' })}
         >
-          <Grip size={10} color="$mutedForeground" />
+          <Grip size={10} color="mutedForeground" />
         </View>
       ) : null}
     </View>

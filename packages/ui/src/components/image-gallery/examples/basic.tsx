@@ -21,7 +21,7 @@ const images: GalleryImage[] = ids.map(([id, alt, caption]) => ({
 
 export default function ImageGalleryBasic() {
   return (
-    <VStack width="100%" maxWidth="$96">
+    <VStack width="100%" maxWidth="96">
       <ImageGallery images={images} columns={{ base: 2, sm: 4 }} />
     </VStack>
   )

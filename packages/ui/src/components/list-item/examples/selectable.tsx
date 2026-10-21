@@ -14,7 +14,7 @@ export default function ListItemSelectable() {
   const [chosen, setChosen] = useState(['reports'])
 
   return (
-    <VStack gap="$2" width="100%" maxWidth="$96">
+    <VStack gap="2" width="100%" maxWidth="96">
       {topics.map((topic) => {
         const selected = chosen.includes(topic.id)
         return (
@@ -28,7 +28,7 @@ export default function ListItemSelectable() {
             onSelectedChange={(on) =>
               setChosen((ids) => (on ? [...ids, topic.id] : ids.filter((id) => id !== topic.id)))
             }
-            trailing={selected ? <CheckIcon color="$primary" /> : null}
+            trailing={selected ? <CheckIcon color="primary" /> : null}
           />
         )
       })}

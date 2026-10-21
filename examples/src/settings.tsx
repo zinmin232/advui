@@ -33,14 +33,7 @@ export function ProfileSettingsScreen() {
   }
 
   return (
-    <VStack
-      gap="$6"
-      padding="$4"
-      width="100%"
-      maxWidth="$224"
-      marginHorizontal="auto"
-      $md={{ padding: '$8' }}
-    >
+    <VStack gap="6" padding="4 md:8" width="100%" maxWidth="224" marginHorizontal="auto">
       <VStack>
         <Text size="3xl" weight="bold">
           Settings
@@ -52,10 +45,10 @@ export function ProfileSettingsScreen() {
         <Card.Header>
           <SectionTitle title="Profile" description="This is how others see you." />
         </Card.Header>
-        <Card.Content gap="$5">
-          <HStack gap="$4">
+        <Card.Content gap="5">
+          <HStack gap="4">
             <Avatar size="xl" alt={name} src={avatarUrl(47)} />
-            <VStack gap="$2">
+            <VStack gap="2">
               <Button
                 size="sm"
                 variant="outline"
@@ -68,16 +61,16 @@ export function ProfileSettingsScreen() {
               </Text>
             </VStack>
           </HStack>
-          <Grid columns={{ base: 1, md: 2 }} gap="$4">
-            <VStack gap="$2">
+          <Grid columns={{ base: 1, md: 2 }} gap="4">
+            <VStack gap="2">
               <Label htmlFor="settings-name">Display name</Label>
               <Input id="settings-name" value={name} onChangeText={setName} />
             </VStack>
-            <VStack gap="$2">
+            <VStack gap="2">
               <Label htmlFor="settings-email">Email</Label>
               <Input id="settings-email" defaultValue="isabella@acme.co" inputMode="email" />
             </VStack>
-            <VStack gap="$2">
+            <VStack gap="2">
               <Label htmlFor="settings-language">Language</Label>
               <Select id="settings-language" defaultValue="en">
                 <Select.Item value="en">English</Select.Item>
@@ -86,7 +79,7 @@ export function ProfileSettingsScreen() {
                 <Select.Item value="ja">Japanese</Select.Item>
               </Select>
             </VStack>
-            <VStack gap="$2">
+            <VStack gap="2">
               <Label htmlFor="settings-timezone">Timezone</Label>
               <Select id="settings-timezone" defaultValue="yangon">
                 <Select.Item value="yangon">Asia/Yangon</Select.Item>
@@ -95,7 +88,7 @@ export function ProfileSettingsScreen() {
               </Select>
             </VStack>
           </Grid>
-          <VStack gap="$2">
+          <VStack gap="2">
             <Label htmlFor="settings-bio">Bio</Label>
             <Textarea id="settings-bio" defaultValue="Product designer. Coffee enthusiast." />
           </VStack>
@@ -111,20 +104,20 @@ export function ProfileSettingsScreen() {
         <Card.Header>
           <SectionTitle title="Notifications" description="Choose what you want to hear about." />
         </Card.Header>
-        <Card.Content gap="$4">
+        <Card.Content gap="4">
           <RadioGroup defaultValue="mentions" aria-label="Notify me about">
             {[
               ['all', 'All new messages'],
               ['mentions', 'Direct messages and mentions'],
               ['none', 'Nothing'],
             ].map(([value, label]) => (
-              <HStack key={value} gap="$2">
+              <HStack key={value} gap="2">
                 <RadioGroup.Item value={value!} id={`notify-${value}`} />
                 <Label htmlFor={`notify-${value}`}>{label}</Label>
               </HStack>
             ))}
           </RadioGroup>
-          <HStack justifyContent="space-between" gap="$4">
+          <HStack justifyContent="space-between" gap="4">
             <VStack flex={1}>
               <Label htmlFor="settings-digest">Weekly digest</Label>
               <Text size="sm" tone="muted">
@@ -136,11 +129,11 @@ export function ProfileSettingsScreen() {
         </Card.Content>
       </Card>
 
-      <Card borderColor="$errorBorder">
+      <Card borderColor="errorBorder">
         <Card.Header>
           <SectionTitle title="Danger zone" />
         </Card.Header>
-        <Card.Content gap="$3">
+        <Card.Content gap="3">
           <Alert variant="error" icon={null}>
             <Alert.Description>
               Deleting your account removes all projects and cannot be undone.

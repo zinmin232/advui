@@ -1,5 +1,5 @@
 import { useIconColor } from '@advui/icons'
-import { Text, View, type ViewProps } from 'tamagui'
+import { Text, View, type ViewProps } from 'tamagui/unstyled'
 import {
   type CircularProgressSize,
   type CircularProgressTone,
@@ -40,7 +40,7 @@ export function CircularProgress({
   const { clamped, fraction } = progressFraction(value, max)
   const geometry = ring(size, fraction)
   const indicator = useIconColor(toneColor[tone])
-  const track = useIconColor('$muted')
+  const track = useIconColor('muted')
   const fontSize = valueFontSize[size]
 
   return (
@@ -92,11 +92,11 @@ export function CircularProgress({
         <Text
           aria-hidden
           position="absolute"
-          fontFamily="$body"
+          fontFamily="body"
           fontSize={fontSize}
           lineHeight={fontSize}
           fontWeight="600"
-          color="$foreground"
+          color="foreground"
         >
           {Math.round(fraction * 100)}%
         </Text>

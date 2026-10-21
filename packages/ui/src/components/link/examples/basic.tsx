@@ -6,7 +6,7 @@ const go = (page: string) => () => toast(`Go to ${page}`)
 
 export default function LinkBasic() {
   return (
-    <VStack gap="$3" maxWidth="$112">
+    <VStack gap="3" maxWidth="112">
       <Text>
         Compare the plans on the <Link onPress={go('Pricing')}>pricing page</Link>, or read how
         billing works in the <Link onPress={go('Help')}>help center</Link>.

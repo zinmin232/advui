@@ -1,6 +1,6 @@
 import { useId } from 'react'
 import Svg, { Defs, Pattern, Rect } from 'react-native-svg'
-import { View } from 'tamagui'
+import { View } from 'tamagui/unstyled'
 import { CHECKER, CHECKER_CELL } from './shared'
 
 /**
@@ -18,7 +18,7 @@ export function Checkerboard() {
       left={0}
       right={0}
       bottom={0}
-      backgroundColor="$white"
+      backgroundColor="white"
       pointerEvents="none"
     >
       <Svg width="100%" height="100%">

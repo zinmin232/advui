@@ -43,7 +43,7 @@ export interface PropDoc {
   options?: string[]
   /** Also accepts a mobile-first map `{ base?, xs?, sm?, md?, lg?, xl?, xxl? }` of the same value. */
   responsive?: boolean
-  /** The value is a theme token of this scale, such as `$4` for `space`. */
+  /** The value is a theme token of this scale, such as `4` for `space`. */
   token?: 'space' | 'size' | 'color' | 'radius' | 'zIndex'
   /** Numbers only. */
   min?: number

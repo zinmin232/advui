@@ -26,7 +26,7 @@ export default defineMeta({
   ],
   usage: `import { Input, Label, VStack } from '@advui/core'
 
-<VStack gap="$2">
+<VStack gap="2">
   <Label htmlFor="email">Email</Label>
   <Input id="email" placeholder="you@example.com" inputMode="email" />
 </VStack>`,

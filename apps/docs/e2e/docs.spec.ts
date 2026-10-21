@@ -13,6 +13,15 @@ function trackErrors(page: Page) {
   return errors
 }
 
+/**
+ * After hydration the sidebar scrolls to the current page, and Tamagui 3
+ * closes an open overlay (and cancels a pending hover) on any scroll. Tests
+ * that open one with the pointer let that scroll happen first.
+ */
+async function sidebarSettled(page: Page) {
+  await expect(page.locator('aside [aria-current="page"]').first()).toBeInViewport()
+}
+
 test('home page renders the hero and live components without errors', async ({ page }) => {
   const errors = trackErrors(page)
   await page.goto('/')
@@ -629,6 +638,7 @@ test('context menu opens at the pointer and closes with Escape', async ({ page }
   const errors = trackErrors(page)
   await page.goto('/docs/components/context-menu')
   await page.waitForLoadState('networkidle')
+  await sidebarSettled(page)
   await page.getByText('Right-click here').first().click({ button: 'right' })
   const menu = page.getByRole('menu')
   await expect(menu).toBeVisible()
@@ -665,7 +675,11 @@ test('hover card opens on hover and keyboard focus, and describes the link', asy
   const errors = trackErrors(page)
   await page.goto('/docs/components/hover-card')
   await page.waitForLoadState('networkidle')
+  await sidebarSettled(page)
   const link = page.getByRole('link', { name: '@ada' }).first()
+  // hover() scrolls and enters in one step, and that scroll cancels the
+  // pending open too; a person scrolls first.
+  await link.scrollIntoViewIfNeeded()
   await link.hover()
   const card = page.getByRole('tooltip')
   await expect(card).toBeVisible()

@@ -1,4 +1,4 @@
-import { isWeb, useDialogContext } from 'tamagui'
+import { isWeb, useDialogContext } from 'tamagui/unstyled'
 
 /**
  * Native: a press on the overlay closes the dialog. Tamagui closes a dialog

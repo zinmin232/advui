@@ -9,8 +9,8 @@ export default function ChipFilter() {
     setSelected((prev) => (on ? [...prev, diet] : prev.filter((d) => d !== diet)))
 
   return (
-    <VStack gap="$3">
-      <HStack gap="$2" flexWrap="wrap" role="group" aria-label="Dietary filters">
+    <VStack gap="3">
+      <HStack gap="2" flexWrap="wrap" role="group" aria-label="Dietary filters">
         {diets.map((diet) => (
           <Chip
             key={diet}

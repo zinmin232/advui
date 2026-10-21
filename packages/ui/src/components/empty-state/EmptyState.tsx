@@ -1,33 +1,32 @@
 import { IconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, View, XStack, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, XStack, styled } from 'tamagui/unstyled'
 import { useDashedBorder } from '../../hooks/useDashedBorder'
 import { Heading, type HeadingProps } from '../typography/Heading'
 import { Text } from '../typography/Text'
 
 const EmptyStateFrame = styled(View, {
-  name: 'EmptyState',
+  displayName: 'EmptyState',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: '$3',
-  paddingVertical: '$10',
-  paddingHorizontal: '$6',
-
+  gap: '3',
+  paddingVertical: '10',
+  paddingHorizontal: '6',
   variants: {
     bordered: {
       true: {
         borderWidth: 1,
         borderStyle: 'dashed',
-        borderColor: '$border',
-        borderRadius: '$lg',
+        borderColor: 'border',
+        borderRadius: 'lg',
       },
     },
   } as const,
 })
 
 const tones = {
-  default: { background: '$muted', icon: '$mutedForeground' },
-  error: { background: '$errorSoft', icon: '$errorSoftForeground' },
+  default: { background: 'muted', icon: 'mutedForeground' },
+  error: { background: 'errorSoft', icon: 'errorSoftForeground' },
 } as const
 
 export interface EmptyStateProps extends Omit<GetProps<typeof EmptyStateFrame>, 'children'> {
@@ -62,21 +61,22 @@ export const EmptyState = forwardRef<TamaguiElement, EmptyStateProps>(function E
   ref,
 ) {
   const colors = tones[tone]
-  const dashed = useDashedBorder(bordered ? '$border' : null)
+  const dashed = useDashedBorder(bordered ? 'border' : null, 'lg')
   return (
     <EmptyStateFrame
       ref={ref}
       bordered={bordered}
-      style={dashed ? [dashed, style] : style}
+      style={dashed.frame ? [dashed.frame, style] : style}
       {...props}
     >
+      {dashed.overlay}
       {icon ? (
         <View
           aria-hidden
           backgroundColor={colors.background}
-          borderRadius="$full"
-          padding="$3"
-          marginBottom="$1"
+          borderRadius="full"
+          padding="3"
+          marginBottom="1"
         >
           <IconDefaults size={24} color={colors.icon}>
             {icon}
@@ -92,7 +92,7 @@ export const EmptyState = forwardRef<TamaguiElement, EmptyStateProps>(function E
         </Text>
       ) : null}
       {children ? (
-        <XStack gap="$2" marginTop="$2" flexWrap="wrap" justifyContent="center">
+        <XStack gap="2" marginTop="2" flexWrap="wrap" justifyContent="center">
           {children}
         </XStack>
       ) : null}

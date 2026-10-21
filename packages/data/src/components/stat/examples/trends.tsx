@@ -3,7 +3,7 @@ import { Stat } from '@advui/data'
 
 export default function StatTrends() {
   return (
-    <Grid columns={{ base: 1, sm: 3 }} gap="$6" width="100%">
+    <Grid columns={{ base: 1, sm: 3 }} gap="6" width="100%">
       <Stat>
         <Stat.Label>Revenue</Stat.Label>
         <Stat.Value>$48,210</Stat.Value>

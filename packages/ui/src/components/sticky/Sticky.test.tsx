@@ -36,7 +36,7 @@ describe('Sticky on web', () => {
   })
 
   it('takes an edge and an offset', () => {
-    expect(css(<Sticky testID="sticky" edge="bottom" offset="$4" />)).toMatchObject({
+    expect(css(<Sticky testID="sticky" edge="bottom" offset="4" />)).toMatchObject({
       position: 'sticky',
       bottom: 'var(--t-space-4)',
     })

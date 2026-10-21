@@ -15,8 +15,8 @@ export default function StickyListHeaders() {
       width="100%"
       maxWidth={360}
       borderWidth={1}
-      borderColor="$border"
-      borderRadius="$lg"
+      borderColor="border"
+      borderRadius="lg"
     >
       {/* Each header is a direct child of the content, so it is pinned on iOS and Android too. */}
       <VStack>
@@ -27,10 +27,10 @@ export default function StickyListHeaders() {
                 role="heading"
                 aria-level={3}
                 size="sm"
+                paddingHorizontal="4"
+                paddingVertical="2"
+                backgroundColor="muted"
                 weight="semibold"
-                paddingHorizontal="$4"
-                paddingVertical="$2"
-                backgroundColor="$muted"
               >
                 {group.region}
               </Text>

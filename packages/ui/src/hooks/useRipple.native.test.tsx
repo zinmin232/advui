@@ -17,6 +17,7 @@ import { Toaster, toast } from '../components/toast/Toaster'
 import { Toggle } from '../components/toggle/Toggle'
 import { ToggleGroup } from '../components/toggle-group/ToggleGroup'
 import { UniversalProvider } from '../provider/UniversalProvider'
+import { touchAt } from '../../test/native-utils'
 
 // Records the view commands the ripple sends (hotspotUpdate, setPressed).
 const mockCommands: Array<[string, unknown[]]> = []
@@ -44,18 +45,6 @@ async function renderWithRipple(ui: ReactElement) {
 
 const ripples = () =>
   screen.container.queryAll((node) => node.props.nativeBackgroundAndroid !== undefined)
-
-const grant = (pageX: number, pageY: number) => ({
-  nativeEvent: {
-    pageX,
-    pageY,
-    locationX: pageX,
-    locationY: pageY,
-    touches: [],
-    changedTouches: [],
-  },
-  touchHistory: { touchBank: [] },
-})
 
 describe('useRipple', () => {
   beforeEach(() => {
@@ -91,7 +80,7 @@ describe('useRipple', () => {
       </Button>,
     )
     const button = screen.getByRole('button', { name: 'Save' })
-    await fireEvent(button, 'responderGrant', grant(12, 8))
+    await fireEvent(button, 'responderGrant', touchAt(12, 8))
     expect(mockCommands).toEqual([
       ['hotspotUpdate', [12, 8]],
       ['setPressed', [true]],
@@ -103,7 +92,7 @@ describe('useRipple', () => {
     const fill = StyleSheet.flatten(button.props.style).backgroundColor
     expect(processColor(fill)).toBe(processColor(light.primary?.val))
 
-    await fireEvent(button, 'responderRelease', grant(12, 8))
+    await fireEvent(button, 'responderRelease', touchAt(12, 8, { lifted: true }))
     expect(onPress).toHaveBeenCalledTimes(1)
     expect(mockCommands.at(-1)).toEqual(['setPressed', [false]])
   })

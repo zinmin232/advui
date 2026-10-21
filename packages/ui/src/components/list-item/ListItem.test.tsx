@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { View } from 'tamagui'
+import { View } from 'tamagui/unstyled'
 import { describe, expect, it, vi } from 'vitest'
 import { renderWithProvider, screen } from '../../../test/utils'
 import { Button } from '../button/Button'
@@ -52,7 +52,7 @@ describe('ListItem', () => {
       </List>,
     )
     expect(screen.getAllByRole('listitem')).toHaveLength(2)
-    const padding = (name: string) => style(screen.getByRole('button', { name })).paddingTop
+    const padding = (name: string) => style(screen.getByRole('button', { name })).paddingBlock
     expect(padding('From the list')).toBe('8px')
     expect(padding('Own size')).toBe('16px')
   })
@@ -66,9 +66,9 @@ describe('ListItem', () => {
       </>,
     )
     const button = (name: string) => screen.getByRole('button', { name })
-    expect(style(button('Small')).paddingTop).toBe('8px')
-    expect(style(button('Medium')).paddingTop).toBe('12px')
-    expect(style(button('Large')).paddingTop).toBe('16px')
+    expect(style(button('Small')).paddingBlock).toBe('8px')
+    expect(style(button('Medium')).paddingBlock).toBe('12px')
+    expect(style(button('Large')).paddingBlock).toBe('16px')
     const fontSize = (text: string) => parseFloat(style(screen.getByText(text)).fontSize)
     expect(fontSize('Small')).toBeLessThan(fontSize('Medium'))
     expect(fontSize('Medium')).toBeLessThan(fontSize('Large'))
@@ -77,7 +77,7 @@ describe('ListItem', () => {
   it('draws the variant surfaces', () => {
     renderWithProvider(
       <>
-        <View testID="muted" backgroundColor="$muted" />
+        <View testID="muted" backgroundColor="muted" />
         <ListItem testID="plain" title="Plain" />
         <ListItem testID="filled" variant="filled" title="Filled" />
         <ListItem testID="outline" variant="outline" title="Outline" />
@@ -113,7 +113,7 @@ describe('ListItem', () => {
   it('lets style props override the variant and size', () => {
     renderWithProvider(
       <>
-        <Text testID="reference" color="$primaryText">
+        <Text testID="reference" color="primaryText">
           Reference
         </Text>
         <ListItem testID="default" variant="outline" title="Default" onPress={() => {}} />
@@ -124,12 +124,12 @@ describe('ListItem', () => {
           description="Tinted"
           onPress={() => {}}
           actions={<Button size="sm">Act</Button>}
-          backgroundColor="$primarySoft"
-          borderColor="$primary"
-          borderRadius="$sm"
-          color="$primaryText"
-          padding="$2"
-          gap="$1"
+          backgroundColor="primarySoft"
+          borderColor="primary"
+          borderRadius="sm"
+          color="primaryText"
+          padding="2"
+          gap="1"
         />
       </>,
     )
@@ -140,7 +140,7 @@ describe('ListItem', () => {
     expect(custom.borderTopLeftRadius).toBe('4px')
     // Padding and gap go to the pressable row, so it still fills the item.
     const row = style(screen.getByRole('button', { name: /Custom/ }))
-    expect(row.paddingTop).toBe('8px')
+    expect(row.paddingBlock).toBe('8px')
     expect(row.gap).toBe('4px')
     expect(style(screen.getByRole('button', { name: 'Act' }).parentElement!).paddingRight).toBe(
       '8px',

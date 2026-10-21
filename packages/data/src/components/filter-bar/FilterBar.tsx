@@ -33,7 +33,7 @@ import {
   isWeb,
   styled,
   useComposedRefs,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import {
   type FilterDefinition,
   type FilterFormatLabels,
@@ -97,14 +97,21 @@ const defaultLabels: FilterBarLabels = {
 }
 
 const FilterBarFrame = styled(Stack, {
-  name: 'FilterBar',
-  borderRadius: '$lg',
-
+  displayName: 'FilterBar',
+  borderRadius: 'lg',
   variants: {
     variant: {
-      default: { backgroundColor: '$background' },
-      outline: { backgroundColor: '$background', borderWidth: 1, borderColor: '$border' },
-      filled: { backgroundColor: '$muted' },
+      default: {
+        backgroundColor: 'background',
+      },
+      outline: {
+        backgroundColor: 'background',
+        borderWidth: 1,
+        borderColor: 'border',
+      },
+      filled: {
+        backgroundColor: 'muted',
+      },
       // No fill, border or padding: for a bar inside a card or above a table.
       ghost: {},
     },
@@ -115,9 +122,9 @@ const FilterBarFrame = styled(Stack, {
 // date-range filters, and the search field, take `wide`); `control` is their
 // height, which leading content is centered on.
 const sizes = {
-  sm: { gap: '$2', padding: '$2', field: '$40', wide: '$56', control: '$8', clear: '$8' },
-  md: { gap: '$3', padding: '$3', field: '$48', wide: '$64', control: '$10', clear: '$9' },
-  lg: { gap: '$4', padding: '$4', field: '$56', wide: '$72', control: '$12', clear: '$10' },
+  sm: { gap: '2', padding: '2', field: '40', wide: '56', control: '8', clear: '8' },
+  md: { gap: '3', padding: '3', field: '48', wide: '64', control: '10', clear: '9' },
+  lg: { gap: '4', padding: '4', field: '56', wide: '72', control: '12', clear: '10' },
 } as const
 
 type Sizes = (typeof sizes)[FilterBarSize]
@@ -125,14 +132,15 @@ type Sizes = (typeof sizes)[FilterBarSize]
 /** A control's box: its width in a row, the full width in a column. */
 function controlBox(layout: FilterBarLayout, width: Sizes['field'] | Sizes['wide']): ViewProps {
   if (layout === 'vertical') return { width: '100%' }
-  if (layout === 'responsive') return { width: '100%', $md: { width } }
+  if (layout === 'responsive') return { width: { default: '100%', md: width } } as ViewProps
   return { width, maxWidth: '100%' }
 }
 
 /** The search field takes the free space of the row. */
 function searchBox(layout: FilterBarLayout, spacing: Sizes): ViewProps {
   if (layout === 'vertical') return { width: '100%' }
-  if (layout === 'responsive') return { width: '100%', $md: { width: spacing.wide, flexGrow: 1 } }
+  if (layout === 'responsive')
+    return { width: { default: '100%', md: spacing.wide }, flexGrow: { md: 1 } } as ViewProps
   return { width: spacing.wide, flexGrow: 1, maxWidth: '100%' }
 }
 
@@ -181,7 +189,7 @@ function Clearable({
     <View position="relative" justifyContent="center">
       {children}
       {label !== null ? (
-        <View position="absolute" right="$1" top={0} bottom={0} justifyContent="center">
+        <View position="absolute" right="1" top={0} bottom={0} justifyContent="center">
           <IconButton size="sm" icon={<XIcon />} aria-label={label} onPress={onClear} />
         </View>
       ) : null}
@@ -711,7 +719,7 @@ export const FilterBar = forwardRef<TamaguiElement, FilterBarProps>(function Fil
             ? { marginInlineStart: 'auto' }
             : layout === 'vertical'
               ? { distribute: 'end' }
-              : { distribute: 'end', $md: { marginInlineStart: 'auto' } })}
+              : { distribute: 'end', marginInlineStart: 'md:auto' })}
         >
           {actions}
         </Stack>
@@ -745,7 +753,7 @@ export const FilterBar = forwardRef<TamaguiElement, FilterBarProps>(function Fil
         main
       )}
       {showActiveFilters && active.length ? (
-        <Wrap ref={chipsRef} role="group" aria-label={labels.activeFilters} gap="$2">
+        <Wrap ref={chipsRef} role="group" aria-label={labels.activeFilters} gap="2">
           {active.map((filter, index) => {
             const text = `${filter.label}: ${formatFilterValue(filter, committed[filter.key] ?? null, labels, dates)}`
             return (

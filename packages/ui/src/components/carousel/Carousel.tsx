@@ -23,7 +23,7 @@ import {
   styled,
   useComposedRefs,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useBreakpointValue } from '../../hooks/useBreakpoint'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
@@ -71,16 +71,16 @@ const defaultLabels: CarouselLabels = {
 }
 
 const focusRing = {
-  outlineColor: '$ring',
-  outlineStyle: 'solid',
-  outlineWidth: 2,
-  outlineOffset: 2,
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
 } as const
 
 const CarouselFrame = styled(View, {
-  name: 'Carousel',
+  displayName: 'Carousel',
   width: '100%',
-  gap: '$3',
+  gap: '3',
   // The controls come first in the tree, so keyboard and screen-reader users
   // meet the pause button before the slides move under them (WAI-ARIA APG),
   // and show under the slides.
@@ -100,7 +100,7 @@ export interface CarouselProps extends Omit<GetProps<typeof CarouselFrame>, 'chi
   onIndexChange?: (index: number) => void
   /** Slides in view at once, or a mobile-first map. Fractions show part of the next one. Default: 1. */
   slidesPerView?: Responsive<number>
-  /** Space between slides (token). Default: `$4`. */
+  /** Space between slides (token). Default: `4`. */
   gap?: SpaceTokens
   /** Next on the last slide goes back to the first, and Previous on the first to the last. */
   loop?: boolean
@@ -162,7 +162,7 @@ function Dot({
   controls: string
   onPress: () => void
 }) {
-  const ripple = useRipple({ color: '$foreground' })
+  const ripple = useRipple({ color: 'foreground' })
   return (
     <View
       {...(isWeb
@@ -175,26 +175,24 @@ function Dot({
             'aria-controls': controls,
           }
         : { accessible: true, role: 'button', 'aria-selected': ariaState(active) })}
-      aria-label={label}
-      // A 24px target around an 8px dot (WCAG 2.5.8).
-      width="$6"
-      height="$6"
+      width="6"
+      height="6"
       alignItems="center"
       justifyContent="center"
-      borderRadius="$full"
-      backgroundColor="transparent"
+      borderRadius="full"
+      backgroundColor="transparent hover:accent"
       cursor="pointer"
-      hoverStyle={{ backgroundColor: '$accent' }}
-      focusVisibleStyle={focusRing}
-      onPress={onPress}
+      {...focusRing}
       {...ripple.props}
+      aria-label={label}
+      onPress={onPress}
     >
       {ripple.element}
       <View
-        width={active ? '$5' : '$2'}
-        height="$2"
-        borderRadius="$full"
-        backgroundColor={active ? '$primary' : '$mutedForeground'}
+        width={active ? '5' : '2'}
+        height="2"
+        borderRadius="full"
+        backgroundColor={active ? 'primary' : 'mutedForeground'}
       />
     </View>
   )
@@ -212,7 +210,7 @@ const CarouselRoot = forwardRef<TamaguiElement, CarouselProps>(function Carousel
     defaultIndex = 0,
     onIndexChange,
     slidesPerView = 1,
-    gap = '$4',
+    gap = '4',
     loop = false,
     autoplay = false,
     showArrows = true,
@@ -330,7 +328,7 @@ const CarouselRoot = forwardRef<TamaguiElement, CarouselProps>(function Carousel
   const controlled = isWeb ? { 'aria-controls': trackId } : null
   const controls =
     lastIndex > 0 && (delay > 0 || showArrows || showDots) ? (
-      <XStack alignItems="center" justifyContent="center" gap="$2" flexWrap="wrap">
+      <XStack alignItems="center" justifyContent="center" gap="2" flexWrap="wrap">
         {delay > 0 ? (
           <IconButton
             size="sm"

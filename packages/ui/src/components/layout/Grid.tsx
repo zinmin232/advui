@@ -6,12 +6,13 @@ import {
   type ViewProps,
   getTokenValue,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import {
-  type Breakpoint,
+  type ConditionalValue,
   type Responsive,
   breakpointKeys,
   isResponsiveMap,
+  mergeResponsiveStyles,
   responsiveValue,
 } from '../../utils/responsive'
 
@@ -23,7 +24,11 @@ export type GridSpan = number | 'full' | 'auto'
 export type ResponsiveSpan = ResponsiveGridValue<GridSpan>
 export type ResponsiveOffset = ResponsiveGridValue<number>
 
-export interface GridProps extends Omit<ViewProps, 'children' | 'gap' | 'rowGap' | 'columnGap'> {
+// `columns` is also a CSS style prop in Tamagui 3; here it is the column count.
+export interface GridProps extends Omit<
+  ViewProps,
+  'children' | 'gap' | 'rowGap' | 'columnGap' | 'columns'
+> {
   children?: ReactNode
   /** Column count, or a mobile-first map such as `{ base: 1, md: 2, lg: 3 }`. */
   columns?: ResponsiveColumns
@@ -56,7 +61,10 @@ export interface GridCellStyle {
   marginInlineStart?: Percent | 0
 }
 
-export type GridCellLayout = GridCellStyle & Partial<Record<`$${Breakpoint}`, GridCellStyle>>
+/** A cell's style: each property a plain value or a conditional one, `{ default, md }`. */
+export type GridCellLayout = {
+  [K in keyof GridCellStyle]?: GridCellStyle[K] | ConditionalValue<GridCellStyle[K]>
+}
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 const whole = (value: number, fallback: number) =>
@@ -66,15 +74,16 @@ const percent = (part: number, count: number) => `${(100 * part) / count}%` as P
 /**
  * Width and offset of one cell at each breakpoint. Missing breakpoints inherit
  * the nearest smaller one, and only the values that change are returned, as
- * media props (`$md`), so web output is plain CSS media queries. A `span` map
- * without `base` starts at the full row, so `{ md: 8 }` stacks on phones.
+ * conditional values (`{ default: '100%', md: '50%' }`), so web output is
+ * plain CSS media queries. A `span` map without `base` starts at the full
+ * row, so `{ md: 8 }` stacks on phones.
  */
 export function gridCellLayout(
   columns: ResponsiveColumns,
   span: ResponsiveSpan = 1,
   offset: ResponsiveOffset = 0,
 ): GridCellLayout {
-  const layout: GridCellLayout = {}
+  const conditional: Record<string, Record<string, unknown>> = {}
   let count = 1
   let cover: GridSpan = isResponsiveMap(span) ? 'full' : 1
   let skip = 0
@@ -110,23 +119,23 @@ export function gridCellLayout(
       margin = nextMargin
     }
 
-    if (key === 'base') Object.assign(layout, style)
-    else if (Object.keys(style).length) layout[`$${key}`] = style
+    for (const [prop, value] of Object.entries(style)) {
+      conditional[prop] ??= {}
+      conditional[prop][key === 'base' ? 'default' : key] = value
+    }
   }
-  return layout
+  // A property set only at the base is a plain value.
+  const layout: Record<string, unknown> = {}
+  for (const [prop, values] of Object.entries(conditional)) {
+    const keys = Object.keys(values)
+    layout[prop] = keys.length === 1 && keys[0] === 'default' ? values.default : values
+  }
+  return layout as GridCellLayout
 }
 
-/** Joins the cell's media props with the item's own, so `$md={{ … }}` keeps the width. */
+/** Joins the cell's style with the item's own, so a conditional `width` keeps both. */
 function mergeCellProps(cell: GridCellLayout, props: Omit<GridItemProps, 'children'>) {
-  const merged: Record<string, unknown> = { ...cell }
-  for (const [key, value] of Object.entries(props)) {
-    const own = merged[key]
-    merged[key] =
-      key.startsWith('$') && own && typeof own === 'object' && value && typeof value === 'object'
-        ? { ...own, ...value }
-        : value
-  }
-  return merged as ViewProps
+  return mergeResponsiveStyles(cell, props) as ViewProps
 }
 
 interface GridContextValue {
@@ -163,7 +172,7 @@ export function GridItem({ children, span = 1, offset = 0, ...props }: GridItemP
 function GridRoot({
   children,
   columns = 1,
-  gap = '$4',
+  gap = '4',
   rowGap = gap,
   columnGap = gap,
   ...props

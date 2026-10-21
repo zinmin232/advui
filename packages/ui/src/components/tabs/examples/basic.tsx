@@ -2,7 +2,7 @@ import { Button, Card, Input, Label, Tabs, VStack } from '@advui/core'
 
 export default function TabsBasic() {
   return (
-    <Tabs defaultValue="account" width="100%" maxWidth="$96">
+    <Tabs defaultValue="account" width="100%" maxWidth="96">
       <Tabs.List aria-label="Account settings">
         <Tabs.Trigger value="account">Account</Tabs.Trigger>
         <Tabs.Trigger value="password">Password</Tabs.Trigger>
@@ -14,7 +14,7 @@ export default function TabsBasic() {
             <Card.Description>Make changes to your account.</Card.Description>
           </Card.Header>
           <Card.Content>
-            <VStack gap="$2">
+            <VStack gap="2">
               <Label htmlFor="tabs-name">Name</Label>
               <Input id="tabs-name" defaultValue="Ada Lovelace" />
             </VStack>
@@ -31,7 +31,7 @@ export default function TabsBasic() {
             <Card.Description>Use at least 12 characters.</Card.Description>
           </Card.Header>
           <Card.Content>
-            <VStack gap="$2">
+            <VStack gap="2">
               <Label htmlFor="tabs-new">New password</Label>
               <Input id="tabs-new" secureTextEntry />
             </VStack>

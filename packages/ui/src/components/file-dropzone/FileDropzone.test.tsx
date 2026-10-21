@@ -27,11 +27,12 @@ describe('FileDropzone', () => {
     const zone = screen.getByRole('button')
     const files = [image('a.png'), new File(['x'], 'notes.txt', { type: 'text/plain' })]
     const dataTransfer = { files, types: ['Files'] }
+    const resting = getComputedStyle(zone).backgroundColor
     fireEvent.dragEnter(zone, { dataTransfer })
-    expect(zone.className).toMatch(/accent/)
+    expect(getComputedStyle(zone).backgroundColor).not.toBe(resting)
     fireEvent.drop(zone, { dataTransfer })
     expect(onValueChange).toHaveBeenLastCalledWith([expect.objectContaining({ name: 'a.png' })])
     expect(onReject).toHaveBeenCalledWith([expect.objectContaining({ reason: 'type' })])
-    expect(zone.className).not.toMatch(/accent/)
+    expect(getComputedStyle(zone).backgroundColor).toBe(resting)
   })
 })

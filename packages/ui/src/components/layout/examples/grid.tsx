@@ -9,10 +9,10 @@ const stats = [
 
 export default function GridExample() {
   return (
-    <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="$4" width="100%">
+    <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="4" width="100%">
       {stats.map((s) => (
         <Card key={s.label}>
-          <Card.Content gap="$1">
+          <Card.Content gap="1">
             <Text size="sm" tone="muted">
               {s.label}
             </Text>

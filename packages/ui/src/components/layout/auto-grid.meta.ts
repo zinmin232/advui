@@ -27,7 +27,7 @@ export default defineMeta({
   ],
   usage: `import { AutoGrid, Card } from '@advui/core'
 
-<AutoGrid minChildWidth={240} gap="$4" maxColumns={4}>
+<AutoGrid minChildWidth={240} gap="4" maxColumns={4}>
   {items.map((item) => <Card key={item.id}>…</Card>)}
 </AutoGrid>`,
   parts: [
@@ -43,7 +43,7 @@ export default defineMeta({
           min: 1,
           step: 1,
           description:
-            'Narrowest a cell gets, in px. Columns = how many fit with the gaps, so a 1000px grid with 240px cells and `$4` gaps has 3. A grid narrower than this has one column, as wide as the grid.',
+            'Narrowest a cell gets, in px. Columns = how many fit with the gaps, so a 1000px grid with 240px cells and `4` gaps has 3. A grid narrower than this has one column, as wide as the grid.',
         },
         {
           name: 'maxColumns',
@@ -56,7 +56,7 @@ export default defineMeta({
           name: 'gap',
           type: 'SpaceTokens',
           token: 'space',
-          default: "'$4'",
+          default: "'4'",
           description: 'Space between cells, across and down.',
         },
       ],

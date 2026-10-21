@@ -7,12 +7,12 @@ export default function FormCustomStyling() {
       title="Sign in"
       width="100%"
       maxWidth={400}
-      padding="$6"
-      borderRadius="$xl"
+      padding="6"
+      borderRadius="xl"
       borderWidth={1}
-      borderColor="$border"
-      backgroundColor="$card"
-      gap="$5"
+      borderColor="border"
+      backgroundColor="card"
+      gap="5"
       footer={
         <>
           <Button variant="link">Forgot password?</Button>

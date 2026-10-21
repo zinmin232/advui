@@ -8,7 +8,7 @@ import {
   XStack,
   isWeb,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
 import { useControllableState } from '../../hooks/useControllableState'
 import { ariaState } from '../../utils/ariaState'
@@ -18,45 +18,53 @@ import { fieldBoxStyle } from '../input/Input'
 import { TagsInputText } from './TagsInputText'
 
 export const TagsInputFrame = styled(XStack, {
-  name: 'TagsInput',
+  displayName: 'TagsInput',
   ...fieldBoxStyle,
   alignItems: 'center',
   flexWrap: 'wrap',
-  gap: '$1.5',
+  gap: '1-5',
   cursor: 'text',
-
   variants: {
     // The row of tags and the text box fits inside the field's height, so a
     // field with one row is as tall as an Input of the same size.
     size: {
-      sm: { minHeight: '$8', paddingHorizontal: '$1', paddingVertical: '$0.5' },
-      md: { minHeight: '$10', paddingHorizontal: '$1.5', paddingVertical: '$1' },
-      lg: { minHeight: '$12', paddingHorizontal: '$2', paddingVertical: '$1' },
+      sm: {
+        minHeight: '8',
+        paddingHorizontal: '1',
+        paddingVertical: '0-5',
+      },
+      md: {
+        minHeight: '10',
+        paddingHorizontal: '1-5',
+        paddingVertical: '1',
+      },
+      lg: {
+        minHeight: '12',
+        paddingHorizontal: '2',
+        paddingVertical: '1',
+      },
     },
     focused: {
       true: {
-        borderColor: '$ring',
-        hoverStyle: { borderColor: '$ring' },
+        borderColor: 'ring hover:ring',
       },
     },
     invalid: {
       true: {
-        borderColor: '$error',
-        hoverStyle: { borderColor: '$error' },
+        borderColor: 'error hover:error',
       },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed' },
     },
   } as const,
-
   defaultVariants: { size: 'md' },
 })
 
-const rowHeights = { sm: '$6', md: '$7', lg: '$8' } as const
-const fontSizes = { sm: '$2', md: '$2', lg: '$3' } as const
+const rowHeights = { sm: '6', md: '7', lg: '8' } as const
+const fontSizes = { sm: '2', md: '2', lg: '3' } as const
 // The text box's own inset, so its text and placeholder line up with an Input's.
-const textInsets = { sm: '$1.5', md: '$1.5', lg: '$2' } as const
+const textInsets = { sm: '1-5', md: '1-5', lg: '2' } as const
 
 export interface TagsInputLabels {
   /** Name of a tag's remove button. Default: "Remove {tag}". */
@@ -254,10 +262,10 @@ export const TagsInput = forwardRef<TamaguiElement, TagsInputProps>(
         invalid={invalid}
         disabled={disabled}
         {...props}
-        // The ring an Input draws on focus (web only, like its focusVisibleStyle).
+        // The ring an Input draws on focus (web only, like its focus-visible outline).
         {...(isWeb &&
           focused && {
-            outlineColor: invalid ? '$error' : '$ring',
+            outlineColor: invalid ? 'error' : 'ring',
             outlineStyle: 'solid',
             outlineWidth: 2,
           })}

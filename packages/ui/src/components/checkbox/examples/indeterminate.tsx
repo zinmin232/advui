@@ -8,8 +8,8 @@ export default function CheckboxIndeterminate() {
   const all = selected.length === items.length
   const some = selected.length > 0 && !all
   return (
-    <VStack gap="$2">
-      <HStack gap="$2">
+    <VStack gap="2">
+      <HStack gap="2">
         <Checkbox
           id="cb-all"
           checked={all ? true : some ? 'indeterminate' : false}
@@ -17,9 +17,9 @@ export default function CheckboxIndeterminate() {
         />
         <Label htmlFor="cb-all">All notifications</Label>
       </HStack>
-      <VStack gap="$2" paddingLeft="$6">
+      <VStack gap="2" paddingLeft="6">
         {items.map((item) => (
-          <HStack key={item} gap="$2">
+          <HStack key={item} gap="2">
             <Checkbox
               id={`cb-${item}`}
               checked={selected.includes(item)}

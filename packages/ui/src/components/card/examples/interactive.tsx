@@ -7,7 +7,7 @@ export default function CardInteractive() {
       role="link"
       aria-label="Open project Atlas"
       width="100%"
-      maxWidth="$80"
+      maxWidth="80"
       onPress={() => toast('Opening Atlas…')}
     >
       <Card.Header>

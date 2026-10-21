@@ -12,7 +12,7 @@ const projects = [
 export default function GridResponsiveCards() {
   // Equal columns need no Grid.Item: each child is one column wide.
   return (
-    <Grid columns={{ base: 1, sm: 2, lg: 3 }} gap="$4" width="100%">
+    <Grid columns={{ base: 1, sm: 2, lg: 3 }} gap="4" width="100%">
       {projects.map((project) => (
         <Card key={project.name} flexGrow={1}>
           <Card.Header>

@@ -21,7 +21,7 @@ export default defineMeta({
     {
       name: 'Separator',
       description:
-        'With a label, it is a row: a line, the label in small muted text, then a line, `$3` apart. View props go on that row.',
+        'With a label, it is a row: a line, the label in small muted text, then a line, `3` apart. View props go on that row.',
       props: [
         {
           name: 'orientation',

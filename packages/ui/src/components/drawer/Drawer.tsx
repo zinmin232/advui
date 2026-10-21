@@ -6,6 +6,7 @@ import {
   type DialogProps as TamaguiDialogProps,
   type GetProps,
   ScrollView,
+  type ScrollViewProps,
   Dialog as TamaguiDialog,
   type TamaguiElement,
   View,
@@ -14,7 +15,7 @@ import {
   useConfiguration,
   useWindowDimensions,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
@@ -27,28 +28,28 @@ import {
   titleStyle,
 } from '../dialog/styles'
 import { useOverlayPress } from '../dialog/useOverlayPress'
+import { transformOpacity } from '../../utils/transition'
 
 // A modal panel pinned to one edge of the screen. It is a Dialog underneath
 // (focus trap, Escape, overlay, labelling), so it shares Dialog's styles.
 
 type Side = 'left' | 'right' | 'top' | 'bottom'
 
-const Overlay = styled(TamaguiDialog.Overlay, { name: 'DrawerOverlay', ...overlayStyle })
+const Overlay = styled(TamaguiDialog.Overlay, { displayName: 'DrawerOverlay', ...overlayStyle })
 
 const ContentFrame = styled(TamaguiDialog.Content, {
-  name: 'DrawerContent',
+  displayName: 'DrawerContent',
   position: 'absolute',
-  backgroundColor: '$popover',
-  borderColor: '$border',
+  backgroundColor: 'popover',
+  borderColor: 'border',
   borderWidth: 0,
   borderRadius: 0,
-  padding: '$6',
-  gap: '$4',
+  padding: '6',
+  gap: '4',
   ...shadows.lg,
   opacity: 1,
   x: 0,
   y: 0,
-
   variants: {
     side: {
       left: { top: 0, bottom: 0, left: 0, borderRightWidth: 1, maxWidth: '85%' },
@@ -65,27 +66,38 @@ const ContentFrame = styled(TamaguiDialog.Content, {
 })
 
 // Panel width for left and right drawers; top and bottom ones fit their content.
-const widths = { sm: '$72', md: '$96', lg: '$128' } as const
+const widths = { sm: '72', md: '96', lg: '128' } as const
 
-const Header = styled(View, { name: 'DrawerHeader', ...headerStyle, paddingRight: '$8' })
+const Header = styled(View, {
+  displayName: 'DrawerHeader',
+  ...headerStyle,
+  paddingRight: '8',
+})
 
-const Footer = styled(View, { name: 'DrawerFooter', ...footerStyle })
+const Footer = styled(View, { displayName: 'DrawerFooter', ...footerStyle })
 
-const Title = styled(TamaguiDialog.Title, { name: 'DrawerTitle', ...titleStyle })
+const Title = styled(TamaguiDialog.Title, { displayName: 'DrawerTitle', ...titleStyle })
 
 const Description = styled(TamaguiDialog.Description, {
-  name: 'DrawerDescription',
+  displayName: 'DrawerDescription',
   ...descriptionStyle,
 })
 
 /** Scrolls long content between the header and footer. */
-const Body = styled(ScrollView, {
-  name: 'DrawerBody',
+const BodyFrame = styled(ScrollView, {
+  displayName: 'DrawerBody',
   flexGrow: 1,
   flexShrink: 1,
   // Room for focus rings of full-width controls inside.
-  marginHorizontal: '$-1',
-  contentContainerStyle: { gap: '$3', paddingHorizontal: '$1' },
+  marginHorizontal: '-1',
+  contentContainerStyle: { gap: '3', paddingHorizontal: '1' },
+})
+
+// A component typed with ScrollViewProps: the styled ScrollView's inferred
+// type names Tamagui types that are not exported, which a declaration file
+// cannot refer to.
+const Body = forwardRef<TamaguiElement, ScrollViewProps>(function DrawerBody(props, ref) {
+  return <BodyFrame ref={ref as never} {...(props as object)} />
 })
 
 export interface DrawerProps extends Omit<TamaguiDialogProps, 'modal'> {
@@ -126,17 +138,18 @@ const Content = forwardRef<TamaguiElement, DrawerContentProps>(function DrawerCo
   // Slide in from just past the edge. Window size (not a percentage) because
   // the native animation driver only interpolates numbers.
   const viewport = useWindowDimensions()
-  const offscreen = {
-    left: { x: -viewport.width },
-    right: { x: viewport.width },
-    top: { y: -viewport.height },
-    bottom: { y: viewport.height },
-  }[side]
+  const [axis, distance] = {
+    left: ['x', -viewport.width],
+    right: ['x', viewport.width],
+    top: ['y', -viewport.height],
+    bottom: ['y', viewport.height],
+  }[side] as ['x' | 'y', number]
+  const offscreen = { [axis]: { default: 0, enter: distance, exit: distance } }
 
   // Keep the edge that touches the screen clear of the notch, status bar and
   // home indicator (native; insets come from UniversalProvider).
   const insets = useConfiguration().insets
-  const pad = getTokenValue('$6', 'space') as number
+  const pad = getTokenValue('6', 'space') as number
   const safe = insets
     ? {
         paddingTop: side === 'bottom' ? pad : pad + insets.top,
@@ -149,7 +162,7 @@ const Content = forwardRef<TamaguiElement, DrawerContentProps>(function DrawerCo
   const horizontal = side === 'left' || side === 'right'
 
   return (
-    <TamaguiDialog.Portal>
+    <TamaguiDialog.Portal render="div" aria-modal={undefined}>
       <Overlay key="overlay" {...overlayPress} transition={reducedMotion ? null : 'quick'} />
       <ContentFrame
         key="content"
@@ -157,10 +170,8 @@ const Content = forwardRef<TamaguiElement, DrawerContentProps>(function DrawerCo
         side={side}
         size={size}
         width={horizontal ? widths[size] : undefined}
-        enterStyle={offscreen}
-        exitStyle={offscreen}
-        transition={transition}
-        animateOnly={['transform', 'opacity']}
+        {...offscreen}
+        transition={transformOpacity(transition)}
         {...safe}
         {...props}
       >
@@ -172,8 +183,8 @@ const Content = forwardRef<TamaguiElement, DrawerContentProps>(function DrawerCo
               icon={<XIcon />}
               size="sm"
               position="absolute"
-              top={safe ? safe.paddingTop - pad + getTokenValue('$4', 'space') : '$4'}
-              right={safe ? safe.paddingRight - pad + getTokenValue('$4', 'space') : '$4'}
+              top={safe ? safe.paddingTop - pad + getTokenValue('4', 'space') : '4'}
+              right={safe ? safe.paddingRight - pad + getTokenValue('4', 'space') : '4'}
             />
           </Close>
         )}

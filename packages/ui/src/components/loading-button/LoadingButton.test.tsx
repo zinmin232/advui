@@ -161,9 +161,9 @@ describe('LoadingButton', () => {
         <Button
           variant="outline"
           size="lg"
+          borderRadius="xl"
+          backgroundColor="info"
           theme="dark"
-          borderRadius="$xl"
-          backgroundColor="$info"
           disabled
         >
           Save
@@ -172,8 +172,8 @@ describe('LoadingButton', () => {
           variant="outline"
           size="lg"
           theme="dark"
-          borderRadius="$xl"
-          backgroundColor="$info"
+          borderRadius="xl"
+          backgroundColor="info"
           loading
         >
           Save

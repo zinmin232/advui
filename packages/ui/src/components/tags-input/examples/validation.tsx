@@ -13,7 +13,7 @@ export default function TagsInputValidation() {
       description="Up to 5 email addresses."
       error={error}
       width="100%"
-      maxWidth="$96"
+      maxWidth="96"
     >
       <TagsInput
         value={emails}

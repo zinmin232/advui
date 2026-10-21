@@ -2,7 +2,7 @@ import { Link, Text, VStack } from '@advui/core'
 
 export default function LinkExternal() {
   return (
-    <VStack gap="$3" maxWidth="$112">
+    <VStack gap="3" maxWidth="112">
       <Text>
         Adv UI is built on{' '}
         <Link href="https://tamagui.dev" external>

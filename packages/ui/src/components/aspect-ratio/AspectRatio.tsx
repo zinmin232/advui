@@ -1,8 +1,8 @@
 import { forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, View, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, styled } from 'tamagui/unstyled'
 
 const AspectRatioFrame = styled(View, {
-  name: 'AspectRatio',
+  displayName: 'AspectRatio',
   position: 'relative',
   width: '100%',
   overflow: 'hidden',

@@ -148,14 +148,14 @@ export default defineMeta({
           name: 'borderColor',
           type: 'ColorTokens',
           token: 'color',
-          default: "'$border' (outline)",
+          default: "'border' (outline)",
           description: 'Overrides the outline color. Other variants show it with a `borderWidth`.',
         },
         {
           name: 'borderRadius',
           type: 'RadiusTokens | number',
           token: 'radius',
-          default: "'$lg'",
+          default: "'lg'",
           description: 'Corner radius of the container.',
         },
       ],
@@ -329,7 +329,7 @@ export default defineMeta({
     { keys: 'Home / End', action: '`toolbar`: the first or last control.' },
   ],
   responsive:
-    'Toolbar fills the width of a column and sizes to its content in a row. On narrow screens leading and center shrink first (a title wraps, a search field with `flex={1}` narrows); trailing keeps its size. On web, leading, trailing and a text center never shrink below their content, so they do not run into each other; a center holding a control that cannot shrink (a Toggle Group) needs `wrap`. Give bars that must fit phone widths `wrap`: controls and regions move onto new lines, a wrapped trailing region wraps its own controls, and it stays at the end edge (the left one in right-to-left layouts). `align` and `distribute` take breakpoint maps; for anything else use media props such as `$md={{ gap: "$3" }}`. Toolbar never turns controls into a menu: show a Dropdown Menu for the overflow yourself (with Show / Hide).',
+    'Toolbar fills the width of a column and sizes to its content in a row. On narrow screens leading and center shrink first (a title wraps, a search field with `flex={1}` narrows); trailing keeps its size. On web, leading, trailing and a text center never shrink below their content, so they do not run into each other; a center holding a control that cannot shrink (a Toggle Group) needs `wrap`. Give bars that must fit phone widths `wrap`: controls and regions move onto new lines, a wrapped trailing region wraps its own controls, and it stays at the end edge (the left one in right-to-left layouts). `align` and `distribute` take breakpoint maps; for anything else use flat values such as `gap="2 md:3"`. Toolbar never turns controls into a menu: show a Dropdown Menu for the overflow yourself (with Show / Hide).',
   tables: [
     {
       id: 'regions',

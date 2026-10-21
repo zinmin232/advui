@@ -8,41 +8,40 @@ export type ColorMode = 'light' | 'dark'
 /**
  * Every value a Adv UI theme defines. The first block is Tamagui's
  * standard theme contract (used by Tamagui primitives); the rest are the
- * semantic tokens our components use (`$primary`, `$mutedForeground`, …).
+ * semantic tokens our components use (`primary`, `mutedForeground`, …).
  */
 export type ThemeValues = {
   // Tamagui standard keys
   background: string
-  backgroundHover: string
-  backgroundPress: string
-  backgroundFocus: string
-  backgroundStrong: string
-  backgroundTransparent: string
+  'background-hover': string
+  'background-press': string
+  'background-focus': string
+  'background-strong': string
+  'background-transparent': string
   color: string
-  colorHover: string
-  colorPress: string
-  colorFocus: string
-  colorTransparent: string
-  borderColor: string
-  borderColorHover: string
-  borderColorPress: string
-  borderColorFocus: string
-  placeholderColor: string
-  outlineColor: string
-  shadowColor: string
-  shadowColorStrong: string
-  color1: string
-  color2: string
-  color3: string
-  color4: string
-  color5: string
-  color6: string
-  color7: string
-  color8: string
-  color9: string
-  color10: string
-  color11: string
-  color12: string
+  'color-hover': string
+  'color-press': string
+  'color-focus': string
+  'color-transparent': string
+  'border-color': string
+  'border-color-hover': string
+  'border-color-press': string
+  'border-color-focus': string
+  'placeholder-color': string
+  'outline-color': string
+  'shadow-color': string
+  'shadow-color-strong': string
+  'color-1': string
+  'color-2': string
+  'color-3': string
+  'color-4': string
+  'color-5': string
+  'color-6': string
+  'color-7': string
+  'color-8': string
+  'color-9': string
+  'color-10': string
+  'color-11': string
 
   // Surfaces
   foreground: string
@@ -67,7 +66,7 @@ export type ThemeValues = {
   primaryForeground: string
   /** Primary-colored text/links on the page background (≥4.5:1). `primary` is a fill color. */
   primaryText: string
-  /** Primary-colored text on inverse surfaces (`$foreground` as a background), e.g. a snackbar action. */
+  /** Primary-colored text on inverse surfaces (`foreground` as a background), e.g. a snackbar action. */
   inversePrimary: string
   primarySoft: string
   primarySoftHover: string
@@ -202,36 +201,35 @@ function buildMode(mode: ColorMode, input: Required<Omit<ThemeColorsInput, 'over
 
   const values: ThemeValues = {
     background,
-    backgroundHover: isDark ? n[2] : n[1],
-    backgroundPress: isDark ? n[3] : n[2],
-    backgroundFocus: isDark ? n[2] : n[1],
-    backgroundStrong: isDark ? n[1] : n[1],
-    backgroundTransparent: withAlpha(background, 0),
+    'background-hover': isDark ? n[2] : n[1],
+    'background-press': isDark ? n[3] : n[2],
+    'background-focus': isDark ? n[2] : n[1],
+    'background-strong': isDark ? n[1] : n[1],
+    'background-transparent': withAlpha(background, 0),
     color: n[11],
-    colorHover: n[11],
-    colorPress: n[10],
-    colorFocus: n[11],
-    colorTransparent: withAlpha(n[11], 0),
-    borderColor: n[5],
-    borderColorHover: n[7],
-    borderColorPress: n[7],
-    borderColorFocus: primary.base,
-    placeholderColor: n[9],
-    outlineColor: primary.base,
-    shadowColor: isDark ? 'rgba(0, 0, 0, 0.45)' : 'rgba(16, 24, 40, 0.08)',
-    shadowColorStrong: isDark ? 'rgba(0, 0, 0, 0.65)' : 'rgba(16, 24, 40, 0.18)',
-    color1: n[0],
-    color2: n[1],
-    color3: n[2],
-    color4: n[3],
-    color5: n[4],
-    color6: n[5],
-    color7: n[6],
-    color8: n[7],
-    color9: n[8],
-    color10: n[9],
-    color11: n[10],
-    color12: n[11],
+    'color-hover': n[11],
+    'color-press': n[10],
+    'color-focus': n[11],
+    'color-transparent': withAlpha(n[11], 0),
+    'border-color': n[5],
+    'border-color-hover': n[7],
+    'border-color-press': n[7],
+    'border-color-focus': primary.base,
+    'placeholder-color': n[9],
+    'outline-color': primary.base,
+    'shadow-color': isDark ? 'rgba(0, 0, 0, 0.45)' : 'rgba(16, 24, 40, 0.08)',
+    'shadow-color-strong': isDark ? 'rgba(0, 0, 0, 0.65)' : 'rgba(16, 24, 40, 0.18)',
+    'color-1': n[0],
+    'color-2': n[1],
+    'color-3': n[2],
+    'color-4': n[3],
+    'color-5': n[4],
+    'color-6': n[5],
+    'color-7': n[7],
+    'color-8': n[8],
+    'color-9': n[9],
+    'color-10': n[10],
+    'color-11': n[11],
 
     foreground: n[11],
     muted: isDark ? n[2] : n[1],

@@ -1,6 +1,6 @@
 import { PauseIcon, PlayIcon, RotateCcwIcon, RotateCwIcon } from '@advui/icons'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
-import { type GetProps, View, XStack, isWeb } from 'tamagui'
+import { type GetProps, View, XStack, isWeb } from 'tamagui/unstyled'
 import { Button } from '../button/Button'
 import { IconButton } from '../icon-button/IconButton'
 import { Slider } from '../slider/Slider'
@@ -164,17 +164,17 @@ export function AudioPlayer({
   return (
     <View
       {...(isWeb ? { role: 'group' } : {})}
-      aria-label={title}
       width="100%"
-      gap="$3"
-      padding="$3"
+      gap="3"
+      padding="3"
       borderWidth={1}
-      borderColor="$border"
-      borderRadius="$lg"
-      backgroundColor="$card"
+      borderColor="border"
+      borderRadius="lg"
+      backgroundColor="card"
       {...props}
+      aria-label={title}
     >
-      <XStack alignItems="center" gap="$3">
+      <XStack alignItems="center" gap="3">
         <IconButton
           variant="default"
           circular
@@ -188,7 +188,7 @@ export function AudioPlayer({
         />
         {artwork ? <View aria-hidden>{artwork}</View> : null}
         <View flex={1} minWidth={0}>
-          <Text size="sm" weight="semibold" color="$cardForeground" numberOfLines={1}>
+          <Text size="sm" color="cardForeground" numberOfLines={1} weight="semibold">
             {title}
           </Text>
           {status.error || !supported ? (
@@ -204,17 +204,17 @@ export function AudioPlayer({
         {rates.length > 1 ? (
           <Button
             size="sm"
+            minWidth="12"
             variant="ghost"
             aria-label={labels.rate(rate)}
             disabled={disabled}
             onPress={nextRate}
-            minWidth="$12"
           >
             {`${rate}×`}
           </Button>
         ) : null}
       </XStack>
-      <XStack alignItems="center" gap="$2">
+      <XStack alignItems="center" gap="2">
         {skip > 0 ? (
           <IconButton
             size="sm"
@@ -224,7 +224,7 @@ export function AudioPlayer({
             onPress={() => seekBy(-skip)}
           />
         ) : null}
-        <Text aria-hidden size="xs" tone="muted" minWidth="$10" textAlign="right">
+        <Text aria-hidden size="xs" minWidth="10" textAlign="right" tone="muted">
           {formatTime(time)}
         </Text>
         <Slider
@@ -247,7 +247,7 @@ export function AudioPlayer({
             setScrub(null)
           }}
         />
-        <Text aria-hidden size="xs" tone="muted" minWidth="$10">
+        <Text aria-hidden size="xs" minWidth="10" tone="muted">
           {ready ? formatTime(status.duration) : '–:––'}
         </Text>
         {skip > 0 ? (

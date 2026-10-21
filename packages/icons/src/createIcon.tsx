@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { isWeb, useTheme } from 'tamagui'
+import { isWeb, useTheme } from 'tamagui/unstyled'
 import { useIconDefaults } from './context'
 import { SvgIcon } from './SvgIcon'
 import type { IconComponent, IconNode, IconProps } from './types'
@@ -15,7 +15,10 @@ export function createIcon(name: string, node: IconNode): IconComponent {
     // Web inherits `currentColor` from surrounding text; native has no
     // inheritance, so fall back to the theme's text color.
     const theme = useTheme()
-    const resolved = resolveIconColor(theme, color ?? defaults.color ?? (isWeb ? undefined : '$color'))
+    const resolved = resolveIconColor(
+      theme,
+      color ?? defaults.color ?? (isWeb ? undefined : 'color'),
+    )
     const resolvedFill = resolveIconColor(theme, fill)
     return (
       <SvgIcon

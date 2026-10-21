@@ -9,12 +9,12 @@ const files = [
 
 export default function ContextMenuList() {
   return (
-    <Card padding="$2" gap="$1" width="100%" maxWidth="$96">
+    <Card padding="2" gap="1" width="100%" maxWidth="96">
       {files.map((file) => (
         <ContextMenu key={file.name}>
           <ContextMenu.Trigger>
-            <HStack gap="$3" alignItems="center" padding="$2" borderRadius="$md">
-              <FileIcon size={18} color="$mutedForeground" />
+            <HStack gap="3" alignItems="center" padding="2" borderRadius="md">
+              <FileIcon size={18} color="mutedForeground" />
               <VStack flex={1}>
                 <Text size="sm">{file.name}</Text>
                 <Text size="xs" tone="muted">

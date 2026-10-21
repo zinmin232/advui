@@ -6,9 +6,9 @@ Lucide icons as Tamagui-aware components for web (SVG) and native
 ```tsx
 import { SearchIcon, IconDefaults, createIcon } from '@advui/icons'
 
-<SearchIcon size={16} color="$mutedForeground" />
+<SearchIcon size={16} color="mutedForeground" />
 
-<IconDefaults size={20} color="$primaryText">
+<IconDefaults size={20} color="primaryText">
   <SearchIcon />
 </IconDefaults>
 ```

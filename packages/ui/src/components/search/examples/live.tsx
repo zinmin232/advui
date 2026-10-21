@@ -27,7 +27,7 @@ export default function SearchLive() {
   }, [query])
 
   return (
-    <VStack gap="$2" width="100%" maxWidth="$80">
+    <VStack gap="2" width="100%" maxWidth="80">
       <Search
         aria-label="Search townships"
         placeholder="Search townships"

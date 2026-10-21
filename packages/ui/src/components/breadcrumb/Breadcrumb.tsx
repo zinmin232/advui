@@ -8,7 +8,7 @@ import {
   useContext,
   useState,
 } from 'react'
-import { type GetProps, Text, View, isWeb, withStaticProperties } from 'tamagui'
+import { type GetProps, Text, View, isWeb, withStaticProperties } from 'tamagui/unstyled'
 
 type ItemState = { current: boolean; separator: ReactNode }
 
@@ -31,7 +31,7 @@ export interface BreadcrumbProps extends Omit<GetProps<typeof View>, 'children'>
 function BreadcrumbRoot({
   children,
   maxItems,
-  separator = <ChevronRightIcon size={14} color="$mutedForeground" />,
+  separator = <ChevronRightIcon size={14} color="mutedForeground" />,
   'aria-label': ariaLabel = 'Breadcrumb',
   ...props
 }: BreadcrumbProps) {
@@ -49,19 +49,20 @@ function BreadcrumbRoot({
       aria-label={`Show ${hiddenCount} more`}
       alignItems="center"
       justifyContent="center"
-      width="$6"
-      height="$6"
+      width="6"
+      height="6"
       padding={0}
       borderWidth={0}
-      borderRadius="$sm"
-      backgroundColor="transparent"
+      borderRadius="sm"
+      backgroundColor="transparent hover:accent"
       cursor="pointer"
-      hoverStyle={{ backgroundColor: '$accent' }}
-      focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
+      outlineColor="focus-visible:ring"
+      outlineStyle="focus-visible:solid"
+      outlineWidth="focus-visible:2px"
       {...(isWeb ? { type: 'button' } : { accessible: true, hitSlop: 10 })}
       onPress={() => setExpanded(true)}
     >
-      <MoreHorizontalIcon size={16} color="$mutedForeground" />
+      <MoreHorizontalIcon size={16} color="mutedForeground" />
     </View>
   )
 
@@ -75,8 +76,8 @@ function BreadcrumbRoot({
         flexDirection="row"
         flexWrap="wrap"
         alignItems="center"
-        rowGap="$1"
-        columnGap="$1.5"
+        rowGap="1"
+        columnGap="1-5"
         margin={0}
         padding={0}
       >
@@ -97,7 +98,7 @@ function BreadcrumbRoot({
 function ListItem({ children }: { children: ReactNode }) {
   const { separator } = useContext(ItemContext)
   return (
-    <View render="li" flexDirection="row" alignItems="center" gap="$1.5" minWidth={0}>
+    <View render="li" flexDirection="row" alignItems="center" gap="1-5" minWidth={0}>
       {separator ? (
         <View aria-hidden {...(!isWeb && { accessible: false })}>
           {separator}
@@ -139,7 +140,6 @@ function BreadcrumbItem({
         <Text
           render={render ?? (href !== undefined ? 'a' : 'button')}
           {...(href !== undefined && { href })}
-          role="link"
           {...(!isWeb && {
             accessible: true,
             hitSlop: 8,
@@ -149,41 +149,37 @@ function BreadcrumbItem({
               if (event.nativeEvent.actionName === 'activate') onPress?.(event as never)
             },
           })}
-          // Without an href this renders a <button>: drop the browser's button chrome.
           padding={0}
           borderWidth={0}
           backgroundColor="transparent"
-          fontFamily="$body"
-          fontSize="$2"
-          lineHeight="$2"
-          color="$mutedForeground"
+          fontFamily="body"
+          fontSize="2"
+          lineHeight="2"
+          color="mutedForeground hover:foreground"
           cursor="pointer"
-          textDecorationLine="none"
+          textDecorationLine="none hover:underline"
           numberOfLines={1}
-          hoverStyle={{ color: '$foreground', textDecorationLine: 'underline' }}
-          focusVisibleStyle={{
-            outlineColor: '$ring',
-            outlineStyle: 'solid',
-            outlineWidth: 2,
-            outlineOffset: 2,
-            borderRadius: '$sm',
-          }}
-          onPress={onPress}
+          outlineColor="focus-visible:ring"
+          outlineStyle="focus-visible:solid"
+          outlineWidth="focus-visible:2px"
+          outlineOffset="focus-visible:2px"
+          borderRadius="focus-visible:sm"
           {...props}
+          role="link"
+          onPress={onPress}
         >
           {children}
         </Text>
       ) : (
         <Text
           aria-current={current ? 'page' : undefined}
-          // Native has no aria-current; say it in the label instead.
           {...(!isWeb &&
             current &&
             typeof children === 'string' && { 'aria-label': `${children}, current page` })}
-          fontFamily="$body"
-          fontSize="$2"
-          lineHeight="$2"
-          color={current ? '$foreground' : '$mutedForeground'}
+          fontFamily="body"
+          fontSize="2"
+          lineHeight="2"
+          color={current ? 'foreground' : 'mutedForeground'}
           fontWeight={current ? '500' : '400'}
           numberOfLines={1}
           {...props}

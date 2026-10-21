@@ -2,7 +2,7 @@ import { Field, Input, VStack } from '@advui/core'
 
 export default function InputAddons() {
   return (
-    <VStack gap="$4" width="100%" maxWidth="$96">
+    <VStack gap="4" width="100%" maxWidth="96">
       <Field label="Website">
         <Input leadingAddon="https://" trailingAddon=".com" placeholder="example" />
       </Field>

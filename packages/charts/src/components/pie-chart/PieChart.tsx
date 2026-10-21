@@ -66,8 +66,8 @@ export function PieChart({
     ...textProp,
   }
   const colors = useChartColors()
-  const ink = useChartInk('$background')
-  const foreground = useIconColor('$foreground') ?? 'currentColor'
+  const ink = useChartInk('background')
+  const foreground = useIconColor('foreground') ?? 'currentColor'
 
   // Largest first; past the limit, the tail folds into one "Other" slice.
   const positive = data.filter((d) => d.value > 0).sort((a, b) => b.value - a.value)

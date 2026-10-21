@@ -1,5 +1,5 @@
 import { type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react'
-import { type TamaguiElement, isWeb } from 'tamagui'
+import { type TamaguiElement, isWeb } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { AlertDialog } from '../alert-dialog/AlertDialog'
 import { Button } from '../button/Button'
@@ -81,7 +81,8 @@ export function ConfirmDialog({
   const wasPending = useRef(false)
   useEffect(() => {
     if (isWeb && wasPending.current && !pending && open) {
-      if (document.activeElement === document.body) (confirmRef.current as HTMLElement | null)?.focus()
+      if (document.activeElement === document.body)
+        (confirmRef.current as HTMLElement | null)?.focus()
     }
     wasPending.current = pending
   }, [pending, open])

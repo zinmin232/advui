@@ -3,7 +3,7 @@ import { CopyIcon, DownloadIcon, TrashIcon } from '@advui/icons'
 
 export default function TooltipBasic() {
   return (
-    <HStack gap="$1">
+    <HStack gap="1">
       <Tooltip content="Copy link">
         <IconButton aria-label="Copy link" icon={<CopyIcon />} />
       </Tooltip>

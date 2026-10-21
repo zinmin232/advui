@@ -55,7 +55,7 @@ export default function DataGridBasic() {
   const [rows, setRows] = useState(initial)
   const [last, setLast] = useState('Double-click a cell, or press Enter, to edit.')
   return (
-    <VStack gap="$2" width="100%">
+    <VStack gap="2" width="100%">
       <DataGrid
         aria-label="Reach by township"
         data={rows}

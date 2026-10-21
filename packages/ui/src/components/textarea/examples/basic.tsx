@@ -2,7 +2,7 @@ import { Label, Text, Textarea, VStack } from '@advui/core'
 
 export default function TextareaBasic() {
   return (
-    <VStack gap="$2" width="100%" maxWidth="$96">
+    <VStack gap="2" width="100%" maxWidth="96">
       <Label htmlFor="feedback">Feedback</Label>
       <Textarea
         id="feedback"

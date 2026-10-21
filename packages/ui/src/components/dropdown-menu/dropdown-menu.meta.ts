@@ -87,9 +87,9 @@ export default defineMeta({
       props: [
         {
           name: 'minWidth',
-          type: "'$40' | '$48' | '$56' | '$64'",
-          options: ['$40', '$48', '$56', '$64'],
-          default: "'$48'",
+          type: "'40' | '48' | '56' | '64'",
+          options: ['40', '48', '56', '64'],
+          default: "'48'",
           token: 'size',
           platforms: ['web'],
           description: 'Minimum menu width.',

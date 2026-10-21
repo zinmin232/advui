@@ -14,7 +14,7 @@ import {
   XStack,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { Text } from '@advui/core'
 
 export type TimelineTone = 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info'
@@ -23,53 +23,53 @@ export type TimelineTone = 'default' | 'primary' | 'success' | 'warning' | 'erro
 const ItemPosition = createContext({ last: true })
 
 const TimelineFrame = styled(View, {
-  name: 'Timeline',
+  displayName: 'Timeline',
   role: 'list',
   flexDirection: 'column',
 })
 
 const TimelineItemFrame = styled(View, {
-  name: 'TimelineItem',
+  displayName: 'TimelineItem',
   role: 'listitem',
   flexDirection: 'row',
-  gap: '$3',
+  gap: '3',
 })
 
 const TimelineConnector = styled(View, {
-  name: 'TimelineConnector',
+  displayName: 'TimelineConnector',
   flex: 1,
   width: 2,
-  minHeight: '$4',
-  marginVertical: '$1',
-  borderRadius: '$full',
-  backgroundColor: '$border',
+  minHeight: '4',
+  marginVertical: '1',
+  borderRadius: 'full',
+  backgroundColor: 'border',
 })
 
 const TimelineTitle = styled(Text, {
-  name: 'TimelineTitle',
+  displayName: 'TimelineTitle',
   size: 'sm',
   weight: 'medium',
 })
 
 const TimelineTime = styled(Text, {
-  name: 'TimelineTime',
+  displayName: 'TimelineTime',
   size: 'xs',
   tone: 'muted',
 })
 
 const TimelineDescription = styled(Text, {
-  name: 'TimelineDescription',
+  displayName: 'TimelineDescription',
   size: 'sm',
   tone: 'muted',
 })
 
 const tones = {
-  default: { dot: '$borderStrong', soft: '$muted', icon: '$mutedForeground' },
-  primary: { dot: '$primary', soft: '$primarySoft', icon: '$primarySoftForeground' },
-  success: { dot: '$success', soft: '$successSoft', icon: '$successSoftForeground' },
-  warning: { dot: '$warning', soft: '$warningSoft', icon: '$warningSoftForeground' },
-  error: { dot: '$error', soft: '$errorSoft', icon: '$errorSoftForeground' },
-  info: { dot: '$info', soft: '$infoSoft', icon: '$infoSoftForeground' },
+  default: { dot: 'borderStrong', soft: 'muted', icon: 'mutedForeground' },
+  primary: { dot: 'primary', soft: 'primarySoft', icon: 'primarySoftForeground' },
+  success: { dot: 'success', soft: 'successSoft', icon: 'successSoftForeground' },
+  warning: { dot: 'warning', soft: 'warningSoft', icon: 'warningSoftForeground' },
+  error: { dot: 'error', soft: 'errorSoft', icon: 'errorSoftForeground' },
+  info: { dot: 'info', soft: 'infoSoft', icon: 'infoSoftForeground' },
 } as const
 
 export type TimelineProps = GetProps<typeof TimelineFrame>
@@ -120,13 +120,13 @@ const TimelineItem = forwardRef<TamaguiElement, TimelineItemProps>(function Time
   const colors = tones[tone]
   return (
     <TimelineItemFrame ref={ref} {...props}>
-      <View aria-hidden alignItems="center" width="$6">
-        <View height="$6" width="$6" alignItems="center" justifyContent="center">
+      <View aria-hidden alignItems="center" width="6">
+        <View height="6" width="6" alignItems="center" justifyContent="center">
           {icon ? (
             <View
-              width="$6"
-              height="$6"
-              borderRadius="$full"
+              width="6"
+              height="6"
+              borderRadius="full"
               alignItems="center"
               justifyContent="center"
               backgroundColor={colors.soft}
@@ -136,18 +136,18 @@ const TimelineItem = forwardRef<TamaguiElement, TimelineItemProps>(function Time
               </IconDefaults>
             </View>
           ) : (
-            <View width="$2.5" height="$2.5" borderRadius="$full" backgroundColor={colors.dot} />
+            <View width="2-5" height="2-5" borderRadius="full" backgroundColor={colors.dot} />
           )}
         </View>
         {last ? null : <TimelineConnector />}
       </View>
-      <View flex={1} minWidth={0} gap="$1" paddingBottom={last ? '$0' : '$6'}>
+      <View flex={1} minWidth={0} gap="1" paddingBottom={last ? '0' : '6'}>
         <XStack
-          minHeight="$6"
+          minHeight="6"
           alignItems="center"
           justifyContent="space-between"
           flexWrap="wrap"
-          columnGap="$2"
+          columnGap="2"
         >
           <TimelineTitle>{title}</TimelineTitle>
           {time != null ? <TimelineTime>{time}</TimelineTime> : null}

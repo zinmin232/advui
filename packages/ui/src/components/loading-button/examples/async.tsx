@@ -19,7 +19,7 @@ export default function LoadingButtonAsync() {
   }
 
   return (
-    <VStack gap="$2" alignItems="flex-start">
+    <VStack gap="2" alignItems="flex-start">
       <LoadingButton loading={loading} loadingText="Saving…" onPress={handleSave}>
         Save activity
       </LoadingButton>

@@ -1,4 +1,4 @@
-import { View } from 'tamagui'
+import { View } from 'tamagui/unstyled'
 import { describe, expect, it, vi } from 'vitest'
 import { renderWithProvider, screen } from '../../../test/utils'
 import { Text } from '../typography/Text'
@@ -47,7 +47,7 @@ describe('CodeBlock', () => {
     renderWithProvider(
       <>
         <CodeBlock code={'one\ntwo\nthree'} highlightLines={[2]} />
-        <View testID="soft" backgroundColor="$primarySoft" />
+        <View testID="soft" backgroundColor="primarySoft" />
       </>,
     )
     const [one, two] = [...code().children] as HTMLElement[]
@@ -62,10 +62,10 @@ describe('CodeBlock', () => {
         <CodeBlock
           code="let x"
           tokens={[
-            [{ content: 'let', color: '$infoSoftForeground', bold: true }, { content: ' x' }],
+            [{ content: 'let', color: 'infoSoftForeground', bold: true }, { content: ' x' }],
           ]}
         />
-        <Text color="$infoSoftForeground">reference</Text>
+        <Text color="infoSoftForeground">reference</Text>
       </>,
     )
     expect(code().textContent).toBe('let x')

@@ -40,7 +40,7 @@ const platformLabel: Record<Platform, string> = { web: 'Web', ios: 'iOS', androi
 
 export function PlatformBadges({ platforms }: { platforms: Platform[] }) {
   return (
-    <HStack gap="$1.5" flexWrap="wrap" role="list" aria-label="Supported platforms">
+    <HStack gap="1-5" flexWrap="wrap" role="list" aria-label="Supported platforms">
       {(['web', 'ios', 'android'] as const).map((p) => {
         const supported = platforms.includes(p)
         return (
@@ -63,7 +63,7 @@ export function PlatformBadges({ platforms }: { platforms: Platform[] }) {
 
 function PropsTable({ part }: { part: PartDoc }) {
   return (
-    <VStack gap="$2">
+    <VStack gap="2">
       <Text render="h3" size="base" weight="semibold" mono margin={0}>
         {part.name}
       </Text>
@@ -76,13 +76,14 @@ function PropsTable({ part }: { part: PartDoc }) {
         <View
           overflowX="auto"
           borderWidth={1}
-          borderColor="$border"
-          borderRadius="$lg"
-          // Long types can overflow; a focusable region scrolls with the keyboard.
+          borderColor="border"
+          borderRadius="lg"
+          outlineColor="focus-visible:ring"
+          outlineStyle="focus-visible:solid"
+          outlineWidth="focus-visible:2px"
           tabIndex={0}
           role="region"
           aria-label={`${part.name} props`}
-          focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
         >
           <table className="props-table">
             <thead>
@@ -133,12 +134,14 @@ function ReferenceTable({ table }: { table: DocTable }) {
       <View
         overflowX="auto"
         borderWidth={1}
-        borderColor="$border"
-        borderRadius="$lg"
+        borderColor="border"
+        borderRadius="lg"
+        outlineColor="focus-visible:ring"
+        outlineStyle="focus-visible:solid"
+        outlineWidth="focus-visible:2px"
         tabIndex={0}
         role="region"
         aria-label={table.title}
-        focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
       >
         <table className="props-table">
           <thead>
@@ -167,7 +170,7 @@ function ReferenceTable({ table }: { table: DocTable }) {
 
 function SectionAnchor({ id, children }: { id: string; children: ReactNode }) {
   return (
-    <VStack id={id} gap="$4">
+    <VStack id={id} gap="4">
       {children}
     </VStack>
   )
@@ -207,7 +210,7 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
         ]}
       />
       <PageHeader title={meta.name} description={meta.description}>
-        <HStack gap="$2" flexWrap="wrap" alignItems="center">
+        <HStack gap="2" flexWrap="wrap" alignItems="center">
           <Badge
             variant={
               meta.status === 'stable' ? 'success' : meta.status === 'beta' ? 'warning' : 'info'
@@ -258,11 +261,11 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
             <Tabs.Trigger value="package">Package</Tabs.Trigger>
             <Tabs.Trigger value="cli">CLI (copy source)</Tabs.Trigger>
           </Tabs.List>
-          <Tabs.Content value="package" gap="$2">
+          <Tabs.Content value="package" gap="2">
             <CodeBlock {...data.install.pnpm} title="pnpm" />
             <CodeBlock {...data.install.npm} title="npm" />
           </Tabs.Content>
-          <Tabs.Content value="cli" gap="$2">
+          <Tabs.Content value="cli" gap="2">
             <CodeBlock {...data.install.cli} title="Terminal" />
             <Text size="sm" tone="muted">
               Copies the source into your project
@@ -286,7 +289,7 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
       {listed.length ? (
         <SectionAnchor id="examples">
           <H2 id="examples-heading">Examples</H2>
-          <VStack gap="$8">
+          <VStack gap="8">
             {listed.map((example) => (
               <ComponentPreview key={example.name} slug={meta.slug} {...example} />
             ))}
@@ -296,7 +299,7 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
 
       <SectionAnchor id="api">
         <H2 id="api-heading">API reference</H2>
-        <VStack gap="$6">
+        <VStack gap="6">
           {meta.parts.map((part) => (
             <PropsTable key={part.name} part={part} />
           ))}
@@ -318,12 +321,14 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
           <View
             overflowX="auto"
             borderWidth={1}
-            borderColor="$border"
-            borderRadius="$lg"
+            borderColor="border"
+            borderRadius="lg"
+            outlineColor="focus-visible:ring"
+            outlineStyle="focus-visible:solid"
+            outlineWidth="focus-visible:2px"
             tabIndex={0}
             role="region"
             aria-label="Keyboard interactions"
-            focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
           >
             <table className="props-table">
               <caption className="sr-only">Keyboard interactions</caption>
@@ -358,7 +363,7 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
       {meta.platformNotes && Object.keys(meta.platformNotes).length ? (
         <SectionAnchor id="platforms">
           <H2 id="platforms-heading">Platform notes</H2>
-          <Grid columns={{ base: 1, md: 3 }} gap="$3">
+          <Grid columns={{ base: 1, md: 3 }} gap="3">
             {(['web', 'ios', 'android'] as const)
               .filter((p) => meta.platformNotes?.[p])
               .map((p) => (
@@ -378,7 +383,7 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
       {data.related.length ? (
         <SectionAnchor id="related">
           <H2 id="related-heading">Related components</H2>
-          <HStack gap="$2" flexWrap="wrap">
+          <HStack gap="2" flexWrap="wrap">
             {data.related.map((r) => (
               <Link key={r.slug} href={`/docs/components/${r.slug}`} className="plain-link">
                 <Badge variant="outline" size="md">
@@ -390,7 +395,7 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
         </SectionAnchor>
       ) : null}
 
-      <HStack gap="$4" flexWrap="wrap" paddingTop="$6">
+      <HStack gap="4" flexWrap="wrap" paddingTop="6">
         <Text size="xs" tone="muted">
           Since v{meta.since}
         </Text>
@@ -399,7 +404,7 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
           {new Date(data.lastUpdated).toLocaleDateString('en', { dateStyle: 'medium' })}
         </Text>
         <a href={data.editUrl} className="prose-link" target="_blank" rel="noreferrer">
-          <Text size="xs" color="$primaryText">
+          <Text size="xs" color="primaryText">
             Edit this page on GitHub
           </Text>
         </a>

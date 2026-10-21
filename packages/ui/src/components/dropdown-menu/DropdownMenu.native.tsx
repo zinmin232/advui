@@ -1,5 +1,5 @@
 import { type ReactElement, cloneElement } from 'react'
-import { withStaticProperties } from 'tamagui'
+import { withStaticProperties } from 'tamagui/unstyled'
 import { sheetMenu, useSheetMenu } from './sheetMenu'
 import type { DropdownMenuTriggerProps } from './types'
 

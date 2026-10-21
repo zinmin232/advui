@@ -1,46 +1,41 @@
 import { CheckIcon, IconDefaults, XIcon } from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
 import { ariaState } from '../../utils/ariaState'
+import { flatValue } from '../../utils/responsive'
 
 const ChipFrame = styled(View, {
-  name: 'Chip',
+  displayName: 'Chip',
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf: 'flex-start',
-  gap: '$1.5',
-  height: '$8',
-  paddingHorizontal: '$3',
+  gap: '1-5',
+  height: '8',
+  paddingHorizontal: '3',
   borderWidth: 1,
-  borderColor: '$input',
-  borderRadius: '$lg',
+  borderColor: 'input',
+  borderRadius: 'lg',
   backgroundColor: 'transparent',
   userSelect: 'none',
-
   variants: {
     interactive: {
       true: {
         cursor: 'pointer',
-        hoverStyle: { backgroundColor: '$accent' },
-        pressStyle: { backgroundColor: '$accentHover' },
-        focusVisibleStyle: {
-          outlineColor: '$ring',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineOffset: 2,
-        },
+        backgroundColor: 'hover:accent press:accentHover',
+        outlineColor: 'focus-visible:ring',
+        outlineStyle: 'focus-visible:solid',
+        outlineWidth: 'focus-visible:2px',
+        outlineOffset: 'focus-visible:2px',
       },
     },
     // Material's selected filter chip: a filled tonal surface without a border.
     selected: {
       true: {
-        backgroundColor: '$secondary',
-        borderColor: '$secondary',
-        hoverStyle: { backgroundColor: '$secondaryHover' },
-        pressStyle: { backgroundColor: '$secondaryPress' },
+        backgroundColor: 'secondary hover:secondaryHover press:secondaryPress',
+        borderColor: 'secondary',
       },
     },
     disabled: {
@@ -72,14 +67,14 @@ export interface ChipProps extends Omit<
   disabled?: boolean
 }
 
-type LabelColor = '$foreground' | '$secondaryForeground'
+type LabelColor = 'foreground' | 'secondaryForeground'
 
 const Label = ({ children, color }: { children: ReactNode; color: LabelColor }) =>
   isTextContent(children) ? (
     <Text
-      fontFamily="$body"
-      fontSize="$2"
-      lineHeight="$2"
+      fontFamily="body"
+      fontSize="2"
+      lineHeight="2"
       fontWeight="500"
       color={color}
       numberOfLines={1}
@@ -121,12 +116,12 @@ export const Chip = forwardRef<TamaguiElement, ChipProps>(function Chip(
     onChange: onSelectedChange,
   })
   const on = filter && selected
-  const color: LabelColor = on ? '$secondaryForeground' : '$foreground'
+  const color: LabelColor = on ? 'secondaryForeground' : 'foreground'
   const leading = on ? <CheckIcon /> : icon
   const pressable = filter || onPress !== undefined
   const ripple = useRipple({ color, disabled: disabled || !pressable, onPressIn, onPressOut })
   const removeRipple = useRipple({
-    color: '$mutedForeground',
+    color: 'mutedForeground',
     disabled: disabled || !onRemove || filter,
   })
 
@@ -135,35 +130,38 @@ export const Chip = forwardRef<TamaguiElement, ChipProps>(function Chip(
   if (onRemove && !filter) {
     const name = removeLabel ?? (typeof children === 'string' ? `Remove ${children}` : 'Remove')
     return (
-      <ChipFrame ref={ref} paddingRight="$1" disabled={disabled} {...props} {...ripple.props}>
-        <IconDefaults size={18} color="$mutedForeground">
+      <ChipFrame ref={ref} paddingRight="1" {...props} {...ripple.props} disabled={disabled}>
+        <IconDefaults size={18} color="mutedForeground">
           {icon}
         </IconDefaults>
-        <Label color="$foreground">{children}</Label>
+        <Label color="foreground">{children}</Label>
         <View
           render="button"
           role="button"
           aria-label={name}
           alignItems="center"
           justifyContent="center"
-          width="$6"
-          height="$6"
-          borderRadius="$full"
+          width="6"
+          height="6"
+          borderRadius="full"
           cursor={disabled ? 'not-allowed' : 'pointer'}
-          hoverStyle={disabled ? undefined : { backgroundColor: '$accent' }}
-          pressStyle={
-            removeRipple.active || disabled ? undefined : { backgroundColor: '$accentHover' }
-          }
-          focusVisibleStyle={{ outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }}
-          aria-disabled={ariaState(disabled)}
+          backgroundColor={flatValue(
+            isWeb && 'transparent',
+            !disabled && 'hover:accent',
+            !disabled && !removeRipple.active && 'press:accentHover',
+          )}
+          outlineColor="focus-visible:ring"
+          outlineStyle="focus-visible:solid"
+          outlineWidth="focus-visible:2px"
           {...(isWeb
-            ? { type: 'button', padding: 0, borderWidth: 0, backgroundColor: 'transparent' }
+            ? { type: 'button', padding: 0, borderWidth: 0 }
             : { accessible: true, hitSlop: 10 })}
-          onPress={() => !disabled && onRemove()}
           {...removeRipple.props}
+          aria-disabled={ariaState(disabled)}
+          onPress={() => !disabled && onRemove()}
         >
           {removeRipple.element}
-          <XIcon size={14} color="$mutedForeground" />
+          <XIcon size={14} color="mutedForeground" />
         </View>
       </ChipFrame>
     )
@@ -206,7 +204,7 @@ export const Chip = forwardRef<TamaguiElement, ChipProps>(function Chip(
           : undefined
       }
       {...(ripple.active && {
-        pressStyle: { backgroundColor: on ? '$secondary' : 'transparent' },
+        backgroundColor: on ? 'press:secondary' : 'press:transparent',
         // The ripple is clipped inside the border; a selected chip's border
         // matches its fill, so drop it and let the ripple reach the edge.
         ...(on && { borderWidth: 0 }),
@@ -215,7 +213,7 @@ export const Chip = forwardRef<TamaguiElement, ChipProps>(function Chip(
       {...ripple.props}
     >
       {ripple.element}
-      <IconDefaults size={18} color={on ? '$secondaryForeground' : '$mutedForeground'}>
+      <IconDefaults size={18} color={on ? 'secondaryForeground' : 'mutedForeground'}>
         {leading}
       </IconDefaults>
       <Label color={color}>{children}</Label>

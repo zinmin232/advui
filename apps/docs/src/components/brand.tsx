@@ -24,19 +24,19 @@ export function LogoMark({ size = 24 }: { size?: number }) {
       height={size}
       minWidth={size}
       paddingHorizontal={size * 0.18}
-      borderRadius="$md"
-      backgroundColor="$primary"
+      borderRadius="md"
+      backgroundColor="primary"
       alignItems="center"
       justifyContent="center"
       aria-hidden
     >
       <Text
-        color="$primaryForeground"
-        weight="bold"
+        color="primaryForeground"
         fontSize={size * 0.5}
-        lineHeight={size}
+        lineHeight={`${size}px`}
         letterSpacing={-0.3}
         userSelect="none"
+        weight="bold"
       >
         {siteConfig.shortName}
       </Text>
@@ -47,7 +47,7 @@ export function LogoMark({ size = 24 }: { size?: number }) {
 export function Logo() {
   return (
     <Link href="/" className="plain-link" aria-label={`${siteConfig.name} home`}>
-      <HStack gap="$2">
+      <HStack gap="2">
         <LogoMark />
         <Text weight="bold" size="base" letterSpacing={-0.3}>
           {siteConfig.name}

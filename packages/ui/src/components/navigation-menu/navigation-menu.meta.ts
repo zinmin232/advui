@@ -92,7 +92,7 @@ export default defineMeta({
           name: 'panelWidth',
           type: 'SizeTokens | number',
           token: 'size',
-          default: "'$72'",
+          default: "'72'",
           platforms: ['web'],
           description: 'Width of the panel. iOS and Android show the links under the bar.',
         },

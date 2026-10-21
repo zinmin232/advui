@@ -18,7 +18,7 @@ const filters: FilterDefinition[] = [
 export default function FilterBarApply() {
   const [applied, setApplied] = useState<FilterState | null>(null)
   return (
-    <VStack gap="$3" width="100%">
+    <VStack gap="3" width="100%">
       <FilterBar
         aria-label="Filter orders"
         variant="outline"

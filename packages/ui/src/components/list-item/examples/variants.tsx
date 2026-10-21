@@ -3,7 +3,7 @@ import { FileIcon, StarIcon } from '@advui/icons'
 
 export default function ListItemVariants() {
   return (
-    <VStack gap="$3" width="100%" maxWidth="$96">
+    <VStack gap="3" width="100%" maxWidth="96">
       <ListItem leading={<FileIcon />} title="Plain" description="No surface of its own" />
       <ListItem
         variant="filled"
@@ -23,9 +23,9 @@ export default function ListItemVariants() {
         leading={<StarIcon />}
         title="Custom colors"
         description="backgroundColor, color and borderRadius"
-        backgroundColor="$primarySoft"
-        color="$primarySoftForeground"
-        borderRadius="$xl"
+        backgroundColor="primarySoft"
+        color="primarySoftForeground"
+        borderRadius="xl"
       />
     </VStack>
   )

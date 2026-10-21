@@ -1,6 +1,6 @@
 import { AlertCircleIcon } from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
-import { type TamaguiElement, isWeb } from 'tamagui'
+import { type TamaguiElement, isWeb } from 'tamagui/unstyled'
 import { Button } from '../button/Button'
 import { EmptyState, type EmptyStateProps } from '../empty-state/EmptyState'
 

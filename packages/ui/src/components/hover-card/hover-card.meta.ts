@@ -82,7 +82,7 @@ export default defineMeta({
     },
     {
       name: 'HoverCard.Content',
-      description: 'Takes View props to style the card; its width defaults to `$72`.',
+      description: 'Takes View props to style the card; its width defaults to `72`.',
       props: [],
       children: { accepts: 'any' },
       within: 'HoverCard',

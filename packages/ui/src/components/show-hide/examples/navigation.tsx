@@ -5,17 +5,17 @@ export default function ShowHideNavigation() {
   return (
     <HStack
       width="100%"
-      gap="$3"
-      padding="$3"
+      gap="3"
+      padding="3"
       borderWidth={1}
-      borderColor="$border"
-      borderRadius="$lg"
+      borderColor="border"
+      borderRadius="lg"
       distribute="between"
     >
       <Text weight="semibold">Field reports</Text>
       {/* Links from md, a menu button below it. */}
       <Show above="md">
-        <HStack gap="$1">
+        <HStack gap="1">
           <Button variant="ghost" size="sm">
             Projects
           </Button>
@@ -27,7 +27,7 @@ export default function ShowHideNavigation() {
           </Button>
         </HStack>
       </Show>
-      <HStack gap="$1">
+      <HStack gap="1">
         <Hide below="sm">
           <IconButton aria-label="Search" icon={<SearchIcon />} />
         </Hide>

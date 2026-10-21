@@ -1,47 +1,44 @@
 import { CheckIcon, MinusIcon } from '@advui/icons'
+import { style } from '@tamagui/core'
 import { forwardRef } from 'react'
 import {
   isWeb,
+  Checkbox as TamaguiCheckbox,
   type CheckboxProps as TamaguiCheckboxProps,
-  CheckboxFrame as TamaguiCheckboxFrame,
-  CheckboxIndicatorFrame as TamaguiIndicatorFrame,
   type TamaguiElement,
-  createCheckbox,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useFieldControl } from '../../hooks/useFieldControl'
 import { ariaState } from '../../utils/ariaState'
 
-// Visual styles live in the `unstyled: false` variant so they override the
-// defaults Tamagui's createCheckbox applies through the same variant.
-const Frame = styled(TamaguiCheckboxFrame, {
-  name: 'Checkbox',
+// Tamagui 3's Checkbox is a styled HOC: styling it keeps its behavior.
+const BaseCheckbox = styled(TamaguiCheckbox, {
+  displayName: 'Checkbox',
   padding: 0,
   alignItems: 'center',
   justifyContent: 'center',
   cursor: 'pointer',
+  borderWidth: 1,
+  borderColor: 'input hover:borderStrong press:borderStrong focus:input',
+  backgroundColor: 'background',
+  borderRadius: 'sm',
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
 
   variants: {
-    unstyled: {
-      false: {
-        borderWidth: 1,
-        borderColor: '$input',
-        backgroundColor: '$background',
-        borderRadius: '$sm',
-        hoverStyle: { borderColor: '$borderStrong' },
-        pressStyle: { borderColor: '$borderStrong' },
-        focusStyle: { borderColor: '$input' },
-        focusVisibleStyle: {
-          outlineColor: '$ring',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineOffset: 2,
-        },
-      },
-    },
     size: {
-      sm: { width: '$4', height: '$4', borderRadius: '$xs' },
-      md: { width: '$5', height: '$5', borderRadius: '$sm' },
+      sm: {
+        width: '4',
+        height: '4',
+        borderRadius: 'xs',
+      },
+      md: {
+        width: '5',
+        height: '5',
+        borderRadius: 'sm',
+      },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: 'none' },
@@ -51,13 +48,11 @@ const Frame = styled(TamaguiCheckboxFrame, {
   defaultVariants: { size: 'md' },
 })
 
-const Indicator = styled(TamaguiIndicatorFrame, {
-  name: 'CheckboxIndicator',
+const Indicator = styled(TamaguiCheckbox.Indicator, {
+  displayName: 'CheckboxIndicator',
   alignItems: 'center',
   justifyContent: 'center',
 })
-
-const BaseCheckbox = createCheckbox({ Frame, Indicator })
 
 export type CheckedState = boolean | 'indeterminate'
 
@@ -80,7 +75,8 @@ export interface CheckboxProps extends Omit<
 const nativeA11y = (disabled: boolean | undefined) =>
   isWeb ? null : { accessible: true, 'aria-disabled': ariaState(disabled), 'aria-busy': false }
 
-const checkedStyle = { backgroundColor: '$primary', borderColor: '$primary' } as const
+// Tamagui 3 applies `activeStyle` as a style piece, which resolves the tokens.
+const checkedStyle = style({ backgroundColor: 'primary', borderColor: 'primary' })
 
 /**
  * Binary (or indeterminate) choice. Pair with `<Label htmlFor>` using the same `id`.
@@ -96,17 +92,17 @@ export const Checkbox = forwardRef<TamaguiElement, CheckboxProps>(
         size={size as never}
         {...nativeA11y(props.disabled)}
         aria-invalid={invalid || undefined}
-        {...(invalid ? { borderColor: '$error' as const } : null)}
+        {...(invalid ? { borderColor: 'error' as const } : null)}
         activeStyle={checkedStyle}
         {...(props as TamaguiCheckboxProps)}
       >
-        <BaseCheckbox.Indicator>
+        <Indicator>
           {props.checked === 'indeterminate' ? (
-            <MinusIcon size={iconSize} color="$primaryForeground" strokeWidth={3} />
+            <MinusIcon size={iconSize} color="primaryForeground" strokeWidth={3} />
           ) : (
-            <CheckIcon size={iconSize} color="$primaryForeground" strokeWidth={3} />
+            <CheckIcon size={iconSize} color="primaryForeground" strokeWidth={3} />
           )}
-        </BaseCheckbox.Indicator>
+        </Indicator>
       </BaseCheckbox>
     )
   },

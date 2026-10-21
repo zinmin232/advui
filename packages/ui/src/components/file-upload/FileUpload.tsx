@@ -1,6 +1,6 @@
 import { UploadIcon } from '@advui/icons'
 import { forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, View, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, styled } from 'tamagui/unstyled'
 import { useFieldControl } from '../../hooks/useFieldControl'
 import { Button } from '../button/Button'
 import { Text } from '../typography/Text'
@@ -8,8 +8,8 @@ import { FileList } from './FileList'
 import { type FileSelectionProps, useFileSelection } from './useFileSelection'
 
 const FileUploadFrame = styled(View, {
-  name: 'FileUpload',
-  gap: '$2',
+  displayName: 'FileUpload',
+  gap: '2',
   alignItems: 'flex-start',
 })
 
@@ -82,7 +82,7 @@ export const FileUpload = forwardRef<TamaguiElement, FileUploadProps>(
           aria-describedby={describedBy}
           aria-invalid={invalid || undefined}
           aria-required={required}
-          {...(invalid && { borderColor: '$error' })}
+          {...(invalid && { borderColor: 'error' })}
           onPress={open}
         >
           {buttonLabel}

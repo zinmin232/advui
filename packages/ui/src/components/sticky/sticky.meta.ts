@@ -14,7 +14,7 @@ export default defineMeta({
   keywords: ['sticky', 'pinned', 'fixed header', 'section header', 'position sticky'],
   usage: `import { ScrollArea, Sticky, VStack } from '@advui/core'
 
-<Sticky offset="$0"><Header /></Sticky>
+<Sticky offset="0"><Header /></Sticky>
 
 // Pinned on iOS and Android too: a direct child of the ScrollArea's content
 <ScrollArea height={400}>
@@ -48,7 +48,7 @@ export default defineMeta({
           name: 'zIndex',
           type: 'ZIndexTokens | number',
           token: 'zIndex',
-          default: "'$sticky'",
+          default: "'sticky'",
           description: 'Stacking level: above content, below dropdowns and dialogs.',
         },
       ],

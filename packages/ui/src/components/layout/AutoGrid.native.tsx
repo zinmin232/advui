@@ -1,5 +1,5 @@
 import { Children, forwardRef, isValidElement, useState } from 'react'
-import { type TamaguiElement, View } from 'tamagui'
+import { type TamaguiElement, View } from 'tamagui/unstyled'
 import type { AutoGridProps } from './AutoGrid'
 import { autoGridColumns, spaceValue } from './autoGridColumns'
 
@@ -9,7 +9,7 @@ import { autoGridColumns, spaceValue } from './autoGridColumns'
  * first layout it renders one full-width column, so cells never flash at zero width.
  */
 export const AutoGrid = forwardRef<TamaguiElement, AutoGridProps>(function AutoGrid(
-  { children, minChildWidth = 240, gap = '$4', maxColumns, onLayout, ...props },
+  { children, minChildWidth = 240, gap = '4', maxColumns, onLayout, ...props },
   ref,
 ) {
   const [width, setWidth] = useState(0)

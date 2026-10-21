@@ -10,7 +10,7 @@ import {
   View,
   XStack,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useFieldControl } from '../../hooks/useFieldControl'
 import { fieldBoxStyle } from '../input/Input'
 import { Text } from '../typography/Text'
@@ -18,67 +18,71 @@ import { type ComboboxFieldProps, defaultFilter, fieldHeights } from './options'
 import { ariaState } from '../../utils/ariaState'
 
 const FieldBox = styled(XStack, {
-  name: 'ComboboxField',
+  displayName: 'ComboboxField',
   ...fieldBoxStyle,
   alignItems: 'center',
   flexWrap: 'wrap',
-  gap: '$1.5',
+  gap: '1-5',
   cursor: 'text',
   // The input inside draws no ring of its own; the box shows focus instead.
-  focusWithinStyle: {
-    borderColor: '$ring',
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: 0,
-  },
-
+  borderColor: 'focus-within:ring',
+  outlineColor: 'focus-within:ring',
+  outlineStyle: 'focus-within:solid',
+  outlineWidth: 'focus-within:2px',
+  outlineOffset: 'focus-within:0px',
   variants: {
     size: {
-      sm: { minHeight: '$8', paddingHorizontal: '$2.5', paddingVertical: '$0.5' },
-      md: { minHeight: '$10', paddingHorizontal: '$3', paddingVertical: '$1' },
-      lg: { minHeight: '$12', paddingHorizontal: '$4', paddingVertical: '$1' },
+      sm: {
+        minHeight: '8',
+        paddingHorizontal: '2-5',
+        paddingVertical: '0-5',
+      },
+      md: {
+        minHeight: '10',
+        paddingHorizontal: '3',
+        paddingVertical: '1',
+      },
+      lg: {
+        minHeight: '12',
+        paddingHorizontal: '4',
+        paddingVertical: '1',
+      },
     },
     invalid: {
       true: {
-        borderColor: '$error',
-        hoverStyle: { borderColor: '$error' },
-        focusWithinStyle: { borderColor: '$error', outlineColor: '$error' },
+        borderColor: 'error hover:error focus-within:error',
+        outlineColor: 'focus-within:error',
       },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: 'none' },
     },
   } as const,
-
   defaultVariants: { size: 'md' },
 })
 
 const BareInput = styled(TamaguiInput, {
-  name: 'ComboboxInput',
-  unstyled: true,
+  displayName: 'ComboboxInput',
   flex: 1,
-  minWidth: '$16',
+  minWidth: '16',
   padding: 0,
   borderWidth: 0,
   backgroundColor: 'transparent',
-  fontFamily: '$body',
-  fontSize: '$2',
-  color: '$foreground',
-  placeholderTextColor: '$placeholderColor',
+  fontFamily: 'body',
+  fontSize: '2',
+  color: 'foreground',
+  placeholderTextColor: 'placeholder-color',
   // The field box draws the focus ring; `outline-style: auto` ignores width.
-  outlineStyle: 'none',
-  focusStyle: { outlineStyle: 'none' },
-  focusVisibleStyle: { outlineStyle: 'none' },
+  outlineStyle: 'none focus:none focus-visible:none',
 })
 
 const ListFrame = styled(View, {
-  name: 'ComboboxList',
-  backgroundColor: '$popover',
+  displayName: 'ComboboxList',
+  backgroundColor: 'popover',
   borderWidth: 1,
-  borderColor: '$border',
-  borderRadius: '$lg',
-  padding: '$1',
+  borderColor: 'border',
+  borderRadius: 'lg',
+  padding: '1',
   overflowX: 'hidden',
   overflowY: 'auto',
   // The portal around it ignores the pointer so the page stays clickable;
@@ -88,17 +92,20 @@ const ListFrame = styled(View, {
 })
 
 const OptionRow = styled(XStack, {
-  name: 'ComboboxOption',
+  displayName: 'ComboboxOption',
   alignItems: 'center',
-  gap: '$2',
-  minHeight: '$8',
-  paddingHorizontal: '$2',
-  paddingVertical: '$1.5',
-  borderRadius: '$md',
+  gap: '2',
+  minHeight: '8',
+  paddingHorizontal: '2',
+  paddingVertical: '1-5',
+  borderRadius: 'md',
   cursor: 'pointer',
-
   variants: {
-    highlighted: { true: { backgroundColor: '$accent' } },
+    highlighted: {
+      true: {
+        backgroundColor: 'accent',
+      },
+    },
     disabled: { true: { opacity: 0.5, cursor: 'not-allowed' } },
   } as const,
 })
@@ -282,7 +289,7 @@ export const ComboboxField = forwardRef<TamaguiElement, ComboboxFieldProps>(
           />
           <View
             aria-hidden
-            padding="$1"
+            padding="1"
             cursor="pointer"
             onPress={(event: { stopPropagation: () => void }) => {
               // The box's own press would open the list again.
@@ -291,7 +298,7 @@ export const ComboboxField = forwardRef<TamaguiElement, ComboboxFieldProps>(
               setOpen(!open)
             }}
           >
-            <ChevronDownIcon size={16} color="$mutedForeground" />
+            <ChevronDownIcon size={16} color="mutedForeground" />
           </View>
         </FieldBox>
         {showList ? (
@@ -307,7 +314,7 @@ export const ComboboxField = forwardRef<TamaguiElement, ComboboxFieldProps>(
               onMouseDown={(event: { preventDefault: () => void }) => event.preventDefault()}
             >
               {matches.length === 0 ? (
-                <Text size="sm" tone="muted" padding="$2">
+                <Text size="sm" padding="2" tone="muted">
                   {emptyText}
                 </Text>
               ) : (
@@ -327,15 +334,15 @@ export const ComboboxField = forwardRef<TamaguiElement, ComboboxFieldProps>(
                       }}
                       onPress={() => pick(index)}
                     >
-                      <View width="$4" alignItems="center">
+                      <View width="4" alignItems="center">
                         {isSelected ? (
-                          <IconDefaults size={16} color="$popoverForeground">
+                          <IconDefaults size={16} color="popoverForeground">
                             <CheckIcon />
                           </IconDefaults>
                         ) : null}
                       </View>
                       <View flex={1}>
-                        <Text size="sm" color="$popoverForeground">
+                        <Text size="sm" color="popoverForeground">
                           {option.label}
                         </Text>
                         {option.description ? (

@@ -1,7 +1,11 @@
+// Tamagui 3 still applies `elevation` on Android but leaves it out of its style
+// types, so it is spread in untyped: the presets keep their exact types.
+const elevation = (value: number): object => ({ elevation: value })
+
 /**
  * Elevation presets. Spread them into `styled()` definitions:
  * `styled(View, { ...shadows.md })`. Colors come from the theme
- * (`$shadowColor`, `$shadowColorStrong`) so dark mode gets deeper shadows.
+ * (`shadow-color`, `shadow-color-strong`) so dark mode gets deeper shadows.
  * `elevation` is the Android equivalent.
  */
 export const shadows = {
@@ -10,35 +14,35 @@ export const shadows = {
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0,
     shadowRadius: 0,
-    elevation: 0,
+    ...elevation(0),
   },
   xs: {
-    shadowColor: '$shadowColor',
+    shadowColor: 'shadow-color',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 1,
     shadowRadius: 2,
-    elevation: 1,
+    ...elevation(1),
   },
   sm: {
-    shadowColor: '$shadowColor',
+    shadowColor: 'shadow-color',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 1,
     shadowRadius: 6,
-    elevation: 2,
+    ...elevation(2),
   },
   md: {
-    shadowColor: '$shadowColorStrong',
+    shadowColor: 'shadow-color-strong',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 1,
     shadowRadius: 16,
-    elevation: 6,
+    ...elevation(6),
   },
   lg: {
-    shadowColor: '$shadowColorStrong',
+    shadowColor: 'shadow-color-strong',
     shadowOffset: { width: 0, height: 12 },
     shadowOpacity: 1,
     shadowRadius: 32,
-    elevation: 12,
+    ...elevation(12),
   },
 } as const
 

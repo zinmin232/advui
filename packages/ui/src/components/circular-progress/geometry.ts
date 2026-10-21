@@ -9,14 +9,14 @@ export type CircularProgressSize = keyof typeof circularSizes
 export type CircularProgressTone = 'primary' | 'success' | 'warning' | 'error'
 
 export const toneColor = {
-  primary: '$primary',
-  success: '$success',
-  warning: '$warning',
-  error: '$error',
-} as const satisfies Record<CircularProgressTone, `$${string}`>
+  primary: 'primary',
+  success: 'success',
+  warning: 'warning',
+  error: 'error',
+} as const satisfies Record<CircularProgressTone, string>
 
 // The percentage label is only legible from `md` up.
-export const valueFontSize = { sm: null, md: '$1', lg: '$3' } as const
+export const valueFontSize = { sm: null, md: '1', lg: '3' } as const
 
 /** The share of the ring an indeterminate indicator covers while it spins. */
 const INDETERMINATE_FRACTION = 0.25

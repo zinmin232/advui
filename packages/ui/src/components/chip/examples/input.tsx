@@ -6,12 +6,12 @@ export default function ChipInput() {
   const [recipients, setRecipients] = useState(['Ada Lovelace', 'Grace Hopper', 'Alan Turing'])
 
   return (
-    <VStack gap="$4">
-      <VStack gap="$2">
+    <VStack gap="4">
+      <VStack gap="2">
         <Text size="sm" weight="medium">
           To
         </Text>
-        <HStack gap="$2" flexWrap="wrap">
+        <HStack gap="2" flexWrap="wrap">
           {recipients.map((name) => (
             <Chip
               key={name}
@@ -28,11 +28,11 @@ export default function ChipInput() {
           ) : null}
         </HStack>
       </VStack>
-      <VStack gap="$2">
+      <VStack gap="2">
         <Text size="sm" weight="medium">
           Suggested
         </Text>
-        <HStack gap="$2" flexWrap="wrap">
+        <HStack gap="2" flexWrap="wrap">
           <Chip icon={<CalendarIcon />} onPress={() => toast('Meeting scheduled')}>
             Schedule meeting
           </Chip>

@@ -80,7 +80,7 @@ const commands: Command[] = [
 export default function CommandPaletteBasic() {
   const [open, setOpen] = useState(false)
   return (
-    <HStack gap="$3" alignItems="center" flexWrap="wrap">
+    <HStack gap="3" alignItems="center" flexWrap="wrap">
       <Button variant="outline" onPress={() => setOpen(true)}>
         Open command palette
       </Button>

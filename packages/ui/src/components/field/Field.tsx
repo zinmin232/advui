@@ -1,5 +1,5 @@
 import { type ReactNode, forwardRef, isValidElement, useId, useMemo } from 'react'
-import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui/unstyled'
 import { FieldContext, type FieldState } from '../../hooks/useFieldControl'
 import { useParentForm } from '../../hooks/useParentForm'
 import { plainText } from '../../utils/plainText'
@@ -9,9 +9,8 @@ import { Text } from '../typography/Text'
 export type FieldOrientation = 'vertical' | 'horizontal'
 
 const FieldFrame = styled(View, {
-  name: 'Field',
-  gap: '$2',
-
+  displayName: 'Field',
+  gap: '2',
   variants: {
     fullWidth: {
       true: { width: '100%', alignSelf: 'stretch' },
@@ -22,21 +21,21 @@ const FieldFrame = styled(View, {
 // Horizontal fields: the label is centered on the control beside it, and the
 // help and error text line up under the control.
 const FieldRow = styled(View, {
-  name: 'FieldRow',
+  displayName: 'FieldRow',
   flexDirection: 'row',
   alignItems: 'center',
-  columnGap: '$4',
+  columnGap: '4',
 })
 
 const FieldLabelColumn = styled(View, {
-  name: 'FieldLabelColumn',
+  displayName: 'FieldLabelColumn',
   // A share of the width, so the controls of stacked fields line up.
   width: '33%',
   flexShrink: 0,
 })
 
 const FieldControlColumn = styled(View, {
-  name: 'FieldControlColumn',
+  displayName: 'FieldControlColumn',
   flex: 1,
   minWidth: 0,
 })
@@ -94,7 +93,7 @@ export const Field = forwardRef<TamaguiElement, FieldProps>(function Field(
     optionalText = '(optional)',
     disabled: disabledProp = false,
     orientation = 'vertical',
-    gap = '$2',
+    gap = '2',
     fullWidth = false,
     id: idProp,
     children,

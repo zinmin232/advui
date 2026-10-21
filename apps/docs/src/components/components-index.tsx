@@ -38,7 +38,7 @@ export function ComponentsIndex({
         title="Components"
         description={`${components.length} components available across web, iOS and Android${roadmap.length > 0 ? ` — ${roadmap.length} more on the roadmap` : ''}.`}
       >
-        <HStack gap="$3" flexWrap="wrap">
+        <HStack gap="3" flexWrap="wrap">
           {(
             [
               'stable',
@@ -47,7 +47,7 @@ export function ComponentsIndex({
               ...(roadmap.length > 0 ? ['planned' as const] : []),
             ] as const
           ).map((s) => (
-            <HStack key={s} gap="$1.5">
+            <HStack key={s} gap="1-5">
               <StatusDot status={s} />
               <Text size="sm" tone="muted">
                 {statusMeta[s].label}
@@ -56,19 +56,13 @@ export function ComponentsIndex({
           ))}
         </HStack>
       </PageHeader>
-      <HStack
-        gap="$2"
-        borderWidth={1}
-        borderColor="$input"
-        borderRadius="$md"
-        paddingHorizontal="$3"
-      >
-        <SearchIcon size={16} color="$mutedForeground" />
+      <HStack gap="2" borderWidth={1} borderColor="input" borderRadius="md" paddingHorizontal="3">
+        <SearchIcon size={16} color="mutedForeground" />
         <Input
           flex={1}
           borderWidth={0}
-          paddingHorizontal="$0"
-          focusVisibleStyle={{ outlineWidth: 0 }}
+          paddingHorizontal="0"
+          outlineWidth="focus-visible:0px"
           placeholder="Filter components…"
           aria-label="Filter components"
           value={query}
@@ -80,9 +74,9 @@ export function ComponentsIndex({
         const planned = plannedFiltered.filter((r) => r.category === category.id)
         if (!items.length && !planned.length) return null
         return (
-          <VStack key={category.id} gap="$3">
+          <VStack key={category.id} gap="3">
             <H2 id={category.id}>{category.label}</H2>
-            <Grid columns={{ base: 1, sm: 2, lg: 3 }} gap="$3">
+            <Grid columns={{ base: 1, sm: 2, lg: 3 }} gap="3">
               {items.map((c) => (
                 <Link key={c.slug} href={`/docs/components/${c.slug}`} className="plain-link">
                   <Card interactive height="100%">
@@ -96,7 +90,7 @@ export function ComponentsIndex({
                         ) : null}
                       </HStack>
                     </Card.Header>
-                    <Card.Content paddingTop="$2">
+                    <Card.Content paddingTop="2">
                       <Text size="sm" tone="muted">
                         {c.description}
                       </Text>
@@ -110,11 +104,10 @@ export function ComponentsIndex({
                     height="100%"
                     borderWidth={1}
                     borderStyle="dashed"
-                    borderColor="$border"
-                    borderRadius="$xl"
-                    padding="$4"
-                    gap="$1"
-                    hoverStyle={{ borderColor: '$borderStrong' }}
+                    borderColor="border hover:borderStrong"
+                    borderRadius="xl"
+                    padding="4"
+                    gap="1"
                   >
                     <Text weight="medium" tone="muted">
                       {r.name}

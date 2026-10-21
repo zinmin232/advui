@@ -8,16 +8,16 @@ const tasks = [
 
 export default function GridTwoColumn() {
   return (
-    <Grid columns={12} gap="$4" width="100%">
+    <Grid columns={12} gap="4" width="100%">
       <Grid.Item span={{ base: 12, md: 8 }}>
         <Card flexGrow={1}>
           <Card.Header>
             <Card.Title>Sprint progress</Card.Title>
             <Card.Description>8 of 12 columns from md, the full row on phones.</Card.Description>
           </Card.Header>
-          <Card.Content gap="$4">
+          <Card.Content gap="4">
             {tasks.map((task) => (
-              <VStack key={task.label} gap="$1.5">
+              <VStack key={task.label} gap="1-5">
                 <HStack justifyContent="space-between">
                   <Text size="sm">{task.label}</Text>
                   <Text size="sm" tone="muted">
@@ -36,7 +36,7 @@ export default function GridTwoColumn() {
             <Card.Title>Details</Card.Title>
             <Card.Description>4 of 12 columns from md.</Card.Description>
           </Card.Header>
-          <Card.Content gap="$3">
+          <Card.Content gap="3">
             <HStack justifyContent="space-between">
               <Text size="sm" tone="muted">
                 Status

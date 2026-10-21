@@ -9,7 +9,7 @@ import {
   View,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
@@ -25,23 +25,28 @@ import {
   titleStyle,
 } from './styles'
 import { useOverlayPress } from './useOverlayPress'
+import { transformOpacity } from '../../utils/transition'
 
-const Overlay = styled(TamaguiDialog.Overlay, { name: 'DialogOverlay', ...overlayStyle })
+const Overlay = styled(TamaguiDialog.Overlay, { displayName: 'DialogOverlay', ...overlayStyle })
 
 const ContentFrame = styled(TamaguiDialog.Content, {
-  name: 'DialogContent',
+  displayName: 'DialogContent',
   ...contentStyle,
   variants: { size: contentSizes } as const,
 })
 
-const Header = styled(View, { name: 'DialogHeader', ...headerStyle, paddingRight: '$6' })
+const Header = styled(View, {
+  displayName: 'DialogHeader',
+  ...headerStyle,
+  paddingRight: '6',
+})
 
-const Footer = styled(View, { name: 'DialogFooter', ...footerStyle })
+const Footer = styled(View, { displayName: 'DialogFooter', ...footerStyle })
 
-const Title = styled(TamaguiDialog.Title, { name: 'DialogTitle', ...titleStyle })
+const Title = styled(TamaguiDialog.Title, { displayName: 'DialogTitle', ...titleStyle })
 
 const Description = styled(TamaguiDialog.Description, {
-  name: 'DialogDescription',
+  displayName: 'DialogDescription',
   ...descriptionStyle,
 })
 
@@ -62,14 +67,13 @@ const Content = forwardRef<TamaguiElement, DialogContentProps>(function DialogCo
   const transition = reducedMotion ? null : 'quick'
   const overlayPress = useOverlayPress()
   return (
-    <TamaguiDialog.Portal>
+    <TamaguiDialog.Portal render="div" aria-modal={undefined}>
       <Overlay key="overlay" {...overlayPress} transition={transition} />
       <ContentFrame
         key="content"
         ref={ref}
         size={size}
-        transition={transition}
-        animateOnly={['transform', 'opacity']}
+        transition={transformOpacity(transition)}
         {...props}
       >
         {children}
@@ -80,8 +84,8 @@ const Content = forwardRef<TamaguiElement, DialogContentProps>(function DialogCo
               icon={<XIcon />}
               size="sm"
               position="absolute"
-              top="$3"
-              right="$3"
+              top="3"
+              right="3"
             />
           </Close>
         )}
@@ -125,6 +129,9 @@ export const Dialog = withStaticProperties(DialogRoot, {
   Title,
   Description,
   Close,
-  Body: styled(View, { name: 'DialogBody', gap: '$3' }),
+  Body: styled(View, {
+    displayName: 'DialogBody',
+    gap: '3',
+  }),
   Text,
 })

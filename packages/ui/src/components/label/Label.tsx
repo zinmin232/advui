@@ -6,22 +6,21 @@ import {
   Text,
   isWeb,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { usePublishLabel } from '../../hooks/useLabelFor'
 import { plainText } from '../../utils/plainText'
 
 const LabelFrame = styled(TamaguiLabel, {
-  name: 'Label',
-  fontFamily: '$body',
-  fontSize: '$2',
-  lineHeight: '$2',
+  displayName: 'Label',
+  fontFamily: 'body',
+  fontSize: '2',
+  lineHeight: '2',
   fontWeight: '500',
-  color: '$foreground',
+  color: 'foreground',
   height: 'auto',
   paddingHorizontal: 0,
   cursor: 'default',
   userSelect: 'none',
-
   variants: {
     disabled: {
       true: { opacity: 0.6 },
@@ -30,9 +29,9 @@ const LabelFrame = styled(TamaguiLabel, {
 })
 
 const RequiredMark = styled(Text, {
-  name: 'LabelRequired',
-  color: '$error',
-  fontSize: '$2',
+  displayName: 'LabelRequired',
+  color: 'error',
+  fontSize: '2',
 })
 
 export type LabelProps = GetProps<typeof LabelFrame> & {

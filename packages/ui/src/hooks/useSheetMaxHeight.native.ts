@@ -1,5 +1,5 @@
 import { Dimensions } from 'react-native'
-import { getTokenValue, useConfiguration, useWindowDimensions } from 'tamagui'
+import { getTokenValue, useConfiguration, useWindowDimensions } from 'tamagui/unstyled'
 
 /**
  * The tallest a bottom sheet's frame may be. Tamagui grows a `fit` sheet to
@@ -15,5 +15,5 @@ export function useSheetMaxHeight(): number | undefined {
   // against (as Tamagui does).
   useWindowDimensions()
   const top = useConfiguration().insets?.top ?? 0
-  return Dimensions.get('screen').height - top - (getTokenValue('$8', 'space') as number)
+  return Dimensions.get('screen').height - top - (getTokenValue('8', 'space') as number)
 }

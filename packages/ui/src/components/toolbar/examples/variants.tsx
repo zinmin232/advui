@@ -4,7 +4,7 @@ const variants = ['default', 'outline', 'filled', 'ghost'] as const
 
 export default function ToolbarVariants() {
   return (
-    <VStack gap="$3" width="100%">
+    <VStack gap="3" width="100%">
       {variants.map((variant) => (
         <Toolbar
           key={variant}

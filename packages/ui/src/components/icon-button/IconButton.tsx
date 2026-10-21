@@ -1,12 +1,12 @@
 import { type ReactElement, forwardRef, useContext } from 'react'
-import type { TamaguiElement } from 'tamagui'
+import type { TamaguiElement } from 'tamagui/unstyled'
 import { Button, type ButtonProps } from '../button/Button'
 import { ButtonGroupContext } from '../button/groupContext'
 
 const squareSizes = {
-  sm: '$8',
-  md: '$10',
-  lg: '$12',
+  sm: '8',
+  md: '10',
+  lg: '12',
 } as const
 
 export interface IconButtonProps extends Omit<
@@ -42,7 +42,7 @@ export const IconButton = forwardRef<TamaguiElement, IconButtonProps>(function I
       size="icon"
       width={squareSizes[size]}
       height={squareSizes[size]}
-      {...(circular && { borderRadius: '$full' })}
+      {...(circular && { borderRadius: 'full' })}
       icon={icon}
       {...props}
     />

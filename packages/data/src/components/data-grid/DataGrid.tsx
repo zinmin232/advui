@@ -1,5 +1,5 @@
 import { type ReactNode, useEffect, useId, useRef, useState } from 'react'
-import { ScrollView, View, XStack, isWeb, styled } from 'tamagui'
+import { ScrollView, View, XStack, isWeb, styled } from 'tamagui/unstyled'
 import { Input, Text, useControllableState } from '@advui/core'
 
 export type DataGridValue = string | number | null | undefined
@@ -71,29 +71,33 @@ export interface DataGridProps<T> {
 }
 
 const Cell = styled(View, {
-  name: 'DataGridCell',
+  displayName: 'DataGridCell',
   position: 'relative',
   justifyContent: 'center',
   flexShrink: 0,
   borderRightWidth: 1,
   borderBottomWidth: 1,
-  borderColor: '$border',
-  paddingHorizontal: '$3',
+  borderColor: 'border',
+  paddingHorizontal: '3',
   outlineStyle: 'none',
-
   variants: {
     size: {
-      sm: { height: '$8' },
-      md: { height: '$10', $touchable: { height: '$11' } },
+      sm: {
+        height: '8',
+      },
+      md: {
+        height: '10 touchable:11',
+      },
     },
     header: {
-      true: { backgroundColor: '$muted' },
+      true: {
+        backgroundColor: 'muted',
+      },
     },
     editing: {
       true: { paddingHorizontal: 0 },
     },
   } as const,
-
   defaultVariants: { size: 'md' },
 })
 
@@ -302,16 +306,15 @@ export function DataGrid<T>({
   }
 
   return (
-    <View gap="$2" width="100%">
+    <View gap="2" width="100%">
       <ScrollView
         ref={scrollRef as never}
         horizontal
-        // Hugs the columns when they are narrower than the page; scrolls when wider.
         alignSelf="flex-start"
         maxWidth="100%"
         borderWidth={1}
-        borderColor="$border"
-        borderRadius="$md"
+        borderColor="border"
+        borderRadius="md"
         keyboardShouldPersistTaps="handled"
       >
         <View
@@ -372,7 +375,7 @@ export function DataGrid<T>({
                     {...(isActive &&
                       gridFocused &&
                       !isEditing && {
-                        outlineColor: '$ring',
+                        outlineColor: 'ring',
                         outlineStyle: 'solid',
                         outlineWidth: 2,
                         outlineOffset: -2,
@@ -404,14 +407,13 @@ export function DataGrid<T>({
                       <Input
                         ref={editorRef as never}
                         autoFocus
-                        unstyled
                         size={size}
                         height="100%"
                         width="100%"
                         borderRadius={0}
                         borderWidth={2}
-                        borderColor={error ? '$error' : '$ring'}
-                        backgroundColor="$background"
+                        borderColor={error ? 'error' : 'ring'}
+                        backgroundColor="background"
                         textAlign={
                           align === 'end' ? 'right' : align === 'center' ? 'center' : 'left'
                         }
@@ -452,7 +454,7 @@ export function DataGrid<T>({
           ))}
         </View>
       </ScrollView>
-      <Text id={statusId} size="sm" tone="error" aria-live="polite" minHeight="$5">
+      <Text id={statusId} size="sm" minHeight="5" tone="error" aria-live="polite">
         {error ?? ''}
       </Text>
     </View>

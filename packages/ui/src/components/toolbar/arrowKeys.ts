@@ -1,5 +1,5 @@
 import { type RefObject, useEffect, useLayoutEffect, useRef } from 'react'
-import { isWeb } from 'tamagui'
+import { isWeb } from 'tamagui/unstyled'
 
 /**
  * Set on a Toolbar with `role="toolbar"`. Controls that move focus with the

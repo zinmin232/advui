@@ -1,5 +1,5 @@
 import { Children, type ReactNode, forwardRef, isValidElement } from 'react'
-import { type GetProps, type TamaguiElement, View } from 'tamagui'
+import { type GetProps, type TamaguiElement, View } from 'tamagui/unstyled'
 import type { ButtonVariant } from '../button/Button'
 import {
   ButtonGroupContext,
@@ -41,7 +41,7 @@ export const ButtonGroup = forwardRef<TamaguiElement, ButtonGroupProps>(function
         flexDirection={horizontal ? 'row' : 'column'}
         alignItems={horizontal ? 'center' : 'stretch'}
         alignSelf="flex-start"
-        gap={attached ? 0 : '$2'}
+        gap={attached ? 0 : '2'}
         {...props}
       >
         {items.map((child, index) => (

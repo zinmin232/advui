@@ -62,7 +62,7 @@ export default defineMeta({
           name: 'gap',
           type: 'SpaceTokens',
           token: 'space',
-          default: "'$3'; horizontal: '$5' between items, '$3' between rows",
+          default: "'3'; horizontal: '5' between items, '3' between rows",
           description: 'Space between items, and between rows when a horizontal group wraps.',
         },
         {

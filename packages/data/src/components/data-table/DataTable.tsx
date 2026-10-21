@@ -1,6 +1,6 @@
 import { SearchIcon } from '@advui/icons'
 import type { ReactNode } from 'react'
-import { type GetProps, View, XStack, isWeb } from 'tamagui'
+import { type GetProps, View, XStack, isWeb } from 'tamagui/unstyled'
 import { Checkbox, Input, Pagination, Skeleton, Text, useControllableState } from '@advui/core'
 import { Table, type TableAlign, type TableProps } from '../table/Table'
 
@@ -47,7 +47,12 @@ const defaultLabels: DataTableLabels = {
   selected: (count) => `${count} selected`,
 }
 
-export interface DataTableProps<T> extends Omit<TableProps, 'children' | 'onSort' | 'caption'> {
+// `page` and `columns` are also CSS style props in Tamagui 3; here they are
+// the current page and the column definitions.
+export interface DataTableProps<T> extends Omit<
+  TableProps,
+  'children' | 'onSort' | 'caption' | 'page' | 'columns'
+> {
   data: T[]
   columns: DataTableColumn<T>[]
   /** Stable id of a row. Default: `row.id`, then the index. */
@@ -226,28 +231,22 @@ export function DataTable<T>({
         : [...selected, ...visibleIds.filter((id) => !selectedSet.has(id))],
     )
 
-  const checkboxCell = { flexGrow: 0, flexShrink: 0, width: size === 'sm' ? '$10' : '$12' } as const
+  const checkboxCell = { flexGrow: 0, flexShrink: 0, width: size === 'sm' ? '10' : '12' } as const
   const placeholderRows = Math.min(pageSize ?? 5, 5)
 
   return (
-    <View
-      gap="$3"
-      width="100%"
-      // Web only: Android has no busy state for an unnamed view and would read
-      // "busy" on it for good.
-      {...(isWeb && { 'aria-busy': loading || undefined })}
-    >
+    <View gap="3" width="100%" {...(isWeb && { 'aria-busy': loading || undefined })}>
       {searchable || toolbar ? (
-        <XStack gap="$2" alignItems="center" flexWrap="wrap">
+        <XStack gap="2" alignItems="center" flexWrap="wrap">
           {searchable ? (
-            <XStack position="relative" flex={1} minWidth="$48" maxWidth="$80" alignItems="center">
-              <View position="absolute" left="$3" zIndex={1} pointerEvents="none" aria-hidden>
-                <SearchIcon size={16} color="$mutedForeground" />
+            <XStack position="relative" flex={1} minWidth="48" maxWidth="80" alignItems="center">
+              <View position="absolute" left="3" zIndex={1} pointerEvents="none" aria-hidden>
+                <SearchIcon size={16} color="mutedForeground" />
               </View>
               <Input
                 flex={1}
                 size={size === 'sm' ? 'sm' : 'md'}
-                paddingLeft="$9"
+                paddingLeft="9"
                 role="searchbox"
                 aria-label={labels.search}
                 placeholder={labels.search}
@@ -260,7 +259,7 @@ export function DataTable<T>({
             </XStack>
           ) : null}
           {toolbar ? (
-            <XStack gap="$2" marginLeft="auto" alignItems="center">
+            <XStack gap="2" marginLeft="auto" alignItems="center">
               {toolbar}
             </XStack>
           ) : null}
@@ -309,14 +308,14 @@ export function DataTable<T>({
                     flex={column.flex}
                     {...(column.width != null && { width: column.width, flexGrow: 0 })}
                   >
-                    <Skeleton height="$3" width="70%" />
+                    <Skeleton height="3" width="70%" />
                   </Table.Cell>
                 ))}
               </Table.Row>
             ))
           ) : visible.length === 0 ? (
             <Table.Row>
-              <Table.Cell align="center" paddingVertical="$8">
+              <Table.Cell align="center" paddingVertical="8">
                 {empty ?? (
                   <Text size="sm" tone="muted">
                     {labels.empty}
@@ -357,11 +356,11 @@ export function DataTable<T>({
       </Table>
 
       <XStack
-        gap="$3"
+        gap="3"
         alignItems="center"
         justifyContent="space-between"
         flexWrap="wrap"
-        minHeight="$8"
+        minHeight="8"
       >
         <Text size="sm" tone="muted" aria-live="polite">
           {loading

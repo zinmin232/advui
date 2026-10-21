@@ -193,9 +193,7 @@ describe('filter state helpers', () => {
     } as unknown as Intl.DateTimeFormat
     const range = { start: new Date(2026, 9, 1), end: new Date(2026, 9, 5) }
     expect(formatFilterValue(period, range, formatLabels, icu)).toBe('Oct 1 – 5, 2026')
-    expect(formatFilterValue(created, new Date(2026, 9, 1), formatLabels, icu)).toBe(
-      'Oct 1, 2026',
-    )
+    expect(formatFilterValue(created, new Date(2026, 9, 1), formatLabels, icu)).toBe('Oct 1, 2026')
   })
 })
 

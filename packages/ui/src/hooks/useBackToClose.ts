@@ -4,11 +4,7 @@
  * useBackToClose.native.ts. Browsers have no back button to intercept here
  * (react-native-web's BackHandler only warns), so on web it does nothing.
  */
-export function useBackToClose(
-  _open: boolean,
-  _close: () => void,
-  _options?: BackToCloseOptions,
-) {}
+export function useBackToClose(_open: boolean, _close: () => void, _options?: BackToCloseOptions) {}
 
 export interface BackToCloseOptions {
   /**

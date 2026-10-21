@@ -303,7 +303,8 @@
       "dependencies": [],
       "registryDependencies": [
         "dialog",
-        "hooks"
+        "hooks",
+        "utils"
       ]
     },
     {
@@ -537,7 +538,8 @@
       "status": "stable",
       "package": "@advui/core",
       "dependencies": [
-        "@advui/icons"
+        "@advui/icons",
+        "@tamagui/core"
       ],
       "registryDependencies": [
         "hooks",
@@ -769,7 +771,8 @@
       "registryDependencies": [
         "hooks",
         "icon-button",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {
@@ -787,7 +790,8 @@
       "registryDependencies": [
         "dialog",
         "hooks",
-        "icon-button"
+        "icon-button",
+        "utils"
       ]
     },
     {
@@ -943,7 +947,8 @@
         "@advui/utils"
       ],
       "registryDependencies": [
-        "hooks"
+        "hooks",
+        "utils"
       ]
     },
     {
@@ -1070,9 +1075,7 @@
       "category": "layout",
       "status": "stable",
       "package": "@advui/core",
-      "dependencies": [
-        "@advui/theme"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ]
@@ -1085,9 +1088,7 @@
       "category": "layout",
       "status": "stable",
       "package": "@advui/core",
-      "dependencies": [
-        "@advui/theme"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ]
@@ -1340,7 +1341,8 @@
       ],
       "registryDependencies": [
         "hooks",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {
@@ -1397,7 +1399,8 @@
         "@advui/icons"
       ],
       "registryDependencies": [
-        "hooks"
+        "hooks",
+        "utils"
       ]
     },
     {
@@ -1599,7 +1602,8 @@
       ],
       "registryDependencies": [
         "hooks",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {
@@ -1710,7 +1714,8 @@
       "registryDependencies": [
         "hooks",
         "spinner",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {
@@ -1773,7 +1778,8 @@
         "@advui/utils"
       ],
       "registryDependencies": [
-        "hooks"
+        "hooks",
+        "utils"
       ]
     },
     {

@@ -2,11 +2,11 @@
 export const textBoxStyle = {
   name: 'TagsInputText',
   flex: 1,
-  minWidth: '$20',
+  minWidth: '20',
   padding: 0,
   borderWidth: 0,
   backgroundColor: 'transparent',
-  fontFamily: '$body',
-  color: '$foreground',
-  placeholderTextColor: '$placeholderColor',
+  fontFamily: 'body',
+  color: 'foreground',
+  placeholderTextColor: 'placeholder-color',
 } as const

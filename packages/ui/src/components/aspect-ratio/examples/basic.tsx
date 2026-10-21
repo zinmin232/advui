@@ -3,13 +3,15 @@ import { Image } from 'react-native'
 
 export default function AspectRatioBasic() {
   return (
-    <VStack gap="$2" width="100%" maxWidth="$96">
-      <AspectRatio ratio={16 / 9} borderRadius="$lg" backgroundColor="$muted">
+    <VStack gap="2" width="100%" maxWidth="96">
+      <AspectRatio ratio={16 / 9} borderRadius="lg" backgroundColor="muted">
         <Image
           source={{
             uri: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=900&q=70',
           }}
           style={{ width: '100%', height: '100%' }}
+          // Without a role, React Native Web labels a plain div until the photo loads.
+          role="img"
           accessibilityLabel="A desert road between red rock canyons"
         />
       </AspectRatio>

@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import { isWeb } from 'tamagui'
+import { isWeb } from 'tamagui/unstyled'
 import { useLabelFor } from './useLabelFor'
 import { FormContext } from './useParentForm'
 
@@ -22,6 +22,16 @@ export interface FieldState {
 
 /** Set by Field. A control that renders other controls inside resets it to null for them. */
 export const FieldContext = createContext<FieldState | null>(null)
+
+/**
+ * Tamagui 3 types every variant prop as a flat value too (`'a hover:b'`). A
+ * control's `disabled` and `invalid` are plain booleans: omit the frame's
+ * and take these.
+ */
+export interface ControlStateProps {
+  disabled?: boolean
+  invalid?: boolean
+}
 
 /** The props a Field sets on its control. The core form controls all accept them. */
 export interface FieldControlProps {
@@ -46,7 +56,10 @@ const joinIds = (...lists: Array<string | undefined>) =>
  * htmlFor>` names the control with its id. Call it in your own controls so a
  * Field, a Form and a Label wire them like the core ones.
  */
-export function useFieldControl<P extends FieldControlProps>(props: P): P {
+export function useFieldControl<P extends object>(controlProps: P): P {
+  // Tamagui 3 widens variant props (`invalid`, `disabled`) to flat values in
+  // GetProps types; controls pass plain values, which is what this reads.
+  const props = controlProps as P & FieldControlProps
   const field = useContext(FieldContext)
   const form = useContext(FormContext)
   // Native: a Label's htmlFor only moves focus, so its text names the control.

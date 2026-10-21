@@ -9,7 +9,7 @@ const settings = [
 
 export default function ListInteractive() {
   return (
-    <List variant="outline" divided width="100%" maxWidth="$96">
+    <List variant="outline" divided width="100%" maxWidth="96">
       {settings.map((item) => (
         <List.Item
           key={item.title}

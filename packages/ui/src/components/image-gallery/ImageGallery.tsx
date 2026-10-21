@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon, XIcon } from '@advui/icons'
 import { useEffect, useRef } from 'react'
-import { View, XStack, isWeb } from 'tamagui'
+import { View, XStack, isWeb } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { Dialog } from '../dialog/Dialog'
@@ -62,27 +62,24 @@ function Thumbnail({
   ratio: number
   onPress: () => void
 }) {
-  const ripple = useRipple({ color: '$foreground' })
+  const ripple = useRipple({ color: 'foreground' })
   return (
     <View
       {...(isWeb
         ? { render: 'button', type: 'button', padding: 0, borderWidth: 0 }
         : { accessible: true, role: 'button' })}
-      aria-label={label}
-      borderRadius="$md"
+      borderRadius="md"
       overflow="hidden"
       backgroundColor="transparent"
       cursor="pointer"
-      hoverStyle={{ opacity: 0.9 }}
-      pressStyle={{ opacity: 0.8 }}
-      focusVisibleStyle={{
-        outlineColor: '$ring',
-        outlineStyle: 'solid',
-        outlineWidth: 2,
-        outlineOffset: 2,
-      }}
-      onPress={onPress}
+      opacity="hover:0.9 press:0.8"
+      outlineColor="focus-visible:ring"
+      outlineStyle="focus-visible:solid"
+      outlineWidth="focus-visible:2px"
+      outlineOffset="focus-visible:2px"
       {...ripple.props}
+      aria-label={label}
+      onPress={onPress}
     >
       {ripple.element}
       {/* The button carries the name; the picture itself is decoration here. */}
@@ -135,7 +132,7 @@ export function ImageGallery({
 
   return (
     <>
-      <Grid columns={columns} gap="$2" width="100%">
+      <Grid columns={columns} gap="2" width="100%">
         {images.map((item, i) => (
           <Thumbnail
             key={`${String(item.src)}-${i}`}
@@ -148,10 +145,10 @@ export function ImageGallery({
       </Grid>
       <Dialog open={image != null} onOpenChange={(open) => !open && setIndex(null)}>
         {image ? (
-          <Dialog.Content size="xl" hideCloseButton gap="$3">
-            <XStack alignItems="center" gap="$2">
+          <Dialog.Content size="xl" gap="3" hideCloseButton>
+            <XStack alignItems="center" gap="2">
               <View flex={1} minWidth={0}>
-                <Dialog.Title fontSize="$3" lineHeight="$3" numberOfLines={1}>
+                <Dialog.Title fontSize="3" lineHeight="3" numberOfLines={1}>
                   {image.alt}
                 </Dialog.Title>
                 <Text size="xs" tone="muted" aria-live="polite">
@@ -169,9 +166,8 @@ export function ImageGallery({
               fit="contain"
               width="100%"
               // A set height keeps the caption and buttons on screen, whatever the photo's shape.
-              height="$96"
-              $max-sm={{ height: '$64' }}
-              borderRadius="$md"
+              height="96 max-sm:64"
+              borderRadius="md"
             />
             {image.caption ? <Dialog.Description>{image.caption}</Dialog.Description> : null}
             <XStack justifyContent="space-between" alignItems="center">

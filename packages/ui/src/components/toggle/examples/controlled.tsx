@@ -5,7 +5,7 @@ import { useState } from 'react'
 export default function ToggleControlled() {
   const [saved, setSaved] = useState(false)
   return (
-    <VStack gap="$2" alignItems="center">
+    <VStack gap="2" alignItems="center">
       <Toggle
         variant="outline"
         size="lg"

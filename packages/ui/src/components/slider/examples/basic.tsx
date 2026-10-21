@@ -4,7 +4,7 @@ import { useState } from 'react'
 export default function SliderBasic() {
   const [volume, setVolume] = useState(40)
   return (
-    <VStack gap="$3" width="100%" maxWidth="$80">
+    <VStack gap="3" width="100%" maxWidth="80">
       <HStack justifyContent="space-between">
         <Label id="volume-label">Volume</Label>
         <Text size="sm" tone="muted">

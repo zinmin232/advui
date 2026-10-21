@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import type { TamaguiTextElement } from 'tamagui'
+import type { TamaguiTextElement } from 'tamagui/unstyled'
 import { Text, type TextProps, type TextSize } from './Text'
 
 type Level = 1 | 2 | 3 | 4 | 5 | 6
@@ -32,11 +32,11 @@ export const Heading = forwardRef<TamaguiTextElement, HeadingProps>(function Hea
       role="heading"
       aria-level={level}
       render={`h${level}`}
-      fontFamily="$heading"
+      fontFamily="heading"
       size={size ?? defaultSizes[level]}
-      weight={weight}
       margin={0}
       {...props}
+      weight={weight}
     />
   )
 })

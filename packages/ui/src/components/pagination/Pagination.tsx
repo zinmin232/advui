@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from '@advui/icons'
 import { forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { Button } from '../button/Button'
 import { IconButton } from '../icon-button/IconButton'
@@ -50,12 +50,11 @@ export function getPaginationItems(
 }
 
 const PaginationFrame = styled(View, {
-  name: 'Pagination',
+  displayName: 'Pagination',
   flexDirection: 'row',
   alignItems: 'center',
   flexWrap: 'wrap',
-  gap: '$1',
-  '$max-xs': { gap: '$0.5' },
+  gap: '1 max-xs:0-5',
 })
 
 export interface PaginationLabels {
@@ -74,7 +73,11 @@ const defaultLabels: PaginationLabels = {
   status: (page, count) => `Page ${page} of ${count}`,
 }
 
-export interface PaginationProps extends Omit<GetProps<typeof PaginationFrame>, 'children'> {
+// `page` is also a CSS style prop in Tamagui 3; here it is the current page.
+export interface PaginationProps extends Omit<
+  GetProps<typeof PaginationFrame>,
+  'children' | 'page'
+> {
   /** Number of pages. */
   count: number
   /** Current page, from 1 (controlled). */
@@ -125,11 +128,13 @@ export const Pagination = forwardRef<TamaguiElement, PaginationProps>(function P
     onChange: onPageChange,
   })
   const page = Math.min(Math.max(1, rawPage), pages)
-  const buttonSize = size === 'sm' ? '$8' : '$10'
+  const buttonSize = size === 'sm' ? '8' : '10'
   // On narrow phones the default size drops to the small one, so a full
   // pager fits on one line. Media props are CSS on web: safe to server-render.
-  const narrow = { '$max-xs': { width: '$8', height: '$8' } } as const
-  const narrowPage = { '$max-xs': { minWidth: '$8', height: '$8' } } as const
+  // With the base size too: IconButton sets its own width and height, which
+  // these replace as props, states and all.
+  const narrowSize = `${buttonSize} max-xs:8` as const
+  const narrow = { width: narrowSize, height: narrowSize }
 
   return (
     <View ref={ref} render="nav" aria-label={ariaLabel} {...(!isWeb && { role: 'navigation' })}>
@@ -145,7 +150,7 @@ export const Pagination = forwardRef<TamaguiElement, PaginationProps>(function P
           />
         </View>
         {variant === 'compact' ? (
-          <View render="li" paddingHorizontal="$2">
+          <View render="li" paddingHorizontal="2">
             <Text size="sm" tone="muted" aria-live="polite">
               {labels.status(page, pages)}
             </Text>
@@ -156,16 +161,15 @@ export const Pagination = forwardRef<TamaguiElement, PaginationProps>(function P
               <View key={item} render="li">
                 <Button
                   size={size === 'sm' ? 'sm' : 'md'}
-                  variant={item === page ? 'outline' : 'ghost'}
-                  minWidth={buttonSize}
-                  {...narrowPage}
-                  paddingHorizontal="$2"
-                  aria-label={labels.page(item)}
-                  disabled={disabled}
-                  // Native has no aria-current; a selected button says "selected".
+                  minWidth={`${buttonSize} max-xs:8`}
+                  height="max-xs:8"
+                  paddingHorizontal="2"
                   {...(isWeb
                     ? item === page && { 'aria-current': 'page' as const }
                     : { 'aria-selected': item === page })}
+                  variant={item === page ? 'outline' : 'ghost'}
+                  aria-label={labels.page(item)}
+                  disabled={disabled}
                   onPress={() => setPage(item)}
                 >
                   {String(item)}
@@ -176,13 +180,12 @@ export const Pagination = forwardRef<TamaguiElement, PaginationProps>(function P
                 key={item}
                 render="li"
                 aria-hidden
-                width={buttonSize}
-                height={buttonSize}
-                {...narrow}
+                width={`${buttonSize} max-xs:8`}
+                height={`${buttonSize} max-xs:8`}
                 alignItems="center"
                 justifyContent="center"
               >
-                <MoreHorizontalIcon size={16} color="$mutedForeground" />
+                <MoreHorizontalIcon size={16} color="mutedForeground" />
               </View>
             ),
           )

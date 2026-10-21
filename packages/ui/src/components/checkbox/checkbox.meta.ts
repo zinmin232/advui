@@ -14,7 +14,7 @@ export default defineMeta({
   keywords: ['check', 'tick', 'option', 'terms', 'indeterminate'],
   usage: `import { Checkbox, HStack, Label } from '@advui/core'
 
-<HStack gap="$2">
+<HStack gap="2">
   <Checkbox id="terms" checked={accepted} onCheckedChange={setAccepted} />
   <Label htmlFor="terms">Accept terms and conditions</Label>
 </HStack>`,

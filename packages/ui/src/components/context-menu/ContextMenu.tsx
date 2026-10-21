@@ -1,4 +1,8 @@
-import { ContextMenu as TamaguiContextMenu, type Menu, withStaticProperties } from 'tamagui'
+import {
+  ContextMenu as TamaguiContextMenu,
+  type Menu,
+  withStaticProperties,
+} from 'tamagui/unstyled'
 import { createMenuParts } from '../dropdown-menu/menuParts'
 import type { ContextMenuProps, ContextMenuTriggerProps } from './types'
 

@@ -1,6 +1,6 @@
 import { useIconColor } from '@advui/icons'
 import { type ReactNode, useId, useRef, useState } from 'react'
-import { type GetProps, View, VisuallyHidden, XStack, isWeb } from 'tamagui'
+import { type GetProps, View, VisuallyHidden, XStack, isWeb } from 'tamagui/unstyled'
 import { Button, Text } from '@advui/core'
 import { Table } from '@advui/data'
 
@@ -27,23 +27,23 @@ export const defaultChartLabels: ChartLabels = {
 export function useChartColors(): string[] {
   // Hooks in a fixed order: one per slot.
   return [
-    useIconColor('$chart1'),
-    useIconColor('$chart2'),
-    useIconColor('$chart3'),
-    useIconColor('$chart4'),
-    useIconColor('$chart5'),
-    useIconColor('$chart6'),
-    useIconColor('$chart7'),
-    useIconColor('$chart8'),
+    useIconColor('chart1'),
+    useIconColor('chart2'),
+    useIconColor('chart3'),
+    useIconColor('chart4'),
+    useIconColor('chart5'),
+    useIconColor('chart6'),
+    useIconColor('chart7'),
+    useIconColor('chart8'),
   ].map((color) => color ?? 'currentColor')
 }
 
 /** Axis text, gridlines and the surface, as resolved colors. */
 export function useChartInk(surface: string) {
   return {
-    text: useIconColor('$mutedForeground') ?? 'currentColor',
-    grid: useIconColor('$border') ?? 'currentColor',
-    axis: useIconColor('$borderStrong') ?? 'currentColor',
+    text: useIconColor('mutedForeground') ?? 'currentColor',
+    grid: useIconColor('border') ?? 'currentColor',
+    axis: useIconColor('borderStrong') ?? 'currentColor',
     surface: useIconColor(surface) ?? 'transparent',
   }
 }
@@ -142,15 +142,8 @@ export function ChartFrame({
     : ''
 
   return (
-    <View
-      render="figure"
-      margin={0}
-      gap="$3"
-      width="100%"
-      aria-labelledby={titleId}
-      {...frameProps}
-    >
-      <View gap="$1">
+    <View render="figure" margin={0} gap="3" width="100%" {...frameProps} aria-labelledby={titleId}>
+      <View gap="1">
         <Text id={titleId} size="sm" weight="semibold">
           {title}
         </Text>
@@ -162,15 +155,15 @@ export function ChartFrame({
       </View>
 
       {legend.length > 0 ? (
-        <XStack flexWrap="wrap" columnGap="$4" rowGap="$1.5">
+        <XStack flexWrap="wrap" columnGap="4" rowGap="1-5">
           {legend.map((item) => (
-            <XStack key={item.label} alignItems="center" gap="$1.5">
+            <XStack key={item.label} alignItems="center" gap="1-5">
               <View
                 aria-hidden
                 backgroundColor={item.color as never}
-                width={item.shape === 'line' ? '$3' : '$2.5'}
-                height={item.shape === 'line' ? 2 : '$2.5'}
-                borderRadius={item.shape === 'line' ? '$full' : '$xs'}
+                width={item.shape === 'line' ? '3' : '2-5'}
+                height={item.shape === 'line' ? 2 : '2-5'}
+                borderRadius={item.shape === 'line' ? 'full' : 'xs'}
               />
               <Text size="xs" tone="muted">
                 {item.label}
@@ -186,12 +179,6 @@ export function ChartFrame({
         position="relative"
         height={height}
         width={fixedWidth ?? '100%'}
-        onLayout={(event: { nativeEvent: { layout: { width: number } } }) =>
-          setMeasured(Math.floor(event.nativeEvent.layout.width))
-        }
-        // The plot is one focusable image; the arrow keys read it point by point.
-        role="img"
-        aria-label={`${title}.${description ? ` ${description}.` : ''}${isWeb ? ` ${labels.keyboardHint}` : ''}`}
         {...(isWeb
           ? {
               tabIndex: 0,
@@ -208,13 +195,16 @@ export function ChartFrame({
               onPress: (event: { nativeEvent: { locationX: number; locationY: number } }) =>
                 setActive(hitTest(event.nativeEvent.locationX, event.nativeEvent.locationY, width)),
             })}
-        borderRadius="$sm"
-        focusVisibleStyle={{
-          outlineColor: '$ring',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineOffset: 4,
-        }}
+        borderRadius="sm"
+        outlineColor="focus-visible:ring"
+        outlineStyle="focus-visible:solid"
+        outlineWidth="focus-visible:2px"
+        outlineOffset="focus-visible:4px"
+        onLayout={(event: { nativeEvent: { layout: { width: number } } }) =>
+          setMeasured(Math.floor(event.nativeEvent.layout.width))
+        }
+        role="img"
+        aria-label={`${title}.${description ? ` ${description}.` : ''}${isWeb ? ` ${labels.keyboardHint}` : ''}`}
       >
         {width > 0 ? children(width, active) : null}
         {content && point ? (
@@ -224,26 +214,26 @@ export function ChartFrame({
             position="absolute"
             top={0}
             {...(point.x < width / 2 ? { left: point.x + 12 } : { right: width - point.x + 12 })}
-            backgroundColor="$popover"
+            backgroundColor="popover"
             borderWidth={1}
-            borderColor="$border"
-            borderRadius="$md"
-            paddingHorizontal="$2.5"
-            paddingVertical="$2"
-            gap="$1"
-            minWidth="$32"
+            borderColor="border"
+            borderRadius="md"
+            paddingHorizontal="2-5"
+            paddingVertical="2"
+            gap="1"
+            minWidth="32"
             zIndex={1}
           >
             <Text size="xs" tone="muted">
               {content.title}
             </Text>
             {content.rows.map((row) => (
-              <XStack key={row.label} alignItems="center" gap="$2">
+              <XStack key={row.label} alignItems="center" gap="2">
                 <View
                   backgroundColor={row.color as never}
-                  width="$2.5"
-                  height={row.shape === 'line' ? 2 : '$2.5'}
-                  borderRadius={row.shape === 'line' ? '$full' : '$xs'}
+                  width="2-5"
+                  height={row.shape === 'line' ? 2 : '2-5'}
+                  borderRadius={row.shape === 'line' ? 'full' : 'xs'}
                 />
                 <Text size="sm" weight="semibold">
                   {row.value}
@@ -259,14 +249,13 @@ export function ChartFrame({
       {/* Outside the plot: an img's contents are hidden from assistive technology. */}
       {isWeb ? <VisuallyHidden aria-live="polite">{summary}</VisuallyHidden> : null}
 
-      <View alignItems="flex-start" gap="$2">
+      <View alignItems="flex-start" gap="2">
         <Button
           size="sm"
-          variant="ghost"
-          // Lines the label up with the title above.
-          marginLeft="$-3"
-          aria-expanded={showTable}
+          marginLeft="-3"
           {...(isWeb && { 'aria-controls': tableId })}
+          variant="ghost"
+          aria-expanded={showTable}
           onPress={() => setShowTable(!showTable)}
         >
           {showTable ? labels.hideTable : labels.showTable}

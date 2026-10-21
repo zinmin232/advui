@@ -1,5 +1,5 @@
 import { FileIcon, IconDefaults, XIcon } from '@advui/icons'
-import { View, XStack } from 'tamagui'
+import { View, XStack } from 'tamagui/unstyled'
 import { IconButton } from '../icon-button/IconButton'
 import { Text } from '../typography/Text'
 import { type PickedFile, formatBytes } from './files'
@@ -17,22 +17,22 @@ export function FileList({
   disabled?: boolean
 }) {
   return (
-    <View role="list" gap="$1.5">
+    <View role="list" gap="1-5">
       {files.map((file, index) => (
         <XStack
           key={`${file.name}-${index}`}
           role="listitem"
           alignItems="center"
-          gap="$2.5"
-          paddingLeft="$3"
-          paddingRight="$1"
-          paddingVertical="$1"
+          gap="2-5"
+          paddingLeft="3"
+          paddingRight="1"
+          paddingVertical="1"
           borderWidth={1}
-          borderColor="$border"
-          borderRadius="$md"
-          backgroundColor="$card"
+          borderColor="border"
+          borderRadius="md"
+          backgroundColor="card"
         >
-          <IconDefaults size={16} color="$mutedForeground">
+          <IconDefaults size={16} color="mutedForeground">
             <FileIcon />
           </IconDefaults>
           <View flex={1} minWidth={0}>

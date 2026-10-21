@@ -8,7 +8,7 @@ export default function ProgressBasic() {
     return () => clearInterval(id)
   }, [])
   return (
-    <VStack gap="$3" width="100%" maxWidth="$96">
+    <VStack gap="3" width="100%" maxWidth="96">
       <HStack justifyContent="space-between">
         <Text size="sm">Uploading…</Text>
         <Text size="sm" tone="muted">

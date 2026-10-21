@@ -11,7 +11,7 @@ const places = [
 export default function AutoGridCardGallery() {
   // No breakpoints: as many 220px columns as fit, never more than 4.
   return (
-    <AutoGrid minChildWidth={220} maxColumns={4} gap="$4">
+    <AutoGrid minChildWidth={220} maxColumns={4} gap="4">
       {places.map((place) => (
         <Card key={place.name}>
           <Card.Header>
@@ -19,7 +19,7 @@ export default function AutoGridCardGallery() {
             <Card.Description>{place.region} region</Card.Description>
           </Card.Header>
           <Card.Content>
-            <HStack gap="$2">
+            <HStack gap="2">
               <Badge variant="secondary" size="sm">
                 {place.sites}
               </Badge>

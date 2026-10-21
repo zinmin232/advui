@@ -35,7 +35,7 @@ const components = { ...UI, ...Data } as unknown as Record<
 
 function GridCell({ label }: { label: string }) {
   return (
-    <UI.Box flexGrow={1} padding="$3" borderRadius="$md" backgroundColor="$muted">
+    <UI.Box flexGrow={1} padding="3" borderRadius="md" backgroundColor="muted">
       <UI.Text size="sm" weight="medium">
         {label}
       </UI.Text>
@@ -397,9 +397,9 @@ const elementControls: Record<string, Record<string, { on?: ElementProp; off?: E
     center: {
       on: {
         value: (
-          <UI.Input size="sm" flex={1} maxWidth="$64" placeholder="Search…" aria-label="Search" />
+          <UI.Input size="sm" flex={1} maxWidth="64" placeholder="Search…" aria-label="Search" />
         ),
-        code: 'center={<Input size="sm" flex={1} maxWidth="$64" placeholder="Search…" aria-label="Search" />}',
+        code: 'center={<Input size="sm" flex={1} maxWidth="64" placeholder="Search…" aria-label="Search" />}',
       },
     },
     trailing: {
@@ -497,14 +497,14 @@ function Control({
       )
     case 'boolean':
       return (
-        <HStack gap="$3" justifyContent="space-between">
+        <HStack gap="3" justifyContent="space-between">
           <Label htmlFor={id}>{control.prop}</Label>
           <Switch id={id} size="sm" checked={Boolean(value)} onCheckedChange={onChange} />
         </HStack>
       )
     case 'number':
       return (
-        <VStack gap="$2">
+        <VStack gap="2">
           <Label htmlFor={id}>{control.prop}</Label>
           <Input
             id={id}
@@ -521,7 +521,7 @@ function Control({
       )
     default:
       return (
-        <VStack gap="$2">
+        <VStack gap="2">
           <Label htmlFor={id}>{control.prop}</Label>
           <Input id={id} size="sm" value={String(value)} onChangeText={onChange} />
         </VStack>
@@ -552,14 +552,14 @@ export function Playground({
       {...(iconFor[spec.component] ? { icon: iconFor[spec.component] } : null)}
       {...controlProps(spec, values)}
       {...(structural?.props ? resolve(structural.props, values) : null)}
-      {...(spec.component === 'Card' ? { width: '100%', maxWidth: '$80' } : null)}
+      {...(spec.component === 'Card' ? { width: '100%', maxWidth: '80' } : null)}
       {...(spec.component === 'Grid' || spec.component === 'Table' ? { width: '100%' } : null)}
       {...(spec.component === 'List' || spec.component === 'ListItem' || spec.component === 'Alert'
-        ? { width: '100%', maxWidth: '$96' }
+        ? { width: '100%', maxWidth: '96' }
         : null)}
-      {...(spec.component === 'Form' ? { width: '100%', maxWidth: '$96' } : null)}
+      {...(spec.component === 'Form' ? { width: '100%', maxWidth: '96' } : null)}
       {...(spec.component === 'Toolbar' && values.orientation !== 'vertical'
-        ? { width: '100%', maxWidth: '$144' }
+        ? { width: '100%', maxWidth: '144' }
         : null)}
     >
       {structural?.element ? resolve(structural.element, values) : spec.children}
@@ -574,37 +574,32 @@ export function Playground({
   return (
     <View
       borderWidth={1}
-      borderColor="$border"
-      borderRadius="$lg"
+      borderColor="border"
+      borderRadius="lg"
       overflow="hidden"
-      $lg={{ flexDirection: 'row' }}
+      flexDirection="lg:row"
     >
       {/* flex only in the row: below lg its 0px basis would collapse the column
           to nothing, and the preview would draw under the props. */}
       <View
         minWidth={0}
-        borderColor="$border"
-        borderBottomWidth={1}
-        $lg={{ flex: 1, borderBottomWidth: 0, borderRightWidth: 1 }}
+        borderColor="border"
+        borderBottomWidth="1px lg:0px"
+        flex="lg:1"
+        borderRightWidth="lg:1px"
       >
-        <PreviewSurface minHeight="$72">
+        <PreviewSurface minHeight="72">
           {/* Remount when props change so uncontrolled defaults (defaultChecked…) apply. */}
           <View key={JSON.stringify(values)} width="100%" alignItems="center">
             {element}
           </View>
         </PreviewSurface>
-        <View
-          borderTopWidth={1}
-          borderColor="$border"
-          backgroundColor="$muted"
-          padding="$4"
-          gap="$2"
-        >
+        <View borderTopWidth={1} borderColor="border" backgroundColor="muted" padding="4" gap="2">
           <HStack justifyContent="space-between">
             <Text size="xs" weight="semibold" tone="muted">
               JSX
             </Text>
-            <HStack gap="$1">
+            <HStack gap="1">
               <Button
                 size="sm"
                 variant="ghost"
@@ -641,14 +636,7 @@ export function Playground({
           </Text>
         </View>
       </View>
-      <VStack
-        padding="$4"
-        gap="$4"
-        width="100%"
-        $lg={{ width: '$72' }}
-        aria-label="Props"
-        role="group"
-      >
+      <VStack padding="4" gap="4" width="100% lg:72" aria-label="Props" role="group">
         <HStack justifyContent="space-between">
           <Text size="sm" weight="semibold">
             Props

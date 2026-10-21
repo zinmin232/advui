@@ -7,11 +7,11 @@ export default function ToolbarWrap() {
   return (
     <Box
       width="100%"
-      maxWidth="$80"
+      maxWidth="80"
       borderWidth={1}
-      borderColor="$border"
+      borderColor="border"
       borderStyle="dashed"
-      borderRadius="$lg"
+      borderRadius="lg"
     >
       <Toolbar
         aria-label="Orders"
@@ -25,7 +25,7 @@ export default function ToolbarWrap() {
           <Input
             size="sm"
             flex={1}
-            minWidth="$40"
+            minWidth="40"
             placeholder="Search orders…"
             aria-label="Search orders"
           />

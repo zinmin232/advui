@@ -46,20 +46,20 @@ export function SiteHeader() {
         render="header"
         position="sticky"
         top={0}
-        zIndex="$sticky"
-        backgroundColor="$background"
+        zIndex="sticky"
+        backgroundColor="background"
         borderBottomWidth={1}
-        borderColor="$border"
+        borderColor="border"
       >
         <HStack
-          height="$14"
-          paddingHorizontal="$4"
-          gap="$2"
+          height="14"
+          paddingHorizontal="4"
+          gap="2"
           maxWidth={1440}
           marginHorizontal="auto"
           width="100%"
         >
-          <View display="flex" $lg={{ display: 'none' }}>
+          <View display="flex lg:none">
             <IconButton
               aria-label="Open navigation"
               icon={<MenuIcon />}
@@ -67,14 +67,7 @@ export function SiteHeader() {
             />
           </View>
           <Logo />
-          <HStack
-            render="nav"
-            aria-label="Main"
-            gap="$1"
-            marginLeft="$6"
-            display="none"
-            $md={{ display: 'flex' }}
-          >
+          <HStack render="nav" aria-label="Main" gap="1" marginLeft="6" display="none md:flex">
             {links.map((link) => {
               const active = link.match.test(pathname)
               return (
@@ -86,12 +79,12 @@ export function SiteHeader() {
                 >
                   <Text
                     size="sm"
+                    paddingHorizontal="3"
+                    paddingVertical="1-5"
+                    borderRadius="md"
+                    color={`${active ? 'foreground' : 'mutedForeground'} hover:foreground`}
+                    backgroundColor="hover:accent"
                     weight="medium"
-                    paddingHorizontal="$3"
-                    paddingVertical="$1.5"
-                    borderRadius="$md"
-                    color={active ? '$foreground' : '$mutedForeground'}
-                    hoverStyle={{ color: '$foreground', backgroundColor: '$accent' }}
                   >
                     {link.label}
                   </Text>
@@ -103,20 +96,20 @@ export function SiteHeader() {
           <Button
             variant="outline"
             size="sm"
+            justifyContent="flex-start"
+            display="none sm:flex"
+            width="sm:56"
             icon={<SearchIcon />}
             onPress={() => palette.setOpen(true)}
             aria-label="Search documentation"
             aria-keyshortcuts="Control+K Meta+K"
-            justifyContent="flex-start"
-            display="none"
-            $sm={{ display: 'flex', width: '$56' }}
           >
             <Text size="sm" tone="muted" flex={1}>
               Search…
             </Text>
             <Kbd>Ctrl K</Kbd>
           </Button>
-          <View $sm={{ display: 'none' }}>
+          <View display="sm:none">
             <IconButton
               aria-label="Search documentation"
               icon={<SearchIcon />}

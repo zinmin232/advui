@@ -13,8 +13,8 @@ export default function NavigationBarBasic() {
   const [tab, setTab] = useState('home')
   return (
     // A card stands in for the phone screen; in an app the bar sits at the bottom.
-    <Card width="100%" maxWidth="$96" overflow="hidden">
-      <VStack height="$40" padding="$4" gap="$1">
+    <Card width="100%" maxWidth="96" overflow="hidden">
+      <VStack height="40" padding="4" gap="1">
         <Text size="lg" weight="semibold">
           {titles[tab]}
         </Text>

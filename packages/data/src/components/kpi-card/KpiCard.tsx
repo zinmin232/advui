@@ -1,6 +1,6 @@
 import { IconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef } from 'react'
-import { type TamaguiElement, View, XStack, isWeb } from 'tamagui'
+import { type TamaguiElement, View, XStack, isWeb } from 'tamagui/unstyled'
 import { Card, type CardProps, Skeleton } from '@advui/core'
 import { Stat, type StatTone, type StatTrend } from '../stat/Stat'
 
@@ -56,13 +56,13 @@ export const KpiCard = forwardRef<TamaguiElement, KpiCardProps>(function KpiCard
       {...(isWeb && { 'aria-busy': loading || undefined })}
       {...props}
     >
-      <Card.Content gap="$3">
+      <Card.Content gap="3">
         <Stat>
-          <XStack alignItems="flex-start" justifyContent="space-between" gap="$3">
+          <XStack alignItems="flex-start" justifyContent="space-between" gap="3">
             <Stat.Label flex={1}>{label}</Stat.Label>
             {icon ? (
               <View aria-hidden>
-                <IconDefaults size={16} color="$mutedForeground">
+                <IconDefaults size={16} color="mutedForeground">
                   {icon}
                 </IconDefaults>
               </View>
@@ -70,14 +70,14 @@ export const KpiCard = forwardRef<TamaguiElement, KpiCardProps>(function KpiCard
           </XStack>
           {loading ? (
             <>
-              <Skeleton height="$9" width="$32" marginVertical="$0.5" />
-              {footer ? <Skeleton height="$4" width="$40" /> : null}
+              <Skeleton height="9" width="32" marginVertical="0-5" />
+              {footer ? <Skeleton height="4" width="40" /> : null}
             </>
           ) : (
             <>
               <Stat.Value>{value}</Stat.Value>
               {footer ? (
-                <XStack alignItems="center" gap="$1.5" flexWrap="wrap">
+                <XStack alignItems="center" gap="1-5" flexWrap="wrap">
                   {delta != null ? (
                     <Stat.Delta trend={trend} tone={tone} trendLabel={trendLabel}>
                       {delta}

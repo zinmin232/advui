@@ -21,12 +21,13 @@ import {
   isWeb,
   useComposedRefs,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useSheetMaxHeight } from '../../hooks/useSheetMaxHeight'
 import { Text } from '../typography/Text'
+import { transformOpacity } from '../../utils/transition'
 
 type Side = 'top' | 'right' | 'bottom' | 'left'
 type Align = 'start' | 'center' | 'end'
@@ -102,30 +103,33 @@ function PopoverRoot({
               transition={reducedMotion ? undefined : 'medium'}
             >
               <Sheet.Overlay
-                backgroundColor="$overlay"
-                enterStyle={{ opacity: 0 }}
-                exitStyle={{ opacity: 0 }}
+                backgroundColor="overlay"
+                opacity="enter:0 exit:0"
                 transition={reducedMotion ? undefined : 'quick'}
               />
-              <Sheet.Handle backgroundColor="$borderStrong" />
-              <Sheet.Frame
-                backgroundColor="$popover"
-                borderTopLeftRadius="$dialog"
-                borderTopRightRadius="$dialog"
-                padding="$5"
-                paddingBottom="$8"
+              <Sheet.Handle backgroundColor="borderStrong" />
+              <Sheet.Container
+                paddingTop="5"
+                paddingRight="5"
+                paddingLeft="5"
+                paddingBottom="8"
                 maxHeight={sheetMaxHeight}
               >
+                <Sheet.Background
+                  backgroundColor="popover"
+                  borderTopLeftRadius="dialog"
+                  borderTopRightRadius="dialog"
+                />
                 {/* Scrolls when the content is taller than the sheet may be (a
                     calendar on a phone in landscape). Color Picker's drag area
                     keeps its gesture from it. */}
                 <Sheet.ScrollView>
                   {/* Not on Sheet.Frame: Tamagui copies its props onto a decorative cover view. */}
-                  <View role="dialog" aria-labelledby={titleId} gap="$3">
+                  <View role="dialog" aria-labelledby={titleId} gap="3">
                     <Adapt.Contents />
                   </View>
                 </Sheet.ScrollView>
-              </Sheet.Frame>
+              </Sheet.Container>
             </Sheet>
           </Adapt>
         </TamaguiPopover>
@@ -157,45 +161,39 @@ const PopoverContent = forwardRef<TamaguiElement, PopoverContentProps>(function 
   return (
     <TamaguiPopover.Content
       ref={ref as never}
-      unstyled
-      backgroundColor="$popover"
+      backgroundColor="popover"
       borderWidth={1}
-      borderColor="$border"
-      borderRadius="$lg"
-      padding="$4"
-      gap="$3"
-      width="$72"
+      borderColor="border"
+      borderRadius="lg"
+      padding="4"
+      gap="3"
+      width="72"
       maxWidth="100%"
       {...shadows.md}
-      enterStyle={{ opacity: 0, scale: 0.96, y: -4 }}
-      exitStyle={{ opacity: 0, scale: 0.96, y: -4 }}
-      opacity={1}
-      scale={1}
-      y={0}
-      transition={reducedMotion ? null : 'quick'}
-      animateOnly={['transform', 'opacity']}
+      opacity="1 enter:0 exit:0"
+      scale="1 enter:0.96 exit:0.96"
+      y="0 enter:-4px exit:-4px"
+      transition={transformOpacity(reducedMotion ? null : 'quick')}
+      {...props}
       onPointerDownOutside={composeEventHandlers(
         onPointerDownOutside,
-        (event) => {
-          const { button, ctrlKey } = event.detail.originalEvent
-          rightClick.current = button === 2 || (button === 0 && ctrlKey)
+        (details) => {
+          const pointer = details.event
+          rightClick.current =
+            !!pointer && (pointer.button === 2 || (pointer.button === 0 && pointer.ctrlKey))
         },
         { checkDefaultPrevented: false },
       )}
-      // Tamagui's trigger learns its element from pointer and focus events,
-      // but `asChild` drops its onFocus: after an open from the keyboard alone
-      // it had no element, and focus fell to the body on close.
       onCloseAutoFocus={
         onCloseAutoFocus === false
           ? false
-          : composeEventHandlers(onCloseAutoFocus, (event) => {
+          : composeEventHandlers(onCloseAutoFocus, (details) => {
               const trigger = triggerRef?.current
               if (!trigger) return
-              event.preventDefault()
+              details.cancel()
               if (!rightClick.current) trigger.focus()
             })
       }
-      {...props}
     >
       {children}
     </TamaguiPopover.Content>

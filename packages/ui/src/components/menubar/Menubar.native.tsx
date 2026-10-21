@@ -1,5 +1,5 @@
 import { createContext, forwardRef, useContext, useId } from 'react'
-import { type TamaguiElement, withStaticProperties } from 'tamagui'
+import { type TamaguiElement, withStaticProperties } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { ariaState } from '../../utils/ariaState'
@@ -57,7 +57,7 @@ function MenubarMenu({ children, value: valueProp }: MenubarMenuProps) {
 
 function MenubarTrigger({ children, disabled = false }: MenubarTriggerProps) {
   const { open, setOpen } = useSheetMenu()
-  const ripple = useRipple({ color: '$foreground', disabled })
+  const ripple = useRipple({ color: 'foreground', disabled })
   return (
     <MenubarTriggerFrame
       // iOS has no trait for a menu item; a button says it can be pressed.
@@ -71,7 +71,7 @@ function MenubarTrigger({ children, disabled = false }: MenubarTriggerProps) {
       {...ripple.props}
     >
       {ripple.element}
-      <Text size="sm" weight="medium" color="$foreground">
+      <Text size="sm" color="foreground" weight="medium">
         {children}
       </Text>
     </MenubarTriggerFrame>

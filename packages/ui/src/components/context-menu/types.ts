@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { GetProps, View } from 'tamagui'
+import type { GetProps, View } from 'tamagui/unstyled'
 import type {
   DropdownMenuCheckboxItemProps,
   DropdownMenuContentProps,

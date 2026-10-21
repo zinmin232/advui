@@ -2,7 +2,7 @@ import { CopyButton, HStack } from '@advui/core'
 
 export default function CopyButtonLabel() {
   return (
-    <HStack flexWrap="wrap" gap="$3">
+    <HStack flexWrap="wrap" gap="3">
       <CopyButton value="https://example.org/invite/7Hq2" labels={{ copied: 'Link copied' }}>
         Copy invite link
       </CopyButton>

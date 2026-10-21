@@ -1,5 +1,5 @@
 import type { KeyboardEvent, ReactNode } from 'react'
-import { View, isWeb } from 'tamagui'
+import { View, isWeb } from 'tamagui/unstyled'
 import { ariaState } from '../../utils/ariaState'
 import { Thumb } from './ColorArea'
 import { type AccessibilityActionEvent, THUMB, clamp, focusRing } from './shared'
@@ -95,19 +95,18 @@ export function ChannelSlider({
   const surface = (
     <View
       position="relative"
-      // As tall as the thumb, so the whole strip takes a press.
       height={THUMB}
       justifyContent="center"
-      borderRadius="$full"
+      borderRadius="full"
       cursor={disabled ? 'not-allowed' : 'pointer'}
-      focusVisibleStyle={focusRing}
+      {...focusRing}
       {...semantics}
       {...drag.surface}
     >
       <View
         position="relative"
-        height="$3"
-        borderRadius="$full"
+        height="3"
+        borderRadius="full"
         overflow="hidden"
         pointerEvents="none"
       >

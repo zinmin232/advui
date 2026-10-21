@@ -22,8 +22,8 @@ export function PageHeader({
   children?: ReactNode
 }) {
   return (
-    <VStack gap="$3" paddingBottom="$4">
-      <Heading level={1} size="4xl" $max-sm={{ fontSize: '$7', lineHeight: '$7' }}>
+    <VStack gap="3" paddingBottom="4">
+      <Heading level={1} size="4xl" fontSize="max-sm:7" lineHeight="max-sm:7">
         {title}
       </Heading>
       {description ? (
@@ -42,10 +42,10 @@ export function H2({ children, id }: { children: string; id?: string }) {
       level={2}
       size="2xl"
       id={id ?? slugify(children)}
-      marginTop="$8"
-      paddingBottom="$2"
+      marginTop="8"
+      paddingBottom="2"
       borderBottomWidth={1}
-      borderColor="$border"
+      borderColor="border"
     >
       {children}
     </Heading>
@@ -54,7 +54,7 @@ export function H2({ children, id }: { children: string; id?: string }) {
 
 export function H3({ children, id }: { children: string; id?: string }) {
   return (
-    <Heading level={3} size="lg" id={id ?? slugify(children)} marginTop="$5">
+    <Heading level={3} size="lg" id={id ?? slugify(children)} marginTop="5">
       {children}
     </Heading>
   )
@@ -62,7 +62,7 @@ export function H3({ children, id }: { children: string; id?: string }) {
 
 export function P({ children }: { children: ReactNode }) {
   return (
-    <Text render="p" lineHeight="$4" marginVertical={0} color="$foreground">
+    <Text render="p" lineHeight="4" marginVertical={0} color="foreground">
       {children}
     </Text>
   )
@@ -70,7 +70,7 @@ export function P({ children }: { children: ReactNode }) {
 
 export function UL({ children }: { children: ReactNode }) {
   return (
-    <View render="ul" gap="$2" paddingLeft="$5" marginVertical={0}>
+    <View render="ul" gap="2" paddingLeft="5" marginVertical={0}>
       {children}
     </View>
   )
@@ -78,7 +78,7 @@ export function UL({ children }: { children: ReactNode }) {
 
 export function LI({ children }: { children: ReactNode }) {
   return (
-    <Text render="li" lineHeight="$4" className="prose-li" color="$foreground">
+    <Text render="li" lineHeight="4" color="foreground" className="prose-li">
       {children}
     </Text>
   )
@@ -90,10 +90,10 @@ export function C({ children }: { children: ReactNode }) {
       render="code"
       mono
       size="sm"
-      backgroundColor="$muted"
-      paddingHorizontal="$1"
-      borderRadius="$sm"
-      color="$foreground"
+      backgroundColor="muted"
+      paddingHorizontal="1"
+      borderRadius="sm"
+      color="foreground"
     >
       {children}
     </Text>
@@ -137,5 +137,5 @@ export function Callout({
 }
 
 export function Section({ children }: { children: ReactNode }) {
-  return <VStack gap="$4">{children}</VStack>
+  return <VStack gap="4">{children}</VStack>
 }

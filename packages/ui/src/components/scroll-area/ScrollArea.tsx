@@ -1,26 +1,22 @@
 import { type ReactNode, forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, View, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, styled } from 'tamagui/unstyled'
 
 export type ScrollAreaOrientation = 'vertical' | 'horizontal'
 
 const ScrollAreaFrame = styled(View, {
-  name: 'ScrollArea',
+  displayName: 'ScrollArea',
   // Keyboard users scroll it with the arrow keys once it has focus.
   tabIndex: 0,
-  focusVisibleStyle: {
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: 2,
-  },
-
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
   variants: {
     orientation: {
       vertical: { overflowX: 'hidden', overflowY: 'auto' },
       horizontal: { flexDirection: 'row', overflowX: 'auto', overflowY: 'hidden' },
     },
   } as const,
-
   defaultVariants: { orientation: 'vertical' },
 })
 

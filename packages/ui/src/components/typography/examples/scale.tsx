@@ -2,7 +2,7 @@ import { HStack, Heading, Kbd, Text, VStack } from '@advui/core'
 
 export default function TypographyScale() {
   return (
-    <VStack gap="$2">
+    <VStack gap="2">
       <Heading level={1}>The quick brown fox</Heading>
       <Heading level={2}>The quick brown fox</Heading>
       <Heading level={3}>The quick brown fox</Heading>
@@ -16,7 +16,7 @@ export default function TypographyScale() {
       <Text mono size="sm">
         pnpm add @advui/core
       </Text>
-      <HStack gap="$1">
+      <HStack gap="1">
         <Text size="sm">Search with</Text>
         <Kbd>Ctrl</Kbd>
         <Kbd>K</Kbd>

@@ -14,7 +14,7 @@ export default function ListItemNavigation() {
   const [active, setActive] = useState('reports')
 
   return (
-    <VStack gap="$1" width="100%" maxWidth="$64">
+    <VStack gap="1" width="100%" maxWidth="64">
       {pages.map((page) => (
         <ListItem
           key={page.id}

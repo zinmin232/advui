@@ -7,7 +7,7 @@ import {
   View,
   isWeb,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { FieldContext, type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
 import { ariaState } from '../../utils/ariaState'
@@ -21,26 +21,28 @@ const iconSizes: Record<RatingSize, number> = { sm: 16, md: 24, lg: 32 }
 const EPSILON = 1e-9
 
 const RatingFrame = styled(View, {
-  name: 'Rating',
+  displayName: 'Rating',
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf: 'flex-start',
-  borderRadius: '$sm',
-  focusVisibleStyle: {
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: 2,
-  },
-
+  borderRadius: 'sm',
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
   variants: {
     size: {
-      sm: { gap: '$0.5' },
-      md: { gap: '$1' },
-      lg: { gap: '$1.5' },
+      sm: {
+        gap: '0-5',
+      },
+      md: {
+        gap: '1',
+      },
+      lg: {
+        gap: '1-5',
+      },
     },
   } as const,
-
   defaultVariants: { size: 'md' },
 })
 
@@ -68,7 +70,7 @@ export interface RatingProps
   icon?: IconComponent
   /**
    * Fill and outline of the chosen icons. By default they are filled with
-   * `$warning` (amber) and outlined in `$warningSoftForeground`, so they stand
+   * `warning` (amber) and outlined in `warningSoftForeground`, so they stand
    * out on light backgrounds too.
    */
   color?: ColorTokens
@@ -99,7 +101,7 @@ export const Rating = forwardRef<TamaguiElement, RatingProps>(function Rating(ra
     size = 'md',
     icon: Icon = StarIcon,
     color,
-    emptyColor = '$mutedForeground',
+    emptyColor = 'mutedForeground',
     getValueText,
     name,
     disabled = false,
@@ -127,9 +129,9 @@ export const Rating = forwardRef<TamaguiElement, RatingProps>(function Rating(ra
   const valueText = getValueText ? getValueText(value) : `${value} of ${count}`
   const iconSize = iconSizes[size]
 
-  const fill = color ?? '$warning'
-  const outline = color ?? '$warningSoftForeground'
-  const emptyOutline = invalid ? '$error' : emptyColor
+  const fill = color ?? 'warning'
+  const outline = color ?? 'warningSoftForeground'
+  const emptyOutline = invalid ? 'error' : emptyColor
 
   const pick = (next: number) => {
     if (!interactive) return
@@ -263,7 +265,9 @@ export const Rating = forwardRef<TamaguiElement, RatingProps>(function Rating(ra
           </View>
         )
       })}
-      {isWeb && name && !readOnly ? <input type="hidden" name={name} value={value} disabled={disabled} /> : null}
+      {isWeb && name && !readOnly ? (
+        <input type="hidden" name={name} value={value} disabled={disabled} />
+      ) : null}
     </RatingFrame>
   )
 })

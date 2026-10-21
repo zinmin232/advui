@@ -1,4 +1,4 @@
-import { View } from 'tamagui'
+import { View } from 'tamagui/unstyled'
 import { describe, expect, it, vi } from 'vitest'
 import { renderWithProvider, screen } from '../../../test/utils'
 import { Label } from '../label/Label'
@@ -57,7 +57,7 @@ describe('RadioGroup', () => {
         <RadioGroup aria-label="Plan">
           <RadioGroup.Item value="free" label="Free" />
         </RadioGroup>
-        <View gap="$3" testID="reference" />
+        <View gap="3" testID="reference" />
       </>,
     )
     const gap = getComputedStyle(screen.getByRole('radiogroup')).gap

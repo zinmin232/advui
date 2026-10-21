@@ -1,18 +1,19 @@
 import { createTokens } from 'tamagui'
 
 /**
- * 4px-based spacing scale: `$1` = 4px, `$4` = 16px, `$10` = 40px.
- * Negative keys (`$-2`) exist for margins.
+ * 4px-based spacing scale: `1` = 4px, `4` = 16px, `10` = 40px. Half steps are
+ * named with a hyphen (`1-5` = 6px): Tamagui 3 reads a dot as `category.name`.
+ * Negative keys (`-2`, `-0-5`) exist for margins.
  */
 const spaceScale = {
   0: 0,
-  0.5: 2,
+  '0-5': 2,
   1: 4,
-  1.5: 6,
+  '1-5': 6,
   2: 8,
-  2.5: 10,
+  '2-5': 10,
   3: 12,
-  3.5: 14,
+  '3-5': 14,
   4: 16,
   5: 20,
   6: 24,
@@ -34,7 +35,6 @@ type NegativeSpace = { [K in Exclude<SpaceKey, 0> as `-${K}`]: number }
 
 export const space = {
   ...spaceScale,
-  true: 16,
   ...(Object.fromEntries(
     Object.entries(spaceScale)
       .filter(([key]) => key !== '0')
@@ -58,7 +58,6 @@ export const size = {
   168: 672,
   192: 768,
   224: 896,
-  true: 40,
 } as const
 
 export const radiusScales = {
@@ -82,9 +81,9 @@ export type RadiusInput = RadiusScale | number | RadiusOverrides
 /**
  * Radius tokens derived from a single base value so the whole library can be
  * made sharper or rounder at once. Components pick semantic steps:
- * controls `$md`, menus/popovers `$lg`, cards `$xl`, pills `$full`, and role
- * tokens a design system can reshape on their own: `$button` / `$buttonLg`
- * (buttons, icon buttons, toggles) and `$dialog` (dialogs and sheets).
+ * controls `md`, menus/popovers `lg`, cards `xl`, pills `full`, and role
+ * tokens a design system can reshape on their own: `button` / `buttonLg`
+ * (buttons, icon buttons, toggles) and `dialog` (dialogs and sheets).
  */
 export function createRadius(input: RadiusInput = 'md') {
   const overrides = typeof input === 'object' ? input : {}
@@ -107,7 +106,7 @@ export function createRadius(input: RadiusInput = 'md') {
     dialog: r(1.5),
     ...exact,
   }
-  return { ...tokens, true: tokens.md }
+  return tokens
 }
 
 export const zIndex = {
@@ -123,10 +122,11 @@ export const zIndex = {
   tooltip: 1600,
 } as const
 
+// No `transparent`: Tamagui 3 reserves CSS-wide keywords, which resolve as
+// literal CSS, so `transparent` works without a token.
 export const colorTokens = {
   white: '#ffffff',
   black: '#000000',
-  transparent: 'rgba(0, 0, 0, 0)',
 } as const
 
 export function createUniversalTokens({ radius = 'md' }: { radius?: RadiusInput } = {}) {

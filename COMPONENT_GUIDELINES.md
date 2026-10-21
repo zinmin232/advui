@@ -65,17 +65,24 @@ entry, search entry, Expo screen and registry item then appear automatically.
 
 ## Styling rules
 
-- **Tokens only.** Colors come from theme keys (`$primary`,
-  `$mutedForeground`), spacing and sizes from `$` tokens, radius from `$sm`…`$full`
-  (buttons and toggles `$button`, dialogs and sheets `$dialog`),
+- **Tokens only.** Colors come from theme keys (`primary`,
+  `mutedForeground`), spacing and sizes from tokens (`4`, `1-5`), radius from
+  `sm`…`full` (buttons and toggles `button`, dialogs and sheets `dialog`),
   z-index from `zIndex` in `@advui/theme`. The lint config rejects hex,
   rgb and hsl literals in library code.
-- **Pick the right color role.** `$primary` is a fill. Use `$primaryText` for
+- **Pick the right color role.** `primary` is a fill. Use `primaryText` for
   primary-colored text on the page background. Soft intent colors
-  (`$successSoft`) pair with `$successSoftForeground`. Never use an intent color
+  (`successSoft`) pair with `successSoftForeground`. Never use an intent color
   as text unless its `*Foreground` or `*Text` key says it is safe.
-- **Focus is visible.** Interactive frames set
-  `focusVisibleStyle: { outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 2 }`.
+- **Focus is visible.** Interactive frames set flat values:
+  `outlineColor: 'focus-visible:ring'`, `outlineStyle: 'focus-visible:solid'`,
+  `outlineWidth: 'focus-visible:2px'`.
+- **States are flat values.** Hover, press, focus, enter and exit go in the
+  property's value (`backgroundColor: 'transparent hover:accent press:accentHover'`,
+  `opacity: { default: 1, enter: 0, exit: 0 }`). A state that depends on a
+  prop is built with `flatValue(...)` (`utils/responsive.ts`). Set the base
+  and its states in one prop: a later spread that sets the same prop replaces
+  them all.
 - **Motion is optional.** Use named animations (`quick`, `medium`…). On web,
   the provider's stylesheet removes transitions under
   `prefers-reduced-motion`. Components with enter/exit motion (Dialog, Select,
@@ -84,10 +91,12 @@ entry, search entry, Expo screen and registry item then appear automatically.
   animated style objects there.
 - **Press feedback.** Pressables call `useRipple()`: spread `ripple.props`
   last, render `ripple.element` first, and while `ripple.active` keep the
-  resting fill as the `pressStyle` and drop a transparent border (Android
+  resting fill as the `press:` value (`backgroundColor: 'press:primary'`)
+  and drop a transparent border (Android
   clips children inside the border).
-- **Tamagui factories.** Components built with `createCheckbox`, `createSwitch`
-  or `createRadioGroup` must put their styles in the `unstyled.false` variant.
+- **Unstyled primitives.** Import from `tamagui/unstyled` (the root
+  `tamagui` entry has Tamagui's default skin). Name a component with
+  `displayName` in `styled()`: an unknown `name` option becomes a DOM attribute.
 - **No layout assumptions.** Components don't set outer margins. They size to
   their content or accept width props.
 
@@ -123,11 +132,12 @@ entry, search entry, Expo screen and registry item then appear automatically.
   props without a web equivalent. When you need one, guard it with `isWeb` from
   `tamagui`.
 - Stay SSR-safe: no `window` access during render, and no `useMedia()`
-  branching that changes markup between server and client. Prefer media props
-  (`$sm={{ … }}`).
-- A prop that takes a breakpoint map is typed `Responsive<T>` and becomes
-  media props through `responsiveStyle(prop, value, map?)` (`utils/responsive.ts`),
-  usually in a function variant, as Stack's `direction` and Container's
+  branching that changes markup between server and client. Prefer flat media
+  values (`padding="4 sm:6"`).
+- A prop that takes a breakpoint map is typed `Responsive<T>` and becomes a
+  conditional value through `responsiveStyle(prop, value, map?)`
+  (`utils/responsive.ts`), usually in a `styled.dynamic<T>(fn)` variant (give
+  the type argument; an annotated parameter breaks Tamagui's inference), as Stack's `direction` and Container's
   `gutter` do. Don't emit a media style that a default or a raw prop also sets
   at the same breakpoint: the later one wins on web but the first on native.
 - For width-dependent markup, use Show / Hide (CSS on web). `useBreakpoint()`

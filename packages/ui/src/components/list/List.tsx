@@ -1,5 +1,11 @@
 import { Children, forwardRef, isValidElement } from 'react'
-import { type GetProps, type TamaguiElement, View, styled, withStaticProperties } from 'tamagui'
+import {
+  type GetProps,
+  type TamaguiElement,
+  View,
+  styled,
+  withStaticProperties,
+} from 'tamagui/unstyled'
 import {
   ListContext,
   ListItem,
@@ -9,7 +15,7 @@ import {
 } from '../list-item/ListItem'
 
 const ListFrame = styled(View, {
-  name: 'List',
+  displayName: 'List',
   context: ListContext,
   role: 'list',
   flexDirection: 'column',
@@ -18,10 +24,10 @@ const ListFrame = styled(View, {
     variant: {
       plain: {},
       outline: {
-        backgroundColor: '$card',
+        backgroundColor: 'card',
         borderWidth: 1,
-        borderColor: '$border',
-        borderRadius: '$lg',
+        borderColor: 'border',
+        borderRadius: 'lg',
         overflow: 'hidden',
       },
     },

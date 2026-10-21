@@ -49,16 +49,20 @@ export function resolveResponsive<T>(
 /** Turns a value into the one the style needs, such as `'start'` → `'flex-start'`. */
 export type ValueMap<T, V> = ((value: T) => V) | Partial<Record<T & PropertyKey, V>>
 
-type MediaKey = `$${Breakpoint}`
+/**
+ * A Tamagui 3 conditional style value: `default` below the first breakpoint,
+ * then one entry per media key. Later keys win, so breakpoints go smallest
+ * first.
+ */
+export type ConditionalValue<V> = { default?: V } & Partial<Record<Breakpoint, V>>
 
-/** Style props for one property: the base value plus a media prop per breakpoint. */
-export type ResponsiveStyle<P extends string, V> = Partial<Record<P, V>> &
-  Partial<Record<MediaKey, Partial<Record<P, V>>>>
+/** Style props for one property: a plain value, or a conditional value. */
+export type ResponsiveStyle<P extends string, V> = Partial<Record<P, V | ConditionalValue<V>>>
 
 /**
  * Style props for a responsive value, mobile-first:
  * `responsiveStyle('flexDirection', { base: 'column', md: 'row' })` →
- * `{ flexDirection: 'column', $md: { flexDirection: 'row' } }`. Only the
+ * `{ flexDirection: { default: 'column', md: 'row' } }`. Only the
  * breakpoints given are emitted (a map without `base` has no base value), so
  * on web they compile to plain CSS media queries. `map` converts each value.
  */
@@ -72,12 +76,81 @@ export function responsiveStyle<P extends string, T, V = T>(
     const mapped = map?.[input as T & PropertyKey]
     return (mapped === undefined ? input : mapped) as V
   }
-  const style: Record<string, unknown> = {}
+  const conditional: Record<string, V> = {}
+  let hasBreakpoint = false
   for (const key of ['base', ...breakpointKeys] as const) {
     const given = responsiveValue(value, key)
     if (given === undefined) continue
-    if (key === 'base') style[prop] = convert(given)
-    else style[`$${key}`] = { [prop]: convert(given) }
+    conditional[key === 'base' ? 'default' : key] = convert(given)
+    if (key !== 'base') hasBreakpoint = true
   }
-  return style as ResponsiveStyle<P, V>
+  if (!hasBreakpoint && 'default' in conditional) {
+    return { [prop]: conditional.default } as ResponsiveStyle<P, V>
+  }
+  return (Object.keys(conditional).length ? { [prop]: conditional } : {}) as ResponsiveStyle<P, V>
+}
+
+/**
+ * Merges style props whose values may be conditional, key by key, so two
+ * helpers that set the same property under different conditions both apply.
+ * A plain value followed by a conditional one without `default` becomes its
+ * `default`; a later plain value replaces the property.
+ */
+export function mergeResponsiveStyles(
+  ...styles: (Record<string, unknown> | undefined | null | false)[]
+): Record<string, unknown> {
+  const merged: Record<string, unknown> = {}
+  for (const style of styles) {
+    if (!style) continue
+    for (const [prop, value] of Object.entries(style)) {
+      const previous = merged[prop]
+      if (isConditional(value) && isConditional(previous)) {
+        merged[prop] = { ...previous, ...value }
+      } else if (isConditional(value) && previous !== undefined && !('default' in value)) {
+        merged[prop] = { default: previous, ...value }
+      } else {
+        merged[prop] = value
+      }
+    }
+  }
+  return merged
+}
+
+/**
+ * A style object that applies only under one condition — a media query
+ * (`max-xs`) or a state (`hover`, `press`, `focus-visible`) — as conditional
+ * values: `when('hover', { opacity: 1 })` → `{ opacity: { hover: 1 } }`.
+ * Merge it with the base style through `mergeResponsiveStyles` so the base
+ * values stay in place.
+ */
+export function when(condition: string, style: Record<string, unknown>): Record<string, unknown> {
+  return Object.fromEntries(
+    Object.entries(style).map(([prop, value]) => [prop, { [condition]: value }]),
+  )
+}
+
+/**
+ * A flat style value from parts, skipping the empty ones:
+ * `flatValue('transparent', !disabled && 'hover:muted')` → `'transparent hover:muted'`.
+ */
+export function flatValue(...parts: (string | false | null | undefined)[]): FlatString | undefined {
+  const value = parts.filter(Boolean).join(' ')
+  return (value || undefined) as FlatString | undefined
+}
+
+/**
+ * The string shape Tamagui's style props take beyond a single token: a base
+ * and clauses (`'a hover:b'`) or a clause alone (`'hover:b'`).
+ */
+export type FlatString = `${string} ${string}` | `${string}:${string}`
+
+// A `{ width, height }` shadow offset is a structured value, not conditions.
+function isConditional(value: unknown): value is Record<string, unknown> {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    !Array.isArray(value) &&
+    !('width' in value) &&
+    !('height' in value)
+  )
 }

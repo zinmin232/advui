@@ -3,7 +3,7 @@ import { MinusIcon, PlusIcon } from '@advui/icons'
 
 export default function ButtonGroupOrientation() {
   return (
-    <HStack gap="$6" alignItems="center">
+    <HStack gap="6" alignItems="center">
       <ButtonGroup aria-label="Zoom" orientation="vertical" variant="outline" size="sm">
         <IconButton aria-label="Zoom in" icon={<PlusIcon />} />
         <IconButton aria-label="Zoom out" icon={<MinusIcon />} />

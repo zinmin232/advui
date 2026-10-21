@@ -8,10 +8,10 @@ import {
   useLayoutEffect,
   useRef,
 } from 'react'
-import { Menu, type TamaguiElement, useComposedRefs, withStaticProperties } from 'tamagui'
+import { Menu, type TamaguiElement, useComposedRefs, withStaticProperties } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { ariaState } from '../../utils/ariaState'
-import { createMenuContent, createMenuParts } from '../dropdown-menu/menuParts'
+import { type FocusDetails, createMenuContent, createMenuParts } from '../dropdown-menu/menuParts'
 import { useArrowKeys } from '../toolbar/arrowKeys'
 import { Text } from '../typography/Text'
 import { MenubarFrame, MenubarTriggerFrame } from './frames'
@@ -170,8 +170,8 @@ function MenubarTrigger({ children, disabled = false }: MenubarTriggerProps) {
   const pointer = useRef('')
   const toggle = () => bar.setValue(menu.open ? null : menu.value)
 
-  // Given to Menu.Trigger, these replace Tamagui's own open handlers (the
-  // child's would run after them): the bar decides which menu is open.
+  // Menu.Trigger runs these before its own open handlers and skips those for
+  // a prevented event: the bar decides which menu is open.
   const handlers = {
     onPointerDown: (event: TriggerPointerEvent) => {
       pointer.current = event.pointerType
@@ -180,7 +180,11 @@ function MenubarTrigger({ children, disabled = false }: MenubarTriggerProps) {
       if (!menu.open) event.preventDefault()
       toggle()
     },
-    onClick: () => {
+    onClick: (event: { preventDefault: () => void }) => {
+      // Tamagui opens on click instead of pointerdown wherever the screen
+      // takes touch (navigator.maxTouchPoints), mouse presses included, and
+      // toggles after us unless the event is prevented.
+      event.preventDefault()
       if (disabled || (pointer.current !== 'touch' && pointer.current !== 'pen')) return
       pointer.current = ''
       toggle()
@@ -218,7 +222,7 @@ function MenubarTrigger({ children, disabled = false }: MenubarTriggerProps) {
         open={menu.open}
         disabled={disabled}
       >
-        <Text size="sm" weight="medium" color="$foreground" userSelect="none">
+        <Text size="sm" color="foreground" userSelect="none" weight="medium">
           {children}
         </Text>
       </MenubarTriggerFrame>
@@ -252,10 +256,10 @@ function MenubarContent(props: MenubarContentProps) {
       {...props}
       id={menu.contentId}
       pointerEvents="auto"
-      onOpenAutoFocus={(event: Event) => {
+      onOpenAutoFocus={(details: FocusDetails) => {
         // Tamagui focuses the first menu in the page, which is the previous
         // one while it animates out.
-        event.preventDefault()
+        details.cancel()
         focusMenu()
       }}
       onEscapeKeyDown={() => {
@@ -268,10 +272,10 @@ function MenubarContent(props: MenubarContentProps) {
       onPointerDownOutside={() => {
         pressedOutside.current = true
       }}
-      onCloseAutoFocus={(event: Event) => {
+      onCloseAutoFocus={(details: FocusDetails) => {
         // Replaces Tamagui's, which keeps focus where it is after any focus
         // outside, even one before the menu was reopened.
-        event.preventDefault()
+        details.cancel()
         // Focus goes back to the trigger when the bar closed from this menu
         // (Escape, a choice), not when another menu took its place.
         if (pressedOutside.current || bar.valueRef.current !== null) return
@@ -282,10 +286,10 @@ function MenubarContent(props: MenubarContentProps) {
           if (!active || active === document.body) menu.triggerRef.current?.focus()
         })
       }}
-      onFocusOutside={(event: CustomEvent<{ originalEvent: FocusEvent }>) => {
+      onFocusOutside={(details: FocusDetails) => {
         // Focus on a trigger in the bar is the bar's to handle (hover, a press).
-        const target = event.detail.originalEvent.target as Node | null
-        if (target && bar.rootRef.current?.contains(target)) event.preventDefault()
+        const target = (details.event?.target ?? null) as Node | null
+        if (target && bar.rootRef.current?.contains(target)) details.cancel()
       }}
       onKeyDown={(event: { key: string; preventDefault: () => void }) => {
         const root = bar.rootRef.current

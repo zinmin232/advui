@@ -81,7 +81,7 @@ export default defineMeta({
           name: 'color',
           type: 'ColorTokens',
           token: 'color',
-          default: "'$warning', outlined in '$warningSoftForeground'",
+          default: "'warning', outlined in 'warningSoftForeground'",
           description:
             'Fill and outline of the chosen icons. The default amber has a darker outline so the icons stand out on light backgrounds.',
         },
@@ -89,20 +89,22 @@ export default defineMeta({
           name: 'emptyColor',
           type: 'ColorTokens',
           token: 'color',
-          default: "'$mutedForeground'",
-          description: 'Outline of the icons that are not chosen. `$error` while invalid.',
+          default: "'mutedForeground'",
+          description: 'Outline of the icons that are not chosen. `error` while invalid.',
         },
         {
           name: 'getValueText',
           type: '(value: number) => string',
           default: '"3 of 5"',
-          description: 'The value screen readers read, and a read-only rating’s name. Translate it here.',
+          description:
+            'The value screen readers read, and a read-only rating’s name. Translate it here.',
         },
         {
           name: 'disabled',
           type: 'boolean',
           default: 'false',
-          description: 'Dims the icons and ignores presses and keys. Also on inside a disabled Field or Form.',
+          description:
+            'Dims the icons and ignores presses and keys. Also on inside a disabled Field or Form.',
         },
         {
           name: 'invalid',
@@ -136,7 +138,8 @@ export default defineMeta({
     {
       name: 'half',
       title: 'Half ratings and sizes',
-      description: 'With `allowHalf`, each half of an icon is its own value. Small, medium and large.',
+      description:
+        'With `allowHalf`, each half of an icon is its own value. Small, medium and large.',
     },
     {
       name: 'read-only',
@@ -170,7 +173,7 @@ export default defineMeta({
     'An interactive rating is one `role="slider"` from 0 to `count`, as in the WAI-ARIA rating slider example, with `aria-valuetext` such as "3 of 5" (`getValueText`). The icons inside are hidden from assistive technology.',
     'Named by `aria-label` or, inside a Field, by the field’s label (`aria-labelledby`); the field’s help and error text describe it. A slider has no required state, so say what is required in the help or error text.',
     '`readOnly` makes it `role="img"`, named by its label and value ("Average rating: 4.3 of 5"), and takes it out of the Tab order.',
-    'The chosen icons are filled, not only colored, so the score does not rely on color alone. The default empty outline (`$mutedForeground`) has at least 3:1 contrast on the background in every preset.',
+    'The chosen icons are filled, not only colored, so the score does not rely on color alone. The default empty outline (`mutedForeground`) has at least 3:1 contrast on the background in every preset.',
     'On iOS and Android each icon reaches a 44pt touch target with `hitSlop`.',
   ],
   keyboard: [

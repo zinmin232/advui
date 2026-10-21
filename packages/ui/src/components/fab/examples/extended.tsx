@@ -5,8 +5,8 @@ export default function FabExtended() {
   return (
     // `placement` pins the FAB to a corner of its nearest positioned parent,
     // usually the screen; here a card stands in for the screen.
-    <Card position="relative" width="100%" maxWidth="$96" height="$56" overflow="hidden">
-      <VStack padding="$4" gap="$2">
+    <Card position="relative" width="100%" maxWidth="96" height="56" overflow="hidden">
+      <VStack padding="4" gap="2">
         <Text weight="semibold">Inbox</Text>
         <Text size="sm" tone="muted">
           No new messages.

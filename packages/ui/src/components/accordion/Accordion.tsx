@@ -12,11 +12,12 @@ import {
   createStyledContext,
   isWeb,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 import { Text } from '../typography/Text'
 import { ariaState } from '../../utils/ariaState'
+import { flatValue } from '../../utils/responsive'
 import { isTextContent } from '../../utils/isTextContent'
 
 export type AccordionVariant = 'default' | 'card'
@@ -42,9 +43,9 @@ const AccordionRoot = forwardRef<TamaguiElement, AccordionProps>(function Accord
         {...(variant === 'card'
           ? {
               borderWidth: 1,
-              borderColor: '$border',
-              borderRadius: '$lg',
-              backgroundColor: '$card',
+              borderColor: 'border',
+              borderRadius: 'lg',
+              backgroundColor: 'card',
               overflow: 'hidden',
             }
           : null)}
@@ -69,11 +70,10 @@ const AccordionItem = forwardRef<TamaguiElement, AccordionItemProps>(
       <ItemContext.Provider value={{ disabled: !!props.disabled, contentId }}>
         <TamaguiAccordion.Item
           ref={ref as never}
-          // Card items draw a top divider; the first one is clipped by the frame.
           {...(variant === 'card'
             ? { borderTopWidth: 1, marginTop: -1 }
             : { borderBottomWidth: 1 })}
-          borderColor="$border"
+          borderColor="border"
           {...props}
         />
       </ItemContext.Provider>
@@ -94,36 +94,33 @@ const AccordionTrigger = forwardRef<TamaguiElement, AccordionTriggerProps>(
     const { variant } = AccordionStyleContext.useStyledContext()
     const reducedMotion = useReducedMotion()
     const { disabled, contentId } = useContext(ItemContext)
-    const ripple = useRipple({ color: '$foreground', disabled, onPressIn, onPressOut })
+    const ripple = useRipple({ color: 'foreground', disabled, onPressIn, onPressOut })
 
     const trigger = (
       <TamaguiAccordion.Trigger
         ref={ref as never}
         aria-controls={contentId}
-        unstyled
         flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
-        gap="$3"
+        gap="3"
         width="100%"
-        minHeight="$11"
-        paddingVertical="$3"
-        paddingHorizontal={variant === 'card' ? '$4' : '$1'}
+        minHeight="11"
+        paddingVertical="3"
+        paddingHorizontal={variant === 'card' ? '4' : '1'}
         borderWidth={0}
-        borderRadius={variant === 'card' ? 0 : '$sm'}
-        backgroundColor="transparent"
+        borderRadius={variant === 'card' ? 0 : 'sm'}
+        backgroundColor={flatValue(
+          'transparent',
+          !disabled && 'hover:muted',
+          !disabled && !ripple.active && 'press:accent',
+        )}
         cursor={disabled ? 'not-allowed' : 'pointer'}
         opacity={disabled ? 0.5 : 1}
-        hoverStyle={disabled ? undefined : { backgroundColor: '$muted' }}
-        pressStyle={disabled || ripple.active ? undefined : { backgroundColor: '$accent' }}
-        focusVisibleStyle={{
-          outlineColor: '$ring',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineOffset: -2,
-        }}
-        // On web the trigger renders a <button>; native needs the role spelled
-        // out, and the disabled state, which Tamagui sets on web only.
+        outlineColor="focus-visible:ring"
+        outlineStyle="focus-visible:solid"
+        outlineWidth="focus-visible:2px"
+        outlineOffset="focus-visible:-2px"
         {...(!isWeb && { role: 'button', accessible: true, 'aria-disabled': ariaState(disabled) })}
         {...props}
         {...ripple.props}
@@ -143,7 +140,7 @@ const AccordionTrigger = forwardRef<TamaguiElement, AccordionTriggerProps>(
               rotate={open ? '180deg' : '0deg'}
               transition={reducedMotion ? undefined : 'quick'}
             >
-              <ChevronDownIcon size={16} color="$mutedForeground" />
+              <ChevronDownIcon size={16} color="mutedForeground" />
             </View>
           </>
         )}
@@ -158,8 +155,8 @@ const AccordionTrigger = forwardRef<TamaguiElement, AccordionTriggerProps>(
         render={`h${level}` as 'h3'}
         margin={0}
         padding={0}
-        fontSize="$2"
-        lineHeight="$2"
+        fontSize="2"
+        lineHeight="2"
         fontWeight="normal"
       >
         {trigger}
@@ -180,14 +177,10 @@ const AccordionContent = forwardRef<TamaguiElement, AccordionContentProps>(
         <TamaguiAccordion.Content
           ref={ref as never}
           id={contentId}
-          // A region is a web landmark. React Native gives a view with a role
-          // or aria-labelledby its children's text as a label, so TalkBack
-          // would read the section twice.
-          {...(!isWeb && { role: undefined, 'aria-labelledby': undefined })}
-          unstyled
-          paddingBottom="$4"
-          paddingHorizontal={variant === 'card' ? '$4' : '$1'}
-          exitStyle={{ opacity: 0 }}
+          {...(!isWeb && { role: null as never, 'aria-labelledby': null as never })}
+          paddingBottom="4"
+          paddingHorizontal={variant === 'card' ? '4' : '1'}
+          opacity="exit:0"
           transition={reducedMotion ? undefined : 'medium'}
           {...props}
         >

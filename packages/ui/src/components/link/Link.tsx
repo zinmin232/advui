@@ -1,7 +1,13 @@
 import { ExternalLinkIcon } from '@advui/icons'
 import { type CSSProperties, type ReactNode, forwardRef } from 'react'
 import { type GestureResponderEvent, Linking } from 'react-native'
-import { type GetProps, type TamaguiTextElement, Text as TamaguiText, isWeb, styled } from 'tamagui'
+import {
+  type GetProps,
+  type TamaguiTextElement,
+  Text as TamaguiText,
+  isWeb,
+  styled,
+} from 'tamagui/unstyled'
 import { type TextSize, textSizes, textWeights } from '../typography/Text'
 
 export type LinkTone = 'primary' | 'muted' | 'inherit'
@@ -48,33 +54,32 @@ const visuallyHidden = {
 const warnedPaths = new Set<string>()
 
 const LinkText = styled(TamaguiText, {
-  name: 'Link',
+  displayName: 'Link',
   cursor: 'pointer',
   // A link without an href renders a <button>: drop the browser's button chrome.
   padding: 0,
   borderWidth: 0,
   backgroundColor: 'transparent',
-  focusVisibleStyle: {
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: 2,
-    borderRadius: '$sm',
-  },
-
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
+  borderRadius: 'focus-visible:sm',
   variants: {
     tone: {
-      primary: { color: '$primaryText' },
-      muted: { color: '$mutedForeground', hoverStyle: { color: '$foreground' } },
+      primary: {
+        color: 'primaryText',
+      },
+      muted: {
+        color: 'mutedForeground hover:foreground',
+      },
       // Takes the surrounding text's color, for links inside a sentence.
       inherit: {},
     },
     underline: {
       always: { textDecorationLine: 'underline' },
       hover: {
-        textDecorationLine: 'none',
-        hoverStyle: { textDecorationLine: 'underline' },
-        focusVisibleStyle: { textDecorationLine: 'underline' },
+        textDecorationLine: 'none hover:underline focus-visible:underline',
       },
       none: { textDecorationLine: 'none' },
     },
@@ -82,7 +87,9 @@ const LinkText = styled(TamaguiText, {
     size: textSizes,
     weight: textWeights,
     pressable: {
-      true: { pressStyle: { opacity: 0.7 } },
+      true: {
+        opacity: 'press:0.7',
+      },
     },
   } as const,
 })
@@ -190,9 +197,7 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
   return (
     <LinkText
       ref={ref}
-      // Tamagui's Text sets the theme's text color unless unstyled. Before
-      // tone, which must win: later variant props override earlier ones.
-      unstyled={tone === 'inherit'}
+      // The unstyled Text has no color of its own, so `inherit` keeps the parent's.
       tone={tone}
       underline={underline}
       size={size}
@@ -207,7 +212,6 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
           {'\u00A0'}
           <TamaguiText
             // Unstyled, so the icon's currentColor is the link's.
-            unstyled
             {...(isWeb && { display: 'inline-flex', verticalAlign: 'middle' })}
             {...(!isWeb && { accessible: false })}
           >
@@ -217,11 +221,7 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
             />
           </TamaguiText>
           {/* Text, not the icon's label: every browser puts text in the link's name. */}
-          {isWeb ? (
-            <TamaguiText unstyled {...visuallyHidden}>
-              {` ${labels.external}`}
-            </TamaguiText>
-          ) : null}
+          {isWeb ? <TamaguiText {...visuallyHidden}>{` ${labels.external}`}</TamaguiText> : null}
         </>
       ) : null}
     </LinkText>
@@ -230,5 +230,5 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
 
 // Native icons do not inherit the text color.
 function color(tone: Exclude<LinkTone, 'inherit'>) {
-  return tone === 'primary' ? '$primaryText' : '$mutedForeground'
+  return tone === 'primary' ? 'primaryText' : 'mutedForeground'
 }

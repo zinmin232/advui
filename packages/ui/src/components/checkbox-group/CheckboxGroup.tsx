@@ -16,7 +16,7 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { FieldContext, type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
 import { sentences } from '../../utils/plainText'
@@ -57,7 +57,7 @@ function useGroup(part: string) {
 }
 
 const CheckboxGroupFrame = styled(View, {
-  name: 'CheckboxGroup',
+  displayName: 'CheckboxGroup',
   role: 'group',
 
   variants: {
@@ -173,8 +173,8 @@ const CheckboxGroupRoot = forwardRef<TamaguiElement, CheckboxGroupProps>(
           {...(gap !== undefined
             ? { gap }
             : orientation === 'horizontal'
-              ? { columnGap: '$5', rowGap: '$3' }
-              : { gap: '$3' })}
+              ? { columnGap: '5', rowGap: '3' }
+              : { gap: '3' })}
           // A <label for> cannot name a group, so a Field's label is linked by id.
           {...(isWeb &&
             field?.labelId &&

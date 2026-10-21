@@ -8,7 +8,7 @@ import {
   createStyledContext,
   isWeb,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { ariaState } from '../../utils/ariaState'
@@ -26,7 +26,7 @@ export const ListContext = createStyledContext<{ size: ListItemSize }>({ size: '
 export const ListItemPosition = createContext({ inList: false, index: 0, divided: false })
 
 const ListItemFrame = styled(View, {
-  name: 'ListItem',
+  displayName: 'ListItem',
   position: 'relative',
   flexDirection: 'row',
   alignItems: 'stretch',
@@ -36,17 +36,26 @@ const ListItemFrame = styled(View, {
   variants: {
     variant: {
       plain: {},
-      filled: { backgroundColor: '$muted' },
-      outline: { backgroundColor: '$card', borderWidth: 1, borderColor: '$border' },
+      filled: {
+        backgroundColor: 'muted',
+      },
+      outline: {
+        backgroundColor: 'card',
+        borderWidth: 1,
+        borderColor: 'border',
+      },
     },
     divider: {
-      true: { borderTopWidth: 1, borderColor: '$border' },
+      true: {
+        borderTopWidth: 1,
+        borderColor: 'border',
+      },
     },
   } as const,
 })
 
 const ListItemRow = styled(View, {
-  name: 'ListItemRow',
+  displayName: 'ListItemRow',
   context: ListContext,
   // Positioned so it paints above the selected fill on web.
   position: 'relative',
@@ -54,78 +63,102 @@ const ListItemRow = styled(View, {
   minWidth: 0,
   flexDirection: 'row',
   alignItems: 'center',
-  gap: '$3',
-
+  gap: '3',
   variants: {
     size: {
-      sm: { paddingHorizontal: '$3', paddingVertical: '$2', minHeight: '$11' },
-      md: { paddingHorizontal: '$4', paddingVertical: '$3', minHeight: '$12' },
-      lg: { paddingHorizontal: '$4', paddingVertical: '$4', minHeight: '$14' },
+      sm: {
+        paddingHorizontal: '3',
+        paddingVertical: '2',
+        minHeight: '11',
+      },
+      md: {
+        paddingHorizontal: '4',
+        paddingVertical: '3',
+        minHeight: '12',
+      },
+      lg: {
+        paddingHorizontal: '4',
+        paddingVertical: '4',
+        minHeight: '14',
+      },
     },
     interactive: {
       true: {
         cursor: 'pointer',
-        backgroundColor: 'transparent',
+        backgroundColor: 'transparent hover:accent press:accentHover',
         borderWidth: 0,
-        hoverStyle: { backgroundColor: '$accent' },
-        pressStyle: { backgroundColor: '$accentHover' },
         // Inset, so the item's own clipping does not cut it off.
-        focusVisibleStyle: {
-          outlineColor: '$ring',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineOffset: -2,
-        },
+        outlineColor: 'focus-visible:ring',
+        outlineStyle: 'focus-visible:solid',
+        outlineWidth: 'focus-visible:2px',
+        outlineOffset: 'focus-visible:-2px',
       },
     },
     disabled: {
       true: {
         opacity: 0.5,
         cursor: 'not-allowed',
-        hoverStyle: { backgroundColor: 'transparent' },
-        pressStyle: { backgroundColor: 'transparent' },
+        backgroundColor: 'hover:transparent press:transparent',
       },
     },
   } as const,
 })
 
 const ListItemContent = styled(View, {
-  name: 'ListItemContent',
+  displayName: 'ListItemContent',
   flex: 1,
   minWidth: 0,
-  gap: '$0.5',
+  gap: '0-5',
 })
 
 const ListItemTitle = styled(Text, {
-  name: 'ListItemTitle',
+  displayName: 'ListItemTitle',
   context: ListContext,
   weight: 'medium',
 
   variants: {
     size: {
-      sm: { fontSize: '$2', lineHeight: '$2' },
-      md: { fontSize: '$3', lineHeight: '$3' },
-      lg: { fontSize: '$4', lineHeight: '$4' },
+      sm: {
+        fontSize: '2',
+        lineHeight: '2',
+      },
+      md: {
+        fontSize: '3',
+        lineHeight: '3',
+      },
+      lg: {
+        fontSize: '4',
+        lineHeight: '4',
+      },
     },
   } as const,
 })
 
 const ListItemDescription = styled(Text, {
-  name: 'ListItemDescription',
+  displayName: 'ListItemDescription',
   context: ListContext,
   tone: 'muted',
 
   variants: {
     size: {
-      sm: { fontSize: '$1', lineHeight: '$1' },
-      md: { fontSize: '$2', lineHeight: '$2' },
-      lg: { fontSize: '$3', lineHeight: '$3' },
+      sm: {
+        fontSize: '1',
+        lineHeight: '1',
+      },
+      md: {
+        fontSize: '2',
+        lineHeight: '2',
+      },
+      lg: {
+        fontSize: '3',
+        lineHeight: '3',
+      },
     },
   } as const,
 })
 
 const iconSizes: Record<ListItemSize, number> = { sm: 20, md: 20, lg: 24 }
-const rowPadding = { sm: '$3', md: '$4', lg: '$4' } as const
+const rowPadding = { sm: '3', md: '4', lg: '4' } as const
 
 type RowProps = GetProps<typeof ListItemRow>
 
@@ -155,6 +188,13 @@ function splitSpacing(props: Record<string, unknown>) {
     const target = rowSpacing[key]
     if (target) row[target] = value
     else frame[key] = value
+  }
+  // The size variants set paddingVertical and paddingHorizontal, which Tamagui
+  // 3 keeps as their own declarations over a `padding`: give it both axes.
+  if (row.padding !== undefined) {
+    row.paddingVertical ??= row.padding
+    row.paddingHorizontal ??= row.padding
+    delete row.padding
   }
   return { row, frame }
 }
@@ -253,7 +293,7 @@ export const ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListI
   const isLink = href !== undefined && !selectable
   const interactive = selectable || isLink || !!onPress
   const ripple = useRipple({
-    color: '$foreground',
+    color: 'foreground',
     disabled: !interactive || disabled,
     onPressIn,
     onPressOut,
@@ -265,7 +305,7 @@ export const ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListI
     <>
       {leading != null ? (
         <View flexShrink={0} alignItems="center" justifyContent="center">
-          <IconDefaults size={iconSizes[size]} color={color ?? '$mutedForeground'}>
+          <IconDefaults size={iconSizes[size]} color={color ?? 'mutedForeground'}>
             {leading}
           </IconDefaults>
         </View>
@@ -289,8 +329,8 @@ export const ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListI
       {trailing != null ? (
         // Never wider than half the row, so long meta wraps instead of
         // squeezing the title.
-        <View flexShrink={0} maxWidth="50%" flexDirection="row" alignItems="center" gap="$3">
-          <IconDefaults size={16} color={color ?? '$mutedForeground'}>
+        <View flexShrink={0} maxWidth="50%" flexDirection="row" alignItems="center" gap="3">
+          <IconDefaults size={16} color={color ?? 'mutedForeground'}>
             {isTextContent(trailing) ? (
               <Text size="sm" tone="muted" {...textColor}>
                 {trailing}
@@ -337,7 +377,7 @@ export const ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListI
       ref={ref}
       variant={variant}
       divider={divider}
-      borderRadius={variant === 'plain' ? (inList || divider ? 0 : '$md') : '$lg'}
+      borderRadius={variant === 'plain' ? (inList || divider ? 0 : 'md') : 'lg'}
       {...(inList && { role: 'listitem' as const })}
       {...(!interactive && ariaLabel !== undefined && { 'aria-label': ariaLabel })}
       {...(!interactive && { onPressIn, onPressOut })}
@@ -351,7 +391,7 @@ export const ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListI
         right={0}
         bottom={0}
         left={0}
-        backgroundColor="$secondary"
+        backgroundColor="secondary"
         opacity={shown}
       />
       {/* A shape as well as a fill, so the selected item stands out on every
@@ -361,12 +401,12 @@ export const ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListI
         pointerEvents="none"
         position="absolute"
         left={0}
-        top="$2"
-        bottom="$2"
-        width="$1"
-        borderTopRightRadius="$full"
-        borderBottomRightRadius="$full"
-        backgroundColor="$primary"
+        top="2"
+        bottom="2"
+        width="1"
+        borderTopRightRadius="full"
+        borderBottomRightRadius="full"
+        backgroundColor="primary"
         opacity={shown}
       />
       <ListContext.Provider size={size}>
@@ -387,7 +427,7 @@ export const ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListI
               if (selectable) setSelected(!selected)
             }}
             {...spacing}
-            {...(ripple.active && { pressStyle: { backgroundColor: 'transparent' } })}
+            {...(ripple.active && { backgroundColor: 'press:transparent' })}
             {...ripple.props}
           >
             {ripple.element}
@@ -405,7 +445,7 @@ export const ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListI
           flexShrink={0}
           flexDirection="row"
           alignItems="center"
-          gap="$2"
+          gap="2"
           paddingRight={
             (spacing.paddingRight ??
               spacing.paddingHorizontal ??

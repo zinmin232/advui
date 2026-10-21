@@ -9,32 +9,39 @@ import {
   XStack,
   isWeb,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useFieldControl } from '../../hooks/useFieldControl'
 import type { InputProps } from '../input/Input'
 
 const slotSizes = {
-  sm: { width: '$9', height: '$10', fontSize: '$3' },
-  md: { width: '$11', height: '$12', fontSize: '$4' },
-  lg: { width: '$14', height: '$14', fontSize: '$6' },
+  sm: { width: '9', height: '10', fontSize: '3' },
+  md: { width: '11', height: '12', fontSize: '4' },
+  lg: { width: '14', height: '14', fontSize: '6' },
 } as const
 
 const Slot = styled(View, {
-  name: 'OtpInputSlot',
+  displayName: 'OtpInputSlot',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: '$background',
+  backgroundColor: 'background',
   borderWidth: 1,
-  borderColor: '$input',
-  borderRadius: '$md',
-
+  borderColor: 'input',
+  borderRadius: 'md',
   variants: {
     active: {
-      true: { borderColor: '$ring', outlineColor: '$ring', outlineStyle: 'solid', outlineWidth: 1 },
+      true: {
+        borderColor: 'ring',
+        outlineColor: 'ring',
+        outlineStyle: 'solid',
+        outlineWidth: 1,
+      },
     },
     invalid: {
-      true: { borderColor: '$error', outlineColor: '$error' },
+      true: {
+        borderColor: 'error',
+        outlineColor: 'error',
+      },
     },
   } as const,
 })
@@ -42,7 +49,7 @@ const Slot = styled(View, {
 // The real field lies over the slots: one text box, so paste, SMS autofill and
 // screen readers all work, while the slots only draw its characters.
 const HiddenField = styled(TamaguiInput, {
-  name: 'OtpInputField',
+  displayName: 'OtpInputField',
   position: 'absolute',
   top: 0,
   left: 0,
@@ -58,7 +65,7 @@ const HiddenField = styled(TamaguiInput, {
   // Android leaves a view with alpha 0 out of the accessibility tree, so
   // TalkBack could not reach the field.
   opacity: isWeb ? 0 : 0.01,
-  fontSize: '$1',
+  fontSize: '1',
   cursor: 'text',
   outlineWidth: 0,
 })
@@ -115,11 +122,11 @@ export const OtpInput = forwardRef<TamaguiElement, OtpInputProps>(function OtpIn
 
   return (
     <View position="relative" alignSelf="flex-start" opacity={disabled ? 0.5 : 1}>
-      <XStack gap="$2" alignItems="center" aria-hidden>
+      <XStack gap="2" alignItems="center" aria-hidden>
         {Array.from({ length }, (_, i) => (
           <Fragment key={i}>
             {groupSize && i > 0 && i % groupSize === 0 ? (
-              <Text color="$mutedForeground" fontSize={slot.fontSize}>
+              <Text color="mutedForeground" fontSize={slot.fontSize}>
                 –
               </Text>
             ) : null}
@@ -129,7 +136,7 @@ export const OtpInput = forwardRef<TamaguiElement, OtpInputProps>(function OtpIn
               active={focused && i === activeIndex}
               invalid={invalid}
             >
-              <Text fontFamily="$body" fontSize={slot.fontSize} color="$foreground">
+              <Text fontFamily="body" fontSize={slot.fontSize} color="foreground">
                 {value[i] ?? ''}
               </Text>
             </Slot>

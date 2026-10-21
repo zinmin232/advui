@@ -2,7 +2,7 @@ import { Timeline } from '@advui/data'
 
 export default function TimelineBasic() {
   return (
-    <Timeline width="100%" maxWidth="$96">
+    <Timeline width="100%" maxWidth="96">
       <Timeline.Item
         title="Assessment published"
         time="Sep 24"

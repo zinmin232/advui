@@ -66,7 +66,7 @@ export default defineMeta({
     },
     {
       name: 'Popover.Content',
-      description: 'Takes View props to style the panel; its width defaults to `$72`.',
+      description: 'Takes View props to style the panel; its width defaults to `72`.',
       props: [],
       children: { accepts: 'any' },
       within: 'Popover',

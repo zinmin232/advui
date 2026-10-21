@@ -11,8 +11,8 @@ export default function AvatarGroup() {
           alt={name}
           src={`https://i.pravatar.cc/128?img=${index + 10}`}
           borderWidth={2}
-          borderColor="$background"
-          marginLeft={index === 0 ? 0 : '$-2'}
+          borderColor="background"
+          marginLeft={index === 0 ? 0 : '-2'}
         />
       ))}
     </HStack>

@@ -11,19 +11,18 @@ import { withBasePath } from '../lib/site'
 
 export function ExamplesGallery() {
   return (
-    <View minHeight="100vh" backgroundColor="$background">
+    <View minHeight="100vh" backgroundColor="background">
       <SiteHeader />
       <VStack
         render="main"
         id="main"
-        gap="$6"
-        padding="$4"
+        gap="6"
+        padding="4 md:8"
         maxWidth={1280}
         marginHorizontal="auto"
         width="100%"
-        $md={{ padding: '$8' }}
       >
-        <VStack gap="$2">
+        <VStack gap="2">
           <Text render="h1" size="4xl" weight="bold" margin={0}>
             Examples
           </Text>
@@ -32,7 +31,7 @@ export function ExamplesGallery() {
             Android.
           </Text>
         </VStack>
-        <Grid columns={{ base: 1, md: 2, lg: 3 }} gap="$4">
+        <Grid columns={{ base: 1, md: 2, lg: 3 }} gap="4">
           {appExamples.map((example) => (
             <Link key={example.slug} href={`/examples/${example.slug}`} className="plain-link">
               <Card interactive height="100%">
@@ -40,15 +39,15 @@ export function ExamplesGallery() {
                   <HStack justifyContent="space-between">
                     <Card.Title>{example.title}</Card.Title>
                     {example.device === 'mobile' ? (
-                      <SmartphoneIcon size={16} color="$mutedForeground" />
+                      <SmartphoneIcon size={16} color="mutedForeground" />
                     ) : (
-                      <MonitorIcon size={16} color="$mutedForeground" />
+                      <MonitorIcon size={16} color="mutedForeground" />
                     )}
                   </HStack>
                   <Card.Description>{example.description}</Card.Description>
                 </Card.Header>
                 <Card.Content>
-                  <HStack gap="$1" flexWrap="wrap">
+                  <HStack gap="1" flexWrap="wrap">
                     {example.components.map((c) => (
                       <Badge key={c} variant="secondary" size="sm">
                         {c}
@@ -71,19 +70,19 @@ export function ExampleViewer({ slug }: { slug: string }) {
   if (!example) return null
   const { Component } = example
   return (
-    <View minHeight="100vh" backgroundColor="$background">
+    <View minHeight="100vh" backgroundColor="background">
       <SiteHeader />
-      <VStack render="main" id="main" gap="$4" padding="$4" $md={{ padding: '$6' }}>
+      <VStack render="main" id="main" gap="4" padding="4 md:6">
         <HStack
           justifyContent="space-between"
           flexWrap="wrap"
-          gap="$3"
+          gap="3"
           maxWidth={1280}
           width="100%"
           marginHorizontal="auto"
         >
           {/* Shrinks so the description wraps on phones instead of widening the page. */}
-          <HStack gap="$3" flexShrink={1} minWidth={0}>
+          <HStack gap="3" flexShrink={1} minWidth={0}>
             <Link href="/examples" className="plain-link" aria-label="All examples">
               <ArrowLeftIcon />
             </Link>
@@ -96,7 +95,7 @@ export function ExampleViewer({ slug }: { slug: string }) {
               </Text>
             </VStack>
           </HStack>
-          <HStack gap="$1" role="group" aria-label="Frame">
+          <HStack gap="1" role="group" aria-label="Frame">
             <Button
               size="sm"
               variant={device === 'desktop' ? 'secondary' : 'ghost'}
@@ -121,13 +120,13 @@ export function ExampleViewer({ slug }: { slug: string }) {
           <View
             testID="example-frame"
             borderWidth={1}
-            borderColor="$border"
-            borderRadius="$xl"
+            borderColor="border"
+            borderRadius="xl"
             overflow="hidden"
             maxWidth={1280}
             width="100%"
             marginHorizontal="auto"
-            backgroundColor="$background"
+            backgroundColor="background"
           >
             <Component />
           </View>
@@ -156,7 +155,7 @@ export function ExampleFrame({ slug }: { slug: string }) {
   if (!example) return null
   const { Component } = example
   return (
-    <View render="main" minHeight="100vh" backgroundColor="$background">
+    <View render="main" minHeight="100vh" backgroundColor="background">
       <Component />
     </View>
   )

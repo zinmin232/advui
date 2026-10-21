@@ -21,15 +21,15 @@ export default function HoverCardBasic() {
           </Text>
         </HoverCard.Trigger>
         <HoverCard.Content>
-          <HStack gap="$3">
+          <HStack gap="3">
             <Avatar alt="Ada Lovelace" />
-            <VStack gap="$1" flex={1}>
+            <VStack gap="1" flex={1}>
               <Text size="sm" weight="semibold">
                 Ada Lovelace
               </Text>
               <Text size="sm">Writes the first algorithms meant for a machine.</Text>
-              <HStack gap="$1.5" alignItems="center" paddingTop="$1">
-                <CalendarIcon size={14} color="$mutedForeground" />
+              <HStack gap="1-5" alignItems="center" paddingTop="1">
+                <CalendarIcon size={14} color="mutedForeground" />
                 <Text size="xs" tone="muted">
                   Joined December 1842
                 </Text>

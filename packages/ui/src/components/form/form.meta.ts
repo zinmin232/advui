@@ -78,7 +78,7 @@ const save = async () => {
           name: 'gap',
           type: 'SpaceTokens | number',
           token: 'space',
-          default: "'$4'",
+          default: "'4'",
           description: 'Space between the fields.',
         },
         {
@@ -198,7 +198,7 @@ const save = async () => {
         options: ['vertical', 'horizontal'],
         default: 'vertical',
       },
-      { prop: 'gap', type: 'select', options: ['$2', '$4', '$6'], default: '$4' },
+      { prop: 'gap', type: 'select', options: ['2', '4', '6'], default: '4' },
       { prop: 'loading', type: 'boolean', default: false },
       { prop: 'loadingText', type: 'text', default: 'Saving…' },
       { prop: 'disabled', type: 'boolean', default: false },
@@ -254,7 +254,7 @@ const save = async () => {
     { keys: 'Tab', action: 'Moves through the fields and actions in order.' },
   ],
   responsive:
-    'Vertical forms fill their container and stack fields. Horizontal forms wrap fields to the next line when they run out of room; give fields `flex` and `minWidth`. Use media props (`$sm={{ padding: "$6" }}`) for per-breakpoint styles.',
+    'Vertical forms fill their container and stack fields. Horizontal forms wrap fields to the next line when they run out of room; give fields `flex` and `minWidth`. Use flat values (`padding="4 sm:6"`) for per-breakpoint styles.',
   platformNotes: {
     web: 'Renders `<form noValidate>`; `Form.Submit` is `<button type="submit">`.',
     ios: 'No form element: `Form.Submit` calls `onSubmit` on press. The loading status is read from the busy button.',

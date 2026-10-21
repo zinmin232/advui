@@ -16,7 +16,7 @@ export default defineMeta({
 <Container size="lg">…page…</Container>
 
 // Edge to edge on phones, padded from md
-<Container gutter={{ base: '$0', md: '$6' }}>…</Container>`,
+<Container gutter={{ base: '0', md: '6' }}>…</Container>`,
   parts: [
     {
       name: 'Container',
@@ -35,9 +35,9 @@ export default defineMeta({
           type: 'SpaceTokens',
           token: 'space',
           responsive: true,
-          default: "{ base: '$4', md: '$6', lg: '$8' }",
+          default: "{ base: '4', md: '6', lg: '8' }",
           description:
-            'Side padding. A token or map replaces the default at every breakpoint; `"$0"` removes it. Since 0.9.0.',
+            'Side padding. A token or map replaces the default at every breakpoint; `"0"` removes it. Since 0.9.0.',
         },
         {
           name: 'centerContent',
@@ -54,7 +54,7 @@ export default defineMeta({
     {
       name: 'gutter',
       title: 'Gutter and centered content',
-      description: 'The default gutter, `gutter="$0"` and `centerContent`.',
+      description: 'The default gutter, `gutter="0"` and `centerContent`.',
     },
   ],
   accessibility: ['Visual only.'],
@@ -69,11 +69,7 @@ export default defineMeta({
         ['`.container`', '`<Container>`', 'Up to 1280px (`xl`), centered.'],
         ['`.container-lg`', '`<Container size="lg">`', 'Also `sm`, `md`, `xl` and `xxl`.'],
         ['`.container-fluid`', '`<Container size="full">`', 'There is no separate `fluid` prop.'],
-        [
-          '`.px-0` on a container',
-          '`gutter="$0"`',
-          'Or a map, such as `{ base: "$0", md: "$6" }`.',
-        ],
+        ['`.px-0` on a container', '`gutter="0"`', 'Or a map, such as `{ base: "0", md: "6" }`.'],
       ],
     },
   ],

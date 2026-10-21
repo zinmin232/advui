@@ -5,8 +5,8 @@ import { useState } from 'react'
 export default function CollapsibleSettings() {
   const [open, setOpen] = useState(false)
   return (
-    <Collapsible open={open} onOpenChange={setOpen} gap="$3" width="100%" maxWidth="$80">
-      <VStack gap="$1.5">
+    <Collapsible open={open} onOpenChange={setOpen} gap="3" width="100%" maxWidth="80">
+      <VStack gap="1-5">
         <Label htmlFor="clp-name">Project name</Label>
         <Input id="clp-name" defaultValue="Atlas" />
       </VStack>
@@ -24,12 +24,12 @@ export default function CollapsibleSettings() {
           Advanced options
         </Button>
       </Collapsible.Trigger>
-      <Collapsible.Content gap="$3">
-        <VStack gap="$1.5">
+      <Collapsible.Content gap="3">
+        <VStack gap="1-5">
           <Label htmlFor="clp-slug">URL slug</Label>
           <Input id="clp-slug" defaultValue="atlas" />
         </VStack>
-        <HStack justifyContent="space-between" gap="$4">
+        <HStack justifyContent="space-between" gap="4">
           <VStack flex={1}>
             <Label htmlFor="clp-private">Private project</Label>
             <Text size="sm" tone="muted">

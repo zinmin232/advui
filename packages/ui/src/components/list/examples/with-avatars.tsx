@@ -9,7 +9,7 @@ const team = [
 
 export default function ListWithAvatars() {
   return (
-    <List divided size="sm" width="100%" maxWidth="$96">
+    <List divided size="sm" width="100%" maxWidth="96">
       {team.map((person) => (
         <List.Item
           key={person.name}

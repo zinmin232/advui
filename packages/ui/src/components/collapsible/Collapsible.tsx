@@ -7,7 +7,7 @@ import {
   useContext,
   useId,
 } from 'react'
-import { type GetProps, type TamaguiElement, View, withStaticProperties } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, withStaticProperties } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 
 type CollapsibleState = {

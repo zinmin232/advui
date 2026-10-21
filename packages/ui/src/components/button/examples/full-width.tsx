@@ -2,7 +2,7 @@ import { Button, VStack } from '@advui/core'
 
 export default function ButtonFullWidth() {
   return (
-    <VStack gap="$2" width="100%" maxWidth="$80">
+    <VStack gap="2" width="100%" maxWidth="80">
       <Button fullWidth size="lg">
         Create account
       </Button>

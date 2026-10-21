@@ -21,7 +21,7 @@ import {
   useConfiguration,
   useMedia,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import {
   AppShellContext,
   type AppShellContextValue,
@@ -76,13 +76,11 @@ const visuallyHidden = {
 } as const
 
 const RootFrame = styled(View, {
-  name: 'AppShell',
+  displayName: 'AppShell',
   width: '100%',
   overflow: 'hidden',
-  backgroundColor: '$background',
-  // Fills the screen. `height` (or `flex`) overrides it, such as in a preview.
+  backgroundColor: 'background',
   ...(isWeb ? { height: '100dvh' as never } : { flexGrow: 1, flexShrink: 1 }),
-
   variants: {
     layout: {
       'header-full': { flexDirection: 'column' },
@@ -92,33 +90,33 @@ const RootFrame = styled(View, {
 })
 
 const HeaderFrame = styled(View, {
-  name: 'AppShellHeader',
+  displayName: 'AppShellHeader',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: '$2',
-  minHeight: '$14',
-  paddingHorizontal: '$4',
-  backgroundColor: '$background',
+  gap: '2',
+  minHeight: '14',
+  paddingHorizontal: '4',
+  backgroundColor: 'background',
   borderBottomWidth: 1,
-  borderColor: '$border',
+  borderColor: 'border',
   flexShrink: 0,
 })
 
 const FooterFrame = styled(View, {
-  name: 'AppShellFooter',
+  displayName: 'AppShellFooter',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: '$2',
-  minHeight: '$12',
-  paddingHorizontal: '$4',
-  backgroundColor: '$background',
+  gap: '2',
+  minHeight: '12',
+  paddingHorizontal: '4',
+  backgroundColor: 'background',
   borderTopWidth: 1,
-  borderColor: '$border',
+  borderColor: 'border',
   flexShrink: 0,
 })
 
 const SidebarFrame = styled(View, {
-  name: 'AppShellSidebar',
+  displayName: 'AppShellSidebar',
   flexShrink: 0,
   minHeight: 0,
   ...(isWeb && { overflowY: 'auto' }),
@@ -126,29 +124,27 @@ const SidebarFrame = styled(View, {
 
 /** Web: the box that scrolls, around the header (when it scrolls too) and `<main>`. */
 const ScrollerFrame = styled(View, {
-  name: 'AppShellScroller',
+  displayName: 'AppShellScroller',
   flex: 1,
   minHeight: 0,
   minWidth: 0,
   overflowY: 'auto',
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:-2px',
   // Keyboard users scroll it with the arrow keys once it has focus.
   tabIndex: 0,
-  focusVisibleStyle: {
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: -2,
-  },
 })
 
 const MainFrame = styled(View, {
-  name: 'AppShellMain',
+  displayName: 'AppShellMain',
   flexGrow: 1,
   flexShrink: 0,
 })
 
 /** Min height of a bar plus the safe area it pads, so the bar keeps its own height. */
-function barMinHeight(token: '$12' | '$14', inset: number) {
+function barMinHeight(token: '12' | '14', inset: number) {
   return inset ? (getTokenValue(token, 'size') as number) + inset : undefined
 }
 
@@ -164,7 +160,7 @@ const AppShellHeader = forwardRef<TamaguiElement, AppShellHeaderProps>(
         render="header"
         {...(insets.top > 0 && {
           paddingTop: insets.top,
-          minHeight: barMinHeight('$14', insets.top),
+          minHeight: barMinHeight('14', insets.top),
         })}
         {...props}
       />
@@ -184,7 +180,7 @@ const AppShellFooter = forwardRef<TamaguiElement, AppShellFooterProps>(
         render="footer"
         {...(insets.bottom > 0 && {
           paddingBottom: insets.bottom,
-          minHeight: barMinHeight('$12', insets.bottom),
+          minHeight: barMinHeight('12', insets.bottom),
         })}
         {...props}
       />

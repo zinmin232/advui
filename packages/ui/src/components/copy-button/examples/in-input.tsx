@@ -4,7 +4,7 @@ const apiKey = 'demo_7Hq2xT9k'
 
 export default function CopyButtonInInput() {
   return (
-    <Field label="API key" width="100%" maxWidth="$80">
+    <Field label="API key" width="100%" maxWidth="80">
       <Input
         defaultValue={apiKey}
         readOnly

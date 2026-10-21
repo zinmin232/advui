@@ -8,7 +8,7 @@ import {
   forwardRef,
   isValidElement,
 } from 'react'
-import { ScrollView, type TamaguiElement, validStyles } from 'tamagui'
+import { ScrollView, type TamaguiElement, validStyles } from 'tamagui/unstyled'
 import { Sticky, type StickyProps } from '../sticky/Sticky'
 import type { ScrollAreaProps } from './ScrollArea'
 

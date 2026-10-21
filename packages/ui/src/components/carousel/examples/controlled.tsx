@@ -11,10 +11,10 @@ export default function CarouselControlled() {
   const [index, setIndex] = useState(0)
   const last = index === steps.length - 1
   return (
-    <VStack width="100%" maxWidth="$96" gap="$4">
+    <VStack width="100%" maxWidth="96" gap="4">
       <Carousel aria-label="Welcome tour" index={index} onIndexChange={setIndex} showArrows={false}>
         {steps.map((step) => (
-          <Carousel.Item key={step.title} gap="$1" paddingVertical="$2">
+          <Carousel.Item key={step.title} gap="1" paddingVertical="2">
             <Heading level={3} size="lg">
               {step.title}
             </Heading>

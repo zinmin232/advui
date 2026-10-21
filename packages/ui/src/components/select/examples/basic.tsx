@@ -4,7 +4,7 @@ import { useState } from 'react'
 export default function SelectBasic() {
   const [fruit, setFruit] = useState('apple')
   return (
-    <VStack gap="$2" width="100%" maxWidth="$64">
+    <VStack gap="2" width="100%" maxWidth="64">
       <Label htmlFor="select-fruit">Favorite fruit</Label>
       <Select id="select-fruit" value={fruit} onValueChange={setFruit}>
         <Select.Item value="apple">Apple</Select.Item>

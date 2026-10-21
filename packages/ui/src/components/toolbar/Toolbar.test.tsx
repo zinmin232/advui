@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
-import { View } from 'tamagui'
+import { View } from 'tamagui/unstyled'
 import { describe, expect, it, vi } from 'vitest'
 import { fireEvent, renderWithProvider, screen, waitFor } from '../../../test/utils'
 import { Button } from '../button/Button'
@@ -12,7 +12,7 @@ import { Text } from '../typography/Text'
 import { Toolbar } from './Toolbar'
 
 const style = (el: Element) => getComputedStyle(el)
-const icon = <View width="$4" height="$4" />
+const icon = <View width="4" height="4" />
 
 function Formatting({ disabledItalic = false }: { disabledItalic?: boolean }) {
   return (
@@ -172,9 +172,9 @@ describe('Toolbar', () => {
   it('styles the container per variant', () => {
     renderWithProvider(
       <>
-        <View testID="background" backgroundColor="$background" />
-        <View testID="muted" backgroundColor="$muted" />
-        <View testID="border" borderWidth={1} borderColor="$border" />
+        <View testID="background" backgroundColor="background" />
+        <View testID="muted" backgroundColor="muted" />
+        <View testID="border" borderWidth={1} borderColor="border" />
         <Toolbar testID="default" />
         <Toolbar testID="outline" variant="outline" />
         <Toolbar testID="filled" variant="filled" />
@@ -196,16 +196,16 @@ describe('Toolbar', () => {
   it('lets style props override the variant and size, in any order', () => {
     renderWithProvider(
       <>
-        <View testID="accent" backgroundColor="$accent" borderColor="$ring" />
+        <View testID="accent" backgroundColor="accent" borderColor="ring" />
         <Toolbar
           testID="custom"
-          padding="$5"
-          gap="$4"
-          backgroundColor="$accent"
-          borderColor="$ring"
-          borderRadius="$0"
-          variant="outline"
+          padding="5"
+          gap="4"
+          backgroundColor="accent"
+          borderColor="ring"
+          borderRadius="0"
           size="sm"
+          variant="outline"
           leading={<Text>Title</Text>}
           trailing={<Button>Save</Button>}
         >

@@ -77,7 +77,7 @@ export default function FilterBarDataTable() {
   const [state, setState] = useState<FilterState>({})
   const rows = members.filter((member) => matches(member, state))
   return (
-    <VStack gap="$3" width="100%">
+    <VStack gap="3" width="100%">
       <FilterBar
         aria-label="Filter members"
         variant="ghost"

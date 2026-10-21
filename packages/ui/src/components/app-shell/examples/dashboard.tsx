@@ -21,13 +21,7 @@ export default function AppShellDashboard() {
   return (
     // `height`, the border and `safeArea={false}` fit the shell into the preview. In an app,
     // leave them out: the shell fills the screen and clears the notch and home indicator.
-    <AppShell
-      height="$112"
-      borderWidth={1}
-      borderColor="$border"
-      borderRadius="$lg"
-      safeArea={false}
-    >
+    <AppShell height="112" borderWidth={1} borderColor="border" borderRadius="lg" safeArea={false}>
       <AppShell.Header>
         <AppShell.SidebarTrigger />
         <Text weight="semibold" flex={1}>
@@ -55,11 +49,11 @@ export default function AppShellDashboard() {
           </Sidebar.Content>
         </Sidebar>
       </AppShell.Sidebar>
-      <AppShell.Main padding="$6" gap="$4">
+      <AppShell.Main padding="6" gap="4">
         <Text size="xl" weight="semibold">
           {pages.find((item) => item.id === page)?.label}
         </Text>
-        <AutoGrid minChildWidth={160} gap="$3">
+        <AutoGrid minChildWidth={160} gap="3">
           {stats.map((stat) => (
             <Card key={stat.label}>
               <Card.Header>

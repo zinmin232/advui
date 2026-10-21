@@ -9,7 +9,7 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { Text, isTextContent } from '@advui/core'
 
 export type StatSize = 'sm' | 'md' | 'lg'
@@ -19,16 +19,22 @@ export type StatTone = 'positive' | 'negative' | 'neutral'
 const StatContext = createStyledContext<{ size: StatSize }>({ size: 'md' })
 
 const StatFrame = styled(View, {
-  name: 'Stat',
+  displayName: 'Stat',
   context: StatContext,
   flexDirection: 'column',
   minWidth: 0,
 
   variants: {
     size: {
-      sm: { gap: '$0.5' },
-      md: { gap: '$1' },
-      lg: { gap: '$1.5' },
+      sm: {
+        gap: '0-5',
+      },
+      md: {
+        gap: '1',
+      },
+      lg: {
+        gap: '1-5',
+      },
     },
   } as const,
 
@@ -36,68 +42,97 @@ const StatFrame = styled(View, {
 })
 
 const StatLabel = styled(Text, {
-  name: 'StatLabel',
+  displayName: 'StatLabel',
   context: StatContext,
   tone: 'muted',
   weight: 'medium',
 
   variants: {
     size: {
-      sm: { fontSize: '$1', lineHeight: '$1' },
-      md: { fontSize: '$2', lineHeight: '$2' },
-      lg: { fontSize: '$3', lineHeight: '$3' },
+      sm: {
+        fontSize: '1',
+        lineHeight: '1',
+      },
+      md: {
+        fontSize: '2',
+        lineHeight: '2',
+      },
+      lg: {
+        fontSize: '3',
+        lineHeight: '3',
+      },
     },
   } as const,
 })
 
 const StatValue = styled(Text, {
-  name: 'StatValue',
+  displayName: 'StatValue',
   context: StatContext,
-  fontFamily: '$heading',
+  fontFamily: 'heading',
   fontWeight: '700',
-
   variants: {
     size: {
-      sm: { fontSize: '$5', lineHeight: '$5' },
-      md: { fontSize: '$7', lineHeight: '$7' },
-      lg: { fontSize: '$9', lineHeight: '$9' },
+      sm: {
+        fontSize: '5',
+        lineHeight: '5',
+      },
+      md: {
+        fontSize: '7',
+        lineHeight: '7',
+      },
+      lg: {
+        fontSize: '9',
+        lineHeight: '9',
+      },
     },
   } as const,
 })
 
 const StatHelpText = styled(Text, {
-  name: 'StatHelpText',
+  displayName: 'StatHelpText',
   context: StatContext,
   tone: 'muted',
 
   variants: {
     size: {
-      sm: { fontSize: '$1', lineHeight: '$1' },
-      md: { fontSize: '$1', lineHeight: '$1' },
-      lg: { fontSize: '$2', lineHeight: '$2' },
+      sm: {
+        fontSize: '1',
+        lineHeight: '1',
+      },
+      md: {
+        fontSize: '1',
+        lineHeight: '1',
+      },
+      lg: {
+        fontSize: '2',
+        lineHeight: '2',
+      },
     },
   } as const,
 })
 
 const StatDeltaFrame = styled(View, {
-  name: 'StatDelta',
+  displayName: 'StatDelta',
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf: 'flex-start',
-  gap: '$1',
-
+  gap: '1',
   variants: {
     variant: {
       plain: {},
-      badge: { paddingHorizontal: '$2', paddingVertical: '$0.5', borderRadius: '$full' },
+      badge: {
+        paddingHorizontal: '2',
+        paddingVertical: '0-5',
+        borderRadius: 'full',
+      },
     },
   } as const,
 })
 
 const tones = {
-  positive: { text: 'success', badge: '$successSoft', icon: '$successSoftForeground' },
-  negative: { text: 'error', badge: '$errorSoft', icon: '$errorSoftForeground' },
-  neutral: { text: 'muted', badge: '$muted', icon: '$mutedForeground' },
+  positive: { text: 'success', badge: 'successSoft', icon: 'successSoftForeground' },
+  negative: { text: 'error', badge: 'errorSoft', icon: 'errorSoftForeground' },
+  neutral: { text: 'muted', badge: 'muted', icon: 'mutedForeground' },
 } as const
 
 const defaultTones: Record<StatTrend, StatTone> = {

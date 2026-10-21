@@ -8,39 +8,39 @@ import {
   createSwitch,
   isWeb,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
 import { ariaState } from '../../utils/ariaState'
 
-// Visual styles live in the `unstyled: false` variant so they override the
-// defaults Tamagui's createSwitch applies through the same variant.
 const Frame = styled(TamaguiSwitchFrame, {
-  name: 'Switch',
+  displayName: 'Switch',
   justifyContent: 'center',
   // reset the UA <button> padding so the thumb travel is exact
   padding: 0,
   cursor: 'pointer',
+  borderRadius: 'full',
+  borderWidth: 2,
+  borderColor: 'transparent',
+  backgroundColor: 'input',
+  transition: 'quick',
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
 
   variants: {
-    unstyled: {
-      false: {
-        borderRadius: '$full',
-        borderWidth: 2,
-        borderColor: 'transparent',
-        backgroundColor: '$input',
-        transition: 'quick',
-        focusVisibleStyle: {
-          outlineColor: '$ring',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineOffset: 2,
-        },
-      },
-    },
     size: {
-      sm: { width: '$9', height: '$5', minHeight: '$5' },
-      md: { width: '$11', height: '$6', minHeight: '$6' },
+      sm: {
+        width: '9',
+        height: '5',
+        minHeight: '5',
+      },
+      md: {
+        width: '11',
+        height: '6',
+        minHeight: '6',
+      },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: 'none' },
@@ -51,20 +51,22 @@ const Frame = styled(TamaguiSwitchFrame, {
 })
 
 const Thumb = styled(TamaguiSwitchThumb, {
-  name: 'SwitchThumb',
+  displayName: 'SwitchThumb',
+  backgroundColor: 'background',
+  borderRadius: 'full',
+  transition: 'quick',
+  ...shadows.xs,
 
   variants: {
-    unstyled: {
-      false: {
-        backgroundColor: '$background',
-        borderRadius: '$full',
-        transition: 'quick',
-        ...shadows.xs,
-      },
-    },
     size: {
-      sm: { width: '$4', height: '$4' },
-      md: { width: '$5', height: '$5' },
+      sm: {
+        width: '4',
+        height: '4',
+      },
+      md: {
+        width: '5',
+        height: '5',
+      },
     },
   } as const,
 
@@ -103,14 +105,18 @@ export const Switch = forwardRef<TamaguiElement, SwitchProps>(function Switch(sw
       ref={ref}
       role="switch"
       size={size as never}
-      activeStyle={{ backgroundColor: '$primary' }}
+      activeStyle={{ backgroundColor: 'primary' }}
       aria-invalid={invalid || undefined}
       {...props}
       checked={checked}
       onCheckedChange={setChecked}
       {...(isWeb
         ? null
-        : { accessible: true, 'aria-checked': checked, 'aria-disabled': ariaState(props.disabled) })}
+        : {
+            accessible: true,
+            'aria-checked': checked,
+            'aria-disabled': ariaState(props.disabled),
+          })}
     >
       <BaseSwitch.Thumb size={size as never} />
     </BaseSwitch>

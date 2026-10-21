@@ -17,8 +17,8 @@ export default function ShowHideBreakpointValue() {
   const preview = useBreakpointValue({ base: 2, md: 4, lg: 6 }) ?? 2
 
   return (
-    <VStack gap="$3" width="100%">
-      <HStack gap="$2" wrap="wrap">
+    <VStack gap="3" width="100%">
+      <HStack gap="2" wrap="wrap">
         <Text size="sm" tone="muted">
           Breakpoint
         </Text>
@@ -27,9 +27,9 @@ export default function ShowHideBreakpointValue() {
           Showing {preview} of {states.length}
         </Text>
       </HStack>
-      <Grid columns={{ base: 1, sm: 2, lg: 3 }} gap="$3">
+      <Grid columns={{ base: 1, sm: 2, lg: 3 }} gap="3">
         {states.slice(0, preview).map((state) => (
-          <Card key={state} padding="$3">
+          <Card key={state} padding="3">
             <Text weight="medium">{state}</Text>
           </Card>
         ))}

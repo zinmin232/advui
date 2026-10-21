@@ -14,7 +14,7 @@ function Brand() {
 function Account() {
   const { collapsed } = useSidebar()
   return (
-    <HStack gap="$2" alignItems="center" justifyContent={collapsed ? 'center' : 'flex-start'}>
+    <HStack gap="2" alignItems="center" justifyContent={collapsed ? 'center' : 'flex-start'}>
       <Avatar size="sm" alt="Nwe Ni" />
       {collapsed ? null : (
         <VStack flex={1} minWidth={0}>
@@ -46,10 +46,10 @@ function AppLayout({ page, onPageChange, defaultCollapsed = false }: AppLayoutPr
   const [collapsed, setCollapsed] = useState(defaultCollapsed)
   return (
     <HStack
-      height="$112"
+      height="112"
       borderWidth={1}
-      borderColor="$border"
-      borderRadius="$lg"
+      borderColor="border"
+      borderRadius="lg"
       overflow="hidden"
       width="100%"
     >
@@ -86,7 +86,7 @@ function AppLayout({ page, onPageChange, defaultCollapsed = false }: AppLayoutPr
         </Sidebar.Footer>
       </Sidebar>
       {/* Where both don't fit, the open sidebar pushes the page aside instead of squeezing it. */}
-      <VStack flex={1} minWidth="$56" padding="$6" gap="$2">
+      <VStack flex={1} minWidth="56" padding="6" gap="2">
         <Text size="xl" weight="semibold">
           {pages.find((p) => p.id === page)?.label}
         </Text>

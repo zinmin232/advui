@@ -1,13 +1,13 @@
 import { CalendarIcon, IconDefaults } from '@advui/icons'
 import { type ReactNode, forwardRef, useId } from 'react'
-import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
-import { useFieldControl } from '../../hooks/useFieldControl'
+import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui/unstyled'
+import { useFieldControl, type ControlStateProps } from '../../hooks/useFieldControl'
 import { fieldBoxStyle } from '../input/Input'
 import { Text } from '../typography/Text'
 import { ariaState } from '../../utils/ariaState'
 
 const TriggerFrame = styled(View, {
-  name: 'PickerTrigger',
+  displayName: 'PickerTrigger',
   role: 'button',
   render: 'button',
   tabIndex: 0,
@@ -15,27 +15,39 @@ const TriggerFrame = styled(View, {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  gap: '$2',
+  gap: '2',
   cursor: 'pointer',
-
   variants: {
     size: {
-      sm: { height: '$8', paddingHorizontal: '$2.5' },
-      md: { height: '$10', paddingHorizontal: '$3' },
-      lg: { height: '$12', paddingHorizontal: '$4' },
+      sm: {
+        height: '8',
+        paddingHorizontal: '2-5',
+      },
+      md: {
+        height: '10',
+        paddingHorizontal: '3',
+      },
+      lg: {
+        height: '12',
+        paddingHorizontal: '4',
+      },
     },
     invalid: {
-      true: { borderColor: '$error', hoverStyle: { borderColor: '$error' } },
+      true: {
+        borderColor: 'error hover:error',
+      },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: 'none' },
     },
   } as const,
-
   defaultVariants: { size: 'md' },
 })
 
-export interface PickerTriggerProps extends Omit<GetProps<typeof TriggerFrame>, 'children'> {
+export interface PickerTriggerProps
+  extends
+    Omit<GetProps<typeof TriggerFrame>, 'children' | 'disabled' | 'invalid'>,
+    ControlStateProps {
   /** The formatted value, or null to show the placeholder. */
   valueText: string | null
   placeholder: string
@@ -69,9 +81,7 @@ export const PickerTrigger = forwardRef<TamaguiElement, PickerTriggerProps>(
         size="sm"
         numberOfLines={1}
         flexShrink={1}
-        // The placeholder is real text here, not an input's placeholder, so
-        // it needs body-text contrast: `$placeholderColor` is below 4.5:1.
-        color={valueText ? '$foreground' : '$mutedForeground'}
+        color={valueText ? 'foreground' : 'mutedForeground'}
       >
         {valueText ?? placeholder}
       </Text>
@@ -92,14 +102,14 @@ export const PickerTrigger = forwardRef<TamaguiElement, PickerTriggerProps>(
         {...props}
       >
         {leading ? (
-          <View flexDirection="row" alignItems="center" gap="$2" flexShrink={1}>
+          <View flexDirection="row" alignItems="center" gap="2" flexShrink={1}>
             {leading}
             {text}
           </View>
         ) : (
           text
         )}
-        <IconDefaults size={16} color="$mutedForeground">
+        <IconDefaults size={16} color="mutedForeground">
           {icon}
         </IconDefaults>
       </TriggerFrame>

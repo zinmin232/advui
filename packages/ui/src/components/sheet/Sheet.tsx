@@ -16,7 +16,7 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
@@ -134,18 +134,14 @@ function SheetContent({
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
       position="relative"
-      gap="$4"
+      gap="4"
       width="100%"
-      maxWidth="$168"
+      maxWidth="168"
       alignSelf="center"
-      // With snap points the frame has a fixed height: fill it so a ScrollView
-      // inside gets the remaining space. (In fit mode flex would collapse it.)
       flex={snapPoints ? 1 : undefined}
-      // Tamagui keeps the content mounted off-screen while closed (to measure
-      // it), so hide it from screen readers and the tab order until it opens.
-      aria-hidden={!open || undefined}
       {...(isWeb ? { inert: !open } : { accessibilityViewIsModal: open })}
       {...props}
+      aria-hidden={!open || undefined}
     >
       {children}
       {hideCloseButton ? null : (
@@ -154,8 +150,8 @@ function SheetContent({
           icon={<XIcon />}
           size="sm"
           position="absolute"
-          top="$-2"
-          right="$-2"
+          top="-2"
+          right="-2"
           onPress={() => setOpen(false)}
         />
       )}
@@ -176,19 +172,17 @@ function SheetContent({
       transition={reducedMotion ? undefined : 'medium'}
     >
       <TamaguiSheet.Overlay
-        backgroundColor="$overlay"
-        enterStyle={{ opacity: 0 }}
-        exitStyle={{ opacity: 0 }}
+        backgroundColor="overlay"
+        opacity="enter:0 exit:0"
         transition={reducedMotion ? undefined : 'quick'}
       />
-      <TamaguiSheet.Handle backgroundColor="$borderStrong" />
-      <TamaguiSheet.Frame
-        backgroundColor="$popover"
-        borderTopLeftRadius="$dialog"
-        borderTopRightRadius="$dialog"
-        padding="$6"
-        paddingBottom="$8"
-      >
+      <TamaguiSheet.Handle backgroundColor="borderStrong" />
+      <TamaguiSheet.Container paddingTop="6" paddingRight="6" paddingLeft="6" paddingBottom="8">
+        <TamaguiSheet.Background
+          backgroundColor="popover"
+          borderTopLeftRadius="dialog"
+          borderTopRightRadius="dialog"
+        />
         {/* The native sheet renders in a portal, which does not carry React context. */}
         <SheetContext.Provider value={sheet}>
           {isWeb ? (
@@ -197,8 +191,8 @@ function SheetContent({
             <Dismissable
               forceUnmount={!open}
               disableOutsidePointerEvents={open}
-              onPointerDownOutside={(event) => {
-                if (!dismissible) event.preventDefault()
+              onPointerDownOutside={(details) => {
+                if (!dismissible) details.cancel()
               }}
               onDismiss={() => setOpen(false)}
             >
@@ -210,7 +204,7 @@ function SheetContent({
             body
           )}
         </SheetContext.Provider>
-      </TamaguiSheet.Frame>
+      </TamaguiSheet.Container>
     </TamaguiSheet>
   )
 }
@@ -248,13 +242,17 @@ function SheetScrollView(props: SheetScrollViewProps) {
   return <TamaguiSheet.ScrollView flex={1} {...props} />
 }
 
-const Header = styled(View, { name: 'SheetHeader', gap: '$1.5', paddingRight: '$8' })
+const Header = styled(View, {
+  displayName: 'SheetHeader',
+  gap: '1-5',
+  paddingRight: '8',
+})
 
 const Footer = styled(View, {
-  name: 'SheetFooter',
-  flexDirection: 'column-reverse',
-  gap: '$2',
-  $sm: { flexDirection: 'row', justifyContent: 'flex-end' },
+  displayName: 'SheetFooter',
+  flexDirection: 'column-reverse sm:row',
+  gap: '2',
+  justifyContent: 'sm:flex-end',
 })
 
 /**

@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { type NativeScrollEvent, type NativeSyntheticEvent, ScrollView } from 'react-native'
-import { type Token, getTokenValue } from 'tamagui'
+import { type Token, getTokenValue } from 'tamagui/unstyled'
 import {
   type CarouselTrackHandle,
   type CarouselTrackProps,

@@ -6,7 +6,7 @@ export default function RichTextEditorMinimal() {
       aria-label="Comment"
       placeholder="Write a comment…"
       tools={['bold', 'italic', 'link', 'bulletList']}
-      minHeight="$20"
+      minHeight="20"
     />
   )
 }

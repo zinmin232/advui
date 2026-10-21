@@ -10,7 +10,7 @@ import {
   StrikethroughIcon,
 } from '@advui/icons'
 import { type ReactElement, useId, useLayoutEffect, useRef, useState } from 'react'
-import { type GetProps, type TamaguiElement, View, XStack, isWeb } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, XStack, isWeb } from 'tamagui/unstyled'
 import {
   Button,
   IconButton,
@@ -85,7 +85,7 @@ export interface RichTextEditorProps {
   placeholder?: string
   /** Toolbar buttons, in order. Default: all nine. */
   tools?: RichTextTool[]
-  /** Minimum height of the text area. Default: `$32`. */
+  /** Minimum height of the text area. Default: `32`. */
   minHeight?: GetProps<typeof View>['minHeight']
   maxLength?: number
   disabled?: boolean
@@ -123,7 +123,7 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
     onValueChange,
     placeholder,
     tools = defaultRichTextTools,
-    minHeight = '$32',
+    minHeight = '32',
     maxLength,
     disabled = false,
     invalid = false,
@@ -216,7 +216,7 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
   return (
     <View
       {...fieldBoxStyle}
-      {...(invalid && { borderColor: '$error' })}
+      {...(invalid && { borderColor: 'error' })}
       opacity={disabled ? 0.5 : 1}
       overflow="hidden"
       width="100%"
@@ -224,10 +224,10 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
       <XStack
         alignItems="center"
         justifyContent="space-between"
-        gap="$2"
-        padding="$1"
+        gap="2"
+        padding="1"
         borderBottomWidth={1}
-        borderColor="$border"
+        borderColor="border"
       >
         <XStack
           flexWrap="wrap"
@@ -266,7 +266,7 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
           aria-pressed={preview}
           disabled={disabled}
           onPress={() => setPreview(!preview)}
-          {...(preview && { backgroundColor: '$accent' })}
+          {...(preview && { backgroundColor: 'accent' })}
         >
           {labels.preview}
         </Button>
@@ -274,7 +274,7 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
       {preview ? (
         <View
           minHeight={minHeight}
-          padding="$3"
+          padding="3"
           {...(isWeb && { role: 'region', 'aria-label': labels.preview })}
         >
           {value.trim() ? (
@@ -308,7 +308,8 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
           borderWidth={0}
           borderRadius={0}
           backgroundColor="transparent"
-          focusVisibleStyle={{ outlineWidth: 0, outlineStyle: 'none' }}
+          outlineWidth="focus-visible:0px"
+          outlineStyle="focus-visible:none"
           onSelectionChange={(event: { nativeEvent: { selection: TextSelection } }) => {
             selection.current = event.nativeEvent.selection
           }}
@@ -319,10 +320,10 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
         <Text
           id={countId}
           size="xs"
-          tone="muted"
           textAlign="right"
-          paddingHorizontal="$3"
-          paddingBottom="$2"
+          paddingHorizontal="3"
+          paddingBottom="2"
+          tone="muted"
         >
           {labels.count(value.length, maxLength)}
         </Text>

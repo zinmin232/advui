@@ -9,7 +9,7 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { FormContext, type FormContextValue, useParentForm } from '../../hooks/useParentForm'
 import { isTextContent } from '../../utils/isTextContent'
 import { LoadingButton, type LoadingButtonProps } from '../loading-button/LoadingButton'
@@ -21,10 +21,9 @@ export type FormDirection = 'vertical' | 'horizontal'
 // Tamagui's Form renders `<form>` on web (submit events, Enter in a field) and
 // a View on native, and feeds `onSubmit` to `Form.Trigger`.
 const FormFrame = styled(TamaguiForm, {
-  name: 'Form',
+  displayName: 'Form',
   flexDirection: 'column',
-  gap: '$6',
-
+  gap: '6',
   variants: {
     fullWidth: {
       true: { width: '100%', alignSelf: 'stretch' },
@@ -33,12 +32,12 @@ const FormFrame = styled(TamaguiForm, {
 })
 
 const FormHeader = styled(View, {
-  name: 'FormHeader',
-  gap: '$1.5',
+  displayName: 'FormHeader',
+  gap: '1-5',
 })
 
 const FormContent = styled(View, {
-  name: 'FormContent',
+  displayName: 'FormContent',
   flexDirection: 'column',
 
   variants: {
@@ -50,13 +49,12 @@ const FormContent = styled(View, {
 })
 
 const FormFooter = styled(View, {
-  name: 'FormFooter',
+  displayName: 'FormFooter',
   flexDirection: 'row',
   flexWrap: 'wrap',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  gap: '$2',
-
+  gap: '2',
   variants: {
     fullWidth: {
       true: { flexDirection: 'column', alignItems: 'stretch' },
@@ -72,7 +70,7 @@ export interface FormProps extends Omit<
 > {
   /** Fields and anything else. The form does not change them. */
   children?: ReactNode
-  /** Space between the fields. Default: `$4`. */
+  /** Space between the fields. Default: `4`. */
   gap?: GetProps<typeof FormContent>['gap']
   /** Text becomes a level-2 heading that names the form. Pass an element for another level. */
   title?: ReactNode
@@ -105,7 +103,7 @@ const hasContent = (node: ReactNode) => node != null && node !== false && node !
 const FormImpl = forwardRef<TamaguiElement, FormProps>(function Form(
   {
     children,
-    gap = '$4',
+    gap = '4',
     title,
     description,
     footer,

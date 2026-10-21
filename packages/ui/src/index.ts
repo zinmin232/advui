@@ -137,4 +137,4 @@ export {
   type IconName,
   type IconProps,
 } from '@advui/icons'
-export { Theme, useMedia, useTheme, type TamaguiElement } from 'tamagui'
+export { Theme, useMedia, useTheme, type TamaguiElement } from 'tamagui/unstyled'

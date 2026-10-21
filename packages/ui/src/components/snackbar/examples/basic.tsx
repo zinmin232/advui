@@ -6,7 +6,7 @@ export default function SnackbarBasic() {
   const [open, setOpen] = useState(false)
 
   return (
-    <VStack gap="$3" alignItems="center">
+    <VStack gap="3" alignItems="center">
       <Button
         onPress={() => {
           setArchived((n) => n + 1)

@@ -29,19 +29,18 @@ export function PlaygroundPage({ components }: { components: Playable[] }) {
   )
 
   return (
-    <View minHeight="100vh" backgroundColor="$background">
+    <View minHeight="100vh" backgroundColor="background">
       <SiteHeader />
       <VStack
         render="main"
         id="main"
-        gap="$6"
-        padding="$4"
+        gap="6"
+        padding="4 md:8"
         maxWidth={1440}
         marginHorizontal="auto"
         width="100%"
-        $md={{ padding: '$8' }}
       >
-        <VStack gap="$2">
+        <VStack gap="2">
           <Text render="h1" size="4xl" weight="bold" margin={0}>
             Playground
           </Text>
@@ -55,13 +54,13 @@ export function PlaygroundPage({ components }: { components: Playable[] }) {
           options={components.map((c) => ({ value: c.playground!.component, label: c.name }))}
           onChange={(component) => router.replace(`/playground?component=${component}`)}
         />
-        <View gap="$6" $xl={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+        <View gap="6" flexDirection="xl:row" alignItems="xl:flex-start">
           {/* flex only beside the theme card; in a column its 0px basis collapses it. */}
-          <View minWidth={0} $xl={{ flex: 1 }}>
+          <View minWidth={0} flex="xl:1">
             {/* key resets state when switching components */}
             <Playground key={spec.component} spec={spec} initial={initial} showOpenLink={false} />
           </View>
-          <Card width="100%" $xl={{ width: '$96' }}>
+          <Card width="100% xl:96">
             <Card.Header>
               <Card.Title>Theme</Card.Title>
               <Card.Description>Preset, colors, radius, font size and mode.</Card.Description>

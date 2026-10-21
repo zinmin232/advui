@@ -19,7 +19,7 @@ import {
   isWeb,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
@@ -38,63 +38,62 @@ const MenuContext = createContext<MenuContextValue>({ open: null, setOpen: () =>
 const InPanel = createContext(false)
 
 const focusRing = {
-  outlineColor: '$ring',
-  outlineStyle: 'solid',
-  outlineWidth: 2,
-  outlineOffset: 2,
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
 } as const
 
 const TopLevelFrame = styled(View, {
-  name: 'NavigationMenuTrigger',
+  displayName: 'NavigationMenuTrigger',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: '$1',
-  height: '$9',
-  paddingHorizontal: '$3',
-  borderRadius: '$md',
+  gap: '1',
+  height: '9',
+  paddingHorizontal: '3',
+  borderRadius: 'md',
   borderWidth: 0,
-  backgroundColor: 'transparent',
+  backgroundColor: 'transparent hover:accent press:accentHover',
   cursor: 'pointer',
-  hoverStyle: { backgroundColor: '$accent' },
-  pressStyle: { backgroundColor: '$accentHover' },
-  focusVisibleStyle: focusRing,
-
+  ...focusRing,
   variants: {
     active: {
-      true: { backgroundColor: '$accent' },
+      true: {
+        backgroundColor: 'accent',
+      },
     },
   } as const,
 })
 
 const PanelLinkFrame = styled(View, {
-  name: 'NavigationMenuPanelLink',
+  displayName: 'NavigationMenuPanelLink',
   flexDirection: 'row',
   alignItems: 'flex-start',
-  gap: '$3',
-  padding: '$3',
-  borderRadius: '$md',
+  gap: '3',
+  padding: '3',
+  borderRadius: 'md',
   borderWidth: 0,
-  backgroundColor: 'transparent',
+  backgroundColor: 'transparent hover:accent press:accentHover',
   cursor: 'pointer',
-  hoverStyle: { backgroundColor: '$accent' },
-  pressStyle: { backgroundColor: '$accentHover' },
-  focusVisibleStyle: { ...focusRing, outlineOffset: -2 },
-
+  ...focusRing,
+  outlineOffset: 'focus-visible:-2px',
   variants: {
     active: {
-      true: { backgroundColor: '$accent' },
+      true: {
+        backgroundColor: 'accent',
+      },
     },
   } as const,
 })
 
 const PanelFrame = styled(View, {
-  name: 'NavigationMenuPanel',
-  backgroundColor: '$popover',
+  displayName: 'NavigationMenuPanel',
+  backgroundColor: 'popover',
   borderWidth: 1,
-  borderColor: '$border',
-  borderRadius: '$lg',
-  padding: '$2',
-  gap: '$1',
+  borderColor: 'border',
+  borderRadius: 'lg',
+  padding: '2',
+  gap: '1',
 })
 
 export interface NavigationMenuProps extends Omit<GetProps<typeof View>, 'children'> {
@@ -166,14 +165,14 @@ function NavigationMenuRoot({
           flexDirection="row"
           flexWrap="wrap"
           alignItems="center"
-          gap="$1"
+          gap="1"
           margin={0}
           padding={0}
         >
           {children}
         </View>
         {openItem ? (
-          <PanelFrame marginTop="$2">
+          <PanelFrame marginTop="2">
             <InPanel.Provider value>{openItem.props.children}</InPanel.Provider>
           </PanelFrame>
         ) : null}
@@ -207,10 +206,10 @@ const NavigationMenuLink = forwardRef<TamaguiElement, NavigationMenuLinkProps>(
   ) {
     const inPanel = useContext(InPanel)
     const { setOpen } = useContext(MenuContext)
-    const ripple = useRipple({ color: '$foreground' })
+    const ripple = useRipple({ color: 'foreground' })
     const Frame = inPanel ? PanelLinkFrame : TopLevelFrame
     const title = (
-      <Text size="sm" weight="medium" color="$foreground">
+      <Text size="sm" color="foreground" weight="medium">
         {children}
       </Text>
     )
@@ -246,13 +245,13 @@ const NavigationMenuLink = forwardRef<TamaguiElement, NavigationMenuLinkProps>(
           {inPanel ? (
             <>
               {icon ? (
-                <View aria-hidden paddingTop="$0.5">
-                  <IconDefaults size={16} color="$mutedForeground">
+                <View aria-hidden paddingTop="0-5">
+                  <IconDefaults size={16} color="mutedForeground">
                     {icon}
                   </IconDefaults>
                 </View>
               ) : null}
-              <View flex={1} minWidth={0} gap="$0.5">
+              <View flex={1} minWidth={0} gap="0-5">
                 {title}
                 {description != null ? (
                   <Text size="xs" tone="muted">
@@ -277,7 +276,7 @@ export interface NavigationMenuItemProps {
   value?: string
   /** `NavigationMenu.Link` elements shown in the panel. */
   children: ReactNode
-  /** Panel width on web (a size token or number). Default: `$72`. */
+  /** Panel width on web (a size token or number). Default: `72`. */
   panelWidth?: GetProps<typeof View>['width']
 }
 
@@ -285,13 +284,13 @@ const itemValue = (props: NavigationMenuItemProps) => props.value ?? props.label
 
 /** A button in the bar that opens a panel of links. */
 function NavigationMenuItem(props: NavigationMenuItemProps) {
-  const { label, children, panelWidth = '$72' } = props
+  const { label, children, panelWidth = '72' } = props
   const value = itemValue(props)
   const { open, setOpen } = useContext(MenuContext)
   const isOpen = open === value
   const panelId = useId()
   const triggerRef = useRef<HTMLElement>(null)
-  const ripple = useRipple({ color: '$foreground' })
+  const ripple = useRipple({ color: 'foreground' })
 
   const close = () => {
     setOpen(null)
@@ -322,11 +321,11 @@ function NavigationMenuItem(props: NavigationMenuItemProps) {
         {...ripple.props}
       >
         {ripple.element}
-        <Text size="sm" weight="medium" color="$foreground">
+        <Text size="sm" color="foreground" weight="medium">
           {label}
         </Text>
         <View aria-hidden {...(isOpen && { rotate: '180deg' })}>
-          <ChevronDownIcon size={14} color="$mutedForeground" />
+          <ChevronDownIcon size={14} color="mutedForeground" />
         </View>
       </TopLevelFrame>
       {isWeb ? (
@@ -335,15 +334,14 @@ function NavigationMenuItem(props: NavigationMenuItemProps) {
           position="absolute"
           top="100%"
           left={0}
-          marginTop="$1"
+          marginTop="1"
           width={panelWidth}
-          maxWidth="$96"
+          maxWidth="96"
           zIndex={zIndex.dropdown}
-          // Kept in the page while closed so `aria-controls` always points at it.
           display={isOpen ? 'flex' : 'none'}
           {...shadows.md}
         >
-          <View render="ul" margin={0} padding={0} gap="$1">
+          <View render="ul" margin={0} padding={0} gap="1">
             <InPanel.Provider value>{children}</InPanel.Provider>
           </View>
         </PanelFrame>

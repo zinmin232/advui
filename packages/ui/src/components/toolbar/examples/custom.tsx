@@ -7,11 +7,11 @@ export default function ToolbarCustom() {
     <Toolbar
       aria-label="Draft"
       variant="outline"
-      backgroundColor="$card"
-      borderColor="$primary"
-      borderRadius="$full"
-      paddingHorizontal="$3"
-      gap="$1"
+      backgroundColor="card"
+      borderColor="primary"
+      borderRadius="full"
+      paddingHorizontal="3"
+      gap="1"
       alignSelf="center"
     >
       <Button size="sm" variant="ghost">

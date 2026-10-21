@@ -4,7 +4,7 @@ const tones = ['default', 'muted', 'primary', 'success', 'warning', 'error', 'in
 
 export default function TypographyTones() {
   return (
-    <VStack gap="$1">
+    <VStack gap="1">
       {tones.map((tone) => (
         <Text key={tone} tone={tone} weight="medium">
           {tone} text

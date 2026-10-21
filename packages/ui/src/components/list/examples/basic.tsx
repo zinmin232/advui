@@ -3,7 +3,7 @@ import { FileIcon, FolderIcon, ImageIcon } from '@advui/icons'
 
 export default function ListBasic() {
   return (
-    <List width="100%" maxWidth="$96">
+    <List width="100%" maxWidth="96">
       <List.Item leading={<FolderIcon />} title="Field reports" description="12 files" />
       <List.Item leading={<FileIcon />} title="Budget 2026.xlsx" description="Edited yesterday" />
       <List.Item

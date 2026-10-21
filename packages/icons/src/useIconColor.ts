@@ -1,7 +1,7 @@
-import { isWeb, useTheme } from 'tamagui'
+import { isWeb, useTheme } from 'tamagui/unstyled'
 
 /**
- * Resolves a theme token (`$primary`) to a value usable by SVG. On web we keep
+ * Resolves a theme token (`primary`) to a value usable by SVG. On web we keep
  * the CSS variable so the icon follows light/dark switches without a re-render.
  */
 export function useIconColor(color: string | undefined): string | undefined {
@@ -14,8 +14,9 @@ export function resolveIconColor(
   color: string | undefined,
 ): string | undefined {
   if (!color) return undefined
-  if (!color.startsWith('$')) return color
-  const variable = theme[color.slice(1) as keyof typeof theme] as
+  // Tamagui 3 names theme values without a `$`; the prefix is still accepted.
+  const name = color.startsWith('$') ? color.slice(1) : color
+  const variable = theme[name as keyof typeof theme] as
     { val: string; get: () => string } | undefined
   if (!variable) return color
   return isWeb ? variable.get() : variable.val

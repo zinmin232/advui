@@ -6,7 +6,7 @@ import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native'
 export default function ExampleScreen() {
   const { slug } = useLocalSearchParams<{ slug: string }>()
   const example = getAppExample(slug)
-  if (!example) return <Text padding="$4">Unknown example “{slug}”.</Text>
+  if (!example) return <Text padding="4">Unknown example “{slug}”.</Text>
   const { Component } = example
   return (
     <KeyboardAvoidingView

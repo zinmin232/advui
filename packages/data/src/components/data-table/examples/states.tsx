@@ -24,7 +24,7 @@ export default function DataTableStates() {
       loading={state === 'loading'}
       searchable
       toolbar={
-        <HStack gap="$2">
+        <HStack gap="2">
           <Button size="sm" variant="outline" onPress={() => setState('loading')}>
             Loading
           </Button>

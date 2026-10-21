@@ -13,10 +13,11 @@ import {
   createStyledContext,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
+import type { ControlStateProps } from '../../hooks/useFieldControl'
 
 type TabsVariant = 'pills' | 'underline'
 
@@ -24,14 +25,14 @@ const TabsStyleContext = createStyledContext<{ variant: TabsVariant }>({ variant
 const ActiveValueContext = createContext<string | undefined>(undefined)
 
 const TabsFrame = styled(TamaguiTabs, {
-  name: 'Tabs',
+  displayName: 'Tabs',
   context: TabsStyleContext,
   flexDirection: 'column',
-  gap: '$3',
+  gap: '3',
 })
 
 const ListFrame = styled(TamaguiTabs.List, {
-  name: 'TabsList',
+  displayName: 'TabsList',
   context: TabsStyleContext,
   flexDirection: 'row',
   alignSelf: 'flex-start',
@@ -41,50 +42,46 @@ const ListFrame = styled(TamaguiTabs.List, {
   variants: {
     variant: {
       pills: {
-        backgroundColor: '$muted',
-        borderRadius: '$lg',
-        padding: '$1',
-        gap: '$1',
+        backgroundColor: 'muted',
+        borderRadius: 'lg',
+        padding: '1',
+        gap: '1',
       },
       underline: {
         alignSelf: 'stretch',
         borderBottomWidth: 1,
-        borderColor: '$border',
-        gap: '$4',
+        borderColor: 'border',
+        gap: '4',
       },
     },
   } as const,
 })
 
 const TriggerFrame = styled(TamaguiTabs.Tab, {
-  name: 'TabsTrigger',
+  displayName: 'TabsTrigger',
   context: TabsStyleContext,
-  unstyled: true,
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: '$1.5',
+  gap: '1-5',
   cursor: 'pointer',
   backgroundColor: 'transparent',
   transition: 'quick',
-  focusVisibleStyle: {
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: 1,
-  },
-
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:1px',
   variants: {
     variant: {
       pills: {
-        height: '$8',
-        paddingHorizontal: '$3',
-        borderRadius: '$md',
-        hoverStyle: { backgroundColor: '$accent' },
+        height: '8',
+        paddingHorizontal: '3',
+        borderRadius: 'md',
+        backgroundColor: 'hover:accent',
       },
       underline: {
-        height: '$10',
-        paddingHorizontal: '$1',
+        height: '10',
+        paddingHorizontal: '1',
         borderBottomWidth: 2,
         borderColor: 'transparent',
         marginBottom: -1,
@@ -97,22 +94,20 @@ const TriggerFrame = styled(TamaguiTabs.Tab, {
 })
 
 const TriggerText = styled(Text, {
-  name: 'TabsTriggerText',
-  fontSize: '$2',
-  lineHeight: '$2',
+  displayName: 'TabsTriggerText',
+  fontSize: '2',
+  lineHeight: '2',
   fontWeight: '500',
-  color: '$mutedForeground',
+  color: 'mutedForeground',
   userSelect: 'none',
 })
 
 const ContentFrame = styled(TamaguiTabs.Content, {
-  name: 'TabsContent',
-  focusVisibleStyle: {
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: 2,
-  },
+  displayName: 'TabsContent',
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
 })
 
 export type TabsProps = TamaguiTabsProps & { variant?: TabsVariant }
@@ -155,7 +150,8 @@ const TabsList = forwardRef<TamaguiElement, TabsListProps>(function TabsList(pro
   return <ListFrame ref={ref} variant={variant} {...props} />
 })
 
-export interface TabsTriggerProps extends Omit<TamaguiTabsTabProps, 'children'> {
+export interface TabsTriggerProps
+  extends Omit<TamaguiTabsTabProps, 'children' | 'disabled'>, Pick<ControlStateProps, 'disabled'> {
   value: string
   children?: ReactNode
   icon?: ReactNode
@@ -163,10 +159,10 @@ export interface TabsTriggerProps extends Omit<TamaguiTabsTabProps, 'children'> 
 
 const activeStyles = {
   pills: {
-    backgroundColor: '$background',
+    backgroundColor: 'background',
     ...shadows.xs,
   },
-  underline: { borderColor: '$primary' },
+  underline: { borderColor: 'primary' },
 } as const
 
 const TabsTrigger = forwardRef<TamaguiElement, TabsTriggerProps>(function TabsTrigger(
@@ -176,7 +172,7 @@ const TabsTrigger = forwardRef<TamaguiElement, TabsTriggerProps>(function TabsTr
   const { variant } = TabsStyleContext.useStyledContext()
   const active = useContext(ActiveValueContext) === props.value
   const ripple = useRipple({
-    color: '$foreground',
+    color: 'foreground',
     disabled: props.disabled ?? false,
     onPressIn,
     onPressOut,
@@ -192,10 +188,10 @@ const TabsTrigger = forwardRef<TamaguiElement, TabsTriggerProps>(function TabsTr
       {...ripple.props}
     >
       {ripple.element}
-      <IconDefaults size={16} color={active ? '$foreground' : '$mutedForeground'}>
+      <IconDefaults size={16} color={active ? 'foreground' : 'mutedForeground'}>
         {icon}
         {isTextContent(children) ? (
-          <TriggerText color={active ? '$foreground' : '$mutedForeground'}>{children}</TriggerText>
+          <TriggerText color={active ? 'foreground' : 'mutedForeground'}>{children}</TriggerText>
         ) : (
           children
         )}

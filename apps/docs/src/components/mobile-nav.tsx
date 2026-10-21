@@ -30,21 +30,21 @@ export function MobileNav({
         top={0}
         bottom={0}
         width="86%"
-        maxWidth="$80"
+        maxWidth="80"
         maxHeight="100%"
         borderRadius={0}
         borderWidth={0}
         borderRightWidth={1}
-        padding="$4"
-        enterStyle={{ x: -40, opacity: 0 }}
-        exitStyle={{ x: -40, opacity: 0 }}
+        padding="4"
+        x="enter:-40px exit:-40px"
+        opacity="enter:0 exit:0"
         overflowY="auto"
       >
         <Dialog.Title className="sr-only">Navigation</Dialog.Title>
-        <HStack paddingBottom="$2">
+        <HStack paddingBottom="2">
           <Logo />
         </HStack>
-        <VStack gap="$1" paddingBottom="$2">
+        <VStack gap="1" paddingBottom="2">
           {topLinks.map((link) => (
             <Link
               key={link.href}
@@ -52,7 +52,7 @@ export function MobileNav({
               className="plain-link"
               onClick={() => onOpenChange(false)}
             >
-              <Text weight="medium" paddingVertical="$1.5">
+              <Text weight="medium" paddingVertical="1-5">
                 {link.label}
               </Text>
             </Link>

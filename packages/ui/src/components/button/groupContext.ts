@@ -25,10 +25,10 @@ export function positionOf(index: number, count: number): Position {
 }
 
 const ring = {
-  outlineColor: '$ring',
-  outlineStyle: 'solid',
-  outlineWidth: 2,
-  outlineOffset: 2,
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
 } as const
 
 /**
@@ -46,7 +46,8 @@ export function attachedStyle(
   return {
     // Lifts the focused button so its ring is not covered by its neighbour.
     position: 'relative',
-    focusVisibleStyle: { ...ring, zIndex: 1 },
+    ...ring,
+    zIndex: 'focus-visible:1',
     ...(!start && {
       ...(horizontal
         ? { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }

@@ -2,7 +2,7 @@ import { XIcon } from '@advui/icons'
 import { shadows, zIndex } from '@advui/theme'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
 import { AccessibilityInfo, Platform } from 'react-native'
-import { Portal, Text, View, isWeb } from 'tamagui'
+import { Portal, Text, View, isWeb } from 'tamagui/unstyled'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 
@@ -47,8 +47,8 @@ export function Snackbar({
   const closable = showClose ?? timeout === null
   const close = useRef(onOpenChange)
   close.current = onOpenChange
-  const actionRipple = useRipple({ color: '$inversePrimary', disabled: !action })
-  const closeRipple = useRipple({ color: '$background', disabled: !closable })
+  const actionRipple = useRipple({ color: 'inversePrimary', disabled: !action })
+  const closeRipple = useRipple({ color: 'background', disabled: !closable })
 
   useEffect(() => {
     if (!open || paused || timeout === null) return
@@ -72,31 +72,29 @@ export function Snackbar({
         aria-live="polite"
         accessibilityLiveRegion="polite"
         position="absolute"
-        bottom="$4"
-        left="$4"
-        right="$4"
+        bottom="4 md:6"
+        left="4"
+        right="4"
         alignItems="center"
         pointerEvents="box-none"
-        $md={{ bottom: '$6' }}
       >
         {open ? (
           <View
             flexDirection="row"
             alignItems="center"
-            gap="$2"
+            gap="2"
             width="100%"
-            maxWidth="$144"
-            minHeight="$12"
-            paddingLeft="$4"
-            paddingRight={action || closable ? '$2' : '$4'}
-            paddingVertical="$2"
-            borderRadius="$sm"
-            backgroundColor="$foreground"
+            maxWidth="144"
+            minHeight="12"
+            paddingLeft="4"
+            paddingRight={action || closable ? '2' : '4'}
+            paddingVertical="2"
+            borderRadius="sm"
+            backgroundColor="foreground"
             pointerEvents="auto"
             {...shadows.lg}
-            opacity={1}
-            y={0}
-            enterStyle={{ opacity: 0, y: 12 }}
+            opacity="1 enter:0"
+            y="0 enter:12px"
             transition={reducedMotion ? undefined : 'quick'}
             {...(isWeb && {
               onMouseEnter: () => setPaused(true),
@@ -107,10 +105,10 @@ export function Snackbar({
           >
             <Text
               flex={1}
-              fontFamily="$body"
-              fontSize="$2"
-              lineHeight="$2"
-              color="$background"
+              fontFamily="body"
+              fontSize="2"
+              lineHeight="2"
+              color="background"
               numberOfLines={2}
             >
               {children}
@@ -119,34 +117,31 @@ export function Snackbar({
               <View
                 render="button"
                 role="button"
-                paddingHorizontal="$3"
-                height="$9"
+                paddingHorizontal="3"
+                height="9"
                 justifyContent="center"
-                borderRadius="$button"
+                borderRadius="button"
                 cursor="pointer"
-                hoverStyle={{ opacity: 0.85 }}
-                pressStyle={actionRipple.active ? undefined : { opacity: 0.7 }}
-                focusVisibleStyle={{
-                  outlineColor: '$inversePrimary',
-                  outlineStyle: 'solid',
-                  outlineWidth: 2,
-                }}
+                opacity={actionRipple.active ? 'hover:0.85' : 'hover:0.85 press:0.7'}
+                outlineColor="focus-visible:inversePrimary"
+                outlineStyle="focus-visible:solid"
+                outlineWidth="focus-visible:2px"
                 {...(isWeb
                   ? { type: 'button', borderWidth: 0, backgroundColor: 'transparent' }
                   : { accessible: true, hitSlop: 6 })}
+                {...actionRipple.props}
                 onPress={() => {
                   action.onPress()
                   onOpenChange(false)
                 }}
-                {...actionRipple.props}
               >
                 {actionRipple.element}
                 <Text
-                  fontFamily="$body"
-                  fontSize="$2"
-                  lineHeight="$2"
+                  fontFamily="body"
+                  fontSize="2"
+                  lineHeight="2"
                   fontWeight="600"
-                  color="$inversePrimary"
+                  color="inversePrimary"
                 >
                   {action.label}
                 </Text>
@@ -157,26 +152,24 @@ export function Snackbar({
                 render="button"
                 role="button"
                 aria-label="Close"
-                width="$9"
-                height="$9"
+                width="9"
+                height="9"
                 alignItems="center"
                 justifyContent="center"
-                borderRadius="$full"
+                borderRadius="full"
                 cursor="pointer"
-                hoverStyle={{ opacity: 0.85 }}
-                focusVisibleStyle={{
-                  outlineColor: '$inversePrimary',
-                  outlineStyle: 'solid',
-                  outlineWidth: 2,
-                }}
+                opacity="hover:0.85"
+                outlineColor="focus-visible:inversePrimary"
+                outlineStyle="focus-visible:solid"
+                outlineWidth="focus-visible:2px"
                 {...(isWeb
                   ? { type: 'button', borderWidth: 0, backgroundColor: 'transparent' }
                   : { accessible: true, hitSlop: 6 })}
-                onPress={() => onOpenChange(false)}
                 {...closeRipple.props}
+                onPress={() => onOpenChange(false)}
               >
                 {closeRipple.element}
-                <XIcon size={18} color="$background" />
+                <XIcon size={18} color="background" />
               </View>
             ) : null}
           </View>

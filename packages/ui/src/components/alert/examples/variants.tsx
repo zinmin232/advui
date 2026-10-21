@@ -2,7 +2,7 @@ import { Alert, VStack } from '@advui/core'
 
 export default function AlertVariants() {
   return (
-    <VStack gap="$3" width="100%">
+    <VStack gap="3" width="100%">
       <Alert>
         <Alert.Title>Heads up</Alert.Title>
         <Alert.Description>You can add components using the CLI.</Alert.Description>

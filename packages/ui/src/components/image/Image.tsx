@@ -17,7 +17,7 @@ import {
   isWeb,
   styled,
   useEvent,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 
 type Status = 'loading' | 'loaded' | 'error'
 
@@ -27,11 +27,10 @@ const ImageElement = TamaguiImage as unknown as ComponentType<
 >
 
 const ImageFrame = styled(View, {
-  name: 'Image',
+  displayName: 'Image',
   position: 'relative',
   overflow: 'hidden',
-  backgroundColor: '$muted',
-
+  backgroundColor: 'muted',
   variants: {
     loaded: {
       true: { backgroundColor: 'transparent' },
@@ -115,7 +114,7 @@ export const Image = forwardRef<TamaguiElement, ImageProps>(function Image(
             : { 'aria-hidden': true })}
         >
           {fallback ?? (
-            <IconDefaults size={24} color="$mutedForeground">
+            <IconDefaults size={24} color="mutedForeground">
               <ImageIcon />
             </IconDefaults>
           )}

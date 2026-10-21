@@ -1,5 +1,5 @@
 import { forwardRef, useState } from 'react'
-import { type TamaguiElement, isWeb } from 'tamagui'
+import { type TamaguiElement, isWeb } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { ComboboxField } from './ComboboxField'
 import type { ComboboxFieldProps } from './options'

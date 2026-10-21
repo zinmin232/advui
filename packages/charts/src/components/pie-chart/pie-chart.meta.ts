@@ -93,7 +93,7 @@ export default defineMeta({
     'The chart is a `figure` named by its title. The plot is one focusable image whose name gives the title, description and a hint; the arrow keys (Home / End too) step through the values, which a polite live region reads out.',
     'Every chart has a table view ("Show table") with the same values, so nothing depends on seeing colors or hovering.',
     'Identity never relies on color alone: two or more series get a legend, and the tooltip names each value.',
-    'Colors come from the `$chart1`…`$chart8` theme keys, a palette checked for color-blind separation in light and dark mode.',
+    'Colors come from the `chart1`…`chart8` theme keys, a palette checked for color-blind separation in light and dark mode.',
     'The legend names every slice with its share, so the percentages are readable without the tooltip.',
   ],
   keyboard: [

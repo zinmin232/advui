@@ -10,10 +10,10 @@ const log = Array.from(
 
 export default function CodeBlockLongLines() {
   return (
-    <VStack gap="$4" width="100%">
+    <VStack gap="4" width="100%">
       <CodeBlock language="bash" code={command} />
       <CodeBlock language="bash" code={command} wrap />
-      <CodeBlock title="sync.log" code={log} lineNumbers maxHeight="$48" />
+      <CodeBlock title="sync.log" code={log} lineNumbers maxHeight="48" />
     </VStack>
   )
 }

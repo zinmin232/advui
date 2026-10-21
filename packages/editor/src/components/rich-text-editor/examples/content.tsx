@@ -9,5 +9,5 @@ const note = `### Distribution plan
 > Keep ~~paper lists~~ digital records only.`
 
 export default function RichTextEditorContent() {
-  return <RichTextContent maxWidth="$144">{note}</RichTextContent>
+  return <RichTextContent maxWidth="144">{note}</RichTextContent>
 }

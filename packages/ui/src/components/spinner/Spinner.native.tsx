@@ -1,12 +1,12 @@
 import { useIconColor } from '@advui/icons'
 import { ActivityIndicator } from 'react-native'
-import { View } from 'tamagui'
+import { View } from 'tamagui/unstyled'
 import { spinnerSizes } from './sizes'
 import type { SpinnerProps } from './Spinner'
 
 /** Native: the platform ActivityIndicator, tinted with a theme color. */
 export function Spinner({ size = 'md', color, label = 'Loading', ...props }: SpinnerProps) {
-  const resolved = useIconColor(color ?? '$color')
+  const resolved = useIconColor(color ?? 'color')
   return (
     <View
       accessible

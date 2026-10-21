@@ -9,14 +9,14 @@ import {
   XStack,
   isWeb,
   styled,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { CopyButton, type CopyButtonLabels } from '../copy-button/CopyButton'
 import { Text } from '../typography/Text'
 
 /** One run of text in a highlighted line. */
 export interface CodeToken {
   content: string
-  /** A theme color such as `$primaryText`, or a CSS color from a highlighter. */
+  /** A theme color such as `primaryText`, or a CSS color from a highlighter. */
   color?: ColorTokens | (string & {})
   italic?: boolean
   bold?: boolean
@@ -35,49 +35,45 @@ const defaultLabels: CodeBlockLabels = {
 }
 
 export const CodeBlockFrame = styled(View, {
-  name: 'CodeBlock',
+  displayName: 'CodeBlock',
   // The floating copy button is placed against the block (web Views are static).
   position: 'relative',
-  backgroundColor: '$muted',
+  backgroundColor: 'muted',
   borderWidth: 1,
-  borderColor: '$border',
-  borderRadius: '$lg',
+  borderColor: 'border',
+  borderRadius: 'lg',
   overflow: 'hidden',
 })
 
 // Every Text sets its own `white-space` on web, so each one takes `wrap`.
 const CodeText = styled(TamaguiText, {
-  name: 'CodeBlockText',
-  fontFamily: '$mono',
-  fontSize: '$2',
-  lineHeight: '$2',
-  color: '$foreground',
-
+  displayName: 'CodeBlockText',
+  fontFamily: 'mono',
+  fontSize: '2',
+  lineHeight: '2',
+  color: 'foreground',
   variants: {
     wrap: {
       true: { whiteSpace: 'pre-wrap' },
       false: { whiteSpace: 'pre' },
     },
   } as const,
-
   defaultVariants: { wrap: false },
 })
 
 // Web: the scroll box. Keyboard users scroll it with the arrow keys once it has focus.
 const Pre = styled(View, {
-  name: 'CodeBlockPre',
+  displayName: 'CodeBlockPre',
   render: 'pre',
   tabIndex: 0,
   margin: 0,
-  paddingVertical: '$3',
+  paddingVertical: '3',
   overflowX: 'auto',
   overflowY: 'auto',
-  focusVisibleStyle: {
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: -2,
-  },
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:-2px',
 })
 
 type FrameProps = GetProps<typeof CodeBlockFrame>
@@ -128,7 +124,7 @@ function Tokens({ line, wrap }: { line: CodeToken[]; wrap: boolean }) {
       <CodeText
         key={index}
         wrap={wrap}
-        color={(token.color as ColorTokens | undefined) ?? '$foreground'}
+        color={(token.color as ColorTokens | undefined) ?? 'foreground'}
         fontStyle={token.italic ? 'italic' : 'normal'}
         fontWeight={token.bold ? '700' : '400'}
       >
@@ -183,12 +179,12 @@ export const CodeBlock = forwardRef<TamaguiElement, CodeBlockProps>(function Cod
   const lineStyle = (number: number) => {
     const mark = marked.has(number)
     return {
-      paddingLeft: '$4',
-      paddingRight: floating ? '$11' : '$4',
+      paddingLeft: '4',
+      paddingRight: floating ? '11' : '4',
       // A bar beside marked lines, so the mark is not color alone.
       borderLeftWidth: anyMarked ? 2 : 0,
-      borderLeftColor: mark ? '$primary' : 'transparent',
-      backgroundColor: mark ? '$primarySoft' : 'transparent',
+      borderLeftColor: mark ? 'primary' : 'transparent',
+      backgroundColor: mark ? 'primarySoft' : 'transparent',
     } as const
   }
   const lineNumber = (number: number) => String(number).padStart(digits)
@@ -219,7 +215,7 @@ export const CodeBlock = forwardRef<TamaguiElement, CodeBlockProps>(function Cod
                 {lineNumbers ? (
                   <CodeText
                     {...css({ display: 'inline-block', width: `${digits + 2}ch` })}
-                    color="$mutedForeground"
+                    color="mutedForeground"
                     userSelect="none"
                     aria-hidden
                   >
@@ -250,17 +246,17 @@ export const CodeBlock = forwardRef<TamaguiElement, CodeBlockProps>(function Cod
     </Pre>
   ) : (
     <NativeScroll maxHeight={maxHeight} wrap={wrap}>
-      <View flexGrow={1} paddingVertical="$3">
+      <View flexGrow={1} paddingVertical="3">
         {lines.map((line, index) => {
           const number = firstLineNumber + index
           return (
             <XStack key={index} {...lineStyle(number)}>
               {lineNumbers ? (
-                <CodeText color="$mutedForeground" paddingRight="$4" aria-hidden>
+                <CodeText color="mutedForeground" paddingRight="4" aria-hidden>
                   {lineNumber(number)}
                 </CodeText>
               ) : null}
-              <CodeText selectable flexShrink={wrap ? 1 : 0}>
+              <CodeText userSelect="text" flexShrink={wrap ? 1 : 0}>
                 {/* An empty Text has no height. */}
                 {line.some((token) => token.content) ? <Tokens line={line} wrap={wrap} /> : ' '}
                 {/*
@@ -283,17 +279,17 @@ export const CodeBlock = forwardRef<TamaguiElement, CodeBlockProps>(function Cod
         <XStack
           alignItems="center"
           justifyContent="space-between"
-          gap="$2"
-          minHeight="$10"
-          paddingLeft="$4"
-          paddingRight="$1"
+          gap="2"
+          minHeight="10"
+          paddingLeft="4"
+          paddingRight="1"
           borderBottomWidth={1}
-          borderColor="$border"
+          borderColor="border"
         >
           <Text size="xs" tone="muted" mono truncate flexShrink={1}>
             {header}
           </Text>
-          <XStack alignItems="center" gap="$2">
+          <XStack alignItems="center" gap="2">
             {title && language ? (
               <Text size="xs" tone="muted">
                 {language}
@@ -304,7 +300,7 @@ export const CodeBlock = forwardRef<TamaguiElement, CodeBlockProps>(function Cod
         </XStack>
       ) : null}
       {floating ? (
-        <View position="absolute" top="$1.5" right="$1.5" zIndex={1}>
+        <View position="absolute" top="1-5" right="1-5" zIndex={1}>
           {copyButton}
         </View>
       ) : null}

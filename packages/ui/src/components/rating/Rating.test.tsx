@@ -89,8 +89,8 @@ describe('Rating', () => {
     expect(onValueChange).toHaveBeenLastCalledWith(4)
     expect(whole).toHaveAttribute('aria-valuenow', '4')
 
-    const halves = (index: number) => icons(screen.getByRole('slider', { name: 'Half' }))[index]!
-      .lastElementChild!.children
+    const halves = (index: number) =>
+      icons(screen.getByRole('slider', { name: 'Half' }))[index]!.lastElementChild!.children
     await user.click(halves(2)[0]!)
     expect(onHalfChange).toHaveBeenLastCalledWith(2.5)
     await user.click(halves(4)[1]!)

@@ -10,7 +10,7 @@ export default function FieldValidation() {
     : 'Enter an email like you@example.org.'
   const passwordError = password.length >= 8 ? undefined : 'Too short.'
   return (
-    <VStack gap="$4" width="100%" maxWidth={360}>
+    <VStack gap="4" width="100%" maxWidth={360}>
       <Field label="Email" required error={emailError}>
         <Input value={email} onChangeText={setEmail} inputMode="email" />
       </Field>

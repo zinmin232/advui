@@ -63,4 +63,4 @@ export interface ComboboxFieldProps {
   width?: number | string
 }
 
-export const fieldHeights = { sm: '$8', md: '$10', lg: '$12' } as const
+export const fieldHeights = { sm: '8', md: '10', lg: '12' } as const

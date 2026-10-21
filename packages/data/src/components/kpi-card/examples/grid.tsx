@@ -4,7 +4,7 @@ import { BarChartIcon, PackageIcon, ShoppingCartIcon, UsersIcon } from '@advui/i
 
 export default function KpiCardGrid() {
   return (
-    <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="$4" width="100%">
+    <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="4" width="100%">
       <KpiCard
         label="Subscriptions"
         value="2,350"

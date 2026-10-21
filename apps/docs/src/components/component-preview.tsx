@@ -20,19 +20,18 @@ export function ExampleRenderer({ slug, name }: { slug: string; name: string }) 
 /** Preview surface shared by examples and the playground. */
 export function PreviewSurface({
   children,
-  minHeight = '$56',
+  minHeight = '56',
 }: {
   children: React.ReactNode
-  minHeight?: '$40' | '$56' | '$72'
+  minHeight?: '40' | '56' | '72'
 }) {
   return (
     <View
       minHeight={minHeight}
       alignItems="center"
       justifyContent="center"
-      padding="$6"
-      $sm={{ padding: '$10' }}
-      backgroundColor="$background"
+      padding="6 sm:10"
+      backgroundColor="background"
       backgroundImage="radial-gradient(var(--border) 1px, transparent 1px)"
       backgroundSize="16px 16px"
     >
@@ -60,8 +59,8 @@ export function ComponentPreview({
 }) {
   const [viewport, setViewport] = useState<Viewport>('desktop')
   return (
-    <VStack gap="$3" id={`example-${name}`}>
-      <VStack gap="$1">
+    <VStack gap="3" id={`example-${name}`}>
+      <VStack gap="1">
         <Text render="h3" size="lg" weight="semibold" margin={0}>
           {title}
         </Text>
@@ -71,13 +70,13 @@ export function ComponentPreview({
           </Text>
         ) : null}
       </VStack>
-      <Tabs defaultValue="preview" gap="$2">
-        <HStack justifyContent="space-between" flexWrap="wrap" gap="$2">
+      <Tabs defaultValue="preview" gap="2">
+        <HStack justifyContent="space-between" flexWrap="wrap" gap="2">
           <Tabs.List aria-label={`${title} example`}>
             <Tabs.Trigger value="preview">Preview</Tabs.Trigger>
             <Tabs.Trigger value="code">Code</Tabs.Trigger>
           </Tabs.List>
-          <HStack gap="$1" role="group" aria-label="Preview width">
+          <HStack gap="1" role="group" aria-label="Preview width">
             {(['desktop', 'tablet', 'mobile'] as const).map((v) => (
               <Tooltip key={v} content={v === 'desktop' ? 'Full width' : `${widths[v]}px`}>
                 <Button
@@ -95,7 +94,7 @@ export function ComponentPreview({
           </HStack>
         </HStack>
         <Tabs.Content value="preview">
-          <View borderWidth={1} borderColor="$border" borderRadius="$lg" overflow="hidden">
+          <View borderWidth={1} borderColor="border" borderRadius="lg" overflow="hidden">
             {viewport === 'desktop' ? (
               <PreviewSurface>
                 <ExampleRenderer slug={slug} name={name} />
@@ -103,8 +102,8 @@ export function ComponentPreview({
             ) : (
               <View
                 alignItems="center"
-                backgroundColor="$muted"
-                paddingVertical="$4"
+                backgroundColor="muted"
+                paddingVertical="4"
                 overflowX="auto"
               >
                 <iframe

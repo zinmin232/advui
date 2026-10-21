@@ -1,6 +1,6 @@
 import { IconDefaults, UploadIcon } from '@advui/icons'
 import { type ReactNode, forwardRef, useRef } from 'react'
-import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui/unstyled'
 import { useDashedBorder } from '../../hooks/useDashedBorder'
 import { FileList } from '../file-upload/FileList'
 import { type FileSelectionProps, useFileSelection } from '../file-upload/useFileSelection'
@@ -9,44 +9,41 @@ import { useDropTarget } from './useDropTarget'
 import { ariaState } from '../../utils/ariaState'
 
 const DropArea = styled(View, {
-  name: 'FileDropzone',
+  displayName: 'FileDropzone',
   role: 'button',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: '$2',
-  paddingVertical: '$8',
-  paddingHorizontal: '$6',
+  gap: '2',
+  paddingVertical: '8',
+  paddingHorizontal: '6',
   borderWidth: 1,
   borderStyle: 'dashed',
-  borderColor: '$borderStrong',
-  borderRadius: '$lg',
-  backgroundColor: '$background',
+  borderColor: 'borderStrong',
+  borderRadius: 'lg',
+  backgroundColor: 'background hover:muted press:muted',
   cursor: 'pointer',
-  hoverStyle: { backgroundColor: '$muted' },
-  pressStyle: { backgroundColor: '$muted' },
-  focusVisibleStyle: {
-    outlineColor: '$ring',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineOffset: 2,
-  },
-
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
   variants: {
     dragging: {
       true: {
-        borderColor: '$ring',
+        borderColor: 'ring',
         borderStyle: 'solid',
-        backgroundColor: '$accent',
-        hoverStyle: { backgroundColor: '$accent' },
+        backgroundColor: 'accent hover:accent',
       },
     },
-    invalid: { true: { borderColor: '$error' } },
+    invalid: {
+      true: {
+        borderColor: 'error',
+      },
+    },
     disabled: {
       true: {
         opacity: 0.5,
         cursor: 'not-allowed',
-        hoverStyle: { backgroundColor: '$background' },
-        pressStyle: { backgroundColor: '$background' },
+        backgroundColor: 'hover:background press:background',
       },
     },
   } as const,
@@ -104,13 +101,13 @@ export const FileDropzone = forwardRef<TamaguiElement, FileDropzoneProps>(functi
   })
   const inactive = disabled || !canPick
   const dragging = useDropTarget(areaRef, { onFiles: add, disabled })
-  const dashed = useDashedBorder(dragging ? null : invalid ? '$error' : '$borderStrong')
+  const dashed = useDashedBorder(dragging ? null : invalid ? 'error' : 'borderStrong', 'lg')
   const defaultTitle = isWeb
     ? `Drop ${multiple ? 'files' : 'a file'} here or click to browse`
     : `Tap to choose ${multiple ? 'files' : 'a file'}`
 
   return (
-    <View gap="$3" alignSelf="stretch">
+    <View gap="3" alignSelf="stretch">
       {inputElement}
       <DropArea
         ref={(node: TamaguiElement | null) => {
@@ -135,11 +132,12 @@ export const FileDropzone = forwardRef<TamaguiElement, FileDropzoneProps>(functi
             }
           : { accessible: true })}
         onPress={inactive ? undefined : () => void open()}
-        style={dashed ? [dashed, style] : style}
+        style={dashed.frame ? [dashed.frame, style] : style}
         {...props}
       >
-        <View backgroundColor="$muted" borderRadius="$full" padding="$3" aria-hidden>
-          <IconDefaults size={20} color="$mutedForeground">
+        {dashed.overlay}
+        <View backgroundColor="muted" borderRadius="full" padding="3" aria-hidden>
+          <IconDefaults size={20} color="mutedForeground">
             <UploadIcon />
           </IconDefaults>
         </View>

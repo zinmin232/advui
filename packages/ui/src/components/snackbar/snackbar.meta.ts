@@ -66,7 +66,7 @@ export default defineMeta({
     'The message sits in a polite live region (`role="status"`) that stays mounted, so screen readers announce it without moving focus. On iOS it is announced with `AccessibilityInfo`.',
     'The timer pauses while the pointer or keyboard focus is on the snackbar, and it runs longer when there is an action, so people have time to reach it.',
     'Actions are optional shortcuts: never put the only way to do something in a snackbar. Use `duration={null}` for messages that must stay.',
-    'Colors use the inverse surface with `$inversePrimary` for the action, checked for WCAG AA contrast.',
+    'Colors use the inverse surface with `inversePrimary` for the action, checked for WCAG AA contrast.',
   ],
   keyboard: [
     { keys: 'Tab', action: 'Reaches the action and the close button (it does not take focus).' },

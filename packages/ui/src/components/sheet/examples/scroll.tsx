@@ -27,9 +27,9 @@ export default function SheetScroll() {
           <Sheet.Description>What happened in your projects today.</Sheet.Description>
         </Sheet.Header>
         <Sheet.ScrollView>
-          <VStack gap="$4" paddingBottom="$4">
+          <VStack gap="4" paddingBottom="4">
             {activity.map((item) => (
-              <HStack key={item.who} gap="$3" alignItems="center">
+              <HStack key={item.who} gap="3" alignItems="center">
                 {/* The name is in the text next to it. */}
                 <Avatar size="sm" alt={item.who} aria-hidden />
                 <VStack flex={1}>

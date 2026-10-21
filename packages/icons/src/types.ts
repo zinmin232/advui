@@ -6,7 +6,7 @@ export type IconNode = ReadonlyArray<readonly [string, Readonly<Record<string, s
 export interface IconProps {
   /** Pixel size. Defaults to the nearest `IconDefaults` provider, or 16. */
   size?: number
-  /** Theme token (`"$primary"`) or any color string. Defaults to the surrounding text color. */
+  /** Theme token (`"primary"`) or any color string. Defaults to the surrounding text color. */
   color?: string
   /**
    * Paints the inside of the shape: a theme token or any color. Icons are

@@ -10,10 +10,10 @@ const channels = [
 export default function CheckboxGroupSelectAll() {
   const [value, setValue] = useState(['email'])
   return (
-    <VStack gap="$4">
+    <VStack gap="4">
       <CheckboxGroup aria-label="Notifications" value={value} onValueChange={setValue}>
         <CheckboxGroup.SelectAll label="All channels" />
-        <VStack gap="$3" paddingLeft="$6">
+        <VStack gap="3" paddingLeft="6">
           {channels.map((channel) => (
             <CheckboxGroup.Item key={channel.value} {...channel} />
           ))}

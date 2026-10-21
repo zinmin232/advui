@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { resolveResponsive, responsiveStyle } from './responsive'
+import {
+  flatValue,
+  mergeResponsiveStyles,
+  resolveResponsive,
+  responsiveStyle,
+  when,
+} from './responsive'
 
 describe('responsiveStyle', () => {
   it('turns a plain value into the base style', () => {
@@ -8,33 +14,67 @@ describe('responsiveStyle', () => {
 
   it('emits only the breakpoints given, mobile-first', () => {
     expect(responsiveStyle('flexDirection', { base: 'column', md: 'row' })).toEqual({
-      flexDirection: 'column',
-      $md: { flexDirection: 'row' },
+      flexDirection: { default: 'column', md: 'row' },
     })
-    expect(responsiveStyle('gap', { sm: '$2', xl: '$6' })).toEqual({
-      $sm: { gap: '$2' },
-      $xl: { gap: '$6' },
+    expect(responsiveStyle('gap', { sm: '2', xl: '6' })).toEqual({
+      gap: { sm: '2', xl: '6' },
     })
   })
 
   it('leaves out the base without one', () => {
-    expect(responsiveStyle('flexWrap', { lg: 'wrap' })).not.toHaveProperty('flexWrap')
+    expect(responsiveStyle('flexWrap', { lg: 'wrap' })).toEqual({ flexWrap: { lg: 'wrap' } })
   })
 
   it('maps values with a record or a function', () => {
     const align = { start: 'flex-start', end: 'flex-end' }
     expect(responsiveStyle('alignItems', { base: 'start', md: 'center' }, align)).toEqual({
-      alignItems: 'flex-start',
-      $md: { alignItems: 'center' },
+      alignItems: { default: 'flex-start', md: 'center' },
     })
     expect(responsiveStyle('width', { base: 1, md: 2 }, (n: number) => `${n * 50}%`)).toEqual({
-      width: '50%',
-      $md: { width: '100%' },
+      width: { default: '50%', md: '100%' },
     })
   })
 
   it('returns nothing for undefined', () => {
     expect(responsiveStyle('flexDirection', undefined)).toEqual({})
+  })
+})
+
+describe('mergeResponsiveStyles', () => {
+  it('joins conditional values per property, keeping a plain one as the default', () => {
+    expect(
+      mergeResponsiveStyles(
+        { width: '100%', opacity: 1 },
+        { width: { md: '50%' } },
+        when('hover', { opacity: 0.8 }),
+      ),
+    ).toEqual({ width: { default: '100%', md: '50%' }, opacity: { default: 1, hover: 0.8 } })
+  })
+
+  it('lets a later plain value replace the property', () => {
+    expect(mergeResponsiveStyles({ width: { default: '100%', md: '50%' } }, { width: 10 })).toEqual(
+      {
+        width: 10,
+      },
+    )
+  })
+
+  it('treats a shadow offset as a value, not as conditions', () => {
+    const shadowOffset = { width: 0, height: 2 }
+    expect(mergeResponsiveStyles({ shadowOffset }, { shadowRadius: 4 })).toEqual({
+      shadowOffset,
+      shadowRadius: 4,
+    })
+  })
+})
+
+describe('flatValue', () => {
+  it('joins the parts that are set', () => {
+    const hoverable = false
+    expect(flatValue('transparent', hoverable && 'hover:accent', 'press:accentHover')).toBe(
+      'transparent press:accentHover',
+    )
+    expect(flatValue(undefined, false)).toBeUndefined()
   })
 })
 

@@ -58,7 +58,7 @@ describe('AppShell on web', () => {
     expect(html).toMatch(/<nav[^>]*aria-label="Main"/)
     expect(html).toMatch(/<main[^>]*>/)
     expect(html).toMatch(/<footer[^>]*>/)
-    expect(html).toContain('_height-100dvh')
+    expect(html).toContain('height:100dvh')
     expect(html).not.toContain('role="dialog"')
   })
 
@@ -92,7 +92,8 @@ describe('AppShell on web', () => {
       <Shell sidebarBreakpoint="md" defaultSidebarOpen onSidebarOpenChange={onSidebarOpenChange} />,
     )
     await waitFor(() => expect(onSidebarOpenChange).toHaveBeenCalledWith(false))
-    expect(screen.queryByRole('dialog')).toBeNull()
+    // Gone once the drawer's exit animation ends.
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
   })
 
   it('puts the header at the top of what scrolls when it is not sticky', () => {

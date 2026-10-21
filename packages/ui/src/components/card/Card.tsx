@@ -7,59 +7,60 @@ import {
   View,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from 'tamagui/unstyled'
 import { useRipple } from '../../hooks/useRipple'
 import { Text } from '../typography/Text'
 
 const CardFrame = styled(View, {
-  name: 'Card',
+  displayName: 'Card',
   flexDirection: 'column',
-  backgroundColor: '$card',
-  borderRadius: '$xl',
+  backgroundColor: 'card',
+  borderRadius: 'xl',
   borderWidth: 1,
-  borderColor: '$border',
+  borderColor: 'border',
   overflow: 'hidden',
-
   variants: {
     variant: {
       outline: {},
       elevated: { ...shadows.sm },
       ghost: { borderColor: 'transparent', backgroundColor: 'transparent' },
-      filled: { backgroundColor: '$muted', borderColor: 'transparent' },
+      filled: {
+        backgroundColor: 'muted',
+        borderColor: 'transparent',
+      },
     },
     /** Adds hover/press feedback. Pair with `onPress` and an accessible `role`/label. */
     interactive: {
       true: {
         cursor: 'pointer',
         transition: 'quick',
-        hoverStyle: { borderColor: '$borderStrong' },
-        pressStyle: { scale: 0.99, opacity: 0.95 },
-        focusVisibleStyle: {
-          outlineColor: '$ring',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineOffset: 2,
-        },
+        borderColor: 'hover:borderStrong',
+        scale: 'press:0.99',
+        opacity: 'press:0.95',
+        outlineColor: 'focus-visible:ring',
+        outlineStyle: 'focus-visible:solid',
+        outlineWidth: 'focus-visible:2px',
+        outlineOffset: 'focus-visible:2px',
       },
     },
   } as const,
-
   defaultVariants: { variant: 'outline' },
 })
 
 const CardHeader = styled(View, {
-  name: 'CardHeader',
+  displayName: 'CardHeader',
   flexDirection: 'column',
-  gap: '$1.5',
-  padding: '$4',
-  paddingBottom: '$0',
-  $sm: { padding: '$6', paddingBottom: '$0' },
+  gap: '1-5',
+  paddingTop: '4 sm:6',
+  paddingRight: '4 sm:6',
+  paddingLeft: '4 sm:6',
+  paddingBottom: '0 sm:0',
 })
 
 const CardTitleText = styled(Text, {
-  name: 'CardTitle',
+  displayName: 'CardTitle',
   role: 'heading',
-  fontFamily: '$heading',
+  fontFamily: 'heading',
   fontWeight: '600',
   size: 'lg',
 })
@@ -72,26 +73,26 @@ const CardTitle = forwardRef<TamaguiTextElement, GetProps<typeof CardTitleText>>
 )
 
 const CardDescription = styled(Text, {
-  name: 'CardDescription',
+  displayName: 'CardDescription',
   size: 'sm',
   tone: 'muted',
 })
 
 const CardContent = styled(View, {
-  name: 'CardContent',
-  padding: '$4',
-  gap: '$4',
-  $sm: { padding: '$6' },
+  displayName: 'CardContent',
+  padding: '4 sm:6',
+  gap: '4',
 })
 
 const CardFooter = styled(View, {
-  name: 'CardFooter',
+  displayName: 'CardFooter',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: '$2',
-  padding: '$4',
-  paddingTop: '$0',
-  $sm: { padding: '$6', paddingTop: '$0' },
+  gap: '2',
+  paddingRight: '4 sm:6',
+  paddingBottom: '4 sm:6',
+  paddingLeft: '4 sm:6',
+  paddingTop: '0 sm:0',
 })
 
 const CardImpl = forwardRef<TamaguiElement, GetProps<typeof CardFrame>>(function Card(
@@ -99,7 +100,7 @@ const CardImpl = forwardRef<TamaguiElement, GetProps<typeof CardFrame>>(function
   ref,
 ) {
   const ripple = useRipple({
-    color: '$cardForeground',
+    color: 'cardForeground',
     disabled: !props.interactive || !props.onPress,
     onPressIn,
     onPressOut,
@@ -109,7 +110,8 @@ const CardImpl = forwardRef<TamaguiElement, GetProps<typeof CardFrame>>(function
       ref={ref}
       {...(ripple.active && {
         // The ripple is the press feedback, so the card does not also shrink.
-        pressStyle: { scale: 1, opacity: 1 },
+        scale: 'press:1',
+        opacity: 'press:1',
         // It is clipped inside the border: drop a transparent one.
         ...((props.variant === 'filled' || props.variant === 'ghost') && { borderWidth: 0 }),
       })}

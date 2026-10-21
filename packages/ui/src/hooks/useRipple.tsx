@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
-import type { ColorTokens, GetProps, View } from 'tamagui'
+import type { ColorTokens, GetProps, View } from 'tamagui/unstyled'
 
 type PressHandler = GetProps<typeof View>['onPressIn']
 
 export interface RippleOptions {
-  /** Color of the content on the surface, e.g. `$primaryForeground`. */
+  /** Color of the content on the surface, e.g. `primaryForeground`. */
   color: ColorTokens
   /** No ripple, e.g. while disabled or when the element is not pressable. */
   disabled?: boolean
@@ -15,7 +15,7 @@ export interface RippleOptions {
 
 export interface Ripple {
   /**
-   * The ripple replaces the pressed style, so drop your `pressStyle`
+   * The ripple replaces the pressed style, so drop your `press:`
    * background while this is true. It is clipped inside the border, so drop
    * a transparent border too.
    */
@@ -31,7 +31,7 @@ export interface Ripple {
  * `androidRipple` (as `material()` does). On web and iOS it does nothing.
  *
  * @example
- * const ripple = useRipple({ color: '$foreground', onPressIn, onPressOut })
+ * const ripple = useRipple({ color: 'foreground', onPressIn, onPressOut })
  * <View onPress={open} {...ripple.props}>
  *   {ripple.element}
  *   <Text>Inbox</Text>
