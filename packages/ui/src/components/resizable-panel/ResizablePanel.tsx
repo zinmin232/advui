@@ -396,35 +396,35 @@ function ResizableHandle({
   return (
     <View
       {...(isWeb
-            ? {
-                role: 'separator',
-                tabIndex: disabled ? -1 : 0,
-                'aria-orientation': horizontal ? 'vertical' : 'horizontal',
-                'aria-valuenow': Math.round(size),
-                'aria-valuemin': min,
-                'aria-valuemax': max,
-                'aria-valuetext': `${Math.round(size)}%`,
-                'aria-controls': panelId(index),
-                'aria-disabled': disabled || undefined,
-                onKeyDown: disabled ? undefined : onKeyDown,
-              }
-            : {
-                accessible: true,
-                accessibilityRole: 'adjustable',
-                accessibilityValue: { min, max, now: Math.round(size), text: `${Math.round(size)}%` },
-                accessibilityActions: [
-                  { name: 'increment' },
-                  { name: 'decrement' },
-                  ...(a?.collapsible ? [{ name: 'activate' }] : []),
-                ],
-                onAccessibilityAction: (event: { nativeEvent: { actionName: string } }) => {
-                  const action = event.nativeEvent.actionName
-                  if (action === 'activate') toggle(index)
-                  else step(action === 'increment' ? keyboardStep : -keyboardStep)
-                },
-                // A 1px line is too thin to grab: widen the touch target.
-                hitSlop: horizontal ? { left: 16, right: 16 } : { top: 16, bottom: 16 },
-              })}
+        ? {
+            role: 'separator',
+            tabIndex: disabled ? -1 : 0,
+            'aria-orientation': horizontal ? 'vertical' : 'horizontal',
+            'aria-valuenow': Math.round(size),
+            'aria-valuemin': min,
+            'aria-valuemax': max,
+            'aria-valuetext': `${Math.round(size)}%`,
+            'aria-controls': panelId(index),
+            'aria-disabled': disabled || undefined,
+            onKeyDown: disabled ? undefined : onKeyDown,
+          }
+        : {
+            accessible: true,
+            accessibilityRole: 'adjustable',
+            accessibilityValue: { min, max, now: Math.round(size), text: `${Math.round(size)}%` },
+            accessibilityActions: [
+              { name: 'increment' },
+              { name: 'decrement' },
+              ...(a?.collapsible ? [{ name: 'activate' }] : []),
+            ],
+            onAccessibilityAction: (event: { nativeEvent: { actionName: string } }) => {
+              const action = event.nativeEvent.actionName
+              if (action === 'activate') toggle(index)
+              else step(action === 'increment' ? keyboardStep : -keyboardStep)
+            },
+            // A 1px line is too thin to grab: widen the touch target.
+            hitSlop: horizontal ? { left: 16, right: 16 } : { top: 16, bottom: 16 },
+          })}
       {...(disabled ? {} : drag(horizontal))}
       position="relative"
       flexShrink={0}

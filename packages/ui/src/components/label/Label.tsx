@@ -12,11 +12,11 @@ import { plainText } from '../../utils/plainText'
 
 const LabelFrame = styled(TamaguiLabel, {
   displayName: 'Label',
-  fontFamily: "body",
-  fontSize: "2",
-  lineHeight: "2",
+  fontFamily: 'body',
+  fontSize: '2',
+  lineHeight: '2',
   fontWeight: '500',
-  color: "foreground",
+  color: 'foreground',
   height: 'auto',
   paddingHorizontal: 0,
   cursor: 'default',
@@ -25,13 +25,13 @@ const LabelFrame = styled(TamaguiLabel, {
     disabled: {
       true: { opacity: 0.6 },
     },
-  } as const
+  } as const,
 })
 
 const RequiredMark = styled(Text, {
   displayName: 'LabelRequired',
-  color: "error",
-  fontSize: "2"
+  color: 'error',
+  fontSize: '2',
 })
 
 export type LabelProps = GetProps<typeof LabelFrame> & {

@@ -80,11 +80,11 @@ const focusRing = {
 const CarouselFrame = styled(View, {
   displayName: 'Carousel',
   width: '100%',
-  gap: "3",
+  gap: '3',
   // The controls come first in the tree, so keyboard and screen-reader users
   // meet the pause button before the slides move under them (WAI-ARIA APG),
   // and show under the slides.
-  flexDirection: 'column-reverse'
+  flexDirection: 'column-reverse',
 })
 
 export interface CarouselProps extends Omit<GetProps<typeof CarouselFrame>, 'children' | 'gap'> {
@@ -166,15 +166,15 @@ function Dot({
   return (
     <View
       {...(isWeb
-            ? {
-                render: 'button',
-                type: 'button',
-                padding: 0,
-                borderWidth: 0,
-                'aria-current': active || undefined,
-                'aria-controls': controls,
-              }
-            : { accessible: true, role: 'button', 'aria-selected': ariaState(active) })}
+        ? {
+            render: 'button',
+            type: 'button',
+            padding: 0,
+            borderWidth: 0,
+            'aria-current': active || undefined,
+            'aria-controls': controls,
+          }
+        : { accessible: true, role: 'button', 'aria-selected': ariaState(active) })}
       width="6"
       height="6"
       alignItems="center"
@@ -189,10 +189,10 @@ function Dot({
     >
       {ripple.element}
       <View
-        width={active ? "5" : "2"}
+        width={active ? '5' : '2'}
         height="2"
         borderRadius="full"
-        backgroundColor={active ? "primary" : "mutedForeground"}
+        backgroundColor={active ? 'primary' : 'mutedForeground'}
       />
     </View>
   )

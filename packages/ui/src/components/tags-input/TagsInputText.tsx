@@ -5,6 +5,6 @@ import { textBoxStyle } from './textBoxStyle'
 export const TagsInputText = styled(TamaguiInput, {
   ...textBoxStyle,
   // The field draws the focus ring; `outline-style: auto` ignores width.
-outlineWidth: "focus:0px focus-visible:0px",
-  outlineStyle: "focus:none focus-visible:none",
+  outlineWidth: 'focus:0px focus-visible:0px',
+  outlineStyle: 'focus:none focus-visible:none',
 })

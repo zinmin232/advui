@@ -1,7 +1,8 @@
 import { LinePlot, type LinePlotProps } from '../../charts'
 
-export interface AreaChartProps<T extends object = Record<string, unknown>>
-  extends LinePlotProps<T> {
+export interface AreaChartProps<
+  T extends object = Record<string, unknown>,
+> extends LinePlotProps<T> {
   /** Stacks the series, so the top edge is their total (part-to-whole over time). */
   stacked?: boolean
 }

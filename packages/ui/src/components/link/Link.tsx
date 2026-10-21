@@ -1,7 +1,13 @@
 import { ExternalLinkIcon } from '@advui/icons'
 import { type CSSProperties, type ReactNode, forwardRef } from 'react'
 import { type GestureResponderEvent, Linking } from 'react-native'
-import { type GetProps, type TamaguiTextElement, Text as TamaguiText, isWeb, styled } from 'tamagui/unstyled'
+import {
+  type GetProps,
+  type TamaguiTextElement,
+  Text as TamaguiText,
+  isWeb,
+  styled,
+} from 'tamagui/unstyled'
 import { type TextSize, textSizes, textWeights } from '../typography/Text'
 
 export type LinkTone = 'primary' | 'muted' | 'inherit'
@@ -54,18 +60,18 @@ const LinkText = styled(TamaguiText, {
   padding: 0,
   borderWidth: 0,
   backgroundColor: 'transparent',
-  outlineColor: "focus-visible:ring",
-  outlineStyle: "focus-visible:solid",
-  outlineWidth: "focus-visible:2px",
-  outlineOffset: "focus-visible:2px",
-  borderRadius: "focus-visible:sm",
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
+  borderRadius: 'focus-visible:sm',
   variants: {
     tone: {
       primary: {
-        color: "primaryText"
+        color: 'primaryText',
       },
       muted: {
-        color: "mutedForeground hover:foreground"
+        color: 'mutedForeground hover:foreground',
       },
       // Takes the surrounding text's color, for links inside a sentence.
       inherit: {},
@@ -73,7 +79,7 @@ const LinkText = styled(TamaguiText, {
     underline: {
       always: { textDecorationLine: 'underline' },
       hover: {
-        textDecorationLine: "none hover:underline focus-visible:underline"
+        textDecorationLine: 'none hover:underline focus-visible:underline',
       },
       none: { textDecorationLine: 'none' },
     },
@@ -82,10 +88,10 @@ const LinkText = styled(TamaguiText, {
     weight: textWeights,
     pressable: {
       true: {
-        opacity: "press:0.7"
+        opacity: 'press:0.7',
       },
     },
-  } as const
+  } as const,
 })
 
 type LinkTextProps = GetProps<typeof LinkText>
@@ -215,11 +221,7 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
             />
           </TamaguiText>
           {/* Text, not the icon's label: every browser puts text in the link's name. */}
-          {isWeb ? (
-            <TamaguiText {...visuallyHidden}>
-              {` ${labels.external}`}
-            </TamaguiText>
-          ) : null}
+          {isWeb ? <TamaguiText {...visuallyHidden}>{` ${labels.external}`}</TamaguiText> : null}
         </>
       ) : null}
     </LinkText>

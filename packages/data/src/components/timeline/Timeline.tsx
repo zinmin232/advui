@@ -32,17 +32,17 @@ const TimelineItemFrame = styled(View, {
   displayName: 'TimelineItem',
   role: 'listitem',
   flexDirection: 'row',
-  gap: "3"
+  gap: '3',
 })
 
 const TimelineConnector = styled(View, {
   displayName: 'TimelineConnector',
   flex: 1,
   width: 2,
-  minHeight: "4",
-  marginVertical: "1",
-  borderRadius: "full",
-  backgroundColor: "border"
+  minHeight: '4',
+  marginVertical: '1',
+  borderRadius: 'full',
+  backgroundColor: 'border',
 })
 
 const TimelineTitle = styled(Text, {
@@ -141,7 +141,7 @@ const TimelineItem = forwardRef<TamaguiElement, TimelineItemProps>(function Time
         </View>
         {last ? null : <TimelineConnector />}
       </View>
-      <View flex={1} minWidth={0} gap="1" paddingBottom={last ? "0" : "6"}>
+      <View flex={1} minWidth={0} gap="1" paddingBottom={last ? '0' : '6'}>
         <XStack
           minHeight="6"
           alignItems="center"

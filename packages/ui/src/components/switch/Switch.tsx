@@ -32,14 +32,14 @@ const Frame = styled(TamaguiSwitchFrame, {
   variants: {
     size: {
       sm: {
-        width: "9",
-        height: "5",
-        minHeight: "5"
+        width: '9',
+        height: '5',
+        minHeight: '5',
       },
       md: {
-        width: "11",
-        height: "6",
-        minHeight: "6"
+        width: '11',
+        height: '6',
+        minHeight: '6',
       },
     },
     disabled: {
@@ -60,12 +60,12 @@ const Thumb = styled(TamaguiSwitchThumb, {
   variants: {
     size: {
       sm: {
-        width: "4",
-        height: "4"
+        width: '4',
+        height: '4',
       },
       md: {
-        width: "5",
-        height: "5"
+        width: '5',
+        height: '5',
       },
     },
   } as const,
@@ -112,7 +112,11 @@ export const Switch = forwardRef<TamaguiElement, SwitchProps>(function Switch(sw
       onCheckedChange={setChecked}
       {...(isWeb
         ? null
-        : { accessible: true, 'aria-checked': checked, 'aria-disabled': ariaState(props.disabled) })}
+        : {
+            accessible: true,
+            'aria-checked': checked,
+            'aria-disabled': ariaState(props.disabled),
+          })}
     >
       <BaseSwitch.Thumb size={size as never} />
     </BaseSwitch>

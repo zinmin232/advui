@@ -48,52 +48,52 @@ const TopLevelFrame = styled(View, {
   displayName: 'NavigationMenuTrigger',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: "1",
-  height: "9",
-  paddingHorizontal: "3",
-  borderRadius: "md",
+  gap: '1',
+  height: '9',
+  paddingHorizontal: '3',
+  borderRadius: 'md',
   borderWidth: 0,
-  backgroundColor: "transparent hover:accent press:accentHover",
+  backgroundColor: 'transparent hover:accent press:accentHover',
   cursor: 'pointer',
   ...focusRing,
   variants: {
     active: {
       true: {
-        backgroundColor: "accent"
+        backgroundColor: 'accent',
       },
     },
-  } as const
+  } as const,
 })
 
 const PanelLinkFrame = styled(View, {
   displayName: 'NavigationMenuPanelLink',
   flexDirection: 'row',
   alignItems: 'flex-start',
-  gap: "3",
-  padding: "3",
-  borderRadius: "md",
+  gap: '3',
+  padding: '3',
+  borderRadius: 'md',
   borderWidth: 0,
-  backgroundColor: "transparent hover:accent press:accentHover",
+  backgroundColor: 'transparent hover:accent press:accentHover',
   cursor: 'pointer',
   ...focusRing,
   outlineOffset: 'focus-visible:-2px',
   variants: {
     active: {
       true: {
-        backgroundColor: "accent"
+        backgroundColor: 'accent',
       },
     },
-  } as const
+  } as const,
 })
 
 const PanelFrame = styled(View, {
   displayName: 'NavigationMenuPanel',
-  backgroundColor: "popover",
+  backgroundColor: 'popover',
   borderWidth: 1,
-  borderColor: "border",
-  borderRadius: "lg",
-  padding: "2",
-  gap: "1"
+  borderColor: 'border',
+  borderRadius: 'lg',
+  padding: '2',
+  gap: '1',
 })
 
 export interface NavigationMenuProps extends Omit<GetProps<typeof View>, 'children'> {

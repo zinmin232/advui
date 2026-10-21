@@ -43,10 +43,10 @@ const TableFrame = styled(View, {
       plain: {},
       outline: {
         borderWidth: 1,
-        borderColor: "border",
-        borderRadius: "lg",
+        borderColor: 'border',
+        borderRadius: 'lg',
         overflow: 'hidden',
-        backgroundColor: "card"
+        backgroundColor: 'card',
       },
     },
     size: {
@@ -62,15 +62,15 @@ const TableHeader = styled(View, {
   displayName: 'TableHeader',
   role: 'rowgroup',
   borderBottomWidth: 1,
-  borderColor: "border"
+  borderColor: 'border',
 })
 
 const TableFooterFrame = styled(View, {
   displayName: 'TableFooter',
   role: 'rowgroup',
   borderTopWidth: 1,
-  borderColor: "border",
-  backgroundColor: "muted"
+  borderColor: 'border',
+  backgroundColor: 'muted',
 })
 
 const TableRowFrame = styled(View, {
@@ -83,22 +83,22 @@ const TableRowFrame = styled(View, {
     divider: {
       true: {
         borderBottomWidth: 1,
-        borderColor: "border"
+        borderColor: 'border',
       },
     },
     striped: {
       true: {
-        backgroundColor: "muted"
+        backgroundColor: 'muted',
       },
     },
     selected: {
       true: {
-        backgroundColor: "accent"
+        backgroundColor: 'accent',
       },
     },
     interactive: {
       true: {
-        backgroundColor: "hover:accent"
+        backgroundColor: 'hover:accent',
       },
     },
   } as const,
@@ -183,11 +183,11 @@ const TableImpl = forwardRef<TamaguiElement, TableProps>(function Table(
           horizontal
           width="100%"
           {...(isWeb
-                    ? { tabIndex: 0 }
-                    : {
-                        onLayout: (event: { nativeEvent: { layout: { width: number } } }) =>
-                          setVisibleWidth(event.nativeEvent.layout.width),
-                      })}
+            ? { tabIndex: 0 }
+            : {
+                onLayout: (event: { nativeEvent: { layout: { width: number } } }) =>
+                  setVisibleWidth(event.nativeEvent.layout.width),
+              })}
           outlineColor="focus-visible:ring"
           outlineStyle="focus-visible:solid"
           outlineWidth="focus-visible:2px"
@@ -324,11 +324,11 @@ const TableHead = forwardRef<TamaguiElement, TableHeadProps>(function TableHead(
         <View
           {...(isWeb ? { render: 'button', type: 'button' } : { accessible: true, role: 'button' })}
           {...(!isWeb &&
-                    isTextContent(children) && {
-                      'aria-label': `${[children].flat().join('')}${
-                        sortDirection === 'none' ? '' : `, sorted ${sortDirection}`
-                      }`,
-                    })}
+            isTextContent(children) && {
+              'aria-label': `${[children].flat().join('')}${
+                sortDirection === 'none' ? '' : `, sorted ${sortDirection}`
+              }`,
+            })}
           flexDirection={align === 'end' ? 'row-reverse' : 'row'}
           alignItems="center"
           gap="1"

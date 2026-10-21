@@ -33,13 +33,7 @@ export function ProfileSettingsScreen() {
   }
 
   return (
-    <VStack
-      gap="6"
-      padding="4 md:8"
-      width="100%"
-      maxWidth="224"
-      marginHorizontal="auto"
-    >
+    <VStack gap="6" padding="4 md:8" width="100%" maxWidth="224" marginHorizontal="auto">
       <VStack>
         <Text size="3xl" weight="bold">
           Settings

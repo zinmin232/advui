@@ -20,44 +20,44 @@ import { ariaState } from '../../utils/ariaState'
 
 const CalendarFrame = styled(View, {
   displayName: 'Calendar',
-  gap: "3",
-  alignSelf: 'flex-start'
+  gap: '3',
+  alignSelf: 'flex-start',
 })
 
 const DayCell = styled(View, {
   displayName: 'CalendarDay',
-  width: "9",
-  height: "9",
+  width: '9',
+  height: '9',
   alignItems: 'center',
   justifyContent: 'center',
-  borderRadius: "md",
+  borderRadius: 'md',
   cursor: 'pointer',
-  backgroundColor: "hover:muted",
-  outlineColor: "focus-visible:ring",
-  outlineStyle: "focus-visible:solid",
-  outlineWidth: "focus-visible:2px",
-  outlineOffset: "focus-visible:1px",
+  backgroundColor: 'hover:muted',
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:1px',
   variants: {
     selection: {
       none: {},
       // Ends of a range and the single selected day.
       end: {
-        backgroundColor: "primary hover:primary"
+        backgroundColor: 'primary hover:primary',
       },
       middle: {
-        backgroundColor: "accent hover:accent",
-        borderRadius: 0
+        backgroundColor: 'accent hover:accent',
+        borderRadius: 0,
       },
     },
     disabled: {
       true: {
         opacity: 0.4,
         cursor: 'not-allowed',
-        backgroundColor: "hover:transparent"
+        backgroundColor: 'hover:transparent',
       },
     },
   } as const,
-  defaultVariants: { selection: 'none' }
+  defaultVariants: { selection: 'none' },
 })
 
 type SingleProps = {
@@ -327,7 +327,15 @@ export const Calendar = forwardRef<TamaguiElement, CalendarProps>(function Calen
                   <Text
                     size="sm"
                     {...(isToday && { weight: 'semibold' as const })}
-                    color={selection === 'end' ? "primaryForeground" : selection === 'middle' ? "accentForeground" : isToday ? "primaryText" : "foreground"}
+                    color={
+                      selection === 'end'
+                        ? 'primaryForeground'
+                        : selection === 'middle'
+                          ? 'accentForeground'
+                          : isToday
+                            ? 'primaryText'
+                            : 'foreground'
+                    }
                   >
                     {day.getDate()}
                   </Text>

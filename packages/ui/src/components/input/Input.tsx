@@ -47,25 +47,25 @@ const InputFrame = styled(TamaguiInput, {
   variants: {
     size: {
       sm: {
-        height: "8",
-        paddingHorizontal: "2-5",
-        fontSize: "2"
+        height: '8',
+        paddingHorizontal: '2-5',
+        fontSize: '2',
       },
       md: {
-        height: "10",
-        paddingHorizontal: "3",
-        fontSize: "2"
+        height: '10',
+        paddingHorizontal: '3',
+        fontSize: '2',
       },
       lg: {
-        height: "12",
-        paddingHorizontal: "4",
-        fontSize: "3"
+        height: '12',
+        paddingHorizontal: '4',
+        fontSize: '3',
       },
     },
     invalid: {
       true: {
-        borderColor: "error hover:error focus:error",
-        outlineColor: "focus-visible:error"
+        borderColor: 'error hover:error focus:error',
+        outlineColor: 'focus-visible:error',
       },
     },
     disabled: {
@@ -81,8 +81,8 @@ const InputFrame = styled(TamaguiInput, {
         borderRadius: 0,
         backgroundColor: 'transparent',
         opacity: 1,
-        outlineWidth: "focus-visible:0px",
-        outlineStyle: "focus-visible:none"
+        outlineWidth: 'focus-visible:0px',
+        outlineStyle: 'focus-visible:none',
       },
     },
   } as const,
@@ -94,11 +94,11 @@ const InputGroupFrame = styled(View, {
   displayName: 'InputGroup',
   // Tamagui 3 no longer adds an `is_<name>` class; kept as a stable hook.
   className: 'is_InputGroup',
-  backgroundColor: "background",
+  backgroundColor: 'background',
   borderWidth: 1,
   // Addon backgrounds stop at the rounded corners.
-borderColor: "input hover:borderStrong",
-  borderRadius: "md",
+  borderColor: 'input hover:borderStrong',
+  borderRadius: 'md',
   flexDirection: 'row',
   alignItems: 'stretch',
   // Addon backgrounds stop at the rounded corners.
@@ -106,30 +106,30 @@ borderColor: "input hover:borderStrong",
   variants: {
     size: {
       sm: {
-        height: "8"
+        height: '8',
       },
       md: {
-        height: "10"
+        height: '10',
       },
       lg: {
-        height: "12"
+        height: '12',
       },
     },
     focused: {
       true: {
-        borderColor: "ring hover:ring"
+        borderColor: 'ring hover:ring',
       },
     },
     invalid: {
       true: {
-        borderColor: "error hover:error"
+        borderColor: 'error hover:error',
       },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed' },
     },
   } as const,
-  defaultVariants: { size: 'md' }
+  defaultVariants: { size: 'md' },
 })
 
 // The input's own side padding, and the square an icon or icon button sits in.
@@ -175,7 +175,8 @@ const boxProps = new Set([
 const INTERACTIVE = 'button, a, input, select, textarea, [role="button"]'
 
 export interface InputProps
-  extends Omit<GetProps<typeof InputFrame>, 'grouped' | 'size' | 'disabled' | 'invalid'>,
+  extends
+    Omit<GetProps<typeof InputFrame>, 'grouped' | 'size' | 'disabled' | 'invalid'>,
     ControlStateProps {
   size?: InputSize
   /**
@@ -312,13 +313,13 @@ export const Input = forwardRef<TamaguiElement, InputProps>(function Input(input
       </View>
     ) : (
       <View
-          alignItems="center"
-          justifyContent="center"
-          minWidth={squareSizes[size]}
-          paddingHorizontal="1"
-          {...(!isWeb && { accessible: false })}
-          onPress={focusInput}
-        >
+        alignItems="center"
+        justifyContent="center"
+        minWidth={squareSizes[size]}
+        paddingHorizontal="1"
+        {...(!isWeb && { accessible: false })}
+        onPress={focusInput}
+      >
         <IconDefaults size={iconSizes[size]} color="mutedForeground">
           {node}
         </IconDefaults>

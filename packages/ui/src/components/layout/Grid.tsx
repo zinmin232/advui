@@ -25,8 +25,10 @@ export type ResponsiveSpan = ResponsiveGridValue<GridSpan>
 export type ResponsiveOffset = ResponsiveGridValue<number>
 
 // `columns` is also a CSS style prop in Tamagui 3; here it is the column count.
-export interface GridProps
-  extends Omit<ViewProps, 'children' | 'gap' | 'rowGap' | 'columnGap' | 'columns'> {
+export interface GridProps extends Omit<
+  ViewProps,
+  'children' | 'gap' | 'rowGap' | 'columnGap' | 'columns'
+> {
   children?: ReactNode
   /** Column count, or a mobile-first map such as `{ base: 1, md: 2, lg: 3 }`. */
   columns?: ResponsiveColumns

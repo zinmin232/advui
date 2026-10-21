@@ -594,13 +594,7 @@ export function Playground({
             {element}
           </View>
         </PreviewSurface>
-        <View
-          borderTopWidth={1}
-          borderColor="border"
-          backgroundColor="muted"
-          padding="4"
-          gap="2"
-        >
+        <View borderTopWidth={1} borderColor="border" backgroundColor="muted" padding="4" gap="2">
           <HStack justifyContent="space-between">
             <Text size="xs" weight="semibold" tone="muted">
               JSX
@@ -642,13 +636,7 @@ export function Playground({
           </Text>
         </View>
       </View>
-      <VStack
-        padding="4"
-        gap="4"
-        width="100% lg:72"
-        aria-label="Props"
-        role="group"
-      >
+      <VStack padding="4" gap="4" width="100% lg:72" aria-label="Props" role="group">
         <HStack justifyContent="space-between">
           <Text size="sm" weight="semibold">
             Props

@@ -17,7 +17,7 @@
     {
       "path": "components/skeleton/Skeleton.tsx",
       "type": "registry:ui",
-      "content": "import { type GetProps, View, styled } from 'tamagui'\n\n/**\n * Placeholder shown while content loads. Hidden from assistive technology —\n * announce loading on the container instead (e.g. `aria-busy`).\n */\nexport const Skeleton = styled(View, {\n  name: 'Skeleton',\n  backgroundColor: '$muted',\n  borderRadius: '$md',\n  'aria-hidden': true,\n  className: 'aui-skeleton',\n\n  variants: {\n    circle: {\n      true: { borderRadius: '$full' },\n    },\n  } as const,\n})\n\nexport type SkeletonProps = GetProps<typeof Skeleton>\n"
+      "content": "import { type GetProps, View, styled } from 'tamagui/unstyled'\n\n/**\n * Placeholder shown while content loads. Hidden from assistive technology —\n * announce loading on the container instead (e.g. `aria-busy`).\n */\nexport const Skeleton = styled(View, {\n  displayName: 'Skeleton',\n  backgroundColor: 'muted',\n  borderRadius: 'md',\n  'aria-hidden': true,\n  className: 'aui-skeleton',\n  variants: {\n    circle: {\n      true: {\n        borderRadius: 'full',\n      },\n    },\n  } as const,\n})\n\nexport type SkeletonProps = GetProps<typeof Skeleton>\n"
     },
     {
       "path": "components/skeleton/index.ts",
@@ -29,7 +29,7 @@
     {
       "name": "card",
       "title": "Loading card",
-      "code": "import { HStack, Skeleton, VStack } from '@advui/core'\n\nexport default function SkeletonCard() {\n  return (\n    <VStack gap=\"$3\" width=\"100%\" maxWidth=\"$80\" aria-busy aria-label=\"Loading profile\">\n      <HStack gap=\"$3\">\n        <Skeleton circle width=\"$12\" height=\"$12\" />\n        <VStack gap=\"$2\" flex={1} justifyContent=\"center\">\n          <Skeleton height=\"$3\" width=\"70%\" />\n          <Skeleton height=\"$3\" width=\"40%\" />\n        </VStack>\n      </HStack>\n      <Skeleton height=\"$32\" borderRadius=\"$lg\" />\n    </VStack>\n  )\n}\n"
+      "code": "import { HStack, Skeleton, VStack } from '@advui/core'\n\nexport default function SkeletonCard() {\n  return (\n    <VStack gap=\"3\" width=\"100%\" maxWidth=\"80\" aria-busy aria-label=\"Loading profile\">\n      <HStack gap=\"3\">\n        <Skeleton circle width=\"12\" height=\"12\" />\n        <VStack gap=\"2\" flex={1} justifyContent=\"center\">\n          <Skeleton height=\"3\" width=\"70%\" />\n          <Skeleton height=\"3\" width=\"40%\" />\n        </VStack>\n      </HStack>\n      <Skeleton height=\"32\" borderRadius=\"lg\" />\n    </VStack>\n  )\n}\n"
     }
   ],
   "docs": "/docs/components/skeleton",

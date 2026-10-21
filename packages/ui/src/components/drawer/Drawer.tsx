@@ -39,12 +39,12 @@ const Overlay = styled(TamaguiDialog.Overlay, { displayName: 'DrawerOverlay', ..
 const ContentFrame = styled(TamaguiDialog.Content, {
   displayName: 'DrawerContent',
   position: 'absolute',
-  backgroundColor: "popover",
-  borderColor: "border",
+  backgroundColor: 'popover',
+  borderColor: 'border',
   borderWidth: 0,
   borderRadius: 0,
-  padding: "6",
-  gap: "4",
+  padding: '6',
+  gap: '4',
   ...shadows.lg,
   opacity: 1,
   x: 0,
@@ -61,7 +61,7 @@ const ContentFrame = styled(TamaguiDialog.Content, {
       md: {},
       lg: {},
     },
-  } as const
+  } as const,
 })
 
 // Panel width for left and right drawers; top and bottom ones fit their content.
@@ -70,7 +70,7 @@ const widths = { sm: '72', md: '96', lg: '128' } as const
 const Header = styled(View, {
   displayName: 'DrawerHeader',
   ...headerStyle,
-  paddingRight: "8"
+  paddingRight: '8',
 })
 
 const Footer = styled(View, { displayName: 'DrawerFooter', ...footerStyle })
@@ -88,8 +88,8 @@ const Body = styled(ScrollView, {
   flexGrow: 1,
   flexShrink: 1,
   // Room for focus rings of full-width controls inside.
-marginHorizontal: "-1",
-  contentContainerStyle: { gap: '3', paddingHorizontal: '1' }
+  marginHorizontal: '-1',
+  contentContainerStyle: { gap: '3', paddingHorizontal: '1' },
 })
 
 export interface DrawerProps extends Omit<TamaguiDialogProps, 'modal'> {

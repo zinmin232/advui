@@ -7,17 +7,17 @@ const ScrollAreaFrame = styled(View, {
   displayName: 'ScrollArea',
   // Keyboard users scroll it with the arrow keys once it has focus.
   tabIndex: 0,
-  outlineColor: "focus-visible:ring",
-  outlineStyle: "focus-visible:solid",
-  outlineWidth: "focus-visible:2px",
-  outlineOffset: "focus-visible:2px",
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
   variants: {
     orientation: {
       vertical: { overflowX: 'hidden', overflowY: 'auto' },
       horizontal: { flexDirection: 'row', overflowX: 'auto', overflowY: 'hidden' },
     },
   } as const,
-  defaultVariants: { orientation: 'vertical' }
+  defaultVariants: { orientation: 'vertical' },
 })
 
 export interface ScrollAreaProps extends Omit<

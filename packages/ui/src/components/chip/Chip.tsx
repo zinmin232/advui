@@ -12,36 +12,36 @@ const ChipFrame = styled(View, {
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf: 'flex-start',
-  gap: "1-5",
-  height: "8",
-  paddingHorizontal: "3",
+  gap: '1-5',
+  height: '8',
+  paddingHorizontal: '3',
   borderWidth: 1,
-  borderColor: "input",
-  borderRadius: "lg",
+  borderColor: 'input',
+  borderRadius: 'lg',
   backgroundColor: 'transparent',
   userSelect: 'none',
   variants: {
     interactive: {
       true: {
         cursor: 'pointer',
-        backgroundColor: "hover:accent press:accentHover",
-        outlineColor: "focus-visible:ring",
-        outlineStyle: "focus-visible:solid",
-        outlineWidth: "focus-visible:2px",
-        outlineOffset: "focus-visible:2px"
+        backgroundColor: 'hover:accent press:accentHover',
+        outlineColor: 'focus-visible:ring',
+        outlineStyle: 'focus-visible:solid',
+        outlineWidth: 'focus-visible:2px',
+        outlineOffset: 'focus-visible:2px',
       },
     },
     // Material's selected filter chip: a filled tonal surface without a border.
     selected: {
       true: {
-        backgroundColor: "secondary hover:secondaryHover press:secondaryPress",
-        borderColor: "secondary"
+        backgroundColor: 'secondary hover:secondaryHover press:secondaryPress',
+        borderColor: 'secondary',
       },
     },
     disabled: {
       true: { opacity: 0.5, pointerEvents: 'none', cursor: 'default' },
     },
-  } as const
+  } as const,
 })
 
 type FrameProps = GetProps<typeof ChipFrame>

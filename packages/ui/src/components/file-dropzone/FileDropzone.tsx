@@ -13,38 +13,40 @@ const DropArea = styled(View, {
   role: 'button',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: "2",
-  paddingVertical: "8",
-  paddingHorizontal: "6",
+  gap: '2',
+  paddingVertical: '8',
+  paddingHorizontal: '6',
   borderWidth: 1,
   borderStyle: 'dashed',
-  borderColor: "borderStrong",
-  borderRadius: "lg",
-  backgroundColor: "background hover:muted press:muted",
+  borderColor: 'borderStrong',
+  borderRadius: 'lg',
+  backgroundColor: 'background hover:muted press:muted',
   cursor: 'pointer',
-  outlineColor: "focus-visible:ring",
-  outlineStyle: "focus-visible:solid",
-  outlineWidth: "focus-visible:2px",
-  outlineOffset: "focus-visible:2px",
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
   variants: {
     dragging: {
       true: {
-        borderColor: "ring",
+        borderColor: 'ring',
         borderStyle: 'solid',
-        backgroundColor: "accent hover:accent"
+        backgroundColor: 'accent hover:accent',
       },
     },
-    invalid: { true: {
-      borderColor: "error"
-    } },
+    invalid: {
+      true: {
+        borderColor: 'error',
+      },
+    },
     disabled: {
       true: {
         opacity: 0.5,
         cursor: 'not-allowed',
-        backgroundColor: "hover:background press:background"
+        backgroundColor: 'hover:background press:background',
       },
     },
-  } as const
+  } as const,
 })
 
 export interface FileDropzoneProps

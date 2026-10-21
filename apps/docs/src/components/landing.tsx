@@ -164,12 +164,7 @@ export function Landing() {
         gap="16"
         paddingBottom="20"
       >
-        <VStack
-          alignItems="center"
-          gap="6"
-          paddingTop="16 md:24"
-          maxWidth="192"
-        >
+        <VStack alignItems="center" gap="6" paddingTop="16 md:24" maxWidth="192">
           <Link href="/docs/components" className="plain-link">
             <Badge variant="secondary" icon={<StarIcon />}>
               {components.length} components · web, iOS, Android

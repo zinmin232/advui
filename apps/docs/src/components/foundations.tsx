@@ -158,7 +158,7 @@ export function SpaceScale() {
         .map(([key, value]) => (
           <HStack key={key} gap="3">
             <Text mono size="xs" width="16" tone="muted">
-              ${key}
+              {key}
             </Text>
             <View height="3" width={value} backgroundColor="primary" borderRadius="xs" />
             <Text mono size="xs" tone="muted">
@@ -177,8 +177,7 @@ export function SizeTable() {
   return (
     <Text size="sm" tone="muted">
       Sizes reuse the spacing scale and add larger steps for layout boxes:{' '}
-      {entries.map(([k, v]) => `$${k} = ${v}px`).join(' · ')}. `true` = 40px (default control
-      height).
+      {entries.map(([k, v]) => `${k} = ${v}px`).join(' · ')}.
     </Text>
   )
 }
@@ -196,10 +195,10 @@ export function RadiusScale() {
               backgroundColor="primarySoft"
               borderWidth={2}
               borderColor="primary"
-              borderRadius={`$${key}` as never}
+              borderRadius={key}
             />
             <Text mono size="xs" tone="muted">
-              ${key}
+              {key}
             </Text>
           </VStack>
         ))}
@@ -252,7 +251,7 @@ export function BreakpointsTable() {
           {Object.entries(breakpoints).map(([key, value]) => (
             <tr key={key}>
               <td>
-                <code className="prop-name">${key === 'xxl' ? 'xxl (2xl)' : key}</code>
+                <code className="prop-name">{key === 'xxl' ? 'xxl: (2xl)' : `${key}:`}</code>
               </td>
               <td>{value}px</td>
               <td>
@@ -280,7 +279,7 @@ export function ZIndexTable() {
     <Text size="sm" tone="muted">
       {Object.entries(zIndex)
         .filter(([k]) => Number.isNaN(Number(k)))
-        .map(([k, v]) => `$${k} = ${v}`)
+        .map(([k, v]) => `${k} = ${v}`)
         .join(' · ')}
     </Text>
   )

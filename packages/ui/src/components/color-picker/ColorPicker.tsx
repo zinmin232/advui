@@ -179,7 +179,9 @@ export const ColorPicker = forwardRef<TamaguiElement, ColorPickerProps>(
         invalid={invalid}
         labels={labels}
         // Native has no group names: each control reads the field's label and help.
-        hint={inline && !isWeb ? sentences(props['aria-label'], props.accessibilityHint) : undefined}
+        hint={
+          inline && !isWeb ? sentences(props['aria-label'], props.accessibilityHint) : undefined
+        }
         onChange={update}
         onCommit={commit}
         onApply={apply}
@@ -205,13 +207,13 @@ export const ColorPicker = forwardRef<TamaguiElement, ColorPickerProps>(
           maxWidth="100%"
           opacity={disabled ? 0.5 : 1}
           {...(isWeb && {
-                    role: 'group',
-                    'aria-label': groupLabel,
-                    // A <label for> cannot name a group, so a Field's label is linked by id.
-                    ...(field?.labelId &&
-                      groupLabel === undefined &&
-                      props['aria-labelledby'] === undefined && { 'aria-labelledby': field.labelId }),
-                  })}
+            role: 'group',
+            'aria-label': groupLabel,
+            // A <label for> cannot name a group, so a Field's label is linked by id.
+            ...(field?.labelId &&
+              groupLabel === undefined &&
+              props['aria-labelledby'] === undefined && { 'aria-labelledby': field.labelId }),
+          })}
           {...frameProps}
         >
           {panel}

@@ -56,13 +56,7 @@ export function ComponentsIndex({
           ))}
         </HStack>
       </PageHeader>
-      <HStack
-        gap="2"
-        borderWidth={1}
-        borderColor="input"
-        borderRadius="md"
-        paddingHorizontal="3"
-      >
+      <HStack gap="2" borderWidth={1} borderColor="input" borderRadius="md" paddingHorizontal="3">
         <SearchIcon size={16} color="mutedForeground" />
         <Input
           flex={1}

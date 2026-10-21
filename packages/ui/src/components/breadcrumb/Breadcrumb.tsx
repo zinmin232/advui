@@ -141,14 +141,14 @@ function BreadcrumbItem({
           render={render ?? (href !== undefined ? 'a' : 'button')}
           {...(href !== undefined && { href })}
           {...(!isWeb && {
-                    accessible: true,
-                    hitSlop: 8,
-                    // TalkBack's double-tap on text arrives as the "activate" action.
-                    accessibilityActions: [{ name: 'activate' }],
-                    onAccessibilityAction: (event: { nativeEvent: { actionName: string } }) => {
-                      if (event.nativeEvent.actionName === 'activate') onPress?.(event as never)
-                    },
-                  })}
+            accessible: true,
+            hitSlop: 8,
+            // TalkBack's double-tap on text arrives as the "activate" action.
+            accessibilityActions: [{ name: 'activate' }],
+            onAccessibilityAction: (event: { nativeEvent: { actionName: string } }) => {
+              if (event.nativeEvent.actionName === 'activate') onPress?.(event as never)
+            },
+          })}
           padding={0}
           borderWidth={0}
           backgroundColor="transparent"
@@ -172,18 +172,18 @@ function BreadcrumbItem({
         </Text>
       ) : (
         <Text
-            aria-current={current ? 'page' : undefined}
-            {...(!isWeb &&
-                      current &&
-                      typeof children === 'string' && { 'aria-label': `${children}, current page` })}
-            fontFamily="body"
-            fontSize="2"
-            lineHeight="2"
-            color={current ? "foreground" : "mutedForeground"}
-            fontWeight={current ? '500' : '400'}
-            numberOfLines={1}
-            {...props}
-          >
+          aria-current={current ? 'page' : undefined}
+          {...(!isWeb &&
+            current &&
+            typeof children === 'string' && { 'aria-label': `${children}, current page` })}
+          fontFamily="body"
+          fontSize="2"
+          lineHeight="2"
+          color={current ? 'foreground' : 'mutedForeground'}
+          fontWeight={current ? '500' : '400'}
+          numberOfLines={1}
+          {...props}
+        >
           {children}
         </Text>
       )}

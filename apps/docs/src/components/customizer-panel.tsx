@@ -157,20 +157,20 @@ export function CustomizerControls({ compact = false }: { compact?: boolean }) {
               <Button
                 key={name}
                 size="sm"
-                borderColor={selected ? "ring" : "input"}
+                borderColor={selected ? 'ring' : 'input'}
                 borderWidth={selected ? 2 : 1}
                 variant="outline"
                 role="radio"
                 aria-checked={selected}
                 onPress={() => choosePreset(name)}
                 icon={
-                                <View
-                                  width="3-5"
-                                  height="3-5"
-                                  borderRadius="full"
-                                  style={{ backgroundColor: swatch }}
-                                />
-                              }
+                  <View
+                    width="3-5"
+                    height="3-5"
+                    borderRadius="full"
+                    style={{ backgroundColor: swatch }}
+                  />
+                }
               >
                 {themePresets[name].label}
               </Button>

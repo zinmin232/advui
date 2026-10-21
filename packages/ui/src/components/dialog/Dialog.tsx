@@ -38,7 +38,7 @@ const ContentFrame = styled(TamaguiDialog.Content, {
 const Header = styled(View, {
   displayName: 'DialogHeader',
   ...headerStyle,
-  paddingRight: "6"
+  paddingRight: '6',
 })
 
 const Footer = styled(View, { displayName: 'DialogFooter', ...footerStyle })
@@ -131,7 +131,7 @@ export const Dialog = withStaticProperties(DialogRoot, {
   Close,
   Body: styled(View, {
     displayName: 'DialogBody',
-    gap: "3"
+    gap: '3',
   }),
   Text,
 })

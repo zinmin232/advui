@@ -159,13 +159,7 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
         aria-disabled={ariaState(disabled)}
         onPress={choose}
       >
-        <View
-          width="16"
-          height="8"
-          alignItems="center"
-          justifyContent="center"
-          position="relative"
-        >
+        <View width="16" height="8" alignItems="center" justifyContent="center" position="relative">
           {/* Material's active indicator: a pill behind the icon. It is always
               painted and faded in, because Android does not round a background
               that is added after the view mounts. */}
@@ -204,8 +198,8 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
               position="absolute"
               top={count === '' ? '1' : 0}
               left="9"
-              minWidth={count === '' ? "1-5" : "4"}
-              height={count === '' ? "1-5" : "4"}
+              minWidth={count === '' ? '1-5' : '4'}
+              height={count === '' ? '1-5' : '4'}
               paddingHorizontal={count === '' ? 0 : '1'}
               borderRadius="full"
               backgroundColor="error"
@@ -232,7 +226,7 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
           fontSize="1"
           lineHeight="1"
           fontWeight={active ? '700' : '500'}
-          color={active ? "foreground" : "mutedForeground"}
+          color={active ? 'foreground' : 'mutedForeground'}
           numberOfLines={1}
         >
           {label}

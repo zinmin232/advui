@@ -7,7 +7,11 @@ import {
   cloneElement,
   useId,
 } from 'react'
-import { Text, Tooltip as TamaguiTooltip, type TooltipProps as TamaguiTooltipProps } from 'tamagui/unstyled'
+import {
+  Text,
+  Tooltip as TamaguiTooltip,
+  type TooltipProps as TamaguiTooltipProps,
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { transformOpacity } from '../../utils/transition'

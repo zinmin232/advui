@@ -67,13 +67,7 @@ export function SiteHeader() {
             />
           </View>
           <Logo />
-          <HStack
-            render="nav"
-            aria-label="Main"
-            gap="1"
-            marginLeft="6"
-            display="none md:flex"
-          >
+          <HStack render="nav" aria-label="Main" gap="1" marginLeft="6" display="none md:flex">
             {links.map((link) => {
               const active = link.match.test(pathname)
               return (
@@ -88,7 +82,7 @@ export function SiteHeader() {
                     paddingHorizontal="3"
                     paddingVertical="1-5"
                     borderRadius="md"
-                    color={`${active ? "foreground" : "mutedForeground"} hover:foreground`}
+                    color={`${active ? 'foreground' : 'mutedForeground'} hover:foreground`}
                     backgroundColor="hover:accent"
                     weight="medium"
                   >

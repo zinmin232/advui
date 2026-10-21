@@ -191,13 +191,13 @@ const MenuItem = forwardRef<TamaguiElement, MenuItemProps>(function MenuItem(
       aria-current={selected ? (isLink ? 'page' : 'true') : undefined}
       aria-disabled={ariaState(disabled)}
       onPress={(event) => {
-            if (disabled) {
-              event?.preventDefault?.()
-              return
-            }
-            onPress?.(event)
-            activate()
-          }}
+        if (disabled) {
+          event?.preventDefault?.()
+          return
+        }
+        onPress?.(event)
+        activate()
+      }}
     >
       {/* The selected fill is always painted and faded in, because Android
           does not round a background that is added after the view mounts. */}
@@ -261,13 +261,7 @@ const MenuGroup = forwardRef<TamaguiElement, MenuGroupProps>(function MenuGroup(
 ) {
   const labelId = useId()
   return (
-    <View
-      ref={ref}
-      role="group"
-      aria-labelledby={label ? labelId : undefined}
-      gap="0-5"
-      {...props}
-    >
+    <View ref={ref} role="group" aria-labelledby={label ? labelId : undefined} gap="0-5" {...props}>
       {label ? (
         <Text
           id={labelId}
@@ -292,8 +286,8 @@ const MenuSeparator = styled(View, {
   role: isWeb ? 'separator' : 'none',
   'aria-hidden': !isWeb,
   height: 1,
-  backgroundColor: "border",
-  marginVertical: "2"
+  backgroundColor: 'border',
+  marginVertical: '2',
 })
 
 /**

@@ -79,40 +79,40 @@ const RootFrame = styled(View, {
   displayName: 'AppShell',
   width: '100%',
   overflow: 'hidden',
-  backgroundColor: "background",
+  backgroundColor: 'background',
   ...(isWeb ? { height: '100dvh' as never } : { flexGrow: 1, flexShrink: 1 }),
   variants: {
     layout: {
       'header-full': { flexDirection: 'column' },
       'sidebar-full': { flexDirection: 'row' },
     },
-  } as const
+  } as const,
 })
 
 const HeaderFrame = styled(View, {
   displayName: 'AppShellHeader',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: "2",
-  minHeight: "14",
-  paddingHorizontal: "4",
-  backgroundColor: "background",
+  gap: '2',
+  minHeight: '14',
+  paddingHorizontal: '4',
+  backgroundColor: 'background',
   borderBottomWidth: 1,
-  borderColor: "border",
-  flexShrink: 0
+  borderColor: 'border',
+  flexShrink: 0,
 })
 
 const FooterFrame = styled(View, {
   displayName: 'AppShellFooter',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: "2",
-  minHeight: "12",
-  paddingHorizontal: "4",
-  backgroundColor: "background",
+  gap: '2',
+  minHeight: '12',
+  paddingHorizontal: '4',
+  backgroundColor: 'background',
   borderTopWidth: 1,
-  borderColor: "border",
-  flexShrink: 0
+  borderColor: 'border',
+  flexShrink: 0,
 })
 
 const SidebarFrame = styled(View, {
@@ -129,12 +129,12 @@ const ScrollerFrame = styled(View, {
   minHeight: 0,
   minWidth: 0,
   overflowY: 'auto',
-  outlineColor: "focus-visible:ring",
-  outlineStyle: "focus-visible:solid",
-  outlineWidth: "focus-visible:2px",
-  outlineOffset: "focus-visible:-2px",
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:-2px',
   // Keyboard users scroll it with the arrow keys once it has focus.
-  tabIndex: 0
+  tabIndex: 0,
 })
 
 const MainFrame = styled(View, {

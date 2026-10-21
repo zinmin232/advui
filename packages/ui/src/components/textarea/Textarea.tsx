@@ -7,17 +7,17 @@ import { ariaState } from '../../utils/ariaState'
 const TextareaFrame = styled(TextArea, {
   displayName: 'Textarea',
   ...inputBaseStyle,
-  minHeight: "20",
-  paddingHorizontal: "3",
-  paddingVertical: "2",
-  fontSize: "2",
-  lineHeight: "2",
+  minHeight: '20',
+  paddingHorizontal: '3',
+  paddingVertical: '2',
+  fontSize: '2',
+  lineHeight: '2',
   textAlignVertical: 'top',
   variants: {
     invalid: {
       true: {
-        borderColor: "error hover:error focus:error",
-        outlineColor: "focus-visible:error"
+        borderColor: 'error hover:error focus:error',
+        outlineColor: 'focus-visible:error',
       },
     },
     disabled: {
@@ -28,7 +28,7 @@ const TextareaFrame = styled(TextArea, {
       vertical: { resize: 'vertical' },
     },
   } as const,
-  defaultVariants: { resize: 'vertical' }
+  defaultVariants: { resize: 'vertical' },
 })
 
 export type TextareaProps = Omit<GetProps<typeof TextareaFrame>, 'disabled' | 'invalid'> &

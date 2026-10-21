@@ -66,8 +66,8 @@ function Thumbnail({
   return (
     <View
       {...(isWeb
-            ? { render: 'button', type: 'button', padding: 0, borderWidth: 0 }
-            : { accessible: true, role: 'button' })}
+        ? { render: 'button', type: 'button', padding: 0, borderWidth: 0 }
+        : { accessible: true, role: 'button' })}
       borderRadius="md"
       overflow="hidden"
       backgroundColor="transparent"

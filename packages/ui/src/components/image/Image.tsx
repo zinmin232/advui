@@ -30,12 +30,12 @@ const ImageFrame = styled(View, {
   displayName: 'Image',
   position: 'relative',
   overflow: 'hidden',
-  backgroundColor: "muted",
+  backgroundColor: 'muted',
   variants: {
     loaded: {
       true: { backgroundColor: 'transparent' },
     },
-  } as const
+  } as const,
 })
 
 export interface ImageProps extends Omit<GetProps<typeof ImageFrame>, 'children' | 'loaded'> {

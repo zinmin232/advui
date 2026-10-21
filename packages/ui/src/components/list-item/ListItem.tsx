@@ -37,18 +37,18 @@ const ListItemFrame = styled(View, {
     variant: {
       plain: {},
       filled: {
-        backgroundColor: "muted"
+        backgroundColor: 'muted',
       },
       outline: {
-        backgroundColor: "card",
+        backgroundColor: 'card',
         borderWidth: 1,
-        borderColor: "border"
+        borderColor: 'border',
       },
     },
     divider: {
       true: {
         borderTopWidth: 1,
-        borderColor: "border"
+        borderColor: 'border',
       },
     },
   } as const,
@@ -63,52 +63,52 @@ const ListItemRow = styled(View, {
   minWidth: 0,
   flexDirection: 'row',
   alignItems: 'center',
-  gap: "3",
+  gap: '3',
   variants: {
     size: {
       sm: {
-        paddingHorizontal: "3",
-        paddingVertical: "2",
-        minHeight: "11"
+        paddingHorizontal: '3',
+        paddingVertical: '2',
+        minHeight: '11',
       },
       md: {
-        paddingHorizontal: "4",
-        paddingVertical: "3",
-        minHeight: "12"
+        paddingHorizontal: '4',
+        paddingVertical: '3',
+        minHeight: '12',
       },
       lg: {
-        paddingHorizontal: "4",
-        paddingVertical: "4",
-        minHeight: "14"
+        paddingHorizontal: '4',
+        paddingVertical: '4',
+        minHeight: '14',
       },
     },
     interactive: {
       true: {
         cursor: 'pointer',
-        backgroundColor: "transparent hover:accent press:accentHover",
+        backgroundColor: 'transparent hover:accent press:accentHover',
         borderWidth: 0,
         // Inset, so the item's own clipping does not cut it off.
-      outlineColor: "focus-visible:ring",
-        outlineStyle: "focus-visible:solid",
-        outlineWidth: "focus-visible:2px",
-        outlineOffset: "focus-visible:-2px"
+        outlineColor: 'focus-visible:ring',
+        outlineStyle: 'focus-visible:solid',
+        outlineWidth: 'focus-visible:2px',
+        outlineOffset: 'focus-visible:-2px',
       },
     },
     disabled: {
       true: {
         opacity: 0.5,
         cursor: 'not-allowed',
-        backgroundColor: "hover:transparent press:transparent"
+        backgroundColor: 'hover:transparent press:transparent',
       },
     },
-  } as const
+  } as const,
 })
 
 const ListItemContent = styled(View, {
   displayName: 'ListItemContent',
   flex: 1,
   minWidth: 0,
-  gap: "0-5"
+  gap: '0-5',
 })
 
 const ListItemTitle = styled(Text, {
@@ -119,16 +119,16 @@ const ListItemTitle = styled(Text, {
   variants: {
     size: {
       sm: {
-        fontSize: "2",
-        lineHeight: "2"
+        fontSize: '2',
+        lineHeight: '2',
       },
       md: {
-        fontSize: "3",
-        lineHeight: "3"
+        fontSize: '3',
+        lineHeight: '3',
       },
       lg: {
-        fontSize: "4",
-        lineHeight: "4"
+        fontSize: '4',
+        lineHeight: '4',
       },
     },
   } as const,
@@ -142,16 +142,16 @@ const ListItemDescription = styled(Text, {
   variants: {
     size: {
       sm: {
-        fontSize: "1",
-        lineHeight: "1"
+        fontSize: '1',
+        lineHeight: '1',
       },
       md: {
-        fontSize: "2",
-        lineHeight: "2"
+        fontSize: '2',
+        lineHeight: '2',
       },
       lg: {
-        fontSize: "3",
-        lineHeight: "3"
+        fontSize: '3',
+        lineHeight: '3',
       },
     },
   } as const,
@@ -446,7 +446,12 @@ export const ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListI
           flexDirection="row"
           alignItems="center"
           gap="2"
-          paddingRight={ (spacing.paddingRight ?? spacing.paddingHorizontal ?? spacing.padding ?? rowPadding[size]) as RowProps['paddingRight'] }
+          paddingRight={
+            (spacing.paddingRight ??
+              spacing.paddingHorizontal ??
+              spacing.padding ??
+              rowPadding[size]) as RowProps['paddingRight']
+          }
         >
           {actions}
         </View>

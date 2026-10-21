@@ -27,10 +27,10 @@ const AvatarFrame = styled(TamaguiAvatar, {
   variants: {
     shape: {
       circle: {
-        borderRadius: "full"
+        borderRadius: 'full',
       },
       square: {
-        borderRadius: "md"
+        borderRadius: 'md',
       },
     },
   } as const,
@@ -46,36 +46,36 @@ const AvatarImage = styled(TamaguiAvatar.Image, {
 
 const AvatarFallbackFrame = styled(TamaguiAvatar.Fallback, {
   displayName: 'AvatarFallback',
-  backgroundColor: "muted",
+  backgroundColor: 'muted',
   alignItems: 'center',
-  justifyContent: 'center'
+  justifyContent: 'center',
 })
 
 const AvatarFallbackText = styled(Text, {
   displayName: 'AvatarFallbackText',
   context: AvatarContext,
-  color: "mutedForeground",
-  fontFamily: "body",
+  color: 'mutedForeground',
+  fontFamily: 'body',
   fontWeight: '500',
   variants: {
     size: {
       xs: {
-        fontSize: "1"
+        fontSize: '1',
       },
       sm: {
-        fontSize: "1"
+        fontSize: '1',
       },
       md: {
-        fontSize: "2"
+        fontSize: '2',
       },
       lg: {
-        fontSize: "3"
+        fontSize: '3',
       },
       xl: {
-        fontSize: "5"
+        fontSize: '5',
       },
     },
-  } as const
+  } as const,
 })
 
 export type AvatarProps = Omit<GetProps<typeof AvatarFrame>, 'size'> & {

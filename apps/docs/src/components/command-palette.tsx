@@ -194,13 +194,7 @@ export function CommandPalette({ entries }: { entries: SearchEntry[] }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Dialog.Content
-        size="lg"
-        padding="0"
-        gap="0"
-        top="10% sm:15%"
-        hideCloseButton
-      >
+      <Dialog.Content size="lg" padding="0" gap="0" top="10% sm:15%" hideCloseButton>
         <Dialog.Title className="sr-only">Search documentation</Dialog.Title>
         <HStack gap="2" paddingHorizontal="4" borderBottomWidth={1} borderColor="border">
           <SearchIcon size={18} color="mutedForeground" />
@@ -269,7 +263,7 @@ export function CommandPalette({ entries }: { entries: SearchEntry[] }) {
                   paddingVertical="2"
                   borderRadius="md"
                   cursor="pointer"
-                  backgroundColor={isActive ? "accent" : "transparent"}
+                  backgroundColor={isActive ? 'accent' : 'transparent'}
                   onMouseEnter={() => setActive(index)}
                   onPress={() => select(result)}
                 >

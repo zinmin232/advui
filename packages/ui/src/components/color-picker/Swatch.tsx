@@ -58,15 +58,15 @@ export function SwatchButton({ color, label, selected, disabled, onPress }: Swat
   return (
     <View
       {...(isWeb
-            ? {
-                render: 'button',
-                type: 'button',
-                padding: 0,
-                borderWidth: 0,
-                backgroundColor: 'transparent',
-                'aria-pressed': selected,
-              }
-            : { accessible: true, role: 'button', 'aria-selected': ariaState(selected) })}
+        ? {
+            render: 'button',
+            type: 'button',
+            padding: 0,
+            borderWidth: 0,
+            backgroundColor: 'transparent',
+            'aria-pressed': selected,
+          }
+        : { accessible: true, role: 'button', 'aria-selected': ariaState(selected) })}
       borderRadius="sm"
       cursor={disabled ? 'not-allowed' : 'pointer'}
       {...focusRing}
@@ -75,7 +75,9 @@ export function SwatchButton({ color, label, selected, disabled, onPress }: Swat
       onPress={disabled ? undefined : onPress}
     >
       <Swatch color={color} size="6">
-        {selected ? <CheckIcon size={14} color={readableForeground(shownOverWhite(color))} /> : null}
+        {selected ? (
+          <CheckIcon size={14} color={readableForeground(shownOverWhite(color))} />
+        ) : null}
       </Swatch>
     </View>
   )

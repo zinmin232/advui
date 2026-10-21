@@ -4,46 +4,46 @@ const Track = styled(View, {
   displayName: 'Progress',
   width: '100%',
   overflow: 'hidden',
-  backgroundColor: "muted",
-  borderRadius: "full",
+  backgroundColor: 'muted',
+  borderRadius: 'full',
   variants: {
     size: {
       sm: {
-        height: "1"
+        height: '1',
       },
       md: {
-        height: "2"
+        height: '2',
       },
       lg: {
-        height: "3"
+        height: '3',
       },
     },
   } as const,
-  defaultVariants: { size: 'md' }
+  defaultVariants: { size: 'md' },
 })
 
 const Indicator = styled(View, {
   displayName: 'ProgressIndicator',
   height: '100%',
-  borderRadius: "full",
+  borderRadius: 'full',
   transition: 'medium',
   variants: {
     tone: {
       primary: {
-        backgroundColor: "primary"
+        backgroundColor: 'primary',
       },
       success: {
-        backgroundColor: "success"
+        backgroundColor: 'success',
       },
       warning: {
-        backgroundColor: "warning"
+        backgroundColor: 'warning',
       },
       error: {
-        backgroundColor: "error"
+        backgroundColor: 'error',
       },
     },
   } as const,
-  defaultVariants: { tone: 'primary' }
+  defaultVariants: { tone: 'primary' },
 })
 
 export type ProgressProps = Omit<GetProps<typeof Track>, 'children'> & {

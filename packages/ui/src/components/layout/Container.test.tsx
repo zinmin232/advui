@@ -11,7 +11,7 @@ const LegacyContainer = styled(View, {
   displayName: 'Container',
   width: '100%',
   marginHorizontal: 'auto',
-  paddingHorizontal: "4 md:6 lg:8",
+  paddingHorizontal: '4 md:6 lg:8',
   variants: {
     size: {
       sm: { maxWidth: breakpoints.sm },
@@ -21,7 +21,7 @@ const LegacyContainer = styled(View, {
       full: { maxWidth: '100%' },
     },
   } as const,
-  defaultVariants: { size: 'xl' }
+  defaultVariants: { size: 'xl' },
 })
 
 /** CSS declarations that apply to an element, keyed by media query (`''` without one). */

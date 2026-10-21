@@ -14,10 +14,10 @@ import { Text } from '../typography/Text'
 const CardFrame = styled(View, {
   displayName: 'Card',
   flexDirection: 'column',
-  backgroundColor: "card",
-  borderRadius: "xl",
+  backgroundColor: 'card',
+  borderRadius: 'xl',
   borderWidth: 1,
-  borderColor: "border",
+  borderColor: 'border',
   overflow: 'hidden',
   variants: {
     variant: {
@@ -25,8 +25,8 @@ const CardFrame = styled(View, {
       elevated: { ...shadows.sm },
       ghost: { borderColor: 'transparent', backgroundColor: 'transparent' },
       filled: {
-        backgroundColor: "muted",
-        borderColor: 'transparent'
+        backgroundColor: 'muted',
+        borderColor: 'transparent',
       },
     },
     /** Adds hover/press feedback. Pair with `onPress` and an accessible `role`/label. */
@@ -34,35 +34,35 @@ const CardFrame = styled(View, {
       true: {
         cursor: 'pointer',
         transition: 'quick',
-        borderColor: "hover:borderStrong",
-        scale: "press:0.99",
-        opacity: "press:0.95",
-        outlineColor: "focus-visible:ring",
-        outlineStyle: "focus-visible:solid",
-        outlineWidth: "focus-visible:2px",
-        outlineOffset: "focus-visible:2px"
+        borderColor: 'hover:borderStrong',
+        scale: 'press:0.99',
+        opacity: 'press:0.95',
+        outlineColor: 'focus-visible:ring',
+        outlineStyle: 'focus-visible:solid',
+        outlineWidth: 'focus-visible:2px',
+        outlineOffset: 'focus-visible:2px',
       },
     },
   } as const,
-  defaultVariants: { variant: 'outline' }
+  defaultVariants: { variant: 'outline' },
 })
 
 const CardHeader = styled(View, {
   displayName: 'CardHeader',
   flexDirection: 'column',
-  gap: "1-5",
-  paddingTop: "4 sm:6",
-  paddingRight: "4 sm:6",
-  paddingLeft: "4 sm:6",
-  paddingBottom: "0 sm:0"
+  gap: '1-5',
+  paddingTop: '4 sm:6',
+  paddingRight: '4 sm:6',
+  paddingLeft: '4 sm:6',
+  paddingBottom: '0 sm:0',
 })
 
 const CardTitleText = styled(Text, {
   displayName: 'CardTitle',
   role: 'heading',
-  fontFamily: "heading",
+  fontFamily: 'heading',
   fontWeight: '600',
-  size: 'lg'
+  size: 'lg',
 })
 
 /** Card heading. Defaults to heading level 3 — pass `aria-level` to fit your page outline. */
@@ -80,19 +80,19 @@ const CardDescription = styled(Text, {
 
 const CardContent = styled(View, {
   displayName: 'CardContent',
-  padding: "4 sm:6",
-  gap: "4"
+  padding: '4 sm:6',
+  gap: '4',
 })
 
 const CardFooter = styled(View, {
   displayName: 'CardFooter',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: "2",
-  paddingRight: "4 sm:6",
-  paddingBottom: "4 sm:6",
-  paddingLeft: "4 sm:6",
-  paddingTop: "0 sm:0"
+  gap: '2',
+  paddingRight: '4 sm:6',
+  paddingBottom: '4 sm:6',
+  paddingLeft: '4 sm:6',
+  paddingTop: '0 sm:0',
 })
 
 const CardImpl = forwardRef<TamaguiElement, GetProps<typeof CardFrame>>(function Card(

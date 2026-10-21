@@ -59,62 +59,62 @@ export const ButtonFrame = styled(View, {
   alignItems: 'center',
   justifyContent: 'center',
   flexShrink: 0,
-  gap: "2",
+  gap: '2',
   borderWidth: 1,
   borderColor: 'transparent',
-  borderRadius: "button",
+  borderRadius: 'button',
   cursor: 'pointer',
   userSelect: 'none',
   transition: 'quick',
-  outlineColor: "focus-visible:ring",
-  outlineStyle: "focus-visible:solid",
-  outlineWidth: "focus-visible:2px",
-  outlineOffset: "focus-visible:2px",
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
   variants: {
     variant: {
       default: {
-        backgroundColor: "primary hover:primaryHover press:primaryPress"
+        backgroundColor: 'primary hover:primaryHover press:primaryPress',
       },
       secondary: {
-        backgroundColor: "secondary hover:secondaryHover press:secondaryPress"
+        backgroundColor: 'secondary hover:secondaryHover press:secondaryPress',
       },
       outline: {
-        backgroundColor: "background hover:accent press:accentHover",
-        borderColor: "input hover:borderStrong"
+        backgroundColor: 'background hover:accent press:accentHover',
+        borderColor: 'input hover:borderStrong',
       },
       ghost: {
-        backgroundColor: "transparent hover:accent press:accentHover"
+        backgroundColor: 'transparent hover:accent press:accentHover',
       },
       destructive: {
-        backgroundColor: "destructive hover:destructiveHover press:destructivePress"
+        backgroundColor: 'destructive hover:destructiveHover press:destructivePress',
       },
       link: {
         backgroundColor: 'transparent',
         paddingHorizontal: 0,
         height: 'auto',
-        opacity: "hover:0.8 press:0.7"
+        opacity: 'hover:0.8 press:0.7',
       },
     },
 
     size: {
       sm: {
-        height: "8",
-        paddingHorizontal: "3",
-        gap: "1-5"
+        height: '8',
+        paddingHorizontal: '3',
+        gap: '1-5',
       },
       md: {
-        height: "10",
-        paddingHorizontal: "4"
+        height: '10',
+        paddingHorizontal: '4',
       },
       lg: {
-        height: "12",
-        paddingHorizontal: "6",
-        borderRadius: "buttonLg"
+        height: '12',
+        paddingHorizontal: '6',
+        borderRadius: 'buttonLg',
       },
       icon: {
-        height: "10",
-        width: "10",
-        paddingHorizontal: 0
+        height: '10',
+        width: '10',
+        paddingHorizontal: 0,
       },
     },
 
@@ -129,13 +129,13 @@ export const ButtonFrame = styled(View, {
   defaultVariants: {
     variant: 'default',
     size: 'md',
-  }
+  },
 })
 
 export const ButtonText = styled(Text, {
   displayName: 'ButtonText',
   context: ButtonContext,
-  fontFamily: "body",
+  fontFamily: 'body',
   fontWeight: '500',
   userSelect: 'none',
   flexShrink: 1,
@@ -151,30 +151,29 @@ export const ButtonText = styled(Text, {
     },
     size: {
       sm: {
-        fontSize: "2",
-        lineHeight: "2"
+        fontSize: '2',
+        lineHeight: '2',
       },
       md: {
-        fontSize: "2",
-        lineHeight: "2"
+        fontSize: '2',
+        lineHeight: '2',
       },
       lg: {
-        fontSize: "3",
-        lineHeight: "3"
+        fontSize: '3',
+        lineHeight: '3',
       },
       icon: {
-        fontSize: "2",
-        lineHeight: "2"
+        fontSize: '2',
+        lineHeight: '2',
       },
     },
-  } as const
+  } as const,
 })
 
 type FrameProps = GetProps<typeof ButtonFrame>
 
 export interface ButtonProps
-  extends Omit<FrameProps, 'variant' | 'size' | 'disabled'>,
-    Pick<ControlStateProps, 'disabled'> {
+  extends Omit<FrameProps, 'variant' | 'size' | 'disabled'>, Pick<ControlStateProps, 'disabled'> {
   variant?: ButtonVariant
   size?: ButtonSize
   /** Shows a spinner, sets `aria-busy` and blocks presses while keeping the label for layout. */

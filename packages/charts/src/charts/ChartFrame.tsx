@@ -142,14 +142,7 @@ export function ChartFrame({
     : ''
 
   return (
-    <View
-      render="figure"
-      margin={0}
-      gap="3"
-      width="100%"
-      {...frameProps}
-      aria-labelledby={titleId}
-    >
+    <View render="figure" margin={0} gap="3" width="100%" {...frameProps} aria-labelledby={titleId}>
       <View gap="1">
         <Text id={titleId} size="sm" weight="semibold">
           {title}
@@ -168,9 +161,9 @@ export function ChartFrame({
               <View
                 aria-hidden
                 backgroundColor={item.color as never}
-                width={item.shape === 'line' ? "3" : "2-5"}
+                width={item.shape === 'line' ? '3' : '2-5'}
                 height={item.shape === 'line' ? 2 : '2-5'}
-                borderRadius={item.shape === 'line' ? "full" : "xs"}
+                borderRadius={item.shape === 'line' ? 'full' : 'xs'}
               />
               <Text size="xs" tone="muted">
                 {item.label}
@@ -187,29 +180,29 @@ export function ChartFrame({
         height={height}
         width={fixedWidth ?? '100%'}
         {...(isWeb
-                ? {
-                    tabIndex: 0,
-                    onKeyDown,
-                    onBlur: () => setActive(null),
-                    onMouseMove: (event: { clientX: number; clientY: number }) =>
-                      pointAt(event.clientX, event.clientY),
-                    onMouseLeave: () => setActive(null),
-                  }
-                : {
-                    accessible: true,
-                    // Native has no live region here: the reading becomes the plot's value.
-                    ...(summary && { accessibilityValue: { text: summary } }),
-                    onPress: (event: { nativeEvent: { locationX: number; locationY: number } }) =>
-                      setActive(hitTest(event.nativeEvent.locationX, event.nativeEvent.locationY, width)),
-                  })}
+          ? {
+              tabIndex: 0,
+              onKeyDown,
+              onBlur: () => setActive(null),
+              onMouseMove: (event: { clientX: number; clientY: number }) =>
+                pointAt(event.clientX, event.clientY),
+              onMouseLeave: () => setActive(null),
+            }
+          : {
+              accessible: true,
+              // Native has no live region here: the reading becomes the plot's value.
+              ...(summary && { accessibilityValue: { text: summary } }),
+              onPress: (event: { nativeEvent: { locationX: number; locationY: number } }) =>
+                setActive(hitTest(event.nativeEvent.locationX, event.nativeEvent.locationY, width)),
+            })}
         borderRadius="sm"
         outlineColor="focus-visible:ring"
         outlineStyle="focus-visible:solid"
         outlineWidth="focus-visible:2px"
         outlineOffset="focus-visible:4px"
         onLayout={(event: { nativeEvent: { layout: { width: number } } }) =>
-                setMeasured(Math.floor(event.nativeEvent.layout.width))
-              }
+          setMeasured(Math.floor(event.nativeEvent.layout.width))
+        }
         role="img"
         aria-label={`${title}.${description ? ` ${description}.` : ''}${isWeb ? ` ${labels.keyboardHint}` : ''}`}
       >
@@ -240,7 +233,7 @@ export function ChartFrame({
                   backgroundColor={row.color as never}
                   width="2-5"
                   height={row.shape === 'line' ? 2 : '2-5'}
-                  borderRadius={row.shape === 'line' ? "full" : "xs"}
+                  borderRadius={row.shape === 'line' ? 'full' : 'xs'}
                 />
                 <Text size="sm" weight="semibold">
                   {row.value}

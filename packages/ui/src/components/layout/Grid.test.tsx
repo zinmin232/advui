@@ -42,7 +42,10 @@ describe('gridCellLayout', () => {
       $md: { width: twoThirds },
     })
     // A map without base is the full row below its first breakpoint, like Bootstrap's col-md-6.
-    expect(legacyShape(gridCellLayout(12, { md: 6 }))).toEqual({ width: '100%', $md: { width: '50%' } })
+    expect(legacyShape(gridCellLayout(12, { md: 6 }))).toEqual({
+      width: '100%',
+      $md: { width: '50%' },
+    })
     expect(legacyShape(gridCellLayout(12, { sm: 6, lg: 4 }))).toEqual({
       width: '100%',
       $sm: { width: '50%' },
@@ -84,7 +87,9 @@ describe('gridCellLayout', () => {
       $md: { width: `${200 / 12}%` },
     })
     // Same share at both counts: nothing to emit at md.
-    expect(legacyShape(gridCellLayout({ base: 2, md: 4 }, { base: 1, md: 2 }))).toEqual({ width: '50%' })
+    expect(legacyShape(gridCellLayout({ base: 2, md: 4 }, { base: 1, md: 2 }))).toEqual({
+      width: '50%',
+    })
   })
 
   it('clamps span and offset to the column count', () => {
@@ -97,7 +102,10 @@ describe('gridCellLayout', () => {
     expect(legacyShape(gridCellLayout(12, -3))).toEqual({ width: `${100 / 12}%` })
     expect(legacyShape(gridCellLayout(12, Number.NaN))).toEqual({ width: `${100 / 12}%` })
     // The offset leaves room for the span in the same row.
-    expect(legacyShape(gridCellLayout(12, 8, 6))).toEqual({ width: twoThirds, marginInlineStart: third })
+    expect(legacyShape(gridCellLayout(12, 8, 6))).toEqual({
+      width: twoThirds,
+      marginInlineStart: third,
+    })
     expect(legacyShape(gridCellLayout(12, 4, -2))).toEqual({ width: third })
     expect(legacyShape(gridCellLayout(12, 'full', 3))).toEqual({ width: '100%' })
     expect(legacyShape(gridCellLayout(12, 'auto', 20))).toEqual({
@@ -125,7 +133,10 @@ describe('gridCellLayout', () => {
   })
 
   it('offsets with marginInlineStart, per breakpoint, back to zero', () => {
-    expect(legacyShape(gridCellLayout(12, 6, 3))).toEqual({ width: '50%', marginInlineStart: '25%' })
+    expect(legacyShape(gridCellLayout(12, 6, 3))).toEqual({
+      width: '50%',
+      marginInlineStart: '25%',
+    })
     expect(legacyShape(gridCellLayout(12, { base: 12, md: 6 }, { md: 3, lg: 0 }))).toEqual({
       width: '100%',
       $md: { width: '50%', marginInlineStart: '25%' },

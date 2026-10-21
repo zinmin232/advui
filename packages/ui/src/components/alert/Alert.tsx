@@ -111,51 +111,51 @@ const sizes = {
 const AlertFrame = styled(View, {
   displayName: 'Alert',
   flexDirection: 'row',
-  borderRadius: "lg",
+  borderRadius: 'lg',
   borderWidth: 1,
   variants: {
     variant: {
       default: {
-        backgroundColor: "card",
-        borderColor: "border"
+        backgroundColor: 'card',
+        borderColor: 'border',
       },
       info: {
-        backgroundColor: "infoSoft",
-        borderColor: "infoBorder"
+        backgroundColor: 'infoSoft',
+        borderColor: 'infoBorder',
       },
       success: {
-        backgroundColor: "successSoft",
-        borderColor: "successBorder"
+        backgroundColor: 'successSoft',
+        borderColor: 'successBorder',
       },
       warning: {
-        backgroundColor: "warningSoft",
-        borderColor: "warningBorder"
+        backgroundColor: 'warningSoft',
+        borderColor: 'warningBorder',
       },
       error: {
-        backgroundColor: "errorSoft",
-        borderColor: "errorBorder"
+        backgroundColor: 'errorSoft',
+        borderColor: 'errorBorder',
       },
       destructive: {
-        backgroundColor: "destructive",
-        borderColor: "destructive"
+        backgroundColor: 'destructive',
+        borderColor: 'destructive',
       },
     },
     size: {
       sm: {
-        padding: "3",
-        gap: "2"
+        padding: '3',
+        gap: '2',
       },
       md: {
-        padding: "4",
-        gap: "3"
+        padding: '4',
+        gap: '3',
       },
       lg: {
-        padding: "5",
-        gap: "4"
+        padding: '5',
+        gap: '4',
       },
     },
   } as const,
-  defaultVariants: { variant: 'default', size: 'md' }
+  defaultVariants: { variant: 'default', size: 'md' },
 })
 
 // `size` follows the alert's; sm and lg match Text's own sm and lg.
@@ -166,16 +166,16 @@ const AlertTitle = styled(Text, {
   variants: {
     size: {
       sm: {
-        fontSize: "2",
-        lineHeight: "2"
+        fontSize: '2',
+        lineHeight: '2',
       },
       md: {
-        fontSize: "2",
-        lineHeight: "2"
+        fontSize: '2',
+        lineHeight: '2',
       },
       lg: {
-        fontSize: "4",
-        lineHeight: "4"
+        fontSize: '4',
+        lineHeight: '4',
       },
     },
   } as const,
@@ -187,16 +187,16 @@ const AlertDescription = styled(Text, {
   variants: {
     size: {
       sm: {
-        fontSize: "1",
-        lineHeight: "1"
+        fontSize: '1',
+        lineHeight: '1',
       },
       md: {
-        fontSize: "2",
-        lineHeight: "2"
+        fontSize: '2',
+        lineHeight: '2',
       },
       lg: {
-        fontSize: "3",
-        lineHeight: "3"
+        fontSize: '3',
+        lineHeight: '3',
       },
     },
   } as const,
@@ -335,10 +335,10 @@ const AlertImpl = forwardRef<TamaguiElement, AlertProps>(function Alert(
             : { accessible: true, hitSlop: 10 })}
           {...dismissRipple.props}
           onPress={(event) => {
-                    // Keep the press from reaching a pressable card or row around the alert.
-                    event.stopPropagation()
-                    setOpen(false)
-                  }}
+            // Keep the press from reaching a pressable card or row around the alert.
+            event.stopPropagation()
+            setOpen(false)
+          }}
         >
           {dismissRipple.element}
           <XIcon size={size === 'lg' ? 16 : 14} color={accentColor} />

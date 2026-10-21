@@ -27,13 +27,13 @@ const StatFrame = styled(View, {
   variants: {
     size: {
       sm: {
-        gap: "0-5"
+        gap: '0-5',
       },
       md: {
-        gap: "1"
+        gap: '1',
       },
       lg: {
-        gap: "1-5"
+        gap: '1-5',
       },
     },
   } as const,
@@ -50,16 +50,16 @@ const StatLabel = styled(Text, {
   variants: {
     size: {
       sm: {
-        fontSize: "1",
-        lineHeight: "1"
+        fontSize: '1',
+        lineHeight: '1',
       },
       md: {
-        fontSize: "2",
-        lineHeight: "2"
+        fontSize: '2',
+        lineHeight: '2',
       },
       lg: {
-        fontSize: "3",
-        lineHeight: "3"
+        fontSize: '3',
+        lineHeight: '3',
       },
     },
   } as const,
@@ -68,24 +68,24 @@ const StatLabel = styled(Text, {
 const StatValue = styled(Text, {
   displayName: 'StatValue',
   context: StatContext,
-  fontFamily: "heading",
+  fontFamily: 'heading',
   fontWeight: '700',
   variants: {
     size: {
       sm: {
-        fontSize: "5",
-        lineHeight: "5"
+        fontSize: '5',
+        lineHeight: '5',
       },
       md: {
-        fontSize: "7",
-        lineHeight: "7"
+        fontSize: '7',
+        lineHeight: '7',
       },
       lg: {
-        fontSize: "9",
-        lineHeight: "9"
+        fontSize: '9',
+        lineHeight: '9',
       },
     },
-  } as const
+  } as const,
 })
 
 const StatHelpText = styled(Text, {
@@ -96,16 +96,16 @@ const StatHelpText = styled(Text, {
   variants: {
     size: {
       sm: {
-        fontSize: "1",
-        lineHeight: "1"
+        fontSize: '1',
+        lineHeight: '1',
       },
       md: {
-        fontSize: "1",
-        lineHeight: "1"
+        fontSize: '1',
+        lineHeight: '1',
       },
       lg: {
-        fontSize: "2",
-        lineHeight: "2"
+        fontSize: '2',
+        lineHeight: '2',
       },
     },
   } as const,
@@ -116,17 +116,17 @@ const StatDeltaFrame = styled(View, {
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf: 'flex-start',
-  gap: "1",
+  gap: '1',
   variants: {
     variant: {
       plain: {},
       badge: {
-        paddingHorizontal: "2",
-        paddingVertical: "0-5",
-        borderRadius: "full"
+        paddingHorizontal: '2',
+        paddingVertical: '0-5',
+        borderRadius: 'full',
       },
     },
-  } as const
+  } as const,
 })
 
 const tones = {

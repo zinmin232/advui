@@ -98,7 +98,5 @@ export function ChoiceRow({
 }
 
 /** Style for the control in a ChoiceRow: it keeps its size and lines up with the label's first line. */
-export const choiceControlStyle = (
-  size: 'sm' | 'md',
-): { flexShrink: number; marginTop?: '0-5' } =>
+export const choiceControlStyle = (size: 'sm' | 'md'): { flexShrink: number; marginTop?: '0-5' } =>
   size === 'sm' ? { flexShrink: 0, marginTop: '0-5' } : { flexShrink: 0 }

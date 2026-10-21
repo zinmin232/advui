@@ -76,9 +76,9 @@ const StepperFrame = styled(View, {
 
 const StepIndicator = styled(View, {
   displayName: 'StepIndicator',
-  width: "8",
-  height: "8",
-  borderRadius: "full",
+  width: '8',
+  height: '8',
+  borderRadius: 'full',
   alignItems: 'center',
   justifyContent: 'center',
   flexShrink: 0,
@@ -86,51 +86,51 @@ const StepIndicator = styled(View, {
   variants: {
     status: {
       complete: {
-        backgroundColor: "primary",
-        borderColor: "primary"
+        backgroundColor: 'primary',
+        borderColor: 'primary',
       },
       current: {
-        backgroundColor: "background",
-        borderColor: "primary"
+        backgroundColor: 'background',
+        borderColor: 'primary',
       },
       upcoming: {
-        backgroundColor: "background",
-        borderColor: "border"
+        backgroundColor: 'background',
+        borderColor: 'border',
       },
       error: {
-        backgroundColor: "error",
-        borderColor: "error"
+        backgroundColor: 'error',
+        borderColor: 'error',
       },
     },
-  } as const
+  } as const,
 })
 
 const StepConnector = styled(View, {
   displayName: 'StepConnector',
-  borderRadius: "full",
+  borderRadius: 'full',
   variants: {
     orientation: {
       horizontal: {
         flex: 1,
         height: 2,
-        marginHorizontal: "2"
+        marginHorizontal: '2',
       },
       vertical: {
         flex: 1,
         width: 2,
-        minHeight: "4",
-        marginVertical: "1"
+        minHeight: '4',
+        marginVertical: '1',
       },
     },
     done: {
       true: {
-        backgroundColor: "primary"
+        backgroundColor: 'primary',
       },
       false: {
-        backgroundColor: "border"
+        backgroundColor: 'border',
       },
     },
-  } as const
+  } as const,
 })
 
 const StepTitle = styled(Text, {
@@ -286,14 +286,16 @@ const StepperStep = forwardRef<TamaguiElement, StepperStepProps>(function Steppe
   const target = pressable ? (
     <View
       {...(isWeb
-            ? { render: 'button', type: 'button', style: { textAlign: 'start' } }
-            : { accessible: true, role: 'button', 'aria-label': nativeName })}
+        ? { render: 'button', type: 'button', style: { textAlign: 'start' } }
+        : { accessible: true, role: 'button', 'aria-label': nativeName })}
       alignSelf="flex-start"
       padding="1"
       margin="-1"
       borderWidth={0}
       borderRadius="md"
-      backgroundColor={ripple.active ? 'transparent hover:accent' : 'transparent hover:accent press:accentHover'}
+      backgroundColor={
+        ripple.active ? 'transparent hover:accent' : 'transparent hover:accent press:accentHover'
+      }
       cursor="pointer"
       outlineColor="focus-visible:ring"
       outlineStyle="focus-visible:solid"
@@ -322,7 +324,7 @@ const StepperStep = forwardRef<TamaguiElement, StepperStepProps>(function Steppe
           <View width="8" alignItems="center" aria-hidden>
             {last ? null : <StepConnector orientation="vertical" done={status === 'complete'} />}
           </View>
-          <View flex={1} minWidth={0} paddingBottom={last ? "0" : "4"} gap="3">
+          <View flex={1} minWidth={0} paddingBottom={last ? '0' : '4'} gap="3">
             {current ? children : null}
           </View>
         </View>
@@ -340,21 +342,14 @@ const StepperStep = forwardRef<TamaguiElement, StepperStepProps>(function Steppe
       flexShrink={last ? 0 : 1}
       flexBasis="auto"
       minWidth={0}
-      maxWidth={last ? "40" : undefined}
+      maxWidth={last ? '40' : undefined}
       {...props}
     >
       <View flexShrink={1} minWidth={0} maxWidth="40">
         {target}
       </View>
       {last ? null : (
-        <View
-          flex={1}
-          minWidth="4"
-          height="8"
-          flexDirection="row"
-          alignItems="center"
-          aria-hidden
-        >
+        <View flex={1} minWidth="4" height="8" flexDirection="row" alignItems="center" aria-hidden>
           <StepConnector orientation="horizontal" done={status === 'complete'} />
         </View>
       )}

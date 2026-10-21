@@ -38,7 +38,7 @@
     {
       "path": "types.ts",
       "type": "registry:ui",
-      "content": "import type { UniversalConfig } from '@advui/theme'\n\n// Registers Adv UI's tokens and themes with Tamagui so props like\n// `backgroundColor=\"$primary\"` and `padding=\"$4\"` are type-checked.\ndeclare module 'tamagui' {\n  // Module augmentation requires an interface; the empty body is intentional.\n  // eslint-disable-next-line @typescript-eslint/no-empty-object-type\n  interface TamaguiCustomConfig extends UniversalConfig {}\n}\n\nexport type ColorModePreference = 'light' | 'dark' | 'system'\nexport type ResolvedColorMode = 'light' | 'dark'\n"
+      "content": "import type { UniversalConfig } from '@advui/theme'\n\n// Registers Adv UI's tokens and themes with Tamagui so props like\n// `backgroundColor=\"primary\"` and `padding=\"4\"` are type-checked.\ndeclare module 'tamagui' {\n  // Module augmentation requires an interface; the empty body is intentional.\n  // eslint-disable-next-line @typescript-eslint/no-empty-object-type\n  interface TamaguiCustomConfig extends UniversalConfig {}\n}\n\nexport type ColorModePreference = 'light' | 'dark' | 'system'\nexport type ResolvedColorMode = 'light' | 'dark'\n"
     }
   ],
   "dependencies": [

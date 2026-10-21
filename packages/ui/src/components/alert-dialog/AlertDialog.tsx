@@ -23,7 +23,10 @@ import {
 } from '../dialog/styles'
 import { transformOpacity } from '../../utils/transition'
 
-const Overlay = styled(TamaguiAlertDialog.Overlay, { displayName: 'AlertDialogOverlay', ...overlayStyle })
+const Overlay = styled(TamaguiAlertDialog.Overlay, {
+  displayName: 'AlertDialogOverlay',
+  ...overlayStyle,
+})
 
 const Header = styled(View, { displayName: 'AlertDialogHeader', ...headerStyle })
 

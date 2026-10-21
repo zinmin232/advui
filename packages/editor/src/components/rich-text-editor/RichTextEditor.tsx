@@ -308,7 +308,8 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
           borderWidth={0}
           borderRadius={0}
           backgroundColor="transparent"
-          outlineWidth="focus-visible:0px" outlineStyle="focus-visible:none"
+          outlineWidth="focus-visible:0px"
+          outlineStyle="focus-visible:none"
           onSelectionChange={(event: { nativeEvent: { selection: TextSelection } }) => {
             selection.current = event.nativeEvent.selection
           }}

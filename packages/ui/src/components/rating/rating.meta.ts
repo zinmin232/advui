@@ -96,13 +96,15 @@ export default defineMeta({
           name: 'getValueText',
           type: '(value: number) => string',
           default: '"3 of 5"',
-          description: 'The value screen readers read, and a read-only rating’s name. Translate it here.',
+          description:
+            'The value screen readers read, and a read-only rating’s name. Translate it here.',
         },
         {
           name: 'disabled',
           type: 'boolean',
           default: 'false',
-          description: 'Dims the icons and ignores presses and keys. Also on inside a disabled Field or Form.',
+          description:
+            'Dims the icons and ignores presses and keys. Also on inside a disabled Field or Form.',
         },
         {
           name: 'invalid',
@@ -136,7 +138,8 @@ export default defineMeta({
     {
       name: 'half',
       title: 'Half ratings and sizes',
-      description: 'With `allowHalf`, each half of an icon is its own value. Small, medium and large.',
+      description:
+        'With `allowHalf`, each half of an icon is its own value. Small, medium and large.',
     },
     {
       name: 'read-only',

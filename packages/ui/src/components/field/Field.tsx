@@ -10,12 +10,12 @@ export type FieldOrientation = 'vertical' | 'horizontal'
 
 const FieldFrame = styled(View, {
   displayName: 'Field',
-  gap: "2",
+  gap: '2',
   variants: {
     fullWidth: {
       true: { width: '100%', alignSelf: 'stretch' },
     },
-  } as const
+  } as const,
 })
 
 // Horizontal fields: the label is centered on the control beside it, and the
@@ -24,7 +24,7 @@ const FieldRow = styled(View, {
   displayName: 'FieldRow',
   flexDirection: 'row',
   alignItems: 'center',
-  columnGap: "4"
+  columnGap: '4',
 })
 
 const FieldLabelColumn = styled(View, {

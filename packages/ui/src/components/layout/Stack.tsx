@@ -96,8 +96,8 @@ export const Wrap = styled(Stack, {
   flexDirection: 'row',
   flexWrap: 'wrap',
   alignItems: 'center',
-  gap: "2",
-  variants: flexVariants()
+  gap: '2',
+  variants: flexVariants(),
 })
 
 /** Centers its children on both axes. */

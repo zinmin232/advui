@@ -144,7 +144,8 @@ export default defineMeta({
           name: 'disabled',
           type: 'boolean',
           default: 'false',
-          description: 'Dims the picker and ignores drags, keys and presses. Also on inside a disabled Field or Form.',
+          description:
+            'Dims the picker and ignores drags, keys and presses. Also on inside a disabled Field or Form.',
         },
         {
           name: 'invalid',
@@ -211,7 +212,10 @@ export default defineMeta({
     'On iOS and Android the area and sliders are adjustable: swipes change the brightness, hue or opacity by 10, and the actions menu has "More saturated" and "Less saturated". Inline, each control reads the Field’s label and help as its hint. The sliders reach a 44pt touch target with `hitSlop`.',
   ],
   keyboard: [
-    { keys: 'ArrowRight / ArrowLeft', action: 'Area: saturation ±1%. Sliders: ±1 (degree or percent).' },
+    {
+      keys: 'ArrowRight / ArrowLeft',
+      action: 'Area: saturation ±1%. Sliders: ±1 (degree or percent).',
+    },
     { keys: 'ArrowUp / ArrowDown', action: 'Area: brightness ±1%. Sliders: ±1.' },
     { keys: 'Shift + Arrow', action: 'Steps of 10.' },
     { keys: 'PageUp / PageDown', action: 'Area: brightness ±10%. Sliders: ±10.' },

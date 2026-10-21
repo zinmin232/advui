@@ -54,7 +54,7 @@ const PaginationFrame = styled(View, {
   flexDirection: 'row',
   alignItems: 'center',
   flexWrap: 'wrap',
-  gap: "1 max-xs:0-5"
+  gap: '1 max-xs:0-5',
 })
 
 export interface PaginationLabels {
@@ -74,7 +74,10 @@ const defaultLabels: PaginationLabels = {
 }
 
 // `page` is also a CSS style prop in Tamagui 3; here it is the current page.
-export interface PaginationProps extends Omit<GetProps<typeof PaginationFrame>, 'children' | 'page'> {
+export interface PaginationProps extends Omit<
+  GetProps<typeof PaginationFrame>,
+  'children' | 'page'
+> {
   /** Number of pages. */
   count: number
   /** Current page, from 1 (controlled). */
@@ -159,8 +162,8 @@ export const Pagination = forwardRef<TamaguiElement, PaginationProps>(function P
                   height="max-xs:8"
                   paddingHorizontal="2"
                   {...(isWeb
-                                    ? item === page && { 'aria-current': 'page' as const }
-                                    : { 'aria-selected': item === page })}
+                    ? item === page && { 'aria-current': 'page' as const }
+                    : { 'aria-selected': item === page })}
                   variant={item === page ? 'outline' : 'ghost'}
                   aria-label={labels.page(item)}
                   disabled={disabled}

@@ -24,7 +24,12 @@ async function drag(target: ReturnType<typeof screen.getByRole>, path: { x: numb
   await fireEvent(target, 'responderRelease', touchAt(end.x, end.y, { lifted: true }))
 }
 
-const cases: { name: string; render: (onPress: () => void) => ReactElement; role: string; label: string }[] = [
+const cases: {
+  name: string
+  render: (onPress: () => void) => ReactElement
+  role: string
+  label: string
+}[] = [
   {
     name: 'Button',
     render: (onPress) => <Button onPress={onPress}>Save</Button>,

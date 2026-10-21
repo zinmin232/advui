@@ -34,7 +34,7 @@ const FabFrame = styled(View, {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: "3",
+  gap: '3',
   borderWidth: 0,
   cursor: 'pointer',
   userSelect: 'none',
@@ -44,73 +44,73 @@ const FabFrame = styled(View, {
   // `shadowOffset` (an object) stays at md's. Hover is web-only, where
   // Android's `elevation` does not apply.
   shadowRadius: { default: shadows.md.shadowRadius, hover: shadows.lg.shadowRadius },
-  outlineColor: "focus-visible:ring",
-  outlineStyle: "focus-visible:solid",
-  outlineWidth: "focus-visible:2px",
-  outlineOffset: "focus-visible:2px",
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
   variants: {
     variant: {
       soft: {
-        backgroundColor: "primarySoft press:primarySoftHover"
+        backgroundColor: 'primarySoft press:primarySoftHover',
       },
       primary: {
-        backgroundColor: "primary hover:primaryHover press:primaryPress"
+        backgroundColor: 'primary hover:primaryHover press:primaryPress',
       },
       secondary: {
-        backgroundColor: "secondary hover:secondaryHover press:secondaryPress"
+        backgroundColor: 'secondary hover:secondaryHover press:secondaryPress',
       },
       surface: {
-        backgroundColor: "card hover:accent press:accentHover"
+        backgroundColor: 'card hover:accent press:accentHover',
       },
     },
     // Material sizes: 40, 56 and 96, with 12, 16 and 28px corners in the Material theme.
     size: {
       sm: {
-        width: "10",
-        height: "10",
-        borderRadius: "xl"
+        width: '10',
+        height: '10',
+        borderRadius: 'xl',
       },
       md: {
-        width: "14",
-        height: "14",
-        borderRadius: "2xl"
+        width: '14',
+        height: '14',
+        borderRadius: '2xl',
       },
       lg: {
-        width: "24",
-        height: "24",
-        borderRadius: "3xl"
+        width: '24',
+        height: '24',
+        borderRadius: '3xl',
       },
     },
     extended: {
       true: {
         width: 'auto',
-        height: "14",
-        paddingHorizontal: "4",
-        borderRadius: "2xl"
+        height: '14',
+        paddingHorizontal: '4',
+        borderRadius: '2xl',
       },
     },
     placement: {
       'bottom-end': {
         position: 'absolute',
-        bottom: "4",
-        right: "4"
+        bottom: '4',
+        right: '4',
       },
       'bottom-start': {
         position: 'absolute',
-        bottom: "4",
-        left: "4"
+        bottom: '4',
+        left: '4',
       },
       'bottom-center': {
         position: 'absolute',
-        bottom: "4",
-        alignSelf: 'center'
+        bottom: '4',
+        alignSelf: 'center',
       },
     },
     disabled: {
       true: { opacity: 0.5, pointerEvents: 'none', cursor: 'default' },
     },
   } as const,
-  defaultVariants: { variant: 'soft', size: 'md' }
+  defaultVariants: { variant: 'soft', size: 'md' },
 })
 
 type FrameProps = GetProps<typeof FabFrame>

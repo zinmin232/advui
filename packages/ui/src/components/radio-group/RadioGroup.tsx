@@ -53,16 +53,16 @@ const Item = styled(TamaguiRadioGroup.Item, {
   variants: {
     size: {
       sm: {
-        width: "4",
-        height: "4",
-        minHeight: "4",
-        padding: 0
+        width: '4',
+        height: '4',
+        minHeight: '4',
+        padding: 0,
       },
       md: {
-        width: "5",
-        height: "5",
-        minHeight: "5",
-        padding: 0
+        width: '5',
+        height: '5',
+        minHeight: '5',
+        padding: 0,
       },
     },
     disabled: {

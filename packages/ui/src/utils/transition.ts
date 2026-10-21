@@ -6,5 +6,7 @@ import type { TransitionKeys } from 'tamagui/unstyled'
  * `undefined` (reduced motion) stays as it is, so nothing animates.
  */
 export function transformOpacity<T extends TransitionKeys | null | undefined>(preset: T) {
-  return preset ? { preset, properties: 'transform, opacity' } : (preset as Exclude<T, TransitionKeys>)
+  return preset
+    ? { preset, properties: 'transform, opacity' }
+    : (preset as Exclude<T, TransitionKeys>)
 }

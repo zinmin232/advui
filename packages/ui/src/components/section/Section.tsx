@@ -79,8 +79,10 @@ const surfaces: Record<SectionBackground, { theme?: SubTheme; color?: string; fa
 
 // `background` and `container` are also Tamagui 3 style props; here they pick
 // the surface and the inner Container.
-export interface SectionProps
-  extends Omit<GetProps<typeof View>, 'children' | 'background' | 'container'> {
+export interface SectionProps extends Omit<
+  GetProps<typeof View>,
+  'children' | 'background' | 'container'
+> {
   /** Vertical padding, a step or a mobile-first map. Default `md`. */
   spacing?: Responsive<SectionSpacing>
   /** The surface. `primary` and `inverse` switch to a sub-theme, so text stays readable. */

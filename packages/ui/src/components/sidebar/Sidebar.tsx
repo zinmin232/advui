@@ -44,29 +44,29 @@ const SidebarFrame = styled(View, {
   displayName: 'Sidebar',
   flexDirection: 'column',
   height: '100%',
-  backgroundColor: "card",
+  backgroundColor: 'card',
   borderRightWidth: 1,
-  borderColor: "border",
+  borderColor: 'border',
   flexShrink: 0,
   variants: {
     collapsed: {
       true: {
-        width: "16"
+        width: '16',
       },
       false: {
-        width: "64"
+        width: '64',
       },
     },
-  } as const
+  } as const,
 })
 
 const SidebarHeader = styled(View, {
   displayName: 'SidebarHeader',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: "2",
-  padding: "3",
-  minHeight: "14"
+  gap: '2',
+  padding: '3',
+  minHeight: '14',
 })
 
 const SidebarContent = styled(View, {
@@ -74,38 +74,38 @@ const SidebarContent = styled(View, {
   flex: 1,
   minHeight: 0,
   overflowY: 'auto',
-  paddingHorizontal: "2",
-  paddingVertical: "2",
-  gap: "4"
+  paddingHorizontal: '2',
+  paddingVertical: '2',
+  gap: '4',
 })
 
 const SidebarFooter = styled(View, {
   displayName: 'SidebarFooter',
-  padding: "3",
+  padding: '3',
   borderTopWidth: 1,
-  borderColor: "border",
-  gap: "2"
+  borderColor: 'border',
+  gap: '2',
 })
 
 const SidebarItemFrame = styled(View, {
   displayName: 'SidebarItem',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: "3",
-  minHeight: "9 touchable:11",
-  paddingHorizontal: "3",
-  borderRadius: "md",
+  gap: '3',
+  minHeight: '9 touchable:11',
+  paddingHorizontal: '3',
+  borderRadius: 'md',
   borderWidth: 0,
-  backgroundColor: "transparent hover:accent press:accentHover",
+  backgroundColor: 'transparent hover:accent press:accentHover',
   cursor: 'pointer',
-  outlineColor: "focus-visible:ring",
-  outlineStyle: "focus-visible:solid",
-  outlineWidth: "focus-visible:2px",
-  outlineOffset: "focus-visible:-2px",
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:-2px',
   variants: {
     active: {
       true: {
-        backgroundColor: "accent"
+        backgroundColor: 'accent',
       },
     },
     collapsed: {
@@ -115,10 +115,10 @@ const SidebarItemFrame = styled(View, {
       true: {
         opacity: 0.5,
         cursor: 'not-allowed',
-        backgroundColor: "hover:transparent"
+        backgroundColor: 'hover:transparent',
       },
     },
-  } as const
+  } as const,
 })
 
 export interface SidebarProps extends Omit<GetProps<typeof SidebarFrame>, 'collapsed'> {

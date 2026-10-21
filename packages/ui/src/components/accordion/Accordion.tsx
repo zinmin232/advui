@@ -71,8 +71,8 @@ const AccordionItem = forwardRef<TamaguiElement, AccordionItemProps>(
         <TamaguiAccordion.Item
           ref={ref as never}
           {...(variant === 'card'
-                    ? { borderTopWidth: 1, marginTop: -1 }
-                    : { borderBottomWidth: 1 })}
+            ? { borderTopWidth: 1, marginTop: -1 }
+            : { borderBottomWidth: 1 })}
           borderColor="border"
           {...props}
         />
@@ -107,7 +107,7 @@ const AccordionTrigger = forwardRef<TamaguiElement, AccordionTriggerProps>(
         width="100%"
         minHeight="11"
         paddingVertical="3"
-        paddingHorizontal={variant === 'card' ? "4" : "1"}
+        paddingHorizontal={variant === 'card' ? '4' : '1'}
         borderWidth={0}
         borderRadius={variant === 'card' ? 0 : 'sm'}
         backgroundColor={flatValue(
@@ -179,7 +179,7 @@ const AccordionContent = forwardRef<TamaguiElement, AccordionContentProps>(
           id={contentId}
           {...(!isWeb && { role: null as never, 'aria-labelledby': null as never })}
           paddingBottom="4"
-          paddingHorizontal={variant === 'card' ? "4" : "1"}
+          paddingHorizontal={variant === 'card' ? '4' : '1'}
           opacity="exit:0"
           transition={reducedMotion ? undefined : 'medium'}
           {...props}

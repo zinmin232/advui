@@ -6,12 +6,12 @@ export const MenubarFrame = styled(View, {
   displayName: 'Menubar',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: "1",
-  padding: "1",
-  backgroundColor: "background",
+  gap: '1',
+  padding: '1',
+  backgroundColor: 'background',
   borderWidth: 1,
-  borderColor: "border",
-  borderRadius: "lg"
+  borderColor: 'border',
+  borderRadius: 'lg',
 })
 
 export const MenubarTriggerFrame = styled(View, {
@@ -19,28 +19,28 @@ export const MenubarTriggerFrame = styled(View, {
   flexDirection: 'row',
   alignItems: 'center',
   // Finger-sized targets on touch screens and phones.
-minHeight: "8 touchable:11",
-  paddingHorizontal: "3",
-  borderRadius: "md",
+  minHeight: '8 touchable:11',
+  paddingHorizontal: '3',
+  borderRadius: 'md',
   borderWidth: 0,
-  backgroundColor: "transparent hover:accent",
+  backgroundColor: 'transparent hover:accent',
   cursor: 'pointer',
-  outlineColor: "focus-visible:ring",
-  outlineStyle: "focus-visible:solid",
-  outlineWidth: "focus-visible:2px",
-  outlineOffset: "focus-visible:-2px",
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:-2px',
   variants: {
     open: {
       true: {
-        backgroundColor: "accent"
+        backgroundColor: 'accent',
       },
     },
     disabled: {
       true: {
         opacity: 0.5,
         cursor: 'not-allowed',
-        backgroundColor: "hover:transparent"
+        backgroundColor: 'hover:transparent',
       },
     },
-  } as const
+  } as const,
 })

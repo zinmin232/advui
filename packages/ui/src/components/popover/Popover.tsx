@@ -115,7 +115,11 @@ function PopoverRoot({
                 paddingBottom="8"
                 maxHeight={sheetMaxHeight}
               >
-                <Sheet.Background backgroundColor="popover" borderTopLeftRadius="dialog" borderTopRightRadius="dialog" />
+                <Sheet.Background
+                  backgroundColor="popover"
+                  borderTopLeftRadius="dialog"
+                  borderTopRightRadius="dialog"
+                />
                 {/* Scrolls when the content is taller than the sheet may be (a
                     calendar on a phone in landscape). Color Picker's drag area
                     keeps its gesture from it. */}
@@ -172,23 +176,24 @@ const PopoverContent = forwardRef<TamaguiElement, PopoverContentProps>(function 
       transition={transformOpacity(reducedMotion ? null : 'quick')}
       {...props}
       onPointerDownOutside={composeEventHandlers(
-            onPointerDownOutside,
-            (details) => {
-              const pointer = details.event
-              rightClick.current = !!pointer && (pointer.button === 2 || (pointer.button === 0 && pointer.ctrlKey))
-            },
-            { checkDefaultPrevented: false },
-          )}
+        onPointerDownOutside,
+        (details) => {
+          const pointer = details.event
+          rightClick.current =
+            !!pointer && (pointer.button === 2 || (pointer.button === 0 && pointer.ctrlKey))
+        },
+        { checkDefaultPrevented: false },
+      )}
       onCloseAutoFocus={
-            onCloseAutoFocus === false
-              ? false
-              : composeEventHandlers(onCloseAutoFocus, (details) => {
-                  const trigger = triggerRef?.current
-                  if (!trigger) return
-                  details.cancel()
-                  if (!rightClick.current) trigger.focus()
-                })
-          }
+        onCloseAutoFocus === false
+          ? false
+          : composeEventHandlers(onCloseAutoFocus, (details) => {
+              const trigger = triggerRef?.current
+              if (!trigger) return
+              details.cancel()
+              if (!rightClick.current) trigger.focus()
+            })
+      }
     >
       {children}
     </TamaguiPopover.Content>

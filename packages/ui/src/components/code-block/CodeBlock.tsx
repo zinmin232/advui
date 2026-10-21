@@ -38,27 +38,27 @@ export const CodeBlockFrame = styled(View, {
   displayName: 'CodeBlock',
   // The floating copy button is placed against the block (web Views are static).
   position: 'relative',
-  backgroundColor: "muted",
+  backgroundColor: 'muted',
   borderWidth: 1,
-  borderColor: "border",
-  borderRadius: "lg",
-  overflow: 'hidden'
+  borderColor: 'border',
+  borderRadius: 'lg',
+  overflow: 'hidden',
 })
 
 // Every Text sets its own `white-space` on web, so each one takes `wrap`.
 const CodeText = styled(TamaguiText, {
   displayName: 'CodeBlockText',
-  fontFamily: "mono",
-  fontSize: "2",
-  lineHeight: "2",
-  color: "foreground",
+  fontFamily: 'mono',
+  fontSize: '2',
+  lineHeight: '2',
+  color: 'foreground',
   variants: {
     wrap: {
       true: { whiteSpace: 'pre-wrap' },
       false: { whiteSpace: 'pre' },
     },
   } as const,
-  defaultVariants: { wrap: false }
+  defaultVariants: { wrap: false },
 })
 
 // Web: the scroll box. Keyboard users scroll it with the arrow keys once it has focus.
@@ -67,13 +67,13 @@ const Pre = styled(View, {
   render: 'pre',
   tabIndex: 0,
   margin: 0,
-  paddingVertical: "3",
+  paddingVertical: '3',
   overflowX: 'auto',
   overflowY: 'auto',
-  outlineColor: "focus-visible:ring",
-  outlineStyle: "focus-visible:solid",
-  outlineWidth: "focus-visible:2px",
-  outlineOffset: "focus-visible:-2px"
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:-2px',
 })
 
 type FrameProps = GetProps<typeof CodeBlockFrame>

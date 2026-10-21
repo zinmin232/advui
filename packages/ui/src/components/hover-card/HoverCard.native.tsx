@@ -1,5 +1,10 @@
 import { type ReactNode, forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, type View, withStaticProperties } from 'tamagui/unstyled'
+import {
+  type GetProps,
+  type TamaguiElement,
+  type View,
+  withStaticProperties,
+} from 'tamagui/unstyled'
 import type { HoverCardProps, HoverCardTriggerProps } from './types'
 
 // iOS / Android: touch screens have no hover, and a press on the trigger

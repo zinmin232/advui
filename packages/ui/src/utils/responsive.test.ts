@@ -52,9 +52,11 @@ describe('mergeResponsiveStyles', () => {
   })
 
   it('lets a later plain value replace the property', () => {
-    expect(mergeResponsiveStyles({ width: { default: '100%', md: '50%' } }, { width: 10 })).toEqual({
-      width: 10,
-    })
+    expect(mergeResponsiveStyles({ width: { default: '100%', md: '50%' } }, { width: 10 })).toEqual(
+      {
+        width: 10,
+      },
+    )
   })
 
   it('treats a shadow offset as a value, not as conditions', () => {
@@ -68,7 +70,8 @@ describe('mergeResponsiveStyles', () => {
 
 describe('flatValue', () => {
   it('joins the parts that are set', () => {
-    expect(flatValue('transparent', false && 'hover:accent', 'press:accentHover')).toBe(
+    const hoverable = false
+    expect(flatValue('transparent', hoverable && 'hover:accent', 'press:accentHover')).toBe(
       'transparent press:accentHover',
     )
     expect(flatValue(undefined, false)).toBeUndefined()

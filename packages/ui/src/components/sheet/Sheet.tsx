@@ -244,15 +244,15 @@ function SheetScrollView(props: SheetScrollViewProps) {
 
 const Header = styled(View, {
   displayName: 'SheetHeader',
-  gap: "1-5",
-  paddingRight: "8"
+  gap: '1-5',
+  paddingRight: '8',
 })
 
 const Footer = styled(View, {
   displayName: 'SheetFooter',
-  flexDirection: "column-reverse sm:row",
-  gap: "2",
-  justifyContent: "sm:flex-end"
+  flexDirection: 'column-reverse sm:row',
+  gap: '2',
+  justifyContent: 'sm:flex-end',
 })
 
 /**

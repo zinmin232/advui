@@ -79,7 +79,7 @@ function ToastContent({ item, onClose }: { item: ToastT; onClose: () => void }) 
         {item.action ? (
           <View flexDirection="row" marginTop="2">
             <Toast.Action
-              backgroundColor={`primary hover:primaryHover press:${actionRipple.active ? "primary" : "primaryPress"}`}
+              backgroundColor={`primary hover:primaryHover press:${actionRipple.active ? 'primary' : 'primaryPress'}`}
               borderRadius="md"
               paddingHorizontal="3"
               height="8"
@@ -87,9 +87,9 @@ function ToastContent({ item, onClose }: { item: ToastT; onClose: () => void }) 
               cursor="pointer"
               {...actionRipple.props}
               onPress={(event) => {
-                            item.action?.onClick?.(event as never)
-                            onClose()
-                          }}
+                item.action?.onClick?.(event as never)
+                onClose()
+              }}
             >
               {actionRipple.element}
               <Text size="sm" color="primaryForeground" weight="medium">
@@ -121,8 +121,8 @@ function ToastContent({ item, onClose }: { item: ToastT; onClose: () => void }) 
           outlineStyle="focus-visible:solid"
           outlineWidth="focus-visible:2px"
           {...(isWeb
-                    ? { type: 'button', padding: 0, borderWidth: 0 }
-                    : { accessible: true, hitSlop: 10 })}
+            ? { type: 'button', padding: 0, borderWidth: 0 }
+            : { accessible: true, hitSlop: 10 })}
           {...closeRipple.props}
           onPress={onClose}
         >

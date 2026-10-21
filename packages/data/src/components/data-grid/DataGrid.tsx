@@ -77,28 +77,28 @@ const Cell = styled(View, {
   flexShrink: 0,
   borderRightWidth: 1,
   borderBottomWidth: 1,
-  borderColor: "border",
-  paddingHorizontal: "3",
+  borderColor: 'border',
+  paddingHorizontal: '3',
   outlineStyle: 'none',
   variants: {
     size: {
       sm: {
-        height: "8"
+        height: '8',
       },
       md: {
-        height: "10 touchable:11"
+        height: '10 touchable:11',
       },
     },
     header: {
       true: {
-        backgroundColor: "muted"
+        backgroundColor: 'muted',
       },
     },
     editing: {
       true: { paddingHorizontal: 0 },
     },
   } as const,
-  defaultVariants: { size: 'md' }
+  defaultVariants: { size: 'md' },
 })
 
 const valueOf = <T,>(column: DataGridColumn<T>, row: T): DataGridValue =>

@@ -18,31 +18,33 @@ const FieldBox = styled(XStack, {
   // Yoga starts wrapped lines at the top, so a line of text shorter than the
   // minimum height sat above the middle.
   alignContent: 'center',
-  gap: "1-5",
+  gap: '1-5',
   variants: {
     size: {
       sm: {
-        minHeight: "8",
-        paddingHorizontal: "2-5",
-        paddingVertical: "0-5"
+        minHeight: '8',
+        paddingHorizontal: '2-5',
+        paddingVertical: '0-5',
       },
       md: {
-        minHeight: "10",
-        paddingHorizontal: "3",
-        paddingVertical: "1"
+        minHeight: '10',
+        paddingHorizontal: '3',
+        paddingVertical: '1',
       },
       lg: {
-        minHeight: "12",
-        paddingHorizontal: "4",
-        paddingVertical: "1"
+        minHeight: '12',
+        paddingHorizontal: '4',
+        paddingVertical: '1',
       },
     },
-    invalid: { true: {
-      borderColor: "error"
-    } },
+    invalid: {
+      true: {
+        borderColor: 'error',
+      },
+    },
     disabled: { true: { opacity: 0.5 } },
   } as const,
-  defaultVariants: { size: 'md' }
+  defaultVariants: { size: 'md' },
 })
 
 function OptionRow({
@@ -77,8 +79,8 @@ function OptionRow({
       onPress={option.disabled ? undefined : onPress}
       accessibilityActions={[{ name: 'activate' }]}
       onAccessibilityAction={(event: { nativeEvent: { actionName: string } }) => {
-            if (!option.disabled && event.nativeEvent.actionName === 'activate') onPress()
-          }}
+        if (!option.disabled && event.nativeEvent.actionName === 'activate') onPress()
+      }}
     >
       {ripple.element}
       <View width="5" alignItems="center">
@@ -171,7 +173,7 @@ export const ComboboxField = forwardRef<TamaguiElement, ComboboxFieldProps>(
             flex={1}
             size="sm"
             numberOfLines={1}
-            color={summary ? "foreground" : "placeholder-color"}
+            color={summary ? 'foreground' : 'placeholder-color'}
           >
             {summary || (multiple && selected.length ? '' : placeholder)}
           </Text>
@@ -194,11 +196,12 @@ export const ComboboxField = forwardRef<TamaguiElement, ComboboxFieldProps>(
               transition={reducedMotion ? undefined : 'quick'}
             />
             <Sheet.Handle backgroundColor="borderStrong" />
-            <Sheet.Container
-              padding="4"
-              gap="3"
-            >
-              <Sheet.Background backgroundColor="popover" borderTopLeftRadius="dialog" borderTopRightRadius="dialog" />
+            <Sheet.Container padding="4" gap="3">
+              <Sheet.Background
+                backgroundColor="popover"
+                borderTopLeftRadius="dialog"
+                borderTopRightRadius="dialog"
+              />
               {/* The sheet stays mounted while closed; hide it from screen readers until it opens. */}
               <View
                 flex={1}

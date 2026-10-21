@@ -35,56 +35,56 @@ export const BadgeFrame = styled(View, {
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf: 'flex-start',
-  gap: "1",
+  gap: '1',
   borderWidth: 1,
   borderColor: 'transparent',
-  borderRadius: "full",
+  borderRadius: 'full',
   variants: {
     variant: {
       default: {
-        backgroundColor: "primary"
+        backgroundColor: 'primary',
       },
       secondary: {
-        backgroundColor: "secondary"
+        backgroundColor: 'secondary',
       },
       outline: {
         backgroundColor: 'transparent',
-        borderColor: "border"
+        borderColor: 'border',
       },
       destructive: {
-        backgroundColor: "destructive"
+        backgroundColor: 'destructive',
       },
       success: {
-        backgroundColor: "successSoft",
-        borderColor: "successBorder"
+        backgroundColor: 'successSoft',
+        borderColor: 'successBorder',
       },
       warning: {
-        backgroundColor: "warningSoft",
-        borderColor: "warningBorder"
+        backgroundColor: 'warningSoft',
+        borderColor: 'warningBorder',
       },
       info: {
-        backgroundColor: "infoSoft",
-        borderColor: "infoBorder"
+        backgroundColor: 'infoSoft',
+        borderColor: 'infoBorder',
       },
     },
     size: {
       sm: {
-        paddingHorizontal: "1-5",
-        paddingVertical: 0
+        paddingHorizontal: '1-5',
+        paddingVertical: 0,
       },
       md: {
-        paddingHorizontal: "2-5",
-        paddingVertical: "0-5"
+        paddingHorizontal: '2-5',
+        paddingVertical: '0-5',
       },
     },
   } as const,
-  defaultVariants: { variant: 'default', size: 'md' }
+  defaultVariants: { variant: 'default', size: 'md' },
 })
 
 export const BadgeText = styled(Text, {
   displayName: 'BadgeText',
   context: BadgeContext,
-  fontFamily: "body",
+  fontFamily: 'body',
   fontWeight: '500',
   numberOfLines: 1,
   variants: {
@@ -93,15 +93,15 @@ export const BadgeText = styled(Text, {
     ) as { [K in BadgeVariant]: { color: (typeof foreground)[K] } },
     size: {
       sm: {
-        fontSize: "1",
-        lineHeight: "1"
+        fontSize: '1',
+        lineHeight: '1',
       },
       md: {
-        fontSize: "1",
-        lineHeight: "1"
+        fontSize: '1',
+        lineHeight: '1',
       },
     },
-  } as const
+  } as const,
 })
 
 export interface BadgeProps extends Omit<GetProps<typeof BadgeFrame>, 'variant' | 'size'> {

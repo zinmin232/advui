@@ -165,8 +165,8 @@ export const Slider = forwardRef<TamaguiElement, SliderProps>(function Slider(sl
             backgroundColor="primary"
             borderRadius="full"
             {...(vertical
-                        ? { left: 0, right: 0, bottom: `${low}%`, top: `${100 - high}%` }
-                        : { top: 0, bottom: 0, left: `${low}%`, right: `${100 - high}%` })}
+              ? { left: 0, right: 0, bottom: `${low}%`, top: `${100 - high}%` }
+              : { top: 0, bottom: 0, left: `${low}%`, right: `${100 - high}%` })}
           />
         </View>
         {values.map((value, index) => (
@@ -188,7 +188,7 @@ export const Slider = forwardRef<TamaguiElement, SliderProps>(function Slider(sl
             borderRadius="full"
             backgroundColor="background"
             borderWidth={2}
-            borderColor={invalid ? "error" : "primary"}
+            borderColor={invalid ? 'error' : 'primary'}
             {...shadows.sm}
             {...((vertical ? { bottom: at(value) } : { left: at(value) }) as object)}
           />
@@ -225,7 +225,7 @@ export const Slider = forwardRef<TamaguiElement, SliderProps>(function Slider(sl
       </TamaguiSlider.Track>
       {values.map((value, index) => (
         <TamaguiSlider.Thumb
-                  // Thumbs keep their identity while dragging past each other.
+          // Thumbs keep their identity while dragging past each other.
           key={index}
           index={index}
           position="absolute"
@@ -234,7 +234,7 @@ export const Slider = forwardRef<TamaguiElement, SliderProps>(function Slider(sl
           height={thumb}
           backgroundColor="background"
           borderWidth={2}
-          borderColor={invalid ? "error" : "primary"}
+          borderColor={invalid ? 'error' : 'primary'}
           cursor={disabled ? 'not-allowed' : 'grab'}
           scale="press:1.1"
           outlineColor="focus-visible:ring"
@@ -243,24 +243,24 @@ export const Slider = forwardRef<TamaguiElement, SliderProps>(function Slider(sl
           outlineOffset="focus-visible:2px"
           {...shadows.sm}
           {...(isWeb
-                    ? {
-                        'aria-labelledby': values.length === 1 ? ariaLabelledBy : undefined,
-                        'aria-describedby': describedBy,
-                        'aria-invalid': invalid || undefined,
-                      }
-                    : { accessibilityHint })}
+            ? {
+                'aria-labelledby': values.length === 1 ? ariaLabelledBy : undefined,
+                'aria-describedby': describedBy,
+                'aria-invalid': invalid || undefined,
+              }
+            : { accessibilityHint })}
           {...(!isWeb && {
-                    // Screen readers adjust sliders with swipe gestures (increment / decrement).
-                    accessible: true,
-                    accessibilityActions: [{ name: 'increment' }, { name: 'decrement' }],
-                    onAccessibilityAction: (event: { nativeEvent: { actionName: string } }) => {
-                      if (disabled) return
-                      if (event.nativeEvent.actionName === 'increment') stepThumb(index, 1)
-                      if (event.nativeEvent.actionName === 'decrement') stepThumb(index, -1)
-                    },
-                    // Thumbs are smaller than a 44pt touch target.
-                    hitSlop: Math.max(0, (44 - thumb) / 2),
-                  })}
+            // Screen readers adjust sliders with swipe gestures (increment / decrement).
+            accessible: true,
+            accessibilityActions: [{ name: 'increment' }, { name: 'decrement' }],
+            onAccessibilityAction: (event: { nativeEvent: { actionName: string } }) => {
+              if (disabled) return
+              if (event.nativeEvent.actionName === 'increment') stepThumb(index, 1)
+              if (event.nativeEvent.actionName === 'decrement') stepThumb(index, -1)
+            },
+            // Thumbs are smaller than a 44pt touch target.
+            hitSlop: Math.max(0, (44 - thumb) / 2),
+          })}
           circular
           aria-label={thumbLabel(index)}
           aria-valuetext={getValueText?.(value)}

@@ -61,40 +61,42 @@ export default function ThemeScreen() {
               <Button
                 key={name}
                 size="sm"
-                borderColor={preset === name ? "ring" : "input"}
+                borderColor={preset === name ? 'ring' : 'input'}
                 borderWidth={preset === name ? 2 : 1}
                 variant="outline"
                 role="radio"
                 aria-checked={preset === name}
                 onPress={() => applyPreset(name)}
                 icon={
-                                <View
-                                  width="3-5"
-                                  height="3-5"
-                                  borderRadius="full"
-                                  backgroundColor={ createThemeColors(themePresets[name].colors).light.primary as never }
-                                />
-                              }
+                  <View
+                    width="3-5"
+                    height="3-5"
+                    borderRadius="full"
+                    backgroundColor={
+                      createThemeColors(themePresets[name].colors).light.primary as never
+                    }
+                  />
+                }
               >
                 {themePresets[name].label}
               </Button>
             ))}
             <Button
               size="sm"
-              borderColor={preset === 'material' ? "ring" : "input"}
+              borderColor={preset === 'material' ? 'ring' : 'input'}
               borderWidth={preset === 'material' ? 2 : 1}
               variant="outline"
               role="radio"
               aria-checked={preset === 'material'}
               onPress={() => applyPreset('material')}
               icon={
-                            <View
-                              width="3-5"
-                              height="3-5"
-                              borderRadius="full"
-                              backgroundColor={MATERIAL_BASELINE_SEED as never}
-                            />
-                          }
+                <View
+                  width="3-5"
+                  height="3-5"
+                  borderRadius="full"
+                  backgroundColor={MATERIAL_BASELINE_SEED as never}
+                />
+              }
             >
               Material 3
             </Button>

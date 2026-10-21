@@ -22,43 +22,43 @@ export const TagsInputFrame = styled(XStack, {
   ...fieldBoxStyle,
   alignItems: 'center',
   flexWrap: 'wrap',
-  gap: "1-5",
+  gap: '1-5',
   cursor: 'text',
   variants: {
     // The row of tags and the text box fits inside the field's height, so a
     // field with one row is as tall as an Input of the same size.
     size: {
       sm: {
-        minHeight: "8",
-        paddingHorizontal: "1",
-        paddingVertical: "0-5"
+        minHeight: '8',
+        paddingHorizontal: '1',
+        paddingVertical: '0-5',
       },
       md: {
-        minHeight: "10",
-        paddingHorizontal: "1-5",
-        paddingVertical: "1"
+        minHeight: '10',
+        paddingHorizontal: '1-5',
+        paddingVertical: '1',
       },
       lg: {
-        minHeight: "12",
-        paddingHorizontal: "2",
-        paddingVertical: "1"
+        minHeight: '12',
+        paddingHorizontal: '2',
+        paddingVertical: '1',
       },
     },
     focused: {
       true: {
-        borderColor: "ring hover:ring"
+        borderColor: 'ring hover:ring',
       },
     },
     invalid: {
       true: {
-        borderColor: "error hover:error"
+        borderColor: 'error hover:error',
       },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed' },
     },
   } as const,
-  defaultVariants: { size: 'md' }
+  defaultVariants: { size: 'md' },
 })
 
 const rowHeights = { sm: '6', md: '7', lg: '8' } as const

@@ -15,37 +15,38 @@ const TriggerFrame = styled(View, {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  gap: "2",
+  gap: '2',
   cursor: 'pointer',
   variants: {
     size: {
       sm: {
-        height: "8",
-        paddingHorizontal: "2-5"
+        height: '8',
+        paddingHorizontal: '2-5',
       },
       md: {
-        height: "10",
-        paddingHorizontal: "3"
+        height: '10',
+        paddingHorizontal: '3',
       },
       lg: {
-        height: "12",
-        paddingHorizontal: "4"
+        height: '12',
+        paddingHorizontal: '4',
       },
     },
     invalid: {
       true: {
-        borderColor: "error hover:error"
+        borderColor: 'error hover:error',
       },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: 'none' },
     },
   } as const,
-  defaultVariants: { size: 'md' }
+  defaultVariants: { size: 'md' },
 })
 
 export interface PickerTriggerProps
-  extends Omit<GetProps<typeof TriggerFrame>, 'children' | 'disabled' | 'invalid'>,
+  extends
+    Omit<GetProps<typeof TriggerFrame>, 'children' | 'disabled' | 'invalid'>,
     ControlStateProps {
   /** The formatted value, or null to show the placeholder. */
   valueText: string | null
@@ -80,7 +81,7 @@ export const PickerTrigger = forwardRef<TamaguiElement, PickerTriggerProps>(
         size="sm"
         numberOfLines={1}
         flexShrink={1}
-        color={valueText ? "foreground" : "mutedForeground"}
+        color={valueText ? 'foreground' : 'mutedForeground'}
       >
         {valueText ?? placeholder}
       </Text>

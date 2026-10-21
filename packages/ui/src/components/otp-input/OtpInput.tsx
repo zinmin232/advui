@@ -24,26 +24,26 @@ const Slot = styled(View, {
   displayName: 'OtpInputSlot',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: "background",
+  backgroundColor: 'background',
   borderWidth: 1,
-  borderColor: "input",
-  borderRadius: "md",
+  borderColor: 'input',
+  borderRadius: 'md',
   variants: {
     active: {
       true: {
-        borderColor: "ring",
-        outlineColor: "ring",
+        borderColor: 'ring',
+        outlineColor: 'ring',
         outlineStyle: 'solid',
-        outlineWidth: 1
+        outlineWidth: 1,
       },
     },
     invalid: {
       true: {
-        borderColor: "error",
-        outlineColor: "error"
+        borderColor: 'error',
+        outlineColor: 'error',
       },
     },
-  } as const
+  } as const,
 })
 
 // The real field lies over the slots: one text box, so paste, SMS autofill and
@@ -65,9 +65,9 @@ const HiddenField = styled(TamaguiInput, {
   // Android leaves a view with alpha 0 out of the accessibility tree, so
   // TalkBack could not reach the field.
   opacity: isWeb ? 0 : 0.01,
-  fontSize: "1",
+  fontSize: '1',
   cursor: 'text',
-  outlineWidth: 0
+  outlineWidth: 0,
 })
 
 const oneTimeCode = isWeb || Platform.OS === 'ios' ? 'one-time-code' : 'sms-otp'

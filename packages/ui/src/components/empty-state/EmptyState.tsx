@@ -9,19 +9,19 @@ const EmptyStateFrame = styled(View, {
   displayName: 'EmptyState',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: "3",
-  paddingVertical: "10",
-  paddingHorizontal: "6",
+  gap: '3',
+  paddingVertical: '10',
+  paddingHorizontal: '6',
   variants: {
     bordered: {
       true: {
         borderWidth: 1,
         borderStyle: 'dashed',
-        borderColor: "border",
-        borderRadius: "lg"
+        borderColor: 'border',
+        borderRadius: 'lg',
       },
     },
-  } as const
+  } as const,
 })
 
 const tones = {

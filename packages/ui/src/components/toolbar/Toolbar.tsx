@@ -28,24 +28,24 @@ export type ToolbarRole = 'group' | 'toolbar'
 
 const ToolbarFrame = styled(Stack, {
   displayName: 'Toolbar',
-  borderRadius: "lg",
+  borderRadius: 'lg',
   variants: {
     variant: {
       default: {
-        backgroundColor: "background"
+        backgroundColor: 'background',
       },
       outline: {
-        backgroundColor: "background",
+        backgroundColor: 'background',
         borderWidth: 1,
-        borderColor: "border"
+        borderColor: 'border',
       },
       filled: {
-        backgroundColor: "muted"
+        backgroundColor: 'muted',
       },
       // No fill, border or padding: for a bar inside a card or panel.
       ghost: {},
     },
-  } as const
+  } as const,
 })
 
 // `min` is a control's height plus the padding on both sides, so a bar that

@@ -49,8 +49,10 @@ const defaultLabels: DataTableLabels = {
 
 // `page` and `columns` are also CSS style props in Tamagui 3; here they are
 // the current page and the column definitions.
-export interface DataTableProps<T>
-  extends Omit<TableProps, 'children' | 'onSort' | 'caption' | 'page' | 'columns'> {
+export interface DataTableProps<T> extends Omit<
+  TableProps,
+  'children' | 'onSort' | 'caption' | 'page' | 'columns'
+> {
   data: T[]
   columns: DataTableColumn<T>[]
   /** Stable id of a row. Default: `row.id`, then the index. */
@@ -233,11 +235,7 @@ export function DataTable<T>({
   const placeholderRows = Math.min(pageSize ?? 5, 5)
 
   return (
-    <View
-      gap="3"
-      width="100%"
-      {...(isWeb && { 'aria-busy': loading || undefined })}
-    >
+    <View gap="3" width="100%" {...(isWeb && { 'aria-busy': loading || undefined })}>
       {searchable || toolbar ? (
         <XStack gap="2" alignItems="center" flexWrap="wrap">
           {searchable ? (

@@ -35,8 +35,8 @@ export const textWeights = {
 /** Body text. Sizes follow the type scale; `tone` maps to semantic theme colors. */
 export const Text = styled(TamaguiText, {
   displayName: 'Text',
-  fontFamily: "body",
-  color: "foreground",
+  fontFamily: 'body',
+  color: 'foreground',
   variants: {
     size: textSizes,
     weight: textWeights,
@@ -46,13 +46,13 @@ export const Text = styled(TamaguiText, {
     },
     mono: {
       true: {
-        fontFamily: "mono"
+        fontFamily: 'mono',
       },
     },
   } as const,
   defaultVariants: {
     size: 'base',
-  }
+  },
 })
 
 export type TextProps = GetProps<typeof Text>

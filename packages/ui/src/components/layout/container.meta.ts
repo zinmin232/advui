@@ -69,11 +69,7 @@ export default defineMeta({
         ['`.container`', '`<Container>`', 'Up to 1280px (`xl`), centered.'],
         ['`.container-lg`', '`<Container size="lg">`', 'Also `sm`, `md`, `xl` and `xxl`.'],
         ['`.container-fluid`', '`<Container size="full">`', 'There is no separate `fluid` prop.'],
-        [
-          '`.px-0` on a container',
-          '`gutter="0"`',
-          'Or a map, such as `{ base: "0", md: "6" }`.',
-        ],
+        ['`.px-0` on a container', '`gutter="0"`', 'Or a map, such as `{ base: "0", md: "6" }`.'],
       ],
     },
   ],

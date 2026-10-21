@@ -191,7 +191,12 @@ describe('ColorPicker', () => {
         inline
         aria-label="Label color"
         defaultValue="#22C55E"
-        swatches={[{ value: '#ef4444', label: 'Red' }, { value: '#22c55e', label: 'Green' }, '#3b82f6', 'nope']}
+        swatches={[
+          { value: '#ef4444', label: 'Red' },
+          { value: '#22c55e', label: 'Green' },
+          '#3b82f6',
+          'nope',
+        ]}
         onValueChange={onValueChange}
       />,
     )
@@ -250,7 +255,14 @@ describe('ColorPicker', () => {
     const onValueChange = vi.fn()
     const { user, container } = renderWithProvider(
       <form>
-        <ColorPicker inline disabled aria-label="Tint" name="tint" defaultValue="#ff0000" onValueChange={onValueChange} />
+        <ColorPicker
+          inline
+          disabled
+          aria-label="Tint"
+          name="tint"
+          defaultValue="#ff0000"
+          onValueChange={onValueChange}
+        />
         <ColorPicker aria-label="Accent" name="accent" defaultValue="#00ff00" />
       </form>,
     )

@@ -38,7 +38,7 @@ const Trigger = styled(TamaguiSelect.Trigger, {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  gap: "2",
+  gap: '2',
   cursor: 'pointer',
   // The size variants set the height.
   minHeight: 0,
@@ -46,47 +46,47 @@ const Trigger = styled(TamaguiSelect.Trigger, {
   variants: {
     size: {
       sm: {
-        height: "8",
-        paddingHorizontal: "2-5"
+        height: '8',
+        paddingHorizontal: '2-5',
       },
       md: {
-        height: "10",
-        paddingHorizontal: "3"
+        height: '10',
+        paddingHorizontal: '3',
       },
       lg: {
-        height: "12",
-        paddingHorizontal: "4"
+        height: '12',
+        paddingHorizontal: '4',
       },
     },
     invalid: {
       true: {
-        borderColor: "error hover:error"
+        borderColor: 'error hover:error',
       },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: 'none' },
     },
-  } as const
+  } as const,
 })
 
 const ValueText = styled(TamaguiSelect.Value, {
   displayName: 'SelectValue',
-  fontFamily: "body",
-  fontSize: "2",
-  color: "foreground",
+  fontFamily: 'body',
+  fontSize: '2',
+  color: 'foreground',
   numberOfLines: 1,
-  flexShrink: 1
+  flexShrink: 1,
 })
 
 const Viewport = styled(TamaguiSelect.Viewport, {
   displayName: 'SelectViewport',
-  backgroundColor: "popover",
+  backgroundColor: 'popover',
   borderWidth: 1,
-  borderColor: "border",
-  borderRadius: "lg",
-  padding: "1",
-  minWidth: "48",
-  ...shadows.md
+  borderColor: 'border',
+  borderRadius: 'lg',
+  padding: '1',
+  minWidth: '48',
+  ...shadows.md,
 })
 
 const ItemFrame = styled(TamaguiSelect.Item, {
@@ -94,38 +94,39 @@ const ItemFrame = styled(TamaguiSelect.Item, {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  gap: "2",
-  minHeight: "9 touchable:11",
-  paddingHorizontal: "2-5",
-  borderRadius: "md",
+  gap: '2',
+  minHeight: '9 touchable:11',
+  paddingHorizontal: '2-5',
+  borderRadius: 'md',
   cursor: 'pointer',
-  backgroundColor: "hover:accent press:accentHover focus:accent",
+  backgroundColor: 'hover:accent press:accentHover focus:accent',
   variants: {
     disabled: {
       true: { opacity: 0.5, pointerEvents: 'none' },
     },
-  } as const
+  } as const,
 })
 
 const ItemText = styled(TamaguiSelect.ItemText, {
   displayName: 'SelectItemText',
-  fontFamily: "body",
-  fontSize: "2",
-  color: "popoverForeground"
+  fontFamily: 'body',
+  fontSize: '2',
+  color: 'popoverForeground',
 })
 
 const GroupLabel = styled(TamaguiSelect.Label, {
   displayName: 'SelectLabel',
-  paddingHorizontal: "2-5",
-  paddingVertical: "1-5",
-  fontFamily: "body",
-  fontSize: "1",
+  paddingHorizontal: '2-5',
+  paddingVertical: '1-5',
+  fontFamily: 'body',
+  fontSize: '1',
   fontWeight: '600',
-  color: "mutedForeground"
+  color: 'mutedForeground',
 })
 
 export interface SelectItemProps
-  extends Omit<GetProps<typeof ItemFrame>, 'value' | 'disabled'>,
+  extends
+    Omit<GetProps<typeof ItemFrame>, 'value' | 'disabled'>,
     Pick<ControlStateProps, 'disabled'> {
   value: string
   children: ReactNode
@@ -242,23 +243,23 @@ const StaticTrigger = styled(View, {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  gap: "2",
+  gap: '2',
   variants: {
     size: {
       sm: {
-        height: "8",
-        paddingHorizontal: "2-5"
+        height: '8',
+        paddingHorizontal: '2-5',
       },
       md: {
-        height: "10",
-        paddingHorizontal: "3"
+        height: '10',
+        paddingHorizontal: '3',
       },
       lg: {
-        height: "12",
-        paddingHorizontal: "4"
+        height: '12',
+        paddingHorizontal: '4',
       },
     },
-  } as const
+  } as const,
 })
 
 export interface SelectProps {
@@ -353,7 +354,7 @@ function SelectRoot(selectProps: SelectProps) {
         <Text
           fontFamily="body"
           fontSize="2"
-          color={label ? "foreground" : "placeholder-color"}
+          color={label ? 'foreground' : 'placeholder-color'}
           numberOfLines={1}
         >
           {label ?? placeholder}
@@ -426,7 +427,11 @@ function SelectRoot(selectProps: SelectProps) {
             paddingBottom="6"
             maxHeight={sheetMaxHeight}
           >
-            <Sheet.Background backgroundColor="popover" borderTopLeftRadius="dialog" borderTopRightRadius="dialog" />
+            <Sheet.Background
+              backgroundColor="popover"
+              borderTopLeftRadius="dialog"
+              borderTopRightRadius="dialog"
+            />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
@@ -458,8 +463,8 @@ export const Select = withStaticProperties(SelectRoot, {
   Separator: styled(View, {
     displayName: 'SelectSeparator',
     height: 1,
-    backgroundColor: "border",
-    marginVertical: "1"
+    backgroundColor: 'border',
+    marginVertical: '1',
   }),
   Text,
 })

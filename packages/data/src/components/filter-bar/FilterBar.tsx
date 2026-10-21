@@ -98,24 +98,24 @@ const defaultLabels: FilterBarLabels = {
 
 const FilterBarFrame = styled(Stack, {
   displayName: 'FilterBar',
-  borderRadius: "lg",
+  borderRadius: 'lg',
   variants: {
     variant: {
       default: {
-        backgroundColor: "background"
+        backgroundColor: 'background',
       },
       outline: {
-        backgroundColor: "background",
+        backgroundColor: 'background',
         borderWidth: 1,
-        borderColor: "border"
+        borderColor: 'border',
       },
       filled: {
-        backgroundColor: "muted"
+        backgroundColor: 'muted',
       },
       // No fill, border or padding: for a bar inside a card or above a table.
       ghost: {},
     },
-  } as const
+  } as const,
 })
 
 // `field` and `wide` are the widths of controls in a row (multi-select and
@@ -139,7 +139,8 @@ function controlBox(layout: FilterBarLayout, width: Sizes['field'] | Sizes['wide
 /** The search field takes the free space of the row. */
 function searchBox(layout: FilterBarLayout, spacing: Sizes): ViewProps {
   if (layout === 'vertical') return { width: '100%' }
-  if (layout === 'responsive') return { width: { default: '100%', md: spacing.wide }, flexGrow: { md: 1 } } as ViewProps
+  if (layout === 'responsive')
+    return { width: { default: '100%', md: spacing.wide }, flexGrow: { md: 1 } } as ViewProps
   return { width: spacing.wide, flexGrow: 1, maxWidth: '100%' }
 }
 

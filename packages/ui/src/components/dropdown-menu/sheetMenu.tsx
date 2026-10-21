@@ -66,13 +66,12 @@ function Content({ children }: DropdownMenuContentProps) {
         transition={reducedMotion ? undefined : 'quick'}
       />
       <Sheet.Handle backgroundColor="borderStrong" />
-      <Sheet.Container
-        paddingHorizontal="2"
-        paddingTop="2"
-        paddingBottom="8"
-        maxHeight={maxHeight}
-      >
-        <Sheet.Background backgroundColor="popover" borderTopLeftRadius="dialog" borderTopRightRadius="dialog" />
+      <Sheet.Container paddingHorizontal="2" paddingTop="2" paddingBottom="8" maxHeight={maxHeight}>
+        <Sheet.Background
+          backgroundColor="popover"
+          borderTopLeftRadius="dialog"
+          borderTopRightRadius="dialog"
+        />
         <Sheet.ScrollView>
           {/* The sheet renders in a portal, which does not carry React context. */}
           <MenuContext.Provider value={menu}>
@@ -120,8 +119,8 @@ function Row({
       onPress={disabled ? undefined : onPress}
       accessibilityActions={[{ name: 'activate' }]}
       onAccessibilityAction={(event: { nativeEvent: { actionName: string } }) => {
-            if (!disabled && event.nativeEvent.actionName === 'activate') onPress()
-          }}
+        if (!disabled && event.nativeEvent.actionName === 'activate') onPress()
+      }}
     >
       {ripple.element}
       {children}
@@ -131,7 +130,7 @@ function Row({
 
 function Title({ children, destructive }: { children: ReactNode; destructive?: boolean }) {
   return (
-    <Text flex={1} color={destructive ? "errorSoftForeground" : "popoverForeground"}>
+    <Text flex={1} color={destructive ? 'errorSoftForeground' : 'popoverForeground'}>
       {children}
     </Text>
   )

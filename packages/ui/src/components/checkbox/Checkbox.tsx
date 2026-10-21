@@ -30,14 +30,14 @@ const BaseCheckbox = styled(TamaguiCheckbox, {
   variants: {
     size: {
       sm: {
-        width: "4",
-        height: "4",
-        borderRadius: "xs"
+        width: '4',
+        height: '4',
+        borderRadius: 'xs',
       },
       md: {
-        width: "5",
-        height: "5",
-        borderRadius: "sm"
+        width: '5',
+        height: '5',
+        borderRadius: 'sm',
       },
     },
     disabled: {

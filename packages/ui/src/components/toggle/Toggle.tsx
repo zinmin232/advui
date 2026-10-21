@@ -17,78 +17,78 @@ export const ToggleFrame = styled(View, {
   alignItems: 'center',
   justifyContent: 'center',
   flexShrink: 0,
-  gap: "2",
+  gap: '2',
   borderWidth: 1,
   borderColor: 'transparent',
-  borderRadius: "button",
-  backgroundColor: "transparent hover:accent press:accentHover",
+  borderRadius: 'button',
+  backgroundColor: 'transparent hover:accent press:accentHover',
   cursor: 'pointer',
   userSelect: 'none',
   transition: 'quick',
-  outlineColor: "focus-visible:ring",
-  outlineStyle: "focus-visible:solid",
-  outlineWidth: "focus-visible:2px",
-  outlineOffset: "focus-visible:2px",
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
   variants: {
     variant: {
       default: {},
       outline: {
-        borderColor: "input"
+        borderColor: 'input',
       },
     },
     size: {
       sm: {
-        height: "8",
-        minWidth: "8",
-        paddingHorizontal: "2",
-        gap: "1-5"
+        height: '8',
+        minWidth: '8',
+        paddingHorizontal: '2',
+        gap: '1-5',
       },
       md: {
-        height: "10",
-        minWidth: "10",
-        paddingHorizontal: "2-5"
+        height: '10',
+        minWidth: '10',
+        paddingHorizontal: '2-5',
       },
       lg: {
-        height: "12",
-        minWidth: "12",
-        paddingHorizontal: "3"
+        height: '12',
+        minWidth: '12',
+        paddingHorizontal: '3',
       },
     },
     // A variant rather than activeStyle: Tamagui does not apply activeStyle on native.
     on: {
       true: {
-        backgroundColor: "primarySoft hover:primarySoftHover press:primarySoftHover"
+        backgroundColor: 'primarySoft hover:primarySoftHover press:primarySoftHover',
       },
     },
     disabled: {
       true: { opacity: 0.5, pointerEvents: 'none', cursor: 'default' },
     },
   } as const,
-  defaultVariants: { variant: 'default', size: 'md' }
+  defaultVariants: { variant: 'default', size: 'md' },
 })
 
 export const ToggleText = styled(Text, {
   displayName: 'ToggleText',
-  fontFamily: "body",
+  fontFamily: 'body',
   fontWeight: '500',
   userSelect: 'none',
   numberOfLines: 1,
   variants: {
     size: {
       sm: {
-        fontSize: "2",
-        lineHeight: "2"
+        fontSize: '2',
+        lineHeight: '2',
       },
       md: {
-        fontSize: "2",
-        lineHeight: "2"
+        fontSize: '2',
+        lineHeight: '2',
       },
       lg: {
-        fontSize: "3",
-        lineHeight: "3"
+        fontSize: '3',
+        lineHeight: '3',
       },
     },
-  } as const
+  } as const,
 })
 
 const iconSizes: Record<ToggleSize, number> = { sm: 14, md: 16, lg: 18 }

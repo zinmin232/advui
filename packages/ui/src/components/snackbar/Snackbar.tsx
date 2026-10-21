@@ -87,7 +87,7 @@ export function Snackbar({
             maxWidth="144"
             minHeight="12"
             paddingLeft="4"
-            paddingRight={action || closable ? "2" : "4"}
+            paddingRight={action || closable ? '2' : '4'}
             paddingVertical="2"
             borderRadius="sm"
             backgroundColor="foreground"
@@ -97,11 +97,11 @@ export function Snackbar({
             y="0 enter:12px"
             transition={reducedMotion ? undefined : 'quick'}
             {...(isWeb && {
-                        onMouseEnter: () => setPaused(true),
-                        onMouseLeave: () => setPaused(false),
-                        onFocus: () => setPaused(true),
-                        onBlur: () => setPaused(false),
-                      })}
+              onMouseEnter: () => setPaused(true),
+              onMouseLeave: () => setPaused(false),
+              onFocus: () => setPaused(true),
+              onBlur: () => setPaused(false),
+            })}
           >
             <Text
               flex={1}
@@ -127,13 +127,13 @@ export function Snackbar({
                 outlineStyle="focus-visible:solid"
                 outlineWidth="focus-visible:2px"
                 {...(isWeb
-                                ? { type: 'button', borderWidth: 0, backgroundColor: 'transparent' }
-                                : { accessible: true, hitSlop: 6 })}
+                  ? { type: 'button', borderWidth: 0, backgroundColor: 'transparent' }
+                  : { accessible: true, hitSlop: 6 })}
                 {...actionRipple.props}
                 onPress={() => {
-                                action.onPress()
-                                onOpenChange(false)
-                              }}
+                  action.onPress()
+                  onOpenChange(false)
+                }}
               >
                 {actionRipple.element}
                 <Text
@@ -163,8 +163,8 @@ export function Snackbar({
                 outlineStyle="focus-visible:solid"
                 outlineWidth="focus-visible:2px"
                 {...(isWeb
-                                ? { type: 'button', borderWidth: 0, backgroundColor: 'transparent' }
-                                : { accessible: true, hitSlop: 6 })}
+                  ? { type: 'button', borderWidth: 0, backgroundColor: 'transparent' }
+                  : { accessible: true, hitSlop: 6 })}
                 {...closeRipple.props}
                 onPress={() => onOpenChange(false)}
               >

@@ -4,18 +4,18 @@ import { type GetProps, Text as TamaguiText, styled } from 'tamagui/unstyled'
 export const Kbd = styled(TamaguiText, {
   displayName: 'Kbd',
   render: 'kbd',
-  fontFamily: "mono",
-  fontSize: "1",
-  lineHeight: "1",
-  color: "mutedForeground",
-  backgroundColor: "muted",
+  fontFamily: 'mono',
+  fontSize: '1',
+  lineHeight: '1',
+  color: 'mutedForeground',
+  backgroundColor: 'muted',
   borderWidth: 1,
-  borderColor: "border",
+  borderColor: 'border',
   borderBottomWidth: 2,
-  borderRadius: "sm",
-  paddingHorizontal: "1-5",
-  paddingVertical: "0-5",
-  userSelect: 'none'
+  borderRadius: 'sm',
+  paddingHorizontal: '1-5',
+  paddingVertical: '0-5',
+  userSelect: 'none',
 })
 
 export type KbdProps = GetProps<typeof Kbd>

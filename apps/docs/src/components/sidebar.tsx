@@ -165,7 +165,7 @@ function NavLink({
         paddingRight="2"
         paddingVertical="1-5"
         borderRadius="md"
-        backgroundColor={`${active ? "primarySoft" : emphasis ? "muted" : "transparent"} hover:${active ? "primarySoftHover" : "accent"}`}
+        backgroundColor={`${active ? 'primarySoft' : emphasis ? 'muted' : 'transparent'} hover:${active ? 'primarySoftHover' : 'accent'}`}
       >
         {active ? (
           // Accent bar drawn over the section's guide line.
@@ -184,7 +184,7 @@ function NavLink({
         <Text
           size="sm"
           flex={1}
-          color={active ? "primarySoftForeground" : item.planned ? "mutedForeground" : "foreground"}
+          color={active ? 'primarySoftForeground' : item.planned ? 'mutedForeground' : 'foreground'}
           weight={active || emphasis ? 'semibold' : 'normal'}
         >
           {item.title}

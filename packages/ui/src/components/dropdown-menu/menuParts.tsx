@@ -106,23 +106,11 @@ export function createMenuParts(Primitive: typeof Menu) {
             {icon}
           </IconDefaults>
         ) : null}
-        <Primitive.ItemTitle
-          flex={1}
-          fontFamily="body"
-          fontSize="2"
-          lineHeight="2"
-          color={color}
-        >
+        <Primitive.ItemTitle flex={1} fontFamily="body" fontSize="2" lineHeight="2" color={color}>
           {children}
         </Primitive.ItemTitle>
         {shortcut ? (
-          <Text
-            size="xs"
-            letterSpacing={0.5}
-            display="touchable:none"
-            tone="muted"
-            aria-hidden
-          >
+          <Text size="xs" letterSpacing={0.5} display="touchable:none" tone="muted" aria-hidden>
             {shortcut}
           </Text>
         ) : null}
@@ -227,12 +215,7 @@ export function createMenuParts(Primitive: typeof Menu) {
           shortcut={shortcut}
           leading={
             <IndicatorSlot>
-              <View
-                width="2"
-                height="2"
-                borderRadius="full"
-                backgroundColor="popoverForeground"
-              />
+              <View width="2" height="2" borderRadius="full" backgroundColor="popoverForeground" />
             </IndicatorSlot>
           }
         >

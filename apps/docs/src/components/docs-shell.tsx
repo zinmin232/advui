@@ -77,7 +77,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
           <Text
             size="sm"
             paddingLeft={item.level === 3 ? '3' : 0}
-            color={`${active === item.id ? "primaryText" : "mutedForeground"} hover:foreground`}
+            color={`${active === item.id ? 'primaryText' : 'mutedForeground'} hover:foreground`}
           >
             {item.title}
           </Text>

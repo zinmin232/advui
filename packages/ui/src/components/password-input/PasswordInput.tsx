@@ -66,7 +66,11 @@ export const PasswordInput = forwardRef<TamaguiElement, PasswordInputProps>(
               : // React Native has no aria-pressed; a toggle button reports "checked".
                 // `role` wins over `accessibilityRole`, so Button's own role is cleared
                 // (with null: Tamagui 3 keeps a styled default over undefined).
-                { role: null as never, accessibilityRole: 'togglebutton', 'aria-checked': visible })}
+                {
+                  role: null as never,
+                  accessibilityRole: 'togglebutton',
+                  'aria-checked': visible,
+                })}
             disabled={disabled}
             onPress={() => setVisible(!visible)}
           />

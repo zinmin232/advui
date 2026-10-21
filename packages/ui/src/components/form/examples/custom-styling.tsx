@@ -14,11 +14,11 @@ export default function FormCustomStyling() {
       backgroundColor="card"
       gap="5"
       footer={
-            <>
-              <Button variant="link">Forgot password?</Button>
-              <Form.Submit>Sign in</Form.Submit>
-            </>
-          }
+        <>
+          <Button variant="link">Forgot password?</Button>
+          <Form.Submit>Sign in</Form.Submit>
+        </>
+      }
     >
       <Field label="Email">
         <Input placeholder="you@example.org" inputMode="email" autoComplete="email" />

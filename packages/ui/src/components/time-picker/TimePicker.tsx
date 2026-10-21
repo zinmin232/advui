@@ -7,7 +7,7 @@ const TimePickerFrame = styled(XStack, {
   displayName: 'TimePicker',
   role: 'group',
   alignItems: 'center',
-  gap: "2"
+  gap: '2',
 })
 
 type Parts = { hour: string | null; minute: string | null; period: 'AM' | 'PM' }

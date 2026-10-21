@@ -25,25 +25,25 @@ const RatingFrame = styled(View, {
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf: 'flex-start',
-  borderRadius: "sm",
-  outlineColor: "focus-visible:ring",
-  outlineStyle: "focus-visible:solid",
-  outlineWidth: "focus-visible:2px",
-  outlineOffset: "focus-visible:2px",
+  borderRadius: 'sm',
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
   variants: {
     size: {
       sm: {
-        gap: "0-5"
+        gap: '0-5',
       },
       md: {
-        gap: "1"
+        gap: '1',
       },
       lg: {
-        gap: "1-5"
+        gap: '1-5',
       },
     },
   } as const,
-  defaultVariants: { size: 'md' }
+  defaultVariants: { size: 'md' },
 })
 
 type FrameProps = GetProps<typeof RatingFrame>
@@ -265,7 +265,9 @@ export const Rating = forwardRef<TamaguiElement, RatingProps>(function Rating(ra
           </View>
         )
       })}
-      {isWeb && name && !readOnly ? <input type="hidden" name={name} value={value} disabled={disabled} /> : null}
+      {isWeb && name && !readOnly ? (
+        <input type="hidden" name={name} value={value} disabled={disabled} />
+      ) : null}
     </RatingFrame>
   )
 })

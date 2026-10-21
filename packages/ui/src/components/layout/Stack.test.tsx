@@ -151,7 +151,11 @@ describe('Stack responsive props', () => {
   })
 
   it('works through styled()', () => {
-    const Toolbar = styled(Stack, { displayName: 'Toolbar', direction: 'row', distribute: 'between' })
+    const Toolbar = styled(Stack, {
+      displayName: 'Toolbar',
+      direction: 'row',
+      distribute: 'between',
+    })
     expect(css(<Toolbar testID="stack" />)['']).toMatchObject({
       'flex-direction': 'row',
       'justify-content': 'space-between',

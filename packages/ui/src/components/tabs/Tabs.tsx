@@ -28,7 +28,7 @@ const TabsFrame = styled(TamaguiTabs, {
   displayName: 'Tabs',
   context: TabsStyleContext,
   flexDirection: 'column',
-  gap: "3"
+  gap: '3',
 })
 
 const ListFrame = styled(TamaguiTabs.List, {
@@ -42,16 +42,16 @@ const ListFrame = styled(TamaguiTabs.List, {
   variants: {
     variant: {
       pills: {
-        backgroundColor: "muted",
-        borderRadius: "lg",
-        padding: "1",
-        gap: "1"
+        backgroundColor: 'muted',
+        borderRadius: 'lg',
+        padding: '1',
+        gap: '1',
       },
       underline: {
         alignSelf: 'stretch',
         borderBottomWidth: 1,
-        borderColor: "border",
-        gap: "4"
+        borderColor: 'border',
+        gap: '4',
       },
     },
   } as const,
@@ -63,51 +63,51 @@ const TriggerFrame = styled(TamaguiTabs.Tab, {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: "1-5",
+  gap: '1-5',
   cursor: 'pointer',
   backgroundColor: 'transparent',
   transition: 'quick',
-  outlineColor: "focus-visible:ring",
-  outlineStyle: "focus-visible:solid",
-  outlineWidth: "focus-visible:2px",
-  outlineOffset: "focus-visible:1px",
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:1px',
   variants: {
     variant: {
       pills: {
-        height: "8",
-        paddingHorizontal: "3",
-        borderRadius: "md",
-        backgroundColor: "hover:accent"
+        height: '8',
+        paddingHorizontal: '3',
+        borderRadius: 'md',
+        backgroundColor: 'hover:accent',
       },
       underline: {
-        height: "10",
-        paddingHorizontal: "1",
+        height: '10',
+        paddingHorizontal: '1',
         borderBottomWidth: 2,
         borderColor: 'transparent',
-        marginBottom: -1
+        marginBottom: -1,
       },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed' },
     },
-  } as const
+  } as const,
 })
 
 const TriggerText = styled(Text, {
   displayName: 'TabsTriggerText',
-  fontSize: "2",
-  lineHeight: "2",
+  fontSize: '2',
+  lineHeight: '2',
   fontWeight: '500',
-  color: "mutedForeground",
-  userSelect: 'none'
+  color: 'mutedForeground',
+  userSelect: 'none',
 })
 
 const ContentFrame = styled(TamaguiTabs.Content, {
   displayName: 'TabsContent',
-  outlineColor: "focus-visible:ring",
-  outlineStyle: "focus-visible:solid",
-  outlineWidth: "focus-visible:2px",
-  outlineOffset: "focus-visible:2px"
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:2px',
 })
 
 export type TabsProps = TamaguiTabsProps & { variant?: TabsVariant }
@@ -151,8 +151,7 @@ const TabsList = forwardRef<TamaguiElement, TabsListProps>(function TabsList(pro
 })
 
 export interface TabsTriggerProps
-  extends Omit<TamaguiTabsTabProps, 'children' | 'disabled'>,
-    Pick<ControlStateProps, 'disabled'> {
+  extends Omit<TamaguiTabsTabProps, 'children' | 'disabled'>, Pick<ControlStateProps, 'disabled'> {
   value: string
   children?: ReactNode
   icon?: ReactNode
@@ -192,7 +191,7 @@ const TabsTrigger = forwardRef<TamaguiElement, TabsTriggerProps>(function TabsTr
       <IconDefaults size={16} color={active ? 'foreground' : 'mutedForeground'}>
         {icon}
         {isTextContent(children) ? (
-          <TriggerText color={active ? "foreground" : "mutedForeground"}>{children}</TriggerText>
+          <TriggerText color={active ? 'foreground' : 'mutedForeground'}>{children}</TriggerText>
         ) : (
           children
         )}

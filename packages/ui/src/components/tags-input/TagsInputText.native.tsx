@@ -52,9 +52,9 @@ const Box = styled(KeyTextInput, textBoxStyle, {
 
 const Placeholder = styled(Text, {
   displayName: 'TagsInputPlaceholder',
-  fontFamily: "body",
-  color: "placeholder-color",
-  pointerEvents: 'none'
+  fontFamily: 'body',
+  color: 'placeholder-color',
+  pointerEvents: 'none',
 })
 
 /**

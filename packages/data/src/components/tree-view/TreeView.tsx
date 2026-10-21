@@ -38,38 +38,38 @@ const TreeFrame = styled(View, {
   displayName: 'TreeView',
   role: 'tree',
   flexDirection: 'column',
-  gap: "0-5"
+  gap: '0-5',
 })
 
 const TreeItemFrame = styled(View, {
   displayName: 'TreeItem',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: "1-5",
+  gap: '1-5',
   // 44pt touch targets on phones and tablets.
-minHeight: "9 touchable:11",
-  paddingHorizontal: "2",
-  borderRadius: "md",
+  minHeight: '9 touchable:11',
+  paddingHorizontal: '2',
+  borderRadius: 'md',
   cursor: 'pointer',
-  backgroundColor: "hover:accent press:accentHover",
-  outlineColor: "focus-visible:ring",
-  outlineStyle: "focus-visible:solid",
-  outlineWidth: "focus-visible:2px",
-  outlineOffset: "focus-visible:-2px",
+  backgroundColor: 'hover:accent press:accentHover',
+  outlineColor: 'focus-visible:ring',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineOffset: 'focus-visible:-2px',
   variants: {
     selected: {
       true: {
-        backgroundColor: "primarySoft hover:primarySoftHover"
+        backgroundColor: 'primarySoft hover:primarySoftHover',
       },
     },
     disabled: {
       true: {
         opacity: 0.5,
         cursor: 'not-allowed',
-        backgroundColor: "hover:transparent"
+        backgroundColor: 'hover:transparent',
       },
     },
-  } as const
+  } as const,
 })
 
 export interface TreeViewProps extends Omit<GetProps<typeof TreeFrame>, 'children' | 'onPress'> {
@@ -298,7 +298,7 @@ function TreeItem({
         size="sm"
         flexShrink={1}
         numberOfLines={1}
-        color={selected ? "primarySoftForeground" : "foreground"}
+        color={selected ? 'primarySoftForeground' : 'foreground'}
         {...(selected && { weight: 'medium' as const })}
       >
         {node.label}

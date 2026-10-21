@@ -60,37 +60,37 @@ export function rankCommand(command: Command, query: string): number {
 const SearchInput = styled(TamaguiInput, {
   displayName: 'CommandPaletteInput',
   flex: 1,
-  height: "12",
+  height: '12',
   padding: 0,
   borderWidth: 0,
   backgroundColor: 'transparent',
-  fontFamily: "body",
-  fontSize: "3",
-  color: "foreground",
-  placeholderTextColor: "placeholder-color",
+  fontFamily: 'body',
+  fontSize: '3',
+  color: 'foreground',
+  placeholderTextColor: 'placeholder-color',
   // The dialog is the focus context; the row has no ring of its own.
-  outlineStyle: 'none'
+  outlineStyle: 'none',
 })
 
 const OptionRow = styled(View, {
   displayName: 'CommandPaletteOption',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: "3",
-  minHeight: "10 touchable:11",
-  paddingHorizontal: "3",
-  borderRadius: "md",
+  gap: '3',
+  minHeight: '10 touchable:11',
+  paddingHorizontal: '3',
+  borderRadius: 'md',
   cursor: 'pointer',
   variants: {
     active: {
       true: {
-        backgroundColor: "accent"
+        backgroundColor: 'accent',
       },
     },
     disabled: {
       true: { opacity: 0.5, cursor: 'not-allowed' },
     },
-  } as const
+  } as const,
 })
 
 export interface CommandPaletteProps {
@@ -265,8 +265,8 @@ export function CommandPalette({
             padding="2"
             gap="1"
             {...(isWeb && {
-                        onMouseDown: (event: { preventDefault: () => void }) => event.preventDefault(),
-                      })}
+              onMouseDown: (event: { preventDefault: () => void }) => event.preventDefault(),
+            })}
           >
             {ordered.length === 0 ? (
               <Text

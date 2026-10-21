@@ -81,7 +81,8 @@ export function ConfirmDialog({
   const wasPending = useRef(false)
   useEffect(() => {
     if (isWeb && wasPending.current && !pending && open) {
-      if (document.activeElement === document.body) (confirmRef.current as HTMLElement | null)?.focus()
+      if (document.activeElement === document.body)
+        (confirmRef.current as HTMLElement | null)?.focus()
     }
     wasPending.current = pending
   }, [pending, open])

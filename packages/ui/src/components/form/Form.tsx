@@ -23,17 +23,17 @@ export type FormDirection = 'vertical' | 'horizontal'
 const FormFrame = styled(TamaguiForm, {
   displayName: 'Form',
   flexDirection: 'column',
-  gap: "6",
+  gap: '6',
   variants: {
     fullWidth: {
       true: { width: '100%', alignSelf: 'stretch' },
     },
-  } as const
+  } as const,
 })
 
 const FormHeader = styled(View, {
   displayName: 'FormHeader',
-  gap: "1-5"
+  gap: '1-5',
 })
 
 const FormContent = styled(View, {
@@ -54,12 +54,12 @@ const FormFooter = styled(View, {
   flexWrap: 'wrap',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  gap: "2",
+  gap: '2',
   variants: {
     fullWidth: {
       true: { flexDirection: 'column', alignItems: 'stretch' },
     },
-  } as const
+  } as const,
 })
 
 type FrameProps = GetProps<typeof FormFrame>

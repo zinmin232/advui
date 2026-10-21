@@ -101,11 +101,11 @@ export function ComponentPreview({
               </PreviewSurface>
             ) : (
               <View
-                  alignItems="center"
-                  backgroundColor="muted"
-                  paddingVertical="4"
-                  overflowX="auto"
-                >
+                alignItems="center"
+                backgroundColor="muted"
+                paddingVertical="4"
+                overflowX="auto"
+              >
                 <iframe
                   title={`${title} at ${widths[viewport]}px`}
                   src={withBasePath(`/preview/${slug}/${name}`)}
