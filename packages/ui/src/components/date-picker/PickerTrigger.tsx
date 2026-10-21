@@ -7,7 +7,7 @@ import { Text } from '../typography/Text'
 import { ariaState } from '../../utils/ariaState'
 
 const TriggerFrame = styled(View, {
-  name: 'PickerTrigger',
+  displayName: 'PickerTrigger',
   role: 'button',
   render: 'button',
   tabIndex: 0,

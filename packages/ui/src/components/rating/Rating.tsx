@@ -21,7 +21,7 @@ const iconSizes: Record<RatingSize, number> = { sm: 16, md: 24, lg: 32 }
 const EPSILON = 1e-9
 
 const RatingFrame = styled(View, {
-  name: 'Rating',
+  displayName: 'Rating',
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf: 'flex-start',

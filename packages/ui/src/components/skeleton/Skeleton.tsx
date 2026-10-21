@@ -5,7 +5,7 @@ import { type GetProps, View, styled } from 'tamagui/unstyled'
  * announce loading on the container instead (e.g. `aria-busy`).
  */
 export const Skeleton = styled(View, {
-  name: 'Skeleton',
+  displayName: 'Skeleton',
   backgroundColor: "muted",
   borderRadius: "md",
   'aria-hidden': true,

@@ -13,8 +13,13 @@ const allow = [
   '@advui[+/].*',
 ].join('|')
 
+// Tamagui 3 ships .mjs files (@tamagui/style-grammar); the preset compiles .js/.ts only.
+const preset = require('jest-expo/ios/jest-preset')
+
 module.exports = {
   preset: 'jest-expo/ios',
+  transform: { ...preset.transform, '\\.mjs$': preset.transform['\\.[jt]sx?$'] },
+  moduleFileExtensions: [...preset.moduleFileExtensions, 'mjs'],
   // On Windows, a <rootDir> under .claude\ becomes a glob with an escaped dot, so match relatively
   roots: ['<rootDir>/src'],
   testMatch: ['**/*.native.test.tsx'],

@@ -11,7 +11,7 @@ import { usePublishLabel } from '../../hooks/useLabelFor'
 import { plainText } from '../../utils/plainText'
 
 const LabelFrame = styled(TamaguiLabel, {
-  name: 'Label',
+  displayName: 'Label',
   fontFamily: "body",
   fontSize: "2",
   lineHeight: "2",
@@ -29,7 +29,7 @@ const LabelFrame = styled(TamaguiLabel, {
 })
 
 const RequiredMark = styled(Text, {
-  name: 'LabelRequired',
+  displayName: 'LabelRequired',
   color: "error",
   fontSize: "2"
 })

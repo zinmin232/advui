@@ -3,7 +3,7 @@ import { type Responsive, responsiveStyle } from '../../utils/responsive'
 
 /** The base layout primitive — a `View` that accepts every style prop and token. */
 export const Box = styled(View, {
-  name: 'Box',
+  displayName: 'Box',
 })
 
 export type StackDirection = 'row' | 'column' | 'row-reverse' | 'column-reverse'
@@ -62,7 +62,7 @@ type WithoutDirectionStyle<C> = C extends {
   : never
 
 const StackFrame = styled(View, {
-  name: 'Stack',
+  displayName: 'Stack',
   flexDirection: 'column',
   variants: flexVariants(),
 })
@@ -78,7 +78,7 @@ export const Stack = StackFrame as WithoutDirectionStyle<typeof StackFrame>
 
 /** Horizontal stack. Use `gap="2"` for spacing. */
 export const HStack = styled(Stack, {
-  name: 'HStack',
+  displayName: 'HStack',
   flexDirection: 'row',
   alignItems: 'center',
   variants: flexVariants(),
@@ -86,13 +86,13 @@ export const HStack = styled(Stack, {
 
 /** Vertical stack. Use `gap="2"` for spacing. */
 export const VStack = styled(Stack, {
-  name: 'VStack',
+  displayName: 'VStack',
   flexDirection: 'column',
 })
 
 /** A row that wraps onto new lines, for chips, tags and badges. */
 export const Wrap = styled(Stack, {
-  name: 'Wrap',
+  displayName: 'Wrap',
   flexDirection: 'row',
   flexWrap: 'wrap',
   alignItems: 'center',
@@ -102,14 +102,14 @@ export const Wrap = styled(Stack, {
 
 /** Centers its children on both axes. */
 export const Center = styled(View, {
-  name: 'Center',
+  displayName: 'Center',
   alignItems: 'center',
   justifyContent: 'center',
 })
 
 /** Flexible space that pushes siblings apart inside a stack. */
 export const Spacer = styled(View, {
-  name: 'Spacer',
+  displayName: 'Spacer',
   flex: 1,
   alignSelf: 'stretch',
   'aria-hidden': true,

@@ -35,7 +35,6 @@ type NegativeSpace = { [K in Exclude<SpaceKey, 0> as `-${K}`]: number }
 
 export const space = {
   ...spaceScale,
-  true: 16,
   ...(Object.fromEntries(
     Object.entries(spaceScale)
       .filter(([key]) => key !== '0')
@@ -59,7 +58,6 @@ export const size = {
   168: 672,
   192: 768,
   224: 896,
-  true: 40,
 } as const
 
 export const radiusScales = {
@@ -108,7 +106,7 @@ export function createRadius(input: RadiusInput = 'md') {
     dialog: r(1.5),
     ...exact,
   }
-  return { ...tokens, true: tokens.md }
+  return tokens
 }
 
 export const zIndex = {
@@ -124,10 +122,11 @@ export const zIndex = {
   tooltip: 1600,
 } as const
 
+// No `transparent`: Tamagui 3 reserves CSS-wide keywords, which resolve as
+// literal CSS, so `transparent` works without a token.
 export const colorTokens = {
   white: '#ffffff',
   black: '#000000',
-  transparent: 'rgba(0, 0, 0, 0)',
 } as const
 
 export function createUniversalTokens({ radius = 'md' }: { radius?: RadiusInput } = {}) {

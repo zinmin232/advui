@@ -71,7 +71,7 @@ export interface DataGridProps<T> {
 }
 
 const Cell = styled(View, {
-  name: 'DataGridCell',
+  displayName: 'DataGridCell',
   position: 'relative',
   justifyContent: 'center',
   flexShrink: 0,

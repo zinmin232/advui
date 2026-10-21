@@ -35,7 +35,7 @@ const defaultLabels: CodeBlockLabels = {
 }
 
 export const CodeBlockFrame = styled(View, {
-  name: 'CodeBlock',
+  displayName: 'CodeBlock',
   // The floating copy button is placed against the block (web Views are static).
   position: 'relative',
   backgroundColor: "muted",
@@ -47,7 +47,7 @@ export const CodeBlockFrame = styled(View, {
 
 // Every Text sets its own `white-space` on web, so each one takes `wrap`.
 const CodeText = styled(TamaguiText, {
-  name: 'CodeBlockText',
+  displayName: 'CodeBlockText',
   fontFamily: "mono",
   fontSize: "2",
   lineHeight: "2",
@@ -63,7 +63,7 @@ const CodeText = styled(TamaguiText, {
 
 // Web: the scroll box. Keyboard users scroll it with the arrow keys once it has focus.
 const Pre = styled(View, {
-  name: 'CodeBlockPre',
+  displayName: 'CodeBlockPre',
   render: 'pre',
   tabIndex: 0,
   margin: 0,

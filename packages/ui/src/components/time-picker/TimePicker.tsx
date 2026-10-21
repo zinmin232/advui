@@ -4,7 +4,7 @@ import { FieldContext, useFieldControl } from '../../hooks/useFieldControl'
 import { Select } from '../select/Select'
 
 const TimePickerFrame = styled(XStack, {
-  name: 'TimePicker',
+  displayName: 'TimePicker',
   role: 'group',
   alignItems: 'center',
   gap: "2"

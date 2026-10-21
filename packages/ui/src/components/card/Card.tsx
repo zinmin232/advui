@@ -12,7 +12,7 @@ import { useRipple } from '../../hooks/useRipple'
 import { Text } from '../typography/Text'
 
 const CardFrame = styled(View, {
-  name: 'Card',
+  displayName: 'Card',
   flexDirection: 'column',
   backgroundColor: "card",
   borderRadius: "xl",
@@ -48,7 +48,7 @@ const CardFrame = styled(View, {
 })
 
 const CardHeader = styled(View, {
-  name: 'CardHeader',
+  displayName: 'CardHeader',
   flexDirection: 'column',
   gap: "1-5",
   paddingTop: "4 sm:6",
@@ -58,7 +58,7 @@ const CardHeader = styled(View, {
 })
 
 const CardTitleText = styled(Text, {
-  name: 'CardTitle',
+  displayName: 'CardTitle',
   role: 'heading',
   fontFamily: "heading",
   fontWeight: '600',
@@ -73,19 +73,19 @@ const CardTitle = forwardRef<TamaguiTextElement, GetProps<typeof CardTitleText>>
 )
 
 const CardDescription = styled(Text, {
-  name: 'CardDescription',
+  displayName: 'CardDescription',
   size: 'sm',
   tone: 'muted',
 })
 
 const CardContent = styled(View, {
-  name: 'CardContent',
+  displayName: 'CardContent',
   padding: "4 sm:6",
   gap: "4"
 })
 
 const CardFooter = styled(View, {
-  name: 'CardFooter',
+  displayName: 'CardFooter',
   flexDirection: 'row',
   alignItems: 'center',
   gap: "2",

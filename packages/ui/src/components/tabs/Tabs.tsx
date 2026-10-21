@@ -25,14 +25,14 @@ const TabsStyleContext = createStyledContext<{ variant: TabsVariant }>({ variant
 const ActiveValueContext = createContext<string | undefined>(undefined)
 
 const TabsFrame = styled(TamaguiTabs, {
-  name: 'Tabs',
+  displayName: 'Tabs',
   context: TabsStyleContext,
   flexDirection: 'column',
   gap: "3"
 })
 
 const ListFrame = styled(TamaguiTabs.List, {
-  name: 'TabsList',
+  displayName: 'TabsList',
   context: TabsStyleContext,
   flexDirection: 'row',
   alignSelf: 'flex-start',
@@ -58,7 +58,7 @@ const ListFrame = styled(TamaguiTabs.List, {
 })
 
 const TriggerFrame = styled(TamaguiTabs.Tab, {
-  name: 'TabsTrigger',
+  displayName: 'TabsTrigger',
   context: TabsStyleContext,
   flexDirection: 'row',
   alignItems: 'center',
@@ -94,7 +94,7 @@ const TriggerFrame = styled(TamaguiTabs.Tab, {
 })
 
 const TriggerText = styled(Text, {
-  name: 'TabsTriggerText',
+  displayName: 'TabsTriggerText',
   fontSize: "2",
   lineHeight: "2",
   fontWeight: '500',
@@ -103,7 +103,7 @@ const TriggerText = styled(Text, {
 })
 
 const ContentFrame = styled(TamaguiTabs.Content, {
-  name: 'TabsContent',
+  displayName: 'TabsContent',
   outlineColor: "focus-visible:ring",
   outlineStyle: "focus-visible:solid",
   outlineWidth: "focus-visible:2px",

@@ -6,7 +6,7 @@ import { Text } from '../typography/Text'
 
 // Same layout as Empty State and Error State, so the three can swap in place.
 const LoadingStateFrame = styled(View, {
-  name: 'LoadingState',
+  displayName: 'LoadingState',
   alignItems: 'center',
   justifyContent: 'center',
   gap: "3",

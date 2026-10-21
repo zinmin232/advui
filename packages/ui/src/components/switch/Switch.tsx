@@ -14,7 +14,7 @@ import { type FieldControlProps, useFieldControl } from '../../hooks/useFieldCon
 import { ariaState } from '../../utils/ariaState'
 
 const Frame = styled(TamaguiSwitchFrame, {
-  name: 'Switch',
+  displayName: 'Switch',
   justifyContent: 'center',
   // reset the UA <button> padding so the thumb travel is exact
   padding: 0,
@@ -51,7 +51,7 @@ const Frame = styled(TamaguiSwitchFrame, {
 })
 
 const Thumb = styled(TamaguiSwitchThumb, {
-  name: 'SwitchThumb',
+  displayName: 'SwitchThumb',
   backgroundColor: 'background',
   borderRadius: 'full',
   transition: 'quick',

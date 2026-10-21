@@ -32,11 +32,11 @@ const GroupContext = createContext<GroupState>({ value: '', disabled: false })
 // Tamagui 3's RadioGroup parts are styled HOCs: styling them keeps their
 // behavior. The gap is a prop default (see RadioGroupRoot).
 const Frame = styled(TamaguiRadioGroup, {
-  name: 'RadioGroup',
+  displayName: 'RadioGroup',
 })
 
 const Item = styled(TamaguiRadioGroup.Item, {
-  name: 'RadioGroupItem',
+  displayName: 'RadioGroupItem',
   padding: 0,
   alignItems: 'center',
   justifyContent: 'center',
@@ -74,7 +74,7 @@ const Item = styled(TamaguiRadioGroup.Item, {
 })
 
 const Indicator = styled(TamaguiRadioGroup.Indicator, {
-  name: 'RadioGroupIndicator',
+  displayName: 'RadioGroupIndicator',
   width: '50%',
   height: '50%',
   borderRadius: 'full',

@@ -18,7 +18,7 @@ import { type ComboboxFieldProps, defaultFilter, fieldHeights } from './options'
 import { ariaState } from '../../utils/ariaState'
 
 const FieldBox = styled(XStack, {
-  name: 'ComboboxField',
+  displayName: 'ComboboxField',
   ...fieldBoxStyle,
   alignItems: 'center',
   flexWrap: 'wrap',
@@ -62,7 +62,7 @@ borderColor: "focus-within:ring",
 })
 
 const BareInput = styled(TamaguiInput, {
-  name: 'ComboboxInput',
+  displayName: 'ComboboxInput',
   flex: 1,
   minWidth: "16",
   padding: 0,
@@ -77,7 +77,7 @@ outlineStyle: "none focus:none focus-visible:none"
 })
 
 const ListFrame = styled(View, {
-  name: 'ComboboxList',
+  displayName: 'ComboboxList',
   backgroundColor: "popover",
   borderWidth: 1,
   borderColor: "border",
@@ -92,7 +92,7 @@ const ListFrame = styled(View, {
 })
 
 const OptionRow = styled(XStack, {
-  name: 'ComboboxOption',
+  displayName: 'ComboboxOption',
   alignItems: 'center',
   gap: "2",
   minHeight: "8",

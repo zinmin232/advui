@@ -48,7 +48,9 @@ const buttonBackground = {
 const iconSizes: Record<ButtonSize, number> = { sm: 14, md: 16, lg: 18, icon: 16 }
 
 export const ButtonFrame = styled(View, {
-  name: 'Button',
+  displayName: 'Button',
+  // Tamagui 3 no longer adds an `is_<name>` class; GlobalStyles and apps target it.
+  className: 'is_Button',
   context: ButtonContext,
   role: 'button',
   render: 'button',
@@ -131,7 +133,7 @@ export const ButtonFrame = styled(View, {
 })
 
 export const ButtonText = styled(Text, {
-  name: 'ButtonText',
+  displayName: 'ButtonText',
   context: ButtonContext,
   fontFamily: "body",
   fontWeight: '500',

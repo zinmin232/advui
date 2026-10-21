@@ -60,7 +60,7 @@ const StepContext = createContext<StepContextValue>({
 })
 
 const StepperFrame = styled(View, {
-  name: 'Stepper',
+  displayName: 'Stepper',
   render: 'ol',
   role: 'list',
   margin: 0,
@@ -75,7 +75,7 @@ const StepperFrame = styled(View, {
 })
 
 const StepIndicator = styled(View, {
-  name: 'StepIndicator',
+  displayName: 'StepIndicator',
   width: "8",
   height: "8",
   borderRadius: "full",
@@ -106,7 +106,7 @@ const StepIndicator = styled(View, {
 })
 
 const StepConnector = styled(View, {
-  name: 'StepConnector',
+  displayName: 'StepConnector',
   borderRadius: "full",
   variants: {
     orientation: {
@@ -134,13 +134,13 @@ const StepConnector = styled(View, {
 })
 
 const StepTitle = styled(Text, {
-  name: 'StepTitle',
+  displayName: 'StepTitle',
   size: 'sm',
   weight: 'medium',
 })
 
 const StepDescription = styled(Text, {
-  name: 'StepDescription',
+  displayName: 'StepDescription',
   size: 'xs',
   tone: 'muted',
 })

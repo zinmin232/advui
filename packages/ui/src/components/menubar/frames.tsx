@@ -3,7 +3,7 @@ import { View, styled } from 'tamagui/unstyled'
 // The bar and its triggers, shared by the web and native menubars.
 
 export const MenubarFrame = styled(View, {
-  name: 'Menubar',
+  displayName: 'Menubar',
   flexDirection: 'row',
   alignItems: 'center',
   gap: "1",
@@ -15,7 +15,7 @@ export const MenubarFrame = styled(View, {
 })
 
 export const MenubarTriggerFrame = styled(View, {
-  name: 'MenubarTrigger',
+  displayName: 'MenubarTrigger',
   flexDirection: 'row',
   alignItems: 'center',
   // Finger-sized targets on touch screens and phones.

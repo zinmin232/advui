@@ -97,7 +97,7 @@ const defaultLabels: FilterBarLabels = {
 }
 
 const FilterBarFrame = styled(Stack, {
-  name: 'FilterBar',
+  displayName: 'FilterBar',
   borderRadius: "lg",
   variants: {
     variant: {

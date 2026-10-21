@@ -19,7 +19,7 @@ export type StatTone = 'positive' | 'negative' | 'neutral'
 const StatContext = createStyledContext<{ size: StatSize }>({ size: 'md' })
 
 const StatFrame = styled(View, {
-  name: 'Stat',
+  displayName: 'Stat',
   context: StatContext,
   flexDirection: 'column',
   minWidth: 0,
@@ -42,7 +42,7 @@ const StatFrame = styled(View, {
 })
 
 const StatLabel = styled(Text, {
-  name: 'StatLabel',
+  displayName: 'StatLabel',
   context: StatContext,
   tone: 'muted',
   weight: 'medium',
@@ -66,7 +66,7 @@ const StatLabel = styled(Text, {
 })
 
 const StatValue = styled(Text, {
-  name: 'StatValue',
+  displayName: 'StatValue',
   context: StatContext,
   fontFamily: "heading",
   fontWeight: '700',
@@ -89,7 +89,7 @@ const StatValue = styled(Text, {
 })
 
 const StatHelpText = styled(Text, {
-  name: 'StatHelpText',
+  displayName: 'StatHelpText',
   context: StatContext,
   tone: 'muted',
 
@@ -112,7 +112,7 @@ const StatHelpText = styled(Text, {
 })
 
 const StatDeltaFrame = styled(View, {
-  name: 'StatDelta',
+  displayName: 'StatDelta',
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf: 'flex-start',

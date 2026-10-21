@@ -26,7 +26,7 @@ export const ListContext = createStyledContext<{ size: ListItemSize }>({ size: '
 export const ListItemPosition = createContext({ inList: false, index: 0, divided: false })
 
 const ListItemFrame = styled(View, {
-  name: 'ListItem',
+  displayName: 'ListItem',
   position: 'relative',
   flexDirection: 'row',
   alignItems: 'stretch',
@@ -55,7 +55,7 @@ const ListItemFrame = styled(View, {
 })
 
 const ListItemRow = styled(View, {
-  name: 'ListItemRow',
+  displayName: 'ListItemRow',
   context: ListContext,
   // Positioned so it paints above the selected fill on web.
   position: 'relative',
@@ -105,14 +105,14 @@ const ListItemRow = styled(View, {
 })
 
 const ListItemContent = styled(View, {
-  name: 'ListItemContent',
+  displayName: 'ListItemContent',
   flex: 1,
   minWidth: 0,
   gap: "0-5"
 })
 
 const ListItemTitle = styled(Text, {
-  name: 'ListItemTitle',
+  displayName: 'ListItemTitle',
   context: ListContext,
   weight: 'medium',
 
@@ -135,7 +135,7 @@ const ListItemTitle = styled(Text, {
 })
 
 const ListItemDescription = styled(Text, {
-  name: 'ListItemDescription',
+  displayName: 'ListItemDescription',
   context: ListContext,
   tone: 'muted',
 
@@ -188,6 +188,13 @@ function splitSpacing(props: Record<string, unknown>) {
     const target = rowSpacing[key]
     if (target) row[target] = value
     else frame[key] = value
+  }
+  // The size variants set paddingVertical and paddingHorizontal, which Tamagui
+  // 3 keeps as their own declarations over a `padding`: give it both axes.
+  if (row.padding !== undefined) {
+    row.paddingVertical ??= row.padding
+    row.paddingHorizontal ??= row.padding
+    delete row.padding
   }
   return { row, frame }
 }

@@ -41,7 +41,7 @@ const visuallyHidden = {
 } as const
 
 const SidebarFrame = styled(View, {
-  name: 'Sidebar',
+  displayName: 'Sidebar',
   flexDirection: 'column',
   height: '100%',
   backgroundColor: "card",
@@ -61,7 +61,7 @@ const SidebarFrame = styled(View, {
 })
 
 const SidebarHeader = styled(View, {
-  name: 'SidebarHeader',
+  displayName: 'SidebarHeader',
   flexDirection: 'row',
   alignItems: 'center',
   gap: "2",
@@ -70,7 +70,7 @@ const SidebarHeader = styled(View, {
 })
 
 const SidebarContent = styled(View, {
-  name: 'SidebarContent',
+  displayName: 'SidebarContent',
   flex: 1,
   minHeight: 0,
   overflowY: 'auto',
@@ -80,7 +80,7 @@ const SidebarContent = styled(View, {
 })
 
 const SidebarFooter = styled(View, {
-  name: 'SidebarFooter',
+  displayName: 'SidebarFooter',
   padding: "3",
   borderTopWidth: 1,
   borderColor: "border",
@@ -88,7 +88,7 @@ const SidebarFooter = styled(View, {
 })
 
 const SidebarItemFrame = styled(View, {
-  name: 'SidebarItem',
+  displayName: 'SidebarItem',
   flexDirection: 'row',
   alignItems: 'center',
   gap: "3",

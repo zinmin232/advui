@@ -13,7 +13,7 @@ import { ariaState } from '../../utils/ariaState'
 
 // Tamagui 3's Checkbox is a styled HOC: styling it keeps its behavior.
 const BaseCheckbox = styled(TamaguiCheckbox, {
-  name: 'Checkbox',
+  displayName: 'Checkbox',
   padding: 0,
   alignItems: 'center',
   justifyContent: 'center',
@@ -49,7 +49,7 @@ const BaseCheckbox = styled(TamaguiCheckbox, {
 })
 
 const Indicator = styled(TamaguiCheckbox.Indicator, {
-  name: 'CheckboxIndicator',
+  displayName: 'CheckboxIndicator',
   alignItems: 'center',
   justifyContent: 'center',
 })

@@ -78,7 +78,7 @@ const focusRing = {
 } as const
 
 const CarouselFrame = styled(View, {
-  name: 'Carousel',
+  displayName: 'Carousel',
   width: '100%',
   gap: "3",
   // The controls come first in the tree, so keyboard and screen-reader users

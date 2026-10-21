@@ -11,7 +11,7 @@ import {
 // thing for every width (no flash, no hydration mismatch) and the content
 // stays mounted. `display: contents` keeps the wrapper out of the layout:
 // its children lay out as if they were the parent's own.
-const Frame = styled(View, { name: 'ShowHide', display: 'contents' })
+const Frame = styled(View, { displayName: 'ShowHide', display: 'contents' })
 
 // Bundlers replace `process.env.NODE_ENV`; this types it for apps without Node's types.
 declare const process: { env: { NODE_ENV?: string } }

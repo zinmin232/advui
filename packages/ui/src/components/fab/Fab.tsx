@@ -27,7 +27,7 @@ const background = {
 const iconSizes: Record<FabSize, number> = { sm: 20, md: 24, lg: 36 }
 
 const FabFrame = styled(View, {
-  name: 'Fab',
+  displayName: 'Fab',
   role: 'button',
   render: 'button',
   tabIndex: 0,

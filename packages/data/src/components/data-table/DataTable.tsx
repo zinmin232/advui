@@ -47,7 +47,10 @@ const defaultLabels: DataTableLabels = {
   selected: (count) => `${count} selected`,
 }
 
-export interface DataTableProps<T> extends Omit<TableProps, 'children' | 'onSort' | 'caption'> {
+// `page` and `columns` are also CSS style props in Tamagui 3; here they are
+// the current page and the column definitions.
+export interface DataTableProps<T>
+  extends Omit<TableProps, 'children' | 'onSort' | 'caption' | 'page' | 'columns'> {
   data: T[]
   columns: DataTableColumn<T>[]
   /** Stable id of a row. Default: `row.id`, then the index. */

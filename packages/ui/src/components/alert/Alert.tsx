@@ -109,7 +109,7 @@ const sizes = {
 } as const satisfies Record<AlertSize, object>
 
 const AlertFrame = styled(View, {
-  name: 'Alert',
+  displayName: 'Alert',
   flexDirection: 'row',
   borderRadius: "lg",
   borderWidth: 1,
@@ -160,7 +160,7 @@ const AlertFrame = styled(View, {
 
 // `size` follows the alert's; sm and lg match Text's own sm and lg.
 const AlertTitle = styled(Text, {
-  name: 'AlertTitle',
+  displayName: 'AlertTitle',
   context: AlertTitleContext,
   weight: 'semibold',
   variants: {
@@ -182,7 +182,7 @@ const AlertTitle = styled(Text, {
 })
 
 const AlertDescription = styled(Text, {
-  name: 'AlertDescription',
+  displayName: 'AlertDescription',
   context: AlertDescriptionContext,
   variants: {
     size: {

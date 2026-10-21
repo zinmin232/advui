@@ -1,4 +1,5 @@
-import { createAnimations } from '@tamagui/animations-css'
+// `extras` adds the animated-number hooks Tamagui 3's Sheet and Toast use.
+import { createAnimations } from '@tamagui/animations-css/extras'
 
 // Web: CSS transitions — no JS animation runtime. Reduced motion is honored
 // globally by the provider's `prefers-reduced-motion` stylesheet.

@@ -32,7 +32,7 @@ const RowPosition = createContext<{ index: number; last: boolean; striped: boole
 const StripedContext = createContext(false)
 
 const TableFrame = styled(View, {
-  name: 'Table',
+  displayName: 'Table',
   context: TableContext,
   role: 'table',
   flexDirection: 'column',
@@ -59,14 +59,14 @@ const TableFrame = styled(View, {
 })
 
 const TableHeader = styled(View, {
-  name: 'TableHeader',
+  displayName: 'TableHeader',
   role: 'rowgroup',
   borderBottomWidth: 1,
   borderColor: "border"
 })
 
 const TableFooterFrame = styled(View, {
-  name: 'TableFooter',
+  displayName: 'TableFooter',
   role: 'rowgroup',
   borderTopWidth: 1,
   borderColor: "border",
@@ -74,7 +74,7 @@ const TableFooterFrame = styled(View, {
 })
 
 const TableRowFrame = styled(View, {
-  name: 'TableRow',
+  displayName: 'TableRow',
   role: 'row',
   flexDirection: 'row',
   alignItems: 'stretch',
@@ -124,8 +124,8 @@ const cellBase = {
   },
 } as const
 
-const TableCellFrame = styled(View, { name: 'TableCell', role: 'cell', ...cellBase })
-const TableHeadFrame = styled(View, { name: 'TableHead', role: 'columnheader', ...cellBase })
+const TableCellFrame = styled(View, { displayName: 'TableCell', role: 'cell', ...cellBase })
+const TableHeadFrame = styled(View, { displayName: 'TableHead', role: 'columnheader', ...cellBase })
 
 const textAlign = { start: 'left', center: 'center', end: 'right' } as const
 

@@ -30,7 +30,7 @@ const foreground = {
 } as const satisfies Record<BadgeVariant, string>
 
 export const BadgeFrame = styled(View, {
-  name: 'Badge',
+  displayName: 'Badge',
   context: BadgeContext,
   flexDirection: 'row',
   alignItems: 'center',
@@ -82,7 +82,7 @@ export const BadgeFrame = styled(View, {
 })
 
 export const BadgeText = styled(Text, {
-  name: 'BadgeText',
+  displayName: 'BadgeText',
   context: BadgeContext,
   fontFamily: "body",
   fontWeight: '500',

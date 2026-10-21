@@ -38,7 +38,7 @@ export const inputBaseStyle = {
 export type InputSize = 'sm' | 'md' | 'lg'
 
 const InputFrame = styled(TamaguiInput, {
-  name: 'Input',
+  displayName: 'Input',
   ...inputBaseStyle,
   // Android's TextInput adds its own vertical padding, which clips text in
   // the fixed-height sizes (sm most visibly); the height already centers it.
@@ -91,7 +91,9 @@ const InputFrame = styled(TamaguiInput, {
 })
 
 const InputGroupFrame = styled(View, {
-  name: 'InputGroup',
+  displayName: 'InputGroup',
+  // Tamagui 3 no longer adds an `is_<name>` class; kept as a stable hook.
+  className: 'is_InputGroup',
   backgroundColor: "background",
   borderWidth: 1,
   // Addon backgrounds stop at the rounded corners.

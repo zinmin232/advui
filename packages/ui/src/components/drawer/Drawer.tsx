@@ -34,10 +34,10 @@ import { transformOpacity } from '../../utils/transition'
 
 type Side = 'left' | 'right' | 'top' | 'bottom'
 
-const Overlay = styled(TamaguiDialog.Overlay, { name: 'DrawerOverlay', ...overlayStyle })
+const Overlay = styled(TamaguiDialog.Overlay, { displayName: 'DrawerOverlay', ...overlayStyle })
 
 const ContentFrame = styled(TamaguiDialog.Content, {
-  name: 'DrawerContent',
+  displayName: 'DrawerContent',
   position: 'absolute',
   backgroundColor: "popover",
   borderColor: "border",
@@ -68,23 +68,23 @@ const ContentFrame = styled(TamaguiDialog.Content, {
 const widths = { sm: '72', md: '96', lg: '128' } as const
 
 const Header = styled(View, {
-  name: 'DrawerHeader',
+  displayName: 'DrawerHeader',
   ...headerStyle,
   paddingRight: "8"
 })
 
-const Footer = styled(View, { name: 'DrawerFooter', ...footerStyle })
+const Footer = styled(View, { displayName: 'DrawerFooter', ...footerStyle })
 
-const Title = styled(TamaguiDialog.Title, { name: 'DrawerTitle', ...titleStyle })
+const Title = styled(TamaguiDialog.Title, { displayName: 'DrawerTitle', ...titleStyle })
 
 const Description = styled(TamaguiDialog.Description, {
-  name: 'DrawerDescription',
+  displayName: 'DrawerDescription',
   ...descriptionStyle,
 })
 
 /** Scrolls long content between the header and footer. */
 const Body = styled(ScrollView, {
-  name: 'DrawerBody',
+  displayName: 'DrawerBody',
   flexGrow: 1,
   flexShrink: 1,
   // Room for focus rings of full-width controls inside.
@@ -154,7 +154,7 @@ const Content = forwardRef<TamaguiElement, DrawerContentProps>(function DrawerCo
   const horizontal = side === 'left' || side === 'right'
 
   return (
-    <TamaguiDialog.Portal>
+    <TamaguiDialog.Portal render="div" aria-modal={undefined}>
       <Overlay key="overlay" {...overlayPress} transition={reducedMotion ? null : 'quick'} />
       <ContentFrame
         key="content"

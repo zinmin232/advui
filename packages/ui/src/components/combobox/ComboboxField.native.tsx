@@ -11,7 +11,7 @@ import { type ComboboxFieldProps, type ComboboxOption, defaultFilter } from './o
 import { ariaState } from '../../utils/ariaState'
 
 const FieldBox = styled(XStack, {
-  name: 'ComboboxField',
+  displayName: 'ComboboxField',
   ...fieldBoxStyle,
   alignItems: 'center',
   flexWrap: 'wrap',

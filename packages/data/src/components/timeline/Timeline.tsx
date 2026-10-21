@@ -23,20 +23,20 @@ export type TimelineTone = 'default' | 'primary' | 'success' | 'warning' | 'erro
 const ItemPosition = createContext({ last: true })
 
 const TimelineFrame = styled(View, {
-  name: 'Timeline',
+  displayName: 'Timeline',
   role: 'list',
   flexDirection: 'column',
 })
 
 const TimelineItemFrame = styled(View, {
-  name: 'TimelineItem',
+  displayName: 'TimelineItem',
   role: 'listitem',
   flexDirection: 'row',
   gap: "3"
 })
 
 const TimelineConnector = styled(View, {
-  name: 'TimelineConnector',
+  displayName: 'TimelineConnector',
   flex: 1,
   width: 2,
   minHeight: "4",
@@ -46,19 +46,19 @@ const TimelineConnector = styled(View, {
 })
 
 const TimelineTitle = styled(Text, {
-  name: 'TimelineTitle',
+  displayName: 'TimelineTitle',
   size: 'sm',
   weight: 'medium',
 })
 
 const TimelineTime = styled(Text, {
-  name: 'TimelineTime',
+  displayName: 'TimelineTime',
   size: 'xs',
   tone: 'muted',
 })
 
 const TimelineDescription = styled(Text, {
-  name: 'TimelineDescription',
+  displayName: 'TimelineDescription',
   size: 'sm',
   tone: 'muted',
 })

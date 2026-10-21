@@ -8,7 +8,7 @@ import { ariaState } from '../../utils/ariaState'
 import { flatValue } from '../../utils/responsive'
 
 const ChipFrame = styled(View, {
-  name: 'Chip',
+  displayName: 'Chip',
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf: 'flex-start',

@@ -9,7 +9,7 @@ import { Text } from '../typography/Text'
 export type FieldOrientation = 'vertical' | 'horizontal'
 
 const FieldFrame = styled(View, {
-  name: 'Field',
+  displayName: 'Field',
   gap: "2",
   variants: {
     fullWidth: {
@@ -21,21 +21,21 @@ const FieldFrame = styled(View, {
 // Horizontal fields: the label is centered on the control beside it, and the
 // help and error text line up under the control.
 const FieldRow = styled(View, {
-  name: 'FieldRow',
+  displayName: 'FieldRow',
   flexDirection: 'row',
   alignItems: 'center',
   columnGap: "4"
 })
 
 const FieldLabelColumn = styled(View, {
-  name: 'FieldLabelColumn',
+  displayName: 'FieldLabelColumn',
   // A share of the width, so the controls of stacked fields line up.
   width: '33%',
   flexShrink: 0,
 })
 
 const FieldControlColumn = styled(View, {
-  name: 'FieldControlColumn',
+  displayName: 'FieldControlColumn',
   flex: 1,
   minWidth: 0,
 })

@@ -9,7 +9,7 @@ const defaultGutter: Responsive<SpaceTokens> = { base: '4', md: '6', lg: '8' }
  * Horizontally centered, width-capped page container with responsive padding.
  */
 export const Container = styled(View, {
-  name: 'Container',
+  displayName: 'Container',
   width: '100%',
   marginHorizontal: 'auto',
 

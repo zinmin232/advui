@@ -35,14 +35,14 @@ export function flattenTree(nodes: TreeNode[], expanded: ReadonlySet<string>): V
 }
 
 const TreeFrame = styled(View, {
-  name: 'TreeView',
+  displayName: 'TreeView',
   role: 'tree',
   flexDirection: 'column',
   gap: "0-5"
 })
 
 const TreeItemFrame = styled(View, {
-  name: 'TreeItem',
+  displayName: 'TreeItem',
   flexDirection: 'row',
   alignItems: 'center',
   gap: "1-5",

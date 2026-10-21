@@ -6,7 +6,7 @@ import { Heading, type HeadingProps } from '../typography/Heading'
 import { Text } from '../typography/Text'
 
 const EmptyStateFrame = styled(View, {
-  name: 'EmptyState',
+  displayName: 'EmptyState',
   alignItems: 'center',
   justifyContent: 'center',
   gap: "3",

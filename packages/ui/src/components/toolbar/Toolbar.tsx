@@ -27,7 +27,7 @@ export type ToolbarSize = 'sm' | 'md' | 'lg'
 export type ToolbarRole = 'group' | 'toolbar'
 
 const ToolbarFrame = styled(Stack, {
-  name: 'Toolbar',
+  displayName: 'Toolbar',
   borderRadius: "lg",
   variants: {
     variant: {

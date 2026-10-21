@@ -9,7 +9,7 @@ import {
 } from '../list-item/ListItem'
 
 const ListFrame = styled(View, {
-  name: 'List',
+  displayName: 'List',
   context: ListContext,
   role: 'list',
   flexDirection: 'column',

@@ -57,7 +57,7 @@ function useGroup(part: string) {
 }
 
 const CheckboxGroupFrame = styled(View, {
-  name: 'CheckboxGroup',
+  displayName: 'CheckboxGroup',
   role: 'group',
 
   variants: {

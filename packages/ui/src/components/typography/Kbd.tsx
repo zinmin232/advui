@@ -2,7 +2,7 @@ import { type GetProps, Text as TamaguiText, styled } from 'tamagui/unstyled'
 
 /** Keyboard key or shortcut hint, e.g. `<Kbd>Ctrl K</Kbd>`. Renders `<kbd>` on web. */
 export const Kbd = styled(TamaguiText, {
-  name: 'Kbd',
+  displayName: 'Kbd',
   render: 'kbd',
   fontFamily: "mono",
   fontSize: "1",

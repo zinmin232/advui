@@ -19,7 +19,7 @@ const AvatarContext = createStyledContext<{ size: AvatarSize }>({ size: 'md' })
 const frameSizes = { xs: '6', sm: '8', md: '10', lg: '12', xl: '16' } as const
 
 const AvatarFrame = styled(TamaguiAvatar, {
-  name: 'Avatar',
+  displayName: 'Avatar',
   circular: true,
   overflow: 'hidden',
   flexShrink: 0,
@@ -39,20 +39,20 @@ const AvatarFrame = styled(TamaguiAvatar, {
 })
 
 const AvatarImage = styled(TamaguiAvatar.Image, {
-  name: 'AvatarImage',
+  displayName: 'AvatarImage',
   width: '100%',
   height: '100%',
 })
 
 const AvatarFallbackFrame = styled(TamaguiAvatar.Fallback, {
-  name: 'AvatarFallback',
+  displayName: 'AvatarFallback',
   backgroundColor: "muted",
   alignItems: 'center',
   justifyContent: 'center'
 })
 
 const AvatarFallbackText = styled(Text, {
-  name: 'AvatarFallbackText',
+  displayName: 'AvatarFallbackText',
   context: AvatarContext,
   color: "mutedForeground",
   fontFamily: "body",

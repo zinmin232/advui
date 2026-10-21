@@ -45,16 +45,20 @@ async function renderWithRipple(ui: ReactElement) {
 const ripples = () =>
   screen.container.queryAll((node) => node.props.nativeBackgroundAndroid !== undefined)
 
+// A responder event as React Native's Pressability reads it (Tamagui 3 hands
+// presses to it): it persists the event and reads the touch's position and time.
 const grant = (pageX: number, pageY: number) => ({
   nativeEvent: {
     pageX,
     pageY,
     locationX: pageX,
     locationY: pageY,
+    timestamp: Date.now(),
     touches: [],
     changedTouches: [],
   },
   touchHistory: { touchBank: [] },
+  persist() {},
 })
 
 describe('useRipple', () => {

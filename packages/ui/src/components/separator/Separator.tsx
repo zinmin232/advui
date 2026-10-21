@@ -4,7 +4,7 @@ import { isTextContent } from '../../utils/isTextContent'
 import { Text } from '../typography/Text'
 
 const SeparatorFrame = styled(View, {
-  name: 'Separator',
+  displayName: 'Separator',
   backgroundColor: "border",
   flexShrink: 0,
   variants: {
@@ -18,7 +18,7 @@ const SeparatorFrame = styled(View, {
 
 /** The row that holds the two lines and the label. */
 const LabelledFrame = styled(View, {
-  name: 'SeparatorLabelled',
+  displayName: 'SeparatorLabelled',
   flexDirection: 'row',
   alignItems: 'center',
   gap: "3",
@@ -27,7 +27,7 @@ const LabelledFrame = styled(View, {
 
 /** One line of a labelled separator; `short` is the 16px end at the start or end. */
 const Line = styled(View, {
-  name: 'SeparatorLine',
+  displayName: 'SeparatorLine',
   height: 1,
   backgroundColor: "border",
   variants: {

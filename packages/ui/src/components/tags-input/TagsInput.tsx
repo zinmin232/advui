@@ -18,7 +18,7 @@ import { fieldBoxStyle } from '../input/Input'
 import { TagsInputText } from './TagsInputText'
 
 export const TagsInputFrame = styled(XStack, {
-  name: 'TagsInput',
+  displayName: 'TagsInput',
   ...fieldBoxStyle,
   alignItems: 'center',
   flexWrap: 'wrap',

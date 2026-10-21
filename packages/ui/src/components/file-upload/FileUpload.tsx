@@ -8,7 +8,7 @@ import { FileList } from './FileList'
 import { type FileSelectionProps, useFileSelection } from './useFileSelection'
 
 const FileUploadFrame = styled(View, {
-  name: 'FileUpload',
+  displayName: 'FileUpload',
   gap: "2",
   alignItems: 'flex-start'
 })

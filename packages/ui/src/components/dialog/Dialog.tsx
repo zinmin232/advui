@@ -27,26 +27,26 @@ import {
 import { useOverlayPress } from './useOverlayPress'
 import { transformOpacity } from '../../utils/transition'
 
-const Overlay = styled(TamaguiDialog.Overlay, { name: 'DialogOverlay', ...overlayStyle })
+const Overlay = styled(TamaguiDialog.Overlay, { displayName: 'DialogOverlay', ...overlayStyle })
 
 const ContentFrame = styled(TamaguiDialog.Content, {
-  name: 'DialogContent',
+  displayName: 'DialogContent',
   ...contentStyle,
   variants: { size: contentSizes } as const,
 })
 
 const Header = styled(View, {
-  name: 'DialogHeader',
+  displayName: 'DialogHeader',
   ...headerStyle,
   paddingRight: "6"
 })
 
-const Footer = styled(View, { name: 'DialogFooter', ...footerStyle })
+const Footer = styled(View, { displayName: 'DialogFooter', ...footerStyle })
 
-const Title = styled(TamaguiDialog.Title, { name: 'DialogTitle', ...titleStyle })
+const Title = styled(TamaguiDialog.Title, { displayName: 'DialogTitle', ...titleStyle })
 
 const Description = styled(TamaguiDialog.Description, {
-  name: 'DialogDescription',
+  displayName: 'DialogDescription',
   ...descriptionStyle,
 })
 
@@ -67,7 +67,7 @@ const Content = forwardRef<TamaguiElement, DialogContentProps>(function DialogCo
   const transition = reducedMotion ? null : 'quick'
   const overlayPress = useOverlayPress()
   return (
-    <TamaguiDialog.Portal>
+    <TamaguiDialog.Portal render="div" aria-modal={undefined}>
       <Overlay key="overlay" {...overlayPress} transition={transition} />
       <ContentFrame
         key="content"
@@ -130,7 +130,7 @@ export const Dialog = withStaticProperties(DialogRoot, {
   Description,
   Close,
   Body: styled(View, {
-    name: 'DialogBody',
+    displayName: 'DialogBody',
     gap: "3"
   }),
   Text,

@@ -50,7 +50,7 @@ export function getPaginationItems(
 }
 
 const PaginationFrame = styled(View, {
-  name: 'Pagination',
+  displayName: 'Pagination',
   flexDirection: 'row',
   alignItems: 'center',
   flexWrap: 'wrap',

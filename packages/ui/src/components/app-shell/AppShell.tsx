@@ -76,7 +76,7 @@ const visuallyHidden = {
 } as const
 
 const RootFrame = styled(View, {
-  name: 'AppShell',
+  displayName: 'AppShell',
   width: '100%',
   overflow: 'hidden',
   backgroundColor: "background",
@@ -90,7 +90,7 @@ const RootFrame = styled(View, {
 })
 
 const HeaderFrame = styled(View, {
-  name: 'AppShellHeader',
+  displayName: 'AppShellHeader',
   flexDirection: 'row',
   alignItems: 'center',
   gap: "2",
@@ -103,7 +103,7 @@ const HeaderFrame = styled(View, {
 })
 
 const FooterFrame = styled(View, {
-  name: 'AppShellFooter',
+  displayName: 'AppShellFooter',
   flexDirection: 'row',
   alignItems: 'center',
   gap: "2",
@@ -116,7 +116,7 @@ const FooterFrame = styled(View, {
 })
 
 const SidebarFrame = styled(View, {
-  name: 'AppShellSidebar',
+  displayName: 'AppShellSidebar',
   flexShrink: 0,
   minHeight: 0,
   ...(isWeb && { overflowY: 'auto' }),
@@ -124,7 +124,7 @@ const SidebarFrame = styled(View, {
 
 /** Web: the box that scrolls, around the header (when it scrolls too) and `<main>`. */
 const ScrollerFrame = styled(View, {
-  name: 'AppShellScroller',
+  displayName: 'AppShellScroller',
   flex: 1,
   minHeight: 0,
   minWidth: 0,
@@ -138,7 +138,7 @@ const ScrollerFrame = styled(View, {
 })
 
 const MainFrame = styled(View, {
-  name: 'AppShellMain',
+  displayName: 'AppShellMain',
   flexGrow: 1,
   flexShrink: 0,
 })

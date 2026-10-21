@@ -48,7 +48,7 @@ const visuallyHidden = {
 const warnedPaths = new Set<string>()
 
 const LinkText = styled(TamaguiText, {
-  name: 'Link',
+  displayName: 'Link',
   cursor: 'pointer',
   // A link without an href renders a <button>: drop the browser's button chrome.
   padding: 0,

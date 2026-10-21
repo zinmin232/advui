@@ -19,13 +19,13 @@ import {
 import { ariaState } from '../../utils/ariaState'
 
 const CalendarFrame = styled(View, {
-  name: 'Calendar',
+  displayName: 'Calendar',
   gap: "3",
   alignSelf: 'flex-start'
 })
 
 const DayCell = styled(View, {
-  name: 'CalendarDay',
+  displayName: 'CalendarDay',
   width: "9",
   height: "9",
   alignItems: 'center',

@@ -11,7 +11,7 @@ export type ToggleSize = 'sm' | 'md' | 'lg'
 
 // Shared with ToggleGroup items so both look and size the same.
 export const ToggleFrame = styled(View, {
-  name: 'Toggle',
+  displayName: 'Toggle',
   render: 'button',
   flexDirection: 'row',
   alignItems: 'center',
@@ -68,7 +68,7 @@ export const ToggleFrame = styled(View, {
 })
 
 export const ToggleText = styled(Text, {
-  name: 'ToggleText',
+  displayName: 'ToggleText',
   fontFamily: "body",
   fontWeight: '500',
   userSelect: 'none',

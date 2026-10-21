@@ -288,7 +288,7 @@ const MenuGroup = forwardRef<TamaguiElement, MenuGroupProps>(function MenuGroup(
 })
 
 const MenuSeparator = styled(View, {
-  name: 'MenuSeparator',
+  displayName: 'MenuSeparator',
   role: isWeb ? 'separator' : 'none',
   'aria-hidden': !isWeb,
   height: 1,

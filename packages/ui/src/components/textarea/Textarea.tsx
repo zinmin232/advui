@@ -5,7 +5,7 @@ import { inputBaseStyle } from '../input/Input'
 import { ariaState } from '../../utils/ariaState'
 
 const TextareaFrame = styled(TextArea, {
-  name: 'Textarea',
+  displayName: 'Textarea',
   ...inputBaseStyle,
   minHeight: "20",
   paddingHorizontal: "3",

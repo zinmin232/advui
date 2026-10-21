@@ -33,7 +33,7 @@ import { plainText } from '../../utils/plainText'
 import { fieldBoxStyle } from '../input/Input'
 
 const Trigger = styled(TamaguiSelect.Trigger, {
-  name: 'SelectTrigger',
+  displayName: 'SelectTrigger',
   ...fieldBoxStyle,
   flexDirection: 'row',
   alignItems: 'center',
@@ -70,7 +70,7 @@ const Trigger = styled(TamaguiSelect.Trigger, {
 })
 
 const ValueText = styled(TamaguiSelect.Value, {
-  name: 'SelectValue',
+  displayName: 'SelectValue',
   fontFamily: "body",
   fontSize: "2",
   color: "foreground",
@@ -79,7 +79,7 @@ const ValueText = styled(TamaguiSelect.Value, {
 })
 
 const Viewport = styled(TamaguiSelect.Viewport, {
-  name: 'SelectViewport',
+  displayName: 'SelectViewport',
   backgroundColor: "popover",
   borderWidth: 1,
   borderColor: "border",
@@ -90,7 +90,7 @@ const Viewport = styled(TamaguiSelect.Viewport, {
 })
 
 const ItemFrame = styled(TamaguiSelect.Item, {
-  name: 'SelectItem',
+  displayName: 'SelectItem',
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -108,14 +108,14 @@ const ItemFrame = styled(TamaguiSelect.Item, {
 })
 
 const ItemText = styled(TamaguiSelect.ItemText, {
-  name: 'SelectItemText',
+  displayName: 'SelectItemText',
   fontFamily: "body",
   fontSize: "2",
   color: "popoverForeground"
 })
 
 const GroupLabel = styled(TamaguiSelect.Label, {
-  name: 'SelectLabel',
+  displayName: 'SelectLabel',
   paddingHorizontal: "2-5",
   paddingVertical: "1-5",
   fontFamily: "body",
@@ -234,7 +234,7 @@ function findLabel(children: ReactNode, value: string | undefined): ReactNode {
 // renders different inline styles during SSR and hydration, so we mount the
 // interactive Select only after hydration.
 const StaticTrigger = styled(View, {
-  name: 'SelectTrigger',
+  displayName: 'SelectTrigger',
   ...fieldBoxStyle,
   flexDirection: 'row',
   alignItems: 'center',
@@ -453,7 +453,7 @@ export const Select = withStaticProperties(SelectRoot, {
   Item: SelectItem as (props: SelectItemProps) => ReactElement,
   Group: SelectGroup,
   Separator: styled(View, {
-    name: 'SelectSeparator',
+    displayName: 'SelectSeparator',
     height: 1,
     backgroundColor: "border",
     marginVertical: "1"

@@ -4,7 +4,7 @@ import { type GetProps, type TamaguiElement, View, styled } from 'tamagui/unstyl
 export type ScrollAreaOrientation = 'vertical' | 'horizontal'
 
 const ScrollAreaFrame = styled(View, {
-  name: 'ScrollArea',
+  displayName: 'ScrollArea',
   // Keyboard users scroll it with the arrow keys once it has focus.
   tabIndex: 0,
   outlineColor: "focus-visible:ring",

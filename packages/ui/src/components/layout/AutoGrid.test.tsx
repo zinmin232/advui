@@ -43,7 +43,7 @@ describe('AutoGrid on web', () => {
         </AutoGrid>
       </UniversalProvider>,
     )
-    expect(html).toContain('_dsp-grid')
+    expect(html).toContain('display:grid')
     expect(html).toContain(
       'grid-template-columns:repeat(auto-fill, minmax(min(max(200px, calc((100% - 16px) / 3)), 100%), 1fr))',
     )

@@ -21,7 +21,7 @@ const slotSizes = {
 } as const
 
 const Slot = styled(View, {
-  name: 'OtpInputSlot',
+  displayName: 'OtpInputSlot',
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: "background",
@@ -49,7 +49,7 @@ const Slot = styled(View, {
 // The real field lies over the slots: one text box, so paste, SMS autofill and
 // screen readers all work, while the slots only draw its characters.
 const HiddenField = styled(TamaguiInput, {
-  name: 'OtpInputField',
+  displayName: 'OtpInputField',
   position: 'absolute',
   top: 0,
   left: 0,

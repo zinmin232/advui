@@ -45,7 +45,7 @@ const focusRing = {
 } as const
 
 const TopLevelFrame = styled(View, {
-  name: 'NavigationMenuTrigger',
+  displayName: 'NavigationMenuTrigger',
   flexDirection: 'row',
   alignItems: 'center',
   gap: "1",
@@ -66,7 +66,7 @@ const TopLevelFrame = styled(View, {
 })
 
 const PanelLinkFrame = styled(View, {
-  name: 'NavigationMenuPanelLink',
+  displayName: 'NavigationMenuPanelLink',
   flexDirection: 'row',
   alignItems: 'flex-start',
   gap: "3",
@@ -87,7 +87,7 @@ const PanelLinkFrame = styled(View, {
 })
 
 const PanelFrame = styled(View, {
-  name: 'NavigationMenuPanel',
+  displayName: 'NavigationMenuPanel',
   backgroundColor: "popover",
   borderWidth: 1,
   borderColor: "border",

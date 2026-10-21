@@ -9,7 +9,7 @@ import { useDropTarget } from './useDropTarget'
 import { ariaState } from '../../utils/ariaState'
 
 const DropArea = styled(View, {
-  name: 'FileDropzone',
+  displayName: 'FileDropzone',
   role: 'button',
   alignItems: 'center',
   justifyContent: 'center',

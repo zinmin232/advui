@@ -27,7 +27,7 @@ const ImageElement = TamaguiImage as unknown as ComponentType<
 >
 
 const ImageFrame = styled(View, {
-  name: 'Image',
+  displayName: 'Image',
   position: 'relative',
   overflow: 'hidden',
   backgroundColor: "muted",

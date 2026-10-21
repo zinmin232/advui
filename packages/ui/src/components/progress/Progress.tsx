@@ -1,7 +1,7 @@
 import { type GetProps, View, isWeb, styled } from 'tamagui/unstyled'
 
 const Track = styled(View, {
-  name: 'Progress',
+  displayName: 'Progress',
   width: '100%',
   overflow: 'hidden',
   backgroundColor: "muted",
@@ -23,7 +23,7 @@ const Track = styled(View, {
 })
 
 const Indicator = styled(View, {
-  name: 'ProgressIndicator',
+  displayName: 'ProgressIndicator',
   height: '100%',
   borderRadius: "full",
   transition: 'medium',

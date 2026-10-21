@@ -58,7 +58,7 @@ export function rankCommand(command: Command, query: string): number {
 }
 
 const SearchInput = styled(TamaguiInput, {
-  name: 'CommandPaletteInput',
+  displayName: 'CommandPaletteInput',
   flex: 1,
   height: "12",
   padding: 0,
@@ -73,7 +73,7 @@ const SearchInput = styled(TamaguiInput, {
 })
 
 const OptionRow = styled(View, {
-  name: 'CommandPaletteOption',
+  displayName: 'CommandPaletteOption',
   flexDirection: 'row',
   alignItems: 'center',
   gap: "3",

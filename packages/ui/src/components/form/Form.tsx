@@ -21,7 +21,7 @@ export type FormDirection = 'vertical' | 'horizontal'
 // Tamagui's Form renders `<form>` on web (submit events, Enter in a field) and
 // a View on native, and feeds `onSubmit` to `Form.Trigger`.
 const FormFrame = styled(TamaguiForm, {
-  name: 'Form',
+  displayName: 'Form',
   flexDirection: 'column',
   gap: "6",
   variants: {
@@ -32,12 +32,12 @@ const FormFrame = styled(TamaguiForm, {
 })
 
 const FormHeader = styled(View, {
-  name: 'FormHeader',
+  displayName: 'FormHeader',
   gap: "1-5"
 })
 
 const FormContent = styled(View, {
-  name: 'FormContent',
+  displayName: 'FormContent',
   flexDirection: 'column',
 
   variants: {
@@ -49,7 +49,7 @@ const FormContent = styled(View, {
 })
 
 const FormFooter = styled(View, {
-  name: 'FormFooter',
+  displayName: 'FormFooter',
   flexDirection: 'row',
   flexWrap: 'wrap',
   alignItems: 'center',
