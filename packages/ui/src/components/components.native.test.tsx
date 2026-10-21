@@ -1425,6 +1425,8 @@ describe('native rendering', () => {
     const touch = {
       nativeEvent: { locationX: 0, locationY: 0, touches: [], changedTouches: [] },
       touchHistory: { touchBank: [], numberActiveTouches: 0, indexOfSingleActiveTouch: 0 },
+      currentTarget: {},
+      persist() {},
     }
     expect(guard!.props.onMoveShouldSetResponder()).toBe(false)
     await fireEvent(area, 'responderGrant', touch)
