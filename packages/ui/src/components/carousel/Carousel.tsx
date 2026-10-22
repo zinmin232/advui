@@ -28,7 +28,6 @@ import { useBreakpointValue } from '../../hooks/useBreakpoint'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
-import { ariaState } from '../../utils/ariaState'
 import type { Responsive } from '../../utils/responsive'
 import { visuallyHidden } from '../../utils/visuallyHidden'
 import { IconButton } from '../icon-button/IconButton'
@@ -54,6 +53,8 @@ export interface CarouselLabels {
   next: string
   /** A dot's name. Default: "Go to slide 3". */
   goTo: (index: number) => string
+  /** Added to the current dot's name on iOS and Android. Default: "current". */
+  current: string
   play: string
   pause: string
 }
@@ -66,6 +67,7 @@ const defaultLabels: CarouselLabels = {
   previous: 'Previous slide',
   next: 'Next slide',
   goTo: (index) => `Go to slide ${index + 1}`,
+  current: 'current',
   play: 'Play slide show',
   pause: 'Pause slide show',
 }
@@ -174,7 +176,7 @@ function Dot({
             'aria-current': active || undefined,
             'aria-controls': controls,
           }
-        : { accessible: true, role: 'button', 'aria-selected': ariaState(active) })}
+        : { accessible: true, role: 'button' })}
       width="6"
       height="6"
       alignItems="center"
@@ -360,7 +362,11 @@ const CarouselRoot = forwardRef<TamaguiElement, CarouselProps>(function Carousel
               <Dot
                 key={i}
                 active={i === index}
-                label={labels.goTo(i)}
+                // Native says which dot is current in its name: a selected
+                // state that moves makes TalkBack read every dot in the row.
+                label={
+                  !isWeb && i === index ? `${labels.goTo(i)}, ${labels.current}` : labels.goTo(i)
+                }
                 controls={trackId}
                 onPress={() => goTo(i)}
               />

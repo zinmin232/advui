@@ -66,7 +66,7 @@ const Item = styled(TamaguiRadioGroup.Item, {
       },
     },
     disabled: {
-      true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: 'none' },
+      true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: isWeb ? 'none' : 'auto' },
     },
   } as const,
 

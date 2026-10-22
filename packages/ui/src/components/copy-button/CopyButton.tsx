@@ -1,7 +1,7 @@
 import { CheckIcon, CopyIcon, XIcon } from '@advui/icons'
 import { composeEventHandlers } from '@advui/utils'
 import { type ReactNode, forwardRef, useContext, useState } from 'react'
-import { AccessibilityInfo, type LayoutChangeEvent } from 'react-native'
+import { AccessibilityInfo, type LayoutChangeEvent, Platform } from 'react-native'
 import { type TamaguiElement, Text, View, isWeb } from 'tamagui/unstyled'
 import { visuallyHidden } from '../../utils/visuallyHidden'
 import { Button, type ButtonProps } from '../button/Button'
@@ -44,6 +44,8 @@ export interface CopyButtonProps extends Omit<
   labels?: Partial<CopyButtonLabels>
 }
 
+const systemConfirmsCopy = () => Platform.OS === 'android' && Platform.Version >= 33
+
 const icons = { idle: <CopyIcon />, copied: <CheckIcon />, failed: <XIcon /> }
 
 /**
@@ -76,7 +78,8 @@ export const CopyButton = forwardRef<TamaguiElement, CopyButtonProps>(function C
     const copied = await copy(value)
     const next = copied ? labels.copied : labels.failed
     if (isWeb) setMessage((current) => ({ text: next, count: current.count + 1 }))
-    else AccessibilityInfo.announceForAccessibility(next)
+    // Android 13 and later confirm every copy themselves, and TalkBack reads it.
+    else if (!(copied && systemConfirmsCopy())) AccessibilityInfo.announceForAccessibility(next)
   }
 
   // The icon button keeps its name while the result shows in the tooltip, so

@@ -89,19 +89,15 @@ CI and AI agents cannot close them. To run the Expo playground on a phone:
 - [ ] **iPhone.** Nothing has been checked on iOS yet. Look closely at Tags
       Input's Backspace, the sheets that stop below the status bar, and the
       announcements made with `AccessibilityInfo`.
-- [ ] **TalkBack and VoiceOver by ear.** The Android checks read the
-      accessibility tree, not speech, and Android puts hints (descriptions,
-      help text, group names) in tooltip text, which `uiautomator` does not
-      show. Listen for:
-  - announcements: Copy Button's result, Tags Input's added and removed
-    tags, Carousel's position;
-  - names: a labelled Separator with `decorative={false}`, read once; a
-    named Section; AppShell's drawer ("Docs");
-  - double reads: a List whose rows are not buttons gets their text as its
-    own label from React Native;
-  - focus after a chip's remove button is pressed (web moves it to the next
-    chip);
-  - Video and Audio Player's sound (the Android phone's media volume was 0).
+- [ ] **TalkBack and VoiceOver by ear.** TalkBack done on 2026-10-22
+      (TECNO KM9, Android 16): Copy Button, Tags Input and Carousel
+      announcements, a labelled Separator, named Sections, AppShell's
+      drawer, List rows, focus after a chip is removed, and Video and Audio
+      Player's sound. The fixes are in the CHANGELOG: Copy Button's
+      "Copied" was read twice, Carousel read every dot after a move, Chip
+      lost focus after a removal, disabled controls could not be found by
+      touch, and Audio Player's frame caught touches meant for its buttons.
+      Left: the same list with VoiceOver on an iPhone.
 - [ ] **A phone with the stock font.** The TECNO's system font replaces
       monospace in every app, so Code Block, `Text mono` and Kbd were never
       seen monospaced on Android.
@@ -120,6 +116,6 @@ CI and AI agents cannot close them. To run the Expo playground on a phone:
       Input's toggle).
       Android (TECNO KM9, Android 16, Expo Go) passed these on 2026-10-22
       after fixes to sheet handles, Select's sheet, Dialog and Drawer motion
-      and Tabs, then Text's `truncate` and Card's `elevated` shadow. Left: an
-      iPhone, and a listen with TalkBack itself (the UI tree gives names and
-      states, not roles or reading order).
+      and Tabs, then Text's `truncate` and Card's `elevated` shadow, and
+      TalkBack was listened to on the same day (the item above). Left: an
+      iPhone.

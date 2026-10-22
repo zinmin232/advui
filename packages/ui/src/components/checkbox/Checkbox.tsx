@@ -41,7 +41,7 @@ const BaseCheckbox = styled(TamaguiCheckbox, {
       },
     },
     disabled: {
-      true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: 'none' },
+      true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: isWeb ? 'none' : 'auto' },
     },
   } as const,
 

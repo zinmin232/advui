@@ -10,7 +10,7 @@ export default defineMeta({
   since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Chip'],
-  files: ['components/chip/Chip.tsx', 'components/chip/index.ts'],
+  files: ['components/chip/Chip.tsx', 'components/chip/removeFocus.ts', 'components/chip/index.ts'],
   keywords: ['tag', 'filter', 'pill', 'token', 'material', 'input chip', 'suggestion'],
   usage: `import { Chip } from '@advui/core'
 
@@ -72,6 +72,8 @@ export default defineMeta({
     'Filter chips are toggle buttons: `aria-pressed` on web, a toggle button with a checked state on iOS and Android. Group them with a labelled `role="group"`.',
     'The selected state is shown by color and a check mark, not color alone.',
     'Input chips keep their text and a separate remove button named “Remove Ada Lovelace”, so the action is clear and has its own focus stop.',
+    'After a remove button removes its chip, focus moves to the next input chip in the row, or the previous one after the last, on every platform (unless the app has moved it). Otherwise focus is lost with the chip, and TalkBack and VoiceOver start again from the top of the screen.',
+    'A disabled chip still takes touches on iOS and Android, so TalkBack finds it by touch and reads it as disabled; it ignores presses.',
     'Action chips are buttons. Chips without an action are plain text.',
   ],
   keyboard: [

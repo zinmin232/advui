@@ -163,6 +163,8 @@ export function AudioPlayer({
 
   return (
     <View
+      // Native reads no group names, and TalkBack made the named frame one
+      // stop that a touch on its buttons landed on.
       {...(isWeb ? { role: 'group' } : {})}
       width="100%"
       gap="3"
@@ -172,7 +174,7 @@ export function AudioPlayer({
       borderRadius="lg"
       backgroundColor="card"
       {...props}
-      aria-label={title}
+      {...(isWeb && { 'aria-label': title })}
     >
       <XStack alignItems="center" gap="3">
         <IconButton

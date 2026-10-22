@@ -232,6 +232,26 @@ line with an ellipsis) and Card's `elevated` shadow (Android `elevation`).
 
 ### Fixed
 
+- **Disabled controls** on iOS and Android take touches, so TalkBack finds
+  them by touch and reads them as disabled: Button, Toggle, FAB, Chip,
+  Checkbox, Switch, Radio Group, Select and the date pickers' triggers. Their
+  disabled style blocked touches (`pointerEvents: 'none'`), which left them
+  reachable only by swiping; it is web only now, and Tamagui gives a disabled
+  view no press handlers.
+- **Chip**: after a remove button removes its chip, focus moves to the next
+  input chip in the row, or the previous one after the last, on every
+  platform. TalkBack started again from the top of the screen. Tags Input's
+  tags do the same on iOS and Android.
+- **Copy Button** on Android 13 and later: "Copied" is read once. The system
+  confirms every copy itself, and TalkBack reads it, so only a failure is
+  announced there.
+- **Carousel** on iOS and Android: after a move TalkBack reads "Slide 2 of
+  4", not every dot as well. The current dot says "current" in its name
+  (new `labels.current`) instead of a selected state, which made TalkBack
+  read the row whenever it moved.
+- **Audio Player** on iOS and Android: TalkBack reaches its skip and speed
+  buttons by touch. The frame was named by the title, and TalkBack made it
+  one stop that caught touches meant for the buttons inside.
 - **Tabs** on Android: TalkBack reads a disabled tab as a disabled tab, and
   reads a panel's content once. Tamagui sets a tab's disabled state on web
   only, so a disabled tab was plain text; and the panel took a tab stop,

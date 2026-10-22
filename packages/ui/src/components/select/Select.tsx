@@ -65,7 +65,7 @@ const Trigger = styled(TamaguiSelect.Trigger, {
       },
     },
     disabled: {
-      true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: 'none' },
+      true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: isWeb ? 'none' : 'auto' },
     },
   } as const,
 })
@@ -108,7 +108,7 @@ const ItemFrame = styled(TamaguiSelect.Item, {
   backgroundColor: 'hover:accent press:accentHover focus:accent',
   variants: {
     disabled: {
-      true: { opacity: 0.5, pointerEvents: 'none' },
+      true: { opacity: 0.5, pointerEvents: isWeb ? 'none' : 'auto' },
     },
   } as const,
 })

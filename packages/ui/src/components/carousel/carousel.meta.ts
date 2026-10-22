@@ -101,7 +101,7 @@ export default defineMeta({
           name: 'labels',
           type: 'Partial<CarouselLabels>',
           description:
-            'Button names (`previous`, `next`, `goTo(index)`, `play`, `pause`), the announcement (`position(index, count)`) and the web role descriptions and slide names (`carousel`, `slide`, `slideName(index, count)`), for translation.',
+            'Button names (`previous`, `next`, `goTo(index)`, `current`, `play`, `pause`), the announcement (`position(index, count)`) and the web role descriptions and slide names (`carousel`, `slide`, `slideName(index, count)`), for translation.',
         },
       ],
       children: { accepts: 'any', min: 1 },
@@ -145,7 +145,7 @@ export default defineMeta({
   ],
   accessibility: [
     'On web the carousel is a region named by `aria-label` and described as a “carousel”; each slide is a group named “2 of 5” and described as a “slide” (WAI-ARIA APG carousel pattern).',
-    'Previous, next and the dots are buttons with names (“Next slide”, “Go to slide 3”); the current dot has `aria-current` on web and the selected state on iOS and Android.',
+    'Previous, next and the dots are buttons with names (“Next slide”, “Go to slide 3”); the current dot has `aria-current` on web, and on iOS and Android says “current” in its name (a selected state that moves makes TalkBack read every dot).',
     'The controls come before the slides in focus and reading order, so the pause button is met before the slides move; they show under the slides.',
     'After a button, dot, key or swipe the new position (“Slide 3 of 5”) is announced: through a polite live region on web, with `AccessibilityInfo.announceForAccessibility` on iOS and Android. Autoplay moves are not announced.',
     'Autoplay waits while the pointer is over the carousel, focus is inside it or a finger is on it, and starts paused when the user asks for less motion. The pause button stops it (WCAG 2.2.2).',
