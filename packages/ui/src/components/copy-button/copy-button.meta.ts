@@ -153,7 +153,7 @@ setClipboard(Clipboard.setStringAsync)`,
   },
   accessibility: [
     'A button, named “Copy” (`labels.copy`) without children or by its label with them. Give it a name that says what it copies when there are several, e.g. “Copy API key”.',
-    'After a press the result is announced, “Copied” or “Couldn’t copy”: through a polite live region on web, and with `AccessibilityInfo.announceForAccessibility` on iOS and Android. The icon button keeps its name; its tooltip shows the result.',
+    'After a press the result is announced, “Copied” or “Couldn’t copy”: through a polite live region on web, and with `AccessibilityInfo.announceForAccessibility` on iOS and Android. Android 13 and later confirm every copy themselves, and TalkBack reads it, so there only a failure is announced. The icon button keeps its name; its tooltip shows the result.',
     'The check is not the only sign: the tooltip or label text changes too.',
   ],
   keyboard: [{ keys: 'Enter / Space', action: 'Copies the value.' }],

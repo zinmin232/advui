@@ -107,7 +107,7 @@ const FabFrame = styled(View, {
       },
     },
     disabled: {
-      true: { opacity: 0.5, pointerEvents: 'none', cursor: 'default' },
+      true: { opacity: 0.5, pointerEvents: isWeb ? 'none' : 'auto', cursor: 'default' },
     },
   } as const,
   defaultVariants: { variant: 'soft', size: 'md' },

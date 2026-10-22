@@ -100,7 +100,7 @@ import { createAudioPlayer } from 'expo-audio'`,
     },
   ],
   accessibility: [
-    'On web the player is a `group` named by its title, so "Play" and "Seek" are read in context.',
+    'On web the player is a `group` named by its title, so "Play" and "Seek" are read in context. iOS and Android read no group names, and TalkBack made a named frame one stop that caught touches meant for its buttons, so there the frame is unnamed.',
     'The play button’s name follows the state ("Play" / "Pause"). The seek bar is a slider whose value reads "1:05 of 3:20"; the time labels beside it are hidden to avoid reading them twice.',
     'The speed button says its value ("Playback speed, 1.5×"). Skip buttons say how far they move.',
     'If the sound cannot be played, the controls are disabled and a message replaces the subtitle.',

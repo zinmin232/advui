@@ -1,11 +1,20 @@
 import { CheckIcon, IconDefaults, XIcon } from '@advui/icons'
-import { type ReactNode, forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui/unstyled'
+import { type ReactNode, forwardRef, useEffect, useRef } from 'react'
+import {
+  type GetProps,
+  type TamaguiElement,
+  Text,
+  View,
+  isWeb,
+  styled,
+  useComposedRefs,
+} from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
 import { ariaState } from '../../utils/ariaState'
 import { flatValue } from '../../utils/responsive'
+import { registerRemovable, removeAndRefocus } from './removeFocus'
 
 const ChipFrame = styled(View, {
   displayName: 'Chip',
@@ -39,7 +48,9 @@ const ChipFrame = styled(View, {
       },
     },
     disabled: {
-      true: { opacity: 0.5, pointerEvents: 'none', cursor: 'default' },
+      // Native keeps touches: TalkBack finds a view by touch only if it takes
+      // them. Chip ignores presses while disabled instead.
+      true: { opacity: 0.5, cursor: 'default', pointerEvents: isWeb ? 'none' : 'auto' },
     },
   } as const,
 })
@@ -124,18 +135,34 @@ export const Chip = forwardRef<TamaguiElement, ChipProps>(function Chip(
     color: 'mutedForeground',
     disabled: disabled || !onRemove || filter,
   })
+  const frameRef = useRef<TamaguiElement>(null)
+  const removeRef = useRef<TamaguiElement>(null)
+  const composedRef = useComposedRefs(ref, frameRef)
+  const removable = onRemove !== undefined && !filter
+  // Removing a chip moves focus to its neighbour, so its row knows its chips.
+  useEffect(() => {
+    if (!removable || !frameRef.current || !removeRef.current) return
+    return registerRemovable(frameRef.current as never, removeRef.current as never)
+  }, [removable])
 
   // An input chip is a group: its text plus a separate remove button, so the
   // remove action has its own name and focus stop.
   if (onRemove && !filter) {
     const name = removeLabel ?? (typeof children === 'string' ? `Remove ${children}` : 'Remove')
     return (
-      <ChipFrame ref={ref} paddingRight="1" {...props} {...ripple.props} disabled={disabled}>
+      <ChipFrame
+        ref={composedRef}
+        paddingRight="1"
+        {...props}
+        {...ripple.props}
+        disabled={disabled}
+      >
         <IconDefaults size={18} color="mutedForeground">
           {icon}
         </IconDefaults>
         <Label color="foreground">{children}</Label>
         <View
+          ref={removeRef}
           render="button"
           role="button"
           aria-label={name}
@@ -158,7 +185,7 @@ export const Chip = forwardRef<TamaguiElement, ChipProps>(function Chip(
             : { accessible: true, hitSlop: 10 })}
           {...removeRipple.props}
           aria-disabled={ariaState(disabled)}
-          onPress={() => !disabled && onRemove()}
+          onPress={() => !disabled && removeAndRefocus(frameRef.current as never, onRemove)}
         >
           {removeRipple.element}
           <XIcon size={14} color="mutedForeground" />

@@ -61,7 +61,7 @@ export const ToggleFrame = styled(View, {
       },
     },
     disabled: {
-      true: { opacity: 0.5, pointerEvents: 'none', cursor: 'default' },
+      true: { opacity: 0.5, pointerEvents: isWeb ? 'none' : 'auto', cursor: 'default' },
     },
   } as const,
   defaultVariants: { variant: 'default', size: 'md' },

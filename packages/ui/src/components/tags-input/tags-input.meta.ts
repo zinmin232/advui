@@ -143,7 +143,7 @@ export default defineMeta({
   ],
   accessibility: [
     'The text box is a plain textbox named by `aria-label` or the Field’s label, with the Field’s help and error text as its description.',
-    'Each tag is a chip with a remove button named “Remove {tag}”. After the button removes its tag, focus moves to the text box.',
+    'Each tag is a chip with a remove button named “Remove {tag}”. After the button removes its tag, focus moves to the text box on web, and to the next tag (or the previous one after the last) on iOS and Android.',
     'Added and removed tags are announced: through a polite live region on web, and with `AccessibilityInfo.announceForAccessibility` on iOS and Android.',
     'Enter in an empty text box is not taken, so it still submits a form.',
   ],

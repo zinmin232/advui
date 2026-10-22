@@ -202,6 +202,25 @@ each edit.
   read that text twice. Keep landmark roles (`region`) web only (Accordion
   content, Carousel). React Native's ScrollView ignores `aria-label`; pass
   `accessibilityLabel` (`ScrollArea.native.tsx`).
+- **Disabled styles must not block touches on native.** TalkBack finds a
+  view by touch only if it takes touches, so `pointerEvents: 'none'` in a
+  `disabled` variant is web only (`isWeb ? 'none' : 'auto'`). Tamagui
+  attaches no press handlers to a view whose `disabled` prop is true. RNTL's
+  `fireEvent.press` still calls the `onPress` it finds on the element you
+  rendered, so tests check the host has no responder handlers
+  (`expectNoPressHandlers`) instead of pressing.
+- **TalkBack reads what moves.** A selected state that moves between
+  siblings makes it read the whole row (Carousel's dots say "current" in
+  their name instead), and Android 13+ reads its own "Copied" after every
+  copy (Copy Button announces only failures there). A named frame around
+  controls becomes one stop that catches touches meant for them (Audio
+  Player): keep group names web only.
+- **Focus after removing a view** on native: React Native's elements walk
+  siblings (`nextElementSibling`) like the DOM, and
+  `AccessibilityInfo.sendAccessibilityEvent(node, 'focus')` moves TalkBack.
+  Wait until the view has left the screen (Chip waits 250 ms after the JS
+  tree drops it), or TalkBack loses focus again and starts at the top
+  (`chip/removeFocus.ts`).
 - **Android does not mark tab and radio views clickable**: give them an
   `activate` action for TalkBack's double-tap (Navigation Bar, Toggle Group).
 - **Yoga sizes a parent at its child's max while measuring**: a center

@@ -8,6 +8,7 @@ import {
   BackHandler,
   Dimensions,
   Linking,
+  Platform,
   StyleSheet,
   processColor,
   type ViewStyle,
@@ -32,6 +33,7 @@ import { Carousel } from './carousel/Carousel'
 import { CheckboxGroup } from './checkbox-group/CheckboxGroup'
 import { Checkbox } from './checkbox/Checkbox'
 import { Chip } from './chip/Chip'
+import { registerRemovable, removeAndRefocus } from './chip/removeFocus'
 import { CircularProgress } from './circular-progress/CircularProgress'
 import { CodeBlock } from './code-block/CodeBlock'
 import { Collapsible } from './collapsible/Collapsible'
@@ -117,6 +119,17 @@ import { UniversalProvider } from '../provider/UniversalProvider'
 // These run the React Native code path (react-native + Tamagui native builds,
 // `.native.tsx` platform files) — the same code Expo ships to iOS and Android.
 
+/**
+ * A disabled control takes touches (so TalkBack finds it), but Tamagui gives
+ * its view no handlers. RNTL's press would still call the rendered element's
+ * onPress, which no touch reaches, so check the handlers instead.
+ */
+function expectNoPressHandlers(element: { props: Record<string, unknown> }) {
+  expect(element.props.onStartShouldSetResponder).toBeUndefined()
+  expect(element.props.onResponderRelease).toBeUndefined()
+  expect(element.props.onClick).toBeUndefined()
+}
+
 describe('native rendering', () => {
   it('Button exposes the button role, fires onPress and blocks presses when disabled', async () => {
     const onPress = jest.fn()
@@ -136,7 +149,7 @@ describe('native rendering', () => {
 
     const disabled = screen.getByRole('button', { name: 'Disabled' })
     expect(disabled).toBeDisabled()
-    await fireEvent.press(disabled)
+    expectNoPressHandlers(disabled)
     expect(onDisabledPress).not.toHaveBeenCalled()
   })
 
@@ -1199,6 +1212,76 @@ describe('native rendering', () => {
     expect(onRemove).toHaveBeenCalledTimes(1)
   })
 
+  it('Chip moves focus to the next input chip after a removal, or the previous after the last', async () => {
+    // The test renderer's views have no siblings to walk, so this drives the
+    // registry with stand-ins for React Native's DOM-like elements.
+    jest.useFakeTimers()
+    const focus = jest.spyOn(AccessibilityInfo, 'sendAccessibilityEvent').mockImplementation(() => {})
+    type Node = {
+      isConnected: boolean
+      nextElementSibling: Node | null
+      previousElementSibling: Node | null
+    }
+    const node = (): Node => ({
+      isConnected: true,
+      nextElementSibling: null,
+      previousElementSibling: null,
+    })
+    const [ada, grace, alan, text] = [node(), node(), node(), node()]
+    ada.nextElementSibling = grace
+    grace.previousElementSibling = ada
+    grace.nextElementSibling = alan
+    alan.previousElementSibling = grace
+    // Not a chip: skipped.
+    alan.nextElementSibling = text
+    const buttons = { ada: node(), grace: node(), alan: node() }
+    registerRemovable(ada, buttons.ada)
+    registerRemovable(grace, buttons.grace)
+    registerRemovable(alan, buttons.alan)
+
+    removeAndRefocus(ada, () => {
+      ada.isConnected = false
+    })
+    jest.advanceTimersByTime(100)
+    // Not yet: focused before the view leaves the screen, TalkBack loses it again.
+    expect(focus).not.toHaveBeenCalled()
+    jest.advanceTimersByTime(300)
+    expect(focus).toHaveBeenLastCalledWith(buttons.grace, 'focus')
+
+    removeAndRefocus(alan, () => {
+      alan.isConnected = false
+    })
+    jest.advanceTimersByTime(400)
+    expect(focus).toHaveBeenLastCalledWith(buttons.grace, 'focus')
+
+    // A chip the app keeps leaves focus alone.
+    removeAndRefocus(grace, () => {})
+    jest.advanceTimersByTime(1000)
+    expect(focus).toHaveBeenCalledTimes(2)
+    focus.mockRestore()
+    jest.useRealTimers()
+  })
+
+  it('disabled controls stay touchable, so TalkBack finds them by touch, and ignore presses', async () => {
+    const onPress = jest.fn()
+    await renderNative(
+      <>
+        <Button disabled onPress={onPress}>
+          Save
+        </Button>
+        <Chip disabled onPress={onPress}>
+          Invite team
+        </Chip>
+      </>,
+    )
+    for (const name of ['Save', 'Invite team']) {
+      const button = screen.getByRole('button', { name })
+      expect(StyleSheet.flatten(button.props.style).pointerEvents).not.toBe('none')
+      expect(button.props.pointerEvents).not.toBe('none')
+      expectNoPressHandlers(button)
+    }
+  })
+
   it('TagsInput shows its placeholder on one line and keeps it for screen readers', async () => {
     await renderNative(<TagsInput aria-label="Invite" placeholder="name@example.com" />)
     // Android wraps a long TextInput placeholder onto a cut-off second line, so
@@ -2214,12 +2297,15 @@ describe('native rendering', () => {
 
     const next = screen.getByRole('button', { name: 'Next slide' })
     expect(screen.getByRole('button', { name: 'Previous slide' })).toBeDisabled()
-    expect(screen.getByRole('button', { name: 'Go to slide 1' })).toBeSelected()
+    // The current dot says so in its name, not with a selected state: TalkBack
+    // reads the whole row of dots when that state moves.
+    const first = screen.getByRole('button', { name: 'Go to slide 1, current' })
+    expect(first).not.toBeSelected()
     await fireEvent.press(next)
     expect(onIndexChange).toHaveBeenLastCalledWith(1)
     expect(announce).toHaveBeenLastCalledWith('Slide 2 of 3')
-    expect(screen.getByRole('button', { name: 'Go to slide 2' })).toBeSelected()
-    expect(screen.getByRole('button', { name: 'Go to slide 1' })).not.toBeSelected()
+    expect(screen.getByRole('button', { name: 'Go to slide 2, current' })).toBeOnTheScreen()
+    expect(screen.getByRole('button', { name: 'Go to slide 1' })).toBeOnTheScreen()
     expect(next).toBeDisabled()
 
     // A swipe back settles on the first slide.
@@ -2281,8 +2367,7 @@ describe('native rendering', () => {
     const busy = screen.getByRole('button', { name: 'Saving…' })
     expect(busy).toBeDisabled()
     expect(busy).toBeBusy()
-    await fireEvent.press(busy)
-    expect(onPress).toHaveBeenCalledTimes(1)
+    expectNoPressHandlers(busy)
   })
 
   it('Resizable handles are adjustable and resize from the accessibility actions', async () => {
@@ -2343,6 +2428,9 @@ describe('native rendering', () => {
       return engine
     })
     await renderNative(<AudioPlayer src="https://example.org/a.mp3" title="Flood safety" />)
+    // An unnamed frame: TalkBack made a named one a stop that caught touches
+    // meant for the buttons inside.
+    expect(screen.queryByLabelText('Flood safety')).toBeNull()
     await act(() => report({ duration: 90 }))
     await fireEvent.press(screen.getByRole('button', { name: 'Play' }))
     expect(engine.play).toHaveBeenCalled()
@@ -2420,6 +2508,24 @@ describe('native rendering', () => {
     expect(StyleSheet.flatten(copied.props.style).minWidth).toBe(150)
     setClipboard(undefined)
     announce.mockRestore()
+  })
+
+  it('CopyButton leaves a copy to Android 13, which confirms it and is read by TalkBack', async () => {
+    const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility')
+    jest.replaceProperty(Platform, 'OS', 'android')
+    jest.spyOn(Platform, 'Version', 'get').mockReturnValue(33)
+    const write = jest.fn((_text: string) => {})
+    setClipboard(write)
+    await renderNative(<CopyButton value="token-123" />)
+    await fireEvent.press(screen.getByRole('button', { name: 'Copy' }))
+    expect(write).toHaveBeenCalledWith('token-123')
+    expect(announce).not.toHaveBeenCalled()
+    // A failure is ours to say.
+    setClipboard(() => Promise.reject(new Error('denied')))
+    await fireEvent.press(screen.getByRole('button', { name: 'Copy' }))
+    await waitFor(() => expect(announce).toHaveBeenLastCalledWith('Couldn’t copy'))
+    jest.restoreAllMocks()
+    setClipboard(undefined)
   })
 
   it('CodeBlock scrolls long lines sideways, hides line numbers and copies the code', async () => {
