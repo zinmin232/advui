@@ -27,14 +27,6 @@ import {
 import { useOverlayPress } from './useOverlayPress'
 import { transformOpacity } from '../../utils/transition'
 
-const Overlay = styled(TamaguiDialog.Overlay, { displayName: 'DialogOverlay', ...overlayStyle })
-
-const ContentFrame = styled(TamaguiDialog.Content, {
-  displayName: 'DialogContent',
-  ...contentStyle,
-  variants: { size: contentSizes } as const,
-})
-
 const Header = styled(View, {
   displayName: 'DialogHeader',
   ...headerStyle,
@@ -53,7 +45,7 @@ const Description = styled(TamaguiDialog.Description, {
 export type DialogProps = TamaguiDialogProps
 
 export interface DialogContentProps extends Omit<TamaguiDialogContentProps, 'size'> {
-  size?: GetProps<typeof ContentFrame>['size']
+  size?: keyof typeof contentSizes
   /** Hide the top-right close button (keep another way to close!). */
   hideCloseButton?: boolean
   children?: ReactNode
@@ -68,11 +60,20 @@ const Content = forwardRef<TamaguiElement, DialogContentProps>(function DialogCo
   const overlayPress = useOverlayPress()
   return (
     <TamaguiDialog.Portal render="div" aria-modal={undefined}>
-      <Overlay key="overlay" {...overlayPress} transition={transition} />
-      <ContentFrame
+      {/* Styles go on Tamagui's parts as props, not through styled(): on native,
+          Tamagui 3 drops enter and exit values that pass through a styled()
+          wrapper of Dialog.Content or Overlay, so the dialog never animated. */}
+      <TamaguiDialog.Overlay
+        key="overlay"
+        {...overlayStyle}
+        {...overlayPress}
+        transition={transition}
+      />
+      <TamaguiDialog.Content
         key="content"
         ref={ref}
-        size={size}
+        {...contentStyle}
+        {...contentSizes[size]}
         transition={transformOpacity(transition)}
         {...props}
       >
@@ -89,7 +90,7 @@ const Content = forwardRef<TamaguiElement, DialogContentProps>(function DialogCo
             />
           </Close>
         )}
-      </ContentFrame>
+      </TamaguiDialog.Content>
     </TamaguiDialog.Portal>
   )
 })

@@ -35,10 +35,10 @@ import { transformOpacity } from '../../utils/transition'
 
 type Side = 'left' | 'right' | 'top' | 'bottom'
 
-const Overlay = styled(TamaguiDialog.Overlay, { displayName: 'DrawerOverlay', ...overlayStyle })
-
-const ContentFrame = styled(TamaguiDialog.Content, {
-  displayName: 'DrawerContent',
+// Props for Tamagui's Dialog.Content and Overlay, not styled() frames: on
+// native, Tamagui 3 drops enter and exit values that pass through a styled()
+// wrapper of either part, so the drawer never slid.
+const contentStyle = {
   position: 'absolute',
   backgroundColor: 'popover',
   borderColor: 'border',
@@ -50,20 +50,14 @@ const ContentFrame = styled(TamaguiDialog.Content, {
   opacity: 1,
   x: 0,
   y: 0,
-  variants: {
-    side: {
-      left: { top: 0, bottom: 0, left: 0, borderRightWidth: 1, maxWidth: '85%' },
-      right: { top: 0, bottom: 0, right: 0, borderLeftWidth: 1, maxWidth: '85%' },
-      top: { top: 0, left: 0, right: 0, borderBottomWidth: 1, maxHeight: '85%' },
-      bottom: { bottom: 0, left: 0, right: 0, borderTopWidth: 1, maxHeight: '85%' },
-    },
-    size: {
-      sm: {},
-      md: {},
-      lg: {},
-    },
-  } as const,
-})
+} as const
+
+const sideStyles = {
+  left: { top: 0, bottom: 0, left: 0, borderRightWidth: 1, maxWidth: '85%' },
+  right: { top: 0, bottom: 0, right: 0, borderLeftWidth: 1, maxWidth: '85%' },
+  top: { top: 0, left: 0, right: 0, borderBottomWidth: 1, maxHeight: '85%' },
+  bottom: { bottom: 0, left: 0, right: 0, borderTopWidth: 1, maxHeight: '85%' },
+} as const
 
 // Panel width for left and right drawers; top and bottom ones fit their content.
 const widths = { sm: '72', md: '96', lg: '128' } as const
@@ -163,12 +157,17 @@ const Content = forwardRef<TamaguiElement, DrawerContentProps>(function DrawerCo
 
   return (
     <TamaguiDialog.Portal render="div" aria-modal={undefined}>
-      <Overlay key="overlay" {...overlayPress} transition={reducedMotion ? null : 'quick'} />
-      <ContentFrame
+      <TamaguiDialog.Overlay
+        key="overlay"
+        {...overlayStyle}
+        {...overlayPress}
+        transition={reducedMotion ? null : 'quick'}
+      />
+      <TamaguiDialog.Content
         key="content"
         ref={ref}
-        side={side}
-        size={size}
+        {...contentStyle}
+        {...sideStyles[side]}
         width={horizontal ? widths[size] : undefined}
         {...offscreen}
         transition={transformOpacity(transition)}
@@ -188,7 +187,7 @@ const Content = forwardRef<TamaguiElement, DrawerContentProps>(function DrawerCo
             />
           </Close>
         )}
-      </ContentFrame>
+      </TamaguiDialog.Content>
     </TamaguiDialog.Portal>
   )
 })

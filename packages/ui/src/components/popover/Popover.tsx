@@ -26,6 +26,7 @@ import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useSheetMaxHeight } from '../../hooks/useSheetMaxHeight'
+import { SheetHandle } from '../sheet/SheetHandle'
 import { Text } from '../typography/Text'
 import { transformOpacity } from '../../utils/transition'
 
@@ -107,7 +108,7 @@ function PopoverRoot({
                 opacity="enter:0 exit:0"
                 transition={reducedMotion ? undefined : 'quick'}
               />
-              <Sheet.Handle backgroundColor="borderStrong" />
+              <SheetHandle />
               <Sheet.Container
                 paddingTop="5"
                 paddingRight="5"

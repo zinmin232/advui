@@ -23,11 +23,6 @@ import {
 } from '../dialog/styles'
 import { transformOpacity } from '../../utils/transition'
 
-const Overlay = styled(TamaguiAlertDialog.Overlay, {
-  displayName: 'AlertDialogOverlay',
-  ...overlayStyle,
-})
-
 const Header = styled(View, { displayName: 'AlertDialogHeader', ...headerStyle })
 
 const Footer = styled(View, { displayName: 'AlertDialogFooter', ...footerStyle })
@@ -54,9 +49,11 @@ const Content = forwardRef<TamaguiElement, AlertDialogContentProps>(function Ale
   const transition = reducedMotion ? null : 'quick'
   return (
     <TamaguiAlertDialog.Portal render="div" aria-modal={undefined}>
-      <Overlay key="overlay" transition={transition} />
-      {/* Not wrapped in styled(): Tamagui's AlertDialog.Content is a plain
-          component, and a styled wrapper keeps it mounted after it closes. */}
+      {/* Neither part is wrapped in styled(): Tamagui's AlertDialog.Content is
+          a plain component, and a styled wrapper keeps it mounted after it
+          closes; on native a styled wrapper also drops enter and exit values,
+          so nothing animated. */}
+      <TamaguiAlertDialog.Overlay key="overlay" {...overlayStyle} transition={transition} />
       <TamaguiAlertDialog.Content
         key="content"
         ref={ref}

@@ -10,7 +10,7 @@ export default defineMeta({
   since: '0.2.0',
   platforms: ['web', 'ios', 'android'],
   exports: ['Sheet'],
-  files: ['components/sheet/Sheet.tsx', 'components/sheet/index.ts'],
+  files: ['components/sheet/Sheet.tsx', 'components/sheet/SheetHandle.tsx', 'components/sheet/index.ts'],
   keywords: ['bottom sheet', 'drawer', 'modal', 'action sheet', 'panel', 'overlay'],
   usage: `import { Button, Sheet } from '@advui/core'
 

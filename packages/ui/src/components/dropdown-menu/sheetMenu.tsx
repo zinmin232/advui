@@ -6,6 +6,7 @@ import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 import { useSheetMaxHeight } from '../../hooks/useSheetMaxHeight'
+import { SheetHandle } from '../sheet/SheetHandle'
 import { Text } from '../typography/Text'
 import type {
   DropdownMenuCheckboxItemProps,
@@ -65,7 +66,7 @@ function Content({ children }: DropdownMenuContentProps) {
         opacity="enter:0 exit:0"
         transition={reducedMotion ? undefined : 'quick'}
       />
-      <Sheet.Handle backgroundColor="borderStrong" />
+      <SheetHandle />
       <Sheet.Container paddingHorizontal="2" paddingTop="2" paddingBottom="8" maxHeight={maxHeight}>
         <Sheet.Background
           backgroundColor="popover"
