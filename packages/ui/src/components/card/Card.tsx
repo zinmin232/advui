@@ -22,7 +22,9 @@ const CardFrame = styled(View, {
   variants: {
     variant: {
       outline: {},
-      elevated: { ...shadows.sm },
+      // The shadow is set by Card itself: a Tamagui 3 variant holds styles
+      // only and drops Android's `elevation`.
+      elevated: {},
       ghost: { borderColor: 'transparent', backgroundColor: 'transparent' },
       filled: {
         backgroundColor: 'muted',
@@ -108,6 +110,7 @@ const CardImpl = forwardRef<TamaguiElement, GetProps<typeof CardFrame>>(function
   return (
     <CardFrame
       ref={ref}
+      {...(props.variant === 'elevated' && shadows.sm)}
       {...(ripple.active && {
         // The ripple is the press feedback, so the card does not also shrink.
         scale: 'press:1',

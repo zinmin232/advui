@@ -143,8 +143,11 @@ each edit.
   the styles as props instead (Dialog, AlertDialog, Drawer). `Sheet.Handle`
   is unstyled and has no size: use `SheetHandle` (`components/sheet`).
 - **Variants hold styles only.** A variant that sets `numberOfLines`,
-  `ellipsis` or `elevation` loses it on native (Tamagui warns in Metro), so
-  `<Text truncate>` and Card's `elevated` shadow do not apply on Android yet.
+  `ellipsis` or `elevation` loses it on native (Tamagui warns in Metro). Set
+  such props in the component: Text maps `truncate` to `numberOfLines` through
+  `createStyledHOC` (so `styled(Text)` still works), and Card spreads
+  `shadows.sm` for `elevated`. `ellipsis` does nothing on native even as a
+  prop.
 - **Tamagui's Dialog portal is a `<dialog aria-modal>`**, a second, unnamed
   dialog around ours. Dialog, AlertDialog and Drawer render it as a `div`.
 - **Declaration files must name every type.** Tamagui 3's inferred types refer

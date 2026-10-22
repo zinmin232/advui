@@ -1046,6 +1046,26 @@ describe('native rendering', () => {
     }
   })
 
+  it('truncated Text stays on one line and the elevated Card casts a shadow', async () => {
+    // Tamagui 3 variants hold styles only: `numberOfLines` and `elevation`
+    // set by a variant never reached the native view.
+    await renderNative(
+      <>
+        <Text truncate>One long line</Text>
+        <Card variant="elevated">
+          <Card.Title truncate>A long card title</Card.Title>
+        </Card>
+      </>,
+    )
+    for (const text of ['One long line', 'A long card title']) {
+      expect(screen.getByText(text).props.numberOfLines).toBe(1)
+      expect(screen.getByText(text).props.ellipsizeMode).toBe('tail')
+    }
+    let node = screen.getByText('A long card title').parent
+    while (node && node.props.elevation === undefined) node = node.parent
+    expect(node?.props.elevation).toBeGreaterThan(0)
+  })
+
   it('HoverCard renders only its trigger (touch has no hover)', async () => {
     await renderNative(
       <HoverCard defaultOpen>

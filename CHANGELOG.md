@@ -53,6 +53,10 @@ Install it with Adv UI, and update your own styles as below; Tamagui's
   presses to React Native's Pressability, which cancels them outside the view.
 - **Toasts** need no patched `@tamagui/toast` for their label on web.
 
+Tamagui 3 variants hold styles only, so two variants are now set by the
+component itself and still work on iOS and Android: Text's `truncate` (one
+line with an ellipsis) and Card's `elevated` shadow (Android `elevation`).
+
 ### Added
 
 - **Field** `requiredText` and **Calendar** `todayLabel`: the words iOS and
