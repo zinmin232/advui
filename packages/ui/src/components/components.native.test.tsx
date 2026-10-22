@@ -12,7 +12,7 @@ import {
   processColor,
   type ViewStyle,
 } from 'react-native'
-import { XStack } from 'tamagui/unstyled'
+import { XStack, getTokenValue } from 'tamagui/unstyled'
 import { renderNative, touchAt } from '../../test/native-utils'
 import { Accordion } from './accordion/Accordion'
 import { AppShell } from './app-shell/AppShell'
@@ -98,6 +98,7 @@ import { Slider } from './slider/Slider'
 import { Snackbar } from './snackbar/Snackbar'
 import { Stepper } from './stepper/Stepper'
 import { Switch } from './switch/Switch'
+import { Tabs } from './tabs/Tabs'
 import { TagsInput } from './tags-input/TagsInput'
 import { TimePicker } from './time-picker/TimePicker'
 import { Textarea } from './textarea/Textarea'
@@ -658,6 +659,33 @@ describe('native rendering', () => {
     expect(maxHeightAbove('Layer size')).toContain(expected)
   })
 
+  it('Select sheet has a visible handle and no dropdown panel inside', async () => {
+    await renderNative(
+      <Select open aria-label="Fruit" placeholder="Pick a fruit">
+        <Select.Item value="apple">Apple</Select.Item>
+      </Select>,
+    )
+    const option = screen.getByText('Apple')
+    // Tamagui 3 keeps the viewport's styles in the sheet on native: the
+    // dropdown's border drew a box around the options.
+    let node = option.parent
+    let sheet = option
+    while (node) {
+      expect(StyleSheet.flatten(node.props.style)?.borderTopWidth ?? 0).toBe(0)
+      sheet = node
+      node = node.parent
+    }
+    // Tamagui 3's unstyled handle has no size of its own. The sheet renders in
+    // a portal, so look below the option's topmost ancestor.
+    const heights: unknown[] = []
+    const visit = (found: typeof option) => {
+      heights.push(StyleSheet.flatten(found.props.style)?.height)
+      for (const child of found.children) if (typeof child === 'object') visit(child)
+    }
+    visit(sheet)
+    expect(heights).toContain(getTokenValue('2-5', 'space'))
+  })
+
   it('Menubar opens one menu at a time as a sheet of accessible items', async () => {
     const onUndo = jest.fn()
     const onValueChange = jest.fn()
@@ -923,6 +951,99 @@ describe('native rendering', () => {
     expect(screen.getByText('Category')).toBeOnTheScreen()
     await fireEvent.press(screen.getByRole('button', { name: 'Close' }))
     expect(onOpenChange).toHaveBeenLastCalledWith(false)
+  })
+
+  it('Dialog, AlertDialog and Drawer animate in from their enter values', async () => {
+    // Tamagui 3 drops enter values that pass through a styled() wrapper of
+    // Dialog.Content or Overlay on native: all three appeared in one frame.
+    jest.useFakeTimers()
+    const styleAbove = (text: string, key: 'opacity' | 'transform') => {
+      let node = screen.getByText(text).parent
+      while (node && StyleSheet.flatten(node.props.style)?.[key] === undefined) node = node.parent
+      return StyleSheet.flatten(node?.props.style)?.[key]
+    }
+    await renderNative(
+      <>
+        <Dialog>
+          <Dialog.Trigger asChild>
+            <Button>Open dialog</Button>
+          </Dialog.Trigger>
+          <Dialog.Content>
+            <Dialog.Title>In the dialog</Dialog.Title>
+          </Dialog.Content>
+        </Dialog>
+        <AlertDialog>
+          <AlertDialog.Trigger asChild>
+            <Button>Open alert</Button>
+          </AlertDialog.Trigger>
+          <AlertDialog.Content>
+            <AlertDialog.Title>In the alert</AlertDialog.Title>
+          </AlertDialog.Content>
+        </AlertDialog>
+        <Drawer>
+          <Drawer.Trigger asChild>
+            <Button>Open drawer</Button>
+          </Drawer.Trigger>
+          <Drawer.Content side="left">
+            <Drawer.Title>In the drawer</Drawer.Title>
+          </Drawer.Content>
+        </Drawer>
+      </>,
+    )
+    await fireEvent.press(screen.getByRole('button', { name: 'Open dialog' }))
+    expect(styleAbove('In the dialog', 'opacity')).toBe(0)
+    await fireEvent.press(
+      screen.getByRole('button', { name: 'Open alert', includeHiddenElements: true }),
+    )
+    expect(styleAbove('In the alert', 'opacity')).toBe(0)
+    await fireEvent.press(
+      screen.getByRole('button', { name: 'Open drawer', includeHiddenElements: true }),
+    )
+    expect(styleAbove('In the drawer', 'transform')).toContainEqual({
+      translateX: -Dimensions.get('window').width,
+    })
+    await act(async () => {
+      jest.advanceTimersByTime(1000)
+    })
+    expect(styleAbove('In the dialog', 'opacity')).toBe(1)
+    expect(styleAbove('In the alert', 'opacity')).toBe(1)
+    expect(styleAbove('In the drawer', 'transform')).not.toContainEqual({
+      translateX: -Dimensions.get('window').width,
+    })
+    jest.useRealTimers()
+  })
+
+  it('Tabs announce selected and disabled tabs', async () => {
+    // Tamagui sets a tab's disabled state on web only: TalkBack read a
+    // disabled tab as plain text.
+    await renderNative(
+      <Tabs defaultValue="account">
+        <Tabs.List aria-label="Settings">
+          <Tabs.Trigger value="account">Account</Tabs.Trigger>
+          <Tabs.Trigger value="advanced" disabled>
+            Advanced
+          </Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="account">
+          <Text>Account panel</Text>
+        </Tabs.Content>
+      </Tabs>,
+    )
+    expect(screen.getByRole('tab', { name: 'Account' })).toBeSelected()
+    expect(screen.getByRole('tab', { name: 'Account' })).toBeEnabled()
+    const advanced = screen.getByRole('tab', { name: 'Advanced' })
+    expect(advanced).toBeDisabled()
+    expect(advanced.props.accessible).toBe(true)
+    // A focusable panel with a role is named from its text on Android, so
+    // TalkBack read the panel's text twice.
+    let node = screen.getByText('Account panel').parent
+    while (node) {
+      expect(node.props.role).not.toBe('tabpanel')
+      // React Native makes a view with any other tabIndex, null included, focusable.
+      expect(node.props.tabIndex).toBeUndefined()
+      expect(node.props.onClick).toBeUndefined()
+      node = node.parent
+    }
   })
 
   it('HoverCard renders only its trigger (touch has no hover)', async () => {

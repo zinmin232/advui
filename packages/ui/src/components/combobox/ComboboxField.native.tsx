@@ -6,6 +6,7 @@ import { FieldContext, useFieldControl } from '../../hooks/useFieldControl'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 import { fieldBoxStyle, Input } from '../input/Input'
+import { SheetHandle } from '../sheet/SheetHandle'
 import { Text } from '../typography/Text'
 import { type ComboboxFieldProps, type ComboboxOption, defaultFilter } from './options'
 import { ariaState } from '../../utils/ariaState'
@@ -195,7 +196,7 @@ export const ComboboxField = forwardRef<TamaguiElement, ComboboxFieldProps>(
               opacity="enter:0 exit:0"
               transition={reducedMotion ? undefined : 'quick'}
             />
-            <Sheet.Handle backgroundColor="borderStrong" />
+            <SheetHandle />
             <Sheet.Container padding="4" gap="3">
               <Sheet.Background
                 backgroundColor="popover"

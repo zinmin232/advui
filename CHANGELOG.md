@@ -228,6 +228,10 @@ Install it with Adv UI, and update your own styles as below; Tamagui's
 
 ### Fixed
 
+- **Tabs** on Android: TalkBack reads a disabled tab as a disabled tab, and
+  reads a panel's content once. Tamagui sets a tab's disabled state on web
+  only, so a disabled tab was plain text; and the panel took a tab stop,
+  which made it a focusable view named after its own text.
 - **Circular Progress** and **Progress** on Android: TalkBack reads the
   value ("Storage used, 82%"). Android reads a value only as text: the
   minimum, maximum and current value became range info, which TalkBack reads

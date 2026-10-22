@@ -11,11 +11,13 @@ import {
   type TamaguiElement,
   Text,
   createStyledContext,
+  isWeb,
   styled,
   withStaticProperties,
 } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
+import { ariaState } from '../../utils/ariaState'
 import { isTextContent } from '../../utils/isTextContent'
 import type { ControlStateProps } from '../../hooks/useFieldControl'
 
@@ -102,12 +104,16 @@ const TriggerText = styled(Text, {
   userSelect: 'none',
 })
 
+// The focus ring is web only: on native the focus-visible clauses make Tamagui
+// attach focus and press handlers, and Android marks the panel clickable.
 const ContentFrame = styled(TamaguiTabs.Content, {
   displayName: 'TabsContent',
-  outlineColor: 'focus-visible:ring',
-  outlineStyle: 'focus-visible:solid',
-  outlineWidth: 'focus-visible:2px',
-  outlineOffset: 'focus-visible:2px',
+  ...(isWeb && {
+    outlineColor: 'focus-visible:ring',
+    outlineStyle: 'focus-visible:solid',
+    outlineWidth: 'focus-visible:2px',
+    outlineOffset: 'focus-visible:2px',
+  }),
 })
 
 export type TabsProps = TamaguiTabsProps & { variant?: TabsVariant }
@@ -184,6 +190,9 @@ const TabsTrigger = forwardRef<TamaguiElement, TabsTriggerProps>(function TabsTr
       ref={ref}
       variant={variant}
       {...(active ? activeStyles[variant] : null)}
+      // Tamagui sets a tab's disabled state on web only; without it TalkBack
+      // read a disabled tab as plain text.
+      {...(isWeb ? null : { accessible: true, 'aria-disabled': ariaState(props.disabled) })}
       {...props}
       {...ripple.props}
     >
@@ -202,6 +211,17 @@ const TabsTrigger = forwardRef<TamaguiElement, TabsTriggerProps>(function TabsTr
 
 export type TabsContentProps = TamaguiTabsContentProps
 
+// Native: Tamagui gives the panel a role, a label reference and a tab stop.
+// Android then names the focusable panel from its text, so TalkBack read it
+// twice; the panel role is web only (`null` clears Tamagui's props). The tab
+// stop is cleared with `undefined`: React Native's View makes any other
+// `tabIndex`, `null` included, focusable (`!tabIndex`).
+const nativePanel = { role: null, 'aria-labelledby': null, tabIndex: undefined } as const
+
+const TabsContent = forwardRef<TamaguiElement, TabsContentProps>(function TabsContent(props, ref) {
+  return <ContentFrame ref={ref} {...(isWeb ? null : (nativePanel as object))} {...props} />
+})
+
 /**
  * Switch between related panels without leaving the page. Implements the WAI-ARIA
  * tabs pattern: arrow keys move focus, Home/End jump, panels are linked by id.
@@ -209,5 +229,5 @@ export type TabsContentProps = TamaguiTabsContentProps
 export const Tabs = withStaticProperties(TabsRoot, {
   List: TabsList,
   Trigger: TabsTrigger,
-  Content: ContentFrame,
+  Content: TabsContent,
 })

@@ -28,6 +28,7 @@ import { FieldContext, useFieldControl, type ControlStateProps } from '../../hoo
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
 import { useSheetMaxHeight } from '../../hooks/useSheetMaxHeight'
+import { SheetHandle } from '../sheet/SheetHandle'
 import { ariaState } from '../../utils/ariaState'
 import { plainText } from '../../utils/plainText'
 import { fieldBoxStyle } from '../input/Input'
@@ -78,15 +79,20 @@ const ValueText = styled(TamaguiSelect.Value, {
   flexShrink: 1,
 })
 
+// The dropdown panel. On native Select is always a sheet, and Tamagui 3 keeps
+// the viewport's styles there (web drops them when adapted), which drew this
+// panel's border and shadow as a box inside the sheet.
 const Viewport = styled(TamaguiSelect.Viewport, {
   displayName: 'SelectViewport',
-  backgroundColor: 'popover',
-  borderWidth: 1,
-  borderColor: 'border',
-  borderRadius: 'lg',
-  padding: '1',
-  minWidth: '48',
-  ...shadows.md,
+  ...(isWeb && {
+    backgroundColor: 'popover',
+    borderWidth: 1,
+    borderColor: 'border',
+    borderRadius: 'lg',
+    padding: '1',
+    minWidth: '48',
+    ...shadows.md,
+  }),
 })
 
 const ItemFrame = styled(TamaguiSelect.Item, {
@@ -419,7 +425,7 @@ function SelectRoot(selectProps: SelectProps) {
             opacity="enter:0 exit:0"
             transition={reducedMotion ? undefined : 'quick'}
           />
-          <Sheet.Handle backgroundColor="borderStrong" />
+          <SheetHandle />
           <Sheet.Container
             paddingTop="2"
             paddingRight="2"

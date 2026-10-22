@@ -22,6 +22,7 @@ import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { IconButton } from '../icon-button/IconButton'
 import { Text, type TextProps } from '../typography/Text'
+import { SheetHandle } from './SheetHandle'
 
 type SheetState = {
   open: boolean
@@ -176,7 +177,7 @@ function SheetContent({
         opacity="enter:0 exit:0"
         transition={reducedMotion ? undefined : 'quick'}
       />
-      <TamaguiSheet.Handle backgroundColor="borderStrong" />
+      <SheetHandle />
       <TamaguiSheet.Container paddingTop="6" paddingRight="6" paddingLeft="6" paddingBottom="8">
         <TamaguiSheet.Background
           backgroundColor="popover"

@@ -137,6 +137,14 @@ each edit.
   `null` (`role: null` in PasswordInput and Accordion).
 - **New style props can clash with component props**: `page`, `offset`,
   `background`, `container`, `columns`. Omit them from the frame's props.
+- **Do not wrap Tamagui's overlay parts in `styled()`.** On native a
+  `styled()` wrapper of `Dialog.Content` or `Dialog.Overlay` drops their
+  enter and exit values, so the part appears and vanishes in one frame. Pass
+  the styles as props instead (Dialog, AlertDialog, Drawer). `Sheet.Handle`
+  is unstyled and has no size: use `SheetHandle` (`components/sheet`).
+- **Variants hold styles only.** A variant that sets `numberOfLines`,
+  `ellipsis` or `elevation` loses it on native (Tamagui warns in Metro), so
+  `<Text truncate>` and Card's `elevated` shadow do not apply on Android yet.
 - **Tamagui's Dialog portal is a `<dialog aria-modal>`**, a second, unnamed
   dialog around ours. Dialog, AlertDialog and Drawer render it as a `div`.
 - **Declaration files must name every type.** Tamagui 3's inferred types refer
@@ -227,6 +235,10 @@ each edit.
   tests still pass, because `fireEvent` finds the handler on a composite
   element: assert that the host element has `onKeyPress`, and check on a
   device with the on-screen keyboard (`adb` key events never fire it).
+- **`tabIndex` on native**: React Native's View makes a view focusable for any
+  `tabIndex` other than `undefined` (`null` included), and Android then marks
+  it clickable. Clear Tamagui's tab stops with `undefined` (Tabs' panel), and
+  keep `focus-visible:` clauses web only on views that are not controls.
 - **Tamagui sets control states on web only.** Its native Switch sends no
   checked state, and its Checkbox and Radio Group items no disabled state, so
   TalkBack misses them. Set them yourself on native (`accessible`,
