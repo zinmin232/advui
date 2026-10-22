@@ -1,4 +1,4 @@
-import { type GetProps, Text as TamaguiText, styled } from 'tamagui/unstyled'
+import { type GetProps, Text as TamaguiText, createStyledHOC, isWeb, styled } from 'tamagui/unstyled'
 
 const tones = {
   default: { color: 'foreground' },
@@ -32,8 +32,7 @@ export const textWeights = {
   bold: { fontWeight: '700' },
 } as const
 
-/** Body text. Sizes follow the type scale; `tone` maps to semantic theme colors. */
-export const Text = styled(TamaguiText, {
+const TextFrame = styled(TamaguiText, {
   displayName: 'Text',
   fontFamily: 'body',
   color: 'foreground',
@@ -41,8 +40,10 @@ export const Text = styled(TamaguiText, {
     size: textSizes,
     weight: textWeights,
     tone: tones,
+    // Web: one line with an ellipsis, in CSS. Native has no style for it
+    // (`ellipsis` and `numberOfLines` are props there), so Text sets the props.
     truncate: {
-      true: { numberOfLines: 1, ellipsis: true },
+      true: isWeb ? { ellipsis: true } : {},
     },
     mono: {
       true: {
@@ -54,6 +55,22 @@ export const Text = styled(TamaguiText, {
     size: 'base',
   },
 })
+
+/** Body text. Sizes follow the type scale; `tone` maps to semantic theme colors. */
+export const Text = createStyledHOC(
+  TextFrame,
+  function Text(props: GetProps<typeof TextFrame>, ref) {
+    // A Tamagui 3 variant holds styles only, so `truncate` cannot set
+    // `numberOfLines` itself.
+    return (
+      <TextFrame
+        ref={ref}
+        {...(!isWeb && props.truncate && { numberOfLines: 1, ellipsizeMode: 'tail' })}
+        {...props}
+      />
+    )
+  },
+)
 
 export type TextProps = GetProps<typeof Text>
 export type TextSize = keyof typeof textSizes

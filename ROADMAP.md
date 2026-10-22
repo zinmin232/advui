@@ -120,7 +120,6 @@ CI and AI agents cannot close them. To run the Expo playground on a phone:
       Input's toggle).
       Android (TECNO KM9, Android 16, Expo Go) passed these on 2026-10-22
       after fixes to sheet handles, Select's sheet, Dialog and Drawer motion
-      and Tabs. Left: an iPhone, a listen with TalkBack itself (the UI tree
-      gives names and states, not roles or reading order), and `<Text
-      truncate>` and Card's `elevated` shadow on Android (variants drop
-      `numberOfLines` and `elevation`).
+      and Tabs, then Text's `truncate` and Card's `elevated` shadow. Left: an
+      iPhone, and a listen with TalkBack itself (the UI tree gives names and
+      states, not roles or reading order).
