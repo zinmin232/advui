@@ -21,11 +21,13 @@ import {
   Installation,
   Introduction,
   Platforms,
+  Tailwind,
   accessibilityToc,
   cliToc,
   installationToc,
   introductionToc,
   platformsToc,
+  tailwindToc,
 } from '../../../content/guides/getting-started'
 import { getGuide, guides } from '../../../lib/guides'
 import { flatPages, guideSectionTitles } from '../../../lib/navigation'
@@ -37,6 +39,7 @@ const content: Record<string, { Body: ComponentType; toc: TocItem[] }> = {
   cli: { Body: Cli, toc: cliToc },
   accessibility: { Body: Accessibility, toc: accessibilityToc },
   platforms: { Body: Platforms, toc: platformsToc },
+  tailwind: { Body: Tailwind, toc: tailwindToc },
   theme: { Body: ThemeGuide, toc: themeToc },
   colors: { Body: ColorsGuide, toc: colorsToc },
   typography: { Body: TypographyGuide, toc: typographyToc },

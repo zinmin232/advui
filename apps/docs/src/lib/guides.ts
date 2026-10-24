@@ -45,6 +45,13 @@ export const guides: GuideMeta[] = [
     keywords: ['react native', 'ios', 'android', 'web', 'differences'],
   },
   {
+    slug: 'tailwind',
+    title: 'Tailwind',
+    description: 'Style screens with Tailwind classes from @tamagui/tailwind next to Adv UI.',
+    section: 'getting-started',
+    keywords: ['tailwindcss', 'classname', 'utility classes', 'css'],
+  },
+  {
     slug: 'theme',
     title: 'Theme',
     description: 'Presets, brand colors, radius and font scale — all from one config.',
