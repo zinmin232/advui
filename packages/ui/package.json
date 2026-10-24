@@ -55,16 +55,16 @@
     "test:native": "jest --config jest.native.config.js"
   },
   "dependencies": {
-    "@tamagui/core": "3.0.18",
-    "@tamagui/dismissable": "3.0.18",
-    "@tamagui/floating": "3.0.18",
-    "@tamagui/focus-scope": "3.0.18",
-    "@tamagui/focusable": "3.0.18",
-    "@tamagui/get-font-sized": "3.0.18",
-    "@tamagui/react-native-types": "3.0.18",
-    "@tamagui/roving-focus": "3.0.18",
-    "@tamagui/toast": "3.0.18",
-    "@tamagui/web": "3.0.18",
+    "@tamagui/core": "3.1.3",
+    "@tamagui/dismissable": "3.1.3",
+    "@tamagui/floating": "3.1.3",
+    "@tamagui/focus-scope": "3.1.3",
+    "@tamagui/focusable": "3.1.3",
+    "@tamagui/get-font-sized": "3.1.3",
+    "@tamagui/react-native-types": "3.1.3",
+    "@tamagui/roving-focus": "3.1.3",
+    "@tamagui/toast": "3.1.3",
+    "@tamagui/web": "3.1.3",
     "@advui/icons": "workspace:*",
     "@advui/theme": "workspace:*",
     "@advui/utils": "workspace:*"
@@ -73,7 +73,7 @@
     "react": ">=19",
     "react-native": "*",
     "react-native-svg": ">=15",
-    "tamagui": "^3.0.18"
+    "tamagui": "^3.1.3"
   },
   "peerDependenciesMeta": {
     "react-native-svg": {
@@ -103,7 +103,7 @@
     "react-native-safe-area-context": "~5.7.0",
     "react-native-svg": "15.15.4",
     "react-native-web": "~0.21.0",
-    "tamagui": "3.0.18",
+    "tamagui": "3.1.3",
     "test-renderer": "~1.2.0",
     "vite": "^8.3.1",
     "vitest": "^5.0.2"

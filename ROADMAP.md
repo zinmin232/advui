@@ -118,4 +118,8 @@ CI and AI agents cannot close them. To run the Expo playground on a phone:
       after fixes to sheet handles, Select's sheet, Dialog and Drawer motion
       and Tabs, then Text's `truncate` and Card's `elevated` shadow, and
       TalkBack was listened to on the same day (the item above). Left: an
-      iPhone.
+      iPhone, and on Android again after the move to Tamagui 3.1.3, whose
+      styled HOCs (Checkbox, Radio Group, Switch, Tabs, Dialog and Sheet
+      parts, Text) now follow theme changes on native: switch light and dark
+      with them on screen, and open and close the Select and Dropdown Menu
+      sheets.
