@@ -198,6 +198,12 @@ line with an ellipsis) and Card's `elevated` shadow (Android `elevation`).
   choice or Escape. With a menu open, pointing at another trigger opens its
   menu. On iOS and Android the triggers are buttons and each menu opens as a
   bottom sheet that the Android back gesture closes.
+- **Docs site**: a Tailwind guide (`/docs/tailwind`) for Tamagui's
+  `@tamagui/tailwind` next to Adv UI. It lists the class names that match
+  Adv UI's theme (camelCase color keys, numbered text sizes, the 4px space
+  steps), the ones that don't (Tailwind's palette, named text sizes and
+  shadows), and how to give an Adv UI component classes with
+  `parseStaticStyle`.
 
 ### Changed
 

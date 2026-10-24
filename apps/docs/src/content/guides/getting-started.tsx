@@ -470,3 +470,211 @@ export async function Platforms() {
     </>
   )
 }
+
+export const tailwindToc: TocItem[] = [
+  { id: 'how-it-fits', title: 'How it fits' },
+  { id: 'install', title: 'Install' },
+  { id: 'usage', title: 'Use it next to Adv UI' },
+  { id: 'colors', title: 'Theme colors' },
+  { id: 'text', title: 'Text sizes' },
+  { id: 'spacing', title: 'Spacing, sizes and radius' },
+  { id: 'shadows', title: 'Shadows' },
+  { id: 'classname', title: 'Classes on Adv UI components' },
+  { id: 'limits', title: 'Limits' },
+]
+
+export async function Tailwind() {
+  return (
+    <>
+      <H2 id="how-it-fits">How it fits</H2>
+      <P>
+        Tamagui's <C>@tamagui/tailwind</C> package has a <C>View</C> and a <C>Text</C> styled with
+        Tailwind class names instead of style props. Adv UI components keep their own props, so the
+        two work side by side: lay out a screen with classes and put Adv UI components in it.
+      </P>
+      <P>
+        Classes are read against your Tamagui config, so they use Adv UI's theme and tokens, but
+        only where the names match. The sections below say which Tailwind names work as they are and
+        which need Adv UI's name instead.
+      </P>
+      <H2 id="install">Install</H2>
+      <Code lang="bash" code="pnpm add @tamagui/tailwind" />
+      <P>
+        Install the same version as your <C>tamagui</C> package. Next.js and Expo need no other
+        setup: the components parse their classes as they render, and Tamagui writes the CSS on web
+        as it does for Adv UI, so there is no Tailwind stylesheet or PostCSS step.
+      </P>
+      <H2 id="usage">Use it next to Adv UI</H2>
+      <P>In Next.js, render them in a client component, as you would Adv UI's.</P>
+      <Code
+        title="app/plan.tsx"
+        code={`'use client'
+
+import { Badge, Button, Card } from '@advui/core'
+import { Text, View } from '@tamagui/tailwind'
+
+export function Plan() {
+  return (
+    <View className="gap-4 p-4 md:flex-row md:p-8 rounded-lg bg-muted border border-border">
+      <Card>
+        <Card.Header>
+          <Card.Title>Pro</Card.Title>
+        </Card.Header>
+        <Card.Content>
+          <Badge>Popular</Badge>
+        </Card.Content>
+      </Card>
+      <View className="flex-1 gap-3 justify-center">
+        <Text className="text-2 text-mutedForeground">Billed yearly.</Text>
+        <Button>Upgrade</Button>
+      </View>
+    </View>
+  )
+}`}
+      />
+      <P>
+        States and breakpoints are prefixes that become Adv UI's flat values: <C>hover:bg-accent</C>
+        , <C>press:bg-muted</C>, <C>focus-visible:border-ring</C>, and <C>md:p-6</C> with Adv UI's{' '}
+        <A href="/docs/spacing#breakpoints">breakpoints</A>.
+      </P>
+      <H2 id="colors">Theme colors</H2>
+      <P>
+        A color class takes a theme key exactly as the theme spells it. Adv UI's keys are camelCase,
+        so the classes are too:
+      </P>
+      <UL>
+        <LI>
+          <C>bg-primary</C>, <C>text-primaryForeground</C>, <C>text-mutedForeground</C> and{' '}
+          <C>border-borderStrong</C> match.
+        </LI>
+        <LI>
+          <C>text-primary-foreground</C> and <C>text-muted-foreground</C>, the kebab-case names
+          shadcn/ui uses, do not.
+        </LI>
+        <LI>
+          Tamagui's own keys are kebab-case and match as written: <C>bg-background-hover</C>,{' '}
+          <C>bg-color-6</C>.
+        </LI>
+      </UL>
+      <Callout variant="warning" title="A name that doesn't match fails silently">
+        A class that matches nothing stays in <C>className</C>, with no warning. On web it does
+        nothing unless your own CSS defines it, and on iOS and Android it is dropped. If an element
+        comes out unstyled, check the name on the <A href="/docs/colors">Colors</A> page.
+      </Callout>
+      <P>
+        There is no Tailwind palette: <C>bg-blue-500</C> doesn't match. Theme colors follow light
+        and dark mode on their own, so you rarely need <C>dark:</C>. Arbitrary values (
+        <C>bg-[#2563eb]</C>) and CSS color names (<C>text-white</C>) are used as written: the same
+        in both modes, and outside the contrast checks Adv UI runs on its themes.
+      </P>
+      <H2 id="text">Text sizes</H2>
+      <P>
+        Font sizes use Adv UI's <A href="/docs/typography">type scale</A>, which is numbered.
+        Tailwind's names (<C>text-sm</C>, <C>text-lg</C>) don't match. Use the number instead: it
+        sets the line height too, and follows your theme's <C>fontScale</C>.
+      </P>
+      <UL>
+        <LI>
+          <C>text-xs</C> → <C>text-1</C> (12px)
+        </LI>
+        <LI>
+          <C>text-sm</C> → <C>text-2</C> (14px)
+        </LI>
+        <LI>
+          <C>text-base</C> → <C>text-3</C> (16px)
+        </LI>
+        <LI>
+          <C>text-lg</C> → <C>text-4</C> (18px)
+        </LI>
+        <LI>
+          <C>text-xl</C> → <C>text-5</C> (20px)
+        </LI>
+        <LI>
+          <C>text-2xl</C> → <C>text-6</C> (24px)
+        </LI>
+        <LI>
+          <C>text-3xl</C> → <C>text-7</C> (30px)
+        </LI>
+        <LI>
+          <C>text-4xl</C> → <C>text-8</C> (36px)
+        </LI>
+        <LI>
+          <C>text-5xl</C> → <C>text-9</C> (48px)
+        </LI>
+        <LI>
+          <C>text-6xl</C> → <C>text-10</C> (60px)
+        </LI>
+      </UL>
+      <P>
+        Arbitrary sizes work (<C>text-[15px]</C>) but ignore <C>fontScale</C>. Line height classes
+        are fixed values, not tokens: <C>leading-6</C> is 24px and <C>leading-tight</C> is 1.25.{' '}
+        <C>font-body</C>, <C>font-heading</C> and <C>font-mono</C> pick the theme's fonts.
+      </P>
+      <H2 id="spacing">Spacing, sizes and radius</H2>
+      <P>
+        Space and size classes use Adv UI's <A href="/docs/spacing">tokens</A>, which follow
+        Tailwind's 4px steps: <C>p-4</C> is 16px, <C>p-1.5</C> is 6px and <C>w-64</C> is 256px.
+        Steps Adv UI doesn't have don't match (<C>p-28</C>, <C>w-36</C>, <C>p-px</C>), and neither
+        do named widths like <C>max-w-md</C>. Use an arbitrary value for those: <C>max-w-[448px]</C>
+        .
+      </P>
+      <P>
+        <C>rounded-md</C>, <C>rounded-lg</C> and the other named radii use Adv UI's radius tokens,
+        so they follow your theme's <C>radius</C> setting, and <C>rounded-button</C> works too. A
+        bare <C>rounded</C> is a fixed 4px. <C>z-*</C> classes are plain numbers, not Adv UI's
+        z-index tokens.
+      </P>
+      <H2 id="shadows">Shadows</H2>
+      <P>
+        Shadow classes (<C>shadow</C>, <C>shadow-md</C>…) don't match. Spread Adv UI's shadow
+        presets on the view instead:
+      </P>
+      <Code
+        code={`import { shadows } from '@advui/theme'
+import { View } from '@tamagui/tailwind'
+
+<View className="rounded-lg bg-card p-4" {...shadows.md} />`}
+      />
+      <H2 id="classname">Classes on Adv UI components</H2>
+      <P>
+        Adv UI components don't read Tailwind classes: <C>{'<Button className="w-full">'}</C> only
+        adds the class to the element on web, and has no effect on iOS and Android. To style one
+        with classes, parse them into style props with <C>parseStaticStyle</C>:
+      </P>
+      <Code
+        title="components/tw-button.tsx"
+        code={`import { Button, type ButtonProps } from '@advui/core'
+import { parseStaticStyle } from '@tamagui/tailwind'
+import { getConfig } from 'tamagui'
+
+/** Adv UI's Button, plus Tailwind classes. */
+export function TwButton({ className = '', ...props }: ButtonProps) {
+  const { className: rest, ...styles } = parseStaticStyle(className, getConfig())
+  return <Button {...styles} {...props} className={rest} />
+}
+
+// <TwButton className="mt-4 w-full md:w-[240px]">Save</TwButton>`}
+      />
+      <P>
+        Props written on the component win over its classes. Use classes for layout and spacing, and
+        a component's variants for its colors, so its text keeps a readable contrast. The package's
+        own <C>styled()</C> wraps its <C>View</C> and <C>Text</C>, not Adv UI components.
+      </P>
+      <H2 id="limits">Limits</H2>
+      <UL>
+        <LI>
+          Tamagui's compiler, which turns classes into CSS at build time, runs only in Vite apps.
+          Next.js and Expo parse them as components render: in the Adv UI Expo playground, the
+          package added about 63 KB to the Android bundle.
+        </LI>
+        <LI>
+          The package installs Tailwind 4's engine, which includes a native binary, and Vite, even
+          in a Next.js or Expo app.
+        </LI>
+        <LI>
+          Web-only classes such as <C>grid</C> are dropped on iOS and Android.
+        </LI>
+      </UL>
+    </>
+  )
+}
