@@ -377,6 +377,16 @@ line with an ellipsis) and Card's `elevated` shadow (Android `elevation`).
   own, though the area kept it, and then stayed on screen without its
   backdrop.
 
+### Security
+
+- **Docs site**: Next.js 16.3.6 → 16.4.1, which fixes two critical
+  unauthenticated remote code execution advisories,
+  [GHSA-2464-fhr4-w9xw](https://github.com/advisories/GHSA-2464-fhr4-w9xw)
+  (Image Optimization API with SVG files) and
+  [GHSA-673q-mjm6-r5xr](https://github.com/advisories/GHSA-673q-mjm6-r5xr)
+  (`use cache` functions returning typed arrays). The published packages do
+  not depend on Next.js.
+
 ## [0.13.0] - 2026-10-15
 
 ### Added
