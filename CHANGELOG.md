@@ -9,7 +9,7 @@ one version.
 
 ### Breaking: Tamagui 3
 
-Adv UI now runs on Tamagui 3 (`tamagui` `^3.0.18` as the peer dependency).
+Adv UI now runs on Tamagui 3 (`tamagui` `^3.1.3` as the peer dependency).
 Install it with Adv UI, and update your own styles as below; Tamagui's
 `@tamagui/codemod-flat-values` converts most of them.
 
@@ -52,6 +52,9 @@ Install it with Adv UI, and update your own styles as below; Tamagui's
   pressable and slid off before lifting still pressed it. Tamagui 3 hands
   presses to React Native's Pressability, which cancels them outside the view.
 - **Toasts** need no patched `@tamagui/toast` for their label on web.
+- **Sheets on web** (Sheet, and Select, Dropdown Menu and Combobox on small
+  screens) start opening from the bottom of the visible screen instead of
+  spending their first frames below it (Tamagui 3.1).
 
 Tamagui 3 variants hold styles only, so two variants are now set by the
 component itself and still work on iOS and Android: Text's `truncate` (one

@@ -150,10 +150,11 @@ each edit.
   prop.
 - **Tamagui's Dialog portal is a `<dialog aria-modal>`**, a second, unnamed
   dialog around ours. Dialog, AlertDialog and Drawer render it as a `div`.
-- **Declaration files must name every type.** Tamagui 3's inferred types refer
-  to types it does not export; give such exports an explicit type
-  (`UniversalConfig`, Drawer's `Body`) and depend directly on
-  `@tamagui/get-font-sized` and `@tamagui/react-native-types`.
+- **Declaration files must name every type.** Some of Tamagui 3's inferred
+  types refer to types it does not export; give such exports an explicit type
+  (`UniversalConfig`) and depend directly on `@tamagui/get-font-sized` and
+  `@tamagui/react-native-types`. Since 3.1, `styled()` results name their
+  types, so a styled frame can be exported as it is (Drawer's `Body`).
 - **Android `TextInput`** rejects animated styles, so fields must not have a
   `transition`.
 - **Android back button**: Tamagui overlays ignore it. A new overlay's root
