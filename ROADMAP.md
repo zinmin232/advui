@@ -75,51 +75,71 @@ Notes for whoever picks these up:
 
 ## Phase 10: open checks and decisions
 
-Carried over from Phase 6. They need a person, an iPhone or a decision, so
-CI and AI agents cannot close them. To run the Expo playground on a phone:
-`pnpm install`, then `pnpm --filter @advui/expo-playground android:emulator`
-(Android over USB or an emulator) or `pnpm --filter @advui/expo-playground ios`
-(macOS).
+Carried over from Phase 6. They need a person, a phone or a decision, so CI
+and AI agents cannot close them. The checks are grouped by platform; run
+`pnpm install` before the playground commands in each group.
+
+Tamagui 3 (unreleased) is behind most of them: it changed how every
+component styles itself (flat values, unstyled primitives) and hands
+presses to React Native's Pressability, which cancels a press when the
+finger slides off the view. Native tests cover that for Button, FAB,
+Accordion trigger and List Item row (`press.native.test.tsx`), but only a
+phone shows it. Tamagui 3.1.3 then made its styled HOCs (Checkbox, Radio
+Group, Switch, Tabs, Dialog and Sheet parts, Text) follow theme changes on
+native.
+
+### Decision
 
 - [ ] **Rich Text Editor: decide.** It is a Markdown editor (toolbar,
       shortcuts, preview), the same on every platform with no extra
       dependencies. Keep it, or ask for a WYSIWYG editor, which needs new
       libraries (TipTap on web, a WebView-based editor on iOS and Android).
       It stays `beta` until then; it is the last component in `beta`.
-- [ ] **iPhone.** Nothing has been checked on iOS yet. Look closely at Tags
-      Input's Backspace, the sheets that stop below the status bar, and the
-      announcements made with `AccessibilityInfo`.
-- [ ] **TalkBack and VoiceOver by ear.** TalkBack done on 2026-10-22
-      (TECNO KM9, Android 16): Copy Button, Tags Input and Carousel
-      announcements, a labelled Separator, named Sections, AppShell's
-      drawer, List rows, focus after a chip is removed, and Video and Audio
-      Player's sound. The fixes are in the CHANGELOG: Copy Button's
-      "Copied" was read twice, Carousel read every dot after a move, Chip
-      lost focus after a removal, disabled controls could not be found by
-      touch, and Audio Player's frame caught touches meant for its buttons.
-      Left: the same list with VoiceOver on an iPhone.
+
+### Android
+
+Run `pnpm --filter @advui/expo-playground android:emulator` (a phone over
+USB or an emulator). Checked so far on a TECNO KM9 (Android 16, Expo Go).
+
+- [ ] **Tamagui 3.1.3.** Switch light and dark mode with Checkbox, Radio
+      Group, Switch, Tabs, Dialog, a Sheet and Text on screen; open and
+      close the Select and Dropdown Menu sheets; and slide a finger off a
+      button to see the press cancel.
 - [ ] **A phone with the stock font.** The TECNO's system font replaces
       monospace in every app, so Code Block, `Text mono` and Kbd were never
       seen monospaced on Android.
-- [x] **Presses that fire after a slide-off on iOS and Android.** Fixed by
-      the move to Tamagui 3 (unreleased): it hands presses to React Native's
-      Pressability, which cancels a press when the finger leaves the view.
-      Native tests cover Button, FAB, Accordion trigger and List Item row
-      (`press.native.test.tsx`). Still to see on a phone; see the next item.
-- [ ] **Tamagui 3 on a phone.** The move changed how every component styles
-      itself (flat values, unstyled primitives, Pressability), and only the
-      web and Jest suites have run on it. Go through the components again on
-      Android and an iPhone, in light and dark mode: press, hover-free touch
-      feedback and the ripple, dashed borders (Empty State, Loading State,
-      File Dropzone), sheets (Select, Dropdown Menu, Combobox), Drawer and
-      Dialog motion, and TalkBack names and roles (Select options, Password
-      Input's toggle).
-      Android (TECNO KM9, Android 16, Expo Go) passed these on 2026-10-22
-      after fixes to sheet handles, Select's sheet, Dialog and Drawer motion
-      and Tabs, then Text's `truncate` and Card's `elevated` shadow, and
-      TalkBack was listened to on the same day (the item above). Left: an
-      iPhone, and on Android again after the move to Tamagui 3.1.3, whose
-      styled HOCs (Checkbox, Radio Group, Switch, Tabs, Dialog and Sheet
-      parts, Text) now follow theme changes on native: switch light and dark
-      with them on screen, and open and close the Select and Dropdown Menu
-      sheets.
+- [x] **Tamagui 3.** Passed on 2026-10-22 in light and dark mode: press,
+      hover-free touch feedback and the ripple, dashed borders (Empty State,
+      Loading State, File Dropzone), sheets (Select, Dropdown Menu,
+      Combobox), Drawer and Dialog motion, and TalkBack names and roles
+      (Select options, Password Input's toggle). It took fixes to sheet
+      handles, Select's sheet, Dialog and Drawer motion and Tabs, then
+      Text's `truncate` and Card's `elevated` shadow.
+- [x] **TalkBack by ear.** Done on 2026-10-22: Copy Button, Tags Input and
+      Carousel announcements, a labelled Separator, named Sections,
+      AppShell's drawer, List rows, focus after a chip is removed, and
+      Video and Audio Player's sound. The fixes are in the CHANGELOG: Copy
+      Button's "Copied" was read twice, Carousel read every dot after a
+      move, Chip lost focus after a removal, disabled controls could not be
+      found by touch, and Audio Player's frame caught touches meant for its
+      buttons.
+
+### iOS
+
+Run `pnpm --filter @advui/expo-playground ios` (macOS). Nothing has been
+checked on an iPhone yet.
+
+- [ ] **Every component.** Go through every example in light and dark mode,
+      as Android was in Phase 6. Look closely at Tags Input's Backspace, the
+      sheets that stop below the status bar, and the announcements made with
+      `AccessibilityInfo`.
+- [ ] **Tamagui 3.1.3.** What Android passed: press and touch feedback, a
+      finger that slides off a button cancels the press, dashed borders
+      (Empty State, Loading State, File Dropzone), sheets (Select, Dropdown
+      Menu, Combobox), Drawer and Dialog motion, and VoiceOver names and
+      roles (Select options, Password Input's toggle). Then switch light and
+      dark mode with the styled HOCs on screen.
+- [ ] **VoiceOver by ear.** The list TalkBack was checked with: Copy
+      Button, Tags Input and Carousel announcements, a labelled Separator,
+      named Sections, AppShell's drawer, List rows, focus after a chip is
+      removed, and Video and Audio Player's sound.
