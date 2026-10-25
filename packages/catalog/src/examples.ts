@@ -144,6 +144,8 @@ import ImageBasic from '../../ui/src/components/image/examples/basic'
 import ImageFit from '../../ui/src/components/image/examples/fit'
 import ImageFallback from '../../ui/src/components/image/examples/fallback'
 import ImageGalleryBasic from '../../ui/src/components/image-gallery/examples/basic'
+import IndicatorBasic from '../../ui/src/components/indicator/examples/basic'
+import IndicatorCounts from '../../ui/src/components/indicator/examples/counts'
 import InputBasic from '../../ui/src/components/input/examples/basic'
 import InputSizes from '../../ui/src/components/input/examples/sizes'
 import InputStates from '../../ui/src/components/input/examples/states'
@@ -530,6 +532,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'image-gallery': {
     'basic': ImageGalleryBasic,
+  },
+  'indicator': {
+    'basic': IndicatorBasic,
+    'counts': IndicatorCounts,
   },
   'input': {
     'basic': InputBasic,

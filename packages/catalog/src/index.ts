@@ -50,6 +50,7 @@ import hoverCardMeta from '../../ui/src/components/hover-card/hover-card.meta'
 import iconButtonMeta from '../../ui/src/components/icon-button/icon-button.meta'
 import imageMeta from '../../ui/src/components/image/image.meta'
 import imageGalleryMeta from '../../ui/src/components/image-gallery/image-gallery.meta'
+import indicatorMeta from '../../ui/src/components/indicator/indicator.meta'
 import inputMeta from '../../ui/src/components/input/input.meta'
 import kpiCardMeta from '../../data/src/components/kpi-card/kpi-card.meta'
 import labelMeta from '../../ui/src/components/label/label.meta'
@@ -190,6 +191,7 @@ export const components: CatalogComponent[] = [
   { ...iconButtonMeta, package: '@advui/core' },
   { ...imageMeta, package: '@advui/core' },
   { ...imageGalleryMeta, package: '@advui/core' },
+  { ...indicatorMeta, package: '@advui/core' },
   { ...inputMeta, package: '@advui/core' },
   { ...kpiCardMeta, package: '@advui/data' },
   { ...labelMeta, package: '@advui/core' },

@@ -1003,6 +1003,19 @@
       "registryDependencies": []
     },
     {
+      "name": "indicator",
+      "title": "Indicator",
+      "type": "registry:component",
+      "description": "A dot or count pinned to the corner of an avatar, icon or button, such as unread messages or someone’s status.",
+      "category": "foundations",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": [
+        "visually-hidden"
+      ]
+    },
+    {
       "name": "input",
       "title": "Input",
       "type": "registry:component",

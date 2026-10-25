@@ -61,6 +61,7 @@ import { HoverCard } from './hover-card/HoverCard'
 import { IconButton } from './icon-button/IconButton'
 import { Image } from './image/Image'
 import { ImageGallery } from './image-gallery/ImageGallery'
+import { Indicator } from './indicator/Indicator'
 import { Input } from './input/Input'
 import { Label } from './label/Label'
 import { AutoGrid } from './layout/AutoGrid'
@@ -2587,6 +2588,36 @@ describe('native rendering', () => {
     expect(alone.opacity).toBeGreaterThan(0)
     expect(alone.color).toBe('transparent')
     expect(alone).not.toHaveProperty('whiteSpace')
+  })
+
+  it('Indicator reads its label and pins a hidden mark to the corner', async () => {
+    await renderNative(
+      <>
+        <Indicator tone="success" placement="bottom-end" overlap="circle" label="Online">
+          <Avatar alt="Ada Lovelace" />
+        </Indicator>
+        <Indicator count={120} placement="bottom-start" overlap="circle" label="120 unread">
+          <Avatar alt="Grace Hopper" />
+        </Indicator>
+      </>,
+    )
+    expect(screen.getByRole('img', { name: 'Ada Lovelace' })).toBeOnTheScreen()
+    expect(screen.getByText('Online')).toBeOnTheScreen()
+    expect(screen.getByText('120 unread')).toBeOnTheScreen()
+    // The count is drawn, but TalkBack and VoiceOver read the label instead.
+    expect(screen.queryByText('99+')).toBeNull()
+    const count = screen.getByText('99+', { includeHiddenElements: true })
+    expect(count).not.toBeVisible()
+    // A point at the corner, moved in to the circle's edge. The mark centers on
+    // it at its own size, and neither takes touches meant for the avatar.
+    let anchor = count.parent
+    while (anchor && StyleSheet.flatten(anchor.props.style)?.width !== 0) anchor = anchor.parent
+    const style = StyleSheet.flatten(anchor?.props.style)
+    expect(style).toMatchObject({ position: 'absolute', width: 0, height: 0 })
+    expect(style).toMatchObject({ alignItems: 'center', justifyContent: 'center' })
+    expect(String(style.bottom)).toMatch(/^14\.6\d*%$/)
+    expect(String(style.left)).toMatch(/^14\.6\d*%$/)
+    expect(anchor?.props.pointerEvents ?? style.pointerEvents).toBe('none')
   })
 })
 

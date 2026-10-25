@@ -204,6 +204,12 @@ line with an ellipsis) and Card's `elevated` shadow (Android `elevation`).
   in a 1px box. On iOS and Android it also works inside another
   Text, where a box does nothing: its words are drawn transparent at almost
   no size, and they stay in the text that VoiceOver and TalkBack read.
+- **Indicator**: a dot or count pinned to the corner of an avatar, icon or
+  button, such as unread messages or someone's status. Counts stop at `max`
+  (`99+`) and a count of 0 hides it unless `showZero` is set.
+  `overlap="circle"` moves it in to the edge of a round avatar. Screen
+  readers read its `label` (“Online”) and never the mark itself; on a
+  button, the count goes in the button's name.
 - **Docs site**: a Tailwind guide (`/docs/tailwind`) for Tamagui's
   `@tamagui/tailwind` next to Adv UI. It lists the class names that match
   Adv UI's theme (camelCase color keys, numbered text sizes, the 4px space
