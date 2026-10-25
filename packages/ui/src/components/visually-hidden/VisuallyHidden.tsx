@@ -16,8 +16,11 @@ export const VisuallyHidden = styled(Text, {
   ...visuallyHidden,
   // Inside another Text, iOS and Android draw it as part of that text, where
   // the box above does nothing. The words stay in the text's string, which
-  // screen readers read, with no color and almost no width.
-  ...(!isWeb && { color: 'transparent', fontSize: 0.1 }),
+  // screen readers read, with no color and almost no width. Not `transparent`:
+  // Android reads a color of 0 as unset, so the words took the color of the
+  // text around them (and its underline). The background at no opacity keeps
+  // its RGB, so it is 0 only on a pure black background.
+  ...(!isWeb && { color: 'background-transparent', fontSize: 0.1 }),
 })
 
 export type VisuallyHiddenProps = GetProps<typeof VisuallyHidden>
