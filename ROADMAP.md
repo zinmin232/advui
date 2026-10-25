@@ -52,7 +52,8 @@ Image Gallery and Pie Chart already cover them.
 Built so far (the table keeps them for reference): Link, Input Group as
 slots on Input (`leading`, `trailing`, `leadingAddon`, `trailingAddon`),
 Checkbox Group, Tags Input, Carousel, Rating, Color Picker, Copy Button,
-Code Block and Menubar. Phase 7 is complete. Phase 8 has Visually Hidden.
+Code Block and Menubar. Phase 7 is complete. Phase 8 has Visually Hidden
+and Indicator.
 
 | Phase | Package         | Components                                                                                                                                  |
 | ----- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -68,8 +69,10 @@ Notes for whoever picks these up:
   new component; Number Input and Password Input should use the same slots.
 - **Tags Input** takes free text. Multi Select, which picks from a fixed list,
   stays as it is; both can render Chip.
-- **Indicator** is a dot or count pinned to an avatar or icon; Badge has no
-  dot mode today.
+- **Indicator** landed as a wrapper around what it is pinned to rather than
+  a dot mode on Badge, since a dot needs that element's corner. The mark is
+  centered on a zero-size point at the corner by flex layout, with no
+  transform.
 - **Visually Hidden** landed as Adv UI's own Text rather than a re-export.
   On iOS and Android, Tamagui's shows its words inside another Text (a
   nested Text takes no box styles) and marks itself `accessible`, a stop of
@@ -113,6 +116,10 @@ USB or an emulator). Checked so far on a TECNO KM9 (Android 16, Expo Go).
       $84”, and nothing shows where the hidden words are: inside a Text
       they are drawn transparent at almost no size. Needs Expo Go for SDK
       57 (the TECNO had updated to 58).
+- [ ] **Indicator.** On its page, each dot sits on the edge of its round
+      avatar and each count on the corner of its icon, whole (the material
+      config's ripple clips a button's content). TalkBack reads “Maya Chen,
+      Online” and “Notifications, 3 unread”, and never the count itself.
 - [ ] **A phone with the stock font.** The TECNO's system font replaces
       monospace in every app, so Code Block, `Text mono` and Kbd were never
       seen monospaced on Android.

@@ -53,6 +53,7 @@ describe('@advui/core public API', () => {
       'CodeBlock',
       'Menubar',
       'VisuallyHidden',
+      'Indicator',
       'UniversalProvider',
       'ariaState',
       'isTextContent',

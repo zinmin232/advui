@@ -189,6 +189,11 @@ const structuralChildren: Record<string, Structure> = {
     <Button fullWidth>Upgrade</Button>
   </Card.Footer>`,
   },
+  // Square, so the default corner sits on it; `overlap="circle"` moves the dot in.
+  Indicator: {
+    element: <UI.Avatar shape="square" alt="Ada Lovelace" />,
+    code: '  <Avatar shape="square" alt="Ada Lovelace" />',
+  },
   // A full-row item, a two-column item and plain cells show how spans clamp and wrap.
   // An array, not a fragment: Grid makes a cell of each child.
   Grid: {

@@ -480,6 +480,7 @@ for (const path of [
   '/docs/components/navigation-menu',
   '/docs/components/menubar',
   '/docs/components/visually-hidden',
+  '/docs/components/indicator',
   '/docs/components/sidebar',
   '/docs/components/search',
   '/docs/components/command-palette',
@@ -704,6 +705,24 @@ test('visually hidden text completes a link name and is not seen', async ({ page
   // Only "Read more" takes room on screen.
   const hidden = link.getByText('about plans for teams')
   expect(await hidden.evaluate((el) => el.getBoundingClientRect().width)).toBeLessThanOrEqual(1)
+})
+
+test('indicator centers its count on the icon corner and the button keeps its name', async ({
+  page,
+}) => {
+  await page.goto('/docs/components/indicator')
+  await page.waitForLoadState('networkidle')
+  const button = page.getByRole('button', { name: 'Notifications, 3 unread' }).first()
+  await expect(button).toBeVisible()
+  // The count sits in a zero-size anchor at the corner, centered by flex layout.
+  const icon = (await button.locator('svg').boundingBox())!
+  const count = (await button.getByText('3', { exact: true }).boundingBox())!
+  expect(Math.abs(count.x + count.width / 2 - (icon.x + icon.width))).toBeLessThanOrEqual(1.5)
+  expect(Math.abs(count.y + count.height / 2 - icon.y)).toBeLessThanOrEqual(1.5)
+  await button.click()
+  const read = page.getByRole('button', { name: 'Notifications', exact: true }).first()
+  await expect(read).toBeVisible()
+  await expect(read.getByText('3', { exact: true })).toHaveCount(0)
 })
 
 test('menu is one Tab stop and arrow keys move between items', async ({ page }) => {

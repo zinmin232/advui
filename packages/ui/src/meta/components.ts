@@ -46,6 +46,7 @@ import hoverCardMeta from '../components/hover-card/hover-card.meta'
 import iconButtonMeta from '../components/icon-button/icon-button.meta'
 import imageMeta from '../components/image/image.meta'
 import imageGalleryMeta from '../components/image-gallery/image-gallery.meta'
+import indicatorMeta from '../components/indicator/indicator.meta'
 import inputMeta from '../components/input/input.meta'
 import labelMeta from '../components/label/label.meta'
 import linkMeta from '../components/link/link.meta'
@@ -145,6 +146,7 @@ export const components: ComponentMeta[] = [
   iconButtonMeta,
   imageMeta,
   imageGalleryMeta,
+  indicatorMeta,
   inputMeta,
   labelMeta,
   linkMeta,
