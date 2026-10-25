@@ -70,6 +70,12 @@ const title =
     .split('-')
     .map((w) => w[0].toUpperCase() + w.slice(1))
     .join(' ')
+// All packages share one version; a new component ships in the next minor release.
+const { version } = JSON.parse(
+  readFileSync(join(repoRoot, corePackage.dir, 'package.json'), 'utf8'),
+)
+const [major, minor] = version.split('.').map(Number)
+const since = `${major}.${minor + 1}.0`
 const dir = join(componentsDir, slug)
 const existing = componentPackages.find((p) => existsSync(join(p.componentsDir, slug)))
 if (existing) {
@@ -79,21 +85,21 @@ if (existing) {
 
 const files = {
   [`${Name}.tsx`]: `import { forwardRef } from 'react'
-import { type GetProps, type TamaguiElement, View, styled } from 'tamagui'
+import { type GetProps, type TamaguiElement, View, styled } from 'tamagui/unstyled'
 
 const ${Name}Frame = styled(View, {
-  name: '${Name}',
-  // Use theme tokens only: '$background', '$border', '$4', '$md'…
-  backgroundColor: '$card',
-  borderColor: '$border',
+  displayName: '${Name}',
+  // Theme keys and tokens only, with no '$': 'card', 'border', '4', 'lg'…
+  backgroundColor: 'card',
+  borderColor: 'border',
   borderWidth: 1,
-  borderRadius: '$lg',
-  padding: '$4',
+  borderRadius: 'lg',
+  padding: '4',
 
   variants: {
     size: {
-      sm: { padding: '$2' },
-      md: { padding: '$4' },
+      sm: { padding: '2' },
+      md: { padding: '4' },
     },
   } as const,
 
@@ -136,7 +142,7 @@ export default defineMeta({
   category: '${category}',
   description: 'TODO: one sentence describing when to use ${title}.',
   status: 'experimental',
-  since: '0.1.0',
+  since: '${since}',
   platforms: ['web', 'ios', 'android'],
   exports: ['${Name}'],
   files: ['components/${slug}/${Name}.tsx', 'components/${slug}/index.ts'],
@@ -206,4 +212,4 @@ Created ${pkg.dir}/src/components/${slug}/ (${pkg.name})
 Next steps (see COMPONENT_GUIDELINES.md):
   1. Implement ${Name}.tsx using theme tokens only
   2. Fill in ${slug}.meta.ts (description, props, accessibility, platform notes)
-  3. Write meaningful tests, add examples, then run: pnpm test && pnpm registry:build`)
+  3. Write meaningful tests and examples, then run: pnpm verify:component ${slug}`)
