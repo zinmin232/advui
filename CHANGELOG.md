@@ -198,6 +198,12 @@ line with an ellipsis) and Card's `elevated` shadow (Android `elevation`).
   choice or Escape. With a menu open, pointing at another trigger opens its
   menu. On iOS and Android the triggers are buttons and each menu opens as a
   bottom sheet that the Android back gesture closes.
+- **Visually Hidden**: text that screen readers read but the screen does not
+  show, such as the rest of a link's name (a “Read more” link read as “Read
+  more about pricing”) or what a strikethrough means. On web it is a `span`
+  in a 1px box. On iOS and Android it also works inside another
+  Text, where a box does nothing: its words are drawn transparent at almost
+  no size, and they stay in the text that VoiceOver and TalkBack read.
 - **Docs site**: a Tailwind guide (`/docs/tailwind`) for Tamagui's
   `@tamagui/tailwind` next to Adv UI. It lists the class names that match
   Adv UI's theme (camelCase color keys, numbered text sizes, the 4px space
@@ -238,6 +244,11 @@ line with an ellipsis) and Card's `elevated` shadow (Android `elevation`).
   as its hint, after its own description. Screen readers there do not
   announce group names, so inside a Field the group's label was never read.
   Items also get a generated `id` when you give none.
+- **Text only screen readers read** keeps to one line on web, so VoiceOver
+  on macOS reads it as a phrase instead of word by word: Link's “(opens in a
+  new tab)”, Stepper's step and status, Sidebar's collapsed labels, and the
+  announcements of Form, Carousel, Copy Button and Tags Input. Link, Stepper
+  and Form use Visually Hidden for it.
 
 ### Fixed
 

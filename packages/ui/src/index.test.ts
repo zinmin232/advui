@@ -52,6 +52,7 @@ describe('@advui/core public API', () => {
       'writeClipboard',
       'CodeBlock',
       'Menubar',
+      'VisuallyHidden',
       'UniversalProvider',
       'ariaState',
       'isTextContent',

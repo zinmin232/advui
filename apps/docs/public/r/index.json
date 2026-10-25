@@ -339,7 +339,8 @@
         "drawer",
         "hooks",
         "icon-button",
-        "show-hide"
+        "show-hide",
+        "utils"
       ]
     },
     {
@@ -934,7 +935,8 @@
         "hooks",
         "loading-button",
         "typography",
-        "utils"
+        "utils",
+        "visually-hidden"
       ]
     },
     {
@@ -1108,7 +1110,8 @@
         "@advui/icons"
       ],
       "registryDependencies": [
-        "typography"
+        "typography",
+        "visually-hidden"
       ]
     },
     {
@@ -1609,7 +1612,8 @@
       "registryDependencies": [
         "hooks",
         "typography",
-        "utils"
+        "utils",
+        "visually-hidden"
       ]
     },
     {
@@ -1812,6 +1816,19 @@
       ],
       "registryDependencies": [
         "typography"
+      ]
+    },
+    {
+      "name": "visually-hidden",
+      "title": "Visually Hidden",
+      "type": "registry:component",
+      "description": "Text that screen readers read but the screen does not show, such as the rest of a link’s name or what a strikethrough means.",
+      "category": "foundations",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
       ]
     }
   ]

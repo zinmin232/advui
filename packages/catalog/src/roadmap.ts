@@ -25,7 +25,6 @@ export const roadmap: RoadmapItem[] = [
   { name: 'Table of Contents', slug: 'table-of-contents', category: 'navigation', phase: 8 },
   { name: 'Back to Top', slug: 'back-to-top', category: 'buttons', phase: 8 },
   { name: 'Transfer List', slug: 'transfer-list', category: 'advanced', phase: 8 },
-  { name: 'Visually Hidden', slug: 'visually-hidden', category: 'foundations', phase: 8 },
   { name: 'Portal', slug: 'portal', category: 'foundations', phase: 8 },
 
   // Phase 9: more charts, and data at scale.

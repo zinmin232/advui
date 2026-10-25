@@ -63,7 +63,8 @@ than add a near-duplicate.
 
 - Required: `name`, `slug`, `category`, `description`, `status`, `since`,
   `usage`, non-empty `platforms` and `accessibility`. The scaffold sets
-  `status: 'experimental'`; move it to `beta` once it is complete and tested
+  `since` to the next minor release and `status: 'experimental'`; move it to
+  `beta` once it is complete and tested
   (COMPONENT_GUIDELINES.md, "Status"). Extending a component keeps its status.
 - `files` and every `examples` entry must exist, and every file in
   `examples/` must be listed in the meta.

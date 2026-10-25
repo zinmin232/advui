@@ -5,7 +5,6 @@ import {
   Form as TamaguiForm,
   type TamaguiElement,
   View,
-  VisuallyHidden,
   isWeb,
   styled,
   withStaticProperties,
@@ -15,6 +14,7 @@ import { isTextContent } from '../../utils/isTextContent'
 import { LoadingButton, type LoadingButtonProps } from '../loading-button/LoadingButton'
 import { Heading } from '../typography/Heading'
 import { Text } from '../typography/Text'
+import { VisuallyHidden } from '../visually-hidden/VisuallyHidden'
 
 export type FormDirection = 'vertical' | 'horizontal'
 

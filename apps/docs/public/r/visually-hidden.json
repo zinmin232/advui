@@ -1,0 +1,49 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "visually-hidden",
+  "title": "Visually Hidden",
+  "type": "registry:component",
+  "description": "Text that screen readers read but the screen does not show, such as the rest of a link’s name or what a strikethrough means.",
+  "category": "foundations",
+  "status": "beta",
+  "since": "0.14.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/visually-hidden/VisuallyHidden.tsx",
+      "type": "registry:ui",
+      "content": "import { type GetProps, Text, isWeb, styled } from 'tamagui/unstyled'\nimport { visuallyHidden } from '../../utils/visuallyHidden'\n\n/**\n * Text that screen readers read and the screen does not show: the rest of a\n * link's name, a status only a color shows, a heading sighted users can do\n * without. A `span` on web, so it fits inside links, buttons and headings.\n *\n * @example\n * <Link href=\"/pricing\">\n *   Read more<VisuallyHidden> about pricing</VisuallyHidden>\n * </Link>\n */\nexport const VisuallyHidden = styled(Text, {\n  displayName: 'VisuallyHidden',\n  ...visuallyHidden,\n  // Inside another Text, iOS and Android draw it as part of that text, where\n  // the box above does nothing. The words stay in the text's string, which\n  // screen readers read, with no color and almost no width.\n  ...(!isWeb && { color: 'transparent', fontSize: 0.1 }),\n})\n\nexport type VisuallyHiddenProps = GetProps<typeof VisuallyHidden>\n"
+    },
+    {
+      "path": "components/visually-hidden/index.ts",
+      "type": "registry:ui",
+      "content": "export { VisuallyHidden, type VisuallyHiddenProps } from './VisuallyHidden'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Complete a link’s name",
+      "code": "import { Heading, Link, Text, VStack, VisuallyHidden, toast } from '@advui/core'\n\nconst posts = [\n  {\n    title: 'Plans for teams',\n    summary: 'Shared billing, seats and roles for every workspace.',\n  },\n  {\n    title: 'Single sign-on',\n    summary: 'Sign in with your company account through SAML or OIDC.',\n  },\n]\n\nexport default function VisuallyHiddenBasic() {\n  return (\n    <VStack gap=\"5\" maxWidth=\"112\">\n      {posts.map((post) => (\n        <VStack key={post.title} gap=\"1\">\n          <Heading level={3} size=\"lg\">\n            {post.title}\n          </Heading>\n          <Text size=\"sm\" tone=\"muted\">\n            {post.summary}\n          </Text>\n          {/* Read as “Read more about plans for teams”: each link names its post. */}\n          <Link\n            onPress={() => toast(`Go to ${post.title}`)}\n            size=\"sm\"\n            weight=\"medium\"\n            alignSelf=\"flex-start\"\n          >\n            Read more<VisuallyHidden> about {post.title.toLowerCase()}</VisuallyHidden>\n          </Link>\n        </VStack>\n      ))}\n    </VStack>\n  )\n}\n"
+    },
+    {
+      "name": "sale-price",
+      "title": "Say what a strikethrough means",
+      "code": "import { HStack, Text, VStack, VisuallyHidden } from '@advui/core'\n\nexport default function VisuallyHiddenSalePrice() {\n  return (\n    <VStack gap=\"1\">\n      <Text weight=\"medium\">Trail running shoes</Text>\n      {/* Screen readers do not announce a strikethrough: say which price is which. */}\n      <HStack gap=\"2\" alignItems=\"baseline\">\n        <Text size=\"sm\" tone=\"muted\" textDecorationLine=\"line-through\">\n          <VisuallyHidden>Was </VisuallyHidden>$120\n        </Text>\n        <Text size=\"lg\" weight=\"semibold\">\n          <VisuallyHidden>Now </VisuallyHidden>$84\n        </Text>\n      </HStack>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/visually-hidden",
+  "dependencies": [],
+  "peerDependencies": [
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "version": "0.13.0"
+}

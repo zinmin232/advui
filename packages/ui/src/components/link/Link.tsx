@@ -9,6 +9,7 @@ import {
   styled,
 } from 'tamagui/unstyled'
 import { type TextSize, textSizes, textWeights } from '../typography/Text'
+import { VisuallyHidden } from '../visually-hidden/VisuallyHidden'
 
 export type LinkTone = 'primary' | 'muted' | 'inherit'
 export type LinkUnderline = 'always' | 'hover' | 'none'
@@ -39,16 +40,6 @@ const iconSizes: Record<TextSize, number> = {
   '5xl': 32,
   '6xl': 36,
 }
-
-/** Hidden on screen, still read by screen readers (web). */
-const visuallyHidden = {
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  overflow: 'hidden',
-  opacity: 0.00000001,
-  pointerEvents: 'none',
-} as const
 
 // Warn once per path, not on every render.
 const warnedPaths = new Set<string>()
@@ -221,7 +212,7 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
             />
           </TamaguiText>
           {/* Text, not the icon's label: every browser puts text in the link's name. */}
-          {isWeb ? <TamaguiText {...visuallyHidden}>{` ${labels.external}`}</TamaguiText> : null}
+          {isWeb ? <VisuallyHidden>{` ${labels.external}`}</VisuallyHidden> : null}
         </>
       ) : null}
     </LinkText>
