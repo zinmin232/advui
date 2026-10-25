@@ -66,7 +66,8 @@ export default defineMeta({
   platformNotes: {
     web: 'A `span` in a 1px box with `overflow: hidden` and `white-space: nowrap`, so VoiceOver on macOS does not read its words one at a time.',
     ios: 'A 1pt box with a trace of opacity, its words drawn transparent at almost no size. Inside another Text the box does nothing, but the words stay invisible, and they stay in that text, which VoiceOver reads.',
-    android: 'Same as iOS; TalkBack reads it as part of the text or link around it.',
+    android:
+      'Same as iOS; TalkBack reads it as part of the text or link around it. The color is the background at no opacity, as Android reads `transparent` as no color and the words took the color of the text around them. Android rounds the font size up to 1px, so hidden words still take a few pixels, unseen.',
   },
   related: ['typography', 'link'],
 })

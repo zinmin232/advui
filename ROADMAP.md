@@ -106,20 +106,29 @@ native.
 
 Run `pnpm --filter @advui/expo-playground android:emulator` (a phone over
 USB or an emulator). Checked so far on a TECNO KM9 (Android 16, Expo Go).
+Expo Go must match the project's SDK (57): install its APK with `adb push`
+and `adb shell pm install`, since a 200 MB `adb install` dropped the USB
+link.
 
 - [ ] **Tamagui 3.1.3.** Switch light and dark mode with Checkbox, Radio
       Group, Switch, Tabs, Dialog, a Sheet and Text on screen; open and
       close the Select and Dropdown Menu sheets; and slide a finger off a
       button to see the press cancel.
-- [ ] **Visually Hidden.** On its page, TalkBack reads the links as “Read
-      more about plans for teams” and the prices as “Was $120” and “Now
-      $84”, and nothing shows where the hidden words are: inside a Text
-      they are drawn transparent at almost no size. Needs Expo Go for SDK
-      57 (the TECNO had updated to 58).
-- [ ] **Indicator.** On its page, each dot sits on the edge of its round
-      avatar and each count on the corner of its icon, whole (the material
-      config's ripple clips a button's content). TalkBack reads “Maya Chen,
-      Online” and “Notifications, 3 unread”, and never the count itself.
+- [ ] **Visually Hidden: TalkBack by ear.** Seen on 2026-10-25 in light
+      and dark mode: nothing shows where the hidden words are, after a fix
+      (Android drew them in the text's color, since it reads `transparent`
+      as no color). The accessibility tree has the links as “Read more about
+      plans for teams” and the prices as “Was $120” and “Now $84”. Left:
+      each link also holds a virtual link button named “Read more” alone
+      (React Native adds them once a link's text has more than one run), so
+      listen for whether TalkBack stops on it and what it says there.
+- [ ] **Indicator: TalkBack by ear.** Seen on 2026-10-25 in light and
+      dark mode: each dot sits on the edge of its round avatar and each
+      count, whole, on the corner of its icon; pressing Notifications clears
+      its count. The accessibility tree has “Maya Chen” then “Online”, and
+      “Notifications, 3 unread”, with no count. Left: hear it, and see a
+      count on a button with `androidRipple` on, which clips the button's
+      content (the playground has no switch for it).
 - [ ] **A phone with the stock font.** The TECNO's system font replaces
       monospace in every app, so Code Block, `Text mono` and Kbd were never
       seen monospaced on Android.

@@ -2579,14 +2579,18 @@ describe('native rendering', () => {
     )
     expect(screen.getByRole('link', { name: 'Read more about pricing' })).toBeOnTheScreen()
     // Inside a Text the box does nothing, so the words are transparent and tiny.
+    // Android reads a color of 0 as unset and drew them in the link's color, so
+    // the color has no alpha but is not 0.
     const nested = StyleSheet.flatten(screen.getByText('about pricing').props.style)
-    expect(nested.color).toBe('transparent')
+    const color = processColor(nested.color) as number
+    expect(color >>> 24).toBe(0)
+    expect(color).not.toBe(0)
     expect(nested.fontSize).toBeLessThan(1)
     // On its own: a 1pt box, with a trace of opacity so Android keeps it in the tree.
     const alone = StyleSheet.flatten(screen.getByText('3 unread messages').props.style)
     expect(alone).toMatchObject({ position: 'absolute', width: 1, height: 1, overflow: 'hidden' })
     expect(alone.opacity).toBeGreaterThan(0)
-    expect(alone.color).toBe('transparent')
+    expect(processColor(alone.color) as number).toBe(color)
     expect(alone).not.toHaveProperty('whiteSpace')
   })
 
