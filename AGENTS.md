@@ -148,6 +148,11 @@ each edit.
   `createStyledHOC` (so `styled(Text)` still works), and Card spreads
   `shadows.sm` for `elevated`. `ellipsis` does nothing on native even as a
   prop.
+- **A Text inside another Text takes text styles only** on native: it is
+  drawn as part of the outer text, so `position`, size and `opacity` do
+  nothing there. Visually Hidden hides nested words with a transparent color
+  and almost no font size; a frame outside text spreads `visuallyHidden`
+  (`utils/visuallyHidden.ts`).
 - **Tamagui's Dialog portal is a `<dialog aria-modal>`**, a second, unnamed
   dialog around ours. Dialog, AlertDialog and Drawer render it as a `div`.
 - **Declaration files must name every type.** Some of Tamagui 3's inferred

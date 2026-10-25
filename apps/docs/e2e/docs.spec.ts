@@ -479,6 +479,7 @@ for (const path of [
   '/docs/components/tree-view',
   '/docs/components/navigation-menu',
   '/docs/components/menubar',
+  '/docs/components/visually-hidden',
   '/docs/components/sidebar',
   '/docs/components/search',
   '/docs/components/command-palette',
@@ -693,6 +694,16 @@ test('hover card opens on hover and keyboard focus, and describes the link', asy
   await expect(card).toBeHidden()
   await expect(link).toBeFocused()
   expect(errors).toEqual([])
+})
+
+test('visually hidden text completes a link name and is not seen', async ({ page }) => {
+  await page.goto('/docs/components/visually-hidden')
+  await page.waitForLoadState('networkidle')
+  const link = page.getByRole('link', { name: 'Read more about plans for teams' }).first()
+  await expect(link).toBeVisible()
+  // Only "Read more" takes room on screen.
+  const hidden = link.getByText('about plans for teams')
+  expect(await hidden.evaluate((el) => el.getBoundingClientRect().width)).toBeLessThanOrEqual(1)
 })
 
 test('menu is one Tab stop and arrow keys move between items', async ({ page }) => {

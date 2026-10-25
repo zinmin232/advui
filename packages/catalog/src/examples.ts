@@ -280,6 +280,8 @@ import TypographyScale from '../../ui/src/components/typography/examples/scale'
 import TypographyTones from '../../ui/src/components/typography/examples/tones'
 import VideoBasic from '../../ui/src/components/video/examples/basic'
 import VideoMutedLoop from '../../ui/src/components/video/examples/muted-loop'
+import VisuallyHiddenBasic from '../../ui/src/components/visually-hidden/examples/basic'
+import VisuallyHiddenSalePrice from '../../ui/src/components/visually-hidden/examples/sale-price'
 import WrapTags from '../../ui/src/components/layout/examples/tags'
 
 export const examples: Record<string, Record<string, ComponentType>> = {
@@ -776,6 +778,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'video': {
     'basic': VideoBasic,
     'muted-loop': VideoMutedLoop,
+  },
+  'visually-hidden': {
+    'basic': VisuallyHiddenBasic,
+    'sale-price': VisuallyHiddenSalePrice,
   },
   'wrap': {
     'tags': WrapTags,

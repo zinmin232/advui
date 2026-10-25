@@ -2,9 +2,9 @@
 
 Components still to be built are listed in
 [`packages/catalog/src/roadmap.ts`](packages/catalog/src/roadmap.ts); the docs
-show them as "Planned". Phases 1 to 7 are done and phases 8 and 9 are
-planned. Phase 10, at the end of this file, holds the checks and decisions
-still open.
+show them as "Planned". Phases 1 to 7 are done, phase 8 has started and
+phase 9 is planned. Phase 10, at the end of this file, holds the checks and
+decisions still open.
 
 ## Phases 1–5 (built)
 
@@ -40,7 +40,7 @@ Closed on 2026-10-19; what is still open moved to Phase 10.
   deprecated). Within a day of a release, pnpm 11 and later install the
   previous version: its `minimumReleaseAge` default skips newer ones.
 
-## Phases 7–9 (7 built, 8 and 9 planned)
+## Phases 7–9 (7 built, 8 started, 9 planned)
 
 Common components that other libraries (shadcn/ui, MUI, Mantine, Chakra, Ant
 Design) have and Adv UI does not yet. Scaffold one with
@@ -52,7 +52,7 @@ Image Gallery and Pie Chart already cover them.
 Built so far (the table keeps them for reference): Link, Input Group as
 slots on Input (`leading`, `trailing`, `leadingAddon`, `trailingAddon`),
 Checkbox Group, Tags Input, Carousel, Rating, Color Picker, Copy Button,
-Code Block and Menubar. Phase 7 is complete.
+Code Block and Menubar. Phase 7 is complete. Phase 8 has Visually Hidden.
 
 | Phase | Package         | Components                                                                                                                                  |
 | ----- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -70,8 +70,11 @@ Notes for whoever picks these up:
   stays as it is; both can render Chip.
 - **Indicator** is a dot or count pinned to an avatar or icon; Badge has no
   dot mode today.
-- **Visually Hidden** and **Portal** exist in Tamagui; they may only need to be
-  re-exported and documented, with the native portal pitfalls in AGENTS.md.
+- **Visually Hidden** landed as Adv UI's own Text rather than a re-export.
+  On iOS and Android, Tamagui's shows its words inside another Text (a
+  nested Text takes no box styles) and marks itself `accessible`, a stop of
+  its own. **Portal** exists in Tamagui and may only need to be re-exported
+  and documented, with the native portal pitfalls in AGENTS.md.
 
 ## Phase 10: open checks and decisions
 
@@ -94,7 +97,7 @@ native.
       shortcuts, preview), the same on every platform with no extra
       dependencies. Keep it, or ask for a WYSIWYG editor, which needs new
       libraries (TipTap on web, a WebView-based editor on iOS and Android).
-      It stays `beta` until then; it is the last component in `beta`.
+      It stays `beta` until then.
 
 ### Android
 
@@ -105,6 +108,11 @@ USB or an emulator). Checked so far on a TECNO KM9 (Android 16, Expo Go).
       Group, Switch, Tabs, Dialog, a Sheet and Text on screen; open and
       close the Select and Dropdown Menu sheets; and slide a finger off a
       button to see the press cancel.
+- [ ] **Visually Hidden.** On its page, TalkBack reads the links as “Read
+      more about plans for teams” and the prices as “Was $120” and “Now
+      $84”, and nothing shows where the hidden words are: inside a Text
+      they are drawn transparent at almost no size. Needs Expo Go for SDK
+      57 (the TECNO had updated to 58).
 - [ ] **A phone with the stock font.** The TECNO's system font replaces
       monospace in every app, so Code Block, `Text mono` and Kbd were never
       seen monospaced on Android.

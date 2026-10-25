@@ -120,6 +120,7 @@ export * from './components/toolbar'
 export * from './components/tooltip'
 export * from './components/typography'
 export * from './components/video'
+export * from './components/visually-hidden'
 
 // Re-exports so apps need a single import
 export {

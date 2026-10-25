@@ -112,6 +112,7 @@ import { Tooltip } from './tooltip/Tooltip'
 import { Heading } from './typography/Heading'
 import { Video } from './video/Video'
 import { setVideoView } from './video/shared'
+import { VisuallyHidden } from './visually-hidden/VisuallyHidden'
 import { Text } from './typography/Text'
 import { useBreakpoint } from '../hooks/useBreakpoint'
 import { UniversalProvider } from '../provider/UniversalProvider'
@@ -2564,6 +2565,28 @@ describe('native rendering', () => {
     const [plain, wrapped] = screen.getAllByText('// a comment').map((token) => token.parent!)
     expect(plain!.props.children).toContain('\u200A')
     expect(wrapped!.props.children).not.toContain('\u200A')
+  })
+
+  it('VisuallyHidden is read with the text around it and drawn nowhere', async () => {
+    await renderNative(
+      <>
+        <Link href="https://example.com/pricing">
+          Read more<VisuallyHidden> about pricing</VisuallyHidden>
+        </Link>
+        <VisuallyHidden>3 unread messages</VisuallyHidden>
+      </>,
+    )
+    expect(screen.getByRole('link', { name: 'Read more about pricing' })).toBeOnTheScreen()
+    // Inside a Text the box does nothing, so the words are transparent and tiny.
+    const nested = StyleSheet.flatten(screen.getByText('about pricing').props.style)
+    expect(nested.color).toBe('transparent')
+    expect(nested.fontSize).toBeLessThan(1)
+    // On its own: a 1pt box, with a trace of opacity so Android keeps it in the tree.
+    const alone = StyleSheet.flatten(screen.getByText('3 unread messages').props.style)
+    expect(alone).toMatchObject({ position: 'absolute', width: 1, height: 1, overflow: 'hidden' })
+    expect(alone.opacity).toBeGreaterThan(0)
+    expect(alone.color).toBe('transparent')
+    expect(alone).not.toHaveProperty('whiteSpace')
   })
 })
 

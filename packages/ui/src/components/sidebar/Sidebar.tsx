@@ -15,6 +15,7 @@ import { isTextContent } from '../../utils/isTextContent'
 import { IconButton } from '../icon-button/IconButton'
 import { Text } from '../typography/Text'
 import { ariaState } from '../../utils/ariaState'
+import { visuallyHidden } from '../../utils/visuallyHidden'
 
 const linkReset = { textDecoration: 'none', textAlign: 'start' } as const
 
@@ -29,16 +30,6 @@ const SidebarContext = createContext<SidebarContextValue>({
   setCollapsed: () => {},
   id: '',
 })
-
-/** Hidden on screen, still read by screen readers (web). */
-const visuallyHidden = {
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  overflow: 'hidden',
-  opacity: 0.00000001,
-  pointerEvents: 'none',
-} as const
 
 const SidebarFrame = styled(View, {
   displayName: 'Sidebar',

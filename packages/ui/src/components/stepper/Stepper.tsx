@@ -11,14 +11,15 @@ import {
   type GetProps,
   type TamaguiElement,
   View,
-  VisuallyHidden,
   isWeb,
   styled,
   withStaticProperties,
 } from 'tamagui/unstyled'
 import { useRipple } from '../../hooks/useRipple'
 import { when } from '../../utils/responsive'
+import { visuallyHidden } from '../../utils/visuallyHidden'
 import { Text } from '../typography/Text'
+import { VisuallyHidden } from '../visually-hidden/VisuallyHidden'
 
 export type StepStatus = 'complete' | 'current' | 'upcoming' | 'error'
 export type StepperOrientation = 'horizontal' | 'vertical'
@@ -144,15 +145,6 @@ const StepDescription = styled(Text, {
   size: 'xs',
   tone: 'muted',
 })
-
-const visuallyHidden = {
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  overflow: 'hidden',
-  opacity: 0.00000001,
-  pointerEvents: 'none',
-} as const
 
 const numberColors = {
   current: 'primaryText',

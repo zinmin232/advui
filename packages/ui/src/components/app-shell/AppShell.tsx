@@ -28,6 +28,7 @@ import {
   AppShellSlotContext,
 } from '../../hooks/useAppShell'
 import { useControllableState } from '../../hooks/useControllableState'
+import { visuallyHidden } from '../../utils/visuallyHidden'
 import { Drawer } from '../drawer/Drawer'
 import { IconButton, type IconButtonProps } from '../icon-button/IconButton'
 import { Show } from '../show-hide/ShowHide'
@@ -64,16 +65,6 @@ const AreaContext = createContext<AreaContextValue>({
 
 // Bundlers replace `process.env.NODE_ENV`; this types it for apps without Node's types.
 declare const process: { env: { NODE_ENV?: string } }
-
-/** Hidden on screen, still read by screen readers. */
-const visuallyHidden = {
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  overflow: 'hidden',
-  opacity: 0.00000001,
-  pointerEvents: 'none',
-} as const
 
 const RootFrame = styled(View, {
   displayName: 'AppShell',

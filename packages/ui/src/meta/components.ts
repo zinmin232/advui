@@ -94,6 +94,7 @@ import toolbarMeta from '../components/toolbar/toolbar.meta'
 import tooltipMeta from '../components/tooltip/tooltip.meta'
 import typographyMeta from '../components/typography/typography.meta'
 import videoMeta from '../components/video/video.meta'
+import visuallyHiddenMeta from '../components/visually-hidden/visually-hidden.meta'
 import wrapMeta from '../components/layout/wrap.meta'
 
 /** The metadata of every @advui/core component, sorted by slug. */
@@ -192,5 +193,6 @@ export const components: ComponentMeta[] = [
   tooltipMeta,
   typographyMeta,
   videoMeta,
+  visuallyHiddenMeta,
   wrapMeta,
 ]
