@@ -89,6 +89,8 @@ import DataTableBasic from '../../data/src/components/data-table/examples/basic'
 import DataTableStates from '../../data/src/components/data-table/examples/states'
 import DatePickerBasic from '../../ui/src/components/date-picker/examples/basic'
 import DateRangePickerBasic from '../../ui/src/components/date-range-picker/examples/basic'
+import DateTimePickerBasic from '../../ui/src/components/date-time-picker/examples/basic'
+import DateTimePickerTwelveHour from '../../ui/src/components/date-time-picker/examples/twelve-hour'
 import DialogBasic from '../../ui/src/components/dialog/examples/basic'
 import DialogConfirm from '../../ui/src/components/dialog/examples/confirm'
 import DrawerBasic from '../../ui/src/components/drawer/examples/basic'
@@ -445,6 +447,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'date-range-picker': {
     'basic': DateRangePickerBasic,
+  },
+  'date-time-picker': {
+    'basic': DateTimePickerBasic,
+    'twelve-hour': DateTimePickerTwelveHour,
   },
   'dialog': {
     'basic': DialogBasic,

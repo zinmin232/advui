@@ -760,6 +760,22 @@
       ]
     },
     {
+      "name": "date-time-picker",
+      "title": "Date Time Picker",
+      "type": "registry:component",
+      "description": "A date field and time selects side by side that make one Date, for meetings, deliveries and reminders.",
+      "category": "forms",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": [
+        "calendar",
+        "date-picker",
+        "hooks",
+        "time-picker"
+      ]
+    },
+    {
       "name": "dialog",
       "title": "Dialog",
       "type": "registry:component",

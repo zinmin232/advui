@@ -42,6 +42,7 @@ import { Combobox } from './combobox/Combobox'
 import { CommandPalette } from './command-palette/CommandPalette'
 import { ConfirmDialog } from './confirm-dialog/ConfirmDialog'
 import { DatePicker } from './date-picker/DatePicker'
+import { DateTimePicker } from './date-time-picker/DateTimePicker'
 import { DateRangePicker } from './date-range-picker/DateRangePicker'
 import { ContextMenu } from './context-menu/ContextMenu'
 import { CopyButton } from './copy-button/CopyButton'
@@ -1582,7 +1583,38 @@ describe('native rendering', () => {
     expect(onValueChange).toHaveBeenCalledWith(new Date(2026, 9, 20))
   })
 
-  it('ColorPicker: adjustable area and sliders, swatches, and a field that opens a sheet', async () => {
+  it('DateTimePicker puts the field label in each part name and keeps the time on a new day', async () => {
+    const onValueChange = jest.fn()
+    await renderNative(
+      <Field label="Starts" description="In your time zone.">
+        <DateTimePicker
+          locale="en-US"
+          defaultValue={new Date(2026, 9, 14, 14, 45)}
+          hourCycle={12}
+          minuteStep={15}
+          onValueChange={onValueChange}
+        />
+      </Field>,
+    )
+    // Native reads no group names, so each part carries the field's.
+    const date = screen.getByRole('button', { name: 'Starts, Date' })
+    expect(date).toHaveAccessibilityValue({ text: 'Oct 14, 2026' })
+    expect(date.props.accessibilityHint).toBe('In your time zone.')
+    const hour = screen.getByRole('combobox', { name: 'Starts, Hour' })
+    expect(hour).toHaveAccessibilityValue({ text: '2' })
+    expect(hour.props.accessibilityHint).toBe('In your time zone.')
+    expect(screen.getByRole('combobox', { name: 'Starts, Minute' })).toHaveAccessibilityValue({
+      text: '45',
+    })
+    expect(screen.getByRole('combobox', { name: 'Starts, AM or PM' })).toHaveAccessibilityValue({
+      text: 'PM',
+    })
+    await fireEvent.press(date)
+    await fireEvent.press(await screen.findByRole('button', { name: /October 20, 2026/ }))
+    expect(onValueChange).toHaveBeenCalledWith(new Date(2026, 9, 20, 14, 45))
+  })
+
+  it('ColorPicker:adjustable area and sliders, swatches, and a field that opens a sheet', async () => {
     const onValueChange = jest.fn()
     await renderNative(
       <>

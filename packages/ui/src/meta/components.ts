@@ -31,6 +31,7 @@ import contextMenuMeta from '../components/context-menu/context-menu.meta'
 import copyButtonMeta from '../components/copy-button/copy-button.meta'
 import datePickerMeta from '../components/date-picker/date-picker.meta'
 import dateRangePickerMeta from '../components/date-range-picker/date-range-picker.meta'
+import dateTimePickerMeta from '../components/date-time-picker/date-time-picker.meta'
 import dialogMeta from '../components/dialog/dialog.meta'
 import drawerMeta from '../components/drawer/drawer.meta'
 import dropdownMenuMeta from '../components/dropdown-menu/dropdown-menu.meta'
@@ -131,6 +132,7 @@ export const components: ComponentMeta[] = [
   copyButtonMeta,
   datePickerMeta,
   dateRangePickerMeta,
+  dateTimePickerMeta,
   dialogMeta,
   drawerMeta,
   dropdownMenuMeta,

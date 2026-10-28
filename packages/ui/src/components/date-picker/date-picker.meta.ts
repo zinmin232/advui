@@ -101,5 +101,5 @@ export default defineMeta({
     ios: 'Opens as a bottom sheet.',
     android: 'Opens as a bottom sheet; the back button closes it.',
   },
-  related: ['calendar', 'date-range-picker', 'time-picker', 'field'],
+  related: ['calendar', 'date-range-picker', 'time-picker', 'date-time-picker', 'field'],
 })

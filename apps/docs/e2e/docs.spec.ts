@@ -451,6 +451,7 @@ for (const path of [
   '/docs/components/date-picker',
   '/docs/components/date-range-picker',
   '/docs/components/time-picker',
+  '/docs/components/date-time-picker',
   '/docs/components/combobox',
   '/docs/components/autocomplete',
   '/docs/components/multi-select',
@@ -873,6 +874,36 @@ test('date picker opens, moves by keyboard, picks and passes axe while open', as
   await expect(trigger).toContainText('Oct 15, 2026')
   // Opened from the keyboard alone, focus still goes back to the field.
   await expect(trigger).toBeFocused()
+  expect(errors).toEqual([])
+})
+
+test('date time picker picks a day, then a time, from the keyboard', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/date-time-picker')
+  await page.waitForLoadState('networkidle')
+  const group = page.getByRole('group', { name: 'Starts' }).first()
+  const date = group.getByRole('button', { name: 'Starts Date' })
+  await date.focus()
+  await page.keyboard.press('Enter')
+  const grid = page.getByRole('grid', { name: 'October 2026' })
+  await expect(grid).toBeVisible()
+  expect(await seriousViolations(page)).toEqual([])
+  await grid.getByRole('gridcell', { name: /October 14, 2026/ }).focus()
+  await page.keyboard.press('ArrowRight')
+  await page.keyboard.press('Enter')
+  await expect(grid).toBeHidden()
+  await expect(date).toContainText('Oct 15, 2026')
+  await expect(date).toBeFocused()
+  // The time selects come next in the tab order and keep their values.
+  await page.keyboard.press('Tab')
+  const hour = group.getByRole('combobox', { name: 'Hour' })
+  await expect(hour).toBeFocused()
+  await expect(hour).toHaveText('09')
+  await page.keyboard.press('Enter')
+  await expect(hour).toHaveAttribute('aria-expanded', 'true')
+  await page.getByRole('option', { name: '10' }).click()
+  await expect(hour).toHaveText('10')
+  await expect(group.getByRole('combobox', { name: 'Minute' })).toHaveText('30')
   expect(errors).toEqual([])
 })
 

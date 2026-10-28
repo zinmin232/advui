@@ -210,6 +210,15 @@ line with an ellipsis) and Card's `elevated` shadow (Android `elevation`).
   `overlap="circle"` moves it in to the edge of a round avatar. Screen
   readers read its `label` (“Online”) and never the mark itself; on a
   button, the count goes in the button's name.
+- **Date Time Picker**: a Date Picker and a Time Picker side by side that
+  make one `Date` in local time (`value`, `defaultValue`, `onValueChange`).
+  It reports a value once a day and a time are both picked, and keeps the
+  time when the day changes. It takes Date Picker's calendar options
+  (`min` and `max` limit the days, not the times on them) and Time
+  Picker's `hourCycle` and `minuteStep`. The date and the time each open
+  their own panel, so no overlay opens inside another. On web it is a group
+  named by its Field; on iOS and Android, where group names are not read,
+  each part carries the field's name (“Starts, Date”, “Starts, Hour”).
 - **Docs site**: a Tailwind guide (`/docs/tailwind`) for Tamagui's
   `@tamagui/tailwind` next to Adv UI. It lists the class names that match
   Adv UI's theme (camelCase color keys, numbered text sizes, the 4px space
