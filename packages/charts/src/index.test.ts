@@ -3,6 +3,16 @@ import * as charts from './index'
 
 describe('@advui/charts public API', () => {
   it('exports the chart components and none of the internals', () => {
-    expect(Object.keys(charts).sort()).toEqual(['AreaChart', 'BarChart', 'LineChart', 'PieChart'])
+    expect(Object.keys(charts).sort()).toEqual([
+      'AreaChart',
+      'BarChart',
+      'ComposedChart',
+      'Heatmap',
+      'LineChart',
+      'PieChart',
+      'RadarChart',
+      'RadialChart',
+      'ScatterChart',
+    ])
   })
 })

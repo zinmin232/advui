@@ -1,6 +1,17 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 import { renderWithProvider, screen } from '../test/utils'
-import { AreaChart, BarChart, type BarChartProps, LineChart, type LineChartProps } from './index'
+import {
+  AreaChart,
+  BarChart,
+  type BarChartProps,
+  ComposedChart,
+  Heatmap,
+  LineChart,
+  type LineChartProps,
+  RadarChart,
+  ScatterChart,
+  type ScatterChartProps,
+} from './index'
 
 // The type checks here run in `pnpm typecheck` (tsc), not in Vitest.
 // An interface has no index signature, so it is not a `Record<string, unknown>`.
@@ -26,9 +37,42 @@ describe('chart row types', () => {
         <BarChart title="Bars" data={projects} index="sector" series={series} width={400} />
         <LineChart title="Lines" data={projects} index="sector" series={series} width={400} />
         <AreaChart title="Areas" data={projects} index="sector" series={series} width={400} />
+        <ComposedChart
+          title="Combo"
+          data={projects}
+          index="sector"
+          series={[series[0], { ...series[1], type: 'line' }]}
+          width={400}
+        />
+        <RadarChart title="Spokes" data={projects} index="sector" series={series} width={400} />
+        <Heatmap title="Cells" data={projects} index="sector" series={series} width={400} />
+        <ScatterChart
+          title="Points"
+          data={projects}
+          x="planned"
+          y="reached"
+          index="sector"
+          width={400}
+        />
       </>,
     )
-    expect(screen.getAllByRole('figure')).toHaveLength(3)
+    expect(screen.getAllByRole('figure')).toHaveLength(7)
+  })
+
+  it('take scatter fields from the rows', () => {
+    expectTypeOf<ScatterChartProps<Project>['x']>().toEqualTypeOf<
+      'sector' | 'planned' | 'reached'
+    >()
+    const chart = (
+      <ScatterChart
+        title="Points"
+        data={projects}
+        x="planned"
+        // @ts-expect-error Project has no `budget` field.
+        y="budget"
+      />
+    )
+    expect(chart).toBeTruthy()
   })
 
   it('take index and series keys from the fields of the rows', () => {

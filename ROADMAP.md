@@ -2,9 +2,9 @@
 
 Components still to be built are listed in
 [`packages/catalog/src/roadmap.ts`](packages/catalog/src/roadmap.ts); the docs
-show them as "Planned". Phases 1 to 7 are done, phase 8 has started and
-phase 9 is planned. Phase 10, at the end of this file, holds the checks and
-decisions still open.
+show them as "Planned". Phases 1 to 8 are done and phase 9 has started: its
+charts are built and its data components are planned. Phase 10, at the end
+of this file, holds the checks and decisions still open.
 
 ## Phases 1–5 (built)
 
@@ -40,7 +40,7 @@ Closed on 2026-10-19; what is still open moved to Phase 10.
   deprecated). Within a day of a release, pnpm 11 and later install the
   previous version: its `minimumReleaseAge` default skips newer ones.
 
-## Phases 7–9 (7 built, 8 started, 9 planned)
+## Phases 7–9 (7 and 8 built, 9 started)
 
 Common components that other libraries (shadcn/ui, MUI, Mantine, Chakra, Ant
 Design) have and Adv UI does not yet. Scaffold one with
@@ -52,7 +52,8 @@ Image Gallery and Pie Chart already cover them.
 Built so far (the table keeps them for reference): Link, Input Group as
 slots on Input (`leading`, `trailing`, `leadingAddon`, `trailingAddon`),
 Checkbox Group, Tags Input, Carousel, Rating, Color Picker, Copy Button,
-Code Block and Menubar. Phases 7 and 8 are complete.
+Code Block and Menubar. Phases 7 and 8 are complete, and so are Phase 9's
+charts: Scatter, Composed, Radar and Radial Chart and Heatmap.
 
 | Phase | Package         | Components                                                                                                                                  |
 | ----- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -97,6 +98,14 @@ Notes for whoever picks these up:
   Android it needs `useBackToTop` on a ScrollArea.
 - **Spoiler** cuts content off by height, not by lines, so it takes any
   content. **Meter** colors by range as the HTML `meter` element does.
+- **Phase 9 charts** share the chart frame (legend, tooltip, table view,
+  arrow keys) with the first four. **Radial Chart** is one component for
+  radial bars and gauges (`variant`), rather than two. **Heatmap** takes the
+  same wide rows as Bar Chart (one column per series) and shades one palette
+  color in round steps rather than a gradient, so the legend can name each
+  shade's range; it has no diverging scale for negative values yet.
+  **Scatter Chart**'s points are found by distance, so a tap on a phone
+  must land within about 16px of one. None was checked on a phone yet.
 
 ## Phase 10: open checks and decisions
 

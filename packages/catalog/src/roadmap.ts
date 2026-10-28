@@ -17,41 +17,6 @@ export interface RoadmapItem {
 export const roadmap: RoadmapItem[] = [
   // Phase 9: more charts, and data at scale.
   {
-    name: 'Scatter Chart',
-    slug: 'scatter-chart',
-    category: 'charts',
-    phase: 9,
-    package: '@advui/charts',
-  },
-  {
-    name: 'Radar Chart',
-    slug: 'radar-chart',
-    category: 'charts',
-    phase: 9,
-    package: '@advui/charts',
-  },
-  {
-    name: 'Radial Chart',
-    slug: 'radial-chart',
-    category: 'charts',
-    phase: 9,
-    package: '@advui/charts',
-  },
-  {
-    name: 'Composed Chart',
-    slug: 'composed-chart',
-    category: 'charts',
-    phase: 9,
-    package: '@advui/charts',
-  },
-  {
-    name: 'Heatmap',
-    slug: 'heatmap',
-    category: 'charts',
-    phase: 9,
-    package: '@advui/charts',
-  },
-  {
     name: 'Virtual List',
     slug: 'virtual-list',
     category: 'data-display',

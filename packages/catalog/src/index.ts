@@ -27,6 +27,7 @@ import collapsibleMeta from '../../ui/src/components/collapsible/collapsible.met
 import colorPickerMeta from '../../ui/src/components/color-picker/color-picker.meta'
 import comboboxMeta from '../../ui/src/components/combobox/combobox.meta'
 import commandPaletteMeta from '../../ui/src/components/command-palette/command-palette.meta'
+import composedChartMeta from '../../charts/src/components/composed-chart/composed-chart.meta'
 import confirmDialogMeta from '../../ui/src/components/confirm-dialog/confirm-dialog.meta'
 import containerMeta from '../../ui/src/components/layout/container.meta'
 import contextMenuMeta from '../../ui/src/components/context-menu/context-menu.meta'
@@ -49,6 +50,7 @@ import filterBarMeta from '../../data/src/components/filter-bar/filter-bar.meta'
 import fabMeta from '../../ui/src/components/fab/fab.meta'
 import formMeta from '../../ui/src/components/form/form.meta'
 import gridMeta from '../../ui/src/components/layout/grid.meta'
+import heatmapMeta from '../../charts/src/components/heatmap/heatmap.meta'
 import hoverCardMeta from '../../ui/src/components/hover-card/hover-card.meta'
 import iconButtonMeta from '../../ui/src/components/icon-button/icon-button.meta'
 import imageMeta from '../../ui/src/components/image/image.meta'
@@ -77,10 +79,13 @@ import pieChartMeta from '../../charts/src/components/pie-chart/pie-chart.meta'
 import popoverMeta from '../../ui/src/components/popover/popover.meta'
 import portalMeta from '../../ui/src/components/portal/portal.meta'
 import progressMeta from '../../ui/src/components/progress/progress.meta'
+import radarChartMeta from '../../charts/src/components/radar-chart/radar-chart.meta'
+import radialChartMeta from '../../charts/src/components/radial-chart/radial-chart.meta'
 import radioGroupMeta from '../../ui/src/components/radio-group/radio-group.meta'
 import ratingMeta from '../../ui/src/components/rating/rating.meta'
 import resizablePanelMeta from '../../ui/src/components/resizable-panel/resizable-panel.meta'
 import richTextEditorMeta from '../../editor/src/components/rich-text-editor/rich-text-editor.meta'
+import scatterChartMeta from '../../charts/src/components/scatter-chart/scatter-chart.meta'
 import scrollAreaMeta from '../../ui/src/components/scroll-area/scroll-area.meta'
 import searchMeta from '../../ui/src/components/search/search.meta'
 import sectionMeta from '../../ui/src/components/section/section.meta'
@@ -137,7 +142,7 @@ export const packages: ComponentPackage[] = [
   {
     name: '@advui/charts',
     title: 'Charts',
-    description: 'Bar, line, area and pie charts for Adv UI: SVG on web, react-native-svg on iOS and Android, with a legend, tooltips and a table view.',
+    description: 'Bar, line, area, pie, scatter, composed, radar and radial charts and heatmaps for Adv UI: SVG on web, react-native-svg on iOS and Android, with a legend, tooltips and a table view.',
     dir: 'packages/charts',
   },
   {
@@ -177,6 +182,7 @@ export const components: CatalogComponent[] = [
   { ...colorPickerMeta, package: '@advui/core' },
   { ...comboboxMeta, package: '@advui/core' },
   { ...commandPaletteMeta, package: '@advui/core' },
+  { ...composedChartMeta, package: '@advui/charts' },
   { ...confirmDialogMeta, package: '@advui/core' },
   { ...containerMeta, package: '@advui/core' },
   { ...contextMenuMeta, package: '@advui/core' },
@@ -199,6 +205,7 @@ export const components: CatalogComponent[] = [
   { ...fabMeta, package: '@advui/core' },
   { ...formMeta, package: '@advui/core' },
   { ...gridMeta, package: '@advui/core' },
+  { ...heatmapMeta, package: '@advui/charts' },
   { ...hoverCardMeta, package: '@advui/core' },
   { ...iconButtonMeta, package: '@advui/core' },
   { ...imageMeta, package: '@advui/core' },
@@ -227,10 +234,13 @@ export const components: CatalogComponent[] = [
   { ...popoverMeta, package: '@advui/core' },
   { ...portalMeta, package: '@advui/core' },
   { ...progressMeta, package: '@advui/core' },
+  { ...radarChartMeta, package: '@advui/charts' },
+  { ...radialChartMeta, package: '@advui/charts' },
   { ...radioGroupMeta, package: '@advui/core' },
   { ...ratingMeta, package: '@advui/core' },
   { ...resizablePanelMeta, package: '@advui/core' },
   { ...richTextEditorMeta, package: '@advui/editor' },
+  { ...scatterChartMeta, package: '@advui/charts' },
   { ...scrollAreaMeta, package: '@advui/core' },
   { ...searchMeta, package: '@advui/core' },
   { ...sectionMeta, package: '@advui/core' },

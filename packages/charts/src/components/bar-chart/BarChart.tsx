@@ -9,14 +9,15 @@ import {
   Svg,
   SvgText,
   ValueGrid,
+  ValueGridX,
   bandScale,
   barPath,
   cartesianPadding,
-  formatCompact,
   formatFull,
   linearScale,
   niceTicks,
   numberAt,
+  truncate,
   useChartColors,
   useChartInk,
 } from '../../charts'
@@ -162,30 +163,13 @@ export function BarChart<T extends object>({
           <Svg width={w} height={height}>
             {horizontal ? (
               <>
-                {ticks.map((tick) => (
-                  <Line
-                    key={`grid-${tick}`}
-                    x1={valueScale(tick)}
-                    x2={valueScale(tick)}
-                    y1={pad.top}
-                    y2={height - pad.bottom}
-                    stroke={tick === 0 ? ink.axis : ink.grid}
-                    strokeWidth={1}
-                  />
-                ))}
-                {ticks.map((tick) => (
-                  <SvgText
-                    key={`tick-${tick}`}
-                    x={valueScale(tick)}
-                    y={height - pad.bottom + 4}
-                    dy="0.9em"
-                    fill={ink.text}
-                    fontSize={12}
-                    textAnchor="middle"
-                  >
-                    {formatCompact(tick)}
-                  </SvgText>
-                ))}
+                <ValueGridX
+                  ticks={ticks}
+                  x={valueScale}
+                  top={pad.top}
+                  bottom={height - pad.bottom}
+                  ink={ink}
+                />
                 {categories.map((category, i) => (
                   <SvgText
                     key={`cat-${i}`}
@@ -297,8 +281,4 @@ export function BarChart<T extends object>({
       }}
     </ChartFrame>
   )
-}
-
-function truncate(text: string, max: number) {
-  return text.length > max ? `${text.slice(0, Math.max(1, max - 1))}…` : text
 }
