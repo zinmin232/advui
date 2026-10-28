@@ -4,7 +4,14 @@ import type { ReactNode } from 'react'
 // native file maps the same components onto react-native-svg.
 
 type Common = { children?: ReactNode; opacity?: number }
-type Paint = { fill?: string; fillOpacity?: number; stroke?: string; strokeWidth?: number }
+type Paint = {
+  fill?: string
+  fillOpacity?: number
+  stroke?: string
+  strokeWidth?: number
+  /** Dash and gap lengths, e.g. "4 4". */
+  strokeDasharray?: string
+}
 
 export function Svg({ width, height, children }: Common & { width: number; height: number }) {
   return (
@@ -23,9 +30,9 @@ export function Svg({ width, height, children }: Common & { width: number; heigh
 
 export const G = ({ children, opacity }: Common) => <g opacity={opacity}>{children}</g>
 
-export const Rect = (props: Paint & { x: number; y: number; width: number; height: number }) => (
-  <rect {...props} />
-)
+export const Rect = (
+  props: Paint & { x: number; y: number; width: number; height: number; rx?: number },
+) => <rect {...props} />
 
 export const Path = (
   props: Paint & { d: string; strokeLinejoin?: 'round'; strokeLinecap?: 'round' },

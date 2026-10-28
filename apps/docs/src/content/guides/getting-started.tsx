@@ -65,8 +65,8 @@ export async function Introduction() {
           and KPI Card
         </LI>
         <LI>
-          <C>@advui/charts</C> — Bar, Line, Area and Pie Chart (uses <C>@advui/data</C> for its
-          table view)
+          <C>@advui/charts</C> — Bar, Line, Area, Pie, Scatter, Composed, Radar and Radial Chart and
+          Heatmap (uses <C>@advui/data</C> for its table view)
         </LI>
         <LI>
           <C>@advui/editor</C> — Rich Text Editor and Rich Text Content
@@ -142,7 +142,7 @@ pnpm add react-native-web   # web only (Next.js, Vite)`}
       <Code
         lang="bash"
         code={`pnpm add @advui/data     # tables, data grid, tree view, timeline, stats
-pnpm add @advui/charts   # bar, line, area and pie charts (installs @advui/data too)
+pnpm add @advui/charts   # bar, line, pie, scatter, radar charts and more (installs @advui/data too)
 pnpm add @advui/editor   # rich text editor`}
       />
       <P>Or let the CLI detect your framework and do it for you:</P>

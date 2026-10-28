@@ -12,3 +12,8 @@ export function numberAt<T extends object>(row: T, key: keyof T): number | null 
   const value: unknown = row[key]
   return typeof value === 'number' && Number.isFinite(value) ? value : null
 }
+
+/** Cuts a label to `max` characters with an ellipsis (SVG text does not wrap). */
+export function truncate(text: string, max: number) {
+  return text.length > max ? `${text.slice(0, Math.max(1, max - 1))}…` : text
+}

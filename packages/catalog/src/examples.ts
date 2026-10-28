@@ -73,6 +73,8 @@ import ColorPickerAlpha from '../../ui/src/components/color-picker/examples/alph
 import ColorPickerSwatches from '../../ui/src/components/color-picker/examples/swatches'
 import ComboboxBasic from '../../ui/src/components/combobox/examples/basic'
 import CommandPaletteBasic from '../../ui/src/components/command-palette/examples/basic'
+import ComposedChartBasic from '../../charts/src/components/composed-chart/examples/basic'
+import ComposedChartStacked from '../../charts/src/components/composed-chart/examples/stacked'
 import ConfirmDialogBasic from '../../ui/src/components/confirm-dialog/examples/basic'
 import ConfirmDialogAsync from '../../ui/src/components/confirm-dialog/examples/async'
 import ConfirmDialogMenu from '../../ui/src/components/confirm-dialog/examples/menu'
@@ -141,6 +143,8 @@ import GridSidebar39 from '../../ui/src/components/layout/examples/sidebar-3-9'
 import GridResponsiveCards from '../../ui/src/components/layout/examples/responsive-cards'
 import GridOffset from '../../ui/src/components/layout/examples/offset'
 import GridGrid from '../../ui/src/components/layout/examples/grid'
+import HeatmapBasic from '../../charts/src/components/heatmap/examples/basic'
+import HeatmapSchedule from '../../charts/src/components/heatmap/examples/schedule'
 import HoverCardBasic from '../../ui/src/components/hover-card/examples/basic'
 import IconButtonBasic from '../../ui/src/components/icon-button/examples/basic'
 import IconButtonVariants from '../../ui/src/components/icon-button/examples/variants'
@@ -204,6 +208,10 @@ import PopoverBasic from '../../ui/src/components/popover/examples/basic'
 import PopoverFilter from '../../ui/src/components/popover/examples/filter'
 import PortalBasic from '../../ui/src/components/portal/examples/basic'
 import ProgressBasic from '../../ui/src/components/progress/examples/basic'
+import RadarChartBasic from '../../charts/src/components/radar-chart/examples/basic'
+import RadarChartCircle from '../../charts/src/components/radar-chart/examples/circle'
+import RadialChartBasic from '../../charts/src/components/radial-chart/examples/basic'
+import RadialChartGauge from '../../charts/src/components/radial-chart/examples/gauge'
 import RadioGroupBasic from '../../ui/src/components/radio-group/examples/basic'
 import RatingBasic from '../../ui/src/components/rating/examples/basic'
 import RatingHalf from '../../ui/src/components/rating/examples/half'
@@ -216,6 +224,8 @@ import ResizablePanelCollapsible from '../../ui/src/components/resizable-panel/e
 import RichTextEditorBasic from '../../editor/src/components/rich-text-editor/examples/basic'
 import RichTextEditorMinimal from '../../editor/src/components/rich-text-editor/examples/minimal'
 import RichTextEditorContent from '../../editor/src/components/rich-text-editor/examples/content'
+import ScatterChartBasic from '../../charts/src/components/scatter-chart/examples/basic'
+import ScatterChartBubble from '../../charts/src/components/scatter-chart/examples/bubble'
 import ScrollAreaBasic from '../../ui/src/components/scroll-area/examples/basic'
 import ScrollAreaHorizontal from '../../ui/src/components/scroll-area/examples/horizontal'
 import SearchBasic from '../../ui/src/components/search/examples/basic'
@@ -430,6 +440,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'command-palette': {
     'basic': CommandPaletteBasic,
   },
+  'composed-chart': {
+    'basic': ComposedChartBasic,
+    'stacked': ComposedChartStacked,
+  },
   'confirm-dialog': {
     'basic': ConfirmDialogBasic,
     'async': ConfirmDialogAsync,
@@ -541,6 +555,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'responsive-cards': GridResponsiveCards,
     'offset': GridOffset,
     'grid': GridGrid,
+  },
+  'heatmap': {
+    'basic': HeatmapBasic,
+    'schedule': HeatmapSchedule,
   },
   'hover-card': {
     'basic': HoverCardBasic,
@@ -661,6 +679,14 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'progress': {
     'basic': ProgressBasic,
   },
+  'radar-chart': {
+    'basic': RadarChartBasic,
+    'circle': RadarChartCircle,
+  },
+  'radial-chart': {
+    'basic': RadialChartBasic,
+    'gauge': RadialChartGauge,
+  },
   'radio-group': {
     'basic': RadioGroupBasic,
   },
@@ -680,6 +706,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': RichTextEditorBasic,
     'minimal': RichTextEditorMinimal,
     'content': RichTextEditorContent,
+  },
+  'scatter-chart': {
+    'basic': ScatterChartBasic,
+    'bubble': ScatterChartBubble,
   },
   'scroll-area': {
     'basic': ScrollAreaBasic,

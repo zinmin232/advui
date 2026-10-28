@@ -57,6 +57,52 @@ export function ValueGrid({
   )
 }
 
+/** Vertical gridlines with value labels under the plot. */
+export function ValueGridX({
+  ticks,
+  x,
+  top,
+  bottom,
+  ink,
+  format = formatCompact,
+}: {
+  ticks: number[]
+  x: (value: number) => number
+  top: number
+  bottom: number
+  ink: { text: string; grid: string; axis: string }
+  format?: (value: number) => string
+}) {
+  return (
+    <>
+      {ticks.map((tick) => (
+        <Line
+          key={`grid-${tick}`}
+          x1={x(tick)}
+          x2={x(tick)}
+          y1={top}
+          y2={bottom}
+          stroke={tick === 0 ? ink.axis : ink.grid}
+          strokeWidth={1}
+        />
+      ))}
+      {ticks.map((tick) => (
+        <SvgText
+          key={`tick-${tick}`}
+          x={x(tick)}
+          y={bottom + 4}
+          dy="0.9em"
+          fill={ink.text}
+          fontSize={12}
+          textAnchor="middle"
+        >
+          {format(tick)}
+        </SvgText>
+      ))}
+    </>
+  )
+}
+
 /**
  * Category labels under the plot. When they would overlap, only every nth
  * is drawn (the first and the rest in steps), so none collide.

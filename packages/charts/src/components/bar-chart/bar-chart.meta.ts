@@ -122,5 +122,5 @@ export default defineMeta({
     ios: 'Drawn with react-native-svg. Tap the plot to show the tooltip for that point. VoiceOver and TalkBack read the title and description, without the arrow-key hint; Show table lists every value.',
     android: 'Same as iOS.',
   },
-  related: ['line-chart', 'pie-chart', 'table', 'kpi-card'],
+  related: ['line-chart', 'pie-chart', 'composed-chart', 'table', 'kpi-card'],
 })

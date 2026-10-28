@@ -2,13 +2,23 @@
 import type { ComponentMeta } from '@advui/core/meta'
 import areaChartMeta from '../components/area-chart/area-chart.meta'
 import barChartMeta from '../components/bar-chart/bar-chart.meta'
+import composedChartMeta from '../components/composed-chart/composed-chart.meta'
+import heatmapMeta from '../components/heatmap/heatmap.meta'
 import lineChartMeta from '../components/line-chart/line-chart.meta'
 import pieChartMeta from '../components/pie-chart/pie-chart.meta'
+import radarChartMeta from '../components/radar-chart/radar-chart.meta'
+import radialChartMeta from '../components/radial-chart/radial-chart.meta'
+import scatterChartMeta from '../components/scatter-chart/scatter-chart.meta'
 
 /** The metadata of every @advui/charts component, sorted by slug. */
 export const components: ComponentMeta[] = [
   areaChartMeta,
   barChartMeta,
+  composedChartMeta,
+  heatmapMeta,
   lineChartMeta,
   pieChartMeta,
+  radarChartMeta,
+  radialChartMeta,
+  scatterChartMeta,
 ]

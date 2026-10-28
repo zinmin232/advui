@@ -79,6 +79,34 @@
       ]
     },
     {
+      "name": "composed-chart",
+      "title": "Composed Chart",
+      "type": "registry:component",
+      "description": "Bars and lines on one value axis, such as results against a target.",
+      "category": "charts",
+      "status": "beta",
+      "package": "@advui/charts",
+      "dependencies": [],
+      "registryDependencies": [
+        "charts"
+      ]
+    },
+    {
+      "name": "heatmap",
+      "title": "Heatmap",
+      "type": "registry:component",
+      "description": "Values across two categories as a grid of shaded cells, darker for more: by place and sector, or by day and hour.",
+      "category": "charts",
+      "status": "beta",
+      "package": "@advui/charts",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "charts"
+      ]
+    },
+    {
       "name": "line-chart",
       "title": "Line Chart",
       "type": "registry:component",
@@ -102,6 +130,47 @@
       "dependencies": [
         "@advui/icons"
       ],
+      "registryDependencies": [
+        "charts"
+      ]
+    },
+    {
+      "name": "radar-chart",
+      "title": "Radar Chart",
+      "type": "registry:component",
+      "description": "Compares a few items across several measures at once, one spoke per measure from a shared zero.",
+      "category": "charts",
+      "status": "beta",
+      "package": "@advui/charts",
+      "dependencies": [],
+      "registryDependencies": [
+        "charts"
+      ]
+    },
+    {
+      "name": "radial-chart",
+      "title": "Radial Chart",
+      "type": "registry:component",
+      "description": "Progress toward a goal as rings: radial bars for a few items, or a gauge for one value.",
+      "category": "charts",
+      "status": "beta",
+      "package": "@advui/charts",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "charts"
+      ]
+    },
+    {
+      "name": "scatter-chart",
+      "title": "Scatter Chart",
+      "type": "registry:component",
+      "description": "Shows how two measures relate, one point per row, grouped by color or sized as bubbles.",
+      "category": "charts",
+      "status": "beta",
+      "package": "@advui/charts",
+      "dependencies": [],
       "registryDependencies": [
         "charts"
       ]

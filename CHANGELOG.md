@@ -276,6 +276,29 @@ line with an ellipsis) and Card's `elevated` shadow (Android `elevation`).
   scrolled into view and followed. On iOS and Android the step and title
   are one heading that takes screen reader focus, the app behind is hidden
   from screen readers, and the back button closes the tour.
+- **Scatter Chart** (`@advui/charts`): one point per row at `x` and `y`,
+  with `category` to color groups (and a legend) and `size` to make bubbles,
+  sized by area. `valueFormatter` gets the field (`x`, `y` or `size`), as the
+  axes often have different units; `xLabel` and `yLabel` name the axes on
+  the plot. The arrow keys step through the points left to right, hover and
+  taps find the nearest one, and dashed guides join it to the axes. Rows
+  missing a value keep their row in the table.
+- **Composed Chart** (`@advui/charts`): bars and lines on one value axis,
+  such as results against a target. Each series is a bar unless its `type`
+  is `line`; `dashed` suits a target or forecast, and `stacked` stacks the
+  bars only. Lines mark every value; a missing one breaks the line.
+- **Radar Chart** (`@advui/charts`): one spoke per row and one shape per
+  series, from a shared zero to `max` (by default the largest value, rounded
+  up), on a `polygon` or `circle` grid. The arrow keys go round the spokes
+  clockwise and read every series there.
+- **Radial Chart** (`@advui/charts`): progress toward `max` as rings.
+  `bars` draws a three-quarter ring per item, named at its start; `gauge`
+  draws a wider arc with the first value in the middle, and a legend when
+  there are more. The tooltip and table give each value's percent of `max`.
+- **Heatmap** (`@advui/charts`): rows of cells, one column per series,
+  shaded in steps of one palette `color` at round values (0–10, 10–20…),
+  with the ranges in the legend and a "No data" entry for empty cells. The
+  arrow keys move along rows and columns.
 - **Docs site**: a Tailwind guide (`/docs/tailwind`) for Tamagui's
   `@tamagui/tailwind` next to Adv UI. It lists the class names that match
   Adv UI's theme (camelCase color keys, numbered text sizes, the 4px space

@@ -11,7 +11,13 @@ import NativeSvg, {
 // Native: the web file's components, mapped onto react-native-svg.
 
 type Common = { children?: ReactNode; opacity?: number }
-type Paint = { fill?: string; fillOpacity?: number; stroke?: string; strokeWidth?: number }
+type Paint = {
+  fill?: string
+  fillOpacity?: number
+  stroke?: string
+  strokeWidth?: number
+  strokeDasharray?: string
+}
 
 export function Svg({ width, height, children }: Common & { width: number; height: number }) {
   return (
@@ -29,9 +35,9 @@ export function Svg({ width, height, children }: Common & { width: number; heigh
 
 export const G = ({ children, opacity }: Common) => <NativeG opacity={opacity}>{children}</NativeG>
 
-export const Rect = (props: Paint & { x: number; y: number; width: number; height: number }) => (
-  <NativeRect {...props} />
-)
+export const Rect = (
+  props: Paint & { x: number; y: number; width: number; height: number; rx?: number },
+) => <NativeRect {...props} />
 
 export const Path = (
   props: Paint & { d: string; strokeLinejoin?: 'round'; strokeLinecap?: 'round' },

@@ -51,15 +51,23 @@ export function useChartInk(surface: string) {
 export interface LegendItem {
   label: string
   color: string
-  /** Mirrors the mark: a line for line charts, a square for bars, areas and slices. */
-  shape: 'line' | 'square'
+  /** Mirrors the mark: a line, a dot for points, or a square for bars, areas and slices. */
+  shape: 'line' | 'square' | 'dot'
   /** Extra text after the label, e.g. a slice's share. */
   detail?: string
+  /** Swatch opacity, for the steps of one color (Heatmap). */
+  opacity?: number
 }
 
 export interface TooltipContent {
   title: string
-  rows: { label: string; value: string; color: string; shape: LegendItem['shape'] }[]
+  rows: {
+    label: string
+    value: string
+    color: string
+    shape: LegendItem['shape']
+    opacity?: number
+  }[]
 }
 
 export interface ChartFrameProps {
@@ -73,6 +81,8 @@ export interface ChartFrameProps {
   width?: number
   /** Number of positions the arrow keys step through. */
   count: number
+  /** Positions per row when they form a grid (Heatmap): ArrowUp and ArrowDown then move a row. */
+  columns?: number
   /** The position under a point in the plot, or null. */
   hitTest: (x: number, y: number, width: number) => number | null
   tooltip: (index: number) => TooltipContent | null
@@ -96,6 +106,7 @@ export function ChartFrame({
   height,
   width: fixedWidth,
   count,
+  columns,
   hitTest,
   tooltip,
   anchor,
@@ -122,11 +133,14 @@ export function ChartFrame({
 
   const onKeyDown = (event: { key: string; preventDefault: () => void }) => {
     const last = count - 1
+    // In a grid, up and down keep the column and stop at the first or last row.
+    const row = (step: number) =>
+      active == null ? 0 : active + step >= 0 && active + step <= last ? active + step : active
     const moves: Record<string, number> = {
       ArrowRight: Math.min(last, (active ?? -1) + 1),
-      ArrowDown: Math.min(last, (active ?? -1) + 1),
+      ArrowDown: columns ? row(columns) : Math.min(last, (active ?? -1) + 1),
       ArrowLeft: Math.max(0, (active ?? count) - 1),
-      ArrowUp: Math.max(0, (active ?? count) - 1),
+      ArrowUp: columns ? row(-columns) : Math.max(0, (active ?? count) - 1),
       Home: 0,
       End: last,
     }
@@ -161,9 +175,10 @@ export function ChartFrame({
               <View
                 aria-hidden
                 backgroundColor={item.color as never}
+                opacity={item.opacity}
                 width={item.shape === 'line' ? '3' : '2-5'}
                 height={item.shape === 'line' ? 2 : '2-5'}
-                borderRadius={item.shape === 'line' ? 'full' : 'xs'}
+                borderRadius={item.shape === 'square' ? 'xs' : 'full'}
               />
               <Text size="xs" tone="muted">
                 {item.label}
@@ -231,9 +246,10 @@ export function ChartFrame({
               <XStack key={row.label} alignItems="center" gap="2">
                 <View
                   backgroundColor={row.color as never}
+                  opacity={row.opacity}
                   width="2-5"
                   height={row.shape === 'line' ? 2 : '2-5'}
-                  borderRadius={row.shape === 'line' ? 'full' : 'xs'}
+                  borderRadius={row.shape === 'square' ? 'xs' : 'full'}
                 />
                 <Text size="sm" weight="semibold">
                   {row.value}

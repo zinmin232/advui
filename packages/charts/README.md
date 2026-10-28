@@ -1,9 +1,10 @@
 # @advui/charts
 
-Bar, line, area and pie charts for [Adv UI](https://github.com/zinmin232/advui),
-on web, iOS and Android. Charts draw SVG on web and use `react-native-svg` on
-iOS and Android. Each chart has a legend, tooltips (tap on touch screens), a
-screen-reader summary and a table view of its data.
+Bar, line, area, pie, scatter, composed, radar and radial charts and heatmaps
+for [Adv UI](https://github.com/zinmin232/advui), on web, iOS and Android.
+Charts draw SVG on web and use `react-native-svg` on iOS and Android. Each
+chart has a legend, tooltips (tap on touch screens), a screen-reader summary
+and a table view of its data.
 
 ```bash
 pnpm add @advui/charts @advui/data @advui/core @advui/theme @advui/icons tamagui
@@ -32,7 +33,8 @@ is a peer dependency, as are `@advui/data` (the table view uses its Table),
 `react`, `react-native`, `tamagui` and (on iOS and Android) `react-native-svg`.
 No charting library is added.
 
-**Exports:** AreaChart, BarChart, LineChart, PieChart and their prop types.
+**Exports:** AreaChart, BarChart, ComposedChart, Heatmap, LineChart, PieChart,
+RadarChart, RadialChart, ScatterChart and their prop types.
 
 **Metadata:** `@advui/charts/meta` exports `components`, the metadata of these
 components (types in `@advui/core/meta`), for tools such as the AdvUI Builder.
