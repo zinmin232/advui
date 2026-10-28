@@ -1,0 +1,47 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "table-of-contents",
+  "title": "Table of Contents",
+  "type": "registry:component",
+  "description": "The sections of a page as links, with the current one marked. On web it follows the scroll by itself.",
+  "category": "navigation",
+  "status": "beta",
+  "since": "0.14.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/table-of-contents/TableOfContents.tsx",
+      "type": "registry:ui",
+      "content": "import { forwardRef, useEffect, useRef } from 'react'\nimport { type GetProps, type TamaguiElement, View, isWeb } from 'tamagui/unstyled'\nimport { useControllableState } from '../../hooks/useControllableState'\nimport { Link } from '../link/Link'\nimport { Text } from '../typography/Text'\n\nexport interface TableOfContentsItem {\n  /** The id of the section's heading; the link goes to `#id` on web. */\n  id: string\n  label: string\n  /** Heading level, such as 2 for an h2. Deeper levels are indented. */\n  level?: number\n}\n\n// `items` is also Tamagui's shorthand for alignItems.\nexport interface TableOfContentsProps extends Omit<GetProps<typeof View>, 'children' | 'items'> {\n  items: TableOfContentsItem[]\n  /** The current section. On web, leave it out to follow the scroll. */\n  activeId?: string\n  /** Called as the scroll reaches another section (web) or an item is pressed. */\n  onActiveIdChange?: (id: string) => void\n  /** Called when an item is pressed. On iOS and Android, scroll to the section here. */\n  onItemPress?: (item: TableOfContentsItem) => void\n  /** Accessible name of the navigation. */\n  label?: string\n  /** Visible heading above the links, such as \"On this page\". */\n  title?: string\n  /** Web: a heading counts as reached this many pixels below the top of the window. */\n  headingOffset?: number\n  /** Added to the current item's name on iOS and Android, which read no `aria-current`. */\n  currentLabel?: string\n}\n\n// Deeper levels step in by 12px.\nconst indents = ['3', '6', '9', '12'] as const\n\n/**\n * The sections of a page as links, with the current one marked. On web it\n * follows the scroll by itself; on iOS and Android, give it `activeId` and\n * scroll in `onItemPress`.\n */\nexport const TableOfContents = forwardRef<TamaguiElement, TableOfContentsProps>(\n  function TableOfContents(\n    {\n      items,\n      activeId: activeIdProp,\n      onActiveIdChange,\n      onItemPress,\n      label = 'On this page',\n      title,\n      headingOffset = 80,\n      currentLabel = 'current',\n      ...props\n    },\n    ref,\n  ) {\n    const [activeId, setActiveId] = useControllableState({\n      value: activeIdProp,\n      defaultValue: items[0]?.id ?? '',\n      onChange: onActiveIdChange,\n    })\n    const setActive = useRef(setActiveId)\n    setActive.current = setActiveId\n    const ids = items.map((item) => item.id).join(' ')\n\n    // Web: the current section is the last heading above the offset, or the\n    // last one once the page is scrolled to the end (a short last section\n    // never reaches the top).\n    useEffect(() => {\n      if (!isWeb) return\n      let frame = 0\n      const update = () => {\n        frame = 0\n        const headings = ids\n          .split(' ')\n          .map((id) => document.getElementById(id))\n          .filter((heading) => heading !== null)\n        const first = headings[0]\n        const last = headings[headings.length - 1]\n        if (!first || !last) return\n        const root = document.documentElement\n        const atEnd =\n          window.scrollY > 0 && window.innerHeight + window.scrollY >= root.scrollHeight - 2\n        let current = first.id\n        if (atEnd) current = last.id\n        else\n          for (const heading of headings)\n            if (heading.getBoundingClientRect().top <= headingOffset) current = heading.id\n        setActive.current(current)\n      }\n      const schedule = () => {\n        if (!frame) frame = requestAnimationFrame(update)\n      }\n      update()\n      window.addEventListener('scroll', schedule, { passive: true })\n      window.addEventListener('resize', schedule)\n      return () => {\n        cancelAnimationFrame(frame)\n        window.removeEventListener('scroll', schedule)\n        window.removeEventListener('resize', schedule)\n      }\n    }, [ids, headingOffset])\n\n    const top = Math.min(...items.map((item) => item.level ?? 2))\n    return (\n      <View ref={ref} render=\"nav\" aria-label={label} gap=\"2\" {...props}>\n        {title ? (\n          <Text size=\"sm\" weight=\"semibold\">\n            {title}\n          </Text>\n        ) : null}\n        <View render=\"ul\" margin={0} padding={0}>\n          {items.map((item) => {\n            const active = item.id === activeId\n            const depth = Math.min(Math.max((item.level ?? 2) - top, 0), indents.length - 1)\n            return (\n              <View\n                key={item.id}\n                render=\"li\"\n                // The line beside the list, darker beside the current item.\n                borderLeftWidth={2}\n                borderColor={active ? 'primary' : 'border'}\n                paddingLeft={indents[depth]}\n                paddingVertical=\"1\"\n              >\n                <Link\n                  href={`#${item.id}`}\n                  size=\"sm\"\n                  tone={active ? 'primary' : 'muted'}\n                  underline=\"hover\"\n                  weight={active ? 'medium' : 'normal'}\n                  {...(isWeb\n                    ? { 'aria-current': active ? 'location' : undefined }\n                    : active && { 'aria-label': `${item.label}, ${currentLabel}` })}\n                  onPress={() => {\n                    setActiveId(item.id)\n                    onItemPress?.(item)\n                  }}\n                >\n                  {item.label}\n                </Link>\n              </View>\n            )\n          })}\n        </View>\n      </View>\n    )\n  },\n)\n"
+    },
+    {
+      "path": "components/table-of-contents/index.ts",
+      "type": "registry:ui",
+      "content": "export { TableOfContents, type TableOfContentsProps } from './TableOfContents'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { Heading, TableOfContents, Text, VStack } from '@advui/core'\n\nconst sections = [\n  {\n    id: 'toc-example-route',\n    label: 'The route',\n    level: 3,\n    text: 'A loop of eleven kilometres from the village, along the river and back over the ridge.',\n  },\n  {\n    id: 'toc-example-start',\n    label: 'Where to start',\n    level: 4,\n    text: 'Park by the old mill and follow the yellow markers past the bridge.',\n  },\n  {\n    id: 'toc-example-water',\n    label: 'Water and shelter',\n    level: 4,\n    text: 'There is a spring at the halfway hut, which stays open from April to October.',\n  },\n  {\n    id: 'toc-example-season',\n    label: 'When to go',\n    level: 3,\n    text: 'Late spring and early autumn, when the river is low enough to cross at the ford.',\n  },\n]\n\nexport default function TableOfContentsBasic() {\n  return (\n    <VStack gap=\"6\" width=\"100%\" maxWidth=\"112\">\n      {/* On web it follows the page's scroll; the links go to the headings' ids. */}\n      <TableOfContents items={sections} title=\"On this page\" label=\"Trail guide\" />\n      <VStack gap=\"4\">\n        {sections.map((section) => (\n          <VStack key={section.id} gap=\"1\">\n            <Heading id={section.id} level={section.level as 3 | 4} size=\"base\">\n              {section.label}\n            </Heading>\n            <Text size=\"sm\" tone=\"muted\">\n              {section.text}\n            </Text>\n          </VStack>\n        ))}\n      </VStack>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/table-of-contents",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "hooks",
+    "link",
+    "typography"
+  ],
+  "version": "0.13.0"
+}

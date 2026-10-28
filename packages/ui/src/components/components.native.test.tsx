@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, jest } from '@jest/globals'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
 import { createThemeColors, createUniversalConfig, themePresets, zIndex } from '@advui/theme'
-import { Fragment, type ReactElement, useState } from 'react'
+import { Fragment, type ReactElement, createContext, useContext, useState } from 'react'
 import {
   AccessibilityInfo,
   BackHandler,
@@ -13,7 +13,7 @@ import {
   processColor,
   type ViewStyle,
 } from 'react-native'
-import { XStack, getTokenValue } from 'tamagui/unstyled'
+import { Theme, XStack, getTokenValue } from 'tamagui/unstyled'
 import { renderNative, touchAt } from '../../test/native-utils'
 import { Accordion } from './accordion/Accordion'
 import { AppShell } from './app-shell/AppShell'
@@ -23,6 +23,7 @@ import { Alert } from './alert/Alert'
 import { Avatar } from './avatar/Avatar'
 import { AudioPlayer } from './audio-player/AudioPlayer'
 import { setAudioEngine } from './audio-player/engine'
+import { BackToTop, type BackToTopScroll, useBackToTop } from './back-to-top/BackToTop'
 import { Badge } from './badge/Badge'
 import { Breadcrumb } from './breadcrumb/Breadcrumb'
 import { Button } from './button/Button'
@@ -47,6 +48,7 @@ import { DateRangePicker } from './date-range-picker/DateRangePicker'
 import { ContextMenu } from './context-menu/ContextMenu'
 import { CopyButton } from './copy-button/CopyButton'
 import { setClipboard } from './copy-button/clipboard'
+import { DescriptionList } from './description-list/DescriptionList'
 import { Dialog } from './dialog/Dialog'
 import { Drawer } from './drawer/Drawer'
 import { EmptyState } from './empty-state/EmptyState'
@@ -77,6 +79,7 @@ import { LoadingButton } from './loading-button/LoadingButton'
 import { LoadingState } from './loading-state/LoadingState'
 import { Menu } from './menu/Menu'
 import { Menubar } from './menubar/Menubar'
+import { Meter } from './meter/Meter'
 import { MultiSelect } from './multi-select/MultiSelect'
 import { NavigationBar } from './navigation-bar/NavigationBar'
 import { NavigationMenu } from './navigation-menu/NavigationMenu'
@@ -85,6 +88,7 @@ import { OtpInput } from './otp-input/OtpInput'
 import { Pagination } from './pagination/Pagination'
 import { PasswordInput } from './password-input/PasswordInput'
 import { Popover } from './popover/Popover'
+import { Portal } from './portal/Portal'
 import { Progress } from './progress/Progress'
 import { RadioGroup } from './radio-group/RadioGroup'
 import { Rating } from './rating/Rating'
@@ -98,10 +102,12 @@ import { Search } from './search/Search'
 import { Select } from './select/Select'
 import { Sheet } from './sheet/Sheet'
 import { Sidebar } from './sidebar/Sidebar'
+import { Spoiler } from './spoiler/Spoiler'
 import { Slider } from './slider/Slider'
 import { Snackbar } from './snackbar/Snackbar'
 import { Stepper } from './stepper/Stepper'
 import { Switch } from './switch/Switch'
+import { TableOfContents } from './table-of-contents/TableOfContents'
 import { Tabs } from './tabs/Tabs'
 import { TagsInput } from './tags-input/TagsInput'
 import { TimePicker } from './time-picker/TimePicker'
@@ -111,6 +117,8 @@ import { Toggle } from './toggle/Toggle'
 import { ToggleGroup } from './toggle-group/ToggleGroup'
 import { Toolbar } from './toolbar/Toolbar'
 import { Tooltip } from './tooltip/Tooltip'
+import { Tour } from './tour/Tour'
+import { TransferList } from './transfer-list/TransferList'
 import { Heading } from './typography/Heading'
 import { Video } from './video/Video'
 import { setVideoView } from './video/shared'
@@ -1393,6 +1401,213 @@ describe('native rendering', () => {
     expect(screen.queryByText('40%')).toBeNull()
     expect(screen.getByText('40%', { includeHiddenElements: true })).toBeOnTheScreen()
     expect(screen.getByRole('progressbar', { name: 'Syncing' })).toBeBusy()
+  })
+
+  it('Meter reads its value as text, by default the percentage', async () => {
+    await renderNative(
+      <>
+        <Meter value={7.2} max={10} label="Storage" valueText="7.2 of 10 GB used" />
+        <Meter value={30} min={20} max={60} label="Temperature" />
+      </>,
+    )
+    expect(screen.getByRole('meter', { name: 'Storage' })).toHaveAccessibilityValue({
+      min: 0,
+      max: 10,
+      now: 7.2,
+      text: '7.2 of 10 GB used',
+    })
+    expect(screen.getByRole('meter', { name: 'Temperature' })).toHaveAccessibilityValue({
+      text: '25%',
+    })
+  })
+
+  it('Spoiler shows its button once the content measures taller than maxHeight', async () => {
+    const onExpandedChange = jest.fn()
+    await renderNative(
+      <>
+        <Spoiler maxHeight={96} onExpandedChange={onExpandedChange}>
+          <Text>A long trail description</Text>
+        </Spoiler>
+        <Spoiler maxHeight={96}>
+          <Text>A short note</Text>
+        </Spoiler>
+      </>,
+    )
+    // Nothing is measured on the first render, so there is no button yet.
+    expect(screen.queryByRole('button')).toBeNull()
+    const measured = (text: string) => {
+      let node = screen.getByText(text).parent
+      while (node && !node.props.onLayout) node = node.parent
+      if (!node) throw new Error('no measured view')
+      return node
+    }
+    await fireEvent(measured('A long trail description'), 'layout', {
+      nativeEvent: { layout: { width: 300, height: 240 } },
+    })
+    await fireEvent(measured('A short note'), 'layout', {
+      nativeEvent: { layout: { width: 300, height: 40 } },
+    })
+    const button = screen.getByRole('button', { name: 'Show more' })
+    expect(button).toBeCollapsed()
+    expect(screen.getAllByRole('button')).toHaveLength(1)
+    // Cut off at 96px until pressed.
+    const content = measured('A long trail description').parent!
+    expect(StyleSheet.flatten(content.props.style).maxHeight).toBe(96)
+    await fireEvent.press(button)
+    expect(onExpandedChange).toHaveBeenCalledWith(true)
+    expect(screen.getByRole('button', { name: 'Show less' })).toBeExpanded()
+    expect(StyleSheet.flatten(content.props.style).maxHeight).toBeUndefined()
+  })
+
+  it('DescriptionList reads a term and its text as one stop, and leaves controls apart', async () => {
+    await renderNative(
+      <DescriptionList>
+        <DescriptionList.Item term="Order">#4021</DescriptionList.Item>
+        <DescriptionList.Item term="Email">
+          <Button>Copy</Button>
+        </DescriptionList.Item>
+      </DescriptionList>,
+    )
+    // The nearest view above the text that a screen reader stops on.
+    const stop = (text: string) => {
+      let node = screen.getByText(text).parent
+      while (node && node.props.accessible !== true) node = node.parent
+      return node
+    }
+    expect(stop('#4021')).not.toBeNull()
+    expect(stop('Order')).toBe(stop('#4021'))
+    // Merging this item would hide its button.
+    expect(stop('Email')).toBeNull()
+    expect(screen.getByRole('button', { name: 'Copy' })).toBeOnTheScreen()
+  })
+
+  it('BackToTop shows once a ScrollArea is scrolled down, and scrolls it back', async () => {
+    let scroll: BackToTopScroll | undefined
+    function Feed() {
+      scroll = useBackToTop({ threshold: 100 })
+      return (
+        <>
+          <ScrollArea aria-label="Feed" {...scroll.scrollProps}>
+            <Text>Posts</Text>
+          </ScrollArea>
+          <BackToTop scroll={scroll} />
+          {/* Without a ScrollArea there is no page to watch on native. */}
+          <BackToTop label="Page" />
+        </>
+      )
+    }
+    await renderNative(<Feed />)
+    expect(screen.queryByRole('button')).toBeNull()
+    const area = screen.getByLabelText('Feed')
+    await fireEvent.scroll(area, { nativeEvent: { contentOffset: { x: 0, y: 400 } } })
+    const button = screen.getByRole('button', { name: 'Back to top' })
+    expect(screen.queryByRole('button', { name: 'Page' })).toBeNull()
+    const scrollTo = jest.fn()
+    ;(scroll!.scrollProps.ref.current as unknown as { scrollTo: jest.Mock }).scrollTo = scrollTo
+    await fireEvent.press(button)
+    expect(scrollTo).toHaveBeenCalledWith({ y: 0, animated: true })
+    await fireEvent.scroll(area, { nativeEvent: { contentOffset: { x: 0, y: 0 } } })
+    expect(screen.queryByRole('button')).toBeNull()
+  })
+
+  it('TableOfContents marks the current link in its name and calls onItemPress', async () => {
+    const onItemPress = jest.fn()
+    await renderNative(
+      <TableOfContents
+        items={[
+          { id: 'install', label: 'Install' },
+          { id: 'usage', label: 'Usage' },
+        ]}
+        onItemPress={onItemPress}
+      />,
+    )
+    // Native reads no aria-current, so the name says it.
+    expect(screen.getByRole('link', { name: 'Install, current' })).toBeOnTheScreen()
+    const usage = screen.getByRole('link', { name: 'Usage' })
+    await fireEvent.press(usage)
+    expect(onItemPress).toHaveBeenCalledWith({ id: 'usage', label: 'Usage' })
+    expect(screen.getByRole('link', { name: 'Usage, current' })).toBeOnTheScreen()
+    expect(screen.getByRole('link', { name: 'Install' })).toBeOnTheScreen()
+  })
+
+  it('TransferList moves checked items, names each box by its list, and announces the move', async () => {
+    const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility')
+    const onValueChange = jest.fn()
+    await renderNative(
+      <TransferList
+        items={[
+          { value: 'name', label: 'Name' },
+          { value: 'email', label: 'Email' },
+        ]}
+        defaultValue={['email']}
+        onValueChange={onValueChange}
+      />,
+    )
+    // Group names are not read on native: the list's name is each box's hint.
+    const name = screen.getByRole('checkbox', { name: 'Name' })
+    expect(name.props.accessibilityHint).toBe('Available.')
+    const add = screen.getByRole('button', { name: 'Move to Selected' })
+    expect(add).toBeDisabled()
+    await fireEvent.press(name)
+    expect(add).toBeEnabled()
+    await fireEvent.press(add)
+    expect(onValueChange).toHaveBeenCalledWith(['name', 'email'])
+    expect(announce).toHaveBeenCalledWith('1 moved to Selected')
+    announce.mockRestore()
+  })
+
+  it('Portal renders beside the app: it keeps the theme, not React context', async () => {
+    const Probe = createContext('lost')
+    function Read() {
+      return <Text>Context {useContext(Probe)}</Text>
+    }
+    await renderNative(
+      <Probe.Provider value="kept">
+        <Text>Light text</Text>
+        <Theme name="dark">
+          <Text>Dark text</Text>
+          <Portal>
+            <Text>In the portal</Text>
+            <Read />
+          </Portal>
+        </Theme>
+      </Probe.Provider>,
+    )
+    const color = (text: string) => StyleSheet.flatten(screen.getByText(text).props.style).color
+    expect(color('Dark text')).not.toEqual(color('Light text'))
+    expect(color('In the portal')).toEqual(color('Dark text'))
+    // What the docs tell apps: pass values in as props, or read a store.
+    expect(screen.getByText('Context lost')).toBeOnTheScreen()
+  })
+
+  it('Tour reads each step as one heading stop, moves focus to it, and walks the steps', async () => {
+    const focus = jest
+      .spyOn(AccessibilityInfo, 'sendAccessibilityEvent')
+      .mockImplementation(() => {})
+    const onComplete = jest.fn()
+    await renderNative(
+      <Tour
+        defaultOpen
+        onComplete={onComplete}
+        steps={[
+          { title: 'Welcome', description: 'A quick look around.' },
+          { title: 'Your projects', description: 'Everything you made is here.' },
+        ]}
+      />,
+    )
+    // Native: the step and the title are one stop, and the card has no
+    // role, which would make it one stop catching the buttons' touches.
+    const heading = screen.getByRole('heading', { name: 'Step 1 of 2 Welcome' })
+    expect(focus).toHaveBeenLastCalledWith(expect.anything(), 'focus')
+    expect(screen.queryByRole('dialog')).toBeNull()
+    await fireEvent.press(screen.getByRole('button', { name: 'Next' }))
+    expect(screen.getByRole('heading', { name: 'Step 2 of 2 Your projects' })).toBeOnTheScreen()
+    expect(heading).not.toBeOnTheScreen()
+    expect(focus).toHaveBeenCalledTimes(2)
+    await fireEvent.press(screen.getByRole('button', { name: 'Done' }))
+    expect(onComplete).toHaveBeenCalled()
+    expect(screen.queryByText('Your projects')).toBeNull()
+    focus.mockRestore()
   })
 
   it('Collapsible hides its content until the trigger expands it', async () => {
@@ -3186,6 +3401,12 @@ describe('Android back button', () => {
         <Select open aria-label="Fruit" onOpenChange={onOpenChange}>
           <Select.Item value="apple">Apple</Select.Item>
         </Select>
+      ),
+    ],
+    [
+      'Tour',
+      (onOpenChange) => (
+        <Tour defaultOpen onOpenChange={onOpenChange} steps={[{ title: 'Welcome' }]} />
       ),
     ],
   ]

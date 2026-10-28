@@ -9,6 +9,7 @@ import audioPlayerMeta from '../../ui/src/components/audio-player/audio-player.m
 import autoGridMeta from '../../ui/src/components/layout/auto-grid.meta'
 import autocompleteMeta from '../../ui/src/components/autocomplete/autocomplete.meta'
 import avatarMeta from '../../ui/src/components/avatar/avatar.meta'
+import backToTopMeta from '../../ui/src/components/back-to-top/back-to-top.meta'
 import badgeMeta from '../../ui/src/components/badge/badge.meta'
 import barChartMeta from '../../charts/src/components/bar-chart/bar-chart.meta'
 import breadcrumbMeta from '../../ui/src/components/breadcrumb/breadcrumb.meta'
@@ -35,6 +36,7 @@ import dataTableMeta from '../../data/src/components/data-table/data-table.meta'
 import datePickerMeta from '../../ui/src/components/date-picker/date-picker.meta'
 import dateRangePickerMeta from '../../ui/src/components/date-range-picker/date-range-picker.meta'
 import dateTimePickerMeta from '../../ui/src/components/date-time-picker/date-time-picker.meta'
+import descriptionListMeta from '../../ui/src/components/description-list/description-list.meta'
 import dialogMeta from '../../ui/src/components/dialog/dialog.meta'
 import drawerMeta from '../../ui/src/components/drawer/drawer.meta'
 import dropdownMenuMeta from '../../ui/src/components/dropdown-menu/dropdown-menu.meta'
@@ -63,6 +65,7 @@ import loadingButtonMeta from '../../ui/src/components/loading-button/loading-bu
 import loadingStateMeta from '../../ui/src/components/loading-state/loading-state.meta'
 import menuMeta from '../../ui/src/components/menu/menu.meta'
 import menubarMeta from '../../ui/src/components/menubar/menubar.meta'
+import meterMeta from '../../ui/src/components/meter/meter.meta'
 import multiSelectMeta from '../../ui/src/components/multi-select/multi-select.meta'
 import navigationBarMeta from '../../ui/src/components/navigation-bar/navigation-bar.meta'
 import navigationMenuMeta from '../../ui/src/components/navigation-menu/navigation-menu.meta'
@@ -72,6 +75,7 @@ import paginationMeta from '../../ui/src/components/pagination/pagination.meta'
 import passwordInputMeta from '../../ui/src/components/password-input/password-input.meta'
 import pieChartMeta from '../../charts/src/components/pie-chart/pie-chart.meta'
 import popoverMeta from '../../ui/src/components/popover/popover.meta'
+import portalMeta from '../../ui/src/components/portal/portal.meta'
 import progressMeta from '../../ui/src/components/progress/progress.meta'
 import radioGroupMeta from '../../ui/src/components/radio-group/radio-group.meta'
 import ratingMeta from '../../ui/src/components/rating/rating.meta'
@@ -89,12 +93,14 @@ import skeletonMeta from '../../ui/src/components/skeleton/skeleton.meta'
 import sliderMeta from '../../ui/src/components/slider/slider.meta'
 import snackbarMeta from '../../ui/src/components/snackbar/snackbar.meta'
 import spinnerMeta from '../../ui/src/components/spinner/spinner.meta'
+import spoilerMeta from '../../ui/src/components/spoiler/spoiler.meta'
 import stackMeta from '../../ui/src/components/layout/stack.meta'
 import statMeta from '../../data/src/components/stat/stat.meta'
 import stepperMeta from '../../ui/src/components/stepper/stepper.meta'
 import stickyMeta from '../../ui/src/components/sticky/sticky.meta'
 import switchMeta from '../../ui/src/components/switch/switch.meta'
 import tableMeta from '../../data/src/components/table/table.meta'
+import tableOfContentsMeta from '../../ui/src/components/table-of-contents/table-of-contents.meta'
 import tabsMeta from '../../ui/src/components/tabs/tabs.meta'
 import tagsInputMeta from '../../ui/src/components/tags-input/tags-input.meta'
 import textareaMeta from '../../ui/src/components/textarea/textarea.meta'
@@ -105,6 +111,8 @@ import toggleMeta from '../../ui/src/components/toggle/toggle.meta'
 import toggleGroupMeta from '../../ui/src/components/toggle-group/toggle-group.meta'
 import toolbarMeta from '../../ui/src/components/toolbar/toolbar.meta'
 import tooltipMeta from '../../ui/src/components/tooltip/tooltip.meta'
+import tourMeta from '../../ui/src/components/tour/tour.meta'
+import transferListMeta from '../../ui/src/components/transfer-list/transfer-list.meta'
 import treeViewMeta from '../../data/src/components/tree-view/tree-view.meta'
 import typographyMeta from '../../ui/src/components/typography/typography.meta'
 import videoMeta from '../../ui/src/components/video/video.meta'
@@ -151,6 +159,7 @@ export const components: CatalogComponent[] = [
   { ...autoGridMeta, package: '@advui/core' },
   { ...autocompleteMeta, package: '@advui/core' },
   { ...avatarMeta, package: '@advui/core' },
+  { ...backToTopMeta, package: '@advui/core' },
   { ...badgeMeta, package: '@advui/core' },
   { ...barChartMeta, package: '@advui/charts' },
   { ...breadcrumbMeta, package: '@advui/core' },
@@ -177,6 +186,7 @@ export const components: CatalogComponent[] = [
   { ...datePickerMeta, package: '@advui/core' },
   { ...dateRangePickerMeta, package: '@advui/core' },
   { ...dateTimePickerMeta, package: '@advui/core' },
+  { ...descriptionListMeta, package: '@advui/core' },
   { ...dialogMeta, package: '@advui/core' },
   { ...drawerMeta, package: '@advui/core' },
   { ...dropdownMenuMeta, package: '@advui/core' },
@@ -205,6 +215,7 @@ export const components: CatalogComponent[] = [
   { ...loadingStateMeta, package: '@advui/core' },
   { ...menuMeta, package: '@advui/core' },
   { ...menubarMeta, package: '@advui/core' },
+  { ...meterMeta, package: '@advui/core' },
   { ...multiSelectMeta, package: '@advui/core' },
   { ...navigationBarMeta, package: '@advui/core' },
   { ...navigationMenuMeta, package: '@advui/core' },
@@ -214,6 +225,7 @@ export const components: CatalogComponent[] = [
   { ...passwordInputMeta, package: '@advui/core' },
   { ...pieChartMeta, package: '@advui/charts' },
   { ...popoverMeta, package: '@advui/core' },
+  { ...portalMeta, package: '@advui/core' },
   { ...progressMeta, package: '@advui/core' },
   { ...radioGroupMeta, package: '@advui/core' },
   { ...ratingMeta, package: '@advui/core' },
@@ -231,12 +243,14 @@ export const components: CatalogComponent[] = [
   { ...sliderMeta, package: '@advui/core' },
   { ...snackbarMeta, package: '@advui/core' },
   { ...spinnerMeta, package: '@advui/core' },
+  { ...spoilerMeta, package: '@advui/core' },
   { ...stackMeta, package: '@advui/core' },
   { ...statMeta, package: '@advui/data' },
   { ...stepperMeta, package: '@advui/core' },
   { ...stickyMeta, package: '@advui/core' },
   { ...switchMeta, package: '@advui/core' },
   { ...tableMeta, package: '@advui/data' },
+  { ...tableOfContentsMeta, package: '@advui/core' },
   { ...tabsMeta, package: '@advui/core' },
   { ...tagsInputMeta, package: '@advui/core' },
   { ...textareaMeta, package: '@advui/core' },
@@ -247,6 +261,8 @@ export const components: CatalogComponent[] = [
   { ...toggleGroupMeta, package: '@advui/core' },
   { ...toolbarMeta, package: '@advui/core' },
   { ...tooltipMeta, package: '@advui/core' },
+  { ...tourMeta, package: '@advui/core' },
+  { ...transferListMeta, package: '@advui/core' },
   { ...treeViewMeta, package: '@advui/data' },
   { ...typographyMeta, package: '@advui/core' },
   { ...videoMeta, package: '@advui/core' },

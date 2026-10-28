@@ -79,5 +79,5 @@ export default defineMeta({
     ios: 'VoiceOver reads the trigger as expanded or collapsed.',
     android: 'TalkBack reads the trigger as expanded or collapsed.',
   },
-  related: ['accordion', 'tabs'],
+  related: ['accordion', 'spoiler', 'tabs'],
 })

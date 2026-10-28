@@ -68,5 +68,5 @@ export default defineMeta({
     android:
       'Same as iOS, with nested scrolling on, so a ScrollArea inside a scrolling screen scrolls itself (since 0.10.0; before, the screen took every vertical drag).',
   },
-  related: ['sheet', 'separator', 'sticky'],
+  related: ['sheet', 'separator', 'sticky', 'back-to-top'],
 })

@@ -9,6 +9,7 @@ import audioPlayerMeta from '../components/audio-player/audio-player.meta'
 import autoGridMeta from '../components/layout/auto-grid.meta'
 import autocompleteMeta from '../components/autocomplete/autocomplete.meta'
 import avatarMeta from '../components/avatar/avatar.meta'
+import backToTopMeta from '../components/back-to-top/back-to-top.meta'
 import badgeMeta from '../components/badge/badge.meta'
 import breadcrumbMeta from '../components/breadcrumb/breadcrumb.meta'
 import buttonMeta from '../components/button/button.meta'
@@ -32,6 +33,7 @@ import copyButtonMeta from '../components/copy-button/copy-button.meta'
 import datePickerMeta from '../components/date-picker/date-picker.meta'
 import dateRangePickerMeta from '../components/date-range-picker/date-range-picker.meta'
 import dateTimePickerMeta from '../components/date-time-picker/date-time-picker.meta'
+import descriptionListMeta from '../components/description-list/description-list.meta'
 import dialogMeta from '../components/dialog/dialog.meta'
 import drawerMeta from '../components/drawer/drawer.meta'
 import dropdownMenuMeta from '../components/dropdown-menu/dropdown-menu.meta'
@@ -57,6 +59,7 @@ import loadingButtonMeta from '../components/loading-button/loading-button.meta'
 import loadingStateMeta from '../components/loading-state/loading-state.meta'
 import menuMeta from '../components/menu/menu.meta'
 import menubarMeta from '../components/menubar/menubar.meta'
+import meterMeta from '../components/meter/meter.meta'
 import multiSelectMeta from '../components/multi-select/multi-select.meta'
 import navigationBarMeta from '../components/navigation-bar/navigation-bar.meta'
 import navigationMenuMeta from '../components/navigation-menu/navigation-menu.meta'
@@ -65,6 +68,7 @@ import otpInputMeta from '../components/otp-input/otp-input.meta'
 import paginationMeta from '../components/pagination/pagination.meta'
 import passwordInputMeta from '../components/password-input/password-input.meta'
 import popoverMeta from '../components/popover/popover.meta'
+import portalMeta from '../components/portal/portal.meta'
 import progressMeta from '../components/progress/progress.meta'
 import radioGroupMeta from '../components/radio-group/radio-group.meta'
 import ratingMeta from '../components/rating/rating.meta'
@@ -81,10 +85,12 @@ import skeletonMeta from '../components/skeleton/skeleton.meta'
 import sliderMeta from '../components/slider/slider.meta'
 import snackbarMeta from '../components/snackbar/snackbar.meta'
 import spinnerMeta from '../components/spinner/spinner.meta'
+import spoilerMeta from '../components/spoiler/spoiler.meta'
 import stackMeta from '../components/layout/stack.meta'
 import stepperMeta from '../components/stepper/stepper.meta'
 import stickyMeta from '../components/sticky/sticky.meta'
 import switchMeta from '../components/switch/switch.meta'
+import tableOfContentsMeta from '../components/table-of-contents/table-of-contents.meta'
 import tabsMeta from '../components/tabs/tabs.meta'
 import tagsInputMeta from '../components/tags-input/tags-input.meta'
 import textareaMeta from '../components/textarea/textarea.meta'
@@ -94,6 +100,8 @@ import toggleMeta from '../components/toggle/toggle.meta'
 import toggleGroupMeta from '../components/toggle-group/toggle-group.meta'
 import toolbarMeta from '../components/toolbar/toolbar.meta'
 import tooltipMeta from '../components/tooltip/tooltip.meta'
+import tourMeta from '../components/tour/tour.meta'
+import transferListMeta from '../components/transfer-list/transfer-list.meta'
 import typographyMeta from '../components/typography/typography.meta'
 import videoMeta from '../components/video/video.meta'
 import visuallyHiddenMeta from '../components/visually-hidden/visually-hidden.meta'
@@ -110,6 +118,7 @@ export const components: ComponentMeta[] = [
   autoGridMeta,
   autocompleteMeta,
   avatarMeta,
+  backToTopMeta,
   badgeMeta,
   breadcrumbMeta,
   buttonMeta,
@@ -133,6 +142,7 @@ export const components: ComponentMeta[] = [
   datePickerMeta,
   dateRangePickerMeta,
   dateTimePickerMeta,
+  descriptionListMeta,
   dialogMeta,
   drawerMeta,
   dropdownMenuMeta,
@@ -158,6 +168,7 @@ export const components: ComponentMeta[] = [
   loadingStateMeta,
   menuMeta,
   menubarMeta,
+  meterMeta,
   multiSelectMeta,
   navigationBarMeta,
   navigationMenuMeta,
@@ -166,6 +177,7 @@ export const components: ComponentMeta[] = [
   paginationMeta,
   passwordInputMeta,
   popoverMeta,
+  portalMeta,
   progressMeta,
   radioGroupMeta,
   ratingMeta,
@@ -182,10 +194,12 @@ export const components: ComponentMeta[] = [
   sliderMeta,
   snackbarMeta,
   spinnerMeta,
+  spoilerMeta,
   stackMeta,
   stepperMeta,
   stickyMeta,
   switchMeta,
+  tableOfContentsMeta,
   tabsMeta,
   tagsInputMeta,
   textareaMeta,
@@ -195,6 +209,8 @@ export const components: ComponentMeta[] = [
   toggleGroupMeta,
   toolbarMeta,
   tooltipMeta,
+  tourMeta,
+  transferListMeta,
   typographyMeta,
   videoMeta,
   visuallyHiddenMeta,

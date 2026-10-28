@@ -1,0 +1,48 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "meter",
+  "title": "Meter",
+  "type": "registry:component",
+  "description": "A value inside a known range, such as storage used, battery left or a score, colored by which part of the range it is in.",
+  "category": "feedback",
+  "status": "beta",
+  "since": "0.14.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/meter/Meter.tsx",
+      "type": "registry:ui",
+      "content": "import { forwardRef } from 'react'\nimport { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui/unstyled'\n\nconst MeterTrack = styled(View, {\n  displayName: 'Meter',\n  width: '100%',\n  overflow: 'hidden',\n  backgroundColor: 'muted',\n  borderRadius: 'full',\n  variants: {\n    size: {\n      sm: {\n        height: '1',\n      },\n      md: {\n        height: '2',\n      },\n      lg: {\n        height: '3',\n      },\n    },\n  } as const,\n  defaultVariants: { size: 'md' },\n})\n\nconst MeterIndicator = styled(View, {\n  displayName: 'MeterIndicator',\n  height: '100%',\n  borderRadius: 'full',\n  transition: 'medium',\n  variants: {\n    tone: {\n      primary: {\n        backgroundColor: 'primary',\n      },\n      success: {\n        backgroundColor: 'success',\n      },\n      warning: {\n        backgroundColor: 'warning',\n      },\n      error: {\n        backgroundColor: 'error',\n      },\n    },\n  } as const,\n  defaultVariants: { tone: 'primary' },\n})\n\nexport type MeterTone = NonNullable<GetProps<typeof MeterIndicator>['tone']>\n\nexport interface MeterProps extends Omit<GetProps<typeof MeterTrack>, 'children'> {\n  /** The measured value, clamped between `min` and `max`. */\n  value: number\n  min?: number\n  max?: number\n  /** Values below this are low. Give `low`, `high` or `optimum` to color by range. */\n  low?: number\n  /** Values above this are high. */\n  high?: number\n  /** The best value: its range is `success`, the next `warning`, the far one `error`. */\n  optimum?: number\n  /** Overrides the color the ranges give. */\n  tone?: MeterTone\n  /** Accessible name, e.g. \"Storage used\". */\n  label?: string\n  /** What a screen reader reads for the value, e.g. \"7.2 of 10 GB\". */\n  valueText?: string\n}\n\nconst clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n))\n\n/**\n * The color of a value by its range, as the HTML `meter` element does it: the\n * range that holds `optimum` is good, the middle is fair next to it, and the\n * other end is bad.\n */\nexport function meterTone({\n  value,\n  min = 0,\n  max = 100,\n  low,\n  high,\n  optimum,\n}: Pick<MeterProps, 'value' | 'min' | 'max' | 'low' | 'high' | 'optimum'>): MeterTone {\n  if (low === undefined && high === undefined && optimum === undefined) return 'primary'\n  const lowEdge = clamp(low ?? min, min, max)\n  const highEdge = clamp(high ?? max, lowEdge, max)\n  const range = (n: number) => (n < lowEdge ? 'low' : n > highEdge ? 'high' : 'middle')\n  const best = range(clamp(optimum ?? (min + max) / 2, min, max))\n  const current = range(clamp(value, min, max))\n  if (current === best) return 'success'\n  if (best === 'middle' || current === 'middle') return 'warning'\n  return 'error'\n}\n\n/** A value inside a known range, such as storage used or battery left, with `meter` semantics. */\nexport const Meter = forwardRef<TamaguiElement, MeterProps>(function Meter(\n  { value, min = 0, max = 100, low, high, optimum, tone, label, valueText, ...props },\n  ref,\n) {\n  const clamped = clamp(value, min, Math.max(min, max))\n  // An empty range (max equal to min) is empty, not NaN.\n  const percent = max > min ? ((clamped - min) / (max - min)) * 100 : 0\n  return (\n    <MeterTrack\n      ref={ref}\n      role=\"meter\"\n      // Android reads a value only as text (see CircularProgress.native.tsx).\n      {...(isWeb ? null : { accessible: true })}\n      aria-label={label}\n      aria-valuemin={min}\n      aria-valuemax={max}\n      aria-valuenow={clamped}\n      aria-valuetext={valueText ?? (isWeb ? undefined : `${Math.round(percent)}%`)}\n      {...props}\n    >\n      <MeterIndicator\n        tone={tone ?? meterTone({ value, min, max, low, high, optimum })}\n        width={`${percent}%`}\n      />\n    </MeterTrack>\n  )\n})\n"
+    },
+    {
+      "path": "components/meter/index.ts",
+      "type": "registry:ui",
+      "content": "export { Meter, type MeterProps, type MeterTone } from './Meter'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { HStack, Meter, Text, VStack } from '@advui/core'\n\nexport default function MeterBasic() {\n  return (\n    <VStack gap=\"2\" width=\"100%\" maxWidth=\"96\">\n      <HStack justifyContent=\"space-between\">\n        <Text size=\"sm\">Storage</Text>\n        <Text size=\"sm\" tone=\"muted\">\n          7.2 of 10 GB\n        </Text>\n      </HStack>\n      <Meter value={7.2} max={10} label=\"Storage\" valueText=\"7.2 of 10 GB used\" />\n    </VStack>\n  )\n}\n"
+    },
+    {
+      "name": "ranges",
+      "title": "Colored by range",
+      "code": "import { HStack, Meter, Text, VStack } from '@advui/core'\n\n// Low below 20%, high above 50%, best at 100%: green, then amber, then red.\nconst battery = { low: 20, high: 50, optimum: 100 }\n\nexport default function MeterRanges() {\n  return (\n    <VStack gap=\"4\" width=\"100%\" maxWidth=\"96\">\n      {[\n        { device: 'Headphones', level: 82 },\n        { device: 'Keyboard', level: 41 },\n        { device: 'Mouse', level: 12 },\n      ].map(({ device, level }) => (\n        <VStack key={device} gap=\"2\">\n          <HStack justifyContent=\"space-between\">\n            <Text size=\"sm\">{device}</Text>\n            <Text size=\"sm\" tone=\"muted\">\n              {level}%\n            </Text>\n          </HStack>\n          <Meter value={level} label={`${device} battery`} size=\"sm\" {...battery} />\n        </VStack>\n      ))}\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/meter",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.13.0"
+}

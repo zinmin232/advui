@@ -213,6 +213,22 @@ const structuralChildren: Record<string, Structure> = {
   <Box>3</Box>
   <Box>4</Box>`,
   },
+  DescriptionList: {
+    element: (
+      <>
+        <UI.DescriptionList.Item term="Order">#4021</UI.DescriptionList.Item>
+        <UI.DescriptionList.Item term="Placed">October 14, 2026</UI.DescriptionList.Item>
+        <UI.DescriptionList.Item term="Status">
+          <UI.Badge variant="success">Paid</UI.Badge>
+        </UI.DescriptionList.Item>
+      </>
+    ),
+    code: `  <DescriptionList.Item term="Order">#4021</DescriptionList.Item>
+  <DescriptionList.Item term="Placed">October 14, 2026</DescriptionList.Item>
+  <DescriptionList.Item term="Status">
+    <Badge variant="success">Paid</Badge>
+  </DescriptionList.Item>`,
+  },
   List: {
     element: (
       <>
@@ -559,7 +575,10 @@ export function Playground({
       {...(structural?.props ? resolve(structural.props, values) : null)}
       {...(spec.component === 'Card' ? { width: '100%', maxWidth: '80' } : null)}
       {...(spec.component === 'Grid' || spec.component === 'Table' ? { width: '100%' } : null)}
-      {...(spec.component === 'List' || spec.component === 'ListItem' || spec.component === 'Alert'
+      {...(spec.component === 'List' ||
+      spec.component === 'ListItem' ||
+      spec.component === 'Alert' ||
+      spec.component === 'DescriptionList'
         ? { width: '100%', maxWidth: '96' }
         : null)}
       {...(spec.component === 'Form' ? { width: '100%', maxWidth: '96' } : null)}

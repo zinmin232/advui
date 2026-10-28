@@ -75,5 +75,5 @@ import { EditIcon } from '@advui/icons'
     android:
       'Uses elevation for its shadow. With `androidRipple` (on in `material()`), presses show the native ripple.',
   },
-  related: ['button', 'icon-button', 'navigation-bar'],
+  related: ['button', 'icon-button', 'navigation-bar', 'back-to-top'],
 })
