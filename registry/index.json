@@ -406,6 +406,22 @@
       "registryDependencies": []
     },
     {
+      "name": "back-to-top",
+      "title": "Back to Top",
+      "type": "registry:component",
+      "description": "A floating button that appears once the page or a ScrollArea is scrolled down, and scrolls it back to the top.",
+      "category": "buttons",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "fab",
+        "hooks"
+      ]
+    },
+    {
       "name": "badge",
       "title": "Badge",
       "type": "registry:component",
@@ -773,6 +789,20 @@
         "date-picker",
         "hooks",
         "time-picker"
+      ]
+    },
+    {
+      "name": "description-list",
+      "title": "Description List",
+      "type": "registry:component",
+      "description": "Terms and their details, such as the fields of an order, a profile or a file: a `dl` on web.",
+      "category": "data-display",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": [
+        "typography",
+        "utils"
       ]
     },
     {
@@ -1241,6 +1271,17 @@
       ]
     },
     {
+      "name": "meter",
+      "title": "Meter",
+      "type": "registry:component",
+      "description": "A value inside a known range, such as storage used, battery left or a score, colored by which part of the range it is in.",
+      "category": "feedback",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
       "name": "multi-select",
       "title": "Multi Select",
       "type": "registry:component",
@@ -1381,6 +1422,19 @@
         "typography",
         "utils"
       ]
+    },
+    {
+      "name": "portal",
+      "title": "Portal",
+      "type": "registry:component",
+      "description": "Renders its children above the app, out of the layout they are written in: for your own floating bars, panels and overlays.",
+      "category": "foundations",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [
+        "@advui/theme"
+      ],
+      "registryDependencies": []
     },
     {
       "name": "progress",
@@ -1628,6 +1682,22 @@
       "registryDependencies": []
     },
     {
+      "name": "spoiler",
+      "title": "Spoiler",
+      "type": "registry:component",
+      "description": "Shows the start of long content, such as a description or a review, with a “Show more” button for the rest. The button appears only when the content is taller than `maxHeight`.",
+      "category": "data-display",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": [
+        "button",
+        "hooks",
+        "typography",
+        "utils"
+      ]
+    },
+    {
       "name": "stepper",
       "title": "Stepper",
       "type": "registry:component",
@@ -1670,6 +1740,21 @@
       "registryDependencies": [
         "hooks",
         "utils"
+      ]
+    },
+    {
+      "name": "table-of-contents",
+      "title": "Table of Contents",
+      "type": "registry:component",
+      "description": "The sections of a page as links, with the current one marked. On web it follows the scroll by itself.",
+      "category": "navigation",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [],
+      "registryDependencies": [
+        "hooks",
+        "link",
+        "typography"
       ]
     },
     {
@@ -1818,6 +1903,45 @@
       ],
       "registryDependencies": [
         "hooks",
+        "utils"
+      ]
+    },
+    {
+      "name": "tour",
+      "title": "Tour",
+      "type": "registry:component",
+      "description": "A guided walk through a screen: each step highlights an element and shows a card beside it with Back, Next and Skip.",
+      "category": "overlay",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [
+        "@advui/theme"
+      ],
+      "registryDependencies": [
+        "button",
+        "hooks",
+        "portal",
+        "typography",
+        "utils"
+      ]
+    },
+    {
+      "name": "transfer-list",
+      "title": "Transfer List",
+      "type": "registry:component",
+      "description": "Two lists side by side: check items in one and move them to the other, such as the columns of a table or the members of a team.",
+      "category": "advanced",
+      "status": "beta",
+      "package": "@advui/core",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "checkbox-group",
+        "hooks",
+        "icon-button",
+        "scroll-area",
+        "typography",
         "utils"
       ]
     },

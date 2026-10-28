@@ -129,5 +129,5 @@ export default defineMeta({
     ios: 'Opens as a bottom sheet that can be swiped away.',
     android: 'Opens as a bottom sheet; the back gesture closes it.',
   },
-  related: ['dialog', 'tooltip', 'dropdown-menu'],
+  related: ['dialog', 'tooltip', 'dropdown-menu', 'tour'],
 })

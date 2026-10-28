@@ -52,8 +52,7 @@ Image Gallery and Pie Chart already cover them.
 Built so far (the table keeps them for reference): Link, Input Group as
 slots on Input (`leading`, `trailing`, `leadingAddon`, `trailingAddon`),
 Checkbox Group, Tags Input, Carousel, Rating, Color Picker, Copy Button,
-Code Block and Menubar. Phase 7 is complete. Phase 8 has Visually Hidden,
-Indicator and Date Time Picker.
+Code Block and Menubar. Phases 7 and 8 are complete.
 
 | Phase | Package         | Components                                                                                                                                  |
 | ----- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -76,13 +75,28 @@ Notes for whoever picks these up:
 - **Visually Hidden** landed as Adv UI's own Text rather than a re-export.
   On iOS and Android, Tamagui's shows its words inside another Text (a
   nested Text takes no box styles) and marks itself `accessible`, a stop of
-  its own. **Portal** exists in Tamagui and may only need to be re-exported
-  and documented, with the native portal pitfalls in AGENTS.md.
+  its own.
+- **Portal** landed as a thin wrapper of Tamagui's rather than a plain
+  re-export: Tamagui's host takes no touches and stops touch scrolling, so
+  the wrapper adds a layer whose children take touches, and takes `zIndex`
+  as a layer of the theme's scale. In the native test renderer, React
+  context from above does not reach its children and the theme does.
 - **Date Time Picker** landed as a Date Picker and a Time Picker side by
   side rather than one panel with a calendar and time selects, so no
   overlay opens inside another (a sheet inside a sheet on phones). Its
   `min` and `max` limit the days only: limiting the times on those days
   needs a `min` and `max` on Time Picker first.
+- **Tour** is built on Portal rather than Popover: it needs a dimmed
+  screen with a hole at the target, and Popover becomes a bottom sheet on
+  phones. Steps point at elements with refs. On iOS and Android targets are
+  measured with `measureInWindow` but not scrolled to, and nobody has
+  checked the card's place or TalkBack and VoiceOver on a phone yet.
+- **Table of Contents** follows the window's scroll on web only. React
+  Native has no anchors, so apps there pass `activeId` and scroll in
+  `onItemPress`. **Back to Top** watches the page on web; on iOS and
+  Android it needs `useBackToTop` on a ScrollArea.
+- **Spoiler** cuts content off by height, not by lines, so it takes any
+  content. **Meter** colors by range as the HTML `meter` element does.
 
 ## Phase 10: open checks and decisions
 

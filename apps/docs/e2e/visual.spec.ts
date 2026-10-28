@@ -5,8 +5,9 @@ import { expect, test } from './fixtures'
 for (const mode of ['light', 'dark'] as const) {
   test(`component examples — ${mode}`, async ({ page }) => {
     // One test screenshots every example, so it outgrows the default timeout,
-    // most of all when writing a full set of baselines.
-    test.setTimeout(5 * 60_000)
+    // most of all when writing a full set of baselines. Some 300 examples
+    // took five minutes on a dev machine.
+    test.setTimeout(10 * 60_000)
     await page.addInitScript((m) => window.localStorage.setItem('aui-color-mode', m), mode)
     // Autoplaying examples (Carousel) start paused for reduced motion, so they hold still.
     await page.emulateMedia({ reducedMotion: 'reduce' })

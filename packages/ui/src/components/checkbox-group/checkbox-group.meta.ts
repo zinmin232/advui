@@ -192,5 +192,5 @@ export default defineMeta({
     android:
       'TalkBack has no group names, so each item reads the group’s name and help text as its hint, after its own description. The visible label and description are hidden from TalkBack, since the checkbox already reads them.',
   },
-  related: ['checkbox', 'radio-group', 'field', 'multi-select'],
+  related: ['checkbox', 'radio-group', 'field', 'multi-select', 'transfer-list'],
 })

@@ -23,6 +23,7 @@ import AutocompleteBasic from '../../ui/src/components/autocomplete/examples/bas
 import AvatarBasic from '../../ui/src/components/avatar/examples/basic'
 import AvatarSizes from '../../ui/src/components/avatar/examples/sizes'
 import AvatarGroup from '../../ui/src/components/avatar/examples/group'
+import BackToTopBasic from '../../ui/src/components/back-to-top/examples/basic'
 import BadgeVariants from '../../ui/src/components/badge/examples/variants'
 import BadgeWithIcon from '../../ui/src/components/badge/examples/with-icon'
 import BarChartBasic from '../../charts/src/components/bar-chart/examples/basic'
@@ -91,6 +92,8 @@ import DatePickerBasic from '../../ui/src/components/date-picker/examples/basic'
 import DateRangePickerBasic from '../../ui/src/components/date-range-picker/examples/basic'
 import DateTimePickerBasic from '../../ui/src/components/date-time-picker/examples/basic'
 import DateTimePickerTwelveHour from '../../ui/src/components/date-time-picker/examples/twelve-hour'
+import DescriptionListBasic from '../../ui/src/components/description-list/examples/basic'
+import DescriptionListDivided from '../../ui/src/components/description-list/examples/divided'
 import DialogBasic from '../../ui/src/components/dialog/examples/basic'
 import DialogConfirm from '../../ui/src/components/dialog/examples/confirm'
 import DrawerBasic from '../../ui/src/components/drawer/examples/basic'
@@ -182,6 +185,8 @@ import MenuBasic from '../../ui/src/components/menu/examples/basic'
 import MenuActions from '../../ui/src/components/menu/examples/actions'
 import MenubarBasic from '../../ui/src/components/menubar/examples/basic'
 import MenubarOptions from '../../ui/src/components/menubar/examples/options'
+import MeterBasic from '../../ui/src/components/meter/examples/basic'
+import MeterRanges from '../../ui/src/components/meter/examples/ranges'
 import MultiSelectBasic from '../../ui/src/components/multi-select/examples/basic'
 import NavigationBarBasic from '../../ui/src/components/navigation-bar/examples/basic'
 import NavigationMenuBasic from '../../ui/src/components/navigation-menu/examples/basic'
@@ -197,6 +202,7 @@ import PieChartBasic from '../../charts/src/components/pie-chart/examples/basic'
 import PieChartOther from '../../charts/src/components/pie-chart/examples/other'
 import PopoverBasic from '../../ui/src/components/popover/examples/basic'
 import PopoverFilter from '../../ui/src/components/popover/examples/filter'
+import PortalBasic from '../../ui/src/components/portal/examples/basic'
 import ProgressBasic from '../../ui/src/components/progress/examples/basic'
 import RadioGroupBasic from '../../ui/src/components/radio-group/examples/basic'
 import RatingBasic from '../../ui/src/components/rating/examples/basic'
@@ -233,6 +239,8 @@ import SliderRange from '../../ui/src/components/slider/examples/range'
 import SnackbarBasic from '../../ui/src/components/snackbar/examples/basic'
 import SnackbarPersistent from '../../ui/src/components/snackbar/examples/persistent'
 import SpinnerBasic from '../../ui/src/components/spinner/examples/basic'
+import SpoilerBasic from '../../ui/src/components/spoiler/examples/basic'
+import SpoilerLabels from '../../ui/src/components/spoiler/examples/labels'
 import StackBasic from '../../ui/src/components/layout/examples/basic'
 import StackResponsiveDirection from '../../ui/src/components/layout/examples/responsive-direction'
 import StackToolbar from '../../ui/src/components/layout/examples/toolbar'
@@ -249,6 +257,7 @@ import SwitchSettings from '../../ui/src/components/switch/examples/settings'
 import TableBasic from '../../data/src/components/table/examples/basic'
 import TableSortable from '../../data/src/components/table/examples/sortable'
 import TableScroll from '../../data/src/components/table/examples/scroll'
+import TableOfContentsBasic from '../../ui/src/components/table-of-contents/examples/basic'
 import TabsBasic from '../../ui/src/components/tabs/examples/basic'
 import TabsUnderline from '../../ui/src/components/tabs/examples/underline'
 import TagsInputBasic from '../../ui/src/components/tags-input/examples/basic'
@@ -278,6 +287,9 @@ import ToolbarSizes from '../../ui/src/components/toolbar/examples/sizes'
 import ToolbarCustom from '../../ui/src/components/toolbar/examples/custom'
 import ToolbarWrap from '../../ui/src/components/toolbar/examples/wrap'
 import TooltipBasic from '../../ui/src/components/tooltip/examples/basic'
+import TourBasic from '../../ui/src/components/tour/examples/basic'
+import TransferListBasic from '../../ui/src/components/transfer-list/examples/basic'
+import TransferListMembers from '../../ui/src/components/transfer-list/examples/members'
 import TreeViewBasic from '../../data/src/components/tree-view/examples/basic'
 import TreeViewControlled from '../../data/src/components/tree-view/examples/controlled'
 import TypographyScale from '../../ui/src/components/typography/examples/scale'
@@ -331,6 +343,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': AvatarBasic,
     'sizes': AvatarSizes,
     'group': AvatarGroup,
+  },
+  'back-to-top': {
+    'basic': BackToTopBasic,
   },
   'badge': {
     'variants': BadgeVariants,
@@ -451,6 +466,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'date-time-picker': {
     'basic': DateTimePickerBasic,
     'twelve-hour': DateTimePickerTwelveHour,
+  },
+  'description-list': {
+    'basic': DescriptionListBasic,
+    'divided': DescriptionListDivided,
   },
   'dialog': {
     'basic': DialogBasic,
@@ -599,6 +618,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': MenubarBasic,
     'options': MenubarOptions,
   },
+  'meter': {
+    'basic': MeterBasic,
+    'ranges': MeterRanges,
+  },
   'multi-select': {
     'basic': MultiSelectBasic,
   },
@@ -631,6 +654,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'popover': {
     'basic': PopoverBasic,
     'filter': PopoverFilter,
+  },
+  'portal': {
+    'basic': PortalBasic,
   },
   'progress': {
     'basic': ProgressBasic,
@@ -702,6 +728,10 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'spinner': {
     'basic': SpinnerBasic,
   },
+  'spoiler': {
+    'basic': SpoilerBasic,
+    'labels': SpoilerLabels,
+  },
   'stack': {
     'basic': StackBasic,
     'responsive-direction': StackResponsiveDirection,
@@ -729,6 +759,9 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': TableBasic,
     'sortable': TableSortable,
     'scroll': TableScroll,
+  },
+  'table-of-contents': {
+    'basic': TableOfContentsBasic,
   },
   'tabs': {
     'basic': TabsBasic,
@@ -778,6 +811,13 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   },
   'tooltip': {
     'basic': TooltipBasic,
+  },
+  'tour': {
+    'basic': TourBasic,
+  },
+  'transfer-list': {
+    'basic': TransferListBasic,
+    'members': TransferListMembers,
   },
   'tree-view': {
     'basic': TreeViewBasic,

@@ -62,5 +62,5 @@ export default defineMeta({
     '`role="progressbar"` with `aria-valuemin/max/now` so assistive tech reads the percentage.',
     'Values are clamped between 0 and `max`.',
   ],
-  related: ['circular-progress', 'spinner', 'skeleton'],
+  related: ['circular-progress', 'meter', 'spinner', 'skeleton'],
 })

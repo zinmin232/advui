@@ -15,16 +15,6 @@ export interface RoadmapItem {
 }
 
 export const roadmap: RoadmapItem[] = [
-  // Phase 8: less common, still in most libraries.
-  { name: 'Description List', slug: 'description-list', category: 'data-display', phase: 8 },
-  { name: 'Tour', slug: 'tour', category: 'overlay', phase: 8 },
-  { name: 'Spoiler', slug: 'spoiler', category: 'data-display', phase: 8 },
-  { name: 'Meter', slug: 'meter', category: 'feedback', phase: 8 },
-  { name: 'Table of Contents', slug: 'table-of-contents', category: 'navigation', phase: 8 },
-  { name: 'Back to Top', slug: 'back-to-top', category: 'buttons', phase: 8 },
-  { name: 'Transfer List', slug: 'transfer-list', category: 'advanced', phase: 8 },
-  { name: 'Portal', slug: 'portal', category: 'foundations', phase: 8 },
-
   // Phase 9: more charts, and data at scale.
   {
     name: 'Scatter Chart',

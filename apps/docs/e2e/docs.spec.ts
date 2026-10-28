@@ -482,6 +482,14 @@ for (const path of [
   '/docs/components/menubar',
   '/docs/components/visually-hidden',
   '/docs/components/indicator',
+  '/docs/components/meter',
+  '/docs/components/spoiler',
+  '/docs/components/description-list',
+  '/docs/components/back-to-top',
+  '/docs/components/table-of-contents',
+  '/docs/components/transfer-list',
+  '/docs/components/portal',
+  '/docs/components/tour',
   '/docs/components/sidebar',
   '/docs/components/search',
   '/docs/components/command-palette',
@@ -724,6 +732,102 @@ test('indicator centers its count on the icon corner and the button keeps its na
   const read = page.getByRole('button', { name: 'Notifications', exact: true }).first()
   await expect(read).toBeVisible()
   await expect(read.getByText('3', { exact: true })).toHaveCount(0)
+})
+
+test('spoiler measures its content, then shows the rest', async ({ page }) => {
+  await page.goto('/docs/components/spoiler')
+  await page.waitForLoadState('networkidle')
+  // The button appears only once the content measures taller than 96px.
+  const more = page.getByRole('button', { name: 'Show more' }).first()
+  await expect(more).toHaveAttribute('aria-expanded', 'false')
+  const content = page.locator(`[id="${await more.getAttribute('aria-controls')}"]`)
+  expect((await content.boundingBox())!.height).toBeLessThanOrEqual(96)
+  await more.click()
+  await expect(page.getByRole('button', { name: 'Show less' }).first()).toHaveAttribute(
+    'aria-expanded',
+    'true',
+  )
+  expect((await content.boundingBox())!.height).toBeGreaterThan(96)
+})
+
+test('back to top appears as a scroll area scrolls, then scrolls it back with focus', async ({
+  page,
+}) => {
+  await page.goto('/docs/components/back-to-top')
+  await page.waitForLoadState('networkidle')
+  const area = page.getByRole('region', { name: 'Build activity' }).first()
+  const button = page.getByRole('button', { name: 'Back to the latest build' })
+  await expect(button).toHaveCount(0)
+  await area.evaluate((el) => el.scrollTo({ top: 400 }))
+  await expect(button.first()).toBeVisible()
+  await button.first().focus()
+  await page.keyboard.press('Enter')
+  await expect.poll(() => area.evaluate((el) => el.scrollTop)).toBe(0)
+  await expect(area).toBeFocused()
+  await expect(button).toHaveCount(0)
+})
+
+test('table of contents follows the scroll to the section at the top', async ({ page }) => {
+  await page.goto('/docs/components/table-of-contents')
+  await page.waitForLoadState('networkidle')
+  const toc = page.getByRole('navigation', { name: 'Trail guide' })
+  const current = toc.locator('[aria-current="location"]')
+  await expect(current).toHaveText('The route')
+  await page.locator('#toc-example-water').evaluate((el) => el.scrollIntoView({ block: 'start' }))
+  await expect(current).toHaveText('Water and shelter')
+  await toc.getByRole('link', { name: 'When to go' }).click()
+  await expect(page).toHaveURL(/#toc-example-season$/)
+  await expect(current).toHaveText('When to go')
+})
+
+test('transfer list moves a checked column from the keyboard and keeps focus', async ({ page }) => {
+  await page.goto('/docs/components/transfer-list')
+  await page.waitForLoadState('networkidle')
+  const hidden = page.getByRole('group', { name: 'Hidden columns' }).first()
+  const shown = page.getByRole('group', { name: 'Shown columns' }).first()
+  await hidden.getByRole('checkbox', { name: 'Team' }).focus()
+  await page.keyboard.press('Space')
+  const add = page.getByRole('button', { name: 'Move to Shown columns' }).first()
+  await add.focus()
+  await page.keyboard.press('Enter')
+  await expect(shown.getByRole('checkbox', { name: 'Team' })).toBeVisible()
+  await expect(hidden.getByRole('checkbox', { name: 'Team' })).toHaveCount(0)
+  await expect(
+    page.getByRole('status').filter({ hasText: '1 moved to Shown columns' }),
+  ).toHaveCount(1)
+  await expect(add).toBeFocused()
+  await expect(add).toHaveAttribute('aria-disabled', 'true')
+})
+
+test('tour walks its steps beside their targets and gives focus back', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/docs/components/tour')
+  await page.waitForLoadState('networkidle')
+  const opener = page.getByRole('button', { name: 'Take the tour' }).first()
+  await opener.focus()
+  await page.keyboard.press('Enter')
+  const welcome = page.getByRole('dialog', { name: 'Welcome to Projects' })
+  await expect(welcome).toBeFocused()
+  expect(await seriousViolations(page)).toEqual([])
+  // Tab stays in the card: Skip, Next, then round to Skip.
+  await page.keyboard.press('Tab')
+  await expect(welcome.getByRole('button', { name: 'Skip tour' })).toBeFocused()
+  await page.keyboard.press('Tab')
+  await page.keyboard.press('Tab')
+  await expect(welcome.getByRole('button', { name: 'Skip tour' })).toBeFocused()
+  await welcome.getByRole('button', { name: 'Next' }).click()
+  // The second step sits just above or below the search field it points at.
+  const step = page.getByRole('dialog', { name: 'Find anything' })
+  await expect(step).toBeFocused()
+  const field = (await page.getByPlaceholder('Search projects').first().boundingBox())!
+  const card = (await step.boundingBox())!
+  const below = card.y - (field.y + field.height)
+  const above = field.y - (card.y + card.height)
+  expect([below, above].some((gap) => gap > 0 && gap < 24)).toBe(true)
+  await page.keyboard.press('Escape')
+  await expect(step).toHaveCount(0)
+  await expect(opener).toBeFocused()
+  expect(errors).toEqual([])
 })
 
 test('menu is one Tab stop and arrow keys move between items', async ({ page }) => {

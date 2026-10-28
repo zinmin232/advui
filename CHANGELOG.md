@@ -219,6 +219,63 @@ line with an ellipsis) and Card's `elevated` shadow (Android `elevation`).
   their own panel, so no overlay opens inside another. On web it is a group
   named by its Field; on iOS and Android, where group names are not read,
   each part carries the field's name (“Starts, Date”, “Starts, Hour”).
+- **Meter**: a value inside a known range, such as storage used or battery
+  left, with `meter` semantics. Give `low`, `high` and `optimum` and it
+  colors the fill by range, as the HTML `meter` element does (the range
+  that holds `optimum` is `success`, the middle `warning`, the far end
+  `error`); `tone` sets the color yourself. `valueText` is what screen
+  readers read; on iOS and Android it defaults to the percentage.
+- **Spoiler**: shows the start of long content, cut off at `maxHeight` (a
+  size token or pixels, 96px by default), with a “Show more” button for the
+  rest (`expanded`, `defaultExpanded`, `onExpandedChange`, `showLabel`,
+  `hideLabel`). The button appears only when the content is taller, and on
+  web it follows the content's size as it changes. Tabbing to a link below
+  the cut shows the rest, so focus never lands on something hidden.
+- **Description List**: terms and their details, such as the fields of an
+  order or a profile. `DescriptionList.Item` takes a `term` and the details
+  as children; the list takes `orientation` (term beside or above),
+  `divided` and `termWidth`. On web it is a `dl`, each item a `div` with a
+  `dt` and a `dd`. On iOS and Android an item whose details are text is one
+  stop (“Status, Paid”); details with controls stay apart so they can be
+  reached.
+- **Back to Top**: a floating button (a small `surface` Fab) that appears
+  once the page or a ScrollArea is scrolled down, and scrolls it back to the
+  top, smoothly unless the user asks for reduced motion. On its own it
+  watches the page (web, `threshold`); `useBackToTop()` gives `scrollProps`
+  to spread on a ScrollArea, which iOS and Android need. On web, focus moves
+  to the top with the scroll, so the next Tab does not go on from the
+  bottom.
+- **Table of Contents**: the sections of a page as links (`items`, each an
+  `id`, a `label` and a heading `level`; deeper levels indented), with the
+  current one marked by `aria-current="location"` and the line beside it.
+  On web it follows the window's scroll by itself (`headingOffset` for a
+  sticky header) and marks the last section once the page is at its end;
+  `activeId` and `onActiveIdChange` control it. On iOS and Android, which
+  have no anchors, pass `activeId` and scroll in `onItemPress`; the current
+  link's name ends in “current”.
+- **Transfer List**: two lists side by side; check items in one and move
+  them to the other, such as the columns of a table. `value` is what is in
+  the target list, kept in the order of `items`; a disabled item stays
+  where it is. Each list is a Checkbox Group with Select All, and the move
+  buttons stay focusable (`aria-disabled`) when nothing is checked, so focus
+  is not lost after a move. “2 moved to Selected” is announced on every
+  platform. `labels` names the lists and the buttons.
+- **Portal**: renders its children above the app, at the end of `body` on
+  web and beside the app on iOS and Android, for your own floating bars and
+  panels. It is Tamagui's Portal with a layer that lets touches outside the
+  children reach the app, `zIndex` as a layer of the theme's scale
+  (`overlay` by default) or a number, and touch scrolling left on inside it.
+  On iOS and Android, React context from above does not reach its children;
+  the theme does.
+- **Tour**: a guided walk through a screen. Each step (a `title`, a
+  `description` and a `target` ref) dims the screen around its element,
+  rings it, and shows a card beside it with Back, Next and Skip; a step
+  without a target is centered. `open`, `step` and `onComplete`
+  control it. On web each step is a modal dialog that takes focus, keeps
+  Tab inside, closes with Escape and gives focus back; the target is
+  scrolled into view and followed. On iOS and Android the step and title
+  are one heading that takes screen reader focus, the app behind is hidden
+  from screen readers, and the back button closes the tour.
 - **Docs site**: a Tailwind guide (`/docs/tailwind`) for Tamagui's
   `@tamagui/tailwind` next to Adv UI. It lists the class names that match
   Adv UI's theme (camelCase color keys, numbered text sizes, the 4px space
