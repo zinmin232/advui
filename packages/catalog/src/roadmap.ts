@@ -16,7 +16,6 @@ export interface RoadmapItem {
 
 export const roadmap: RoadmapItem[] = [
   // Phase 8: less common, still in most libraries.
-  { name: 'Date Time Picker', slug: 'date-time-picker', category: 'forms', phase: 8 },
   { name: 'Description List', slug: 'description-list', category: 'data-display', phase: 8 },
   { name: 'Tour', slug: 'tour', category: 'overlay', phase: 8 },
   { name: 'Spoiler', slug: 'spoiler', category: 'data-display', phase: 8 },

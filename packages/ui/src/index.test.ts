@@ -32,6 +32,7 @@ describe('@advui/core public API', () => {
       // Deprecated alias of Field, kept for apps on 0.6.
       'FormField',
       'DatePicker',
+      'DateTimePicker',
       'Combobox',
       'Dialog',
       'ConfirmDialog',

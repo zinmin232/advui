@@ -34,6 +34,7 @@ import dataGridMeta from '../../data/src/components/data-grid/data-grid.meta'
 import dataTableMeta from '../../data/src/components/data-table/data-table.meta'
 import datePickerMeta from '../../ui/src/components/date-picker/date-picker.meta'
 import dateRangePickerMeta from '../../ui/src/components/date-range-picker/date-range-picker.meta'
+import dateTimePickerMeta from '../../ui/src/components/date-time-picker/date-time-picker.meta'
 import dialogMeta from '../../ui/src/components/dialog/dialog.meta'
 import drawerMeta from '../../ui/src/components/drawer/drawer.meta'
 import dropdownMenuMeta from '../../ui/src/components/dropdown-menu/dropdown-menu.meta'
@@ -175,6 +176,7 @@ export const components: CatalogComponent[] = [
   { ...dataTableMeta, package: '@advui/data' },
   { ...datePickerMeta, package: '@advui/core' },
   { ...dateRangePickerMeta, package: '@advui/core' },
+  { ...dateTimePickerMeta, package: '@advui/core' },
   { ...dialogMeta, package: '@advui/core' },
   { ...drawerMeta, package: '@advui/core' },
   { ...dropdownMenuMeta, package: '@advui/core' },

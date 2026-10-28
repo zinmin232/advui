@@ -52,8 +52,8 @@ Image Gallery and Pie Chart already cover them.
 Built so far (the table keeps them for reference): Link, Input Group as
 slots on Input (`leading`, `trailing`, `leadingAddon`, `trailingAddon`),
 Checkbox Group, Tags Input, Carousel, Rating, Color Picker, Copy Button,
-Code Block and Menubar. Phase 7 is complete. Phase 8 has Visually Hidden
-and Indicator.
+Code Block and Menubar. Phase 7 is complete. Phase 8 has Visually Hidden,
+Indicator and Date Time Picker.
 
 | Phase | Package         | Components                                                                                                                                  |
 | ----- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -78,6 +78,11 @@ Notes for whoever picks these up:
   nested Text takes no box styles) and marks itself `accessible`, a stop of
   its own. **Portal** exists in Tamagui and may only need to be re-exported
   and documented, with the native portal pitfalls in AGENTS.md.
+- **Date Time Picker** landed as a Date Picker and a Time Picker side by
+  side rather than one panel with a calendar and time selects, so no
+  overlay opens inside another (a sheet inside a sheet on phones). Its
+  `min` and `max` limit the days only: limiting the times on those days
+  needs a `min` and `max` on Time Picker first.
 
 ## Phase 10: open checks and decisions
 
