@@ -401,12 +401,12 @@
       ]
     },
     {
-      "name": "rich-text-editor",
-      "title": "Rich Text Editor",
+      "name": "markdown-editor",
+      "title": "Markdown Editor",
       "type": "registry:component",
-      "description": "A Markdown editor with a formatting toolbar and a preview, plus Rich Text Content to show what was written.",
+      "description": "A Markdown editor with a formatting toolbar and a preview, plus Markdown Content to show what was written.",
       "category": "advanced",
-      "status": "beta",
+      "status": "stable",
       "package": "@advui/editor",
       "dependencies": [
         "@advui/icons"
@@ -418,6 +418,31 @@
         "input",
         "textarea",
         "typography"
+      ]
+    },
+    {
+      "name": "rich-text-editor",
+      "title": "Rich Text Editor",
+      "type": "registry:component",
+      "description": "A WYSIWYG editor that shows formatting as you write and saves HTML, plus Rich Text Content to show what was written.",
+      "category": "advanced",
+      "status": "experimental",
+      "package": "@advui/editor",
+      "dependencies": [
+        "@10play/tentap-editor",
+        "@advui/icons",
+        "@tiptap/extension-list",
+        "@tiptap/extensions",
+        "@tiptap/react",
+        "@tiptap/starter-kit"
+      ],
+      "registryDependencies": [
+        "button",
+        "hooks",
+        "input",
+        "markdown-editor",
+        "toggle",
+        "toolbar"
       ]
     },
     {

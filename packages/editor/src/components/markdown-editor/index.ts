@@ -1,14 +1,14 @@
-export { RichTextContent, type RichTextContentProps } from './RichTextContent'
+export { MarkdownContent, type MarkdownContentProps } from './MarkdownContent'
 export {
-  RichTextEditor,
-  defaultRichTextTools,
-  type RichTextEditorLabels,
-  type RichTextEditorProps,
-} from './RichTextEditor'
+  MarkdownEditor,
+  defaultMarkdownTools,
+  type MarkdownEditorLabels,
+  type MarkdownEditorProps,
+} from './MarkdownEditor'
 export {
   applyFormat,
   parseMarkdown,
   type FormatResult,
-  type RichTextTool,
+  type MarkdownTool,
   type TextSelection,
 } from './markdown'

@@ -36,6 +36,12 @@ function Inline({ nodes, size }: { nodes: InlineNode[]; size: TextSize }): React
             <Inline nodes={node.children} size={size} />
           </Text>
         )
+      case 'underline':
+        return (
+          <Text key={i} size={size} textDecorationLine="underline">
+            <Inline nodes={node.children} size={size} />
+          </Text>
+        )
       case 'link':
         return (
           <Text
@@ -54,7 +60,14 @@ function Inline({ nodes, size }: { nodes: InlineNode[]; size: TextSize }): React
   })
 }
 
-function Blocks({ blocks, headingOffset }: { blocks: BlockNode[]; headingOffset: number }) {
+/** Draws parsed blocks: Markdown Content and Rich Text Content share it. */
+export function ContentBlocks({
+  blocks,
+  headingOffset,
+}: {
+  blocks: BlockNode[]
+  headingOffset: number
+}) {
   return blocks.map((block, i) => {
     switch (block.type) {
       case 'heading': {
@@ -80,7 +93,7 @@ function Blocks({ blocks, headingOffset }: { blocks: BlockNode[]; headingOffset:
       case 'quote':
         return (
           <View key={i} borderLeftWidth={3} borderColor="border" paddingLeft="3" gap="2">
-            <Blocks blocks={block.children} headingOffset={headingOffset} />
+            <ContentBlocks blocks={block.children} headingOffset={headingOffset} />
           </View>
         )
       case 'list':
@@ -102,18 +115,18 @@ function Blocks({ blocks, headingOffset }: { blocks: BlockNode[]; headingOffset:
   })
 }
 
-export interface RichTextContentProps extends Omit<GetProps<typeof View>, 'children'> {
-  /** Markdown, as written by Rich Text Editor. */
+export interface MarkdownContentProps extends Omit<GetProps<typeof View>, 'children'> {
+  /** Markdown, as written by Markdown Editor. */
   children: string
   /** Added to heading levels: with 1 (default), `#` is an h2 under your page's h1. */
   headingOffset?: number
 }
 
-/** Shows Markdown written with Rich Text Editor, with the same styles on every platform. */
-export function RichTextContent({ children, headingOffset = 1, ...props }: RichTextContentProps) {
+/** Shows Markdown written with Markdown Editor, with the same styles on every platform. */
+export function MarkdownContent({ children, headingOffset = 1, ...props }: MarkdownContentProps) {
   return (
     <View gap="3" {...props}>
-      <Blocks blocks={parseMarkdown(children)} headingOffset={headingOffset} />
+      <ContentBlocks blocks={parseMarkdown(children)} headingOffset={headingOffset} />
     </View>
   )
 }

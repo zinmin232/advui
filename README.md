@@ -56,7 +56,7 @@ The same file renders DOM elements in Next.js and native views in Expo.
     Calendar, Kanban
   - **`@advui/charts`** (9): Bar Chart, Line Chart, Area Chart, Pie Chart,
     Scatter Chart, Composed Chart, Radar Chart, Radial Chart, Heatmap
-  - **`@advui/editor`** (1): Rich Text Editor, with Rich Text Content
+  - **`@advui/editor`** (2): Rich Text Editor (WYSIWYG) and Markdown Editor, each with a viewer
 - **One theme config** — presets or any brand color. Light and dark palettes are
   generated and checked against WCAG AA contrast. Radius and type scale are
   global knobs.
@@ -78,7 +78,7 @@ The same file renders DOM elements in Next.js and native views in Expo.
 | `packages/ui`            | `@advui/core`: general-purpose components, provider, hooks                     |
 | `packages/data`          | `@advui/data`: tables, Data Grid, Filter Bar, Virtual List, Kanban and more    |
 | `packages/charts`        | `@advui/charts`: bar, line, area, pie, scatter, radar and other charts         |
-| `packages/editor`        | `@advui/editor`: Rich Text Editor and Rich Text Content                        |
+| `packages/editor`        | `@advui/editor`: Rich Text Editor and Markdown Editor, with viewers            |
 | `packages/catalog`       | Private: generated metadata and examples of every component, for docs/Expo     |
 | `packages/theme`         | `@advui/theme`: tokens, palettes, theme generation, `createUniversalConfig`    |
 | `packages/icons`         | `@advui/icons`: Lucide-based icons for web (SVG) and native (react-native-svg) |
@@ -154,7 +154,7 @@ pnpm add react-native-web   # web only (Next.js, Vite)
 # add the packages you need:
 pnpm add @advui/data      # tables, data grid, tree view, timeline, stats
 pnpm add @advui/charts    # charts (also installs @advui/data)
-pnpm add @advui/editor    # rich text editor
+pnpm add @advui/editor    # rich text and Markdown editors
 ```
 
 ```ts

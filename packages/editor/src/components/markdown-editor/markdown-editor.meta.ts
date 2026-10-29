@@ -1,43 +1,43 @@
 import { defineMeta } from '@advui/core/meta'
 
 export default defineMeta({
-  name: 'Rich Text Editor',
-  slug: 'rich-text-editor',
+  name: 'Markdown Editor',
+  slug: 'markdown-editor',
   category: 'advanced',
   description:
-    'A Markdown editor with a formatting toolbar and a preview, plus Rich Text Content to show what was written.',
-  status: 'beta',
+    'A Markdown editor with a formatting toolbar and a preview, plus Markdown Content to show what was written.',
+  status: 'stable',
   since: '0.6.0',
   platforms: ['web', 'ios', 'android'],
   exports: [
-    'RichTextEditor',
-    'RichTextEditorProps',
-    'RichTextEditorLabels',
-    'RichTextContent',
-    'RichTextContentProps',
-    'RichTextTool',
-    'defaultRichTextTools',
+    'MarkdownEditor',
+    'MarkdownEditorProps',
+    'MarkdownEditorLabels',
+    'MarkdownContent',
+    'MarkdownContentProps',
+    'MarkdownTool',
+    'defaultMarkdownTools',
     'applyFormat',
     'parseMarkdown',
     'FormatResult',
     'TextSelection',
   ],
   files: [
-    'components/rich-text-editor/RichTextEditor.tsx',
-    'components/rich-text-editor/RichTextContent.tsx',
-    'components/rich-text-editor/markdown.ts',
-    'components/rich-text-editor/index.ts',
+    'components/markdown-editor/MarkdownEditor.tsx',
+    'components/markdown-editor/MarkdownContent.tsx',
+    'components/markdown-editor/markdown.ts',
+    'components/markdown-editor/index.ts',
   ],
-  keywords: ['rich text', 'editor', 'markdown', 'wysiwyg', 'formatting', 'toolbar', 'comment'],
-  usage: `import { RichTextContent, RichTextEditor } from '@advui/editor'
+  keywords: ['markdown', 'editor', 'plain text', 'formatting', 'toolbar', 'preview', 'comment'],
+  usage: `import { MarkdownContent, MarkdownEditor } from '@advui/editor'
 
-<RichTextEditor aria-label="Report" value={markdown} onValueChange={setMarkdown} />
+<MarkdownEditor aria-label="Report" value={markdown} onValueChange={setMarkdown} />
 
 // Show saved text:
-<RichTextContent>{markdown}</RichTextContent>`,
+<MarkdownContent>{markdown}</MarkdownContent>`,
   parts: [
     {
-      name: 'RichTextEditor',
+      name: 'MarkdownEditor',
       props: [
         { name: 'value', type: 'string', description: 'The text, as Markdown.' },
         {
@@ -53,7 +53,7 @@ export default defineMeta({
         { name: 'placeholder', type: 'string', description: 'Shown while empty.' },
         {
           name: 'tools',
-          type: 'RichTextTool[]',
+          type: 'MarkdownTool[]',
           default: 'all nine',
           description:
             "Toolbar buttons, in order: 'bold', 'italic', 'strikethrough', 'heading', 'bulletList', 'orderedList', 'quote', 'link', 'code'.",
@@ -89,14 +89,14 @@ export default defineMeta({
         },
         {
           name: 'labels',
-          type: 'Partial<RichTextEditorLabels>',
+          type: 'Partial<MarkdownEditorLabels>',
           description: 'Toolbar, tool, preview and count text, for translation.',
         },
       ],
       children: { accepts: 'none' },
     },
     {
-      name: 'RichTextContent',
+      name: 'MarkdownContent',
       description: 'Shows Markdown with the same styles. Also takes View props.',
       props: [
         { name: 'children', type: 'string', required: true, description: 'The Markdown.' },
@@ -123,7 +123,7 @@ export default defineMeta({
     'The toolbar is a WAI-ARIA `toolbar` with one tab stop; each tool is a named button (with its shortcut in the tooltip).',
     'After a tool is used, focus returns to the text with the new text selected, so you can keep typing.',
     'Preview is a toggle button (`aria-pressed`); the preview is a named region with real headings and lists.',
-    'Links in Rich Text Content only follow `http(s)` and `mailto` addresses and open in a new tab on web.',
+    'Links in Markdown Content only follow `http(s)` and `mailto` addresses and open in a new tab on web.',
   ],
   keyboard: [
     { keys: '⌘ / Ctrl + B', action: 'Bold.' },
@@ -138,5 +138,5 @@ export default defineMeta({
     ios: 'The same editor on a native text field; tools act on the selection.',
     android: 'Same as iOS.',
   },
-  related: ['textarea', 'field'],
+  related: ['rich-text-editor', 'textarea', 'field'],
 })

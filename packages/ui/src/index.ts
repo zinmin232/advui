@@ -4,7 +4,12 @@ import './types'
 export { ColorModeProvider, useColorMode, type ColorModeContextValue } from './provider/ColorMode'
 export { UniversalProvider, type UniversalProviderProps } from './provider/UniversalProvider'
 export { useControllableState } from './hooks/useControllableState'
-export { useFieldControl, type FieldControlProps, type FieldState } from './hooks/useFieldControl'
+export {
+  FieldContext,
+  useFieldControl,
+  type FieldControlProps,
+  type FieldState,
+} from './hooks/useFieldControl'
 export {
   useParentForm,
   type FormContextValue,

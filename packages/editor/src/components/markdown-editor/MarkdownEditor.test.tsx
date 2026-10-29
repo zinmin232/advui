@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { renderWithProvider, screen, within } from '../../../test/utils'
-import { RichTextContent } from './RichTextContent'
-import { RichTextEditor } from './RichTextEditor'
+import { MarkdownContent } from './MarkdownContent'
+import { MarkdownEditor } from './MarkdownEditor'
 import { applyFormat, parseInline, parseMarkdown } from './markdown'
 
 describe('applyFormat', () => {
@@ -65,9 +65,9 @@ describe('parseMarkdown', () => {
   })
 })
 
-describe('RichTextEditor', () => {
+describe('MarkdownEditor', () => {
   it('has a named field and a toolbar with one tab stop', () => {
-    renderWithProvider(<RichTextEditor aria-label="Report" />)
+    renderWithProvider(<MarkdownEditor aria-label="Report" />)
     expect(screen.getByRole('textbox', { name: 'Report' })).toBeInTheDocument()
     const toolbar = screen.getByRole('toolbar', { name: 'Formatting' })
     const tools = within(toolbar).getAllByRole('button')
@@ -88,7 +88,7 @@ describe('RichTextEditor', () => {
   it('formats the selected text from the toolbar and the keyboard', async () => {
     const onValueChange = vi.fn()
     const { user } = renderWithProvider(
-      <RichTextEditor
+      <MarkdownEditor
         aria-label="Report"
         defaultValue="clean water"
         onValueChange={onValueChange}
@@ -108,7 +108,7 @@ describe('RichTextEditor', () => {
 
   it('moves through the toolbar with the arrow keys', async () => {
     const { user } = renderWithProvider(
-      <RichTextEditor aria-label="Report" tools={['bold', 'italic', 'link']} />,
+      <MarkdownEditor aria-label="Report" tools={['bold', 'italic', 'link']} />,
     )
     await user.tab()
     expect(screen.getByRole('button', { name: 'Bold' })).toHaveFocus()
@@ -120,7 +120,7 @@ describe('RichTextEditor', () => {
 
   it('previews the Markdown and counts characters', async () => {
     const { user } = renderWithProvider(
-      <RichTextEditor aria-label="Report" defaultValue={'## Needs\n\n- water'} maxLength={100} />,
+      <MarkdownEditor aria-label="Report" defaultValue={'## Needs\n\n- water'} maxLength={100} />,
     )
     expect(screen.getByRole('textbox')).toHaveAccessibleDescription('17 of 100 characters')
     await user.click(screen.getByRole('button', { name: 'Preview' }))
@@ -133,18 +133,18 @@ describe('RichTextEditor', () => {
 
   it('keeps the native-only accessibilityHint off the DOM', () => {
     const { container } = renderWithProvider(
-      <RichTextEditor aria-label="Report" accessibilityHint="Markdown is supported." />,
+      <MarkdownEditor aria-label="Report" accessibilityHint="Markdown is supported." />,
     )
     expect(container.querySelector('[accessibilityhint]')).toBeNull()
   })
 })
 
-describe('RichTextContent', () => {
+describe('MarkdownContent', () => {
   it('renders headings, lists, quotes and safe links', () => {
     renderWithProvider(
-      <RichTextContent>
+      <MarkdownContent>
         {'# Plan\n\n1. Register\n2. Distribute\n\n> Note with [MIMU](https://themimu.info)'}
-      </RichTextContent>,
+      </MarkdownContent>,
     )
     expect(screen.getByRole('heading', { name: 'Plan', level: 2 })).toBeInTheDocument()
     expect(screen.getAllByRole('listitem')).toHaveLength(2)

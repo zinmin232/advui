@@ -1,4 +1,4 @@
-import { RichTextContent } from '@advui/editor'
+import { MarkdownContent } from '@advui/editor'
 
 const note = `### Distribution plan
 
@@ -8,6 +8,6 @@ const note = `### Distribution plan
 
 > Keep ~~paper lists~~ digital records only.`
 
-export default function RichTextEditorContent() {
-  return <RichTextContent maxWidth="144">{note}</RichTextContent>
+export default function MarkdownEditorContent() {
+  return <MarkdownContent maxWidth="144">{note}</MarkdownContent>
 }

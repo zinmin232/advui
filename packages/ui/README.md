@@ -28,7 +28,7 @@ setup.
 More components ship in packages built on this one, so apps install only what
 they use: `@advui/data` (Table, Data Table, Data Grid, Filter Bar, Tree View,
 Timeline, Stat, KPI Card), `@advui/charts` (Bar, Line, Area and Pie Chart) and
-`@advui/editor` (Rich Text Editor). They render inside the same
+`@advui/editor` (Rich Text Editor, Markdown Editor). They render inside the same
 `UniversalProvider`.
 
 **Exports:** Accordion, Alert, AlertDialog, Avatar, Badge, Breadcrumb, Button,

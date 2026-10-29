@@ -20,12 +20,12 @@ import {
   useControllableState,
   useFieldControl,
 } from '@advui/core'
-import { RichTextContent } from './RichTextContent'
-import { type RichTextTool, type TextSelection, applyFormat, shortcuts } from './markdown'
+import { MarkdownContent } from './MarkdownContent'
+import { type MarkdownTool, type TextSelection, applyFormat, shortcuts } from './markdown'
 
-export interface RichTextEditorLabels {
+export interface MarkdownEditorLabels {
   toolbar: string
-  tools: Record<RichTextTool, string>
+  tools: Record<MarkdownTool, string>
   preview: string
   /** Shown in the preview when there is nothing to show. */
   empty: string
@@ -33,7 +33,7 @@ export interface RichTextEditorLabels {
   count: (length: number, max: number) => string
 }
 
-const defaultLabels: RichTextEditorLabels = {
+const defaultLabels: MarkdownEditorLabels = {
   toolbar: 'Formatting',
   tools: {
     bold: 'Bold',
@@ -51,7 +51,7 @@ const defaultLabels: RichTextEditorLabels = {
   count: (length, max) => `${length} of ${max} characters`,
 }
 
-const icons: Record<RichTextTool, ReactElement> = {
+const icons: Record<MarkdownTool, ReactElement> = {
   bold: <BoldIcon />,
   italic: <ItalicIcon />,
   strikethrough: <StrikethroughIcon />,
@@ -63,9 +63,9 @@ const icons: Record<RichTextTool, ReactElement> = {
   quote: <QuoteIcon />,
 }
 
-const shortcutHints: Partial<Record<RichTextTool, string>> = { bold: 'B', italic: 'I', link: 'K' }
+const shortcutHints: Partial<Record<MarkdownTool, string>> = { bold: 'B', italic: 'I', link: 'K' }
 
-export const defaultRichTextTools: RichTextTool[] = [
+export const defaultMarkdownTools: MarkdownTool[] = [
   'bold',
   'italic',
   'strikethrough',
@@ -77,14 +77,14 @@ export const defaultRichTextTools: RichTextTool[] = [
   'code',
 ]
 
-export interface RichTextEditorProps {
+export interface MarkdownEditorProps {
   /** Markdown (controlled). */
   value?: string
   defaultValue?: string
   onValueChange?: (value: string) => void
   placeholder?: string
   /** Toolbar buttons, in order. Default: all nine. */
-  tools?: RichTextTool[]
+  tools?: MarkdownTool[]
   /** Minimum height of the text area. Default: `32`. */
   minHeight?: GetProps<typeof View>['minHeight']
   maxLength?: number
@@ -98,8 +98,8 @@ export interface RichTextEditorProps {
   /** Native: help read after the name (a Field sets it). */
   accessibilityHint?: string
   /** Toolbar, tool and preview names, for translation. */
-  labels?: Partial<Omit<RichTextEditorLabels, 'tools'>> & {
-    tools?: Partial<RichTextEditorLabels['tools']>
+  labels?: Partial<Omit<MarkdownEditorLabels, 'tools'>> & {
+    tools?: Partial<MarkdownEditorLabels['tools']>
   }
 }
 
@@ -114,15 +114,15 @@ type Editable = TamaguiElement & {
 /**
  * A Markdown editor with a formatting toolbar and a preview. It stores plain
  * Markdown, so the text is safe to save and shows the same on every platform
- * with Rich Text Content.
+ * with Markdown Content.
  */
-export function RichTextEditor(editorProps: RichTextEditorProps) {
+export function MarkdownEditor(editorProps: MarkdownEditorProps) {
   const {
     value: valueProp,
     defaultValue = '',
     onValueChange,
     placeholder,
-    tools = defaultRichTextTools,
+    tools = defaultMarkdownTools,
     minHeight = '32',
     maxLength,
     disabled = false,
@@ -167,7 +167,7 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
     selection.current = next
   })
 
-  const apply = (tool: RichTextTool) => {
+  const apply = (tool: MarkdownTool) => {
     const node = field.current
     const current =
       isWeb && node?.selectionStart != null
@@ -278,7 +278,7 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
           {...(isWeb && { role: 'region', 'aria-label': labels.preview })}
         >
           {value.trim() ? (
-            <RichTextContent>{value}</RichTextContent>
+            <MarkdownContent>{value}</MarkdownContent>
           ) : (
             <Text size="sm" tone="muted">
               {labels.empty}

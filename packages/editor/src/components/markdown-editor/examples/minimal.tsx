@@ -1,8 +1,8 @@
-import { RichTextEditor } from '@advui/editor'
+import { MarkdownEditor } from '@advui/editor'
 
-export default function RichTextEditorMinimal() {
+export default function MarkdownEditorMinimal() {
   return (
-    <RichTextEditor
+    <MarkdownEditor
       aria-label="Comment"
       placeholder="Write a comment…"
       tools={['bold', 'italic', 'link', 'bulletList']}
