@@ -2,7 +2,7 @@ import { Badge, Card, HStack, Text, VStack } from '@advui/core'
 import { examples } from '@advui/catalog/examples'
 import { getComponent } from '@advui/catalog'
 import { Stack, useLocalSearchParams } from 'expo-router'
-import { ScrollView } from 'react-native'
+import { ScreenScrollView } from '../../ScreenScrollView'
 
 /** Renders every documented example of a component — the native counterpart of a docs page. */
 export default function ComponentScreen() {
@@ -12,7 +12,7 @@ export default function ComponentScreen() {
   const componentExamples = examples[meta.slug] ?? {}
 
   return (
-    <ScrollView contentInsetAdjustmentBehavior="automatic" keyboardShouldPersistTaps="handled">
+    <ScreenScrollView>
       <Stack.Screen options={{ title: meta.name }} />
       <VStack paddingTop="4" paddingRight="4" paddingLeft="4" paddingBottom="12" gap="5">
         <VStack gap="2">
@@ -50,6 +50,6 @@ export default function ComponentScreen() {
           )
         })}
       </VStack>
-    </ScrollView>
+    </ScreenScrollView>
   )
 }
