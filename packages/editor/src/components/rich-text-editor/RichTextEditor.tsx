@@ -1,122 +1,88 @@
+import { ListItem } from '@tiptap/extension-list'
+import { Placeholder } from '@tiptap/extensions'
+import { type Editor, EditorContent, Extension, useEditor, useEditorState } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import { useContext, useEffect, useId, useMemo, useRef, useState } from 'react'
+import { View, getConfig } from 'tamagui/unstyled'
+import { FieldContext, fieldBoxStyle, useControllableState, useFieldControl } from '@advui/core'
+import { normalizeHtml } from './html'
 import {
-  BoldIcon,
-  CodeIcon,
-  HeadingIcon,
-  ItalicIcon,
-  LinkIcon,
-  ListIcon,
-  ListOrderedIcon,
-  QuoteIcon,
-  StrikethroughIcon,
-} from '@advui/icons'
-import { type ReactElement, useId, useLayoutEffect, useRef, useState } from 'react'
-import { type GetProps, type TamaguiElement, View, XStack, isWeb } from 'tamagui/unstyled'
-import {
-  Button,
-  IconButton,
-  Text,
-  Textarea,
-  fieldBoxStyle,
-  useControllableState,
-  useFieldControl,
-} from '@advui/core'
-import { RichTextContent } from './RichTextContent'
-import { type RichTextTool, type TextSelection, applyFormat, shortcuts } from './markdown'
+  type ActiveTools,
+  LinkBar,
+  type RichTextEditorProps,
+  type RichTextTool,
+  RichTextToolbar,
+  contentCss,
+  defaultRichTextTools,
+  resolveLabels,
+  sizePx,
+} from './parts'
 
-export interface RichTextEditorLabels {
-  toolbar: string
-  tools: Record<RichTextTool, string>
-  preview: string
-  /** Shown in the preview when there is nothing to show. */
-  empty: string
-  /** Character count with `maxLength`: "120 of 500 characters". */
-  count: (length: number, max: number) => string
-}
-
-const defaultLabels: RichTextEditorLabels = {
-  toolbar: 'Formatting',
-  tools: {
-    bold: 'Bold',
-    italic: 'Italic',
-    strikethrough: 'Strikethrough',
-    code: 'Code',
-    link: 'Link',
-    heading: 'Heading',
-    bulletList: 'Bulleted list',
-    orderedList: 'Numbered list',
-    quote: 'Quote',
+// Tab leaves the text instead of nesting list items, so the keyboard can
+// always move on, and lists stay one level deep, as Rich Text Content draws them.
+const FlatListItem = ListItem.extend({
+  addKeyboardShortcuts() {
+    return { Enter: () => this.editor.commands.splitListItem(this.name) }
   },
-  preview: 'Preview',
-  empty: 'Nothing to preview.',
-  count: (length, max) => `${length} of ${max} characters`,
+})
+
+const toggles: Record<Exclude<RichTextTool, 'link'>, (editor: Editor) => void> = {
+  bold: (editor) => editor.chain().focus().toggleBold().run(),
+  italic: (editor) => editor.chain().focus().toggleItalic().run(),
+  underline: (editor) => editor.chain().focus().toggleUnderline().run(),
+  strikethrough: (editor) => editor.chain().focus().toggleStrike().run(),
+  code: (editor) => editor.chain().focus().toggleCode().run(),
+  heading: (editor) => editor.chain().focus().toggleHeading({ level: 2 }).run(),
+  bulletList: (editor) => editor.chain().focus().toggleBulletList().run(),
+  orderedList: (editor) => editor.chain().focus().toggleOrderedList().run(),
+  quote: (editor) => editor.chain().focus().toggleBlockquote().run(),
 }
 
-const icons: Record<RichTextTool, ReactElement> = {
-  bold: <BoldIcon />,
-  italic: <ItalicIcon />,
-  strikethrough: <StrikethroughIcon />,
-  code: <CodeIcon />,
-  link: <LinkIcon />,
-  heading: <HeadingIcon />,
-  bulletList: <ListIcon />,
-  orderedList: <ListOrderedIcon />,
-  quote: <QuoteIcon />,
-}
+const activeTools = (editor: Editor): ActiveTools => ({
+  bold: editor.isActive('bold'),
+  italic: editor.isActive('italic'),
+  underline: editor.isActive('underline'),
+  strikethrough: editor.isActive('strike'),
+  code: editor.isActive('code'),
+  link: editor.isActive('link'),
+  heading: editor.isActive('heading'),
+  bulletList: editor.isActive('bulletList'),
+  orderedList: editor.isActive('orderedList'),
+  quote: editor.isActive('blockquote'),
+})
 
-const shortcutHints: Partial<Record<RichTextTool, string>> = { bold: 'B', italic: 'I', link: 'K' }
+const fieldFocusStyle = {
+  borderColor: 'ring',
+  outlineColor: 'ring',
+  outlineStyle: 'solid',
+  outlineWidth: '2px',
+} as const
 
-export const defaultRichTextTools: RichTextTool[] = [
-  'bold',
-  'italic',
-  'strikethrough',
-  'heading',
-  'bulletList',
-  'orderedList',
-  'quote',
-  'link',
-  'code',
-]
-
-export interface RichTextEditorProps {
-  /** Markdown (controlled). */
-  value?: string
-  defaultValue?: string
-  onValueChange?: (value: string) => void
-  placeholder?: string
-  /** Toolbar buttons, in order. Default: all nine. */
-  tools?: RichTextTool[]
-  /** Minimum height of the text area. Default: `32`. */
-  minHeight?: GetProps<typeof View>['minHeight']
-  maxLength?: number
-  disabled?: boolean
-  invalid?: boolean
-  id?: string
-  'aria-label'?: string
-  'aria-labelledby'?: string
-  'aria-describedby'?: string
-  'aria-required'?: boolean
-  /** Native: help read after the name (a Field sets it). */
-  accessibilityHint?: string
-  /** Toolbar, tool and preview names, for translation. */
-  labels?: Partial<Omit<RichTextEditorLabels, 'tools'>> & {
-    tools?: Partial<RichTextEditorLabels['tools']>
-  }
-}
-
-type Editable = TamaguiElement & {
-  selectionStart?: number
-  selectionEnd?: number
-  setSelectionRange?: (start: number, end: number) => void
-  setSelection?: (start: number, end: number) => void
-  focus?: () => void
+/** The theme as CSS variables, so the text follows a theme change without a render. */
+function editorCss() {
+  const fonts = getConfig().fonts as Record<string, { family?: string } | undefined>
+  return contentCss(
+    '.aui-rich-text',
+    {
+      text: 'var(--foreground)',
+      muted: 'var(--mutedForeground)',
+      link: 'var(--primaryText)',
+      border: 'var(--border)',
+      code: 'var(--muted)',
+      placeholder: 'var(--placeholder-color)',
+    },
+    { body: fonts.body?.family ?? 'sans-serif', mono: fonts.mono?.family ?? 'monospace' },
+  )
 }
 
 /**
- * A Markdown editor with a formatting toolbar and a preview. It stores plain
- * Markdown, so the text is safe to save and shows the same on every platform
- * with Rich Text Content.
+ * A WYSIWYG editor: the text shows bold, headings, lists and links as it is
+ * written. It saves HTML, which Rich Text Content shows on every platform.
+ * Web edits in the page with TipTap; iOS and Android run TipTap in a WebView
+ * (TenTap), with the same toolbar.
  */
 export function RichTextEditor(editorProps: RichTextEditorProps) {
+  const field = useContext(FieldContext)
   const {
     value: valueProp,
     defaultValue = '',
@@ -124,7 +90,6 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
     placeholder,
     tools = defaultRichTextTools,
     minHeight = '32',
-    maxLength,
     disabled = false,
     invalid = false,
     id,
@@ -132,202 +97,181 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
     'aria-labelledby': ariaLabelledBy,
     'aria-describedby': ariaDescribedBy,
     'aria-required': ariaRequired,
-    accessibilityHint,
     labels: labelsProp,
   } = useFieldControl(editorProps)
-  const labels = {
-    ...defaultLabels,
-    ...labelsProp,
-    tools: { ...defaultLabels.tools, ...labelsProp?.tools },
-  }
+  const labels = resolveLabels(labelsProp)
+  const css = useMemo(editorCss, [])
   const [value, setValue] = useControllableState({
     value: valueProp,
     defaultValue,
     onChange: onValueChange,
   })
-  const [preview, setPreview] = useState(false)
-  const [activeTool, setActiveTool] = useState(0)
-  const field = useRef<Editable | null>(null)
-  // Native reports the caret as it moves; web reads it from the textarea.
-  const selection = useRef<TextSelection>({ start: value.length, end: value.length })
-  const pending = useRef<TextSelection | null>(null)
+  // The address the link field opens with, or null while it is closed.
+  const [link, setLink] = useState<string | null>(null)
   const generatedId = useId()
-  const fieldId = id ?? `${generatedId}-field`
-  const countId = `${generatedId}-count`
+  const textId = id ?? `${generatedId}-text`
+  // The HTML the editor wrote last, so it is not loaded back into the editor.
+  const written = useRef(value)
+  const latest = useRef({ setValue, placeholder, openLink: () => {} })
 
-  // Put the selection where the tool left it, once the new text is in.
-  useLayoutEffect(() => {
-    const next = pending.current
-    const node = field.current
-    if (!next || !node) return
-    pending.current = null
-    node.focus?.()
-    if (node.setSelectionRange) node.setSelectionRange(next.start, next.end)
-    else node.setSelection?.(next.start, next.end)
-    selection.current = next
+  const extensions = useMemo(
+    () => [
+      StarterKit.configure({
+        codeBlock: false,
+        horizontalRule: false,
+        listItem: false,
+        trailingNode: false,
+        heading: { levels: [1, 2, 3] },
+        link: { openOnClick: false, autolink: true, defaultProtocol: 'https' },
+      }),
+      FlatListItem,
+      Placeholder.configure({ placeholder: () => latest.current.placeholder ?? '' }),
+      Extension.create({
+        name: 'advuiLinkShortcut',
+        addKeyboardShortcuts: () => ({
+          'Mod-k': () => {
+            latest.current.openLink()
+            return true
+          },
+        }),
+      }),
+    ],
+    [],
+  )
+
+  // A `<label for>` cannot name a div, so a Field's label names it by id.
+  const labelledBy = ariaLabel ? undefined : (ariaLabelledBy ?? field?.labelId)
+  const minPx = sizePx(minHeight)
+  const attributes = useMemo(
+    () =>
+      Object.fromEntries(
+        Object.entries({
+          id: textId,
+          role: 'textbox',
+          'aria-multiline': 'true',
+          'aria-label': ariaLabel,
+          'aria-labelledby': labelledBy,
+          'aria-describedby': ariaDescribedBy,
+          'aria-invalid': invalid ? 'true' : undefined,
+          'aria-required': ariaRequired ? 'true' : undefined,
+          'aria-disabled': disabled ? 'true' : undefined,
+          'aria-placeholder': placeholder,
+          class: 'aui-rich-text',
+          style: minPx === undefined ? undefined : `min-height: ${minPx}px`,
+        }).filter((entry): entry is [string, string] => entry[1] !== undefined),
+      ),
+    [
+      textId,
+      ariaLabel,
+      labelledBy,
+      ariaDescribedBy,
+      invalid,
+      ariaRequired,
+      disabled,
+      placeholder,
+      minPx,
+    ],
+  )
+  const editorOptions = useMemo(() => ({ attributes }), [attributes])
+
+  const editor = useEditor({
+    // The server and the first render show the frame; TipTap fills it after.
+    immediatelyRender: false,
+    extensions,
+    content: written.current,
+    editable: !disabled,
+    editorProps: editorOptions,
+    onUpdate: ({ editor: current }) => {
+      const html = normalizeHtml(current.getHTML())
+      if (html === written.current) return
+      written.current = html
+      latest.current.setValue(html)
+    },
   })
 
-  const apply = (tool: RichTextTool) => {
-    const node = field.current
-    const current =
-      isWeb && node?.selectionStart != null
-        ? { start: node.selectionStart, end: node.selectionEnd ?? node.selectionStart }
-        : selection.current
-    const result = applyFormat(value, current, tool)
-    if (maxLength != null && result.value.length > maxLength) return
-    pending.current = result.selection
-    setValue(result.value)
-  }
+  const active: ActiveTools & { focused?: boolean } =
+    useEditorState({
+      editor,
+      selector: ({ editor: current }) =>
+        current ? { ...activeTools(current), focused: current.isFocused } : {},
+    }) ?? {}
 
-  const onFieldKeyDown = (event: {
-    key: string
-    metaKey?: boolean
-    ctrlKey?: boolean
-    shiftKey?: boolean
-    altKey?: boolean
-    preventDefault: () => void
-  }) => {
-    if (!(event.metaKey || event.ctrlKey) || event.altKey || event.shiftKey) return
-    const tool = shortcuts[event.key.toLowerCase()]
-    if (tool && tools.includes(tool)) {
-      event.preventDefault()
-      apply(tool)
-    }
+  const openLink = () => {
+    if (!editor || disabled) return
+    setLink((editor.getAttributes('link').href as string | undefined) ?? 'https://')
   }
+  latest.current = { setValue, placeholder, openLink }
 
-  // One tab stop for the toolbar; the arrow keys move along it (WAI-ARIA toolbar).
-  const onToolbarKeyDown = (event: { key: string; preventDefault: () => void }) => {
-    const last = tools.length - 1
-    const moves: Record<string, number> = {
-      ArrowRight: activeTool >= last ? 0 : activeTool + 1,
-      ArrowLeft: activeTool <= 0 ? last : activeTool - 1,
-      Home: 0,
-      End: last,
-    }
-    if (!(event.key in moves)) return
-    event.preventDefault()
-    const next = moves[event.key]!
-    setActiveTool(next)
-    document.getElementById(`${generatedId}-tool-${next}`)?.focus()
+  // A new value from outside: load it, without calling onValueChange back.
+  useEffect(() => {
+    if (!editor || value === written.current) return
+    written.current = value
+    editor.commands.setContent(value, { emitUpdate: false })
+  }, [editor, value])
+
+  useEffect(() => {
+    if (editor && editor.isEditable === disabled) editor.setEditable(!disabled, false)
+  }, [editor, disabled])
+
+  const closeLink = () => {
+    setLink(null)
+    editor?.commands.focus()
   }
-
-  const toolsDisabled = disabled || preview
+  const applyLink = (href: string) => {
+    setLink(null)
+    if (!editor) return
+    const chain = editor.chain().focus()
+    // With nothing selected outside a link, the address is the text.
+    if (editor.state.selection.empty && !editor.isActive('link')) {
+      chain.insertContent({ type: 'text', text: href, marks: [{ type: 'link', attrs: { href } }] })
+    } else chain.extendMarkRange('link').setLink({ href })
+    chain.run()
+  }
 
   return (
     <View
       {...fieldBoxStyle}
+      // The text is focused, not the frame: draw the field's focus ring for it.
+      {...(active.focused && fieldFocusStyle)}
       {...(invalid && { borderColor: 'error' })}
       opacity={disabled ? 0.5 : 1}
       overflow="hidden"
       width="100%"
     >
-      <XStack
-        alignItems="center"
-        justifyContent="space-between"
-        gap="2"
-        padding="1"
-        borderBottomWidth={1}
-        borderColor="border"
-      >
-        <XStack
-          flexWrap="wrap"
-          flex={1}
-          {...(isWeb && {
-            role: 'toolbar',
-            'aria-label': labels.toolbar,
-            'aria-controls': fieldId,
-            onKeyDown: onToolbarKeyDown,
-          })}
-        >
-          {tools.map((tool, i) => (
-            <IconButton
-              key={tool}
-              id={`${generatedId}-tool-${i}`}
-              size="sm"
-              icon={icons[tool]}
-              aria-label={labels.tools[tool]}
-              {...(isWeb && {
-                tabIndex: i === activeTool ? 0 : -1,
-                title: shortcutHints[tool]
-                  ? `${labels.tools[tool]} (Ctrl+${shortcutHints[tool]})`
-                  : labels.tools[tool],
-                // Keep the text selected while pressing a tool.
-                onMouseDown: (event: { preventDefault: () => void }) => event.preventDefault(),
-                onFocus: () => setActiveTool(i),
-              })}
-              disabled={toolsDisabled}
-              onPress={() => apply(tool)}
-            />
-          ))}
-        </XStack>
-        <Button
-          size="sm"
-          variant="ghost"
-          aria-pressed={preview}
-          disabled={disabled}
-          onPress={() => setPreview(!preview)}
-          {...(preview && { backgroundColor: 'accent' })}
-        >
-          {labels.preview}
-        </Button>
-      </XStack>
-      {preview ? (
-        <View
-          minHeight={minHeight}
-          padding="3"
-          {...(isWeb && { role: 'region', 'aria-label': labels.preview })}
-        >
-          {value.trim() ? (
-            <RichTextContent>{value}</RichTextContent>
-          ) : (
-            <Text size="sm" tone="muted">
-              {labels.empty}
-            </Text>
-          )}
-        </View>
-      ) : (
-        <Textarea
-          ref={field as never}
-          id={fieldId}
-          value={value}
-          onChangeText={setValue}
-          placeholder={placeholder}
-          disabled={disabled}
-          invalid={invalid}
-          maxLength={maxLength}
-          aria-label={ariaLabel}
-          aria-labelledby={ariaLabelledBy}
-          aria-required={ariaRequired}
-          {...(!isWeb && accessibilityHint && { accessibilityHint })}
-          aria-describedby={
-            [ariaDescribedBy, maxLength != null ? countId : null].filter(Boolean).join(' ') ||
-            undefined
-          }
-          minHeight={minHeight}
-          // The frame draws the border; the text area sits flush inside it.
-          borderWidth={0}
-          borderRadius={0}
-          backgroundColor="transparent"
-          outlineWidth="focus-visible:0px"
-          outlineStyle="focus-visible:none"
-          onSelectionChange={(event: { nativeEvent: { selection: TextSelection } }) => {
-            selection.current = event.nativeEvent.selection
+      <style href="advui-rich-text" precedence="default">
+        {css}
+      </style>
+      <RichTextToolbar
+        tools={tools}
+        labels={labels}
+        active={{ ...active, link: active.link || link !== null }}
+        disabled={disabled}
+        // The text exists once TipTap has mounted, after the first render.
+        controls={editor ? textId : undefined}
+        onTool={(tool) => {
+          if (!editor) return
+          if (tool === 'link') {
+            if (link === null) openLink()
+            else closeLink()
+          } else toggles[tool](editor)
+        }}
+      />
+      {link !== null ? (
+        <LinkBar
+          labels={labels}
+          initial={link}
+          linked={!!active.link}
+          onApply={applyLink}
+          onRemove={() => {
+            setLink(null)
+            editor?.chain().focus().extendMarkRange('link').unsetLink().run()
           }}
-          {...(isWeb && { onKeyDown: onFieldKeyDown })}
+          onCancel={closeLink}
         />
-      )}
-      {maxLength != null ? (
-        <Text
-          id={countId}
-          size="xs"
-          textAlign="right"
-          paddingHorizontal="3"
-          paddingBottom="2"
-          tone="muted"
-        >
-          {labels.count(value.length, maxLength)}
-        </Text>
       ) : null}
+      <View minHeight={minHeight}>
+        <EditorContent editor={editor} />
+      </View>
     </View>
   )
 }

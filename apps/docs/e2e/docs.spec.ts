@@ -512,6 +512,7 @@ for (const path of [
   '/docs/components/video',
   '/docs/components/audio-player',
   '/docs/components/rich-text-editor',
+  '/docs/components/markdown-editor',
   '/docs/components/loading-button',
   '/docs/components/form',
   '/docs/components/grid',

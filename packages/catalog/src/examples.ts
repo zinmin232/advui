@@ -193,6 +193,9 @@ import LoadingButtonSpinnerPosition from '../../ui/src/components/loading-button
 import LoadingButtonAsync from '../../ui/src/components/loading-button/examples/async'
 import LoadingStateBasic from '../../ui/src/components/loading-state/examples/basic'
 import LoadingStateCancel from '../../ui/src/components/loading-state/examples/cancel'
+import MarkdownEditorBasic from '../../editor/src/components/markdown-editor/examples/basic'
+import MarkdownEditorMinimal from '../../editor/src/components/markdown-editor/examples/minimal'
+import MarkdownEditorContent from '../../editor/src/components/markdown-editor/examples/content'
 import MenuBasic from '../../ui/src/components/menu/examples/basic'
 import MenuActions from '../../ui/src/components/menu/examples/actions'
 import MenubarBasic from '../../ui/src/components/menubar/examples/basic'
@@ -652,6 +655,11 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'loading-state': {
     'basic': LoadingStateBasic,
     'cancel': LoadingStateCancel,
+  },
+  'markdown-editor': {
+    'basic': MarkdownEditorBasic,
+    'minimal': MarkdownEditorMinimal,
+    'content': MarkdownEditorContent,
   },
   'menu': {
     'basic': MenuBasic,

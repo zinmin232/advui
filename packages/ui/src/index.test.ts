@@ -17,6 +17,8 @@ describe('@advui/core public API', () => {
       'PieChart',
       'RichTextEditor',
       'RichTextContent',
+      'MarkdownEditor',
+      'MarkdownContent',
     ])
       expect(core).not.toHaveProperty(name)
   })
@@ -72,6 +74,7 @@ describe('@advui/core public API', () => {
       'Wrap',
       'useControllableState',
       'useFieldControl',
+      'FieldContext',
       'useParentForm',
       // Deprecated alias of useParentForm.
       'useFormStatus',

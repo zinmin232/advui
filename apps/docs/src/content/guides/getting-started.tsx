@@ -69,7 +69,8 @@ export async function Introduction() {
           Heatmap (uses <C>@advui/data</C> for its table view)
         </LI>
         <LI>
-          <C>@advui/editor</C> — Rich Text Editor and Rich Text Content
+          <C>@advui/editor</C> — Rich Text Editor (WYSIWYG) and Markdown Editor, with a viewer for
+          each
         </LI>
         <LI>
           <C>@advui/theme</C> — tokens, color presets and <C>createUniversalConfig()</C>
@@ -143,7 +144,7 @@ pnpm add react-native-web   # web only (Next.js, Vite)`}
         lang="bash"
         code={`pnpm add @advui/data     # tables, data grid, tree view, timeline, stats
 pnpm add @advui/charts   # bar, line, pie, scatter, radar charts and more (installs @advui/data too)
-pnpm add @advui/editor   # rich text editor`}
+pnpm add @advui/editor   # rich text and Markdown editors`}
       />
       <P>Or let the CLI detect your framework and do it for you:</P>
       <Code lang="bash" code={`npx ${siteConfig.cliName} init`} />

@@ -79,6 +79,24 @@ describe('CommandPalette', () => {
     expect(onOpenChange).toHaveBeenLastCalledWith(false)
   })
 
+  it('leaves ⌘K / Ctrl+K to a control that used it', async () => {
+    const onOpenChange = vi.fn()
+    const { user } = renderWithProvider(
+      <>
+        <input
+          aria-label="Text"
+          onKeyDown={(event) => {
+            if (event.key === 'k') event.preventDefault()
+          }}
+        />
+        <CommandPalette commands={make()} onOpenChange={onOpenChange} />
+      </>,
+    )
+    await user.click(screen.getByRole('textbox', { name: 'Text' }))
+    await user.keyboard('{Control>}k{/Control}')
+    expect(onOpenChange).not.toHaveBeenCalled()
+  })
+
   it('runs a command on press', async () => {
     const onSelect = vi.fn()
     const { user } = renderWithProvider(<CommandPalette commands={make(onSelect)} defaultOpen />)

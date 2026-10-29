@@ -43,7 +43,7 @@ export default defineMeta({
     {
       name: 'Field',
       description:
-        'A View that takes every view prop (`padding`, `width`, `backgroundColor`, `theme`, media props, `testID`…). It tells the control inside it, at any depth, its id, state and descriptions through context, and never clones its children. Every core form control reads it: Input, Textarea, Select, Checkbox, Checkbox Group, Switch, Radio Group, Password, Number and OTP Input, the date and time pickers, Combobox, Autocomplete, Multi Select, File Upload and Rich Text Editor.',
+        'A View that takes every view prop (`padding`, `width`, `backgroundColor`, `theme`, media props, `testID`…). It tells the control inside it, at any depth, its id, state and descriptions through context, and never clones its children. Every core form control reads it: Input, Textarea, Select, Checkbox, Checkbox Group, Switch, Radio Group, Password, Number and OTP Input, the date and time pickers, Combobox, Autocomplete, Multi Select, File Upload, Rich Text Editor and Markdown Editor.',
       props: [
         {
           name: 'children',

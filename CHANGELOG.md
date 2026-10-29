@@ -60,8 +60,42 @@ Tamagui 3 variants hold styles only, so two variants are now set by the
 component itself and still work on iOS and Android: Text's `truncate` (one
 line with an ellipsis) and Card's `elevated` shadow (Android `elevation`).
 
+### Breaking: Rich Text Editor is now WYSIWYG
+
+The Markdown editor in `@advui/editor` is now **Markdown Editor**, and the
+name **Rich Text Editor** goes to a new WYSIWYG editor that saves HTML.
+
+- **Rename** the Markdown editor's exports: `RichTextEditor` to
+  `MarkdownEditor`, `RichTextContent` to `MarkdownContent`,
+  `RichTextEditorProps` and `RichTextEditorLabels` to `MarkdownEditorProps`
+  and `MarkdownEditorLabels`, `RichTextTool` to `MarkdownTool` and
+  `defaultRichTextTools` to `defaultMarkdownTools`. Its props, labels and the
+  Markdown it writes are unchanged, as are `applyFormat` and `parseMarkdown`.
+  Its docs move to `/docs/components/markdown-editor`.
+- **`RichTextEditor` and `RichTextContent` now take HTML.** Markdown passed
+  to them shows as plain text, so rename the imports before upgrading.
+- **Rich Text Content keeps heading levels** (`headingOffset` defaults to 0):
+  the HTML says `h2` where Markdown said `#`. Markdown Content keeps its
+  default of 1.
+
 ### Added
 
+- **Rich Text Editor** (`@advui/editor`, experimental): a WYSIWYG editor that
+  shows formatting as you write and saves HTML. It is TipTap on web and TipTap
+  in a WebView (TenTap) on iOS and Android, under one toolbar of toggles that
+  show what the selection has: bold, italic, underline, strikethrough,
+  heading, lists, quote, link and code. Link opens an address field under the
+  toolbar. On web, TipTap's shortcuts and Markdown typing (`## `, `- `) work,
+  plus ⌘ / Ctrl + K for a link, and Tab leaves the text, also in a list. It
+  takes a Field's label, help text and state, and a controlled `value`.
+  **Rich Text Content** shows the HTML with Markdown Content's styles, drawn
+  as views: scripts and styles never run, and links keep only `http(s)` and
+  `mailto` addresses. `parseHtml` reads the HTML for your own views. New
+  dependencies: `@tiptap/*` and `@10play/tentap-editor`; `react-native-webview`
+  is an optional peer dependency, needed on iOS and Android (Expo Go has it).
+- **`FieldContext`** is exported from `@advui/core`, for controls built outside
+  core: read a Field's `labelId` for a control a `<label for>` cannot name, or
+  reset it to `null` around controls inside your own.
 - **Field** `requiredText` and **Calendar** `todayLabel`: the words iOS and
   Android read for a required field ("Email, required") and for today
   ("Tuesday, March 3, 2026, today"), where there is no required state or
@@ -343,8 +377,9 @@ line with an ellipsis) and Card's `elevated` shadow (Android `elevation`).
 
 - Stable after the Android phone check: Form, Wrap, Show / Hide, Section,
   Sticky, AppShell, AutoGrid, Copy Button, Code Block, Menubar, Link,
-  Checkbox Group, Tags Input, Carousel, Rating and Color Picker. Rich Text
-  Editor stays beta until its editor is decided.
+  Checkbox Group, Tags Input, Carousel, Rating and Color Picker.
+- Stable: Markdown Editor, the former Rich Text Editor, now that the editor
+  is decided (see the breaking change above).
 - Stable after the Android phone check of the overlays: Alert Dialog,
   Confirm Dialog, Drawer, Sheet, Popover, Hover Card, Menu, Context Menu,
   Dropdown Menu, Toast and Snackbar.
@@ -380,6 +415,9 @@ line with an ellipsis) and Card's `elevated` shadow (Android `elevation`).
 
 ### Fixed
 
+- **Command Palette** leaves ⌘K / Ctrl+K to a control that already used the
+  key, such as Rich Text Editor, which makes a link with it. It opened over
+  the editor instead.
 - **Disabled controls** on iOS and Android take touches, so TalkBack finds
   them by touch and reads them as disabled: Button, Toggle, FAB, Chip,
   Checkbox, Switch, Radio Group, Select and the date pickers' triggers. Their

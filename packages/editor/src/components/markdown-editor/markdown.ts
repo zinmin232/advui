@@ -1,10 +1,10 @@
 /**
- * The Markdown subset Rich Text Editor writes and Rich Text Content reads:
+ * The Markdown subset Markdown Editor writes and Markdown Content reads:
  * **bold**, _italic_, ~~strike~~, `code`, [links](https://…), `#` headings,
  * `-` and `1.` lists, and `>` quotes.
  */
 
-export type RichTextTool =
+export type MarkdownTool =
   | 'bold'
   | 'italic'
   | 'strikethrough'
@@ -49,7 +49,7 @@ const replaces: Record<keyof typeof linePatterns, RegExp[]> = {
 export function applyFormat(
   value: string,
   selection: TextSelection,
-  tool: RichTextTool,
+  tool: MarkdownTool,
   placeholder = tool === 'link' ? 'link text' : 'text',
 ): FormatResult {
   const start = Math.max(0, Math.min(selection.start, selection.end, value.length))
@@ -133,16 +133,17 @@ export function applyFormat(
 }
 
 /** Keyboard shortcuts (with ⌘ or Ctrl). */
-export const shortcuts: Partial<Record<string, RichTextTool>> = {
+export const shortcuts: Partial<Record<string, MarkdownTool>> = {
   b: 'bold',
   i: 'italic',
   k: 'link',
 }
 
+/** The text both viewers draw. Markdown has no underline: only Rich Text Editor's HTML does. */
 export type InlineNode =
   | { type: 'text'; text: string }
   | { type: 'code'; text: string }
-  | { type: 'bold' | 'italic' | 'strike'; children: InlineNode[] }
+  | { type: 'bold' | 'italic' | 'strike' | 'underline'; children: InlineNode[] }
   | { type: 'link'; href: string; children: InlineNode[] }
 
 export type BlockNode =

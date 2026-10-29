@@ -68,6 +68,7 @@ import listMeta from '../../ui/src/components/list/list.meta'
 import listItemMeta from '../../ui/src/components/list-item/list-item.meta'
 import loadingButtonMeta from '../../ui/src/components/loading-button/loading-button.meta'
 import loadingStateMeta from '../../ui/src/components/loading-state/loading-state.meta'
+import markdownEditorMeta from '../../editor/src/components/markdown-editor/markdown-editor.meta'
 import menuMeta from '../../ui/src/components/menu/menu.meta'
 import menubarMeta from '../../ui/src/components/menubar/menubar.meta'
 import meterMeta from '../../ui/src/components/meter/meter.meta'
@@ -152,7 +153,7 @@ export const packages: ComponentPackage[] = [
   {
     name: '@advui/editor',
     title: 'Editor',
-    description: 'Rich text editing for Adv UI: a Markdown editor with a formatting toolbar, shortcuts and a preview, and a viewer for the same Markdown, on web, iOS and Android.',
+    description: 'Text editing for Adv UI: a WYSIWYG rich text editor (TipTap) that saves HTML, a Markdown editor with a toolbar and a preview, and viewers for both, on web, iOS and Android.',
     dir: 'packages/editor',
   },
 ]
@@ -227,6 +228,7 @@ export const components: CatalogComponent[] = [
   { ...listItemMeta, package: '@advui/core' },
   { ...loadingButtonMeta, package: '@advui/core' },
   { ...loadingStateMeta, package: '@advui/core' },
+  { ...markdownEditorMeta, package: '@advui/editor' },
   { ...menuMeta, package: '@advui/core' },
   { ...menubarMeta, package: '@advui/core' },
   { ...meterMeta, package: '@advui/core' },

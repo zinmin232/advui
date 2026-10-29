@@ -138,11 +138,11 @@ native.
 
 ### Decision
 
-- [ ] **Rich Text Editor: decide.** It is a Markdown editor (toolbar,
-      shortcuts, preview), the same on every platform with no extra
-      dependencies. Keep it, or ask for a WYSIWYG editor, which needs new
-      libraries (TipTap on web, a WebView-based editor on iOS and Android).
-      It stays `beta` until then.
+- [x] **Rich Text Editor: decided** on 2026-10-29: both. The Markdown
+      editor is now Markdown Editor (stable), and Rich Text Editor is a new
+      WYSIWYG editor that saves HTML: TipTap on web, and TipTap in a WebView
+      (TenTap) on iOS and Android. It is `experimental` until it is checked
+      on a phone (below).
 
 ### Android
 
@@ -171,6 +171,12 @@ link.
       “Notifications, 3 unread”, with no count. Left: hear it, and see a
       count on a button with `androidRipple` on, which clips the button's
       content (the playground has no switch for it).
+- [ ] **Rich Text Editor on a phone.** It runs only in Jest so far, with
+      TenTap stood in for: see that the WebView loads in Expo Go, grows with
+      the text inside the scrolling screen, keeps the keyboard up when a
+      tool is pressed, and follows light and dark mode; that the link field
+      adds and removes links; and that TalkBack reads the text by the
+      field's name. Then move it to `beta`.
 - [ ] **Phase 9 on a phone.** Kanban: a long press picks a card up and a
       drag moves it, in the playground's scrolling screen (the board stops
       scrolling; see whether the screen does), and TalkBack's actions (swipe
