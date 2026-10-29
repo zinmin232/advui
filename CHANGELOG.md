@@ -521,6 +521,9 @@ line with an ellipsis) and Card's `elevated` shadow (Android `elevation`).
   vertical drag in the color area. Tamagui's Sheet took the drag as its
   own, though the area kept it, and then stayed on screen without its
   backdrop.
+- **Docs site**: the "required" mark in props tables meets WCAG AA contrast
+  in dark mode (it was 4.1:1). It used the error fill color, the same red in
+  both modes; it now uses the error text color (`errorSoftForeground`).
 
 ### Security
 
