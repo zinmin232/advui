@@ -212,6 +212,30 @@
       ]
     },
     {
+      "name": "event-calendar",
+      "title": "Event Calendar",
+      "type": "registry:component",
+      "description": "Events on a month grid, a week or a day of hours, or an agenda list, with Today, previous and next.",
+      "category": "advanced",
+      "status": "beta",
+      "package": "@advui/data",
+      "dependencies": [
+        "@advui/icons"
+      ],
+      "registryDependencies": [
+        "button",
+        "hooks",
+        "icon-button",
+        "scroll-area",
+        "show-hide",
+        "stack",
+        "sticky",
+        "toggle-group",
+        "typography",
+        "visually-hidden"
+      ]
+    },
+    {
       "name": "filter-bar",
       "title": "Filter Bar",
       "type": "registry:component",
@@ -241,6 +265,45 @@
         "stack",
         "typography",
         "utils"
+      ]
+    },
+    {
+      "name": "infinite-scroll",
+      "title": "Infinite Scroll",
+      "type": "registry:component",
+      "description": "Loads more items as the end of a list comes into view, with loading, error and end states.",
+      "category": "data-display",
+      "status": "beta",
+      "package": "@advui/data",
+      "dependencies": [],
+      "registryDependencies": [
+        "button",
+        "scroll-area",
+        "spinner",
+        "stack",
+        "typography",
+        "utils",
+        "visually-hidden"
+      ]
+    },
+    {
+      "name": "kanban",
+      "title": "Kanban",
+      "type": "registry:component",
+      "description": "Cards in columns that people move by dragging, with the keyboard, or with screen reader actions.",
+      "category": "advanced",
+      "status": "experimental",
+      "package": "@advui/data",
+      "dependencies": [
+        "@advui/theme"
+      ],
+      "registryDependencies": [
+        "badge",
+        "hooks",
+        "portal",
+        "scroll-area",
+        "typography",
+        "visually-hidden"
       ]
     },
     {
@@ -322,6 +385,19 @@
         "hooks",
         "typography",
         "utils"
+      ]
+    },
+    {
+      "name": "virtual-list",
+      "title": "Virtual List",
+      "type": "registry:component",
+      "description": "A long list that draws only the rows in view, so thousands of rows scroll smoothly.",
+      "category": "data-display",
+      "status": "beta",
+      "package": "@advui/data",
+      "dependencies": [],
+      "registryDependencies": [
+        "scroll-area"
       ]
     },
     {

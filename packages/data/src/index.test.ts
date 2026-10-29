@@ -6,7 +6,11 @@ describe('@advui/data public API', () => {
     expect(Object.keys(data).sort()).toEqual([
       'DataGrid',
       'DataTable',
+      'EventCalendar',
       'FilterBar',
+      'InfiniteScroll',
+      'Kanban',
+      'KanbanCardFrame',
       'KpiCard',
       'Stat',
       'StatFrame',
@@ -25,7 +29,10 @@ describe('@advui/data public API', () => {
       'TimelineTime',
       'TimelineTitle',
       'TreeView',
+      'VirtualList',
+      'findItem',
       'flattenTree',
+      'moveItem',
     ])
   })
 })

@@ -61,8 +61,8 @@ export async function Introduction() {
           feedback, layout, media) and <C>UniversalProvider</C>
         </LI>
         <LI>
-          <C>@advui/data</C> — Table, Data Table, Data Grid, Filter Bar, Tree View, Timeline, Stat
-          and KPI Card
+          <C>@advui/data</C> — Table, Data Table, Data Grid, Filter Bar, Tree View, Timeline, Stat,
+          KPI Card, Virtual List, Infinite Scroll, Event Calendar and Kanban
         </LI>
         <LI>
           <C>@advui/charts</C> — Bar, Line, Area, Pie, Scatter, Composed, Radar and Radial Chart and

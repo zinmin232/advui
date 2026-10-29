@@ -51,8 +51,9 @@ The same file renders DOM elements in Next.js and native views in Expo.
     - **Foundations and layout:** Typography, Avatar, Badge, Separator,
       Skeleton, Stack, Grid, Container, Aspect Ratio, Scroll Area
     - **Files:** File Upload, File Dropzone
-  - **`@advui/data`** (8): Table, Data Table, Data Grid, Filter Bar, Tree
-    View, Timeline, Stat, KPI Card
+  - **`@advui/data`** (12): Table, Data Table, Data Grid, Filter Bar, Tree
+    View, Timeline, Stat, KPI Card, Virtual List, Infinite Scroll, Event
+    Calendar, Kanban
   - **`@advui/charts`** (9): Bar Chart, Line Chart, Area Chart, Pie Chart,
     Scatter Chart, Composed Chart, Radar Chart, Radial Chart, Heatmap
   - **`@advui/editor`** (1): Rich Text Editor, with Rich Text Content
@@ -75,7 +76,7 @@ The same file renders DOM elements in Next.js and native views in Expo.
 | Path                     | What it is                                                                     |
 | ------------------------ | ------------------------------------------------------------------------------ |
 | `packages/ui`            | `@advui/core`: general-purpose components, provider, hooks                     |
-| `packages/data`          | `@advui/data`: tables, Data Grid, Filter Bar, Tree View, Timeline, Stat, KPI   |
+| `packages/data`          | `@advui/data`: tables, Data Grid, Filter Bar, Virtual List, Kanban and more    |
 | `packages/charts`        | `@advui/charts`: bar, line, area, pie, scatter, radar and other charts         |
 | `packages/editor`        | `@advui/editor`: Rich Text Editor and Rich Text Content                        |
 | `packages/catalog`       | Private: generated metadata and examples of every component, for docs/Expo     |

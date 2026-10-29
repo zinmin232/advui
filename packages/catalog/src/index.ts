@@ -43,6 +43,7 @@ import drawerMeta from '../../ui/src/components/drawer/drawer.meta'
 import dropdownMenuMeta from '../../ui/src/components/dropdown-menu/dropdown-menu.meta'
 import emptyStateMeta from '../../ui/src/components/empty-state/empty-state.meta'
 import errorStateMeta from '../../ui/src/components/error-state/error-state.meta'
+import eventCalendarMeta from '../../data/src/components/event-calendar/event-calendar.meta'
 import fieldMeta from '../../ui/src/components/field/field.meta'
 import fileDropzoneMeta from '../../ui/src/components/file-dropzone/file-dropzone.meta'
 import fileUploadMeta from '../../ui/src/components/file-upload/file-upload.meta'
@@ -56,7 +57,9 @@ import iconButtonMeta from '../../ui/src/components/icon-button/icon-button.meta
 import imageMeta from '../../ui/src/components/image/image.meta'
 import imageGalleryMeta from '../../ui/src/components/image-gallery/image-gallery.meta'
 import indicatorMeta from '../../ui/src/components/indicator/indicator.meta'
+import infiniteScrollMeta from '../../data/src/components/infinite-scroll/infinite-scroll.meta'
 import inputMeta from '../../ui/src/components/input/input.meta'
+import kanbanMeta from '../../data/src/components/kanban/kanban.meta'
 import kpiCardMeta from '../../data/src/components/kpi-card/kpi-card.meta'
 import labelMeta from '../../ui/src/components/label/label.meta'
 import lineChartMeta from '../../charts/src/components/line-chart/line-chart.meta'
@@ -121,6 +124,7 @@ import transferListMeta from '../../ui/src/components/transfer-list/transfer-lis
 import treeViewMeta from '../../data/src/components/tree-view/tree-view.meta'
 import typographyMeta from '../../ui/src/components/typography/typography.meta'
 import videoMeta from '../../ui/src/components/video/video.meta'
+import virtualListMeta from '../../data/src/components/virtual-list/virtual-list.meta'
 import visuallyHiddenMeta from '../../ui/src/components/visually-hidden/visually-hidden.meta'
 import wrapMeta from '../../ui/src/components/layout/wrap.meta'
 import type { CatalogComponent, ComponentPackage } from './types'
@@ -136,7 +140,7 @@ export const packages: ComponentPackage[] = [
   {
     name: '@advui/data',
     title: 'Data',
-    description: 'Data components for Adv UI: Table, Data Table, Data Grid, Filter Bar, Tree View, Timeline, Stat and KPI Card, on web, iOS and Android.',
+    description: 'Data components for Adv UI: Table, Data Table, Data Grid, Filter Bar, Tree View, Timeline, Stat, KPI Card, Virtual List, Infinite Scroll, Event Calendar and Kanban, on web, iOS and Android.',
     dir: 'packages/data',
   },
   {
@@ -198,6 +202,7 @@ export const components: CatalogComponent[] = [
   { ...dropdownMenuMeta, package: '@advui/core' },
   { ...emptyStateMeta, package: '@advui/core' },
   { ...errorStateMeta, package: '@advui/core' },
+  { ...eventCalendarMeta, package: '@advui/data' },
   { ...fieldMeta, package: '@advui/core' },
   { ...fileDropzoneMeta, package: '@advui/core' },
   { ...fileUploadMeta, package: '@advui/core' },
@@ -211,7 +216,9 @@ export const components: CatalogComponent[] = [
   { ...imageMeta, package: '@advui/core' },
   { ...imageGalleryMeta, package: '@advui/core' },
   { ...indicatorMeta, package: '@advui/core' },
+  { ...infiniteScrollMeta, package: '@advui/data' },
   { ...inputMeta, package: '@advui/core' },
+  { ...kanbanMeta, package: '@advui/data' },
   { ...kpiCardMeta, package: '@advui/data' },
   { ...labelMeta, package: '@advui/core' },
   { ...lineChartMeta, package: '@advui/charts' },
@@ -276,6 +283,7 @@ export const components: CatalogComponent[] = [
   { ...treeViewMeta, package: '@advui/data' },
   { ...typographyMeta, package: '@advui/core' },
   { ...videoMeta, package: '@advui/core' },
+  { ...virtualListMeta, package: '@advui/data' },
   { ...visuallyHiddenMeta, package: '@advui/core' },
   { ...wrapMeta, package: '@advui/core' },
 ]

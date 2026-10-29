@@ -2,9 +2,8 @@
 
 Components still to be built are listed in
 [`packages/catalog/src/roadmap.ts`](packages/catalog/src/roadmap.ts); the docs
-show them as "Planned". Phases 1 to 8 are done and phase 9 has started: its
-charts are built and its data components are planned. Phase 10, at the end
-of this file, holds the checks and decisions still open.
+show them as "Planned". Phases 1 to 9 are done, so the list is empty. Phase
+10, at the end of this file, holds the checks and decisions still open.
 
 ## Phases 1–5 (built)
 
@@ -40,7 +39,7 @@ Closed on 2026-10-19; what is still open moved to Phase 10.
   deprecated). Within a day of a release, pnpm 11 and later install the
   previous version: its `minimumReleaseAge` default skips newer ones.
 
-## Phases 7–9 (7 and 8 built, 9 started)
+## Phases 7–9 (built)
 
 Common components that other libraries (shadcn/ui, MUI, Mantine, Chakra, Ant
 Design) have and Adv UI does not yet. Scaffold one with
@@ -49,11 +48,9 @@ the roadmap entry. Banner, Segmented Control, Avatar Group, Range Slider,
 Lightbox and Donut are not listed because Alert, Toggle Group, Avatar, Slider,
 Image Gallery and Pie Chart already cover them.
 
-Built so far (the table keeps them for reference): Link, Input Group as
-slots on Input (`leading`, `trailing`, `leadingAddon`, `trailingAddon`),
-Checkbox Group, Tags Input, Carousel, Rating, Color Picker, Copy Button,
-Code Block and Menubar. Phases 7 and 8 are complete, and so are Phase 9's
-charts: Scatter, Composed, Radar and Radial Chart and Heatmap.
+All three phases are built; the table keeps them for reference. Input
+Group landed as slots on Input (`leading`, `trailing`, `leadingAddon`,
+`trailingAddon`).
 
 | Phase | Package         | Components                                                                                                                                  |
 | ----- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -106,6 +103,23 @@ Notes for whoever picks these up:
   shade's range; it has no diverging scale for negative values yet.
   **Scatter Chart**'s points are found by distance, so a tap on a phone
   must land within about 16px of one. None was checked on a phone yet.
+- **Virtual List** takes known row heights (`itemHeight`, a number or a
+  function of the index) rather than measuring rows, so FlatList can place
+  them without layout passes and web can size the scrollbar. Rows that size
+  themselves would need measuring first.
+- **Infinite Scroll** wraps its items in a ScrollArea rather than watching
+  the window, since iOS and Android have no page to scroll. For thousands of
+  rows, Virtual List's `onEndReached` and `footer` do the same work.
+- **Event Calendar** has month, week, day and agenda views. A month day
+  lists its events rather than drawing bars across days; on phones it shows
+  dots, and the agenda suits phones best. Days and events are reached with
+  Tab, not arrow keys. It has no drag to move or resize events, and no
+  current-time line.
+- **Kanban** is `experimental`: dragging on iOS and Android (long press,
+  then the board claims the finger) has only run in tests. On iOS a screen
+  that scrolls around the board may still scroll during a drag, as React
+  Native cannot stop it there without a gesture library. Screen readers
+  move cards with actions on native and with the keyboard on web.
 
 ## Phase 10: open checks and decisions
 
@@ -157,6 +171,14 @@ link.
       “Notifications, 3 unread”, with no count. Left: hear it, and see a
       count on a button with `androidRipple` on, which clips the button's
       content (the playground has no switch for it).
+- [ ] **Phase 9 on a phone.** Kanban: a long press picks a card up and a
+      drag moves it, in the playground's scrolling screen (the board stops
+      scrolling; see whether the screen does), and TalkBack's actions (swipe
+      up or down on a card) move it and keep focus on it. Virtual List:
+      fast scrolling through ten thousand rows shows no blank rows. Infinite
+      Scroll: pages load at the end and are announced. Event Calendar: the
+      week view opens at 8 AM under its pinned days. The Phase 9 charts
+      were not checked on a phone either.
 - [ ] **A phone with the stock font.** The TECNO's system font replaces
       monospace in every app, so Code Block, `Text mono` and Kbd were never
       seen monospaced on Android.

@@ -162,7 +162,8 @@ input[type='color']::-webkit-color-swatch {
   color: var(--mutedForeground);
 }
 .props-table .prop-required {
-  color: var(--error);
+  /* The error text color: `--error` is a fill, too dark as text in dark mode. */
+  color: var(--errorSoftForeground);
   font-size: 12px;
 }
 .props-table .prop-note {
