@@ -39,6 +39,8 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false)
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      // A control on the page used the key itself (Rich Text Editor's link).
+      if (event.defaultPrevented) return
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         event.preventDefault()
         setOpen((value) => !value)

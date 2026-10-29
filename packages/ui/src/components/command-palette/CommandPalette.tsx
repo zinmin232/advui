@@ -132,12 +132,14 @@ export function CommandPalette({
   const listId = useId()
   const optionId = (index: number) => `${listId}-${index}`
 
-  // ⌘K / Ctrl+K from anywhere on the page.
+  // ⌘K / Ctrl+K from anywhere on the page, unless a control there used the
+  // key itself (Rich Text Editor makes a link with it).
   const openRef = useRef(open)
   openRef.current = open
   useEffect(() => {
     if (!isWeb || !hotkey) return
     const onKeyDown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented) return
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === hotkey.toLowerCase()) {
         event.preventDefault()
         setOpen(!openRef.current)
