@@ -299,6 +299,39 @@ line with an ellipsis) and Card's `elevated` shadow (Android `elevation`).
   shaded in steps of one palette `color` at round values (0–10, 10–20…),
   with the ranges in the legend and a "No data" entry for empty cells. The
   arrow keys move along rows and columns.
+- **Virtual List** (`@advui/data`): a long list that draws only the rows in
+  view and a few around them (`overscan`), so ten thousand rows scroll
+  smoothly. Rows have a known `itemHeight`, one number or a function of the
+  index; `onEndReached` asks for the next page once per length and `footer`
+  shows that it is loading. On web it is a ScrollArea whose `listitem`s carry
+  `aria-posinset` and `aria-setsize`, and a row that holds focus stays drawn
+  when it scrolls away. On iOS and Android it is a FlatList that places rows
+  from `itemHeight` without measuring them.
+- **Infinite Scroll** (`@advui/data`): loads more as the end of its items
+  comes into view, `threshold` visible heights early, with a loading row, an
+  `error` with Try again (loading pauses until it clears) and an
+  `endMessage`. `mode="button"` loads only from Load more, which stays
+  focusable while it loads. After a page the number of new items is
+  announced. On web an IntersectionObserver watches the end, so it works in
+  a ScrollArea of its own height or on the page; on iOS and Android its
+  ScrollView's scroll and size events do.
+- **Event Calendar** (`@advui/data`): events on a `month` grid, a `week` or
+  a `day` of hours, or an `agenda` list, with Today, previous and next, and
+  a view switcher (`views`). A busy month day shows its first events and
+  "+2 more"; a day's number opens it in the day view. Overlapping events
+  share the width of their day; all-day events sit above the hours, which
+  scroll to `scrollToHour` while the days stay pinned. On phones a month day
+  shows dots, and the agenda lists the events in full. Events are buttons
+  with `onEventPress`, named with their title, day and times; `labels`
+  translates every word.
+- **Kanban** (`@advui/data`, experimental): cards in columns that move by
+  dragging (a mouse once it moves, a finger after holding still), with the
+  keyboard (Space picks a card up, the arrow keys move it, Space drops it,
+  Escape puts it back, each step announced), or on iOS and Android with a
+  long press and drag or the screen reader's Move up, Move down and Move to
+  actions. `onItemMove` gets `{ itemId, from, to }`, and `moveItem` applies
+  one to the columns. `renderItem` draws custom cards; a `disabled` card
+  stays in place. Native dragging has not been checked on a device yet.
 - **Docs site**: a Tailwind guide (`/docs/tailwind`) for Tamagui's
   `@tamagui/tailwind` next to Adv UI. It lists the class names that match
   Adv UI's theme (camelCase color keys, numbered text sizes, the 4px space

@@ -14,34 +14,4 @@ export interface RoadmapItem {
   package?: '@advui/data' | '@advui/charts' | '@advui/editor'
 }
 
-export const roadmap: RoadmapItem[] = [
-  // Phase 9: more charts, and data at scale.
-  {
-    name: 'Virtual List',
-    slug: 'virtual-list',
-    category: 'data-display',
-    phase: 9,
-    package: '@advui/data',
-  },
-  {
-    name: 'Infinite Scroll',
-    slug: 'infinite-scroll',
-    category: 'data-display',
-    phase: 9,
-    package: '@advui/data',
-  },
-  {
-    name: 'Kanban',
-    slug: 'kanban',
-    category: 'advanced',
-    phase: 9,
-    package: '@advui/data',
-  },
-  {
-    name: 'Event Calendar',
-    slug: 'event-calendar',
-    category: 'advanced',
-    phase: 9,
-    package: '@advui/data',
-  },
-]
+export const roadmap: RoadmapItem[] = []

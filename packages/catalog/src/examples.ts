@@ -105,6 +105,9 @@ import DropdownMenuOptions from '../../ui/src/components/dropdown-menu/examples/
 import EmptyStateBasic from '../../ui/src/components/empty-state/examples/basic'
 import EmptyStateSearch from '../../ui/src/components/empty-state/examples/search'
 import ErrorStateBasic from '../../ui/src/components/error-state/examples/basic'
+import EventCalendarBasic from '../../data/src/components/event-calendar/examples/basic'
+import EventCalendarWeek from '../../data/src/components/event-calendar/examples/week'
+import EventCalendarAgenda from '../../data/src/components/event-calendar/examples/agenda'
 import FieldBasic from '../../ui/src/components/field/examples/basic'
 import FieldDescription from '../../ui/src/components/field/examples/description'
 import FieldRequiredOptional from '../../ui/src/components/field/examples/required-optional'
@@ -155,11 +158,16 @@ import ImageFallback from '../../ui/src/components/image/examples/fallback'
 import ImageGalleryBasic from '../../ui/src/components/image-gallery/examples/basic'
 import IndicatorBasic from '../../ui/src/components/indicator/examples/basic'
 import IndicatorCounts from '../../ui/src/components/indicator/examples/counts'
+import InfiniteScrollBasic from '../../data/src/components/infinite-scroll/examples/basic'
+import InfiniteScrollLoadMore from '../../data/src/components/infinite-scroll/examples/load-more'
+import InfiniteScrollError from '../../data/src/components/infinite-scroll/examples/error'
 import InputBasic from '../../ui/src/components/input/examples/basic'
 import InputSizes from '../../ui/src/components/input/examples/sizes'
 import InputStates from '../../ui/src/components/input/examples/states'
 import InputSlots from '../../ui/src/components/input/examples/slots'
 import InputAddons from '../../ui/src/components/input/examples/addons'
+import KanbanBasic from '../../data/src/components/kanban/examples/basic'
+import KanbanCustomCards from '../../data/src/components/kanban/examples/custom-cards'
 import KpiCardBasic from '../../data/src/components/kpi-card/examples/basic'
 import KpiCardGrid from '../../data/src/components/kpi-card/examples/grid'
 import KpiCardWithProgress from '../../data/src/components/kpi-card/examples/with-progress'
@@ -306,6 +314,9 @@ import TypographyScale from '../../ui/src/components/typography/examples/scale'
 import TypographyTones from '../../ui/src/components/typography/examples/tones'
 import VideoBasic from '../../ui/src/components/video/examples/basic'
 import VideoMutedLoop from '../../ui/src/components/video/examples/muted-loop'
+import VirtualListBasic from '../../data/src/components/virtual-list/examples/basic'
+import VirtualListLoadMore from '../../data/src/components/virtual-list/examples/load-more'
+import VirtualListVariableHeights from '../../data/src/components/virtual-list/examples/variable-heights'
 import VisuallyHiddenBasic from '../../ui/src/components/visually-hidden/examples/basic'
 import VisuallyHiddenSalePrice from '../../ui/src/components/visually-hidden/examples/sale-price'
 import WrapTags from '../../ui/src/components/layout/examples/tags'
@@ -504,6 +515,11 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'error-state': {
     'basic': ErrorStateBasic,
   },
+  'event-calendar': {
+    'basic': EventCalendarBasic,
+    'week': EventCalendarWeek,
+    'agenda': EventCalendarAgenda,
+  },
   'field': {
     'basic': FieldBasic,
     'description': FieldDescription,
@@ -580,12 +596,21 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': IndicatorBasic,
     'counts': IndicatorCounts,
   },
+  'infinite-scroll': {
+    'basic': InfiniteScrollBasic,
+    'load-more': InfiniteScrollLoadMore,
+    'error': InfiniteScrollError,
+  },
   'input': {
     'basic': InputBasic,
     'sizes': InputSizes,
     'states': InputStates,
     'slots': InputSlots,
     'addons': InputAddons,
+  },
+  'kanban': {
+    'basic': KanbanBasic,
+    'custom-cards': KanbanCustomCards,
   },
   'kpi-card': {
     'basic': KpiCardBasic,
@@ -860,6 +885,11 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'video': {
     'basic': VideoBasic,
     'muted-loop': VideoMutedLoop,
+  },
+  'virtual-list': {
+    'basic': VirtualListBasic,
+    'load-more': VirtualListLoadMore,
+    'variable-heights': VirtualListVariableHeights,
   },
   'visually-hidden': {
     'basic': VisuallyHiddenBasic,

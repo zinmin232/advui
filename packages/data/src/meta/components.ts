@@ -2,21 +2,29 @@
 import type { ComponentMeta } from '@advui/core/meta'
 import dataGridMeta from '../components/data-grid/data-grid.meta'
 import dataTableMeta from '../components/data-table/data-table.meta'
+import eventCalendarMeta from '../components/event-calendar/event-calendar.meta'
 import filterBarMeta from '../components/filter-bar/filter-bar.meta'
+import infiniteScrollMeta from '../components/infinite-scroll/infinite-scroll.meta'
+import kanbanMeta from '../components/kanban/kanban.meta'
 import kpiCardMeta from '../components/kpi-card/kpi-card.meta'
 import statMeta from '../components/stat/stat.meta'
 import tableMeta from '../components/table/table.meta'
 import timelineMeta from '../components/timeline/timeline.meta'
 import treeViewMeta from '../components/tree-view/tree-view.meta'
+import virtualListMeta from '../components/virtual-list/virtual-list.meta'
 
 /** The metadata of every @advui/data component, sorted by slug. */
 export const components: ComponentMeta[] = [
   dataGridMeta,
   dataTableMeta,
+  eventCalendarMeta,
   filterBarMeta,
+  infiniteScrollMeta,
+  kanbanMeta,
   kpiCardMeta,
   statMeta,
   tableMeta,
   timelineMeta,
   treeViewMeta,
+  virtualListMeta,
 ]
