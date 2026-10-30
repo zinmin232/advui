@@ -562,6 +562,12 @@ name **Rich Text Editor** goes to a new WYSIWYG editor that saves HTML.
 - **Docs site**: the "required" mark in props tables meets WCAG AA contrast
   in dark mode (it was 4.1:1). It used the error fill color, the same red in
   both modes; it now uses the error text color (`errorSoftForeground`).
+- **Expo playground**: a focused field stays above the keyboard on iOS and
+  Android. The app draws edge-to-edge on Android, so the window no longer
+  shrinks for the keyboard, and fields in the lower half of a screen (Profile
+  settings' Bio, Rich Text Editor's comment editor) stayed behind it. Its
+  screens scroll in `ScreenScrollView`, a pattern apps can copy (see
+  `apps/expo/README.md`).
 
 ### Security
 
