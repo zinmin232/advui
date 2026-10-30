@@ -122,6 +122,14 @@ each edit.
   set the same breakpoint the later one wins.
 - **Conditions take scalar values.** A `shadowOffset` or transform array cannot
   go in a `hover:` clause (Fab deepens `shadowRadius` only).
+- **A `transition` preset alone animates every style.** On native that
+  includes height and radii, which puts the frame on React Native's JS
+  animation driver, and any style change (a color mode switch too) restarts a
+  spring per style: a screen of Buttons took seconds to switch modes on
+  Android. Name the properties a control's states change: `colorsOpacity`
+  (`utils/transition.ts`) for state colors, `transformOpacity` for overlays.
+  A transition expands no CSS shorthand, and native splits `borderColor` into
+  sides, so the helper names each side.
 - **Import primitives from `tamagui/unstyled`.** The root `tamagui` entry has
   Tamagui's default skin; only the provider and `createTamagui` come from it.
   Checkbox and RadioGroup are styled HOCs (`styled(Checkbox, …)`), Switch

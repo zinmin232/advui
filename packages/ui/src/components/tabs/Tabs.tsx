@@ -19,6 +19,7 @@ import { useControllableState } from '../../hooks/useControllableState'
 import { useRipple } from '../../hooks/useRipple'
 import { ariaState } from '../../utils/ariaState'
 import { isTextContent } from '../../utils/isTextContent'
+import { colorsOpacity } from '../../utils/transition'
 import type { ControlStateProps } from '../../hooks/useFieldControl'
 
 type TabsVariant = 'pills' | 'underline'
@@ -68,7 +69,7 @@ const TriggerFrame = styled(TamaguiTabs.Tab, {
   gap: '1-5',
   cursor: 'pointer',
   backgroundColor: 'transparent',
-  transition: 'quick',
+  transition: colorsOpacity('quick'),
   outlineColor: 'focus-visible:ring',
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',

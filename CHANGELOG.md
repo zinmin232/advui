@@ -415,6 +415,15 @@ name **Rich Text Editor** goes to a new WYSIWYG editor that saves HTML.
 
 ### Fixed
 
+- **Color mode switches** are fast on iOS and Android. On an Android phone
+  the playground's Theme screen took about 2 seconds to switch, with part of
+  the screen in the old mode for a second; it now switches within 0.3
+  seconds. Button, interactive Card, FAB, Toggle, Tabs and Switch gave their
+  `transition` a preset alone, which animates every style, height, radii and
+  border widths included: that put them on React Native's JS animation
+  driver, and every style change restarted a spring per style. They now
+  animate the colors and opacity their states change, and the transform that
+  Card's press and Switch's thumb use.
 - **Tour** on Android: each step's ring sits on its target, and the card
   beside it. Both were a status bar too high in an edge-to-edge app, so the
   card covered the element it described. Targets are measured from the root

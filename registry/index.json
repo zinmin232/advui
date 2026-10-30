@@ -680,7 +680,8 @@
       ],
       "registryDependencies": [
         "hooks",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {

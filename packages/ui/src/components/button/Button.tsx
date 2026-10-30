@@ -15,6 +15,7 @@ import { ButtonGroupContext, ButtonGroupItemContext, attachedStyle } from './gro
 import { Spinner } from '../spinner'
 import { isTextContent } from '../../utils/isTextContent'
 import { ariaState } from '../../utils/ariaState'
+import { colorsOpacity } from '../../utils/transition'
 import type { ControlStateProps } from '../../hooks/useFieldControl'
 
 export type ButtonVariant = 'default' | 'secondary' | 'outline' | 'ghost' | 'destructive' | 'link'
@@ -65,7 +66,7 @@ export const ButtonFrame = styled(View, {
   borderRadius: 'button',
   cursor: 'pointer',
   userSelect: 'none',
-  transition: 'quick',
+  transition: colorsOpacity('quick'),
   outlineColor: 'focus-visible:ring',
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',

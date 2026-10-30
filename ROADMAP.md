@@ -166,12 +166,22 @@ flings and a color mode switch takes twice as long.
       finger that slid off a Toast button showed no toast, and a tap did.
       Not covered: a switch while a Dialog or Sheet is open, which needs
       the system's dark mode with the playground on `system`.
-- [ ] **Color mode switch is slow.** On the TECNO, on a production bundle,
-      a switch takes about 2 seconds on the Theme screen alone, and 5 to 10
-      with ten example screens mounted. Cards change first; for about a
-      second the rest of the screen keeps the old mode, the pressed mode's
-      Button its old variant and an outline Button no label. Profile where
-      the time goes (Tamagui's theme update or Adv UI's components).
+- [x] **Color mode switch is slow.** Fixed on 2026-10-30. On the TECNO, on
+      a production bundle, the Theme screen took about 2 seconds to switch,
+      with the screen half in the old mode for a second. Profiled on a
+      development bundle, 1.4 of its 2 seconds went to the layout effect of
+      Tamagui's React Native animation driver, which restarted 462 springs:
+      Button-like frames animated every style (`transition: 'quick'`),
+      height and radii included, so the driver ran on the JS thread and
+      flushed the whole style at each start. They now animate their state
+      colors and opacity (`colorsOpacity`): 80 springs, and the switch is
+      done within 0.3 seconds. Left: Tamagui 3.1.3's driver looks for
+      `global.__nativeFabricUIManager`, which React Native 0.86 does not set,
+      so it never uses the native driver. Passing `useNativeDriver: true` to
+      `createAnimations` would take these springs off the JS thread, but
+      the native driver throws on styles it does not support (border
+      widths), so every `transition` must name its properties first; report
+      the check upstream.
 - [ ] **Visually Hidden: TalkBack by ear.** Seen on 2026-10-25 in light
       and dark mode: nothing shows where the hidden words are, after a fix
       (Android drew them in the text's color, since it reads `transparent`

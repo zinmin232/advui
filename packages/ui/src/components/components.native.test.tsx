@@ -5,6 +5,7 @@ import { createThemeColors, createUniversalConfig, themePresets, zIndex } from '
 import { Fragment, type ReactElement, createContext, useContext, useState } from 'react'
 import {
   AccessibilityInfo,
+  Animated,
   BackHandler,
   Dimensions,
   Linking,
@@ -203,6 +204,34 @@ describe('native rendering', () => {
       expect(background(role, name)).toBe(processColor(rest))
     }
     jest.useRealTimers()
+  })
+
+  it('restarts only color and opacity springs on a color mode switch', async () => {
+    // A bare preset animated every style: each Button also restarted springs
+    // for its height, radii and border widths, on the JS driver, and a color
+    // mode switch on a screen of buttons took seconds on an Android phone.
+    // Colors and opacity spring to 0 or 1; a height springs to its pixels.
+    const config = createUniversalConfig()
+    const ui = (mode: 'light' | 'dark') => (
+      <UniversalProvider config={config} colorMode={mode} toaster={false}>
+        <Button>Save</Button>
+        <Toggle aria-label="Bold" />
+        <Card interactive>
+          <Text>Plan</Text>
+        </Card>
+      </UniversalProvider>
+    )
+    const spring = jest.spyOn(Animated, 'spring')
+    try {
+      const view = await render(ui('light'))
+      spring.mockClear()
+      await view.rerender(ui('dark'))
+      const targets = spring.mock.calls.map(([, options]) => (options as { toValue: number }).toValue)
+      expect(targets.length).toBeGreaterThan(0)
+      expect(targets.filter((target) => target !== 0 && target !== 1)).toEqual([])
+    } finally {
+      spring.mockRestore()
+    }
   })
 
   it('IconButton is named by its aria-label', async () => {

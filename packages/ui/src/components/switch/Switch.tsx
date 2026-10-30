@@ -12,6 +12,7 @@ import {
 import { useControllableState } from '../../hooks/useControllableState'
 import { type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'
 import { ariaState } from '../../utils/ariaState'
+import { colorsOpacity } from '../../utils/transition'
 
 const Frame = styled(TamaguiSwitchFrame, {
   displayName: 'Switch',
@@ -23,7 +24,7 @@ const Frame = styled(TamaguiSwitchFrame, {
   borderWidth: 2,
   borderColor: 'transparent',
   backgroundColor: 'input',
-  transition: 'quick',
+  transition: colorsOpacity('quick'),
   outlineColor: 'focus-visible:ring',
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
@@ -54,7 +55,8 @@ const Thumb = styled(TamaguiSwitchThumb, {
   displayName: 'SwitchThumb',
   backgroundColor: 'background',
   borderRadius: 'full',
-  transition: 'quick',
+  // The thumb slides with a transform.
+  transition: colorsOpacity('quick', 'transform'),
   ...shadows.xs,
 
   variants: {
