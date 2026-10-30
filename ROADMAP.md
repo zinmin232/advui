@@ -168,9 +168,13 @@ link.
       dark mode: each dot sits on the edge of its round avatar and each
       count, whole, on the corner of its icon; pressing Notifications clears
       its count. The accessibility tree has “Maya Chen” then “Online”, and
-      “Notifications, 3 unread”, with no count. Left: hear it, and see a
-      count on a button with `androidRipple` on, which clips the button's
-      content (the playground has no switch for it).
+      “Notifications, 3 unread”, with no count. With `androidRipple` on
+      (`EXPO_PUBLIC_ADVUI_STYLE=material`) the counts were cut off at the
+      button's corner on 2026-10-29: the ripple clipped the whole button. It
+      clips only itself now, and on 2026-10-30 both counts were whole, at
+      rest on the TECNO and also while pressed on an Android 16 emulator,
+      where the ripple stayed inside the round IconButton, a pill Button and
+      a Card. Left: hear it.
 - [ ] **Rich Text Editor on a phone.** It runs only in Jest so far, with
       TenTap stood in for: see that the WebView loads in Expo Go, grows with
       the text inside the scrolling screen, keeps the keyboard up when a

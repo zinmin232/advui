@@ -177,7 +177,12 @@ export const Toggle = forwardRef<TamaguiElement, ToggleProps>(function Toggle(
     defaultValue: defaultPressed,
     onChange: onPressedChange,
   })
-  const ripple = useToggleRipple(pressed, variant, { disabled, onPressIn, onPressOut })
+  const ripple = useToggleRipple(pressed, variant, {
+    radius: { borderRadius: 'button', ...props },
+    disabled,
+    onPressIn,
+    onPressOut,
+  })
 
   return (
     <ToggleFrame

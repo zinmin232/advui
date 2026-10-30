@@ -1,8 +1,14 @@
 import { getUniversalSettings } from '@advui/theme'
 import { type ComponentRef, forwardRef, useMemo, useRef } from 'react'
 import { Platform, StyleSheet, View, codegenNativeCommands, processColor } from 'react-native'
-import { type ColorTokens, getConfig, useTheme } from 'tamagui/unstyled'
-import type { Ripple, RippleOptions } from './useRipple'
+import {
+  type ColorTokens,
+  View as TamaguiView,
+  getConfig,
+  styled,
+  useTheme,
+} from 'tamagui/unstyled'
+import type { Ripple, RippleOptions, RippleRadius, RippleRadiusKey } from './useRipple'
 
 type Host = ComponentRef<typeof View>
 
@@ -39,34 +45,82 @@ function hotspot(view: Host, event: unknown) {
   return { x: touch.locationX ?? 0, y: touch.locationY ?? 0 }
 }
 
-const RippleHost = forwardRef<Host, { color: ColorTokens }>(function RippleHost({ color }, ref) {
-  const theme = useTheme()
-  const name = color.startsWith('$') ? color.slice(1) : color
-  const value = (theme[name as keyof typeof theme] as { val: string } | undefined)?.val
-  const background = useMemo(
-    () => ({
-      type: 'RippleAndroid',
-      color: processColor(value),
-      borderless: false,
-      // No rippleRadius key: Android reads it as a number when present.
-      alpha: RIPPLE_ALPHA,
-    }),
-    [value],
+const radiusKeys = [
+  'borderRadius',
+  'borderTopLeftRadius',
+  'borderTopRightRadius',
+  'borderBottomRightRadius',
+  'borderBottomLeftRadius',
+  'borderTopStartRadius',
+  'borderTopEndRadius',
+  'borderBottomStartRadius',
+  'borderBottomEndRadius',
+] as const satisfies readonly RippleRadiusKey[]
+
+// A radius, which can be a conditional value (`{ default: 'md', lg: 'xl' }`),
+// or the props that set the corners, of which only the corners are kept.
+function corners(radius: RippleRadius) {
+  const props = radius as Partial<Record<RippleRadiusKey, unknown>> | null | undefined
+  if (typeof props !== 'object' || props === null || !radiusKeys.some((key) => key in props)) {
+    return { borderRadius: radius }
+  }
+  return Object.fromEntries(
+    radiusKeys.flatMap((key) => (props[key] === undefined ? [] : [[key, props[key]]])),
   )
-  return (
-    <View
-      ref={ref}
-      pointerEvents="none"
-      importantForAccessibility="no-hide-descendants"
-      collapsable={false}
-      style={StyleSheet.absoluteFill}
-      // Not in View's public types: it is the prop Pressable's `android_ripple` sets.
-      {...{ nativeBackgroundAndroid: background }}
-    />
-  )
+}
+
+// Android's ripple mask is a rectangle, and a view does not clip its own
+// background, so the ripple is drawn on a view inside this one, which clips
+// it to the pressable's corners. The pressable itself does not clip, so its
+// content can overflow its edge (Indicator's count on an IconButton). It
+// fills the space inside the border, as the pressable's own clip would.
+const RippleClip = styled(TamaguiView, {
+  displayName: 'RippleClip',
+  position: 'absolute',
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
+  overflow: 'hidden',
+  pointerEvents: 'none',
 })
 
-export function useRipple({ color, disabled, onPressIn, onPressOut }: RippleOptions): Ripple {
+const RippleHost = forwardRef<Host, { color: ColorTokens; radius: RippleRadius }>(
+  function RippleHost({ color, radius }, ref) {
+    const theme = useTheme()
+    const name = color.startsWith('$') ? color.slice(1) : color
+    const value = (theme[name as keyof typeof theme] as { val: string } | undefined)?.val
+    const background = useMemo(
+      () => ({
+        type: 'RippleAndroid',
+        color: processColor(value),
+        borderless: false,
+        // No rippleRadius key: Android reads it as a number when present.
+        alpha: RIPPLE_ALPHA,
+      }),
+      [value],
+    )
+    return (
+      <RippleClip importantForAccessibility="no-hide-descendants" {...corners(radius)}>
+        <View
+          ref={ref}
+          collapsable={false}
+          style={StyleSheet.absoluteFill}
+          // Not in View's public types: it is the prop Pressable's `android_ripple` sets.
+          {...{ nativeBackgroundAndroid: background }}
+        />
+      </RippleClip>
+    )
+  },
+)
+
+export function useRipple({
+  color,
+  radius,
+  disabled,
+  onPressIn,
+  onPressOut,
+}: RippleOptions): Ripple {
   // Read from the config rather than React context: sheets and toasts render
   // through native portals that do not carry context.
   const enabled =
@@ -84,9 +138,6 @@ export function useRipple({ color, disabled, onPressIn, onPressOut }: RippleOpti
   return {
     active: true,
     props: {
-      // Clips the ripple to the element's rounded corners. Android clips
-      // inside the border, so a transparent border leaves an unrippled ring.
-      overflow: 'hidden',
       onPressIn: (event) => {
         onPressIn?.(event)
         const view = host.current
@@ -100,6 +151,6 @@ export function useRipple({ color, disabled, onPressIn, onPressOut }: RippleOpti
         if (host.current) viewCommands().setPressed(host.current, false)
       },
     },
-    element: <RippleHost ref={host} color={color} />,
+    element: <RippleHost ref={host} color={color} radius={radius} />,
   }
 }

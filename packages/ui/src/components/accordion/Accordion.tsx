@@ -94,7 +94,14 @@ const AccordionTrigger = forwardRef<TamaguiElement, AccordionTriggerProps>(
     const { variant } = AccordionStyleContext.useStyledContext()
     const reducedMotion = useReducedMotion()
     const { disabled, contentId } = useContext(ItemContext)
-    const ripple = useRipple({ color: 'foreground', disabled, onPressIn, onPressOut })
+    const radius = variant === 'card' ? 0 : 'sm'
+    const ripple = useRipple({
+      color: 'foreground',
+      radius: { borderRadius: radius, ...props },
+      disabled,
+      onPressIn,
+      onPressOut,
+    })
 
     const trigger = (
       <TamaguiAccordion.Trigger
@@ -109,7 +116,7 @@ const AccordionTrigger = forwardRef<TamaguiElement, AccordionTriggerProps>(
         paddingVertical="3"
         paddingHorizontal={variant === 'card' ? '4' : '1'}
         borderWidth={0}
-        borderRadius={variant === 'card' ? 0 : 'sm'}
+        borderRadius={radius}
         backgroundColor={flatValue(
           'transparent',
           !disabled && 'hover:muted',

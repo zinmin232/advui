@@ -132,7 +132,13 @@ const MenuItem = forwardRef<TamaguiElement, MenuItemProps>(function MenuItem(
     : destructive
       ? 'errorSoftForeground'
       : 'foreground'
-  const ripple = useRipple({ color, disabled, onPressIn, onPressOut })
+  const ripple = useRipple({
+    color,
+    radius: { borderRadius: 'md', ...props },
+    disabled,
+    onPressIn,
+    onPressOut,
+  })
 
   const activate = () => {
     onSelect?.()

@@ -206,7 +206,7 @@ const NavigationMenuLink = forwardRef<TamaguiElement, NavigationMenuLinkProps>(
   ) {
     const inPanel = useContext(InPanel)
     const { setOpen } = useContext(MenuContext)
-    const ripple = useRipple({ color: 'foreground' })
+    const ripple = useRipple({ color: 'foreground', radius: { borderRadius: 'md', ...props } })
     const Frame = inPanel ? PanelLinkFrame : TopLevelFrame
     const title = (
       <Text size="sm" color="foreground" weight="medium">
@@ -290,7 +290,7 @@ function NavigationMenuItem(props: NavigationMenuItemProps) {
   const isOpen = open === value
   const panelId = useId()
   const triggerRef = useRef<HTMLElement>(null)
-  const ripple = useRipple({ color: 'foreground' })
+  const ripple = useRipple({ color: 'foreground', radius: 'md' })
 
   const close = () => {
     setOpen(null)

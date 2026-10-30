@@ -50,9 +50,14 @@ function ToastContent({ item, onClose }: { item: ToastT; onClose: () => void }) 
   const title = typeof item.title === 'function' ? item.title() : item.title
   const description = typeof item.description === 'function' ? item.description() : item.description
   const icon = item.icon ?? typeIcon[type]
-  const actionRipple = useRipple({ color: 'primaryForeground', disabled: !item.action })
+  const actionRipple = useRipple({
+    color: 'primaryForeground',
+    radius: 'md',
+    disabled: !item.action,
+  })
   const closeRipple = useRipple({
     color: 'mutedForeground',
+    radius: 'sm',
     disabled: item.dismissible === false,
   })
 

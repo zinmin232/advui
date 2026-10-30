@@ -415,6 +415,13 @@ name **Rich Text Editor** goes to a new WYSIWYG editor that saves HTML.
 
 ### Fixed
 
+- **Android ripple** (`androidRipple`, on in `material()`): a pressable no
+  longer cuts off what overflows it, such as Indicator's count on the corner
+  of an IconButton. To keep the ripple inside its rounded corners, the
+  pressable clipped all its content; now the ripple clips only itself.
+  `useRipple()` takes the element's corners as `radius` (`'md'`, or the
+  props that set them) and no longer returns `overflow: 'hidden'`: give your
+  own rounded pressables a `radius`, or their ripple is square.
 - **Command Palette** leaves ⌘K / Ctrl+K to a control that already used the
   key, such as Rich Text Editor, which makes a link with it. It opened over
   the editor instead.

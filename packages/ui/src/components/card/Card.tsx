@@ -103,6 +103,7 @@ const CardImpl = forwardRef<TamaguiElement, GetProps<typeof CardFrame>>(function
 ) {
   const ripple = useRipple({
     color: 'cardForeground',
+    radius: { borderRadius: 'xl', ...props },
     disabled: !props.interactive || !props.onPress,
     onPressIn,
     onPressOut,

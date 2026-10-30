@@ -585,6 +585,7 @@ function KanbanCard({
   // The drag's own onPressOut runs too.
   const ripple = useRipple({
     color: 'foreground',
+    radius: 'lg',
     disabled: !onPress,
     onPressOut: dragProps.onPressOut as never,
   })

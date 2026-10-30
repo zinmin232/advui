@@ -59,7 +59,11 @@ function OptionRow({
   multiple: boolean
   onPress: () => void
 }) {
-  const ripple = useRipple({ color: 'popoverForeground', disabled: option.disabled })
+  const ripple = useRipple({
+    color: 'popoverForeground',
+    radius: 'md',
+    disabled: option.disabled,
+  })
   return (
     <View
       role={multiple ? 'checkbox' : 'button'}

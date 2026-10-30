@@ -57,7 +57,7 @@ function MenubarMenu({ children, value: valueProp }: MenubarMenuProps) {
 
 function MenubarTrigger({ children, disabled = false }: MenubarTriggerProps) {
   const { open, setOpen } = useSheetMenu()
-  const ripple = useRipple({ color: 'foreground', disabled })
+  const ripple = useRipple({ color: 'foreground', radius: 'md', disabled })
   return (
     <MenubarTriggerFrame
       // iOS has no trait for a menu item; a button says it can be pressed.

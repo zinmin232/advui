@@ -253,7 +253,7 @@ function TreeItem({
   const { node, level, posInSet, setSize } = item
   const hasChildren = !!node.children?.length
   const disabled = !!node.disabled
-  const ripple = useRipple({ color: 'foreground', disabled })
+  const ripple = useRipple({ color: 'foreground', radius: 'md', disabled })
   return (
     <TreeItemFrame
       ref={itemRef as never}

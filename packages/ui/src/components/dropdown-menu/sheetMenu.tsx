@@ -101,7 +101,7 @@ function Row({
   onPress: () => void
   children: ReactNode
 }) {
-  const ripple = useRipple({ color: 'popoverForeground', disabled })
+  const ripple = useRipple({ color: 'popoverForeground', radius: 'md', disabled })
   return (
     <View
       role={role}

@@ -260,7 +260,7 @@ const AlertImpl = forwardRef<TamaguiElement, AlertProps>(function Alert(
     },
   })
   const accentColor = color ?? accent[variant]
-  const dismissRipple = useRipple({ color: accentColor, disabled: !dismissible })
+  const dismissRipple = useRipple({ color: accentColor, radius: 'sm', disabled: !dismissible })
   if (!open) return null
 
   const resolvedIcon = icon === undefined ? defaultIcons[variant] : icon

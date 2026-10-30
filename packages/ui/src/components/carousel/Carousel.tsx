@@ -164,7 +164,7 @@ function Dot({
   controls: string
   onPress: () => void
 }) {
-  const ripple = useRipple({ color: 'foreground' })
+  const ripple = useRipple({ color: 'foreground', radius: 'full' })
   return (
     <View
       {...(isWeb

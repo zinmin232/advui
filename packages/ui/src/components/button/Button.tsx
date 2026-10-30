@@ -209,9 +209,13 @@ const ButtonImpl = forwardRef<TamaguiElement, ButtonProps>(function Button(
   const size = sizeProp ?? group?.size ?? 'md'
   const inactive = disabled || loading
   const foreground = buttonForeground[variant]
+  const attached =
+    group?.attached && position && attachedStyle(position, group.orientation, variant)
   // Material gives text links no ripple, so links keep their own press style.
   const ripple = useRipple({
     color: foreground,
+    // The frame's corners: its size's (see ButtonFrame), then a group's, then yours.
+    radius: { borderRadius: size === 'lg' ? 'buttonLg' : 'button', ...attached, ...props },
     disabled: inactive || variant === 'link',
     onPressIn,
     onPressOut,
@@ -233,7 +237,7 @@ const ButtonImpl = forwardRef<TamaguiElement, ButtonProps>(function Button(
       hitSlop={isWeb ? undefined : nativeHitSlop[size]}
       {...(isWeb ? { type: 'button' } : null)}
       {...(nativeLabel && { 'aria-label': nativeLabel })}
-      {...(group?.attached && position && attachedStyle(position, group.orientation, variant))}
+      {...attached}
       {...(ripple.active && {
         backgroundColor: `press:${buttonBackground[variant]}`,
         // The ripple is clipped inside the border: drop the transparent one

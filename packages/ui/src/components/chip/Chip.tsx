@@ -130,9 +130,16 @@ export const Chip = forwardRef<TamaguiElement, ChipProps>(function Chip(
   const color: LabelColor = on ? 'secondaryForeground' : 'foreground'
   const leading = on ? <CheckIcon /> : icon
   const pressable = filter || onPress !== undefined
-  const ripple = useRipple({ color, disabled: disabled || !pressable, onPressIn, onPressOut })
+  const ripple = useRipple({
+    color,
+    radius: { borderRadius: 'lg', ...props },
+    disabled: disabled || !pressable,
+    onPressIn,
+    onPressOut,
+  })
   const removeRipple = useRipple({
     color: 'mutedForeground',
+    radius: 'full',
     disabled: disabled || !onRemove || filter,
   })
   const frameRef = useRef<TamaguiElement>(null)
