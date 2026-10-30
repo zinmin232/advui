@@ -2,7 +2,14 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { type GestureResponderEvent, type LayoutChangeEvent, PanResponder } from 'react-native'
 import { type DragOptions, type DragOverlay, type Rect, placeAt } from './place'
 
-type Measurable = { measureInWindow?: (callback: (...rect: number[]) => void) => void }
+type Measurable = { measure?: (callback: (...rect: number[]) => void) => void }
+
+// A view's box from the root view, as the finger's moveX and moveY are. Android's
+// measureInWindow starts below the status bar, which an edge-to-edge app draws under.
+const measureColumn = (node: Measurable | undefined, done: (rect: Rect) => void) =>
+  node?.measure?.((_x, _y, width, height, pageX, pageY) =>
+    done({ x: pageX!, y: pageY!, width: width!, height: height! }),
+  )
 
 /**
  * Native: a long press picks the card up. From then on the board claims each
@@ -78,9 +85,7 @@ export function useDrag(options: DragOptions) {
     columnProps: (columnId: string) => ({
       onLayout: () => {
         const node = handlers.current.columns.current.get(columnId) as Measurable | undefined
-        node?.measureInWindow?.((x, y, width, height) =>
-          columnRects.current.set(columnId, { x: x!, y: y!, width: width!, height: height! }),
-        )
+        measureColumn(node, (rect) => columnRects.current.set(columnId, rect))
       },
     }),
     consumePress: () => false,
@@ -97,9 +102,7 @@ export function useDrag(options: DragOptions) {
         const { pageX, pageY, locationX, locationY } = event.nativeEvent
         // Columns move as the board scrolls: measure them now.
         for (const [columnId, node] of handlers.current.columns.current) {
-          ;(node as Measurable).measureInWindow?.((x, y, width, height) =>
-            columnRects.current.set(columnId, { x: x!, y: y!, width: width!, height: height! }),
-          )
+          measureColumn(node as Measurable, (rect) => columnRects.current.set(columnId, rect))
         }
         const width = cardLayouts.current.get(itemId)?.width ?? 0
         const next = { x: pageX, y: pageY, dx: locationX, dy: locationY, width }

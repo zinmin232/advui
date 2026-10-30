@@ -97,9 +97,9 @@ const search = useRef(null)
   ],
   platformNotes: {
     web: 'Scrolls each target into view and follows it as the page scrolls or resizes.',
-    ios: 'Targets are measured with `measureInWindow` and not scrolled to: keep them on screen, or scroll in `onStepChange`.',
+    ios: 'Targets are measured from the root view (`measure`) and not scrolled to: keep them on screen, or scroll in `onStepChange`.',
     android:
-      'Targets are measured with `measureInWindow` and not scrolled to: keep them on screen, or scroll in `onStepChange`. The back button closes the tour.',
+      'Targets are measured from the root view (`measure`), so the ring stays on its target under an edge-to-edge status bar, and not scrolled to: keep them on screen, or scroll in `onStepChange`. The back button closes the tour.',
   },
   related: ['popover', 'dialog', 'portal', 'stepper'],
 })

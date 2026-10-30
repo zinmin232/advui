@@ -415,6 +415,26 @@ name **Rich Text Editor** goes to a new WYSIWYG editor that saves HTML.
 
 ### Fixed
 
+- **Tour** on Android: each step's ring sits on its target, and the card
+  beside it. Both were a status bar too high in an edge-to-edge app, so the
+  card covered the element it described. Targets are measured from the root
+  view (`measure`), where the portal draws, instead of with
+  `measureInWindow`, which Android counts from below the status bar.
+- **Kanban** on Android: a dragged card drops where the finger is. It
+  landed a status bar lower, about a card further down, for the same reason
+  as Tour's ring.
+- **Rich Text Editor** on iOS and Android: Remove link removes the link, and
+  a link applied to selected text links that text. TenTap ignored the remove
+  (it takes `null` as a cancel), and the address field's focus collapsed the
+  editor's selection on Android, so the address was added as new text. The
+  field now keeps the selection it opened with and gives it back on Apply,
+  Remove and Cancel.
+- **Table of Contents** on iOS and Android: after an item is pressed, only
+  that item says "current". The one before kept "current" in its name, as a
+  label left out keeps its last value on native.
+- **Transfer List** on iOS and Android: a long list name wraps, and its
+  count stays in the panel. "Hidden columns 0/3" pushed the count out of a
+  phone-width panel, as Yoga does not shrink flex items by default.
 - **Command Palette** leaves ⌘K / Ctrl+K to a control that already used the
   key, such as Rich Text Editor, which makes a link with it. It opened over
   the editor instead.

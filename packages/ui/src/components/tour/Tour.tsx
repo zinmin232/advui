@@ -71,7 +71,9 @@ type Frame = {
   height: number
 }
 type NativeNode = {
-  measureInWindow: (done: (x: number, y: number, width: number, height: number) => void) => void
+  measure: (
+    done: (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => void,
+  ) => void
 }
 type KeyEvent = {
   key: string
@@ -80,14 +82,16 @@ type KeyEvent = {
   stopPropagation: () => void
 }
 
-// The target's box in window coordinates, which the portal shares.
+// The target's box where the portal draws: the viewport on web, the root view
+// on native. Android's measureInWindow starts below the status bar, which an
+// edge-to-edge app draws under, so the ring would sit a status bar too high.
 function measure(node: TamaguiElement, done: (rect: Rect) => void) {
   if (isWeb) {
     const box = (node as HTMLElement).getBoundingClientRect()
     done({ x: box.left, y: box.top, width: box.width, height: box.height })
   } else {
-    ;(node as unknown as NativeNode).measureInWindow((x, y, width, height) =>
-      done({ x, y, width, height }),
+    ;(node as unknown as NativeNode).measure((_x, _y, width, height, pageX, pageY) =>
+      done({ x: pageX, y: pageY, width, height }),
     )
   }
 }

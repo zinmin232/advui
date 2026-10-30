@@ -83,6 +83,9 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
     onChange: onValueChange,
   })
   const [link, setLink] = useState<string | null>(null)
+  // The link field takes focus from the WebView, and Android then collapses
+  // the editor's selection, so the field keeps the one it opened with.
+  const opened = useRef({ from: 0, to: 0, linked: false })
   const written = useRef(value)
   const latest = useRef(setValue)
   latest.current = setValue
@@ -183,15 +186,29 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
 
   const closeLink = () => {
     setLink(null)
+    editor.setSelection(opened.current.from, opened.current.to)
     editor.focus(null)
+  }
+  const openLink = () => {
+    const { from, to } = state.selection
+    opened.current = { from, to, linked: state.isLinkActive }
+    setLink(state.activeLink ?? 'https://')
   }
   const applyLink = (href: string) => {
     setLink(null)
-    const { from, to } = state.selection
+    const { from, to, linked } = opened.current
+    editor.setSelection(from, to)
     // With nothing selected outside a link, the address is the text.
-    if (from === to && !state.isLinkActive) {
+    if (from === to && !linked) {
       editor.insertContent(`<a href="${escapeHtml(href)}">${escapeHtml(href)}</a>`)
     } else editor.setLink(href)
+    editor.focus(null)
+  }
+  const removeLink = () => {
+    setLink(null)
+    editor.setSelection(opened.current.from, opened.current.to)
+    // TenTap unsets the link around the selection for '' and ignores null (a cancel).
+    editor.setLink('')
     editor.focus(null)
   }
 
@@ -211,7 +228,7 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
         disabled={disabled}
         onTool={(tool) => {
           if (tool !== 'link') return toggles[tool](editor)
-          if (link === null) setLink(state.activeLink ?? 'https://')
+          if (link === null) openLink()
           else closeLink()
         }}
       />
@@ -219,13 +236,9 @@ export function RichTextEditor(editorProps: RichTextEditorProps) {
         <LinkBar
           labels={labels}
           initial={link}
-          linked={state.isLinkActive}
+          linked={opened.current.linked}
           onApply={applyLink}
-          onRemove={() => {
-            setLink(null)
-            editor.setLink(null)
-            editor.focus(null)
-          }}
+          onRemove={removeLink}
           onCancel={closeLink}
         />
       ) : null}

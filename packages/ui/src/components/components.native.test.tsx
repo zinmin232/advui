@@ -1527,7 +1527,10 @@ describe('native rendering', () => {
     await fireEvent.press(usage)
     expect(onItemPress).toHaveBeenCalledWith({ id: 'usage', label: 'Usage' })
     expect(screen.getByRole('link', { name: 'Usage, current' })).toBeOnTheScreen()
-    expect(screen.getByRole('link', { name: 'Install' })).toBeOnTheScreen()
+    // Named outright: a label left out keeps the last one on Android, which
+    // read "Install, current" after the press.
+    const install = screen.getByRole('link', { name: 'Install' })
+    expect(install.props['aria-label'] ?? install.props.accessibilityLabel).toBe('Install')
   })
 
   it('TransferList moves checked items, names each box by its list, and announces the move', async () => {
@@ -1608,6 +1611,24 @@ describe('native rendering', () => {
     expect(onComplete).toHaveBeenCalled()
     expect(screen.queryByText('Your projects')).toBeNull()
     focus.mockRestore()
+  })
+
+  it('Tour places its card from the target’s place in the root view, where the portal draws', async () => {
+    // Android's measureInWindow starts below the status bar (here 40 high),
+    // which an edge-to-edge app draws under.
+    const target = {
+      current: {
+        measure: (done: (...box: number[]) => void) => done(0, 0, 80, 32, 100, 140),
+        measureInWindow: (done: (...box: number[]) => void) => done(100, 100, 80, 32),
+      },
+    }
+    await renderNative(
+      <Tour defaultOpen steps={[{ title: 'Search', target: target as never }]} />,
+    )
+    let card = screen.getByRole('heading', { name: 'Step 1 of 1 Search' }).parent
+    while (card && StyleSheet.flatten(card.props.style)?.position !== 'absolute') card = card.parent
+    // 4px around the target, then 12px to the card.
+    expect(StyleSheet.flatten(card?.props.style)).toMatchObject({ top: 140 + 32 + 4 + 12 })
   })
 
   it('Collapsible hides its content until the trigger expands it', async () => {
