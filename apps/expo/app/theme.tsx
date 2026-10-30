@@ -12,6 +12,12 @@ import { useState } from 'react'
 import { ScrollView } from 'react-native'
 import { View } from 'tamagui'
 
+// Each preset's swatch, worked out once: building a preset's themes in render
+// took longer than the rest of this screen on a phone.
+const swatches = Object.fromEntries(
+  themePresetNames.map((name) => [name, createThemeColors(themePresets[name].colors).light.primary]),
+) as Record<ThemePresetName, string>
+
 /**
  * Runtime theming on native: `updateTheme` swaps the generated light/dark
  * themes in place — the same mechanism the web customizer uses.
@@ -72,9 +78,7 @@ export default function ThemeScreen() {
                     width="3-5"
                     height="3-5"
                     borderRadius="full"
-                    backgroundColor={
-                      createThemeColors(themePresets[name].colors).light.primary as never
-                    }
+                    backgroundColor={swatches[name] as never}
                   />
                 }
               >

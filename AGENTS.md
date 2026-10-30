@@ -122,6 +122,14 @@ each edit.
   set the same breakpoint the later one wins.
 - **Conditions take scalar values.** A `shadowOffset` or transform array cannot
   go in a `hover:` clause (Fab deepens `shadowRadius` only).
+- **A `transition` preset alone animates every style.** On native that
+  includes height and radii, which puts the frame on React Native's JS
+  animation driver, and any style change (a color mode switch too) restarts a
+  spring per style: a screen of Buttons took seconds to switch modes on
+  Android. Name the properties a control's states change: `colorsOpacity`
+  (`utils/transition.ts`) for state colors, `transformOpacity` for overlays.
+  A transition expands no CSS shorthand, and native splits `borderColor` into
+  sides, so the helper names each side.
 - **Import primitives from `tamagui/unstyled`.** The root `tamagui` entry has
   Tamagui's default skin; only the provider and `createTamagui` come from it.
   Checkbox and RadioGroup are styled HOCs (`styled(Checkbox, …)`), Switch
@@ -134,7 +142,10 @@ each edit.
   give the type argument (an annotated parameter breaks variant inference),
   and read props through `.resolve`, not the variant's second argument.
 - **`prop={undefined}` keeps a styled default** in Tamagui 3. Clear one with
-  `null` (`role: null` in PasswordInput and Accordion).
+  `null` (`role: null` in PasswordInput and Accordion). On native a prop that
+  is left out on a later render can keep its last value too: Table of
+  Contents spread `aria-label` only on the current item, and the item before
+  kept "current". Pass the plain value instead.
 - **New style props can clash with component props**: `page`, `offset`,
   `background`, `container`, `columns`. Omit them from the frame's props.
 - **Do not wrap Tamagui's overlay parts in `styled()`.** On native a
@@ -238,6 +249,18 @@ each edit.
   `flexBasis: 0` on native. Yoga also starts wrapped lines at the top
   (`alignContent` defaults to `flex-start`), so a wrapping field with a
   `minHeight` needs `alignContent: 'center'` (`ComboboxField.native.tsx`).
+  Yoga also does not shrink flex items unless told (`flexShrink` is 0): a
+  long title beside a count needs `flexShrink={1}` (Transfer List).
+- **`measureInWindow` is a status bar off on Android.** It counts from below
+  the status bar, which an edge-to-edge app (every app on Android 15 and
+  later) draws under, while portals and a touch's `pageX`/`pageY` count from
+  the root view. Measure what a portal or a finger is compared with by
+  `measure`'s `pageX`/`pageY` (Tour's ring, Kanban's columns).
+- **TenTap (Rich Text Editor on native)**: `editor.setLink(null)` is a
+  cancel and does nothing; `''` removes the link. When a React Native field
+  takes focus from the WebView, Android collapses the editor's selection,
+  so keep the selection from before and restore it with `setSelection`
+  (the link field).
 - **Dashed borders turn solid on Android** with a radius: Android dashes a
   rounded border only from `borderWidth` and `borderColor` for all sides,
   and Tamagui splits both into per-side props on native, its `style` prop
@@ -294,4 +317,5 @@ each edit.
   `transformIgnorePatterns` account for this.
 - **Windows + Android emulator**: use
   `pnpm --filter @advui/expo-playground android:emulator` (adb reverse +
-  `127.0.0.1` Metro host).
+  `127.0.0.1` Metro host). Do not start Metro with `CI=1` to keep it
+  non-interactive: it then watches no files, and the phone keeps the old code.

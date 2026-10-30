@@ -4,6 +4,7 @@ import { type ReactNode, forwardRef } from 'react'
 import { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui/unstyled'
 import { useRipple } from '../../hooks/useRipple'
 import { ariaState } from '../../utils/ariaState'
+import { colorsOpacity } from '../../utils/transition'
 
 export type FabVariant = 'soft' | 'primary' | 'secondary' | 'surface'
 export type FabSize = 'sm' | 'md' | 'lg'
@@ -38,7 +39,8 @@ const FabFrame = styled(View, {
   borderWidth: 0,
   cursor: 'pointer',
   userSelect: 'none',
-  transition: 'quick',
+  // With the hover shadow, which is a box-shadow on web.
+  transition: colorsOpacity('quick', 'box-shadow'),
   ...shadows.md,
   // Tamagui 3 conditions take scalar values, so hover deepens the blur while
   // `shadowOffset` (an object) stays at md's. Hover is web-only, where

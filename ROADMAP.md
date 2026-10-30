@@ -87,8 +87,8 @@ Notes for whoever picks these up:
 - **Tour** is built on Portal rather than Popover: it needs a dimmed
   screen with a hole at the target, and Popover becomes a bottom sheet on
   phones. Steps point at elements with refs. On iOS and Android targets are
-  measured with `measureInWindow` but not scrolled to, and nobody has
-  checked the card's place or TalkBack and VoiceOver on a phone yet.
+  measured from the root view (`measure`) but not scrolled to. The card's
+  place was checked on Android (2026-10-29); TalkBack and VoiceOver were not.
 - **Table of Contents** follows the window's scroll on web only. React
   Native has no anchors, so apps there pass `activeId` and scroll in
   `onItemPress`. **Back to Top** watches the page on web; on iOS and
@@ -116,10 +116,11 @@ Notes for whoever picks these up:
   Tab, not arrow keys. It has no drag to move or resize events, and no
   current-time line.
 - **Kanban** is `experimental`: dragging on iOS and Android (long press,
-  then the board claims the finger) has only run in tests. On iOS a screen
-  that scrolls around the board may still scroll during a drag, as React
-  Native cannot stop it there without a gesture library. Screen readers
-  move cards with actions on native and with the keyboard on web.
+  then the board claims the finger) works on an Android phone when the
+  finger starts slowly; a quick first move lets a screen that scrolls
+  around the board take the gesture and cancel the drag (Phase 10), as
+  React Native cannot stop it there without a gesture library. Screen
+  readers move cards with actions on native and with the keyboard on web.
 
 ## Phase 10: open checks and decisions
 
@@ -150,12 +151,37 @@ Run `pnpm --filter @advui/expo-playground android:emulator` (a phone over
 USB or an emulator). Checked so far on a TECNO KM9 (Android 16, Expo Go).
 Expo Go must match the project's SDK (57): install its APK with `adb push`
 and `adb shell pm install`, since a 200 MB `adb install` dropped the USB
-link.
+link. The Play Store updates Expo Go to the next SDK on its own, and
+Android refuses the older version over it (even with `pm uninstall -k`):
+uninstall Expo Go first, which clears its data. Start Metro without
+`CI=1`, which turns off its file watching, so edits never reach the phone.
+Time and scroll checks on a production bundle (`expo start --no-dev
+--minify`): in a development one Virtual List draws blank rows while it
+flings and a color mode switch takes twice as long.
 
-- [ ] **Tamagui 3.1.3.** Switch light and dark mode with Checkbox, Radio
-      Group, Switch, Tabs, Dialog, a Sheet and Text on screen; open and
-      close the Select and Dropdown Menu sheets; and slide a finger off a
-      button to see the press cancel.
+- [x] **Tamagui 3.1.3.** Passed on 2026-10-29 in light and dark mode:
+      Checkbox, Radio Group, Switch, Tabs, Button, Dialog, Text and Home,
+      mounted under the Theme screen, all followed each switch; Dialog,
+      Sheet, Select and Dropdown Menu opened and closed in both modes; a
+      finger that slid off a Toast button showed no toast, and a tap did.
+      Not covered: a switch while a Dialog or Sheet is open, which needs
+      the system's dark mode with the playground on `system`.
+- [x] **Color mode switch is slow.** Fixed on 2026-10-30. On the TECNO, on
+      a production bundle, the Theme screen took about 2 seconds to switch,
+      with the screen half in the old mode for a second. Profiled on a
+      development bundle, 1.4 of its 2 seconds went to the layout effect of
+      Tamagui's React Native animation driver, which restarted 462 springs:
+      Button-like frames animated every style (`transition: 'quick'`),
+      height and radii included, so the driver ran on the JS thread and
+      flushed the whole style at each start. They now animate their state
+      colors and opacity (`colorsOpacity`): 80 springs, and the switch is
+      done within 0.3 seconds. Left: Tamagui 3.1.3's driver looks for
+      `global.__nativeFabricUIManager`, which React Native 0.86 does not set,
+      so it never uses the native driver. Passing `useNativeDriver: true` to
+      `createAnimations` would take these springs off the JS thread, but
+      the native driver throws on styles it does not support (border
+      widths), so every `transition` must name its properties first; report
+      the check upstream.
 - [ ] **Visually Hidden: TalkBack by ear.** Seen on 2026-10-25 in light
       and dark mode: nothing shows where the hidden words are, after a fix
       (Android drew them in the text's color, since it reads `transparent`
@@ -168,23 +194,51 @@ link.
       dark mode: each dot sits on the edge of its round avatar and each
       count, whole, on the corner of its icon; pressing Notifications clears
       its count. The accessibility tree has “Maya Chen” then “Online”, and
-      “Notifications, 3 unread”, with no count. Left: hear it, and see a
-      count on a button with `androidRipple` on, which clips the button's
-      content (the playground has no switch for it).
-- [ ] **Rich Text Editor on a phone.** It runs only in Jest so far, with
-      TenTap stood in for: see that the WebView loads in Expo Go, grows with
-      the text inside the scrolling screen, keeps the keyboard up when a
-      tool is pressed, and follows light and dark mode; that the link field
-      adds and removes links; and that TalkBack reads the text by the
-      field's name. Then move it to `beta`.
-- [ ] **Phase 9 on a phone.** Kanban: a long press picks a card up and a
-      drag moves it, in the playground's scrolling screen (the board stops
-      scrolling; see whether the screen does), and TalkBack's actions (swipe
-      up or down on a card) move it and keep focus on it. Virtual List:
-      fast scrolling through ten thousand rows shows no blank rows. Infinite
-      Scroll: pages load at the end and are announced. Event Calendar: the
-      week view opens at 8 AM under its pinned days. The Phase 9 charts
-      were not checked on a phone either.
+      “Notifications, 3 unread”, with no count. Seen on 2026-10-29 with
+      `androidRipple` on (`EXPO_PUBLIC_ADVUI_STYLE=material`): both counts
+      are cut off where they pass the button's corner, as `useRipple` gives
+      the pressable `overflow: 'hidden'` to keep the ripple inside its
+      corners. Left: decide the fix (clip the ripple's own view to the
+      button's radius, or pin the Indicator outside the button), and hear
+      it.
+- [ ] **Rich Text Editor: TalkBack by ear.** Checked on 2026-10-29: the
+      WebView loads in Expo Go, grows with the text inside the scrolling
+      screen, keeps the keyboard up when a tool is pressed, and follows
+      light and dark mode, also while mounted under a switch. The link field
+      adds a link at the caret and on selected text, removes it, and gives
+      the selection back on Cancel, after fixes (see the CHANGELOG). The
+      page's editable element has `aria-label` (“Report”, “Comment”), which
+      `uiautomator` does not show, and an empty editor's text is its
+      placeholder (TipTap draws it with `::before`). Left: hear whether
+      TalkBack reads the field's name, and the placeholder as a hint or as
+      text. Then move it to `beta`.
+- [ ] **Phase 9: TalkBack by ear.** Checked on 2026-10-29. Kanban: a long
+      press picks a card up and a drag moves it within and across columns,
+      and the card drops under the finger (after a fix). The board does not
+      scroll during a drag, and does not scroll sideways at its edge either,
+      so a column wholly off screen takes two drags. A finger that moves
+      more than Android's touch slop (about 8dp) before the board claims it
+      lets the screen's ScrollView take the gesture, and the drag is
+      cancelled: `adb` moves of 15px kept the drag, 27px and more lost it.
+      Decide whether to block the screen's scrolling (React Native's JS
+      responder only does it once the board is granted, which is too late)
+      or take a gesture library. Virtual List: no blank rows while flinging
+      through the ten thousand rows on a production bundle, and Load more
+      at the end loads pages up to “All 150 orders”. Infinite Scroll: pages
+      load at the end up to the end message, and the failing page loads on
+      Try again. Event Calendar: the week view opens at its `scrollToHour`
+      (9 in the example) under the pinned days, which stay as the hours
+      scroll. The five Phase 9 charts draw in light and dark mode, and a tap
+      shows a point's tooltip and puts it in the chart's name (Scatter,
+      Composed, Heatmap, Radar, Radial). Left: TalkBack's Move actions on a
+      Kanban card and Infinite Scroll's announcement, by ear.
+- [x] **Phase 8 on a phone.** Checked on 2026-10-29 in light and dark mode:
+      Back to Top, Date Time Picker, Description List, Meter, Portal,
+      Spoiler, Table of Contents, Tour and Transfer List, with their names
+      and states read from the accessibility tree. Tour's ring and card were
+      a status bar too high, Table of Contents kept “current” on the item
+      before, and Transfer List's long list names pushed the count out: all
+      fixed.
 - [ ] **A phone with the stock font.** The TECNO's system font replaces
       monospace in every app, so Code Block, `Text mono` and Kbd were never
       seen monospaced on Android.
