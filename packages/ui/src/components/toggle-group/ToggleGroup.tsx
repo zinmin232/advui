@@ -193,7 +193,12 @@ const ToggleGroupItem = forwardRef<TamaguiElement, ToggleGroupItemProps>(functio
   const on = group.values.includes(value)
   const disabled = group.disabled || !!itemDisabled
   const single = group.type === 'single'
-  const ripple = useToggleRipple(on, group.variant, { disabled, onPressIn, onPressOut })
+  const ripple = useToggleRipple(on, group.variant, {
+    radius: { borderRadius: 'button', ...props },
+    disabled,
+    onPressIn,
+    onPressOut,
+  })
 
   const semantics = isWeb
     ? single

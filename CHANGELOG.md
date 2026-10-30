@@ -415,6 +415,13 @@ name **Rich Text Editor** goes to a new WYSIWYG editor that saves HTML.
 
 ### Fixed
 
+- **Android ripple** (`androidRipple`, on in `material()`): a pressable no
+  longer cuts off what overflows it, such as Indicator's count on the corner
+  of an IconButton. To keep the ripple inside its rounded corners, the
+  pressable clipped all its content; now the ripple clips only itself.
+  `useRipple()` takes the element's corners as `radius` (`'md'`, or the
+  props that set them) and no longer returns `overflow: 'hidden'`: give your
+  own rounded pressables a `radius`, or their ripple is square.
 - **Color mode switches** are fast on iOS and Android. On an Android phone
   the playground's Theme screen took about 2 seconds to switch, with part of
   the screen in the old mode for a second; it now switches within 0.3

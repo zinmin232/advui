@@ -104,6 +104,7 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
     const name = count === null ? label : count === '' ? `${label}, new` : `${label}, ${count} new`
     const ripple = useRipple({
       color: active ? 'secondaryForeground' : 'foreground',
+      radius: 'full',
       disabled,
       onPressIn,
       onPressOut,
@@ -175,20 +176,7 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
             opacity={`${active ? 1 : 0} hover:${active ? 1 : 0.6}`}
           />
           {/* Material draws the press ripple in the indicator's pill shape. */}
-          {ripple.element ? (
-            <View
-              aria-hidden
-              position="absolute"
-              top={0}
-              right={0}
-              bottom={0}
-              left={0}
-              borderRadius="full"
-              overflow="hidden"
-            >
-              {ripple.element}
-            </View>
-          ) : null}
+          {ripple.element}
           <IconDefaults size={24} color={active ? 'secondaryForeground' : 'mutedForeground'}>
             {icon}
           </IconDefaults>

@@ -226,7 +226,7 @@ const StepperStep = forwardRef<TamaguiElement, StepperStepProps>(function Steppe
   const last = index === count - 1
   const vertical = orientation === 'vertical'
   const pressable = !!onStepPress && (!linear || index <= activeStep)
-  const ripple = useRipple({ color: 'foreground', disabled: !pressable })
+  const ripple = useRipple({ color: 'foreground', radius: 'md', disabled: !pressable })
   const current = index === activeStep
 
   const indicator = (

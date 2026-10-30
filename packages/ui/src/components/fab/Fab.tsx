@@ -26,6 +26,8 @@ const background = {
 } as const satisfies Record<FabVariant, string>
 
 const iconSizes: Record<FabSize, number> = { sm: 20, md: 24, lg: 36 }
+// 12, 16 and 28px corners in the Material theme; an extended FAB has md's.
+const radii = { sm: 'xl', md: '2xl', lg: '3xl' } as const satisfies Record<FabSize, string>
 
 const FabFrame = styled(View, {
   displayName: 'Fab',
@@ -65,22 +67,22 @@ const FabFrame = styled(View, {
         backgroundColor: 'card hover:accent press:accentHover',
       },
     },
-    // Material sizes: 40, 56 and 96, with 12, 16 and 28px corners in the Material theme.
+    // Material sizes: 40, 56 and 96.
     size: {
       sm: {
         width: '10',
         height: '10',
-        borderRadius: 'xl',
+        borderRadius: radii.sm,
       },
       md: {
         width: '14',
         height: '14',
-        borderRadius: '2xl',
+        borderRadius: radii.md,
       },
       lg: {
         width: '24',
         height: '24',
-        borderRadius: '3xl',
+        borderRadius: radii.lg,
       },
     },
     extended: {
@@ -88,7 +90,7 @@ const FabFrame = styled(View, {
         width: 'auto',
         height: '14',
         paddingHorizontal: '4',
-        borderRadius: '2xl',
+        borderRadius: radii.md,
       },
     },
     placement: {
@@ -156,7 +158,13 @@ export const Fab = forwardRef<TamaguiElement, FabProps>(function Fab(
 ) {
   const color = foreground[variant]
   const extended = label !== undefined
-  const ripple = useRipple({ color, disabled, onPressIn, onPressOut })
+  const ripple = useRipple({
+    color,
+    radius: { borderRadius: radii[extended ? 'md' : size], ...props },
+    disabled,
+    onPressIn,
+    onPressOut,
+  })
   return (
     <FabFrame
       ref={ref}

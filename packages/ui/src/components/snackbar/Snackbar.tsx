@@ -47,8 +47,8 @@ export function Snackbar({
   const closable = showClose ?? timeout === null
   const close = useRef(onOpenChange)
   close.current = onOpenChange
-  const actionRipple = useRipple({ color: 'inversePrimary', disabled: !action })
-  const closeRipple = useRipple({ color: 'background', disabled: !closable })
+  const actionRipple = useRipple({ color: 'inversePrimary', radius: 'button', disabled: !action })
+  const closeRipple = useRipple({ color: 'background', radius: 'full', disabled: !closable })
 
   useEffect(() => {
     if (!open || paused || timeout === null) return

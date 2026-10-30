@@ -194,13 +194,13 @@ flings and a color mode switch takes twice as long.
       dark mode: each dot sits on the edge of its round avatar and each
       count, whole, on the corner of its icon; pressing Notifications clears
       its count. The accessibility tree has “Maya Chen” then “Online”, and
-      “Notifications, 3 unread”, with no count. Seen on 2026-10-29 with
-      `androidRipple` on (`EXPO_PUBLIC_ADVUI_STYLE=material`): both counts
-      are cut off where they pass the button's corner, as `useRipple` gives
-      the pressable `overflow: 'hidden'` to keep the ripple inside its
-      corners. Left: decide the fix (clip the ripple's own view to the
-      button's radius, or pin the Indicator outside the button), and hear
-      it.
+      “Notifications, 3 unread”, with no count. With `androidRipple` on
+      (`EXPO_PUBLIC_ADVUI_STYLE=material`) the counts were cut off at the
+      button's corner on 2026-10-29: the ripple clipped the whole button. It
+      clips only itself now, and on 2026-10-30 both counts were whole, at
+      rest on the TECNO and also while pressed on an Android 16 emulator,
+      where the ripple stayed inside the round IconButton, a pill Button and
+      a Card. Left: hear it.
 - [ ] **Rich Text Editor: TalkBack by ear.** Checked on 2026-10-29: the
       WebView loads in Expo Go, grows with the text inside the scrolling
       screen, keeps the keyboard up when a tool is pressed, and follows

@@ -62,7 +62,7 @@ function Thumbnail({
   ratio: number
   onPress: () => void
 }) {
-  const ripple = useRipple({ color: 'foreground' })
+  const ripple = useRipple({ color: 'foreground', radius: 'md' })
   return (
     <View
       {...(isWeb

@@ -156,6 +156,7 @@ function SelectItem({
 }: SelectItemInternalProps) {
   const ripple = useRipple({
     color: 'popoverForeground',
+    radius: { borderRadius: 'md', ...props },
     disabled: props.disabled ?? false,
     onPressIn,
     onPressOut,

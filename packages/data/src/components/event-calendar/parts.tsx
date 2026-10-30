@@ -181,7 +181,11 @@ export function EventButton({
   ...props
 }: EventButtonProps) {
   const tone = tones[event.tone ?? 'primary']
-  const ripple = useRipple({ color: tone.color, disabled: !onPress })
+  const ripple = useRipple({
+    color: tone.color,
+    radius: { borderRadius: variant === 'row' ? 'md' : 'sm', ...props },
+    disabled: !onPress,
+  })
   const filled = variant !== 'row'
   const background = filled
     ? tone.background

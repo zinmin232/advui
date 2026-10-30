@@ -220,7 +220,11 @@ const SidebarItem = forwardRef<TamaguiElement, SidebarItemProps>(function Sideba
   const { collapsed } = useContext(SidebarContext)
   const shell = useContext(AppShellContext)
   const inDrawer = useContext(AppShellSlotContext) === 'drawer'
-  const ripple = useRipple({ color: 'foreground', disabled })
+  const ripple = useRipple({
+    color: 'foreground',
+    radius: { borderRadius: 'md', ...props },
+    disabled,
+  })
   const text = isTextContent(children) ? [children].flat().join('') : undefined
   const badgeText = isTextContent(badge) ? [badge].flat().join('') : undefined
   // Native: one name with everything a screen reader would read on web.

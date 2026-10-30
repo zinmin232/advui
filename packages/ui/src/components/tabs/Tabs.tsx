@@ -180,6 +180,7 @@ const TabsTrigger = forwardRef<TamaguiElement, TabsTriggerProps>(function TabsTr
   const active = useContext(ActiveValueContext) === props.value
   const ripple = useRipple({
     color: 'foreground',
+    radius: { borderRadius: variant === 'pills' ? 'md' : 0, ...props },
     disabled: props.disabled ?? false,
     onPressIn,
     onPressOut,
