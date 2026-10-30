@@ -5,6 +5,7 @@ import { useControllableState } from '../../hooks/useControllableState'
 import { type RippleOptions, useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
 import { ariaState } from '../../utils/ariaState'
+import { colorsOpacity } from '../../utils/transition'
 
 export type ToggleVariant = 'default' | 'outline'
 export type ToggleSize = 'sm' | 'md' | 'lg'
@@ -24,7 +25,7 @@ export const ToggleFrame = styled(View, {
   backgroundColor: 'transparent hover:accent press:accentHover',
   cursor: 'pointer',
   userSelect: 'none',
-  transition: 'quick',
+  transition: colorsOpacity('quick'),
   outlineColor: 'focus-visible:ring',
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',

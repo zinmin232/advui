@@ -131,7 +131,9 @@ export const TableOfContents = forwardRef<TamaguiElement, TableOfContentsProps>(
                   weight={active ? 'medium' : 'normal'}
                   {...(isWeb
                     ? { 'aria-current': active ? 'location' : undefined }
-                    : active && { 'aria-label': `${item.label}, ${currentLabel}` })}
+                    : // Always a name: a label left out keeps the last one on native,
+                      // so the item before kept "current" after a press.
+                      { 'aria-label': active ? `${item.label}, ${currentLabel}` : item.label })}
                   onPress={() => {
                     setActiveId(item.id)
                     onItemPress?.(item)

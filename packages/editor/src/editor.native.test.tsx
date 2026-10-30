@@ -24,6 +24,7 @@ const mockEditor = {
   toggleBold: jest.fn(),
   toggleHeading: jest.fn(),
   setLink: jest.fn(),
+  setSelection: jest.fn(),
   insertContent: jest.fn(),
   setContent: jest.fn(),
   setPlaceholder: jest.fn(),
@@ -125,5 +126,50 @@ describe('@advui/editor native rendering', () => {
 
     await act(async () => mockOptions.current.onChange?.())
     expect(onValueChange).toHaveBeenLastCalledWith('<p><strong>water</strong></p>')
+  })
+
+  it('RichTextEditor links the text selected when the link field opened', async () => {
+    Object.assign(mockState, { selection: { from: 1, to: 6 } })
+    mockEditor.insertContent.mockClear()
+    try {
+      await renderNative(<RichTextEditor aria-label="Report" defaultValue="<p>water</p>" />)
+      await fireEvent.press(screen.getByRole('togglebutton', { name: 'Link' }))
+      // The field takes focus from the WebView, and Android collapses the selection.
+      Object.assign(mockState, { selection: { from: 6, to: 6 } })
+      const address = screen.getByLabelText('Link address')
+      await fireEvent.changeText(address, 'https://themimu.info')
+      await fireEvent(address, 'submitEditing')
+      expect(mockEditor.setSelection).toHaveBeenLastCalledWith(1, 6)
+      expect(mockEditor.setLink).toHaveBeenLastCalledWith('https://themimu.info')
+      expect(mockEditor.insertContent).not.toHaveBeenCalledWith(
+        expect.stringContaining('https://themimu.info'),
+      )
+    } finally {
+      Object.assign(mockState, { selection: { from: 1, to: 1 } })
+    }
+  })
+
+  it('RichTextEditor removes the link at the caret', async () => {
+    Object.assign(mockState, {
+      selection: { from: 3, to: 3 },
+      isLinkActive: true,
+      activeLink: 'https://themimu.info',
+    })
+    try {
+      await renderNative(<RichTextEditor aria-label="Report" defaultValue="<p>water</p>" />)
+      await fireEvent.press(screen.getByRole('togglebutton', { name: 'Link' }))
+      expect(screen.getByLabelText('Link address').props.value).toBe('https://themimu.info')
+      await fireEvent.press(screen.getByRole('button', { name: 'Remove link' }))
+      expect(mockEditor.setSelection).toHaveBeenLastCalledWith(3, 3)
+      // TenTap takes null as a cancel and does nothing with it.
+      expect(mockEditor.setLink).toHaveBeenLastCalledWith('')
+      expect(screen.queryByLabelText('Link address')).toBeNull()
+    } finally {
+      Object.assign(mockState, {
+        selection: { from: 1, to: 1 },
+        isLinkActive: false,
+        activeLink: undefined,
+      })
+    }
   })
 })

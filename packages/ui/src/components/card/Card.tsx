@@ -10,6 +10,7 @@ import {
 } from 'tamagui/unstyled'
 import { useRipple } from '../../hooks/useRipple'
 import { Text } from '../typography/Text'
+import { colorsOpacity } from '../../utils/transition'
 
 const CardFrame = styled(View, {
   displayName: 'Card',
@@ -35,7 +36,8 @@ const CardFrame = styled(View, {
     interactive: {
       true: {
         cursor: 'pointer',
-        transition: 'quick',
+        // The hover border, and the press scale and opacity.
+        transition: colorsOpacity('quick', 'transform'),
         borderColor: 'hover:borderStrong',
         scale: 'press:0.99',
         opacity: 'press:0.95',

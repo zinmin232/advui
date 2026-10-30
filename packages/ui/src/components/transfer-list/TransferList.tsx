@@ -153,10 +153,12 @@ export const TransferList = forwardRef<TamaguiElement, TransferListProps>(functi
           borderBottomWidth={1}
           borderColor="border"
         >
-          <Text size="sm" weight="semibold">
+          {/* Yoga does not shrink flex items by default: a long name wraps
+              instead of pushing the count out of a narrow panel. */}
+          <Text size="sm" weight="semibold" flexShrink={1}>
             {name}
           </Text>
-          <Text size="xs" tone="muted">
+          <Text size="xs" tone="muted" flexShrink={0}>
             {pending[side].length}/{list.length}
           </Text>
         </View>
