@@ -415,6 +415,11 @@ name **Rich Text Editor** goes to a new WYSIWYG editor that saves HTML.
 
 ### Fixed
 
+- **Metadata loads in Node.** `@advui/core/meta`, `@advui/data/meta`,
+  `@advui/charts/meta` and `@advui/editor/meta` now import their own files
+  with the extension (`./types.js`), so a Node script can import them without
+  a bundler. Node never adds an extension itself, so these imports failed
+  with `ERR_MODULE_NOT_FOUND`; bundlers such as Vite already worked.
 - **Android ripple** (`androidRipple`, on in `material()`): a pressable no
   longer cuts off what overflows it, such as Indicator's count on the corner
   of an IconButton. To keep the ripple inside its rounded corners, the

@@ -1,4 +1,4 @@
-import { defineMeta } from '../../meta/types'
+import { defineMeta } from '../../meta/types.ts'
 
 export default defineMeta({
   name: 'Command Palette',

@@ -134,7 +134,7 @@ describe('${Name}', () => {
   // TODO: test roles, keyboard interaction and states — not implementation details.
 })
 `,
-  [`${slug}.meta.ts`]: `import { defineMeta } from '${isCore ? '../../meta/types' : `${corePackage.name}/meta`}'
+  [`${slug}.meta.ts`]: `import { defineMeta } from '${isCore ? '../../meta/types.ts' : `${corePackage.name}/meta`}'
 
 export default defineMeta({
   name: '${title}',

@@ -93,13 +93,15 @@ ${exampleMap.join('\n')}
 
 // Each published package lists its own metadata, so tools such as the AdvUI
 // Builder can import it from npm (`@advui/core/meta`) instead of reading the repo.
+// The imports keep their `.ts` extension, which `tsc` writes as `.js`: tools
+// load the list in Node, which does not add extensions.
 function packageMetaIndex(pkg) {
   const own = entries
     .filter((entry) => entry.pkg === pkg)
     .sort((a, b) => a.meta.slug.localeCompare(b.meta.slug))
   const metaDir = join(pkg.src, 'meta')
-  const from = (file) => toPosix(relative(metaDir, file)).replace(/\.tsx?$/, '')
-  const types = pkg === corePackage ? './types' : `${corePackage.name}/meta`
+  const from = (file) => toPosix(relative(metaDir, file))
+  const types = pkg === corePackage ? './types.ts' : `${corePackage.name}/meta`
   return `${header}import type { ComponentMeta } from '${types}'
 ${own.map(({ meta, file }) => `import ${camel(meta.slug)}Meta from '${from(file)}'`).join('\n')}
 

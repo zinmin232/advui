@@ -46,7 +46,7 @@ the docs (parts, props, child rules, examples, platform notes) for every core
 component, with its `ComponentMeta` types, for tools such as the AdvUI
 Builder. `@advui/data/meta`, `@advui/charts/meta` and `@advui/editor/meta` list
 their own components. It is a separate entry point, so apps that don't import
-it don't bundle it.
+it don't bundle it, and Node scripts can import it without a bundler.
 
 ```ts
 import { components } from '@advui/core/meta'

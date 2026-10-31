@@ -1,4 +1,4 @@
-import { defineMeta } from '../../meta/types'
+import { defineMeta } from '../../meta/types.ts'
 
 const itemParts = [
   'Menubar.Item',
