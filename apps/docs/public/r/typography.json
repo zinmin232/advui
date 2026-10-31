@@ -17,21 +17,25 @@
     {
       "path": "components/typography/Text.tsx",
       "type": "registry:ui",
+      "sha256": "e8c067348c4495df9a10094c6d92236c8af9634eb9e886241ce318fae21a78c2",
       "content": "import { type GetProps, Text as TamaguiText, createStyledHOC, isWeb, styled } from 'tamagui/unstyled'\n\nconst tones = {\n  default: { color: 'foreground' },\n  muted: { color: 'mutedForeground' },\n  primary: { color: 'primaryText' },\n  success: { color: 'successSoftForeground' },\n  warning: { color: 'warningSoftForeground' },\n  error: { color: 'errorSoftForeground' },\n  info: { color: 'infoSoftForeground' },\n  inherit: {},\n} as const\n\n/** The type scale, shared with Link so its sizes match. */\nexport const textSizes = {\n  xs: { fontSize: '1', lineHeight: '1' },\n  sm: { fontSize: '2', lineHeight: '2' },\n  base: { fontSize: '3', lineHeight: '3' },\n  lg: { fontSize: '4', lineHeight: '4' },\n  xl: { fontSize: '5', lineHeight: '5' },\n  '2xl': { fontSize: '6', lineHeight: '6' },\n  '3xl': { fontSize: '7', lineHeight: '7' },\n  '4xl': { fontSize: '8', lineHeight: '8' },\n  '5xl': { fontSize: '9', lineHeight: '9' },\n  '6xl': { fontSize: '10', lineHeight: '10' },\n} as const\n\nexport const textWeights = {\n  normal: { fontWeight: '400' },\n  medium: { fontWeight: '500' },\n  semibold: { fontWeight: '600' },\n  bold: { fontWeight: '700' },\n} as const\n\nconst TextFrame = styled(TamaguiText, {\n  displayName: 'Text',\n  fontFamily: 'body',\n  color: 'foreground',\n  variants: {\n    size: textSizes,\n    weight: textWeights,\n    tone: tones,\n    // Web: one line with an ellipsis, in CSS. Native has no style for it\n    // (`ellipsis` and `numberOfLines` are props there), so Text sets the props.\n    truncate: {\n      true: isWeb ? { ellipsis: true } : {},\n    },\n    mono: {\n      true: {\n        fontFamily: 'mono',\n      },\n    },\n  } as const,\n  defaultVariants: {\n    size: 'base',\n  },\n})\n\n/** Body text. Sizes follow the type scale; `tone` maps to semantic theme colors. */\nexport const Text = createStyledHOC(\n  TextFrame,\n  function Text(props: GetProps<typeof TextFrame>, ref) {\n    // A Tamagui 3 variant holds styles only, so `truncate` cannot set\n    // `numberOfLines` itself.\n    return (\n      <TextFrame\n        ref={ref}\n        {...(!isWeb && props.truncate && { numberOfLines: 1, ellipsizeMode: 'tail' })}\n        {...props}\n      />\n    )\n  },\n)\n\nexport type TextProps = GetProps<typeof Text>\nexport type TextSize = keyof typeof textSizes\nexport type TextTone = keyof typeof tones\n"
     },
     {
       "path": "components/typography/Heading.tsx",
       "type": "registry:ui",
+      "sha256": "a93373a0f62c6b1a2bd8d918abf19e3ac917d278c29f0ac111142dd93b63ff85",
       "content": "import { forwardRef } from 'react'\nimport type { TamaguiTextElement } from 'tamagui/unstyled'\nimport { Text, type TextProps, type TextSize } from './Text'\n\ntype Level = 1 | 2 | 3 | 4 | 5 | 6\n\nconst defaultSizes: Record<Level, TextSize> = {\n  1: '4xl',\n  2: '3xl',\n  3: '2xl',\n  4: 'xl',\n  5: 'lg',\n  6: 'base',\n}\n\nexport type HeadingProps = TextProps & {\n  /** Semantic level (h1–h6). Visual size can be changed independently with `size`. */\n  level?: Level\n}\n\n/**\n * Semantic heading: renders `<h1>`–`<h6>` on web and exposes the `header`\n * role with its level to VoiceOver/TalkBack on native.\n */\nexport const Heading = forwardRef<TamaguiTextElement, HeadingProps>(function Heading(\n  { level = 2, size, weight = 'semibold', ...props },\n  ref,\n) {\n  return (\n    <Text\n      ref={ref}\n      role=\"heading\"\n      aria-level={level}\n      render={`h${level}`}\n      fontFamily=\"heading\"\n      size={size ?? defaultSizes[level]}\n      margin={0}\n      {...props}\n      weight={weight}\n    />\n  )\n})\n"
     },
     {
       "path": "components/typography/Kbd.tsx",
       "type": "registry:ui",
+      "sha256": "abc63478a227cc5ec7229e7a5a066a20c95c89ff708d199d2858b53c25ffe7ac",
       "content": "import { type GetProps, Text as TamaguiText, styled } from 'tamagui/unstyled'\n\n/** Keyboard key or shortcut hint, e.g. `<Kbd>Ctrl K</Kbd>`. Renders `<kbd>` on web. */\nexport const Kbd = styled(TamaguiText, {\n  displayName: 'Kbd',\n  render: 'kbd',\n  fontFamily: 'mono',\n  fontSize: '1',\n  lineHeight: '1',\n  color: 'mutedForeground',\n  backgroundColor: 'muted',\n  borderWidth: 1,\n  borderColor: 'border',\n  borderBottomWidth: 2,\n  borderRadius: 'sm',\n  paddingHorizontal: '1-5',\n  paddingVertical: '0-5',\n  userSelect: 'none',\n})\n\nexport type KbdProps = GetProps<typeof Kbd>\n"
     },
     {
       "path": "components/typography/index.ts",
       "type": "registry:ui",
+      "sha256": "aac290bf7333e628eed286789ff9af2f146ae5b60075330348915053b00037d5",
       "content": "export { Heading, type HeadingProps } from './Heading'\nexport { Kbd, type KbdProps } from './Kbd'\nexport { Text, type TextProps, type TextSize, type TextTone } from './Text'\n"
     }
   ],

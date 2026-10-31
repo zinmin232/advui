@@ -20,9 +20,11 @@ export const PACKAGE_DIRS = ['packages/ui', 'packages/data', 'packages/charts', 
 
 export const componentPackages = PACKAGE_DIRS.map((dir) => {
   const root = join(repoRoot, dir)
-  const { name, description } = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
+  const { name, description, version } = JSON.parse(
+    readFileSync(join(root, 'package.json'), 'utf8'),
+  )
   const src = join(root, 'src')
-  return { dir, name, description, src, componentsDir: join(src, 'components') }
+  return { dir, name, description, version, src, componentsDir: join(src, 'components') }
 })
 
 /** `@advui/core`: owns the shared hooks, utils and provider. */

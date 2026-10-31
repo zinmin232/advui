@@ -1,0 +1,60 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "confirm-dialog",
+  "title": "Confirm Dialog",
+  "type": "registry:component",
+  "description": "Asks the user to confirm one action, in one element. An async action keeps it open and busy until it finishes.",
+  "category": "feedback",
+  "status": "stable",
+  "since": "0.13.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/confirm-dialog/ConfirmDialog.tsx",
+      "type": "registry:ui",
+      "sha256": "c2724c43264c45b6dd746f872c0f3d01474fd931af605ee0f78f6c7ab1b87d1b",
+      "content": "import { type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react'\nimport { type TamaguiElement, isWeb } from 'tamagui/unstyled'\nimport { useControllableState } from '../../hooks/useControllableState'\nimport { AlertDialog } from '../alert-dialog/AlertDialog'\nimport { Button } from '../button/Button'\nimport { LoadingButton } from '../loading-button/LoadingButton'\n\nexport type ConfirmDialogTone = 'default' | 'destructive'\n\nexport interface ConfirmDialogProps {\n  /** Open state, when you control it. */\n  open?: boolean\n  /** Open at first, when the dialog manages its state. */\n  defaultOpen?: boolean\n  /** Called when the dialog opens or closes. */\n  onOpenChange?: (open: boolean) => void\n  /** Opens the dialog, such as a Button. Leave it out and open the dialog with `open`. */\n  trigger?: ReactElement\n  /** The question, e.g. \"Delete this project?\". Names the dialog. */\n  title: ReactNode\n  /** The consequences. Announced with the title. */\n  description?: ReactNode\n  /** Label of the confirm button. Name the action, e.g. \"Delete\". */\n  confirmLabel?: ReactNode\n  cancelLabel?: ReactNode\n  /** `destructive` gives the confirm button the destructive fill. */\n  tone?: ConfirmDialogTone\n  /**\n   * Called when the user confirms. Return a Promise to keep the dialog open\n   * and busy until it settles: it closes when the Promise resolves and stays\n   * open when it rejects, so the user can try again or cancel. The dialog\n   * does not report the error; show it (e.g. with a toast) and rethrow.\n   */\n  onConfirm?: () => void | Promise<unknown>\n  /** Called when the user cancels: Cancel, Escape or the Android back button. */\n  onCancel?: () => void\n}\n\nconst isPromiseLike = (value: unknown): value is PromiseLike<unknown> =>\n  typeof (value as PromiseLike<unknown> | undefined)?.then === 'function'\n\n/**\n * Asks the user to confirm one action, in one element: AlertDialog with a\n * title, a description, Cancel and a confirm button. An async `onConfirm`\n * keeps it open and busy until it finishes. Compose AlertDialog instead when\n * the dialog needs more content, such as a field.\n */\nexport function ConfirmDialog({\n  open: openProp,\n  defaultOpen = false,\n  onOpenChange,\n  trigger,\n  title,\n  description,\n  confirmLabel = 'Confirm',\n  cancelLabel = 'Cancel',\n  tone = 'default',\n  onConfirm,\n  onCancel,\n}: ConfirmDialogProps) {\n  const [open, setOpen] = useControllableState({\n    value: openProp,\n    defaultValue: defaultOpen,\n    onChange: onOpenChange,\n  })\n  const [pending, setPending] = useState(false)\n  // The ref blocks a second press before the busy state renders.\n  const pendingRef = useRef(false)\n  const mountedRef = useRef(true)\n  useEffect(() => {\n    mountedRef.current = true\n    return () => {\n      mountedRef.current = false\n    }\n  }, [])\n\n  // Browsers drop focus from a button when it is disabled. After a failed\n  // confirm the dialog stays open, so put focus back on the button: Enter\n  // retries and Tab reaches Cancel.\n  const confirmRef = useRef<TamaguiElement>(null)\n  const wasPending = useRef(false)\n  useEffect(() => {\n    if (isWeb && wasPending.current && !pending && open) {\n      if (document.activeElement === document.body)\n        (confirmRef.current as HTMLElement | null)?.focus()\n    }\n    wasPending.current = pending\n  }, [pending, open])\n\n  // Only the user's own changes arrive here (the trigger, Cancel, Escape,\n  // back); closing after a confirm sets the state directly.\n  const handleOpenChange = (next: boolean) => {\n    // While onConfirm runs, Escape and the back button must not close it.\n    if (pendingRef.current) return\n    setOpen(next)\n    if (!next) onCancel?.()\n  }\n\n  const confirm = () => {\n    if (pendingRef.current) return\n    const result = onConfirm?.()\n    if (!isPromiseLike(result)) {\n      setOpen(false)\n      return\n    }\n    pendingRef.current = true\n    setPending(true)\n    const settle = (succeeded: boolean) => {\n      pendingRef.current = false\n      if (!mountedRef.current) return\n      setPending(false)\n      if (succeeded) setOpen(false)\n    }\n    // A rejection keeps the dialog open; onConfirm owns reporting the error.\n    result.then(\n      () => settle(true),\n      () => settle(false),\n    )\n  }\n\n  return (\n    <AlertDialog open={open} onOpenChange={handleOpenChange}>\n      {trigger ? <AlertDialog.Trigger asChild>{trigger}</AlertDialog.Trigger> : null}\n      <AlertDialog.Content>\n        <AlertDialog.Header>\n          <AlertDialog.Title>{title}</AlertDialog.Title>\n          {description ? <AlertDialog.Description>{description}</AlertDialog.Description> : null}\n        </AlertDialog.Header>\n        <AlertDialog.Footer>\n          <AlertDialog.Cancel asChild>\n            <Button variant=\"outline\" disabled={pending}>\n              {cancelLabel}\n            </Button>\n          </AlertDialog.Cancel>\n          {/* Not AlertDialog.Action: that closes at once, before an async onConfirm finishes. */}\n          <LoadingButton\n            ref={confirmRef}\n            variant={tone === 'destructive' ? 'destructive' : 'default'}\n            loading={pending}\n            onPress={confirm}\n          >\n            {confirmLabel}\n          </LoadingButton>\n        </AlertDialog.Footer>\n      </AlertDialog.Content>\n    </AlertDialog>\n  )\n}\n"
+    },
+    {
+      "path": "components/confirm-dialog/index.ts",
+      "type": "registry:ui",
+      "sha256": "943c0f55cb5e5664c602cd7a5dfd4f1c351aab41b431ee6311a98d49b424c8af",
+      "content": "export { ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogTone } from './ConfirmDialog'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Destructive confirmation",
+      "code": "import { Button, ConfirmDialog, toast } from '@advui/core'\n\nexport default function ConfirmDialogBasic() {\n  return (\n    <ConfirmDialog\n      trigger={<Button variant=\"destructive\">Delete project</Button>}\n      title=\"Delete “Atlas”?\"\n      description=\"The project, its 12 environments and all deploy history are removed. This cannot be undone.\"\n      confirmLabel=\"Delete project\"\n      tone=\"destructive\"\n      onConfirm={() => {\n        toast.success('Project deleted')\n      }}\n    />\n  )\n}\n"
+    },
+    {
+      "name": "async",
+      "title": "Waits for the action",
+      "code": "import { Button, ConfirmDialog, toast } from '@advui/core'\nimport { LogOutIcon } from '@advui/icons'\n\nconst signOutEverywhere = () => new Promise<void>((resolve) => setTimeout(resolve, 1200))\n\nexport default function ConfirmDialogAsync() {\n  return (\n    <ConfirmDialog\n      trigger={\n        <Button variant=\"outline\" icon={<LogOutIcon />}>\n          Sign out everywhere\n        </Button>\n      }\n      title=\"Sign out of all devices?\"\n      description=\"You will need to sign in again on your phone, tablet and other browsers.\"\n      confirmLabel=\"Sign out\"\n      cancelLabel=\"Stay signed in\"\n      // Returning the Promise keeps the dialog open and busy until it resolves.\n      onConfirm={async () => {\n        await signOutEverywhere()\n        toast.success('Signed out of 3 devices')\n      }}\n    />\n  )\n}\n"
+    },
+    {
+      "name": "menu",
+      "title": "Opened from a menu",
+      "code": "import { Button, ConfirmDialog, DropdownMenu, toast } from '@advui/core'\nimport { EditIcon, MoreHorizontalIcon, PackageIcon } from '@advui/icons'\nimport { useState } from 'react'\n\nexport default function ConfirmDialogMenu() {\n  // Controlled: the menu closes when an item is chosen, so the dialog cannot\n  // live inside it. The item opens the dialog instead.\n  const [confirming, setConfirming] = useState(false)\n\n  return (\n    <>\n      <DropdownMenu>\n        <DropdownMenu.Trigger>\n          <Button variant=\"outline\" icon={<MoreHorizontalIcon />}>\n            Actions\n          </Button>\n        </DropdownMenu.Trigger>\n        <DropdownMenu.Content>\n          <DropdownMenu.Item icon={<EditIcon />} onSelect={() => toast('Rename')}>\n            Rename\n          </DropdownMenu.Item>\n          <DropdownMenu.Item icon={<PackageIcon />} onSelect={() => setConfirming(true)}>\n            Archive…\n          </DropdownMenu.Item>\n        </DropdownMenu.Content>\n      </DropdownMenu>\n      <ConfirmDialog\n        open={confirming}\n        onOpenChange={setConfirming}\n        title=\"Archive “Atlas”?\"\n        description=\"Archived projects are read-only. You can restore it from Settings.\"\n        confirmLabel=\"Archive\"\n        onConfirm={() => {\n          toast.success('Project archived')\n        }}\n      />\n    </>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/confirm-dialog",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "alert-dialog",
+    "button",
+    "hooks",
+    "loading-button"
+  ],
+  "version": "0.14.0"
+}

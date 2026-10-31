@@ -1,0 +1,47 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "portal",
+  "title": "Portal",
+  "type": "registry:component",
+  "description": "Renders its children above the app, out of the layout they are written in: for your own floating bars, panels and overlays.",
+  "category": "foundations",
+  "status": "beta",
+  "since": "0.14.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/portal/Portal.tsx",
+      "type": "registry:ui",
+      "sha256": "3dd4ae215ede75c09d2c1e370624413897169bc646e20b8d1d663e29310d0c58",
+      "content": "import { zIndex as zIndices } from '@advui/theme'\nimport type { ReactNode } from 'react'\nimport { Portal as TamaguiPortal, View, isWeb } from 'tamagui/unstyled'\n\nexport type PortalLayer = keyof typeof zIndices\n\nexport interface PortalProps {\n  children?: ReactNode\n  /**\n   * Stacking order: a layer from the theme's `zIndex` scale, or a number.\n   * Android takes 32-bit z-indices only, so prefer a layer.\n   */\n  zIndex?: PortalLayer | number\n}\n\n/**\n * Renders its children above the app: at the end of `body` on web, and in\n * a layer beside the app on iOS and Android, where React context from above\n * does not reach them (the theme does). Touches outside the children reach\n * the app below. Place the children with `position=\"absolute\"`.\n */\nexport function Portal({ children, zIndex = 'overlay' }: PortalProps) {\n  return (\n    <TamaguiPortal\n      zIndex={typeof zIndex === 'number' ? zIndex : zIndices[zIndex]}\n      // Tamagui's host stops touch scrolling for its own overlays; a panel\n      // in the portal may scroll.\n      {...(isWeb && { style: { touchAction: 'auto' } })}\n    >\n      {/* Covers the screen, but only the children take touches. */}\n      <View position=\"absolute\" inset={0} pointerEvents=\"box-none\">\n        {children}\n      </View>\n    </TamaguiPortal>\n  )\n}\n"
+    },
+    {
+      "path": "components/portal/index.ts",
+      "type": "registry:ui",
+      "sha256": "f417af53d815c7db37970d6f9b19b964ac00b7120e7afebeb58b9ab513c50448",
+      "content": "export { Portal, type PortalLayer, type PortalProps } from './Portal'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "A bar over the page",
+      "code": "import { Button, Card, HStack, Portal, Text } from '@advui/core'\nimport { useState } from 'react'\n\nexport default function PortalBasic() {\n  const [open, setOpen] = useState(false)\n  return (\n    <>\n      <Button variant=\"outline\" onPress={() => setOpen((value) => !value)}>\n        {open ? 'Hide the bar' : 'Show a bar over the page'}\n      </Button>\n      {open ? (\n        <Portal>\n          {/* Placed in the window, not in this box. Values reach it as props\n              and closures, such as setOpen; React context may not on iOS and Android. */}\n          <Card\n            variant=\"elevated\"\n            position=\"absolute\"\n            bottom=\"4\"\n            left=\"4\"\n            right=\"4\"\n            maxWidth=\"128\"\n            marginHorizontal=\"auto\"\n          >\n            <HStack padding=\"3\" gap=\"3\" alignItems=\"center\" justifyContent=\"space-between\">\n              <Text size=\"sm\">This bar is in a portal, above everything else.</Text>\n              <Button size=\"sm\" onPress={() => setOpen(false)}>\n                Close\n              </Button>\n            </HStack>\n          </Card>\n        </Portal>\n      ) : null}\n    </>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/portal",
+  "dependencies": [
+    "@advui/theme"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [],
+  "version": "0.14.0"
+}

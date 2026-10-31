@@ -1,0 +1,55 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "label",
+  "title": "Label",
+  "type": "registry:component",
+  "description": "An accessible label linked to a form control.",
+  "category": "forms",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/label/Label.tsx",
+      "type": "registry:ui",
+      "sha256": "b824d4232cf99ca5bed95ea885152710540d1e8486186e098cee7a5680f9bbf1",
+      "content": "import { forwardRef } from 'react'\nimport {\n  type GetProps,\n  Label as TamaguiLabel,\n  type TamaguiTextElement,\n  Text,\n  isWeb,\n  styled,\n} from 'tamagui/unstyled'\nimport { usePublishLabel } from '../../hooks/useLabelFor'\nimport { plainText } from '../../utils/plainText'\n\nconst LabelFrame = styled(TamaguiLabel, {\n  displayName: 'Label',\n  fontFamily: 'body',\n  fontSize: '2',\n  lineHeight: '2',\n  fontWeight: '500',\n  color: 'foreground',\n  height: 'auto',\n  paddingHorizontal: 0,\n  cursor: 'default',\n  userSelect: 'none',\n  variants: {\n    disabled: {\n      true: { opacity: 0.6 },\n    },\n  } as const,\n})\n\nconst RequiredMark = styled(Text, {\n  displayName: 'LabelRequired',\n  color: 'error',\n  fontSize: '2',\n})\n\nexport type LabelProps = GetProps<typeof LabelFrame> & {\n  /** Appends a visual required marker (screen readers get `required` from the input). */\n  required?: boolean\n}\n\n/**\n * Accessible label. Link it to a control with `htmlFor` = the control's `id`.\n * On web this renders `<label for>`; on native, pressing the label focuses or\n * toggles the linked control, and the label's text is the control's name.\n */\nexport const Label = forwardRef<TamaguiTextElement, LabelProps>(function Label(\n  { required, children, ...props },\n  ref,\n) {\n  // Native: a control without a name of its own takes this text as its name,\n  // and the label is then hidden from screen readers so it is not read twice.\n  // A control finds it by its own id (`htmlFor`), or by this label's id when\n  // the control uses `aria-labelledby`, which iOS ignores.\n  const text = plainText(children) || undefined\n  const namedFor = usePublishLabel(isWeb ? undefined : props.htmlFor, text)\n  const namedById = usePublishLabel(isWeb ? undefined : props.id, text)\n  const named = namedFor || namedById\n  return (\n    <LabelFrame ref={ref} {...props} aria-hidden={props['aria-hidden'] ?? (named || undefined)}>\n      {children}\n      {required ? <RequiredMark aria-hidden> *</RequiredMark> : null}\n    </LabelFrame>\n  )\n})\n"
+    },
+    {
+      "path": "components/label/ChoiceRow.tsx",
+      "type": "registry:ui",
+      "sha256": "73bad25155f074063aedef7e495e6ca6e60c44d4bc222d5cc542b68bc147e580",
+      "content": "import type { ReactNode } from 'react'\nimport { XStack, YStack, isWeb } from 'tamagui/unstyled'\nimport { plainText, sentences } from '../../utils/plainText'\nimport { Text } from '../typography/Text'\nimport { Label } from './Label'\n\nexport interface ChoiceText {\n  /** Text beside the control. Pressing it checks the control. */\n  label?: ReactNode\n  /** Smaller text under the label. */\n  description?: ReactNode\n}\n\n/** The accessibility props a control can set itself, which win over the texts. */\ninterface OwnProps {\n  'aria-label'?: string\n  'aria-describedby'?: string\n  accessibilityHint?: string\n}\n\nconst hasContent = (node: ReactNode) => node != null && node !== false && node !== ''\n\nconst textOf = (node: ReactNode) => (hasContent(node) ? plainText(node) || undefined : undefined)\n\n/**\n * What a checkbox or radio takes from the label and description beside it. Web\n * links the description by id. Native has no links, so the control is named by\n * the label's text, and the description and its group's name and help text\n * (`groupHint`) are its hint.\n */\nexport function choiceProps(\n  id: string,\n  { label, description }: ChoiceText,\n  own: OwnProps,\n  groupHint?: string,\n): OwnProps {\n  if (isWeb) {\n    const describedBy = [\n      hasContent(description) ? `${id}-description` : '',\n      own['aria-describedby'],\n    ]\n      .filter(Boolean)\n      .join(' ')\n    return describedBy ? { 'aria-describedby': describedBy } : {}\n  }\n  return {\n    'aria-label': own['aria-label'] ?? textOf(label),\n    accessibilityHint: own.accessibilityHint ?? sentences(textOf(description), groupHint),\n  }\n}\n\n/** True when the control has a label or description to show beside it. */\nexport const hasChoiceText = ({ label, description }: ChoiceText) =>\n  hasContent(label) || hasContent(description)\n\n/**\n * A checkbox or radio (`children`) with its label and description beside it,\n * top-aligned so long labels wrap under themselves. Give the control the `id`\n * and `choiceProps`.\n */\nexport function ChoiceRow({\n  id,\n  label,\n  description,\n  disabled,\n  children,\n}: ChoiceText & { id: string; disabled?: boolean; children: ReactNode }) {\n  // Native: the control already carries these texts as its name and hint.\n  const hideLabel = !isWeb && textOf(label) !== undefined\n  const hideDescription = !isWeb && textOf(description) !== undefined\n  return (\n    <XStack gap=\"2\" alignItems=\"flex-start\">\n      {children}\n      <YStack flexShrink={1} gap=\"0-5\" opacity={disabled ? 0.6 : 1}>\n        {hasContent(label) ? (\n          <Label\n            // Native: a disabled control is not registered to be focused, and\n            // pressing a label that targets it logs a warning.\n            htmlFor={!isWeb && disabled ? undefined : id}\n            aria-hidden={hideLabel || undefined}\n          >\n            {label}\n          </Label>\n        ) : null}\n        {hasContent(description) ? (\n          <Text\n            id={`${id}-description`}\n            size=\"sm\"\n            tone=\"muted\"\n            aria-hidden={hideDescription || undefined}\n          >\n            {description}\n          </Text>\n        ) : null}\n      </YStack>\n    </XStack>\n  )\n}\n\n/** Style for the control in a ChoiceRow: it keeps its size and lines up with the label's first line. */\nexport const choiceControlStyle = (size: 'sm' | 'md'): { flexShrink: number; marginTop?: '0-5' } =>\n  size === 'sm' ? { flexShrink: 0, marginTop: '0-5' } : { flexShrink: 0 }\n"
+    },
+    {
+      "path": "components/label/index.ts",
+      "type": "registry:ui",
+      "sha256": "dfc4752495b549ccc9755c74fd791a3e5726754e4c58085ff80a8e3f9c2525ad",
+      "content": "export { Label, type LabelProps } from './Label'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Labelling controls",
+      "code": "import { Checkbox, HStack, Input, Label, VStack } from '@advui/core'\n\nexport default function LabelBasic() {\n  return (\n    <VStack gap=\"4\" width=\"100%\" maxWidth=\"80\">\n      <VStack gap=\"2\">\n        <Label htmlFor=\"full-name\" required>\n          Full name\n        </Label>\n        <Input id=\"full-name\" required placeholder=\"Ada Lovelace\" />\n      </VStack>\n      <HStack gap=\"2\">\n        <Checkbox id=\"remember\" />\n        <Label htmlFor=\"remember\">Remember me</Label>\n      </HStack>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/label",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "hooks",
+    "typography",
+    "utils"
+  ],
+  "version": "0.14.0"
+}

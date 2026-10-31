@@ -84,7 +84,7 @@ Don't edit these by hand. Change the source and re-run the generator:
 | ---------------------------------------------- | -------------------------------------------------- |
 | `packages/catalog/src/index.ts`, `examples.ts` | `pnpm catalog` (runs before `dev`/`build`)         |
 | `packages/*/src/meta/components.ts`            | `pnpm catalog` (published as `<package>/meta`)     |
-| `registry/*.json`, `apps/docs/public/r/*`      | `pnpm registry:build` (runs before the docs build) |
+| `registry/**`, `apps/docs/public/r/**`         | `pnpm registry:build` (runs before the docs build) |
 | `packages/icons/src/generated.ts`, `icons.ts`  | `pnpm --filter @advui/icons generate`              |
 
 ## Releases
@@ -95,8 +95,12 @@ Packages are versioned together.
 2. Bump `version` in the published packages (`core`, `data`, `charts`,
    `editor`, `theme`, `icons`, `utils`, `cli`) and in
    `apps/docs/src/lib/site.ts`, then run `pnpm registry:build`: every registry
-   item records the version. `@advui/data`, `@advui/charts` and `@advui/editor`
-   take `@advui/core` (and charts take `@advui/data`) as `workspace:^` peer
+   item records the version, and `registry/<version>/` keeps a copy of the
+   release, which `advui update` merges against. The build writes that folder
+   only if it does not exist; if the release changes after it, run
+   `pnpm registry:build --snapshot` to rewrite it. `@advui/data`,
+   `@advui/charts` and `@advui/editor` take `@advui/core` (and charts take
+   `@advui/data`) as `workspace:^` peer
    dependencies, which pnpm turns into `^<version>` when it publishes. After a
    package's first publish, remove it from `unpublishedPackages` in
    `apps/docs/src/lib/site.ts`.

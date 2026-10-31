@@ -1,9 +1,12 @@
+import { createHash } from 'node:crypto'
 import { existsSync, readFileSync } from 'node:fs'
 import { isAbsolute, join, resolve } from 'node:path'
 
 export interface RegistryFile {
   path: string
   type: string
+  /** sha256 of `content` (older registries have none). */
+  sha256?: string
   content: string
 }
 
@@ -12,6 +15,8 @@ export interface RegistryItem {
   title: string
   type: 'registry:component' | 'registry:lib'
   description: string
+  /** Version of the package the item comes from; `<version>/<name>.json` keeps it. */
+  version: string
   status?: string
   dependencies: string[]
   peerDependencies: string[]
@@ -24,6 +29,16 @@ export interface RegistryIndex {
   version: string
   items: Array<Pick<RegistryItem, 'name' | 'title' | 'type' | 'description' | 'status'>>
 }
+
+/** Text with LF line endings, as the registry stores it. */
+export const toLf = (text: string) => text.replace(/\r\n/g, '\n')
+
+/** sha256 of a file's text. Line endings don't count, so a CRLF checkout still matches. */
+export function hashContent(text: string): string {
+  return createHash('sha256').update(toLf(text)).digest('hex')
+}
+
+export const fileHash = (file: RegistryFile) => file.sha256 ?? hashContent(file.content)
 
 const isUrl = (source: string) => /^https?:\/\//.test(source)
 

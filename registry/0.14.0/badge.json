@@ -1,0 +1,54 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "badge",
+  "title": "Badge",
+  "type": "registry:component",
+  "description": "A small label for status, counts or categories.",
+  "category": "foundations",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/badge/Badge.tsx",
+      "type": "registry:ui",
+      "sha256": "c54c2c7f1c8be6bcaa0837016485c5c3de7483c44f299bf04cc949a3564097d2",
+      "content": "import { IconDefaults } from '@advui/icons'\nimport { type ReactNode, forwardRef } from 'react'\nimport {\n  type GetProps,\n  type TamaguiElement,\n  Text,\n  View,\n  createStyledContext,\n  styled,\n  withStaticProperties,\n} from 'tamagui/unstyled'\nimport { isTextContent } from '../../utils/isTextContent'\n\nexport type BadgeVariant =\n  'default' | 'secondary' | 'outline' | 'destructive' | 'success' | 'warning' | 'info'\n\nconst BadgeContext = createStyledContext<{ variant: BadgeVariant; size: 'sm' | 'md' }>({\n  variant: 'default',\n  size: 'md',\n})\n\nconst foreground = {\n  default: 'primaryForeground',\n  secondary: 'secondaryForeground',\n  outline: 'foreground',\n  destructive: 'destructiveForeground',\n  success: 'successSoftForeground',\n  warning: 'warningSoftForeground',\n  info: 'infoSoftForeground',\n} as const satisfies Record<BadgeVariant, string>\n\nexport const BadgeFrame = styled(View, {\n  displayName: 'Badge',\n  context: BadgeContext,\n  flexDirection: 'row',\n  alignItems: 'center',\n  alignSelf: 'flex-start',\n  gap: '1',\n  borderWidth: 1,\n  borderColor: 'transparent',\n  borderRadius: 'full',\n  variants: {\n    variant: {\n      default: {\n        backgroundColor: 'primary',\n      },\n      secondary: {\n        backgroundColor: 'secondary',\n      },\n      outline: {\n        backgroundColor: 'transparent',\n        borderColor: 'border',\n      },\n      destructive: {\n        backgroundColor: 'destructive',\n      },\n      success: {\n        backgroundColor: 'successSoft',\n        borderColor: 'successBorder',\n      },\n      warning: {\n        backgroundColor: 'warningSoft',\n        borderColor: 'warningBorder',\n      },\n      info: {\n        backgroundColor: 'infoSoft',\n        borderColor: 'infoBorder',\n      },\n    },\n    size: {\n      sm: {\n        paddingHorizontal: '1-5',\n        paddingVertical: 0,\n      },\n      md: {\n        paddingHorizontal: '2-5',\n        paddingVertical: '0-5',\n      },\n    },\n  } as const,\n  defaultVariants: { variant: 'default', size: 'md' },\n})\n\nexport const BadgeText = styled(Text, {\n  displayName: 'BadgeText',\n  context: BadgeContext,\n  fontFamily: 'body',\n  fontWeight: '500',\n  numberOfLines: 1,\n  variants: {\n    variant: Object.fromEntries(\n      Object.entries(foreground).map(([key, color]) => [key, { color }]),\n    ) as { [K in BadgeVariant]: { color: (typeof foreground)[K] } },\n    size: {\n      sm: {\n        fontSize: '1',\n        lineHeight: '1',\n      },\n      md: {\n        fontSize: '1',\n        lineHeight: '1',\n      },\n    },\n  } as const,\n})\n\nexport interface BadgeProps extends Omit<GetProps<typeof BadgeFrame>, 'variant' | 'size'> {\n  variant?: BadgeVariant\n  size?: 'sm' | 'md'\n  /** Leading icon element. */\n  icon?: ReactNode\n  children?: ReactNode\n}\n\nconst BadgeImpl = forwardRef<TamaguiElement, BadgeProps>(function Badge(\n  { variant = 'default', size = 'md', icon, children, ...props },\n  ref,\n) {\n  return (\n    <BadgeFrame ref={ref} variant={variant} size={size} {...props}>\n      <IconDefaults size={12} color={foreground[variant]}>\n        {icon}\n        {isTextContent(children) ? <BadgeText>{children}</BadgeText> : children}\n      </IconDefaults>\n    </BadgeFrame>\n  )\n})\n\n/** Small status label. Purely presentational — it has no interactive role. */\nexport const Badge = withStaticProperties(BadgeImpl, { Text: BadgeText })\n"
+    },
+    {
+      "path": "components/badge/index.ts",
+      "type": "registry:ui",
+      "sha256": "5d641d8e2ee88677d4c7a1ba10d6fa53f0610f3de153088884761deee41677e6",
+      "content": "export { Badge, BadgeFrame, BadgeText, type BadgeProps, type BadgeVariant } from './Badge'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "variants",
+      "title": "Variants",
+      "code": "import { Badge, HStack } from '@advui/core'\n\nexport default function BadgeVariants() {\n  return (\n    <HStack gap=\"2\" flexWrap=\"wrap\">\n      <Badge>Default</Badge>\n      <Badge variant=\"secondary\">Secondary</Badge>\n      <Badge variant=\"outline\">Outline</Badge>\n      <Badge variant=\"success\">Paid</Badge>\n      <Badge variant=\"warning\">Pending</Badge>\n      <Badge variant=\"info\">New</Badge>\n      <Badge variant=\"destructive\">Overdue</Badge>\n    </HStack>\n  )\n}\n"
+    },
+    {
+      "name": "with-icon",
+      "title": "With icon",
+      "code": "import { Badge, HStack } from '@advui/core'\nimport { CheckIcon, StarIcon } from '@advui/icons'\n\nexport default function BadgeWithIcon() {\n  return (\n    <HStack gap=\"2\">\n      <Badge variant=\"success\" icon={<CheckIcon />}>\n        Verified\n      </Badge>\n      <Badge variant=\"secondary\" size=\"sm\" icon={<StarIcon />}>\n        Featured\n      </Badge>\n    </HStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/badge",
+  "dependencies": [
+    "@advui/icons"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "version": "0.14.0"
+}

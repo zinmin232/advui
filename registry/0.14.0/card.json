@@ -1,0 +1,61 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "card",
+  "title": "Card",
+  "type": "registry:component",
+  "description": "A surface that groups related content and actions.",
+  "category": "data-display",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/card/Card.tsx",
+      "type": "registry:ui",
+      "sha256": "a35c8964dd1e450676d0039673e93a42bc24f216fa9ddfdf5a254fdb33963ccf",
+      "content": "import { shadows } from '@advui/theme'\nimport { forwardRef } from 'react'\nimport {\n  type GetProps,\n  type TamaguiElement,\n  type TamaguiTextElement,\n  View,\n  styled,\n  withStaticProperties,\n} from 'tamagui/unstyled'\nimport { useRipple } from '../../hooks/useRipple'\nimport { Text } from '../typography/Text'\nimport { colorsOpacity } from '../../utils/transition'\n\nconst CardFrame = styled(View, {\n  displayName: 'Card',\n  flexDirection: 'column',\n  backgroundColor: 'card',\n  borderRadius: 'xl',\n  borderWidth: 1,\n  borderColor: 'border',\n  overflow: 'hidden',\n  variants: {\n    variant: {\n      outline: {},\n      // The shadow is set by Card itself: a Tamagui 3 variant holds styles\n      // only and drops Android's `elevation`.\n      elevated: {},\n      ghost: { borderColor: 'transparent', backgroundColor: 'transparent' },\n      filled: {\n        backgroundColor: 'muted',\n        borderColor: 'transparent',\n      },\n    },\n    /** Adds hover/press feedback. Pair with `onPress` and an accessible `role`/label. */\n    interactive: {\n      true: {\n        cursor: 'pointer',\n        // The hover border, and the press scale and opacity.\n        transition: colorsOpacity('quick', 'transform'),\n        borderColor: 'hover:borderStrong',\n        scale: 'press:0.99',\n        opacity: 'press:0.95',\n        outlineColor: 'focus-visible:ring',\n        outlineStyle: 'focus-visible:solid',\n        outlineWidth: 'focus-visible:2px',\n        outlineOffset: 'focus-visible:2px',\n      },\n    },\n  } as const,\n  defaultVariants: { variant: 'outline' },\n})\n\nconst CardHeader = styled(View, {\n  displayName: 'CardHeader',\n  flexDirection: 'column',\n  gap: '1-5',\n  paddingTop: '4 sm:6',\n  paddingRight: '4 sm:6',\n  paddingLeft: '4 sm:6',\n  paddingBottom: '0 sm:0',\n})\n\nconst CardTitleText = styled(Text, {\n  displayName: 'CardTitle',\n  role: 'heading',\n  fontFamily: 'heading',\n  fontWeight: '600',\n  size: 'lg',\n})\n\n/** Card heading. Defaults to heading level 3 — pass `aria-level` to fit your page outline. */\nconst CardTitle = forwardRef<TamaguiTextElement, GetProps<typeof CardTitleText>>(\n  function CardTitle(props, ref) {\n    return <CardTitleText ref={ref} aria-level={3} {...props} />\n  },\n)\n\nconst CardDescription = styled(Text, {\n  displayName: 'CardDescription',\n  size: 'sm',\n  tone: 'muted',\n})\n\nconst CardContent = styled(View, {\n  displayName: 'CardContent',\n  padding: '4 sm:6',\n  gap: '4',\n})\n\nconst CardFooter = styled(View, {\n  displayName: 'CardFooter',\n  flexDirection: 'row',\n  alignItems: 'center',\n  gap: '2',\n  paddingRight: '4 sm:6',\n  paddingBottom: '4 sm:6',\n  paddingLeft: '4 sm:6',\n  paddingTop: '0 sm:0',\n})\n\nconst CardImpl = forwardRef<TamaguiElement, GetProps<typeof CardFrame>>(function Card(\n  { children, onPressIn, onPressOut, ...props },\n  ref,\n) {\n  const ripple = useRipple({\n    color: 'cardForeground',\n    radius: { borderRadius: 'xl', ...props },\n    disabled: !props.interactive || !props.onPress,\n    onPressIn,\n    onPressOut,\n  })\n  return (\n    <CardFrame\n      ref={ref}\n      {...(props.variant === 'elevated' && shadows.sm)}\n      {...(ripple.active && {\n        // The ripple is the press feedback, so the card does not also shrink.\n        scale: 'press:1',\n        opacity: 'press:1',\n        // It is clipped inside the border: drop a transparent one.\n        ...((props.variant === 'filled' || props.variant === 'ghost') && { borderWidth: 0 }),\n      })}\n      {...props}\n      {...ripple.props}\n    >\n      {ripple.element}\n      {children}\n    </CardFrame>\n  )\n})\n\n/**\n * Groups related content. Compose with `Card.Header`, `Card.Title`,\n * `Card.Description`, `Card.Content` and `Card.Footer`.\n */\nexport const Card = withStaticProperties(CardImpl, {\n  Header: CardHeader,\n  Title: CardTitle,\n  Description: CardDescription,\n  Content: CardContent,\n  Footer: CardFooter,\n})\n\nexport type CardProps = GetProps<typeof CardFrame>\nexport type CardHeaderProps = GetProps<typeof CardHeader>\nexport type CardTitleProps = GetProps<typeof CardTitleText>\nexport type CardDescriptionProps = GetProps<typeof CardDescription>\nexport type CardContentProps = GetProps<typeof CardContent>\nexport type CardFooterProps = GetProps<typeof CardFooter>\n"
+    },
+    {
+      "path": "components/card/index.ts",
+      "type": "registry:ui",
+      "sha256": "faa1d57eb7760861a2ff90da535abbded1b4728c037f724e6ffeaec673e5708c",
+      "content": "export {\n  Card,\n  type CardContentProps,\n  type CardDescriptionProps,\n  type CardFooterProps,\n  type CardHeaderProps,\n  type CardProps,\n  type CardTitleProps,\n} from './Card'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Form card",
+      "code": "import { Button, Card, Input, Label, VStack } from '@advui/core'\n\nexport default function CardBasic() {\n  return (\n    <Card width=\"100%\" maxWidth=\"96\">\n      <Card.Header>\n        <Card.Title>Create project</Card.Title>\n        <Card.Description>Deploy your new project in one click.</Card.Description>\n      </Card.Header>\n      <Card.Content>\n        <VStack gap=\"2\">\n          <Label htmlFor=\"card-name\">Name</Label>\n          <Input id=\"card-name\" placeholder=\"Name of your project\" />\n        </VStack>\n      </Card.Content>\n      <Card.Footer justifyContent=\"flex-end\">\n        <Button variant=\"outline\">Cancel</Button>\n        <Button>Deploy</Button>\n      </Card.Footer>\n    </Card>\n  )\n}\n"
+    },
+    {
+      "name": "variants",
+      "title": "Variants",
+      "code": "import { Card, Grid, Text } from '@advui/core'\n\nconst variants = ['outline', 'elevated', 'filled', 'ghost'] as const\n\nexport default function CardVariants() {\n  return (\n    <Grid columns={{ base: 1, sm: 2 }} gap=\"4\" width=\"100%\">\n      {variants.map((variant) => (\n        <Card key={variant} variant={variant}>\n          <Card.Header>\n            <Card.Title>{variant}</Card.Title>\n          </Card.Header>\n          <Card.Content>\n            <Text size=\"sm\" tone=\"muted\">\n              A {variant} card surface.\n            </Text>\n          </Card.Content>\n        </Card>\n      ))}\n    </Grid>\n  )\n}\n"
+    },
+    {
+      "name": "interactive",
+      "title": "Interactive",
+      "code": "import { Badge, Card, HStack, Text, toast } from '@advui/core'\n\nexport default function CardInteractive() {\n  return (\n    <Card\n      interactive\n      role=\"link\"\n      aria-label=\"Open project Atlas\"\n      width=\"100%\"\n      maxWidth=\"80\"\n      onPress={() => toast('Opening Atlas…')}\n    >\n      <Card.Header>\n        <HStack justifyContent=\"space-between\">\n          <Card.Title>Atlas</Card.Title>\n          <Badge variant=\"success\" size=\"sm\">\n            Live\n          </Badge>\n        </HStack>\n        <Card.Description>Updated 2 hours ago</Card.Description>\n      </Card.Header>\n      <Card.Content>\n        <Text size=\"sm\">Customer analytics dashboard.</Text>\n      </Card.Content>\n    </Card>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/card",
+  "dependencies": [
+    "@advui/theme"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "hooks",
+    "typography",
+    "utils"
+  ],
+  "version": "0.14.0"
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "container",
+  "title": "Container",
+  "type": "registry:component",
+  "description": "Centers page content with a max width and responsive side padding.",
+  "category": "layout",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/layout/Container.tsx",
+      "type": "registry:ui",
+      "sha256": "5254e2ce0b4e1686fb1d0625ebea562a1acfb8f9b0685c9536baeed961e50c79",
+      "content": "import { breakpoints } from '@advui/theme'\nimport { type GetProps, type SpaceTokens, View, styled } from 'tamagui/unstyled'\nimport { type Responsive, responsiveStyle } from '../../utils/responsive'\n\n/** Side padding by default: 16px on phones, 24px from md and 32px from lg. */\nconst defaultGutter: Responsive<SpaceTokens> = { base: '4', md: '6', lg: '8' }\n\n/**\n * Horizontally centered, width-capped page container with responsive padding.\n */\nexport const Container = styled(View, {\n  displayName: 'Container',\n  width: '100%',\n  marginHorizontal: 'auto',\n\n  variants: {\n    size: {\n      sm: { maxWidth: breakpoints.sm },\n      md: { maxWidth: breakpoints.md },\n      lg: { maxWidth: breakpoints.lg },\n      xl: { maxWidth: breakpoints.xl },\n      xxl: { maxWidth: breakpoints.xxl },\n      full: { maxWidth: '100%' },\n    },\n    /**\n     * Side padding: a space token or a mobile-first map. The default lives here\n     * rather than in base styles, so a gutter replaces it at every breakpoint\n     * instead of competing with its media styles.\n     */\n    gutter: styled.dynamic<Responsive<SpaceTokens>>((value) =>\n      responsiveStyle('paddingHorizontal', value ?? defaultGutter),\n    ),\n    /** Centers the children horizontally. */\n    centerContent: {\n      true: { alignItems: 'center' },\n      false: {},\n    },\n  } as const,\n\n  defaultVariants: {\n    size: 'xl',\n    gutter: defaultGutter,\n  },\n})\n\nexport type ContainerProps = GetProps<typeof Container>\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "container",
+      "title": "Page container",
+      "code": "import { Container, Text } from '@advui/core'\n\nexport default function ContainerExample() {\n  return (\n    <Container size=\"sm\" backgroundColor=\"muted\" borderRadius=\"lg\" paddingVertical=\"6\">\n      <Text>This content is centered and capped at the sm breakpoint (640px).</Text>\n    </Container>\n  )\n}\n"
+    },
+    {
+      "name": "gutter",
+      "title": "Gutter and centered content",
+      "code": "import { Container, Text, VStack } from '@advui/core'\n\nfunction Band({ label }: { label: string }) {\n  return (\n    <VStack padding=\"3\" backgroundColor=\"muted\" borderRadius=\"md\">\n      <Text size=\"sm\">{label}</Text>\n    </VStack>\n  )\n}\n\nexport default function ContainerGutter() {\n  return (\n    <VStack gap=\"3\" width=\"100%\">\n      <Container size=\"sm\" borderWidth={1} borderColor=\"border\" borderRadius=\"lg\">\n        <Band label=\"Default gutter: 16px, 24px from md, 32px from lg\" />\n      </Container>\n      <Container size=\"sm\" borderWidth={1} borderColor=\"border\" borderRadius=\"lg\" gutter=\"0\">\n        <Band label='gutter=\"$0\": edge to edge' />\n      </Container>\n      <Container size=\"sm\" borderWidth={1} borderColor=\"border\" borderRadius=\"lg\" centerContent>\n        <Text paddingVertical=\"3\">centerContent</Text>\n      </Container>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/container",
+  "dependencies": [
+    "@advui/theme"
+  ],
+  "peerDependencies": [
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "version": "0.14.0"
+}

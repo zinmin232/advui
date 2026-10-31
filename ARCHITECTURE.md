@@ -194,9 +194,22 @@ imports as before the packages were split. Each item also records its
 - `init` detects the framework and package manager, then writes
   `advui.json` and `tamagui.config.ts`.
 - `add` resolves the dependency graph, rewrites import paths and installs npm
-  dependencies.
+  dependencies. It records each item's version and a sha256 of each file in
+  `advui.json`.
+- `diff` and `update` compare three copies of each file: the installed one
+  (its hash in `advui.json`), the local one and the latest upstream. Hashes
+  tell which side changed a file; a file both sides changed is merged
+  (`src/diff.ts`, a small Myers diff and diff3, so the CLI keeps no runtime
+  dependencies) against the installed text, which comes from the registry's
+  snapshot of that version and must match the recorded hash.
 
-The docs publish the registry at `/r/<name>.json`.
+The docs publish the registry at `/r/<name>.json`, and each release at
+`/r/<version>/<name>.json`. A version folder is written by the first
+`registry:build` at that version (the release commit) and never rewritten
+after, so it keeps what was released while the latest files follow `main`.
+Someone who added a component between releases recorded a copy that no
+snapshot holds; their changes and upstream's are still told apart by hash,
+but a file both changed conflicts instead of merging.
 
 ## Testing layers
 

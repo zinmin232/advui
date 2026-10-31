@@ -7,6 +7,26 @@ one version.
 
 ## [Unreleased]
 
+### Added
+
+- **`advui diff` and `advui update`**: pull upstream fixes into component
+  source you copied with `add`. `add` now records each item's version and a
+  sha256 hash of each file in `advui.json`, so `diff` can tell, for each file,
+  whether it is unchanged, changed locally, changed upstream or changed in
+  both, and print a unified diff of upstream against your copy. `update`
+  replaces files only upstream changed, keeps files only you changed, and
+  merges files both changed with a three-way merge against the version you
+  added. A component whose changes conflict is left as it is and its files
+  listed (exit code 1); `--overwrite` takes upstream's. It also adds
+  components that an updated one now needs. Without names, both commands
+  cover every component in `advui.json`; components added by an older CLI
+  can be named. The CLI still has no runtime dependencies.
+- **Registry**: each file has a `sha256`, and each release stays in a
+  version folder (`/r/<version>/<name>.json`, `registry/<version>/`), the
+  base `update` merges against. `pnpm registry:build` writes the folder for
+  the current version once and leaves it alone afterwards, so it keeps what
+  was released while the latest files move on with `main`.
+
 ## [0.14.0] - 2026-10-31
 
 ### Breaking: Tamagui 3
