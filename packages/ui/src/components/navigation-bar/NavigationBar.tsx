@@ -177,9 +177,13 @@ const NavigationBarItem = forwardRef<TamaguiElement, NavigationBarItemProps>(
           />
           {/* Material draws the press ripple in the indicator's pill shape. */}
           {ripple.element}
-          <IconDefaults size={24} color={active ? 'secondaryForeground' : 'mutedForeground'}>
-            {icon}
-          </IconDefaults>
+          {/* On web a positioned box paints over static ones whatever their
+              order, so the icon needs a position to stay above the pill. */}
+          <View position="relative">
+            <IconDefaults size={24} color={active ? 'secondaryForeground' : 'mutedForeground'}>
+              {icon}
+            </IconDefaults>
+          </View>
           {count !== null ? (
             <View
               aria-hidden

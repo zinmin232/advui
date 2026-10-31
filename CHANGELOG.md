@@ -419,6 +419,10 @@ name **Rich Text Editor** goes to a new WYSIWYG editor that saves HTML.
 
 ### Fixed
 
+- **Navigation Bar** on web: the current destination's icon shows on its
+  pill. The pill is positioned and the icon was not, and a positioned box
+  paints over static ones, so the pill hid the active icon and dimmed a
+  hovered one. iOS and Android draw in order and were not affected.
 - **Metadata loads in Node.** `@advui/core/meta`, `@advui/data/meta`,
   `@advui/charts/meta` and `@advui/editor/meta` now import their own files
   with the extension (`./types.js`), so a Node script can import them without
