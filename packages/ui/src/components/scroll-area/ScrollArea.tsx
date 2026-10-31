@@ -28,6 +28,13 @@ export interface ScrollAreaProps extends Omit<
   orientation?: ScrollAreaOrientation
   /** Names the region, e.g. "Release tags". Recommended. */
   'aria-label'?: string
+  /**
+   * iOS / Android: keep the focused field above the keyboard, for a ScrollArea
+   * that fills the screen (a form, a settings page). Taps on buttons then work
+   * while the keyboard is up. Inside one that does, it is left to the outer
+   * one. Default `false`.
+   */
+  avoidKeyboard?: boolean
   /** Put the content in one child, such as a VStack (or an HStack when horizontal). */
   children: ReactNode
 }
@@ -37,7 +44,8 @@ export interface ScrollAreaProps extends Omit<
  * scrollbars in the theme's colors (web) or the platform's own (native).
  */
 export const ScrollArea = forwardRef<TamaguiElement, ScrollAreaProps>(function ScrollArea(
-  { orientation = 'vertical', 'aria-label': label, ...props },
+  // Browsers keep the focused field in view above the keyboard themselves.
+  { orientation = 'vertical', 'aria-label': label, avoidKeyboard: _avoidKeyboard, ...props },
   ref,
 ) {
   return (

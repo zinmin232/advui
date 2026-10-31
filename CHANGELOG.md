@@ -9,6 +9,15 @@ one version.
 
 ### Added
 
+- **Scroll Area: `avoidKeyboard`** (iOS and Android) keeps the focused field
+  above the keyboard, for a ScrollArea that fills the screen, and lets taps on
+  buttons through while the keyboard is up (`keyboardShouldPersistTaps`). iOS
+  insets the content (`automaticallyAdjustKeyboardInsets`). Android apps draw
+  edge-to-edge, so the window no longer shrinks for the keyboard: the
+  ScrollArea measures where it ends on screen and stops where the keyboard
+  starts, with no offset needed for a navigation header above it, and Android
+  scrolls the focused field into view. Inside a ScrollArea or AppShell that
+  already avoids the keyboard, an inner one leaves it to the outer one.
 - **`advui diff` and `advui update`**: pull upstream fixes into component
   source you copied with `add`. `add` now records each item's version and a
   sha256 hash of each file in `advui.json`, so `diff` can tell, for each file,
@@ -26,6 +35,14 @@ one version.
   base `update` merges against. `pnpm registry:build` writes the folder for
   the current version once and leaves it alone afterwards, so it keeps what
   was released while the latest files move on with `main`.
+
+### Changed
+
+- **App Shell: Main avoids the keyboard** on iOS and Android, as ScrollArea's
+  `avoidKeyboard` does; the footer stays under the keyboard. Before, a field
+  near the bottom of Main was hidden behind the keyboard on Android. Turn it
+  off with `avoidKeyboard={false}` if your app already avoids the keyboard
+  around the shell.
 
 ## [0.14.0] - 2026-10-31
 
