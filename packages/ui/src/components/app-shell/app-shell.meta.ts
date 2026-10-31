@@ -109,6 +109,14 @@ export default defineMeta({
           description:
             'Pad the edges the shell touches for the notch and home indicator. Turn it off when the shell sits below a navigation header or above a tab bar, which pad them already. The drawer always pads.',
         },
+        {
+          name: 'avoidKeyboard',
+          type: 'boolean',
+          default: 'true',
+          platforms: ['ios', 'android'],
+          description:
+            'Main keeps the focused field above the keyboard, and taps on buttons work while the keyboard is up. Turn it off when the app already avoids the keyboard around the shell.',
+        },
       ],
       children: {
         accepts: ['AppShell.Header', 'AppShell.Sidebar', 'AppShell.Main', 'AppShell.Footer'],
@@ -213,9 +221,9 @@ export default defineMeta({
     'Below `sidebarBreakpoint` the sidebar moves into a drawer and the trigger appears. On web that is CSS media queries, so server-rendered HTML is right at every width with no flash; on iOS and Android it follows the window size. A drawer left open closes when the window widens past the breakpoint.',
   platformNotes: {
     web: 'The shell is `100dvh` tall and only Main scrolls, inside the shell, so the header, sidebar and footer need no sticky positioning. The desktop sidebar scrolls on its own when it is taller than the screen.',
-    ios: 'The shell is `flex: 1` and Main is a ScrollView. The header pads the top safe area, the footer the bottom one, and the drawer every edge it touches; the insets come from UniversalProvider.',
+    ios: 'The shell is `flex: 1` and Main is a ScrollView. The header pads the top safe area, the footer the bottom one, and the drawer every edge it touches; the insets come from UniversalProvider. With `avoidKeyboard` (since 0.15.0) Main insets its content by the keyboard and scrolls the focused field into view; the footer stays under the keyboard.',
     android:
-      'The shell is `flex: 1` and Main is a ScrollView. The back button closes an open drawer. Safe areas are padded as on iOS.',
+      'The shell is `flex: 1` and Main is a ScrollView. The back button closes an open drawer. Safe areas are padded as on iOS. Edge-to-edge apps no longer shrink for the keyboard, so with `avoidKeyboard` (since 0.15.0) Main ends where the keyboard starts, measured on screen, so a navigation header above needs no offset; Android then scrolls the focused field into view.',
   },
   related: ['sidebar', 'drawer', 'navigation-bar', 'show-hide'],
 })

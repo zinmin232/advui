@@ -15,7 +15,16 @@ export default defineMeta({
     'components/scroll-area/ScrollArea.native.tsx',
     'components/scroll-area/index.ts',
   ],
-  keywords: ['scroll', 'overflow', 'scrollbar', 'list', 'carousel', 'scroll view'],
+  keywords: [
+    'scroll',
+    'overflow',
+    'scrollbar',
+    'list',
+    'carousel',
+    'scroll view',
+    'keyboard avoiding',
+    'keyboard aware',
+  ],
   usage: `import { ScrollArea, VStack } from '@advui/core'
 
 <ScrollArea aria-label="Release tags" height="72">
@@ -37,6 +46,14 @@ export default defineMeta({
           name: 'aria-label',
           type: 'string',
           description: 'Names the region for screen readers. Recommended.',
+        },
+        {
+          name: 'avoidKeyboard',
+          type: 'boolean',
+          default: 'false',
+          platforms: ['ios', 'android'],
+          description:
+            'Keep the focused field above the keyboard, for a ScrollArea that fills the screen (a form, a settings page). Taps on buttons then work while the keyboard is up. Inside a ScrollArea or AppShell that already does, it leaves that to the outer one.',
         },
         {
           name: 'children',
@@ -64,9 +81,9 @@ export default defineMeta({
   ],
   platformNotes: {
     web: 'A scrolling box with CSS `scrollbar-width: thin` and theme colors (browsers without support show their default scrollbar).',
-    ios: 'A ScrollView with the platform scroll indicator. Top Sticky children of the content element are pinned as sticky headers (since 0.10.0); the content element’s children then become the ScrollView’s own, and its style props style the scroll content.',
+    ios: 'A ScrollView with the platform scroll indicator. Top Sticky children of the content element are pinned as sticky headers (since 0.10.0); the content element’s children then become the ScrollView’s own, and its style props style the scroll content. With `avoidKeyboard` (since 0.15.0) it insets its content by the keyboard and scrolls the focused field into view (`automaticallyAdjustKeyboardInsets`).',
     android:
-      'Same as iOS, with nested scrolling on, so a ScrollArea inside a scrolling screen scrolls itself (since 0.10.0; before, the screen took every vertical drag).',
+      'Same as iOS, with nested scrolling on, so a ScrollArea inside a scrolling screen scrolls itself (since 0.10.0; before, the screen took every vertical drag). Edge-to-edge apps no longer shrink for the keyboard, so with `avoidKeyboard` it ends where the keyboard starts, measured on screen: unlike React Native’s KeyboardAvoidingView it needs no offset for a navigation header above. Android then scrolls the focused field into view.',
   },
   related: ['sheet', 'separator', 'sticky', 'back-to-top'],
 })
