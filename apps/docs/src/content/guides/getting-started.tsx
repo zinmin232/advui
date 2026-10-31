@@ -289,6 +289,8 @@ export function ProfileCard() {
 export const cliToc: TocItem[] = [
   { id: 'init', title: 'init' },
   { id: 'add', title: 'add' },
+  { id: 'diff', title: 'diff' },
+  { id: 'update', title: 'update' },
   { id: 'list', title: 'list' },
   { id: 'registry', title: 'How the registry works' },
 ]
@@ -320,16 +322,54 @@ export async function Cli() {
       <P>
         Files keep their relative layout (<C>ui/components/button/Button.tsx</C>), so internal
         imports work without rewriting. Existing files are never overwritten unless you pass{' '}
-        <C>--overwrite</C>.
+        <C>--overwrite</C>. <C>advui.json</C> records the version of each component you add and a
+        hash of each file, so <C>diff</C> and <C>update</C> can tell your changes from upstream’s.
       </P>
+      <H2 id="diff">diff</H2>
+      <Code
+        lang="bash"
+        code={`npx ${siteConfig.cliName} diff\nnpx ${siteConfig.cliName} diff button`}
+      />
+      <P>
+        Compares your copies with the registry and says, for each file, whether it is unchanged,
+        changed locally, changed upstream or changed in both. Then it prints a unified diff of
+        upstream against your copy. Without names, it covers every component in <C>advui.json</C>.
+      </P>
+      <H2 id="update">update</H2>
+      <Code
+        lang="bash"
+        code={`npx ${siteConfig.cliName} update\nnpx ${siteConfig.cliName} update dialog --overwrite`}
+      />
+      <UL>
+        <LI>Files only upstream changed are replaced; files only you changed are kept.</LI>
+        <LI>
+          Files both sides changed get a three-way merge against the version you added, which the
+          registry keeps.
+        </LI>
+        <LI>
+          Components that an updated one now needs are added, and new npm dependencies installed.
+        </LI>
+      </UL>
+      <P>
+        When your changes and upstream’s touch the same lines, <C>update</C> leaves that component
+        as it is, lists the files and exits with code 1. Merge them by hand, or pass{' '}
+        <C>--overwrite</C> to replace them with upstream’s.
+      </P>
+      <Callout title="Added with an older CLI?">
+        Components added by {siteConfig.cliName} 0.14 or earlier are not recorded in{' '}
+        <C>advui.json</C>. Name them (<C>npx {siteConfig.cliName} diff button</C>) to compare them;{' '}
+        <C>update</C> records them once they match upstream.
+      </Callout>
       <H2 id="list">list</H2>
       <Code lang="bash" code={`npx ${siteConfig.cliName} list`} />
       <H2 id="registry">How the registry works</H2>
       <P>
         Every component has a metadata file. <C>pnpm registry:build</C> reads it, embeds the source
-        files, and derives npm and component dependencies from import statements. The JSON is
-        published at <A href="/r/index.json">/r/index.json</A> and{' '}
-        <A href="/r/button.json">/r/button.json</A>.
+        files with a sha256 hash of each, and derives npm and component dependencies from import
+        statements. The JSON is published at <A href="/r/index.json">/r/index.json</A> and{' '}
+        <A href="/r/button.json">/r/button.json</A>. Each release also stays at{' '}
+        <C>/r/&lt;version&gt;/button.json</C>, so <C>update</C> can merge against the version you
+        added.
       </P>
       <Code
         lang="json"
@@ -337,9 +377,10 @@ export async function Cli() {
         code={`{
   "name": "button",
   "type": "registry:component",
+  "version": "${siteConfig.version}",
   "dependencies": ["@advui/icons"],
   "registryDependencies": ["spinner"],
-  "files": [{ "path": "components/button/Button.tsx", "content": "…" }]
+  "files": [{ "path": "components/button/Button.tsx", "sha256": "…", "content": "…" }]
 }`}
       />
     </>

@@ -17,11 +17,13 @@
     {
       "path": "components/skeleton/Skeleton.tsx",
       "type": "registry:ui",
+      "sha256": "08996b4d79c849d169dee4f9b02f4050b0172273112a5efd8930f92dd33b9621",
       "content": "import { type GetProps, View, styled } from 'tamagui/unstyled'\n\n/**\n * Placeholder shown while content loads. Hidden from assistive technology —\n * announce loading on the container instead (e.g. `aria-busy`).\n */\nexport const Skeleton = styled(View, {\n  displayName: 'Skeleton',\n  backgroundColor: 'muted',\n  borderRadius: 'md',\n  'aria-hidden': true,\n  className: 'aui-skeleton',\n  variants: {\n    circle: {\n      true: {\n        borderRadius: 'full',\n      },\n    },\n  } as const,\n})\n\nexport type SkeletonProps = GetProps<typeof Skeleton>\n"
     },
     {
       "path": "components/skeleton/index.ts",
       "type": "registry:ui",
+      "sha256": "ff327d0576f459ca587481c3f03c366dd4e2f44a2e033e924ecdce208df06fba",
       "content": "export { Skeleton, type SkeletonProps } from './Skeleton'\n"
     }
   ],

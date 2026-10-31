@@ -1,0 +1,55 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "date-time-picker",
+  "title": "Date Time Picker",
+  "type": "registry:component",
+  "description": "A date field and time selects side by side that make one Date, for meetings, deliveries and reminders.",
+  "category": "forms",
+  "status": "beta",
+  "since": "0.14.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/date-time-picker/DateTimePicker.tsx",
+      "type": "registry:ui",
+      "sha256": "034428d1e1690dc192ea285a9d9b8f8f40f9e739789cdcd7adb59fae38f71d25",
+      "content": "import { forwardRef, useContext, useId, useState } from 'react'\nimport { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui/unstyled'\nimport { FieldContext, useFieldControl } from '../../hooks/useFieldControl'\nimport { startOfDay } from '../calendar/dates'\nimport { DatePicker, type DatePickerProps } from '../date-picker/DatePicker'\nimport { TimePicker, type TimePickerProps } from '../time-picker/TimePicker'\n\nconst DateTimePickerFrame = styled(View, {\n  displayName: 'DateTimePicker',\n  flexDirection: 'row',\n  flexWrap: 'wrap',\n  alignItems: 'center',\n  gap: '2',\n})\n\ntype Parts = { date: Date | null; time: string | null }\n\nconst pad = (n: number) => String(n).padStart(2, '0')\n\nfunction toParts(value: Date | null | undefined): Parts {\n  if (!value) return { date: null, time: null }\n  return {\n    date: startOfDay(value),\n    time: `${pad(value.getHours())}:${pad(value.getMinutes())}`,\n  }\n}\n\nfunction toValue({ date, time }: Parts) {\n  if (!date || !time) return null\n  const [hours, minutes] = time.split(':').map(Number)\n  return new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes)\n}\n\nconst sameInstant = (a: Date | null | undefined, b: Date | null | undefined) =>\n  (a?.getTime() ?? null) === (b?.getTime() ?? null)\n\ntype DateOptions = Pick<\n  DatePickerProps,\n  | 'min'\n  | 'max'\n  | 'isDateDisabled'\n  | 'weekStartsOn'\n  | 'locale'\n  | 'today'\n  | 'placeholder'\n  | 'formatOptions'\n  | 'title'\n>\n\ntype TimeOptions = Pick<\n  TimePickerProps,\n  'hourCycle' | 'minuteStep' | 'hourLabel' | 'minuteLabel' | 'periodLabel'\n>\n\nexport interface DateTimePickerProps\n  extends\n    Omit<GetProps<typeof DateTimePickerFrame>, 'children' | 'defaultValue' | 'disabled'>,\n    DateOptions,\n    TimeOptions {\n  /** The picked day and time, or null until both are picked. */\n  value?: Date | null\n  defaultValue?: Date | null\n  onValueChange?: (value: Date | null) => void\n  size?: 'sm' | 'md' | 'lg'\n  disabled?: boolean\n  invalid?: boolean\n  /** Put on the date field, so a Field's label targets it. */\n  id?: string\n  /** Accessible name of the date field. Default \"Date\". */\n  dateLabel?: string\n  /** Accessible name of the time selects' group. Default \"Time\". */\n  timeLabel?: string\n  'aria-describedby'?: string\n  'aria-required'?: boolean | 'true' | 'false'\n}\n\n/**\n * A Date Picker and a Time Picker side by side that make one `Date`. Each\n * part opens its own panel, so no overlay opens inside another.\n */\nexport const DateTimePicker = forwardRef<TamaguiElement, DateTimePickerProps>(\n  function DateTimePicker(pickerProps, ref) {\n    const field = useContext(FieldContext)\n    const {\n      value,\n      defaultValue = null,\n      onValueChange,\n      size = 'md',\n      disabled = false,\n      invalid = false,\n      id,\n      dateLabel = 'Date',\n      timeLabel = 'Time',\n      min,\n      max,\n      isDateDisabled,\n      weekStartsOn,\n      locale,\n      today,\n      placeholder,\n      formatOptions,\n      title,\n      hourCycle,\n      minuteStep,\n      hourLabel,\n      minuteLabel,\n      periodLabel,\n      'aria-label': label,\n      'aria-labelledby': labelledBy,\n      'aria-describedby': describedBy,\n      // aria-required is not allowed on a group or a button. The Field's\n      // label still shows the marker; say what is required in its help text.\n      'aria-required': _ariaRequired,\n      accessibilityHint,\n      ...props\n    } = useFieldControl(pickerProps)\n    const ownId = useId()\n    const dateId = id ?? ownId\n    // Parts are kept apart from the value: a day alone is not a time yet.\n    const [parts, setParts] = useState(() => toParts(value ?? defaultValue))\n    // When the controlled value changes from outside, take its parts (during\n    // render, as Time Picker does).\n    const [seenValue, setSeenValue] = useState(value)\n    if (value !== seenValue) {\n      setSeenValue(value)\n      if (value !== undefined && !sameInstant(value, toValue(parts))) {\n        setParts(toParts(value))\n      }\n    }\n\n    const update = (patch: Partial<Parts>) => {\n      const next = { ...parts, ...patch }\n      setParts(next)\n      const nextValue = toValue(next)\n      if (!sameInstant(nextValue, toValue(parts))) onValueChange?.(nextValue)\n    }\n\n    const shared = { size, disabled, invalid }\n    // Native reads no group names (only focusable views), so each part\n    // carries the field's name, as in \"Starts, Date\" and \"Starts, Hour\".\n    const nativeName = (part: string) => (label ? `${label}, ${part}` : part)\n\n    return (\n      <DateTimePickerFrame\n        ref={ref}\n        {...(isWeb && {\n          role: 'group',\n          'aria-label': label,\n          // A <label for> cannot name a group, so a Field's label is linked by id.\n          'aria-labelledby': labelledBy ?? (label === undefined ? field?.labelId : undefined),\n        })}\n        {...props}\n      >\n        {/* The field's id and texts are passed to the parts below already. */}\n        <FieldContext.Provider value={null}>\n          <DatePicker\n            {...shared}\n            id={dateId}\n            {...(isWeb\n              ? {\n                  'aria-label': dateLabel,\n                  // Points at itself, so its own name stays when a Field's\n                  // Label puts its id in front: \"Starts Date\".\n                  'aria-labelledby': dateId,\n                  'aria-describedby': describedBy,\n                }\n              : { 'aria-label': nativeName(dateLabel), accessibilityHint })}\n            flexGrow={1}\n            minWidth=\"40\"\n            value={parts.date}\n            onValueChange={(date) => update({ date })}\n            {...{ min, max, isDateDisabled, locale, today, placeholder, formatOptions, title }}\n            {...(weekStartsOn !== undefined && { weekStartsOn })}\n          />\n          <TimePicker\n            {...shared}\n            aria-label={isWeb ? timeLabel : label}\n            aria-describedby={describedBy}\n            accessibilityHint={accessibilityHint}\n            value={parts.time}\n            onValueChange={(time) => update({ time })}\n            {...{ hourCycle, minuteStep, hourLabel, minuteLabel, periodLabel }}\n          />\n        </FieldContext.Provider>\n      </DateTimePickerFrame>\n    )\n  },\n)\n"
+    },
+    {
+      "path": "components/date-time-picker/index.ts",
+      "type": "registry:ui",
+      "sha256": "1c688ecfa8d8b3f64edbcedb03bb8809f5b1dd84a5cedfee45f819b622067869",
+      "content": "export { DateTimePicker, type DateTimePickerProps } from './DateTimePicker'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { DateTimePicker, Field } from '@advui/core'\nimport { useState } from 'react'\n\nexport default function DateTimePickerBasic() {\n  const [start, setStart] = useState<Date | null>(new Date(2026, 9, 14, 9, 30))\n  return (\n    <Field label=\"Starts\" description=\"In your time zone.\" width=\"100%\" maxWidth={400}>\n      <DateTimePicker value={start} onValueChange={setStart} />\n    </Field>\n  )\n}\n"
+    },
+    {
+      "name": "twelve-hour",
+      "title": "12-hour, weekdays only",
+      "code": "import { DateTimePicker, Field, Text, VStack } from '@advui/core'\nimport { useState } from 'react'\n\nconst weekend = (date: Date) => date.getDay() === 0 || date.getDay() === 6\n\nexport default function DateTimePickerTwelveHour() {\n  const [pickup, setPickup] = useState<Date | null>(null)\n  return (\n    <VStack gap=\"2\" width=\"100%\" maxWidth={400}>\n      <Field label=\"Pickup\" description=\"Weekdays only.\">\n        <DateTimePicker\n          value={pickup}\n          onValueChange={setPickup}\n          hourCycle={12}\n          minuteStep={15}\n          isDateDisabled={weekend}\n          formatOptions={{ weekday: 'short', month: 'short', day: 'numeric' }}\n          size=\"sm\"\n        />\n      </Field>\n      <Text size=\"sm\" tone=\"muted\">\n        Value: {pickup ? pickup.toLocaleString() : 'none'}\n      </Text>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/date-time-picker",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "calendar",
+    "date-picker",
+    "hooks",
+    "time-picker"
+  ],
+  "version": "0.14.0"
+}

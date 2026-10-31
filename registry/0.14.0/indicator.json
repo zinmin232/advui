@@ -1,0 +1,52 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "indicator",
+  "title": "Indicator",
+  "type": "registry:component",
+  "description": "A dot or count pinned to the corner of an avatar, icon or button, such as unread messages or someone’s status.",
+  "category": "foundations",
+  "status": "beta",
+  "since": "0.14.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/indicator/Indicator.tsx",
+      "type": "registry:ui",
+      "sha256": "bdd9ea9e96c7225e158e3a9c17a345e21f33457d9c0cee1288d00e05e204c4b3",
+      "content": "import { type ReactNode, forwardRef } from 'react'\nimport { type GetProps, type TamaguiElement, Text, View, isWeb, styled } from 'tamagui/unstyled'\nimport { VisuallyHidden } from '../visually-hidden/VisuallyHidden'\n\nexport type IndicatorTone = 'primary' | 'success' | 'warning' | 'error'\nexport type IndicatorPlacement = 'top-end' | 'top-start' | 'bottom-end' | 'bottom-start'\n\n// Spans on web, so it fits inside buttons and links.\nconst IndicatorFrame = styled(View, {\n  displayName: 'Indicator',\n  render: 'span',\n})\n\n// Shrinks to the child, so the corners are the child's. The frame around it\n// takes the parent's alignment, as the child would without an indicator.\nconst IndicatorBox = styled(View, {\n  displayName: 'IndicatorBox',\n  render: 'span',\n  position: 'relative',\n  alignSelf: 'flex-start',\n})\n\n// A point at the corner. The mark inside is absolute with no insets, so web\n// and Yoga both center it on that point at its own size: plain layout, with\n// no transform, and no width for the count to wrap in.\nconst IndicatorAnchor = styled(View, {\n  displayName: 'IndicatorAnchor',\n  render: 'span',\n  position: 'absolute',\n  width: 0,\n  height: 0,\n  alignItems: 'center',\n  justifyContent: 'center',\n  pointerEvents: 'none',\n})\n\nconst IndicatorMark = styled(View, {\n  displayName: 'IndicatorMark',\n  render: 'span',\n  position: 'absolute',\n  alignItems: 'center',\n  justifyContent: 'center',\n  borderRadius: 'full',\n  // Cuts the mark out of an avatar or icon behind it.\n  borderWidth: 2,\n  borderColor: 'background',\n  variants: {\n    tone: {\n      primary: { backgroundColor: 'primary' },\n      success: { backgroundColor: 'success' },\n      warning: { backgroundColor: 'warning' },\n      error: { backgroundColor: 'error' },\n    },\n  } as const,\n  defaultVariants: { tone: 'primary' },\n})\n\nconst IndicatorCount = styled(Text, {\n  displayName: 'IndicatorCount',\n  fontFamily: 'body',\n  fontSize: '1',\n  lineHeight: '1',\n  fontWeight: '600',\n  ...(isWeb && { whiteSpace: 'nowrap' }),\n  variants: {\n    tone: {\n      primary: { color: 'primaryForeground' },\n      success: { color: 'successForeground' },\n      warning: { color: 'warningForeground' },\n      error: { color: 'errorForeground' },\n    },\n  } as const,\n  defaultVariants: { tone: 'primary' },\n})\n\n// Outer sizes, ring included: dots show 8 or 10px of color, counts 16 or 20px.\nconst dotSizes = { sm: '3', md: '3-5' } as const\nconst countSizes = { sm: '5', md: '6' } as const\nconst countPadding = { sm: '1', md: '1-5' } as const\n\n// A circle leaves its box's corners empty. Pin to where the circle crosses\n// the box's diagonal instead, (1 - 1/√2) / 2 of the way in from each side.\nconst circleInset = `${((1 - Math.SQRT1_2) / 2) * 100}%` as const\n\nexport interface IndicatorProps extends Omit<GetProps<typeof IndicatorFrame>, 'children'> {\n  /** What the indicator is pinned to: an avatar, an icon or a button. */\n  children: ReactNode\n  /** A number to show. Without it the indicator is a dot. */\n  count?: number\n  /** Counts above it show as `max+`. */\n  max?: number\n  /** Show a count of 0. By default a count of 0 hides the indicator. */\n  showZero?: boolean\n  /**\n   * What screen readers read, such as \"3 unread messages\" or \"Online\". The\n   * mark itself is hidden from them. Leave it out when the name of what it is\n   * pinned to already says it, as on a button named \"Notifications, 3 unread\".\n   */\n  label?: string\n  /** Shows the indicator. False hides it and keeps the children in place. */\n  visible?: boolean\n  tone?: IndicatorTone\n  size?: 'sm' | 'md'\n  /** The corner it is centered on. `end` is the right side, as on Fab. */\n  placement?: IndicatorPlacement\n  /** The shape of what it is pinned to. `circle` moves it in to the circle's edge. */\n  overlap?: 'circle' | 'square'\n}\n\n/**\n * A dot or count pinned to the corner of an avatar, icon or button: unread\n * messages, someone's status, something new.\n *\n * @example\n * <Indicator tone=\"success\" placement=\"bottom-end\" overlap=\"circle\" label=\"Online\">\n *   <Avatar src={user.photoUrl} alt={user.name} />\n * </Indicator>\n */\nexport const Indicator = forwardRef<TamaguiElement, IndicatorProps>(function Indicator(\n  {\n    children,\n    count,\n    max = 99,\n    showZero = false,\n    label,\n    visible = true,\n    tone = 'primary',\n    size = 'md',\n    placement = 'top-end',\n    overlap = 'square',\n    ...props\n  },\n  ref,\n) {\n  const shown = visible && (count === undefined || count > 0 || showZero)\n  const [vertical, horizontal] = placement.split('-') as ['top' | 'bottom', 'start' | 'end']\n  const inset = overlap === 'circle' ? circleInset : 0\n  return (\n    <IndicatorFrame ref={ref} {...props}>\n      <IndicatorBox>\n        {children}\n        {shown && label ? <VisuallyHidden>{label}</VisuallyHidden> : null}\n        {shown ? (\n          <IndicatorAnchor\n            aria-hidden\n            {...{ [vertical]: inset, [horizontal === 'end' ? 'right' : 'left']: inset }}\n          >\n            {count === undefined ? (\n              <IndicatorMark tone={tone} width={dotSizes[size]} height={dotSizes[size]} />\n            ) : (\n              <IndicatorMark\n                tone={tone}\n                height={countSizes[size]}\n                minWidth={countSizes[size]}\n                paddingHorizontal={countPadding[size]}\n              >\n                <IndicatorCount tone={tone}>{count > max ? `${max}+` : count}</IndicatorCount>\n              </IndicatorMark>\n            )}\n          </IndicatorAnchor>\n        ) : null}\n      </IndicatorBox>\n    </IndicatorFrame>\n  )\n})\n"
+    },
+    {
+      "path": "components/indicator/index.ts",
+      "type": "registry:ui",
+      "sha256": "33c6992f995ba220c586e18b030379cd398be9be0ea8b311aedf4e7d8ed1f713",
+      "content": "export {\n  Indicator,\n  type IndicatorPlacement,\n  type IndicatorProps,\n  type IndicatorTone,\n} from './Indicator'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Who is online",
+      "code": "import { Avatar, HStack, Indicator } from '@advui/core'\n\nconst team = [\n  { name: 'Maya Chen', online: true },\n  { name: 'Jordan Lee', online: true },\n  { name: 'Sam Park', online: false },\n  { name: 'Riley Quinn', online: true },\n]\n\nexport default function IndicatorBasic() {\n  return (\n    <HStack gap=\"3\">\n      {team.map((person) => (\n        // Read as “Maya Chen, image, Online”. The dot is there or not, so its\n        // color is not the only thing that tells the statuses apart.\n        <Indicator\n          key={person.name}\n          visible={person.online}\n          label=\"Online\"\n          tone=\"success\"\n          placement=\"bottom-end\"\n          overlap=\"circle\"\n        >\n          <Avatar alt={person.name} />\n        </Indicator>\n      ))}\n    </HStack>\n  )\n}\n"
+    },
+    {
+      "name": "counts",
+      "title": "Counts on icon buttons",
+      "code": "import { HStack, IconButton, Indicator, toast } from '@advui/core'\nimport { BellIcon, MailIcon } from '@advui/icons'\nimport { useState } from 'react'\n\nexport default function IndicatorCounts() {\n  const [notifications, setNotifications] = useState(3)\n  return (\n    <HStack gap=\"2\">\n      {/* The count goes in the button's name, which replaces anything inside it. */}\n      <IconButton\n        aria-label={notifications ? `Notifications, ${notifications} unread` : 'Notifications'}\n        icon={\n          <Indicator count={notifications} size=\"sm\">\n            <BellIcon />\n          </Indicator>\n        }\n        onPress={() => setNotifications(0)}\n      />\n      <IconButton\n        aria-label=\"Messages, 12 unread\"\n        icon={\n          <Indicator count={12} max={9} size=\"sm\" tone=\"error\">\n            <MailIcon />\n          </Indicator>\n        }\n        onPress={() => toast('Opening messages')}\n      />\n    </HStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/indicator",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "visually-hidden"
+  ],
+  "version": "0.14.0"
+}

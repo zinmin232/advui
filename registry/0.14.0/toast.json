@@ -1,0 +1,59 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "toast",
+  "title": "Toast",
+  "type": "registry:component",
+  "description": "Brief, non-blocking notifications triggered imperatively with `toast()`.",
+  "category": "feedback",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/toast/Toaster.tsx",
+      "type": "registry:ui",
+      "sha256": "da1785872e6bb72149e2dd0a2bfe292d59825640bff8369ffe3c24ab85fc47ac",
+      "content": "import {\n  AlertCircleIcon,\n  AlertTriangleIcon,\n  CheckCircleIcon,\n  IconDefaults,\n  InfoIcon,\n  XIcon,\n} from '@advui/icons'\nimport { shadows, zIndex } from '@advui/theme'\nimport {\n  Toast,\n  type ToastT,\n  type ToastRootProps as TamaguiToasterProps,\n  toast,\n} from '@tamagui/toast'\nimport type { ReactNode } from 'react'\nimport { View, isWeb, useWindowDimensions } from 'tamagui/unstyled'\nimport { useReducedMotion } from '../../hooks/useReducedMotion'\nimport { useRipple } from '../../hooks/useRipple'\nimport { Spinner } from '../spinner'\nimport { Text } from '../typography/Text'\nimport { flatValue } from '../../utils/responsive'\n\ntype ToastType = NonNullable<ToastT['type']>\n\nconst typeIcon: Partial<Record<ToastType, ReactNode>> = {\n  success: <CheckCircleIcon />,\n  error: <AlertCircleIcon />,\n  warning: <AlertTriangleIcon />,\n  info: <InfoIcon />,\n  loading: <Spinner size=\"sm\" />,\n}\n\nconst typeColor: Record<ToastType, string> = {\n  default: 'foreground',\n  success: 'success',\n  error: 'error',\n  warning: 'warningSoftForeground',\n  info: 'info',\n  loading: 'mutedForeground',\n}\n\nexport type ToasterProps = Pick<\n  TamaguiToasterProps,\n  'position' | 'duration' | 'visibleToasts' | 'expand' | 'closeButton' | 'swipeDirection'\n>\n\nfunction ToastContent({ item, onClose }: { item: ToastT; onClose: () => void }) {\n  const type = item.type ?? 'default'\n  const title = typeof item.title === 'function' ? item.title() : item.title\n  const description = typeof item.description === 'function' ? item.description() : item.description\n  const icon = item.icon ?? typeIcon[type]\n  const actionRipple = useRipple({\n    color: 'primaryForeground',\n    radius: 'md',\n    disabled: !item.action,\n  })\n  const closeRipple = useRipple({\n    color: 'mutedForeground',\n    radius: 'sm',\n    disabled: item.dismissible === false,\n  })\n\n  return (\n    <View flexDirection=\"row\" alignItems=\"flex-start\" gap=\"3\">\n      {icon ? (\n        <View paddingTop=\"0-5\">\n          <IconDefaults size={18} color={typeColor[type]}>\n            {icon}\n          </IconDefaults>\n        </View>\n      ) : null}\n      <View flex={1} gap=\"1\">\n        {title ? (\n          <Text size=\"sm\" weight=\"semibold\">\n            {title}\n          </Text>\n        ) : null}\n        {description ? (\n          <Text size=\"sm\" tone=\"muted\">\n            {description}\n          </Text>\n        ) : null}\n        {item.action ? (\n          <View flexDirection=\"row\" marginTop=\"2\">\n            <Toast.Action\n              backgroundColor={`primary hover:primaryHover press:${actionRipple.active ? 'primary' : 'primaryPress'}`}\n              borderRadius=\"md\"\n              paddingHorizontal=\"3\"\n              height=\"8\"\n              justifyContent=\"center\"\n              cursor=\"pointer\"\n              {...actionRipple.props}\n              onPress={(event) => {\n                item.action?.onClick?.(event as never)\n                onClose()\n              }}\n            >\n              {actionRipple.element}\n              <Text size=\"sm\" color=\"primaryForeground\" weight=\"medium\">\n                {item.action.label}\n              </Text>\n            </Toast.Action>\n          </View>\n        ) : null}\n      </View>\n      {item.dismissible === false ? null : (\n        // A plain button rather than Toast.Close, which does not pass press\n        // handlers through (the Android ripple needs them).\n        <View\n          render=\"button\"\n          role=\"button\"\n          aria-label=\"Dismiss notification\"\n          width=\"6\"\n          height=\"6\"\n          alignItems=\"center\"\n          justifyContent=\"center\"\n          borderRadius=\"sm\"\n          cursor=\"pointer\"\n          backgroundColor={flatValue(\n            isWeb && 'transparent',\n            'hover:accent',\n            !closeRipple.active && 'press:accentHover',\n          )}\n          outlineColor=\"focus-visible:ring\"\n          outlineStyle=\"focus-visible:solid\"\n          outlineWidth=\"focus-visible:2px\"\n          {...(isWeb\n            ? { type: 'button', padding: 0, borderWidth: 0 }\n            : { accessible: true, hitSlop: 10 })}\n          {...closeRipple.props}\n          onPress={onClose}\n        >\n          {closeRipple.element}\n          <XIcon size={14} color=\"mutedForeground\" />\n        </View>\n      )}\n    </View>\n  )\n}\n\n/**\n * Renders toasts created with `toast()`. `UniversalProvider` mounts one for\n * you; render your own only to customise placement.\n */\nexport function Toaster({ position = 'bottom-right', duration = 4000, ...props }: ToasterProps) {\n  const reducedMotion = useReducedMotion()\n  const { height } = useWindowDimensions()\n  return (\n    <Toast position={position} duration={duration} reducedMotion={reducedMotion} {...props}>\n      {/* Tamagui defaults the portal to Number.MAX_SAFE_INTEGER, which overflows\n          Android's 32-bit zIndex and draws the toasts beneath the screen. */}\n      <Toast.Viewport\n        label=\"Notifications\"\n        portalZIndex={zIndex.toast}\n        // Native: no keyboard shortcut to add to the label, and room for the\n        // toasts. They are placed absolutely inside the viewport, and Android\n        // reports a view outside its parent's bounds as off-screen, so TalkBack\n        // skipped them and their buttons. The viewport lets touches through.\n        {...(!isWeb && { hotkey: [], minHeight: height / 2 })}\n      >\n        <Toast.List\n          renderItem={({ toast: item, index, handleClose }) => (\n            <Toast.Item\n              toast={item}\n              index={index}\n              backgroundColor=\"popover\"\n              borderColor=\"border\"\n              borderWidth={1}\n              borderRadius=\"lg\"\n              padding=\"4\"\n              width=\"100%\"\n              maxWidth=\"96\"\n              {...shadows.md}\n            >\n              <ToastContent item={item} onClose={handleClose} />\n            </Toast.Item>\n          )}\n        />\n      </Toast.Viewport>\n    </Toast>\n  )\n}\n\nexport { toast }\nexport type { ToastT }\n"
+    },
+    {
+      "path": "components/toast/index.ts",
+      "type": "registry:ui",
+      "sha256": "61f4549e7e86b4dad03aaac35852c9e5b6bb2f4200ea78468f28260f8b0033d4",
+      "content": "export { Toaster, toast, type ToasterProps, type ToastT } from './Toaster'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "types",
+      "title": "Types",
+      "code": "import { Button, HStack, toast } from '@advui/core'\n\nexport default function ToastTypes() {\n  return (\n    <HStack gap=\"2\" flexWrap=\"wrap\">\n      <Button variant=\"outline\" onPress={() => toast('Event created')}>\n        Default\n      </Button>\n      <Button\n        variant=\"outline\"\n        onPress={() => toast.success('Saved', { description: 'All changes are live.' })}\n      >\n        Success\n      </Button>\n      <Button variant=\"outline\" onPress={() => toast.error('Upload failed')}>\n        Error\n      </Button>\n      <Button variant=\"outline\" onPress={() => toast.warning('Low battery')}>\n        Warning\n      </Button>\n      <Button\n        variant=\"outline\"\n        onPress={() =>\n          toast.promise(new Promise((resolve) => setTimeout(resolve, 1500)), {\n            loading: 'Publishing…',\n            success: 'Published!',\n            error: 'Failed',\n          })\n        }\n      >\n        Promise\n      </Button>\n    </HStack>\n  )\n}\n"
+    },
+    {
+      "name": "action",
+      "title": "With action",
+      "code": "import { Button, toast } from '@advui/core'\n\nexport default function ToastAction() {\n  return (\n    <Button\n      variant=\"outline\"\n      onPress={() =>\n        toast('Message archived', {\n          action: { label: 'Undo', onClick: () => toast.success('Restored') },\n        })\n      }\n    >\n      Archive message\n    </Button>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/toast",
+  "dependencies": [
+    "@advui/icons",
+    "@advui/theme",
+    "@tamagui/toast"
+  ],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "hooks",
+    "spinner",
+    "typography",
+    "utils"
+  ],
+  "version": "0.14.0"
+}

@@ -3,8 +3,15 @@
 // and served by the docs site at /r/<name>.json.
 //
 //   registry/index.json          – list of items
-//   registry/<name>.json         – files (with content), dependencies, examples
-//   apps/docs/public/r/*.json    – same files, published with the docs
+//   registry/<name>.json         – files (with content and sha256), dependencies, examples
+//   registry/<version>/*.json    – the same files as released under <version>
+//   apps/docs/public/r/**        – all of the above, published with the docs
+//
+// A version folder is written by the first build at that version (the release
+// commit) and left alone afterwards, so it keeps what was released while the
+// latest files move on with main. `advui diff` and `advui update` read it as
+// the base of a three-way merge. `--snapshot` rewrites the current version's
+// folder, for a release that changes after its first build.
 //
 // Dependencies are derived from import statements, so metadata never drifts
 // from the source: bare imports become npm dependencies, relative imports into
@@ -15,6 +22,7 @@
 // `src`, so they share one layout, and imports of a component package
 // (`import { Input } from '@advui/core'`) are rewritten to the file that
 // declares the name (`'../input/Input'`), so copied source stays self-contained.
+import { createHash } from 'node:crypto'
 import {
   cpSync,
   existsSync,
@@ -161,26 +169,32 @@ for (const item of items) {
 }
 
 // --- write -----------------------------------------------------------------------------------
-rmSync(registryDir, { recursive: true, force: true })
-mkdirSync(registryDir, { recursive: true })
+// Packages are versioned together, so one folder holds every item of a release.
+const version = uiPackage.version
+for (const { pkg } of items)
+  if (pkg.version !== version)
+    throw new Error(
+      `${pkg.name} is at ${pkg.version} and ${corePackage.name} at ${version}: registry/<version>/ needs one version`,
+    )
 
-for (const { pkg: _pkg, ...item } of items) {
-  const output = {
+const outputs = new Map()
+for (const { pkg, ...item } of items) {
+  outputs.set(item.name, {
     $schema: 'https://zinmin232.github.io/advui/schema/registry-item.json',
     ...item,
-    version: uiPackage.version,
+    version: pkg.version,
     files: item.files.map((file) => ({
       path: file,
       type: file.includes('/hooks/') || file.startsWith('hooks/') ? 'registry:hook' : 'registry:ui',
+      sha256: createHash('sha256').update(content.get(file)).digest('hex'),
       content: content.get(file),
     })),
-  }
-  writeFileSync(join(registryDir, `${item.name}.json`), `${JSON.stringify(output, null, 2)}\n`)
+  })
 }
 
-const index = {
+outputs.set('index', {
   name: 'advui',
-  version: uiPackage.version,
+  version,
   items: items.map(
     ({
       name,
@@ -204,14 +218,38 @@ const index = {
       registryDependencies,
     }),
   ),
+})
+
+const writeRegistry = (dir) => {
+  mkdirSync(dir, { recursive: true })
+  for (const [name, output] of outputs)
+    writeFileSync(join(dir, `${name}.json`), `${JSON.stringify(output, null, 2)}\n`)
 }
-writeFileSync(join(registryDir, 'index.json'), `${JSON.stringify(index, null, 2)}\n`)
+
+// Only the latest files are rebuilt; the version folders keep earlier releases.
+mkdirSync(registryDir, { recursive: true })
+for (const entry of readdirSync(registryDir, { withFileTypes: true }))
+  if (entry.isFile()) rmSync(join(registryDir, entry.name))
+writeRegistry(registryDir)
+
+const snapshotDir = join(registryDir, version)
+const snapshot = !existsSync(snapshotDir)
+  ? 'written'
+  : process.argv.includes('--snapshot')
+    ? 'rewritten'
+    : 'kept'
+if (snapshot !== 'kept') {
+  rmSync(snapshotDir, { recursive: true, force: true })
+  writeRegistry(snapshotDir)
+}
 
 rmSync(publicDir, { recursive: true, force: true })
 mkdirSync(join(publicDir, '..'), { recursive: true })
 cpSync(registryDir, publicDir, { recursive: true })
 
-console.log(`Registry: ${items.length} items → registry/ and apps/docs/public/r/`)
+console.log(
+  `Registry: ${items.length} items → registry/ and apps/docs/public/r/ (${version} snapshot ${snapshot})`,
+)
 
 // --- helpers ---------------------------------------------------------------------------------
 function withNativeVariants(pkg, files) {

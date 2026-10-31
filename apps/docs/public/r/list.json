@@ -17,11 +17,13 @@
     {
       "path": "components/list/List.tsx",
       "type": "registry:ui",
+      "sha256": "822983423c3746b6a813f7ccbb986b34a287f1879beef84ff702530ea6674775",
       "content": "import { Children, forwardRef, isValidElement } from 'react'\nimport {\n  type GetProps,\n  type TamaguiElement,\n  View,\n  styled,\n  withStaticProperties,\n} from 'tamagui/unstyled'\nimport {\n  ListContext,\n  ListItem,\n  ListItemDescription,\n  ListItemPosition,\n  ListItemTitle,\n} from '../list-item/ListItem'\n\nconst ListFrame = styled(View, {\n  displayName: 'List',\n  context: ListContext,\n  role: 'list',\n  flexDirection: 'column',\n\n  variants: {\n    variant: {\n      plain: {},\n      outline: {\n        backgroundColor: 'card',\n        borderWidth: 1,\n        borderColor: 'border',\n        borderRadius: 'lg',\n        overflow: 'hidden',\n      },\n    },\n    size: {\n      sm: {},\n      md: {},\n      lg: {},\n    },\n  } as const,\n\n  defaultVariants: { variant: 'plain', size: 'md' },\n})\n\nexport type ListProps = GetProps<typeof ListFrame> & {\n  /** Draws a line between items. */\n  divided?: boolean\n}\n\nconst ListImpl = forwardRef<TamaguiElement, ListProps>(function List(\n  { variant = 'plain', size = 'md', divided = false, children, ...props },\n  ref,\n) {\n  return (\n    <ListFrame ref={ref} variant={variant} size={size} {...props}>\n      {Children.toArray(children).map((child, index) => (\n        <ListItemPosition.Provider\n          key={isValidElement(child) && child.key != null ? child.key : index}\n          value={{ inList: true, index, divided }}\n        >\n          {child}\n        </ListItemPosition.Provider>\n      ))}\n    </ListFrame>\n  )\n})\n\n/**\n * A vertical list of rows. `List.Item` is `ListItem`: an optional leading\n * visual, a title and description, trailing meta and actions; with\n * `onPress` the row is a button.\n */\nexport const List = withStaticProperties(ListImpl, {\n  Item: ListItem,\n  ItemTitle: ListItemTitle,\n  ItemDescription: ListItemDescription,\n})\n\nexport { ListFrame }\n"
     },
     {
       "path": "components/list/index.ts",
       "type": "registry:ui",
+      "sha256": "63b45cf35aec998800b4a0cc4268303250556d0c886a814c77eba382e6251510",
       "content": "export { List, ListFrame, type ListProps } from './List'\n"
     }
   ],

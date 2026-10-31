@@ -1,0 +1,53 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "description-list",
+  "title": "Description List",
+  "type": "registry:component",
+  "description": "Terms and their details, such as the fields of an order, a profile or a file: a `dl` on web.",
+  "category": "data-display",
+  "status": "beta",
+  "since": "0.14.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/description-list/DescriptionList.tsx",
+      "type": "registry:ui",
+      "sha256": "c5707fbd14930c5bb3aabb1712ed3abcf6a037a3070dc0345e8cc176f2ae2bc6",
+      "content": "import {\n  Children,\n  type ReactNode,\n  createContext,\n  forwardRef,\n  isValidElement,\n  useContext,\n} from 'react'\nimport {\n  type GetProps,\n  type SizeTokens,\n  type TamaguiElement,\n  View,\n  isWeb,\n  styled,\n  withStaticProperties,\n} from 'tamagui/unstyled'\nimport { isTextContent } from '../../utils/isTextContent'\nimport { Text } from '../typography/Text'\n\ntype Orientation = 'horizontal' | 'vertical'\n\ntype ListState = {\n  orientation: Orientation\n  divided: boolean\n  termWidth: SizeTokens | number\n}\n\nconst ListContext = createContext<ListState>({\n  orientation: 'horizontal',\n  divided: false,\n  termWidth: '40',\n})\n// The item's place in the list, for the line above every item but the first.\nconst IndexContext = createContext(0)\n\nconst DescriptionListFrame = styled(View, {\n  displayName: 'DescriptionList',\n  render: 'dl',\n  flexDirection: 'column',\n  // A dl has margins in browsers.\n  margin: 0,\n})\n\nexport interface DescriptionListProps extends GetProps<typeof DescriptionListFrame> {\n  /** `horizontal` puts each term beside its details; `vertical` above them. */\n  orientation?: Orientation\n  /** Draws a line between items. */\n  divided?: boolean\n  /** Width of the term column when horizontal: a size token or pixels. */\n  termWidth?: SizeTokens | number\n}\n\nconst DescriptionListRoot = forwardRef<TamaguiElement, DescriptionListProps>(\n  function DescriptionList(\n    { orientation = 'horizontal', divided = false, termWidth = '40', children, ...props },\n    ref,\n  ) {\n    return (\n      <ListContext.Provider value={{ orientation, divided, termWidth }}>\n        <DescriptionListFrame ref={ref} gap={divided ? 0 : '3'} {...props}>\n          {Children.toArray(children).map((child, index) => (\n            <IndexContext.Provider\n              key={isValidElement(child) && child.key != null ? child.key : index}\n              value={index}\n            >\n              {child}\n            </IndexContext.Provider>\n          ))}\n        </DescriptionListFrame>\n      </ListContext.Provider>\n    )\n  },\n)\n\nconst DescriptionTerm = styled(Text, {\n  displayName: 'DescriptionListTerm',\n  render: 'dt',\n  size: 'sm',\n  weight: 'medium',\n  tone: 'muted',\n})\n\nconst DescriptionDetails = styled(View, {\n  displayName: 'DescriptionListDetails',\n  render: 'dd',\n  // A dd is indented in browsers.\n  margin: 0,\n  minWidth: 0,\n  // A Badge keeps its own width.\n  alignItems: 'flex-start',\n})\n\nexport interface DescriptionListItemProps extends Omit<GetProps<typeof View>, 'children'> {\n  /** What is described, such as \"Status\". */\n  term: ReactNode\n  /** The details: text, or elements such as a Badge or a Link. */\n  children?: ReactNode\n}\n\nconst DescriptionListItem = forwardRef<TamaguiElement, DescriptionListItemProps>(\n  function DescriptionListItem({ term, children, ...props }, ref) {\n    const { orientation, divided, termWidth } = useContext(ListContext)\n    const index = useContext(IndexContext)\n    const horizontal = orientation === 'horizontal'\n    const text = isTextContent(children)\n    return (\n      <View\n        ref={ref}\n        flexDirection={horizontal ? 'row' : 'column'}\n        gap={horizontal ? '4' : '1'}\n        {...(divided && {\n          paddingVertical: '3',\n          ...(index > 0 && { borderTopWidth: 1, borderColor: 'border' }),\n        })}\n        // iOS and Android read a term and its text as one stop (\"Status,\n        // Active\"). Details with controls stay apart, or they could not be\n        // reached.\n        {...(!isWeb && text && { accessible: true })}\n        {...props}\n      >\n        <DescriptionTerm {...(horizontal && { width: termWidth, flexShrink: 0 })}>\n          {term}\n        </DescriptionTerm>\n        <DescriptionDetails {...(horizontal && { flex: 1 })}>\n          {text ? <Text size=\"sm\">{children}</Text> : children}\n        </DescriptionDetails>\n      </View>\n    )\n  },\n)\n\n/**\n * Terms and their details, such as the fields of an order or a profile: a\n * `dl` on web. Each `DescriptionList.Item` takes a `term` and its details as\n * children.\n */\nexport const DescriptionList = withStaticProperties(DescriptionListRoot, {\n  Item: DescriptionListItem,\n})\n"
+    },
+    {
+      "path": "components/description-list/index.ts",
+      "type": "registry:ui",
+      "sha256": "1fffbc5b7a43c9738fde912a0339b51f503bc9b912aa0e6842716e5a2ef285ba",
+      "content": "export {\n  DescriptionList,\n  type DescriptionListItemProps,\n  type DescriptionListProps,\n} from './DescriptionList'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { Badge, DescriptionList } from '@advui/core'\n\nexport default function DescriptionListBasic() {\n  return (\n    <DescriptionList width=\"100%\" maxWidth=\"112\">\n      <DescriptionList.Item term=\"Order\">#4021</DescriptionList.Item>\n      <DescriptionList.Item term=\"Placed\">October 14, 2026</DescriptionList.Item>\n      <DescriptionList.Item term=\"Status\">\n        <Badge variant=\"success\">Paid</Badge>\n      </DescriptionList.Item>\n      <DescriptionList.Item term=\"Ship to\">\n        Ada Lovelace, 12 Garden Lane, Bristol BS1 4DJ\n      </DescriptionList.Item>\n    </DescriptionList>\n  )\n}\n"
+    },
+    {
+      "name": "divided",
+      "title": "Vertical, with lines",
+      "code": "import { DescriptionList, Link } from '@advui/core'\n\nexport default function DescriptionListDivided() {\n  return (\n    <DescriptionList orientation=\"vertical\" divided width=\"100%\" maxWidth=\"96\">\n      <DescriptionList.Item term=\"Full name\">Ada Lovelace</DescriptionList.Item>\n      <DescriptionList.Item term=\"Email\">\n        <Link href=\"mailto:ada@example.com\" size=\"sm\">\n          ada@example.com\n        </Link>\n      </DescriptionList.Item>\n      <DescriptionList.Item term=\"Role\">Admin</DescriptionList.Item>\n      <DescriptionList.Item term=\"About\">\n        Writes the release notes and looks after the design system, and knows the build best.\n      </DescriptionList.Item>\n    </DescriptionList>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/description-list",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "typography",
+    "utils"
+  ],
+  "version": "0.14.0"
+}

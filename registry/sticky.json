@@ -17,11 +17,13 @@
     {
       "path": "components/sticky/Sticky.tsx",
       "type": "registry:ui",
+      "sha256": "756f3ec2ae3baa65ae97eaafd6813c2c582aad2f07ebbcfd2dce134f6de50133",
       "content": "import { type ReactNode, forwardRef } from 'react'\nimport {\n  type GetProps,\n  type SpaceTokens,\n  type TamaguiElement,\n  View,\n  type ZIndexTokens,\n  isWeb,\n} from 'tamagui/unstyled'\n\nexport type StickyEdge = 'top' | 'bottom'\n\n// `offset` is also a CSS style prop in Tamagui 3; here it is the distance from the edge.\nexport interface StickyProps extends Omit<GetProps<typeof View>, 'children' | 'zIndex' | 'offset'> {\n  /** The edge it sticks to while its container scrolls. `bottom` is web only. Default `top`. */\n  edge?: StickyEdge\n  /** Distance from that edge, such as the height of a header above it. Default `0`. */\n  offset?: SpaceTokens | number\n  /** Stacking level. Default `sticky` (above content, below dropdowns and dialogs). */\n  zIndex?: ZIndexTokens | number\n  children?: ReactNode\n}\n\n/**\n * Keeps its content in view while the page or a ScrollArea scrolls.\n *\n * Web: `position: sticky`, so it sticks inside its nearest scrolling ancestor\n * and stays in the flow until then.\n * iOS / Android: React Native has no sticky positioning. A top Sticky that is\n * a direct child of a ScrollArea's content element is pinned by the\n * ScrollArea (`stickyHeaderIndices`); anywhere else it is a plain View.\n */\nexport const Sticky = forwardRef<TamaguiElement, StickyProps>(function Sticky(\n  { edge = 'top', offset = 0, zIndex = 'sticky', ...props },\n  ref,\n) {\n  return (\n    <View\n      ref={ref}\n      zIndex={zIndex}\n      {...(isWeb ? { position: 'sticky' as never, [edge]: offset } : null)}\n      {...props}\n    />\n  )\n})\n"
     },
     {
       "path": "components/sticky/index.ts",
       "type": "registry:ui",
+      "sha256": "a9d878e3e0b6625f34a0d5470afeb456b220fd7f88ea44c2755fc52e835a5d7f",
       "content": "export { Sticky, type StickyEdge, type StickyProps } from './Sticky'\n"
     }
   ],

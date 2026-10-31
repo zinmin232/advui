@@ -1,0 +1,49 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "radio-group",
+  "title": "Radio Group",
+  "type": "registry:component",
+  "description": "A set of mutually exclusive options where exactly one can be selected.",
+  "category": "forms",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/radio-group/RadioGroup.tsx",
+      "type": "registry:ui",
+      "sha256": "ca9d489737620c73e027d3ba3f8ae046f03782efa1f47c67b572b857d8e050df",
+      "content": "import { createContext, forwardRef, useContext, useId, useMemo } from 'react'\nimport {\n  RadioGroup as TamaguiRadioGroup,\n  type RadioGroupItemProps as TamaguiItemProps,\n  type RadioGroupProps as TamaguiRadioGroupProps,\n  type TamaguiElement,\n  isWeb,\n  styled,\n  withStaticProperties,\n} from 'tamagui/unstyled'\nimport { useControllableState } from '../../hooks/useControllableState'\nimport { FieldContext, type FieldControlProps, useFieldControl } from '../../hooks/useFieldControl'\nimport { ariaState } from '../../utils/ariaState'\nimport { sentences } from '../../utils/plainText'\nimport {\n  type ChoiceText,\n  ChoiceRow,\n  choiceControlStyle,\n  choiceProps,\n  hasChoiceText,\n} from '../label/ChoiceRow'\n\ninterface GroupState {\n  value: string\n  disabled: boolean\n  /** Native: the group's name and help text, read as each item's hint. */\n  hint?: string\n}\n\nconst GroupContext = createContext<GroupState>({ value: '', disabled: false })\n\n// Tamagui 3's RadioGroup parts are styled HOCs: styling them keeps their\n// behavior. The gap is a prop default (see RadioGroupRoot).\nconst Frame = styled(TamaguiRadioGroup, {\n  displayName: 'RadioGroup',\n})\n\nconst Item = styled(TamaguiRadioGroup.Item, {\n  displayName: 'RadioGroupItem',\n  padding: 0,\n  alignItems: 'center',\n  justifyContent: 'center',\n  cursor: 'pointer',\n  borderRadius: 'full',\n  borderWidth: 1,\n  borderColor: 'input hover:borderStrong',\n  backgroundColor: 'background',\n  outlineColor: 'focus-visible:ring',\n  outlineStyle: 'focus-visible:solid',\n  outlineWidth: 'focus-visible:2px',\n  outlineOffset: 'focus-visible:2px',\n\n  variants: {\n    size: {\n      sm: {\n        width: '4',\n        height: '4',\n        minHeight: '4',\n        padding: 0,\n      },\n      md: {\n        width: '5',\n        height: '5',\n        minHeight: '5',\n        padding: 0,\n      },\n    },\n    disabled: {\n      true: { opacity: 0.5, cursor: 'not-allowed', pointerEvents: isWeb ? 'none' : 'auto' },\n    },\n  } as const,\n\n  defaultVariants: { size: 'md' },\n})\n\nconst Indicator = styled(TamaguiRadioGroup.Indicator, {\n  displayName: 'RadioGroupIndicator',\n  width: '50%',\n  height: '50%',\n  borderRadius: 'full',\n  backgroundColor: 'primary',\n})\n\nexport type RadioGroupProps = TamaguiRadioGroupProps\n\nexport interface RadioGroupItemProps extends Omit<TamaguiItemProps, 'size'>, ChoiceText {\n  size?: 'sm' | 'md'\n  'aria-describedby'?: string\n}\n\nconst RadioGroupItem = forwardRef<TamaguiElement, RadioGroupItemProps>(function RadioGroupItem(\n  { size = 'md', label, description, id: idProp, ...props },\n  ref,\n) {\n  const group = useContext(GroupContext)\n  const generatedId = useId()\n  const id = idProp ?? generatedId\n  const text = { label, description }\n  const withText = hasChoiceText(text)\n  const disabled = group.disabled || Boolean(props.disabled)\n  const item = (\n    <Item\n      ref={ref}\n      id={id}\n      size={size as never}\n      // Tamagui sets `disabled` on web only, so native gets it as a state here.\n      {...(isWeb ? null : { accessible: true, 'aria-disabled': ariaState(disabled) })}\n      {...(group.value === props.value ? { borderColor: 'primary' as const } : null)}\n      {...(withText && choiceControlStyle(size))}\n      {...props}\n      {...choiceProps(id, text, props, group.hint)}\n    >\n      <Indicator />\n    </Item>\n  )\n  if (!withText) return item\n  return (\n    <ChoiceRow id={id} {...text} disabled={disabled}>\n      {item}\n    </ChoiceRow>\n  )\n})\n\nconst RadioGroupRoot = forwardRef<TamaguiElement, RadioGroupProps>(\n  function RadioGroup(groupProps, ref) {\n    const field = useContext(FieldContext)\n    const {\n      value: valueProp,\n      defaultValue,\n      onValueChange,\n      invalid,\n      gap = '3',\n      ...props\n    } = useFieldControl<RadioGroupProps & FieldControlProps>(groupProps)\n    const [value, setValue] = useControllableState({\n      value: valueProp,\n      defaultValue: defaultValue ?? '',\n      onChange: onValueChange,\n    })\n    const disabled = Boolean(props.disabled)\n    const groupLabel = props['aria-label']\n    const groupHint = props.accessibilityHint\n    const state = useMemo<GroupState>(\n      () => ({\n        value,\n        disabled,\n        // Native has no group names: VoiceOver and TalkBack skip a view that is\n        // not an element, and a Field hides its label once it names the control.\n        hint: isWeb ? undefined : sentences(groupLabel, groupHint),\n      }),\n      [value, disabled, groupLabel, groupHint],\n    )\n    return (\n      <GroupContext.Provider value={state}>\n        <Frame\n          ref={ref}\n          value={value}\n          onValueChange={setValue}\n          gap={gap}\n          aria-invalid={invalid || undefined}\n          // A <label for> cannot name a group, so a Field's label is linked by id.\n          {...(isWeb &&\n            field?.labelId &&\n            props['aria-label'] === undefined && { 'aria-labelledby': field.labelId })}\n          {...props}\n        />\n      </GroupContext.Provider>\n    )\n  },\n)\n\n/**\n * A set of mutually exclusive options. Arrow keys move between items (roving\n * focus) on web. Each `RadioGroup.Item` needs a `value`, and a `label` or an\n * `aria-label` (or an `id` for your own Label).\n */\nexport const RadioGroup = withStaticProperties(RadioGroupRoot, {\n  Item: RadioGroupItem,\n})\n"
+    },
+    {
+      "path": "components/radio-group/index.ts",
+      "type": "registry:ui",
+      "sha256": "6a887e7143298ee2473c28a5e97aed08d7a980ca70bfde7dcf352c3f07383867",
+      "content": "export { RadioGroup, type RadioGroupItemProps, type RadioGroupProps } from './RadioGroup'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Plans",
+      "code": "import { RadioGroup } from '@advui/core'\nimport { useState } from 'react'\n\nconst plans = [\n  { value: 'free', label: 'Free', description: 'Up to 3 projects' },\n  { value: 'pro', label: 'Pro', description: 'Unlimited projects' },\n  { value: 'team', label: 'Team', description: 'Shared workspaces' },\n]\n\nexport default function RadioGroupBasic() {\n  const [plan, setPlan] = useState('pro')\n  return (\n    <RadioGroup value={plan} onValueChange={setPlan} aria-label=\"Plan\">\n      {plans.map((p) => (\n        <RadioGroup.Item key={p.value} {...p} />\n      ))}\n    </RadioGroup>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/radio-group",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "hooks",
+    "label",
+    "utils"
+  ],
+  "version": "0.14.0"
+}

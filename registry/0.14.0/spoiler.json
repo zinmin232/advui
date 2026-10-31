@@ -1,0 +1,55 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "spoiler",
+  "title": "Spoiler",
+  "type": "registry:component",
+  "description": "Shows the start of long content, such as a description or a review, with a “Show more” button for the rest. The button appears only when the content is taller than `maxHeight`.",
+  "category": "data-display",
+  "status": "beta",
+  "since": "0.14.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/spoiler/Spoiler.tsx",
+      "type": "registry:ui",
+      "sha256": "9a2ec4d2d31f62a051de3d0eb85cce8518ef7cfa763f431042f8e62c2e92d678",
+      "content": "import { type ReactNode, forwardRef, useEffect, useId, useRef, useState } from 'react'\nimport {\n  type GetProps,\n  type SizeTokens,\n  type TamaguiElement,\n  type Token,\n  View,\n  getTokenValue,\n  isWeb,\n  styled,\n} from 'tamagui/unstyled'\nimport { useControllableState } from '../../hooks/useControllableState'\nimport { isTextContent } from '../../utils/isTextContent'\nimport { Button } from '../button/Button'\nimport { Text } from '../typography/Text'\n\nconst SpoilerFrame = styled(View, {\n  displayName: 'Spoiler',\n  gap: '2',\n  alignItems: 'flex-start',\n})\n\nconst SpoilerContent = styled(View, {\n  displayName: 'SpoilerContent',\n  alignSelf: 'stretch',\n  overflow: 'hidden',\n})\n\nexport interface SpoilerProps extends Omit<\n  GetProps<typeof SpoilerFrame>,\n  'children' | 'maxHeight'\n> {\n  children: ReactNode\n  /** Height of the content while collapsed: a size token or pixels. */\n  maxHeight?: SizeTokens | number\n  expanded?: boolean\n  defaultExpanded?: boolean\n  onExpandedChange?: (expanded: boolean) => void\n  /** Label of the button while collapsed. */\n  showLabel?: string\n  /** Label of the button while expanded. */\n  hideLabel?: string\n}\n\ntype FocusEvent = { currentTarget: Element; target: Element }\n\n/**\n * Shows the start of long content, cut off at `maxHeight`, with a button that\n * shows the rest. The button appears only when the content is taller.\n */\nexport const Spoiler = forwardRef<TamaguiElement, SpoilerProps>(function Spoiler(\n  {\n    children,\n    maxHeight = '24',\n    expanded: expandedProp,\n    defaultExpanded = false,\n    onExpandedChange,\n    showLabel = 'Show more',\n    hideLabel = 'Show less',\n    ...props\n  },\n  ref,\n) {\n  const [expanded, setExpanded] = useControllableState({\n    value: expandedProp,\n    defaultValue: defaultExpanded,\n    onChange: onExpandedChange,\n  })\n  const contentId = useId()\n  const innerRef = useRef<TamaguiElement>(null)\n  // Unknown until measured, after the first render (and on the server).\n  const [height, setHeight] = useState<number | null>(null)\n  const limit =\n    typeof maxHeight === 'number'\n      ? maxHeight\n      : (getTokenValue(maxHeight as Token, 'size') as number)\n  const overflows = height !== null && height > limit\n\n  // Native measures with onLayout; web watches the element, which also sees\n  // content that grows later, such as an image that loads.\n  useEffect(() => {\n    const node = innerRef.current as HTMLElement | null\n    if (!isWeb || !node) return\n    const measure = () => setHeight(node.offsetHeight)\n    measure()\n    const observer = new ResizeObserver(measure)\n    observer.observe(node)\n    return () => observer.disconnect()\n  }, [])\n\n  return (\n    <SpoilerFrame ref={ref} {...props}>\n      <SpoilerContent\n        id={contentId}\n        // Cut off from the first render, so short content never jumps.\n        maxHeight={expanded ? undefined : limit}\n        {...(isWeb &&\n          !expanded &&\n          overflows && {\n            // A keyboard user who tabs to a link that is cut off gets the\n            // rest shown, rather than focus they cannot see.\n            onFocus: (event: FocusEvent) => {\n              const frame = event.currentTarget.getBoundingClientRect()\n              if (event.target.getBoundingClientRect().bottom > frame.bottom) setExpanded(true)\n            },\n          })}\n      >\n        <View\n          ref={innerRef}\n          {...(!isWeb && {\n            onLayout: (event: { nativeEvent: { layout: { height: number } } }) =>\n              setHeight(event.nativeEvent.layout.height),\n          })}\n        >\n          {isTextContent(children) ? <Text>{children}</Text> : children}\n        </View>\n      </SpoilerContent>\n      {overflows ? (\n        <Button\n          variant=\"link\"\n          size=\"sm\"\n          // In line with the content: the sm size pads the link variant.\n          paddingHorizontal={0}\n          aria-expanded={expanded}\n          aria-controls={contentId}\n          onPress={() => setExpanded(!expanded)}\n        >\n          {expanded ? hideLabel : showLabel}\n        </Button>\n      ) : null}\n    </SpoilerFrame>\n  )\n})\n"
+    },
+    {
+      "path": "components/spoiler/index.ts",
+      "type": "registry:ui",
+      "sha256": "276573d1bae01f98a9341addd39ec1d7b089d3bcffa25eaa7824e9de386b700f",
+      "content": "export { Spoiler, type SpoilerProps } from './Spoiler'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { Spoiler, Text, VStack } from '@advui/core'\n\nexport default function SpoilerBasic() {\n  return (\n    <Spoiler width=\"100%\" maxWidth=\"96\">\n      <VStack gap=\"3\">\n        <Text size=\"sm\">\n          The north trail climbs through pine forest for the first two kilometres, then opens onto a\n          ridge with views over both valleys. Most walkers stop at the stone shelter, where there is\n          water from April to October.\n        </Text>\n        <Text size=\"sm\">\n          Past the shelter the path narrows and crosses two scree slopes. Keep to the cairns: the\n          old path below them washed out in the spring and is closed. The summit is another forty\n          minutes from the second slope.\n        </Text>\n        <Text size=\"sm\">\n          Come down the same way, or take the forest road from the shelter, which is longer but\n          gentler on the knees and passes the lake.\n        </Text>\n      </VStack>\n    </Spoiler>\n  )\n}\n"
+    },
+    {
+      "name": "labels",
+      "title": "Own labels and height",
+      "code": "import { Spoiler, Text, VStack } from '@advui/core'\n\nconst changes = [\n  'Faster search in large folders',\n  'Dark theme for the settings page',\n  'Export to CSV from any table',\n  'Keyboard shortcuts for moving cards',\n  'Shared links that expire',\n  'Two-step sign-in with a security key',\n  'Fewer emails about mentions',\n  'A new icon for archived projects',\n]\n\nexport default function SpoilerLabels() {\n  return (\n    <VStack gap=\"2\" width=\"100%\" maxWidth=\"96\">\n      <Text size=\"sm\" weight=\"semibold\">\n        What's new in 4.2\n      </Text>\n      <Spoiler\n        maxHeight=\"24\"\n        showLabel={`Show all ${changes.length} changes`}\n        hideLabel=\"Show fewer\"\n      >\n        <VStack gap=\"1\">\n          {changes.map((change) => (\n            <Text key={change} size=\"sm\">\n              {change}\n            </Text>\n          ))}\n        </VStack>\n      </Spoiler>\n    </VStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/spoiler",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "button",
+    "hooks",
+    "typography",
+    "utils"
+  ],
+  "version": "0.14.0"
+}

@@ -17,11 +17,13 @@
     {
       "path": "components/aspect-ratio/AspectRatio.tsx",
       "type": "registry:ui",
+      "sha256": "c0959e11c0d5bcffc139d7ac1727cf80e24b4fb9155621d9884ec86e4a09d24c",
       "content": "import { forwardRef } from 'react'\nimport { type GetProps, type TamaguiElement, View, styled } from 'tamagui/unstyled'\n\nconst AspectRatioFrame = styled(View, {\n  displayName: 'AspectRatio',\n  position: 'relative',\n  width: '100%',\n  overflow: 'hidden',\n})\n\nexport interface AspectRatioProps extends Omit<GetProps<typeof AspectRatioFrame>, 'aspectRatio'> {\n  /** Width divided by height, e.g. `16 / 9`. Default: 1 (a square). */\n  ratio?: number\n}\n\n/**\n * Keeps its content at a fixed width-to-height ratio as the width changes,\n * for images, video and maps. Content should fill it (`width` and `height`\n * 100%, or absolute positioning).\n */\nexport const AspectRatio = forwardRef<TamaguiElement, AspectRatioProps>(function AspectRatio(\n  { ratio = 1, ...props },\n  ref,\n) {\n  return <AspectRatioFrame ref={ref} aspectRatio={ratio} {...props} />\n})\n"
     },
     {
       "path": "components/aspect-ratio/index.ts",
       "type": "registry:ui",
+      "sha256": "a426597c4d94731657dcf76149b5f69db6f42553f509c021738845a8db4ad8a6",
       "content": "export { AspectRatio, type AspectRatioProps } from './AspectRatio'\n"
     }
   ],

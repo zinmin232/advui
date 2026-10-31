@@ -1,0 +1,57 @@
+{
+  "$schema": "https://zinmin232.github.io/advui/schema/registry-item.json",
+  "name": "icon-button",
+  "title": "Icon Button",
+  "type": "registry:component",
+  "description": "A square, icon-only button for compact toolbars and headers.",
+  "category": "buttons",
+  "status": "stable",
+  "since": "0.1.0",
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
+  "package": "@advui/core",
+  "files": [
+    {
+      "path": "components/icon-button/IconButton.tsx",
+      "type": "registry:ui",
+      "sha256": "06b9512fdf90b4117e087df56e14711501fdeceeafa42db7e0be3d57c369ac7e",
+      "content": "import { type ReactElement, forwardRef, useContext } from 'react'\nimport type { TamaguiElement } from 'tamagui/unstyled'\nimport { Button, type ButtonProps } from '../button/Button'\nimport { ButtonGroupContext } from '../button/groupContext'\n\nconst squareSizes = {\n  sm: '8',\n  md: '10',\n  lg: '12',\n} as const\n\nexport interface IconButtonProps extends Omit<\n  ButtonProps,\n  'size' | 'icon' | 'iconAfter' | 'children'\n> {\n  /** The icon element, e.g. `<SearchIcon />`. */\n  icon: ReactElement\n  /** Required: icon-only buttons need an accessible name. */\n  'aria-label': string\n  size?: keyof typeof squareSizes\n  /** Fully round button. */\n  circular?: boolean\n}\n\n/**\n * A square, icon-only button. `aria-label` is required so the action is\n * announced by screen readers.\n */\nexport const IconButton = forwardRef<TamaguiElement, IconButtonProps>(function IconButton(\n  { icon, size: sizeProp, circular, variant: variantProp, ...props },\n  ref,\n) {\n  // Inside a ButtonGroup, take its size and variant unless set here. Joined\n  // to Buttons, it matches their default variant, as in a split button.\n  const group = useContext(ButtonGroupContext)\n  const size = sizeProp ?? group?.size ?? 'md'\n  const variant = variantProp ?? group?.variant ?? (group?.attached ? 'default' : 'ghost')\n  return (\n    <Button\n      ref={ref}\n      variant={variant}\n      size=\"icon\"\n      width={squareSizes[size]}\n      height={squareSizes[size]}\n      {...(circular && { borderRadius: 'full' })}\n      icon={icon}\n      {...props}\n    />\n  )\n})\n"
+    },
+    {
+      "path": "components/icon-button/index.ts",
+      "type": "registry:ui",
+      "sha256": "c9356c2b1857b6a78439a70961e43cbb535c61b4581e31eac158b3623584a4be",
+      "content": "export { IconButton, type IconButtonProps } from './IconButton'\n"
+    }
+  ],
+  "examples": [
+    {
+      "name": "basic",
+      "title": "Basic",
+      "code": "import { IconButton } from '@advui/core'\nimport { SettingsIcon } from '@advui/icons'\n\nexport default function IconButtonBasic() {\n  return <IconButton aria-label=\"Settings\" icon={<SettingsIcon />} />\n}\n"
+    },
+    {
+      "name": "variants",
+      "title": "Variants",
+      "code": "import { HStack, IconButton } from '@advui/core'\nimport { HeartIcon, PlusIcon, SearchIcon, TrashIcon } from '@advui/icons'\n\nexport default function IconButtonVariants() {\n  return (\n    <HStack gap=\"2\">\n      <IconButton aria-label=\"Search\" icon={<SearchIcon />} />\n      <IconButton aria-label=\"Add\" variant=\"outline\" icon={<PlusIcon />} />\n      <IconButton aria-label=\"Favorite\" variant=\"secondary\" circular icon={<HeartIcon />} />\n      <IconButton aria-label=\"New\" variant=\"default\" icon={<PlusIcon />} />\n      <IconButton aria-label=\"Delete\" variant=\"destructive\" icon={<TrashIcon />} />\n    </HStack>\n  )\n}\n"
+    },
+    {
+      "name": "sizes",
+      "title": "Sizes",
+      "code": "import { HStack, IconButton } from '@advui/core'\nimport { BellIcon } from '@advui/icons'\n\nexport default function IconButtonSizes() {\n  return (\n    <HStack gap=\"2\" alignItems=\"center\">\n      <IconButton aria-label=\"Notifications\" variant=\"outline\" size=\"sm\" icon={<BellIcon />} />\n      <IconButton aria-label=\"Notifications\" variant=\"outline\" size=\"md\" icon={<BellIcon />} />\n      <IconButton aria-label=\"Notifications\" variant=\"outline\" size=\"lg\" icon={<BellIcon />} />\n    </HStack>\n  )\n}\n"
+    }
+  ],
+  "docs": "/docs/components/icon-button",
+  "dependencies": [],
+  "peerDependencies": [
+    "react",
+    "tamagui"
+  ],
+  "registryDependencies": [
+    "button"
+  ],
+  "version": "0.14.0"
+}

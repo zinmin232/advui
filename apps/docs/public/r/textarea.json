@@ -17,11 +17,13 @@
     {
       "path": "components/textarea/Textarea.tsx",
       "type": "registry:ui",
+      "sha256": "07adf1dc5227ff50a67d91d9b81a98fa4b625988c7c163a725ac87634a0d556e",
       "content": "import { forwardRef } from 'react'\nimport { type GetProps, type TamaguiElement, TextArea, isWeb, styled } from 'tamagui/unstyled'\nimport { useFieldControl, type ControlStateProps } from '../../hooks/useFieldControl'\nimport { inputBaseStyle } from '../input/Input'\nimport { ariaState } from '../../utils/ariaState'\n\nconst TextareaFrame = styled(TextArea, {\n  displayName: 'Textarea',\n  ...inputBaseStyle,\n  minHeight: '20',\n  paddingHorizontal: '3',\n  paddingVertical: '2',\n  fontSize: '2',\n  lineHeight: '2',\n  textAlignVertical: 'top',\n  variants: {\n    invalid: {\n      true: {\n        borderColor: 'error hover:error focus:error',\n        outlineColor: 'focus-visible:error',\n      },\n    },\n    disabled: {\n      true: { opacity: 0.5, cursor: 'not-allowed' },\n    },\n    resize: {\n      none: { resize: 'none' },\n      vertical: { resize: 'vertical' },\n    },\n  } as const,\n  defaultVariants: { resize: 'vertical' },\n})\n\nexport type TextareaProps = Omit<GetProps<typeof TextareaFrame>, 'disabled' | 'invalid'> &\n  ControlStateProps\n\n/** Multi-line text field. Grows with `rows`/`minHeight`; set `invalid` for errors. */\nexport const Textarea = forwardRef<TamaguiElement, TextareaProps>(\n  function Textarea(textareaProps, ref) {\n    const { invalid, disabled, ...props } = useFieldControl(textareaProps)\n    return (\n      <TextareaFrame\n        ref={ref}\n        invalid={invalid}\n        disabled={disabled}\n        aria-invalid={invalid || undefined}\n        aria-disabled={ariaState(disabled)}\n        // Native: `disabled` stops at the variant above and never reaches the\n        // TextInput through Tamagui's TextArea, which stayed editable.\n        {...(!isWeb && disabled && { readOnly: true })}\n        multiline\n        // Tamagui 3 fixes the height at `rows` times its guess of the line\n        // height; auto lets `rows` and `minHeight` size it, as before.\n        height=\"auto\"\n        {...props}\n      />\n    )\n  },\n)\n"
     },
     {
       "path": "components/textarea/index.ts",
       "type": "registry:ui",
+      "sha256": "ad3dc8ac01bb5cdcb96251883b96d8f10cf976b011d42a93fc89d89a9389cda5",
       "content": "export { Textarea, type TextareaProps } from './Textarea'\n"
     }
   ],

@@ -17,11 +17,13 @@
     {
       "path": "components/button-group/ButtonGroup.tsx",
       "type": "registry:ui",
+      "sha256": "3161a0418d6b63913a8923518de73ceb9c409530c6dfb15a30279e8ad95c8755",
       "content": "import { Children, type ReactNode, forwardRef, isValidElement } from 'react'\nimport { type GetProps, type TamaguiElement, View } from 'tamagui/unstyled'\nimport type { ButtonVariant } from '../button/Button'\nimport {\n  ButtonGroupContext,\n  ButtonGroupItemContext,\n  type ButtonGroupOrientation,\n  type ButtonGroupSize,\n  positionOf,\n} from '../button/groupContext'\n\nexport interface ButtonGroupProps extends Omit<GetProps<typeof View>, 'children'> {\n  /** Names the group for screen readers, e.g. \"Text formatting\". */\n  'aria-label'?: string\n  /** Join the buttons into one control. Default: true. */\n  attached?: boolean\n  orientation?: ButtonGroupOrientation\n  /** Variant for buttons that do not set their own. */\n  variant?: ButtonVariant\n  /** Size for buttons and icon buttons that do not set their own. */\n  size?: ButtonGroupSize\n  /** Buttons and icon buttons. */\n  children: ReactNode\n}\n\n/**\n * Groups related Buttons and IconButtons, joined into one control or spaced\n * apart, such as a split button or Previous · Today · Next.\n */\nexport const ButtonGroup = forwardRef<TamaguiElement, ButtonGroupProps>(function ButtonGroup(\n  { attached = true, orientation = 'horizontal', variant, size, children, ...props },\n  ref,\n) {\n  const items = Children.toArray(children).filter(isValidElement)\n  const horizontal = orientation === 'horizontal'\n  return (\n    <ButtonGroupContext.Provider value={{ attached, orientation, variant, size }}>\n      <View\n        ref={ref}\n        role=\"group\"\n        flexDirection={horizontal ? 'row' : 'column'}\n        alignItems={horizontal ? 'center' : 'stretch'}\n        alignSelf=\"flex-start\"\n        gap={attached ? 0 : '2'}\n        {...props}\n      >\n        {items.map((child, index) => (\n          <ButtonGroupItemContext.Provider\n            key={child.key ?? index}\n            value={positionOf(index, items.length)}\n          >\n            {child}\n          </ButtonGroupItemContext.Provider>\n        ))}\n      </View>\n    </ButtonGroupContext.Provider>\n  )\n})\n"
     },
     {
       "path": "components/button-group/index.ts",
       "type": "registry:ui",
+      "sha256": "29b09bb3b360268058527eedf10925eec1c95bb4eda62db570da9605ebba0576",
       "content": "export { ButtonGroup, type ButtonGroupProps } from './ButtonGroup'\nexport type { ButtonGroupOrientation, ButtonGroupSize } from '../button/groupContext'\n"
     }
   ],

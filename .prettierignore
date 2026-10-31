@@ -5,7 +5,7 @@ dist
 .expo
 coverage
 pnpm-lock.yaml
-registry/*.json
+registry
 apps/docs/public/r
 playwright-report
 test-results
