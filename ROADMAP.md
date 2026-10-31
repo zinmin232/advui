@@ -137,6 +137,20 @@ phone shows it. Tamagui 3.1.3 then made its styled HOCs (Checkbox, Radio
 Group, Switch, Tabs, Dialog and Sheet parts, Text) follow theme changes on
 native.
 
+### Release
+
+- [ ] **Release 0.14.0** (Tamagui 3, the Phase 7 to 9 components, the WYSIWYG
+      Rich Text Editor, metadata that loads in Node):
+  - Merge the release pull request with a merge commit, then `git pull` and
+    `git tag v0.14.0 <merge commit> && git push origin v0.14.0`.
+  - `pnpm release:check` must list all eight public packages at 0.14.0. Then
+    `npm login` and `pnpm release`.
+  - Check the packages on the registry with
+    `curl -s https://registry.npmjs.org/@advui%2fcore` (npm may stage a
+    version for a while; don't re-publish on a 409).
+  - The AdvUI Builder can then move to 0.14.0, which needs Tamagui 3, take
+    `breakpoints` from `@advui/core/meta` and drop its gaps 10 to 12.
+
 ### Decision
 
 - [x] **Rich Text Editor: decided** on 2026-10-29: both. The Markdown
