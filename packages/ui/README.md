@@ -43,9 +43,10 @@ UniversalProvider,
 
 **Metadata:** `@advui/core/meta` exports `components`, the metadata behind
 the docs (parts, props, child rules, examples, platform notes) for every core
-component, with its `ComponentMeta` types, for tools such as the AdvUI
-Builder. `@advui/data/meta`, `@advui/charts/meta` and `@advui/editor/meta` list
-their own components. It is a separate entry point, so apps that don't import
+component, with its `ComponentMeta` types and `breakpoints` (the theme's,
+which responsive props are keyed by), for tools such as the AdvUI Builder.
+`@advui/data/meta`, `@advui/charts/meta` and `@advui/editor/meta` list their
+own components. It is a separate entry point, so apps that don't import
 it don't bundle it, and Node scripts can import it without a bundler.
 
 ```ts

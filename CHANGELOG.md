@@ -80,6 +80,10 @@ name **Rich Text Editor** goes to a new WYSIWYG editor that saves HTML.
 
 ### Added
 
+- **`breakpoints` in `@advui/core/meta`**: the theme's breakpoints as
+  `{ name, minWidth }`, smallest first, the keys of responsive props after
+  `base`. Tools such as the AdvUI Builder read them with the rest of the
+  metadata instead of copying them from `@advui/theme`, which loads Tamagui.
 - **Rich Text Editor** (`@advui/editor`, experimental): a WYSIWYG editor that
   shows formatting as you write and saves HTML. It is TipTap on web and TipTap
   in a WebView (TenTap) on iOS and Android, under one toolbar of toggles that

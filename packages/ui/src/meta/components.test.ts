@@ -2,8 +2,10 @@ import { execFileSync } from 'node:child_process'
 import { readdirSync } from 'node:fs'
 import { basename, dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import { breakpoints as themeBreakpoints } from '@advui/theme'
 import { describe, expect, it } from 'vitest'
 import { components } from './components'
+import { breakpoints } from './types'
 
 describe('@advui/core/meta', () => {
   // The list is generated, so a new component is missing from npm until it is rerun.
@@ -25,5 +27,13 @@ describe('@advui/core/meta', () => {
       stdio: ['ignore', 'pipe', 'pipe'],
     })
     expect(Number(output)).toBe(components.length)
+  })
+
+  // A copy, so that the entry does not load Tamagui through `@advui/theme`.
+  it('lists the theme breakpoints, smallest first', () => {
+    const fromTheme = Object.entries(themeBreakpoints)
+      .map(([name, minWidth]) => ({ name, minWidth }))
+      .sort((a, b) => a.minWidth - b.minWidth)
+    expect(breakpoints).toEqual(fromTheme)
   })
 })

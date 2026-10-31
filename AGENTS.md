@@ -175,7 +175,8 @@ each edit.
   `dist` (`rewriteRelativeImportExtensions`); `pnpm catalog` writes the lists
   that way, and each package's `meta/components.test.ts` loads them in Node.
   Keep other imports extensionless: an extension stops Metro from picking a
-  `.native` file.
+  `.native` file. Nothing in it may load Tamagui either, so its `breakpoints`
+  are a copy of the theme's, kept equal by a test.
 - **Declaration files must name every type.** Some of Tamagui 3's inferred
   types refer to types it does not export; give such exports an explicit type
   (`UniversalConfig`) and depend directly on `@tamagui/get-font-sized` and
