@@ -7,6 +7,8 @@ one version.
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-10-31
+
 ### Breaking: Tamagui 3
 
 Adv UI now runs on Tamagui 3 (`tamagui` `^3.1.3` as the peer dependency).
