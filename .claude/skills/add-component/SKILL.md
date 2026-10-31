@@ -78,7 +78,8 @@ than add a near-duplicate.
 - `playground` controls pass their values straight in as props, so use them
   for props that take plain values. Element props such as an icon or actions
   need handling in `apps/docs/src/components/playground.tsx`.
-- The meta imports only `defineMeta`, never React or components.
+- The meta imports only `defineMeta`, never React or components. In core it
+  comes from `'../../meta/types.ts'`: keep the `.ts`, Node needs it.
 
 ## 3. Copy these patterns
 

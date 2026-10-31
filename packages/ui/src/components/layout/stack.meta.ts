@@ -1,4 +1,4 @@
-import { type PropDoc, defineMeta } from '../../meta/types'
+import { type PropDoc, defineMeta } from '../../meta/types.ts'
 
 interface StackDefaults {
   direction: string

@@ -58,11 +58,12 @@ function loadTsModule(file, localRequire) {
 /** Evaluates a `*.meta.ts` file and returns its default export. */
 export function loadMetaFile(file) {
   return loadTsModule(file, (id) => {
-    // Core's metadata imports its own types; the other packages import core's.
-    if (id.endsWith('meta/types') || id === `${corePackage.name}/meta`)
+    // Core's metadata imports its own types, with the extension that Node needs
+    // to load `@advui/core/meta` from npm; the other packages import core's.
+    if (id === '../../meta/types.ts' || id === `${corePackage.name}/meta`)
       return { defineMeta: (meta) => meta, categories: [] }
     throw new Error(
-      `${file}: metadata files may only import defineMeta from ${corePackage.name}/meta (found "${id}")`,
+      `${file}: metadata files may only import defineMeta from ${corePackage.name}/meta, or from '../../meta/types.ts' in core (found "${id}")`,
     )
   }).default
 }

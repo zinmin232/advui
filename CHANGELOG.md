@@ -80,6 +80,10 @@ name **Rich Text Editor** goes to a new WYSIWYG editor that saves HTML.
 
 ### Added
 
+- **`breakpoints` in `@advui/core/meta`**: the theme's breakpoints as
+  `{ name, minWidth }`, smallest first, the keys of responsive props after
+  `base`. Tools such as the AdvUI Builder read them with the rest of the
+  metadata instead of copying them from `@advui/theme`, which loads Tamagui.
 - **Rich Text Editor** (`@advui/editor`, experimental): a WYSIWYG editor that
   shows formatting as you write and saves HTML. It is TipTap on web and TipTap
   in a WebView (TenTap) on iOS and Android, under one toolbar of toggles that
@@ -415,6 +419,15 @@ name **Rich Text Editor** goes to a new WYSIWYG editor that saves HTML.
 
 ### Fixed
 
+- **Navigation Bar** on web: the current destination's icon shows on its
+  pill. The pill is positioned and the icon was not, and a positioned box
+  paints over static ones, so the pill hid the active icon and dimmed a
+  hovered one. iOS and Android draw in order and were not affected.
+- **Metadata loads in Node.** `@advui/core/meta`, `@advui/data/meta`,
+  `@advui/charts/meta` and `@advui/editor/meta` now import their own files
+  with the extension (`./types.js`), so a Node script can import them without
+  a bundler. Node never adds an extension itself, so these imports failed
+  with `ERR_MODULE_NOT_FOUND`; bundlers such as Vite already worked.
 - **Android ripple** (`androidRipple`, on in `material()`): a pressable no
   longer cuts off what overflows it, such as Indicator's count on the corner
   of an IconButton. To keep the ripple inside its rounded corners, the

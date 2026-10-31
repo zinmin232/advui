@@ -164,7 +164,8 @@ component has native-specific code or behavior.
 ## Metadata (`<slug>.meta.ts`)
 
 Metadata drives the docs page, search, playground, Expo screen and registry.
-It must be plain data (no JSX, no imports other than `defineMeta`):
+It must be plain data (no JSX, no imports other than `defineMeta`, which core's
+metadata imports from `../../meta/types.ts`):
 
 - `name`, `slug`, `category`, `description`, `status`, `since`, `platforms`
 - `exports` (every public export) and `files` (sources for the registry)

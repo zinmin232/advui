@@ -63,7 +63,7 @@ file: `pnpm --filter @advui/core exec vitest run src/components/button`.
 5. **SSR-safe.** No `window` in render, and no markup that depends on `useMedia()`
    during the first render.
 6. **Metadata is data.** `*.meta.ts` files import only `defineMeta` (from
-   `../../meta/types` in core, `@advui/core/meta` in the other packages) and
+   `../../meta/types.ts` in core, `@advui/core/meta` in the other packages) and
    must not import React or components;
    Server Components and Node scripts read them.
 7. **Generated files are not edited by hand**: `packages/catalog/src/index.ts`,
@@ -169,6 +169,14 @@ each edit.
   a font size up to 1px, so the words still take a little width.
 - **Tamagui's Dialog portal is a `<dialog aria-modal>`**, a second, unnamed
   dialog around ours. Dialog, AlertDialog and Drawer render it as a `div`.
+- **`<package>/meta` loads in Node.** Tools such as the AdvUI Builder import
+  it from npm without a bundler, and Node adds no file extensions. So its
+  files import with `.ts` (`'./types.ts'`), which `tsc` writes as `.js` in
+  `dist` (`rewriteRelativeImportExtensions`); `pnpm catalog` writes the lists
+  that way, and each package's `meta/components.test.ts` loads them in Node.
+  Keep other imports extensionless: an extension stops Metro from picking a
+  `.native` file. Nothing in it may load Tamagui either, so its `breakpoints`
+  are a copy of the theme's, kept equal by a test.
 - **Declaration files must name every type.** Some of Tamagui 3's inferred
   types refer to types it does not export; give such exports an explicit type
   (`UniversalConfig`) and depend directly on `@tamagui/get-font-sized` and

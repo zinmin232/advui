@@ -23,6 +23,17 @@ describe('NavigationBar', () => {
     expect(screen.getByRole('button', { name: 'Search' })).not.toHaveAttribute('aria-current')
   })
 
+  // The pill is absolute, and a positioned box paints over static ones whatever
+  // their order: the icon sits in a positioned box after it to stay visible.
+  it('draws the icon above the active pill', () => {
+    renderWithProvider(<Example />)
+    const icon = screen.getByRole('button', { name: 'Home' }).querySelector('svg')!
+    const box = icon.parentElement!
+    expect(getComputedStyle(box).position).toBe('relative')
+    const pill = box.previousElementSibling
+    expect(pill && getComputedStyle(pill).position).toBe('absolute')
+  })
+
   it('includes badges in the name', () => {
     renderWithProvider(<Example />)
     expect(screen.getByRole('button', { name: 'Inbox, 3 new' })).toBeInTheDocument()

@@ -3,6 +3,7 @@
  * Metadata is plain serializable data (no React imports) so it can be read by
  * React Server Components, the search index, the registry builder and the CLI.
  */
+import type { Breakpoint } from '../utils/responsive'
 
 export type ComponentStatus = 'stable' | 'beta' | 'experimental' | 'deprecated' | 'planned'
 export type Platform = 'web' | 'ios' | 'android'
@@ -21,7 +22,7 @@ export type CategoryId =
   | 'charts'
 
 /** Min-width breakpoints from `@advui/theme`, smallest first. */
-export type { Breakpoint } from '../utils/responsive'
+export type { Breakpoint }
 
 /**
  * One prop. `type` is what the docs show; the optional fields after
@@ -41,7 +42,10 @@ export interface PropDoc {
    * `"'sm' | 'md'"` → `['sm', 'md']`, `1 | 2` → `['1', '2']`.
    */
   options?: string[]
-  /** Also accepts a mobile-first map `{ base?, xs?, sm?, md?, lg?, xl?, xxl? }` of the same value. */
+  /**
+   * Also accepts a mobile-first map `{ base?, xs?, sm?, md?, lg?, xl?, xxl? }` of the same value:
+   * `base` below every breakpoint, then each of `breakpoints`.
+   */
   responsive?: boolean
   /** The value is a theme token of this scale, such as `4` for `space`. */
   token?: 'space' | 'size' | 'color' | 'radius' | 'zIndex'
@@ -171,6 +175,26 @@ export const categories: CategoryMeta[] = [
   { id: 'media', label: 'Media', description: 'Images, video and audio.' },
   { id: 'advanced', label: 'Advanced', description: 'Complex, composite widgets.' },
   { id: 'charts', label: 'Charts', description: 'Data visualisation.' },
+]
+
+export interface BreakpointMeta {
+  name: Breakpoint
+  /** Width in pixels from which the breakpoint applies. */
+  minWidth: number
+}
+
+/**
+ * The theme's breakpoints, smallest first, which responsive props are keyed by.
+ * A copy of `breakpoints` from `@advui/theme` (a test keeps them equal), because
+ * that module loads Tamagui and tools read this entry in plain Node.
+ */
+export const breakpoints: BreakpointMeta[] = [
+  { name: 'xs', minWidth: 460 },
+  { name: 'sm', minWidth: 640 },
+  { name: 'md', minWidth: 768 },
+  { name: 'lg', minWidth: 1024 },
+  { name: 'xl', minWidth: 1280 },
+  { name: 'xxl', minWidth: 1536 },
 ]
 
 export function defineMeta(meta: ComponentMeta): ComponentMeta {
