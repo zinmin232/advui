@@ -27,4 +27,15 @@ describe('ScrollArea', () => {
     expect(getComputedStyle(row).overflowX).toBe('auto')
     expect(getComputedStyle(row).overflowY).toBe('hidden')
   })
+
+  it('leaves the keyboard to the browser with avoidKeyboard', () => {
+    renderWithProvider(
+      <ScrollArea aria-label="Profile" avoidKeyboard>
+        <p>Name</p>
+      </ScrollArea>,
+    )
+    const region = screen.getByRole('region', { name: 'Profile' })
+    expect(region).not.toHaveAttribute('avoidKeyboard')
+    expect(region).not.toHaveAttribute('avoidkeyboard')
+  })
 })

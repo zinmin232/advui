@@ -2,12 +2,13 @@ import { afterEach, describe, expect, it, jest } from '@jest/globals'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
 import { createThemeColors, createUniversalConfig, themePresets, zIndex } from '@advui/theme'
-import { Fragment, type ReactElement, createContext, useContext, useState } from 'react'
+import { Fragment, type ReactElement, createContext, createRef, useContext, useState } from 'react'
 import {
   AccessibilityInfo,
   Animated,
   BackHandler,
   Dimensions,
+  Keyboard,
   Linking,
   Platform,
   StyleSheet,
@@ -3322,6 +3323,104 @@ describe('AppShell and AutoGrid on native', () => {
       flexWrap: 'wrap',
       gap: 16,
     })
+  })
+})
+
+describe('Keyboard avoidance on native', () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
+  /** The host ScrollView around a text. */
+  const scrollViewOf = (text: string) => {
+    let node = screen.getByText(text).parent
+    while (node && node.props.nestedScrollEnabled === undefined) node = node.parent
+    if (!node) throw new Error(`no scroll view around ${text}`)
+    return node
+  }
+
+  it('ScrollArea avoidKeyboard lets iOS inset it; one inside it leaves that to the outer one', async () => {
+    await renderNative(
+      <>
+        <ScrollArea aria-label="Profile" avoidKeyboard>
+          <VStack>
+            <Text>Name</Text>
+            <ScrollArea aria-label="Notes" avoidKeyboard height={120}>
+              <Text>Note</Text>
+            </ScrollArea>
+          </VStack>
+        </ScrollArea>
+        <ScrollArea aria-label="Feed">
+          <Text>Post</Text>
+        </ScrollArea>
+      </>,
+    )
+    const profile = screen.getByLabelText('Profile')
+    expect(profile.props.automaticallyAdjustKeyboardInsets).toBe(true)
+    // A tap on a button while the keyboard is up presses it.
+    expect(profile.props.keyboardShouldPersistTaps).toBe('handled')
+    expect(screen.getByLabelText('Notes').props.automaticallyAdjustKeyboardInsets).toBeUndefined()
+    expect(screen.getByLabelText('Feed').props.automaticallyAdjustKeyboardInsets).toBeUndefined()
+    expect(screen.getByLabelText('Feed').props.keyboardShouldPersistTaps).toBeUndefined()
+  })
+
+  it('on Android, a ScrollArea ends where the keyboard starts, measured from the root view', async () => {
+    jest.replaceProperty(Platform, 'OS', 'android')
+    const listeners = new Map<string, (event: unknown) => void>()
+    jest.spyOn(Keyboard, 'addListener').mockImplementation((event, listener) => {
+      listeners.set(event, listener as (event: unknown) => void)
+      return { remove: () => void listeners.delete(event) } as never
+    })
+    jest.spyOn(Keyboard, 'metrics').mockReturnValue(undefined)
+    const ref = createRef<{ measure: unknown }>()
+    await renderNative(
+      <ScrollArea ref={ref as never} aria-label="Profile" avoidKeyboard>
+        <Text>Name</Text>
+      </ScrollArea>,
+    )
+    const margin = () =>
+      StyleSheet.flatten(screen.getByLabelText('Profile').props.style)?.marginBottom ?? 0
+    // Below a 100px header, 700 high until the margin shortens it.
+    const node = ref.current
+    if (!node) throw new Error('no scroll view')
+    node.measure = (done: (...box: number[]) => void) =>
+      done(0, 100, 400, 700 - Number(margin()), 0, 100)
+    const keyboard = async (event: string, screenY?: number) => {
+      await act(async () => {
+        listeners.get(event)?.({ endCoordinates: { screenX: 0, screenY, width: 400, height: 0 } })
+      })
+    }
+    await keyboard('keyboardDidShow', 500)
+    expect(margin()).toBe(300)
+    // The emoji panel makes the keyboard taller; the view's bottom is still 800.
+    await keyboard('keyboardDidShow', 450)
+    expect(margin()).toBe(350)
+    await keyboard('keyboardDidHide')
+    expect(margin()).toBe(0)
+  })
+
+  it('AppShell.Main avoids the keyboard unless turned off, and a ScrollArea in it leaves it to Main', async () => {
+    await renderNative(
+      <>
+        <AppShell>
+          <AppShell.Main>
+            <Text>Checkout</Text>
+            <ScrollArea aria-label="Items" avoidKeyboard height={120}>
+              <Text>Item</Text>
+            </ScrollArea>
+          </AppShell.Main>
+        </AppShell>
+        <AppShell avoidKeyboard={false}>
+          <AppShell.Main>
+            <Text>Reports</Text>
+          </AppShell.Main>
+        </AppShell>
+      </>,
+    )
+    expect(scrollViewOf('Checkout').props.automaticallyAdjustKeyboardInsets).toBe(true)
+    expect(scrollViewOf('Checkout').props.keyboardShouldPersistTaps).toBe('handled')
+    expect(screen.getByLabelText('Items').props.automaticallyAdjustKeyboardInsets).toBeUndefined()
+    expect(scrollViewOf('Reports').props.automaticallyAdjustKeyboardInsets).toBeUndefined()
   })
 })
 
