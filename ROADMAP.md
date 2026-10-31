@@ -33,8 +33,8 @@ Closed on 2026-10-19; what is still open moved to Phase 10.
 - **Demo media.** Video and Audio Player play clips made for the docs
   (`apps/docs/public/media`, made by
   `scripts/demo-media/make-demo-media.ps1`).
-- **Releases 0.6.0 to 0.13.0** are tagged on `main`, and all eight public
-  packages are on npm at 0.13.0 (0.8.0 and 0.9.0 are git tags only; the
+- **Releases 0.6.0 to 0.14.0** are tagged on `main`, and all eight public
+  packages are on npm at 0.14.0 (0.8.0 and 0.9.0 are git tags only; the
   0.5.0 of `@advui/data`, `@advui/charts` and `@advui/editor` is
   deprecated). Within a day of a release, pnpm 11 and later install the
   previous version: its `minimumReleaseAge` default skips newer ones.
@@ -128,7 +128,7 @@ Carried over from Phase 6. They need a person, a phone or a decision, so CI
 and AI agents cannot close them. The checks are grouped by platform; run
 `pnpm install` before the playground commands in each group.
 
-Tamagui 3 (unreleased) is behind most of them: it changed how every
+Tamagui 3 (released in 0.14.0) is behind most of them: it changed how every
 component styles itself (flat values, unstyled primitives) and hands
 presses to React Native's Pressability, which cancels a press when the
 finger slides off the view. Native tests cover that for Button, FAB,
@@ -139,17 +139,15 @@ native.
 
 ### Release
 
-- [ ] **Release 0.14.0** (Tamagui 3, the Phase 7 to 9 components, the WYSIWYG
-      Rich Text Editor, metadata that loads in Node):
-  - Merge the release pull request with a merge commit, then `git pull` and
-    `git tag v0.14.0 <merge commit> && git push origin v0.14.0`.
-  - `pnpm release:check` must list all eight public packages at 0.14.0. Then
-    `npm login` and `pnpm release`.
-  - Check the packages on the registry with
-    `curl -s https://registry.npmjs.org/@advui%2fcore` (npm may stage a
-    version for a while; don't re-publish on a 409).
-  - The AdvUI Builder can then move to 0.14.0, which needs Tamagui 3, take
-    `breakpoints` from `@advui/core/meta` and drop its gaps 10 to 12.
+- [x] **Release 0.14.0** (Tamagui 3, the Phase 7 to 9 components, the WYSIWYG
+      Rich Text Editor, metadata that loads in Node): published on
+      2026-10-31; all eight public packages are on npm at 0.14.0. Tag
+      `v0.14.0` points at the merge commit on `main`. The AdvUI Builder can
+      move to 0.14.0, which needs Tamagui 3, take `breakpoints` from
+      `@advui/core/meta` and drop its gaps 10 to 12. On Windows, PowerShell
+      that blocks scripts runs npm and pnpm as `npm.cmd` and `pnpm.cmd`;
+      publishing asks for npm's two-factor approval in the browser, once,
+      within a few minutes.
 
 ### Decision
 
