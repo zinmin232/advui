@@ -76,6 +76,46 @@ describe('DateTimePicker', () => {
     )
   })
 
+  it('limits the times on the days of min and max', async () => {
+    const onValueChange = vi.fn()
+    const { user } = renderWithProvider(
+      <DateTimePicker
+        aria-label="Starts"
+        locale="en-US"
+        min={new Date(2026, 9, 14, 9, 30)}
+        max={new Date(2026, 9, 20, 17, 0)}
+        defaultValue={new Date(2026, 9, 16, 8, 0)}
+        onValueChange={onValueChange}
+      />,
+    )
+    // A day between them: every time.
+    await user.click(screen.getByRole('combobox', { name: 'Hour' }))
+    expect(await screen.findByRole('option', { name: '07' })).not.toHaveAttribute(
+      'aria-disabled',
+      'true',
+    )
+    await user.keyboard('{Escape}')
+    // The day of min: 8:00 is too early, so the time moves to 9:30.
+    await user.click(screen.getByRole('button', { name: 'Date' }))
+    await user.click(await screen.findByRole('gridcell', { name: /October 14, 2026/ }))
+    expect(onValueChange).toHaveBeenLastCalledWith(new Date(2026, 9, 14, 9, 30))
+    await user.click(screen.getByRole('combobox', { name: 'Hour' }))
+    expect(await screen.findByRole('option', { name: '08' })).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    )
+    await user.keyboard('{Escape}')
+    // The day of max: 9:30 is fine, and later hours are disabled.
+    await user.click(screen.getByRole('button', { name: 'Date' }))
+    await user.click(await screen.findByRole('gridcell', { name: /October 20, 2026/ }))
+    expect(onValueChange).toHaveBeenLastCalledWith(new Date(2026, 9, 20, 9, 30))
+    await user.click(screen.getByRole('combobox', { name: 'Hour' }))
+    expect(await screen.findByRole('option', { name: '18' })).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    )
+  }, 20_000)
+
   it('takes a controlled value set from outside', async () => {
     function Controlled() {
       const [value, setValue] = useState<Date | null>(new Date(2026, 9, 14, 9, 30))

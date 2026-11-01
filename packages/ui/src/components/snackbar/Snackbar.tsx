@@ -5,6 +5,7 @@ import { AccessibilityInfo, Platform } from 'react-native'
 import { Portal, Text, View, isWeb } from 'tamagui/unstyled'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useRipple } from '../../hooks/useRipple'
+import { transformOpacity } from '../../utils/transition'
 
 export interface SnackbarAction {
   label: string
@@ -95,7 +96,7 @@ export function Snackbar({
             {...shadows.lg}
             opacity="1 enter:0"
             y="0 enter:12px"
-            transition={reducedMotion ? undefined : 'quick'}
+            transition={transformOpacity(reducedMotion ? undefined : 'quick')}
             {...(isWeb && {
               onMouseEnter: () => setPaused(true),
               onMouseLeave: () => setPaused(false),

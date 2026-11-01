@@ -67,7 +67,29 @@ export default defineMeta({
           options: ['chart1', 'chart2', 'chart3', 'chart4', 'chart5', 'chart6', 'chart7', 'chart8'],
           default: "'chart1'",
           description:
-            'The palette color whose shades fill the cells. They step at round values (0–10, 10–20…), four to six of them, from the smallest value or zero to the largest.',
+            'The palette color whose shades fill the cells. They step at round values (0–10, 10–20…), four to six of them, from the smallest value or zero to the largest. On a diverging scale, the color above `midpoint`.',
+        },
+        {
+          name: 'scale',
+          type: "'sequential' | 'diverging'",
+          options: ['sequential', 'diverging'],
+          default: "'sequential'",
+          description:
+            '`diverging` shades `negativeColor` below `midpoint` and `color` above it, darker further away, in two to four round steps on each side: for changes, or values around a target.',
+        },
+        {
+          name: 'midpoint',
+          type: 'number',
+          default: '0',
+          description: 'Diverging: the value where the two colors meet. It takes the color above it.',
+        },
+        {
+          name: 'negativeColor',
+          type: "'chart1' | 'chart2' | 'chart3' | 'chart4' | 'chart5' | 'chart6' | 'chart7' | 'chart8'",
+          options: ['chart1', 'chart2', 'chart3', 'chart4', 'chart5', 'chart6', 'chart7', 'chart8'],
+          default: "'chart2'",
+          description:
+            'Diverging: the palette color below `midpoint`. `chart1` and `chart2` stay apart for color-blind readers.',
         },
         {
           name: 'text',
@@ -102,6 +124,7 @@ export default defineMeta({
   examples: [
     { name: 'basic', title: 'Places and sectors' },
     { name: 'schedule', title: 'Days and hours, with a gap' },
+    { name: 'change', title: 'Change, on a diverging scale' },
   ],
   accessibility: [
     'The chart is a `figure` named by its title. The plot is one focusable image whose name gives the title, description and a hint; the arrow keys move between cells (Left and Right along a row, Up and Down along a column, Home and End to the first and last), and a polite live region reads the row, column and value.',

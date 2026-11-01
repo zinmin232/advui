@@ -127,6 +127,7 @@ import { setVideoView } from './video/shared'
 import { VisuallyHidden } from './visually-hidden/VisuallyHidden'
 import { Text } from './typography/Text'
 import { useBreakpoint } from '../hooks/useBreakpoint'
+import { useScrollLock } from '../hooks/useScrollLock'
 import { UniversalProvider } from '../provider/UniversalProvider'
 
 // These run the React Native code path (react-native + Tamagui native builds,
@@ -3298,6 +3299,49 @@ describe('AppShell and AutoGrid on native', () => {
     expect(padding('header').top).not.toBe(40)
     expect(padding('footer').bottom).not.toBe(30)
     expect(await drawerPadding()).toEqual({ top: 40, bottom: 30 })
+  })
+
+  it('stops Main and a ScrollArea inside it while something in them holds a scroll lock', async () => {
+    let release = () => {}
+    function Holder() {
+      const lock = useScrollLock()
+      return (
+        <Button
+          onPress={() => {
+            release = lock()
+          }}
+        >
+          Pick up
+        </Button>
+      )
+    }
+    await renderNative(
+      <AppShell>
+        <AppShell.Main>
+          <ScrollArea aria-label="Feed">
+            <Holder />
+          </ScrollArea>
+        </AppShell.Main>
+      </AppShell>,
+    )
+    // Whether each scroll view around the button scrolls, innermost first.
+    const scrolls = () => {
+      const found: boolean[] = []
+      let node = screen.getByRole('button', { name: 'Pick up' }).parent
+      for (; node; node = node.parent) {
+        if (node.type === 'RCTScrollView') found.push(node.props.scrollEnabled !== false)
+      }
+      return found
+    }
+    expect(scrolls()).toEqual([true, true])
+    await fireEvent.press(screen.getByRole('button', { name: 'Pick up' }))
+    expect(scrolls()).toEqual([false, false])
+    await act(async () => {
+      release()
+      // A second release does nothing.
+      release()
+    })
+    expect(scrolls()).toEqual([true, true])
   })
 
   it('AutoGrid shows one column until it is measured, then the same count as web', async () => {

@@ -1,14 +1,25 @@
 import type { TransitionKeys } from 'tamagui/unstyled'
 
 /**
+ * A transition for the named properties only, in CSS names with no
+ * shorthands (`width, background-color`). Every transition names them: a
+ * preset alone animates every style, and on native that includes border
+ * widths, which React Native's native animation driver does not take.
+ * `null` or `undefined` (reduced motion) stays as it is, so nothing animates.
+ */
+export function namedTransition<T extends TransitionKeys | null | undefined>(
+  preset: T,
+  properties: string,
+) {
+  return preset ? { preset, properties } : (preset as Exclude<T, TransitionKeys>)
+}
+
+/**
  * A transition that animates only `transform` and `opacity`, as overlays and
- * menus do: both animate without layout work on every driver. `null` or
- * `undefined` (reduced motion) stays as it is, so nothing animates.
+ * menus do: both animate without layout work on every driver.
  */
 export function transformOpacity<T extends TransitionKeys | null | undefined>(preset: T) {
-  return preset
-    ? { preset, properties: 'transform, opacity' }
-    : (preset as Exclude<T, TransitionKeys>)
+  return namedTransition(preset, 'transform, opacity')
 }
 
 // A transition names each property it animates, with no CSS shorthands, and

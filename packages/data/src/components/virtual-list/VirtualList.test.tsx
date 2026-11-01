@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { Text } from '@advui/core'
-import { fireEvent, renderWithProvider, screen } from '../../../test/utils'
+import { act, fireEvent, renderWithProvider, screen } from '../../../test/utils'
 import { VirtualList } from './VirtualList'
 
 const rows = Array.from({ length: 1000 }, (_, i) => ({ id: `r${i}`, name: `Row ${i + 1}` }))
@@ -69,7 +69,16 @@ describe('VirtualList', () => {
         />,
       )
       // Five rows fit; two more below.
-      expect(names()).toEqual(['Row 1', 'Row 2', 'Row 3', 'Row 4', 'Row 5', 'Row 6', 'Row 7', 'Row 8'])
+      expect(names()).toEqual([
+        'Row 1',
+        'Row 2',
+        'Row 3',
+        'Row 4',
+        'Row 5',
+        'Row 6',
+        'Row 7',
+        'Row 8',
+      ])
       scrollTo(screen.getByRole('region'), 4000)
       expect(names()[0]).toBe('Row 99')
       expect(names()).toContain('Row 101')
@@ -94,6 +103,85 @@ describe('VirtualList', () => {
       scrollTo(screen.getByRole('region'), 380)
       // 20 + 9 × 40 = 380: row 11 starts there.
       expect(names()[0]).toBe('Row 11')
+    })
+
+    it('measures rows that size themselves, and keeps the view in place as rows above it grow', () => {
+      // A ResizeObserver the test reports sizes to; happy-dom measures nothing.
+      const observers: { callback: ResizeObserverCallback; observed: Set<Element> }[] = []
+      const original = globalThis.ResizeObserver
+      globalThis.ResizeObserver = class {
+        observed = new Set<Element>()
+        constructor(public callback: ResizeObserverCallback) {
+          observers.push(this)
+        }
+        observe(target: Element) {
+          this.observed.add(target)
+        }
+        unobserve(target: Element) {
+          this.observed.delete(target)
+        }
+        disconnect() {
+          this.observed.clear()
+        }
+      } as unknown as typeof ResizeObserver
+      const resize = (height: (position: number) => number) =>
+        act(() => {
+          for (const observer of observers) {
+            const entries = [...observer.observed].map((target) => ({
+              target,
+              contentRect: { height: height(Number(target.getAttribute('aria-posinset'))) },
+            }))
+            observer.callback(entries as never, observer as never)
+          }
+        })
+      try {
+        renderWithProvider(
+          <VirtualList
+            aria-label="Messages"
+            height={200}
+            data={rows}
+            estimatedItemHeight={40}
+            overscan={0}
+            getItemKey={(row) => row.id}
+            renderItem={(row) => <Text>{row.name}</Text>}
+          />,
+        )
+        const region = screen.getByRole('region')
+        const style = (name: string) =>
+          getComputedStyle(screen.getByText(name).closest('[role="listitem"]')!)
+        // Not measured yet: placed by the estimate, and sized by their content.
+        expect(style('Row 3').top).toBe('80px')
+        expect(style('Row 3').height).not.toBe('40px')
+        resize(() => 50)
+        expect(style('Row 3').top).toBe('100px')
+
+        // Scrolled down to estimated rows: those that grow above the view
+        // move it down by as much, so what is in view stays where it was.
+        let scrollTop = 0
+        Object.defineProperty(region, 'scrollTop', {
+          configurable: true,
+          get: () => scrollTop,
+          set: (value: number) => {
+            scrollTop = value
+          },
+        })
+        // The six rows drawn first are 50 (300), the rest 40: Row 21 starts
+        // at 300 + 14 × 40 = 860.
+        scrollTop = 860
+        fireEvent.scroll(region)
+        expect(names()[0]).toBe('Row 21')
+        resize((position) => (position === 21 ? 40 : 60))
+        // Rows in view or below it grew: nothing above moved.
+        expect(scrollTop).toBe(860)
+        // Row 20 starts at 820, above the view, and grows by 20.
+        scrollTop = 830
+        fireEvent.scroll(region)
+        expect(names()[0]).toBe('Row 20')
+        resize((position) => (position === 21 ? 40 : 60))
+        expect(scrollTop).toBe(850)
+      } finally {
+        globalThis.ResizeObserver = original
+      }
     })
 
     it('keeps the focused row drawn when it scrolls out of view', () => {

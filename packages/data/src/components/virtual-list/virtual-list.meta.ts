@@ -53,13 +53,21 @@ import { VirtualList } from '@advui/data'
           name: 'renderItem',
           type: '(item: T, index: number) => ReactNode',
           required: true,
-          description: 'Draws one row, in a box of the row’s height.',
+          description:
+            'Draws one row: in a box of the row’s height with `itemHeight`, or as tall as it draws itself without.',
         },
         {
           name: 'itemHeight',
           type: 'number | ((index: number) => number)',
-          required: true,
-          description: 'Row height in pixels: one for every row, or one per row.',
+          description:
+            'Row height in pixels: one for every row, or one per row. Leave it out for rows that size themselves, such as wrapping text: they are measured as they are drawn.',
+        },
+        {
+          name: 'estimatedItemHeight',
+          type: 'number',
+          default: '48',
+          description:
+            'Without `itemHeight`: the height of a row not yet measured, which places the rows below it and sizes the scrollbar until then.',
         },
         {
           name: 'getItemKey',
@@ -88,7 +96,8 @@ import { VirtualList } from '@advui/data'
           default: '10',
           min: 1,
           step: 1,
-          description: 'Rows drawn before the list is measured: on the server and in the first frame.',
+          description:
+            'Rows drawn before the list is measured: on the server and in the first frame.',
         },
         {
           name: 'onEndReached',
@@ -134,6 +143,11 @@ import { VirtualList } from '@advui/data'
       title: 'Rows of different heights',
       description: '`itemHeight` as a function: day headings are shorter than messages.',
     },
+    {
+      name: 'measured',
+      title: 'Rows that size themselves',
+      description: 'No `itemHeight`: messages wrap to as many lines as they need.',
+    },
   ],
   accessibility: [
     'On web it is a ScrollArea (a named `region` that takes focus, so the arrow keys scroll it) holding a `list`.',
@@ -147,9 +161,10 @@ import { VirtualList } from '@advui/data'
     { keys: 'Home / End', action: 'Scroll to the first or last row.' },
   ],
   platformNotes: {
-    web: 'Rows are placed at their offsets in a box as tall as the whole list, so the scrollbar is true to length.',
-    ios: 'A FlatList with `getItemLayout` from `itemHeight`, so it places rows without measuring them. It keeps its own window of rows; `overscan` is ignored. In a scrolling screen it still windows its rows, as it has a height, so React Native’s warning about lists nested in scroll views is not raised.',
-    android: 'Same as iOS, with nested scrolling on, so the list scrolls inside a scrolling screen.',
+    web: 'Rows are placed at their offsets in a box as tall as the whole list, so the scrollbar is true to length. Rows that size themselves are measured with a ResizeObserver as they are drawn; when one above the view changes height, the list scrolls by as much, so what is in view stays put.',
+    ios: 'A FlatList with `getItemLayout` from `itemHeight`, so it places rows without measuring them; without `itemHeight`, FlatList measures each row it draws. It keeps its own window of rows; `overscan` is ignored. In a scrolling screen it still windows its rows, as it has a height, so React Native’s warning about lists nested in scroll views is not raised.',
+    android:
+      'Same as iOS, with nested scrolling on, so the list scrolls inside a scrolling screen.',
   },
   related: ['scroll-area', 'list', 'infinite-scroll', 'data-table'],
 })

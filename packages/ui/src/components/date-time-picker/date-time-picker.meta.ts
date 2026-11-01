@@ -57,12 +57,14 @@ export default defineMeta({
         {
           name: 'min',
           type: 'Date',
-          description: 'Earliest day that can be picked. Times on that day are not limited.',
+          description:
+            'Earliest day and time that can be picked: on that day, earlier times are disabled.',
         },
         {
           name: 'max',
           type: 'Date',
-          description: 'Latest day that can be picked. Times on that day are not limited.',
+          description:
+            'Latest day and time that can be picked: on that day, later times are disabled.',
         },
         {
           name: 'id',

@@ -127,9 +127,19 @@ each edit.
   animation driver, and any style change (a color mode switch too) restarts a
   spring per style: a screen of Buttons took seconds to switch modes on
   Android. Name the properties a control's states change: `colorsOpacity`
-  (`utils/transition.ts`) for state colors, `transformOpacity` for overlays.
-  A transition expands no CSS shorthand, and native splits `borderColor` into
-  sides, so the helper names each side.
+  (`utils/transition.ts`) for state colors, `transformOpacity` for overlays,
+  `namedTransition(preset, 'width, background-color')` for anything else. A
+  preset also animates border widths, which React Native's native driver
+  does not take. A transition expands no CSS shorthand, and native splits
+  `borderColor` into sides, so the helper names each side. A Sheet root's
+  `transition` is its position spring, looked up by preset name: keep it a
+  preset.
+- **A drag on native must stop the scroll views around it at pickup.** The
+  JS responder claims a move only after Android's native ScrollView has seen
+  it, so a quick first move scrolls the screen and cancels the drag. A
+  scroll view with `scrollEnabled` off never takes it: call `useScrollLock()`
+  when a long press picks something up (Kanban, Event Calendar), and turn off
+  the component's own ScrollArea from its drag state.
 - **Import primitives from `tamagui/unstyled`.** The root `tamagui` entry has
   Tamagui's default skin; only the provider and `createTamagui` come from it.
   Checkbox and RadioGroup are styled HOCs (`styled(Checkbox, …)`), Switch

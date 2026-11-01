@@ -31,6 +31,7 @@ import { useSheetMaxHeight } from '../../hooks/useSheetMaxHeight'
 import { SheetHandle } from '../sheet/SheetHandle'
 import { ariaState } from '../../utils/ariaState'
 import { plainText } from '../../utils/plainText'
+import { transformOpacity } from '../../utils/transition'
 import { fieldBoxStyle } from '../input/Input'
 
 const Trigger = styled(TamaguiSelect.Trigger, {
@@ -424,7 +425,7 @@ function SelectRoot(selectProps: SelectProps) {
           <Sheet.Overlay
             backgroundColor="overlay"
             opacity="enter:0 exit:0"
-            transition={reducedMotion ? undefined : 'quick'}
+            transition={transformOpacity(reducedMotion ? undefined : 'quick')}
           />
           <SheetHandle />
           <Sheet.Container

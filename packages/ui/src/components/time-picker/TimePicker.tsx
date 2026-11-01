@@ -25,10 +25,45 @@ function toParts(value: string | null | undefined, twelveHour: boolean): Parts {
   }
 }
 
+/** The hour in 24-hour time that an hour option means. */
+const to24 = (hour: string, period: Parts['period'], twelveHour: boolean) =>
+  twelveHour ? (Number(hour) % 12) + (period === 'PM' ? 12 : 0) : Number(hour)
+
 function toValue({ hour, minute, period }: Parts, twelveHour: boolean) {
   if (hour == null || minute == null) return null
-  const h = twelveHour ? (Number(hour) % 12) + (period === 'PM' ? 12 : 0) : Number(hour)
-  return `${pad(h)}:${minute}`
+  return `${pad(to24(hour, period, twelveHour))}:${minute}`
+}
+
+const toMinutes = (time: string) => {
+  const [hours, minutes] = time.split(':').map(Number)
+  return hours! * 60 + minutes!
+}
+
+const minuteOptions = (step: number) =>
+  Array.from({ length: Math.ceil(60 / step) }, (_, i) => pad(i * step))
+
+/** Whether a time is within `min` and `max` (`"HH:mm"`, both included). */
+export function inTimeRange(time: string, min?: string | null, max?: string | null) {
+  const t = toMinutes(time)
+  return (!min || t >= toMinutes(min)) && (!max || t <= toMinutes(max))
+}
+
+/**
+ * A time moved into `min` and `max`: the first option from `min` or the last
+ * one up to `max`, on the minute steps. Null when no option is in the range.
+ */
+export function clampTime(
+  time: string,
+  { min, max, minuteStep = 5 }: { min?: string | null; max?: string | null; minuteStep?: number },
+) {
+  if (inTimeRange(time, min, max)) return time
+  const options = Array.from({ length: 24 }, (_, h) =>
+    minuteOptions(minuteStep).map((m) => `${pad(h)}:${m}`),
+  )
+    .flat()
+    .filter((option) => inTimeRange(option, min, max))
+  if (!options.length) return null
+  return min && toMinutes(time) < toMinutes(min) ? options[0]! : options[options.length - 1]!
 }
 
 export interface TimePickerProps extends Omit<
@@ -43,6 +78,10 @@ export interface TimePickerProps extends Omit<
   hourCycle?: 12 | 24
   /** Minutes between options. Default 5. */
   minuteStep?: number
+  /** The earliest time that can be picked, `"HH:mm"`. Earlier options are disabled. */
+  min?: string | null
+  /** The latest time that can be picked, `"HH:mm"`, from `min` on the same day. */
+  max?: string | null
   size?: 'sm' | 'md' | 'lg'
   disabled?: boolean
   invalid?: boolean
@@ -65,6 +104,8 @@ export const TimePicker = forwardRef<TamaguiElement, TimePickerProps>(
       onValueChange,
       hourCycle = 24,
       minuteStep = 5,
+      min,
+      max,
       size = 'md',
       disabled = false,
       invalid = false,
@@ -94,7 +135,12 @@ export const TimePicker = forwardRef<TamaguiElement, TimePickerProps>(
     }
 
     const update = (patch: Partial<Parts>) => {
-      const next = { ...parts, ...patch }
+      let next = { ...parts, ...patch }
+      const picked = toValue(next, twelveHour)
+      // A new hour or period can leave the minute outside min and max: move
+      // to the nearest time that can be picked, as a clock's wheels do.
+      const clamped = picked && clampTime(picked, { min, max, minuteStep })
+      if (picked && clamped && clamped !== picked) next = toParts(clamped, twelveHour)
       setParts(next)
       const nextValue = toValue(next, twelveHour)
       if (nextValue !== toValue(parts, twelveHour)) onValueChange?.(nextValue)
@@ -103,9 +149,11 @@ export const TimePicker = forwardRef<TamaguiElement, TimePickerProps>(
     const hours = twelveHour
       ? Array.from({ length: 12 }, (_, i) => String(i === 0 ? 12 : i))
       : Array.from({ length: 24 }, (_, i) => pad(i))
-    const minutes = Array.from({ length: Math.ceil(60 / minuteStep) }, (_, i) =>
-      pad(i * minuteStep),
-    )
+    const minutes = minuteOptions(minuteStep)
+    const limited = !!(min || max)
+    const allowed = (hour24: number, minute: string) =>
+      inTimeRange(`${pad(hour24)}:${minute}`, min, max)
+    const hourAllowed = (hour24: number) => minutes.some((m) => allowed(hour24, m))
     const shared = { size, disabled, invalid, width: 'auto' as const }
 
     return (
@@ -122,7 +170,11 @@ export const TimePicker = forwardRef<TamaguiElement, TimePickerProps>(
             onValueChange={(hour) => update({ hour })}
           >
             {hours.map((h) => (
-              <Select.Item key={h} value={h}>
+              <Select.Item
+                key={h}
+                value={h}
+                disabled={limited && !hourAllowed(to24(h, parts.period, twelveHour))}
+              >
                 {h}
               </Select.Item>
             ))}
@@ -138,7 +190,16 @@ export const TimePicker = forwardRef<TamaguiElement, TimePickerProps>(
             onValueChange={(minute) => update({ minute })}
           >
             {minutes.map((m) => (
-              <Select.Item key={m} value={m}>
+              <Select.Item
+                key={m}
+                value={m}
+                // Until an hour is picked, any minute may still fit.
+                disabled={
+                  limited &&
+                  parts.hour != null &&
+                  !allowed(to24(parts.hour, parts.period, twelveHour), m)
+                }
+              >
                 {m}
               </Select.Item>
             ))}
@@ -150,8 +211,20 @@ export const TimePicker = forwardRef<TamaguiElement, TimePickerProps>(
               value={parts.period}
               onValueChange={(period) => update({ period: period as Parts['period'] })}
             >
-              <Select.Item value="AM">AM</Select.Item>
-              <Select.Item value="PM">PM</Select.Item>
+              {(['AM', 'PM'] as const).map((period) => (
+                <Select.Item
+                  key={period}
+                  value={period}
+                  disabled={
+                    limited &&
+                    !Array.from({ length: 12 }, (_, i) => i + (period === 'PM' ? 12 : 0)).some(
+                      hourAllowed,
+                    )
+                  }
+                >
+                  {period}
+                </Select.Item>
+              ))}
             </Select>
           ) : null}
         </FieldContext.Provider>

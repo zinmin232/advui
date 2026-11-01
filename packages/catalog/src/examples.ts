@@ -148,6 +148,7 @@ import GridOffset from '../../ui/src/components/layout/examples/offset'
 import GridGrid from '../../ui/src/components/layout/examples/grid'
 import HeatmapBasic from '../../charts/src/components/heatmap/examples/basic'
 import HeatmapSchedule from '../../charts/src/components/heatmap/examples/schedule'
+import HeatmapChange from '../../charts/src/components/heatmap/examples/change'
 import HoverCardBasic from '../../ui/src/components/hover-card/examples/basic'
 import IconButtonBasic from '../../ui/src/components/icon-button/examples/basic'
 import IconButtonVariants from '../../ui/src/components/icon-button/examples/variants'
@@ -320,6 +321,7 @@ import VideoMutedLoop from '../../ui/src/components/video/examples/muted-loop'
 import VirtualListBasic from '../../data/src/components/virtual-list/examples/basic'
 import VirtualListLoadMore from '../../data/src/components/virtual-list/examples/load-more'
 import VirtualListVariableHeights from '../../data/src/components/virtual-list/examples/variable-heights'
+import VirtualListMeasured from '../../data/src/components/virtual-list/examples/measured'
 import VisuallyHiddenBasic from '../../ui/src/components/visually-hidden/examples/basic'
 import VisuallyHiddenSalePrice from '../../ui/src/components/visually-hidden/examples/sale-price'
 import WrapTags from '../../ui/src/components/layout/examples/tags'
@@ -578,6 +580,7 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   'heatmap': {
     'basic': HeatmapBasic,
     'schedule': HeatmapSchedule,
+    'change': HeatmapChange,
   },
   'hover-card': {
     'basic': HoverCardBasic,
@@ -898,6 +901,7 @@ export const examples: Record<string, Record<string, ComponentType>> = {
     'basic': VirtualListBasic,
     'load-more': VirtualListLoadMore,
     'variable-heights': VirtualListVariableHeights,
+    'measured': VirtualListMeasured,
   },
   'visually-hidden': {
     'basic': VisuallyHiddenBasic,

@@ -82,6 +82,17 @@ export default defineMeta({
           description: 'A card was pressed, or Enter pressed on it: open it here.',
         },
         {
+          name: 'onItemDragStart',
+          type: '(item: T) => void',
+          description:
+            'A card was picked up. On iOS and Android, stop a scroll view around the board that is not a ScrollArea or AppShell here (`scrollEnabled={false}`).',
+        },
+        {
+          name: 'onItemDragEnd',
+          type: '(item: T) => void',
+          description: 'A picked-up card was dropped or put back.',
+        },
+        {
           name: 'renderItem',
           type: '(item: T) => ReactNode',
           description:
@@ -174,8 +185,9 @@ export default defineMeta({
   ],
   platformNotes: {
     web: 'A mouse drags once it moves; a finger after holding still for a moment, so a swipe still scrolls the board. The board scrolls sideways near its edges while dragging.',
-    ios: 'A long press picks a card up and the finger drags it; the board stops scrolling meanwhile. A screen that scrolls around the board may still scroll during a drag. Not yet checked on a device.',
-    android: 'Same as iOS. Not yet checked on a device.',
+    ios: 'A long press picks a card up and the finger drags it. The board and the ScrollArea or AppShell around it stop scrolling until the finger lifts, so a quick first move drags the card. Stop any other scroll view around the board in `onItemDragStart`. Not yet checked on a device.',
+    android:
+      'Same as iOS. Checked on a phone before scroll views stopped during a drag: a quick first move scrolled the screen and cancelled the drag.',
   },
   related: ['list', 'card', 'data-table', 'event-calendar'],
 })
