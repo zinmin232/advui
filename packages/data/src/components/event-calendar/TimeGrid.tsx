@@ -164,6 +164,7 @@ export function TimeGrid({ days, height, scrollToHour, ...context }: TimeGridPro
     minuteHeight: hourPixels / 60,
     step: snapMinutes,
     columns,
+    events: nodes,
     scroller: scrollRef,
     canEdit,
     onPreview: setPreview,

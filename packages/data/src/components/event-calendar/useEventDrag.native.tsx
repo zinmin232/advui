@@ -124,10 +124,15 @@ export function useEventDrag(options: EventDragOptions) {
       onLongPress: (press: GestureResponderEvent) => {
         if (active.current || !handlers.current.canEdit(event)) return
         const { pageY } = press.nativeEvent
-        const target = press.currentTarget as unknown as Measurable | null
-        if (!target?.measure) return pickUp(event, day, 'move', pageY)
-        target.measure((_x, _y, _width, height, _pageX, top) => {
-          pickUp(event, day, pageY > top + height - edgeZone ? 'resize' : 'move', pageY)
+        pickUp(event, day, 'move', pageY)
+        // A press near the bottom edge changes the end instead: measured
+        // within a frame, before the finger moves. Not the press's
+        // currentTarget, which React Native clears before a long press fires.
+        const target = handlers.current.events.current.get(event.id) as Measurable | undefined
+        target?.measure?.((_x, _y, _width, height, _pageX, top) => {
+          if (active.current?.event === event && pageY > top + height - edgeZone) {
+            active.current.edit = 'resize'
+          }
         })
       },
       // A long press that lifts without moving: the grid never took the

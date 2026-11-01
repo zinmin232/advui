@@ -251,8 +251,10 @@ flings and a color mode switch takes twice as long.
       lets the screen's ScrollView take the gesture, and the drag is
       cancelled: `adb` moves of 15px kept the drag, 27px and more lost it.
       Fixed on 2026-11-01 by stopping the screen's scrolling at pickup (see
-      Kanban above); check a quick first move again on the phone, and an
-      `adb` move of 27px and more. Virtual List: no blank rows while flinging
+      Kanban above). On an Android 16 emulator (Medium Phone API 36) an `adb`
+      long press followed by a first move of 115px moved the card, and with
+      the scroll lock taken out the same gesture lost the drag; check it
+      again on the phone. Virtual List: no blank rows while flinging
       through the ten thousand rows on a production bundle, and Load more
       at the end loads pages up to “All 150 orders”. Infinite Scroll: pages
       load at the end up to the end message, and the failing page loads on
@@ -269,12 +271,19 @@ flings and a color mode switch takes twice as long.
       a status bar too high, Table of Contents kept “current” on the item
       before, and Transfer List's long list names pushed the count out: all
       fixed.
-- [ ] **Event Calendar: moving events.** Long-press an event in the week
-      view and drag it to another time and day, and near its bottom edge to
-      change its end; the screen and the hours must not scroll meanwhile.
-      Then TalkBack's Move actions on an event, by ear. Also Virtual List's
-      Rows that size themselves example (no blank rows or jumps while
-      scrolling up), and Time Picker's disabled options in its sheet.
+- [ ] **Event Calendar: moving events.** Checked on 2026-11-01 on an
+      Android 16 emulator (Medium Phone API 36, Expo Go 57) with `adb`
+      gestures: a long press and a quick first move took Sprint planning
+      from Friday 1 PM to Thursday 12 PM, and the screen did not scroll; a
+      long press on its bottom edge and a drag down ended it half an hour
+      later, after a fix (the press's `currentTarget` is gone by the time a
+      long press fires, so the event's own view is measured); the read-only
+      Release stayed put. Time Picker's 12-hour example disables 7 to 11 PM
+      in its sheet (`enabled="false"` in the accessibility tree), and Virtual
+      List's Rows that size themselves example wraps its messages and shows
+      no blank rows or jumps after a fling down and back up. Left: the same
+      drags on a phone with a finger, and TalkBack's Move actions on an
+      event, by ear.
 - [ ] **A phone with the stock font.** The TECNO's system font replaces
       monospace in every app, so Code Block, `Text mono` and Kbd were never
       seen monospaced on Android.

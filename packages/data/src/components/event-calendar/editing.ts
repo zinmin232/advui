@@ -66,6 +66,8 @@ export interface EventDragOptions {
   step: number
   /** The shown days' columns, in order: the day under the pointer is the nearest. */
   columns: RefObject<(TamaguiElement | null)[]>
+  /** Each movable event's view, by id: measured to find a press on its bottom edge (native). */
+  events: RefObject<Map<string, TamaguiElement>>
   /** The scrolling hours, scrolled when a drag nears their top or bottom (web). */
   scroller: RefObject<TamaguiElement | null>
   canEdit: (event: CalendarEvent) => boolean
