@@ -6,7 +6,15 @@ export default function TimePickerTwelveHour() {
   return (
     <VStack gap="2">
       <Field label="Pickup">
-        <TimePicker value={time} onValueChange={setTime} hourCycle={12} minuteStep={15} size="sm" />
+        <TimePicker
+          value={time}
+          onValueChange={setTime}
+          hourCycle={12}
+          minuteStep={15}
+          min="08:00"
+          max="18:00"
+          size="sm"
+        />
       </Field>
       <Text size="sm" tone="muted">
         Value: {time ?? 'none'}

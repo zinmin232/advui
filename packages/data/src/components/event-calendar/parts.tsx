@@ -1,6 +1,7 @@
 import { type ReactNode, useMemo } from 'react'
 import { type ColorTokens, type GetProps, View, isWeb, styled } from 'tamagui/unstyled'
 import { VisuallyHidden, useRipple } from '@advui/core'
+import type { CalendarEventChange } from './editing'
 import type { CalendarEvent, CalendarEventTone } from './events'
 
 export type EventCalendarView = 'month' | 'week' | 'day' | 'agenda'
@@ -30,6 +31,17 @@ export interface EventCalendarLabels {
   more: (count: number) => string
   /** The agenda of a month with no events. */
   noEvents: string
+  /**
+   * Read with each event that can be moved (web): how to move it with the
+   * keyboard. `acrossDays` in the week view, where Left and Right change its day.
+   */
+  editInstructions: (minutes: number, acrossDays: boolean) => string
+  /** Screen reader actions on iOS and Android, for events that can be moved. */
+  moveEarlier: (minutes: number) => string
+  moveLater: (minutes: number) => string
+  moveToDay: (day: string) => string
+  endEarlier: (minutes: number) => string
+  endLater: (minutes: number) => string
 }
 
 export const defaultLabels: EventCalendarLabels = {
@@ -51,6 +63,13 @@ export const defaultLabels: EventCalendarLabels = {
   events: (count) => (count === 0 ? 'no events' : count === 1 ? '1 event' : `${count} events`),
   more: (count) => `${count} more`,
   noEvents: 'No events this month',
+  editInstructions: (minutes, acrossDays) =>
+    `Up and Down arrows move it by ${minutes} minutes${acrossDays ? ', Left and Right to another day' : ''}. With Shift, Up and Down change when it ends.`,
+  moveEarlier: (minutes) => `Move ${minutes} minutes earlier`,
+  moveLater: (minutes) => `Move ${minutes} minutes later`,
+  moveToDay: (day) => `Move to ${day}`,
+  endEarlier: (minutes) => `End ${minutes} minutes earlier`,
+  endLater: (minutes) => `End ${minutes} minutes later`,
 }
 
 /** Soft fills with their text color, and a solid dot for small screens. */
@@ -96,6 +115,12 @@ export interface ViewContext {
   openDay: ((day: Date) => void) | null
   onEventPress: ((event: CalendarEvent) => void) | null
   eventLabel: (event: CalendarEvent) => string
+  /** Makes timed events in the week and day views movable. */
+  onEventChange: ((change: CalendarEventChange) => void) | null
+  /** Minutes moved times snap to. */
+  snapMinutes: number
+  /** The time on the current-time line; the clock when not set. */
+  now: Date | undefined
 }
 
 /** A web-only role: iOS and Android have no table or group roles. */
@@ -165,18 +190,22 @@ export interface EventButtonProps extends Omit<GetProps<typeof EventFrame>, 'onP
   event: CalendarEvent
   label: string
   onPress: ((event: CalendarEvent) => void) | null
+  /** A button even with no `onPress`: an event that can be moved. */
+  focusable?: boolean
   children: ReactNode
 }
 
 /**
- * An event: a button when `onEventPress` is set, else its name in hidden
- * text, with what it shows hidden from screen readers.
+ * An event: a button when `onEventPress` is set or it can be moved, else its
+ * name in hidden text, with what it shows hidden from screen readers.
  */
 export function EventButton({
   event,
   label,
   onPress,
+  focusable = false,
   variant = 'chip',
+  onPressOut,
   children,
   ...props
 }: EventButtonProps) {
@@ -185,6 +214,8 @@ export function EventButton({
     color: tone.color,
     radius: { borderRadius: variant === 'row' ? 'md' : 'sm', ...props },
     disabled: !onPress,
+    // A drag's own onPressOut runs too (native).
+    onPressOut: onPressOut as never,
   })
   const filled = variant !== 'row'
   const background = filled
@@ -192,7 +223,7 @@ export function EventButton({
     : onPress
       ? `transparent hover:accent${ripple.active ? '' : ' press:accentHover'}`
       : 'transparent'
-  if (!onPress) {
+  if (!onPress && !focusable) {
     return (
       <EventFrame variant={variant} backgroundColor={background as ColorTokens} {...props}>
         <VisuallyHidden>{label}</VisuallyHidden>
@@ -212,8 +243,8 @@ export function EventButton({
       {...buttonProps(label)}
       // After buttonProps, which clears a button's own background on web.
       backgroundColor={background as ColorTokens}
-      {...(filled && { opacity: ripple.active ? 'press:1' : 'hover:0.85 press:0.75' })}
-      onPress={() => onPress(event)}
+      {...(filled && onPress && { opacity: ripple.active ? 'press:1' : 'hover:0.85 press:0.75' })}
+      {...(onPress && { onPress: () => onPress(event) })}
       {...props}
       {...ripple.props}
     >

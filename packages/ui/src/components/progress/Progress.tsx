@@ -1,4 +1,5 @@
 import { type GetProps, View, isWeb, styled } from 'tamagui/unstyled'
+import { namedTransition } from '../../utils/transition'
 
 const Track = styled(View, {
   displayName: 'Progress',
@@ -26,7 +27,7 @@ const Indicator = styled(View, {
   displayName: 'ProgressIndicator',
   height: '100%',
   borderRadius: 'full',
-  transition: 'medium',
+  transition: namedTransition('medium', 'width, background-color, opacity'),
   variants: {
     tone: {
       primary: {

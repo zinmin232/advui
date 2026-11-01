@@ -1,5 +1,8 @@
+import { useState } from 'react'
+import { type Token, getTokenValue } from 'tamagui/unstyled'
 import { describe, expect, it, vi } from 'vitest'
-import { renderWithProvider, screen, within } from '../../../test/utils'
+import { act, fireEvent, renderWithProvider, screen, within } from '../../../test/utils'
+import { moveTimes, resizeTimes } from './editing'
 import { EventCalendar } from './EventCalendar'
 import { type CalendarEvent, placeEvents } from './events'
 
@@ -40,9 +43,13 @@ describe('EventCalendar', () => {
     const day = screen.getByRole('button', { name: 'Wednesday, October 28, 2026, 4 events' })
     expect(day).toHaveAttribute('aria-current', 'date')
     // Four events and room for three lines: two, then "+2 more".
-    expect(screen.getByRole('button', { name: '2 more, Wednesday, October 28, 2026' })).toBeVisible()
+    expect(
+      screen.getByRole('button', { name: '2 more, Wednesday, October 28, 2026' }),
+    ).toBeVisible()
     const standup = screen.getByRole('button', {
-      name: new RegExp(`^${time('Team standup, Wednesday, October 28, 2026, 9:00 AM to 9:30 AM')}$`),
+      name: new RegExp(
+        `^${time('Team standup, Wednesday, October 28, 2026, 9:00 AM to 9:30 AM')}$`,
+      ),
     })
     expect(screen.queryByRole('button', { name: /^Partner call/ })).toBeNull()
     // An all-day event shows on each of its days.
@@ -108,7 +115,9 @@ describe('EventCalendar', () => {
     await user.click(screen.getByRole('button', { name: 'Previous week' }))
     expect(screen.getByText('Oct 19 – Oct 25, 2026')).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Friday, October 23, 2026' }))
-    expect(screen.getByText('Friday, October 23, 2026', { selector: '[aria-live]' })).toBeInTheDocument()
+    expect(
+      screen.getByText('Friday, October 23, 2026', { selector: '[aria-live]' }),
+    ).toBeInTheDocument()
   }, 15_000)
 
   it('lists the month in the agenda, or says it has no events', async () => {
@@ -127,12 +136,153 @@ describe('EventCalendar', () => {
     // Without onEventPress, events are text with a full name for screen readers.
     expect(screen.queryByRole('button', { name: /Team standup/ })).toBeNull()
     expect(
-      screen.getByText(new RegExp(`^${time('Team standup, Wednesday, October 28, 2026, 9:00 AM')}`)),
+      screen.getByText(
+        new RegExp(`^${time('Team standup, Wednesday, October 28, 2026, 9:00 AM')}`),
+      ),
     ).toBeInTheDocument()
     expect(screen.queryByRole('radio', { name: 'Week' })).toBeNull()
     await user.click(screen.getByRole('button', { name: 'Next month' }))
     expect(screen.getByText('No events this month')).toBeInTheDocument()
   }, 15_000)
+
+  it('draws the current time as a line across today, in the week and day views', async () => {
+    const { container, user } = renderWithProvider(
+      <EventCalendar
+        locale="en-US"
+        events={events}
+        defaultView="week"
+        defaultDate={wednesday}
+        today={wednesday}
+        now={at(28, 10, 30)}
+      />,
+    )
+    const lines = container.querySelectorAll('.aui-event-calendar-now')
+    expect(lines).toHaveLength(1)
+    // 10:30 is 630 of the day's 1440 minutes, in Wednesday's column.
+    expect(lines[0]).toHaveStyle({ top: '43.75%' })
+    expect(screen.getByRole('group', { name: 'Wednesday, October 28, 2026' })).toContainElement(
+      lines[0] as HTMLElement,
+    )
+    await user.click(screen.getByRole('button', { name: 'Next week' }))
+    expect(container.querySelectorAll('.aui-event-calendar-now')).toHaveLength(0)
+  })
+
+  it('moves and resizes events with the arrow keys, announcing the new times', async () => {
+    const onEventChange = vi.fn()
+    function Editable() {
+      const [list, setList] = useState(events)
+      return (
+        <EventCalendar
+          locale="en-US"
+          events={list}
+          defaultView="week"
+          defaultDate={wednesday}
+          today={wednesday}
+          onEventChange={(change) => {
+            onEventChange(change)
+            setList((current) =>
+              current.map((event) =>
+                event.id === change.event.id
+                  ? { ...event, start: change.start, end: change.end }
+                  : event,
+              ),
+            )
+          }}
+        />
+      )
+    }
+    const { user } = renderWithProvider(<Editable />)
+    const standup = () => screen.getByRole('button', { name: /^Team standup/ })
+    expect(standup()).toHaveAccessibleDescription(/^Up and Down arrows move it by 15 minutes/)
+    // All-day events are not moved on the hours: with no onEventPress, they are text.
+    expect(screen.queryByRole('button', { name: /^Office closed/ })).toBeNull()
+    standup().focus()
+    await user.keyboard('{ArrowDown}')
+    expect(onEventChange).toHaveBeenLastCalledWith({
+      event: expect.objectContaining({ id: 'standup' }),
+      start: at(28, 9, 15),
+      end: at(28, 9, 45),
+    })
+    const status = screen.getByRole('status')
+    expect(status.textContent).toMatch(
+      new RegExp(time('Team standup, Wednesday, October 28, 2026, 9:15 AM to 9:45 AM')),
+    )
+    await user.keyboard('{Shift>}{ArrowDown}{/Shift}')
+    expect(onEventChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ start: at(28, 9, 15), end: at(28, 10) }),
+    )
+    // To Thursday: it mounts again in that column and keeps the focus.
+    await user.keyboard('{ArrowRight}')
+    expect(onEventChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ start: at(29, 9, 15), end: at(29, 10) }),
+    )
+    const thursday = screen.getByRole('group', { name: 'Thursday, October 29, 2026' })
+    expect(within(thursday).getByRole('button', { name: /^Team standup/ })).toHaveFocus()
+    // Never shorter than a step.
+    await user.keyboard('{Shift>}{ArrowUp}{ArrowUp}{ArrowUp}{ArrowUp}{/Shift}')
+    expect(onEventChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ start: at(29, 9, 15), end: at(29, 9, 30) }),
+    )
+  }, 15_000)
+
+  it('drags an event to a new time, and its bottom edge to a new end', async () => {
+    const onEventChange = vi.fn()
+    const onEventPress = vi.fn()
+    const { container } = renderWithProvider(
+      <EventCalendar
+        locale="en-US"
+        events={events}
+        defaultView="day"
+        defaultDate={wednesday}
+        today={wednesday}
+        onEventPress={onEventPress}
+        onEventChange={onEventChange}
+      />,
+    )
+    // happy-dom lays nothing out: a tall box, so the pointer is not near the edges that scroll.
+    const box = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+      ...{ x: 0, y: 0, left: 0, top: 0, right: 600, bottom: 1000, width: 600, height: 1000 },
+      toJSON: () => ({}),
+    })
+    const minute = getTokenValue('12' as Token, 'size') / 60
+    const block = screen.getByRole('button', { name: /^Map review/ })
+    const drag = (target: Element, dy: number) => {
+      act(() => {
+        fireEvent.pointerDown(target, { button: 0, pointerId: 1, clientX: 100, clientY: 200 })
+      })
+      act(() => {
+        window.dispatchEvent(
+          new PointerEvent('pointermove', { pointerId: 1, clientX: 100, clientY: 200 + dy }),
+        )
+      })
+      act(() => {
+        window.dispatchEvent(
+          new PointerEvent('pointerup', { pointerId: 1, clientX: 100, clientY: 200 + dy }),
+        )
+      })
+    }
+    // Half an hour later, snapped to the steps; a little more rounds away.
+    drag(block, 32 * minute)
+    expect(onEventChange).toHaveBeenLastCalledWith({
+      event: events[1],
+      start: at(28, 11, 30),
+      end: at(28, 12, 30),
+    })
+    // The click that ends a drag is not a press.
+    act(() => {
+      fireEvent.click(block)
+    })
+    expect(onEventPress).not.toHaveBeenCalled()
+    // The bottom edge is the last thing in the event.
+    drag(block.lastElementChild!, 45 * minute)
+    expect(onEventChange).toHaveBeenLastCalledWith({
+      event: events[1],
+      start: at(28, 11),
+      end: at(28, 12, 45),
+    })
+    expect(container.querySelector('.aui-event-calendar-now')).toBeNull()
+    box.mockRestore()
+  })
 
   it('takes its labels from `labels`', () => {
     renderWithProvider(
@@ -188,5 +338,23 @@ describe('placeEvents', () => {
       ['late', 0, 120],
       ['short', 1420, 1440],
     ])
+  })
+})
+
+describe('moveTimes and resizeTimes', () => {
+  const event = { id: 'a', title: 'A', start: at(28, 9, 7), end: at(28, 10, 7) }
+
+  it('move a start onto the steps, keep the length, and stay on the day', () => {
+    expect(moveTimes(event, 20, 0, 15)).toEqual({ start: at(28, 9, 30), end: at(28, 10, 30) })
+    expect(moveTimes(event, 0, 1, 15)).toEqual({ start: at(29, 9), end: at(29, 10) })
+    expect(moveTimes(event, -24 * 60, 0, 15)).toEqual({ start: at(28, 0), end: at(28, 1) })
+    // The latest start is a step before midnight.
+    expect(moveTimes(event, 24 * 60, 0, 15).start).toEqual(at(28, 23, 45))
+  })
+
+  it('move an end onto the steps, a step after the start and by midnight at the latest', () => {
+    expect(resizeTimes(event, 50, 15)).toEqual({ start: at(28, 9, 7), end: at(28, 11) })
+    expect(resizeTimes(event, -120, 15).end).toEqual(at(28, 9, 22))
+    expect(resizeTimes(event, 24 * 60, 15).end).toEqual(at(29, 0))
   })
 })

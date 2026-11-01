@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui/unstyled'
+import { namedTransition } from '../../utils/transition'
 
 const MeterTrack = styled(View, {
   displayName: 'Meter',
@@ -27,7 +28,7 @@ const MeterIndicator = styled(View, {
   displayName: 'MeterIndicator',
   height: '100%',
   borderRadius: 'full',
-  transition: 'medium',
+  transition: namedTransition('medium', 'width, background-color'),
   variants: {
     tone: {
       primary: {

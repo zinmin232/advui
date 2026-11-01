@@ -19,6 +19,7 @@ import type {
   DropdownMenuRadioItemProps,
 } from './types'
 import { ariaState } from '../../utils/ariaState'
+import { transformOpacity } from '../../utils/transition'
 
 // iOS / Android menu, shared by Dropdown Menu and Context Menu (their
 // `.native.tsx` files add the trigger). Native menus need a native module (not
@@ -64,7 +65,7 @@ function Content({ children }: DropdownMenuContentProps) {
       <Sheet.Overlay
         backgroundColor="overlay"
         opacity="enter:0 exit:0"
-        transition={reducedMotion ? undefined : 'quick'}
+        transition={transformOpacity(reducedMotion ? undefined : 'quick')}
       />
       <SheetHandle />
       <Sheet.Container paddingHorizontal="2" paddingTop="2" paddingBottom="8" maxHeight={maxHeight}>

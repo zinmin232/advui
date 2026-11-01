@@ -11,12 +11,14 @@ const ParentScrollView = (ScrollView as unknown as { Context: Context<unknown> }
 
 /**
  * Native: React Native's FlatList, which keeps its own window of rows. The
- * frame takes the style props (height, border…) and the list fills it.
+ * frame takes the style props (height, border…) and the list fills it. Rows
+ * that size themselves are measured by FlatList as it draws them.
  */
 export function VirtualList<T>({
   data,
   renderItem,
   itemHeight,
+  estimatedItemHeight: _estimatedItemHeight,
   getItemKey,
   overscan: _overscan,
   initialCount = 10,
@@ -29,7 +31,10 @@ export function VirtualList<T>({
   'aria-label': label,
   ...props
 }: VirtualListProps<T>) {
-  const offsets = useMemo(() => itemOffsets(data.length, itemHeight), [data.length, itemHeight])
+  const offsets = useMemo(
+    () => (itemHeight === undefined ? null : itemOffsets(data.length, itemHeight)),
+    [data.length, itemHeight],
+  )
   return (
     <View ref={ref} {...props}>
       <ParentScrollView.Provider value={null}>
@@ -37,17 +42,24 @@ export function VirtualList<T>({
           data={data}
           // `flex: 1` fills the frame, whatever height it is given.
           style={{ flex: 1 }}
-          renderItem={({ item, index }) => (
-            <View height={heightOf(itemHeight, index)}>{renderItem(item, index)}</View>
-          )}
+          renderItem={({ item, index }) =>
+            itemHeight === undefined ? (
+              <View>{renderItem(item, index)}</View>
+            ) : (
+              <View height={heightOf(itemHeight, index)}>{renderItem(item, index)}</View>
+            )
+          }
           keyExtractor={(item, index) => String(getItemKey ? getItemKey(item, index) : index)}
           // Known heights: FlatList places rows without measuring them, and
-          // scrolls straight to any of them.
-          getItemLayout={(_, index) => ({
-            length: heightOf(itemHeight, index),
-            offset: offsets[index]!,
-            index,
-          })}
+          // scrolls straight to any of them. Otherwise it measures them.
+          {...(itemHeight !== undefined &&
+            offsets && {
+              getItemLayout: (_: unknown, index: number) => ({
+                length: heightOf(itemHeight, index),
+                offset: offsets[index]!,
+                index,
+              }),
+            })}
           initialNumToRender={initialCount}
           onEndReached={onEndReached ? () => onEndReached() : undefined}
           onEndReachedThreshold={onEndReachedThreshold}

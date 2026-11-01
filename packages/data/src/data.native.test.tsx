@@ -1,6 +1,6 @@
 import { describe, expect, it, jest } from '@jest/globals'
 import { act, fireEvent, screen } from '@testing-library/react-native'
-import { Text } from '@advui/core'
+import { ScrollArea, Text } from '@advui/core'
 import { PlusIcon } from '@advui/icons'
 import { useState } from 'react'
 import { AccessibilityInfo, ScrollView, StyleSheet } from 'react-native'
@@ -271,6 +271,26 @@ describe('@advui/data native rendering', () => {
     expect(onEndReached).toHaveBeenCalledTimes(1)
   })
 
+  it('VirtualList leaves rows that size themselves for FlatList to measure', async () => {
+    const rows = Array.from({ length: 200 }, (_, i) => ({ id: `r${i}`, name: `Row ${i + 1}` }))
+    await renderNative(
+      <VirtualList
+        aria-label="Messages"
+        height="80"
+        data={rows}
+        initialCount={5}
+        getItemKey={(row) => row.id}
+        renderItem={(row) => <Text>{row.name}</Text>}
+      />,
+    )
+    // No getItemLayout: FlatList lays out each row it draws and keeps its size.
+    expect(screen.getByLabelText('Messages').props.getItemLayout).toBeUndefined()
+    expect(screen.getByText('Row 5')).toBeOnTheScreen()
+    expect(screen.queryByText('Row 150')).toBeNull()
+    const row = screen.getByText('Row 1').parent
+    expect(StyleSheet.flatten(row?.props.style)?.height).toBeUndefined()
+  })
+
   it('InfiniteScroll loads near the end of its ScrollView and announces the new items', async () => {
     const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility')
     const onLoadMore = jest.fn()
@@ -352,6 +372,64 @@ describe('@advui/data native rendering', () => {
     expect(onEventPress).toHaveBeenCalledWith(expect.objectContaining({ id: 'standup' }))
   })
 
+  it('EventCalendar moves events with screen reader actions, and a long press stops the scrolling', async () => {
+    const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility')
+    const onEventChange = jest.fn()
+    await renderNative(
+      <ScrollArea aria-label="Screen">
+        <EventCalendar
+          locale="en-US"
+          events={[
+            {
+              id: 'standup',
+              title: 'Team standup',
+              start: new Date(2026, 9, 28, 9),
+              end: new Date(2026, 9, 28, 9, 30),
+            },
+          ]}
+          defaultView="week"
+          defaultDate={new Date(2026, 9, 28)}
+          today={new Date(2026, 9, 28)}
+          onEventChange={onEventChange}
+        />
+      </ScrollArea>,
+    )
+    // With onEventChange alone, the event is a button for its actions.
+    const event = screen.getByRole('button', { name: /^Team standup/ })
+    expect(
+      event.props.accessibilityActions.map((action: { label: string }) => action.label),
+    ).toEqual([
+      'Move 15 minutes earlier',
+      'Move 15 minutes later',
+      'Move to Tuesday',
+      'Move to Thursday',
+      'End 15 minutes earlier',
+      'End 15 minutes later',
+    ])
+    await fireEvent(event, 'accessibilityAction', { nativeEvent: { actionName: 'nextDay' } })
+    expect(onEventChange).toHaveBeenLastCalledWith({
+      event: expect.objectContaining({ id: 'standup' }),
+      start: new Date(2026, 9, 29, 9),
+      end: new Date(2026, 9, 29, 9, 30),
+    })
+    expect(announce).toHaveBeenLastCalledWith(
+      expect.stringMatching(/^Team standup, Thursday, October 29, 2026, 9:00\sAM to 9:30\sAM$/),
+    )
+
+    // A long press picks it up: the screen and the hours stop scrolling until it is let go.
+    const scrolls = () => screen.getByLabelText('Screen').props.scrollEnabled !== false
+    await fireEvent(event, 'longPress', { nativeEvent: { pageX: 20, pageY: 20 } })
+    expect(scrolls()).toBe(false)
+    await fireEvent(screen.getByRole('button', { name: /^Team standup/ }), 'pressOut')
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0))
+    })
+    expect(scrolls()).toBe(true)
+    // Let go where it was: no change.
+    expect(onEventChange).toHaveBeenCalledTimes(1)
+    announce.mockRestore()
+  })
+
   it('Kanban cards have screen reader actions, and a long press picks one up', async () => {
     const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility')
     const focus = jest.spyOn(AccessibilityInfo, 'sendAccessibilityEvent')
@@ -420,5 +498,41 @@ describe('@advui/data native rendering', () => {
     expect(onItemMove).toHaveBeenCalledTimes(1)
     announce.mockRestore()
     focus.mockRestore()
+  })
+
+  it('Kanban stops the scroll views around the board from pickup, before the finger moves', async () => {
+    const onItemDragStart = jest.fn()
+    const onItemDragEnd = jest.fn()
+    await renderNative(
+      <ScrollArea aria-label="Screen">
+        <ScrollArea aria-label="Section">
+          <Kanban
+            aria-label="Sprint"
+            defaultValue={[
+              { id: 'todo', title: 'To do', items: [{ id: 'a', title: 'Write the report' }] },
+              { id: 'done', title: 'Done', items: [] },
+            ]}
+            onItemDragStart={onItemDragStart}
+            onItemDragEnd={onItemDragEnd}
+          />
+        </ScrollArea>
+      </ScrollArea>,
+    )
+    const scrollEnabled = () =>
+      ['Screen', 'Section', 'Sprint'].map(
+        (name) => screen.getByLabelText(name).props.scrollEnabled !== false,
+      )
+    expect(scrollEnabled()).toEqual([true, true, true])
+    await fireEvent(screen.getByRole('button', { name: 'Write the report' }), 'longPress', {
+      nativeEvent: { pageX: 20, pageY: 20, locationX: 10, locationY: 10 },
+    })
+    expect(scrollEnabled()).toEqual([false, false, false])
+    expect(onItemDragStart).toHaveBeenCalledWith(expect.objectContaining({ id: 'a' }))
+    await fireEvent(screen.getByRole('button', { name: 'Write the report' }), 'pressOut')
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0))
+    })
+    expect(scrollEnabled()).toEqual([true, true, true])
+    expect(onItemDragEnd).toHaveBeenCalledTimes(1)
   })
 })

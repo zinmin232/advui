@@ -15,6 +15,8 @@ export interface CalendarEvent {
   allDay?: boolean
   /** Color. Default `primary`. */
   tone?: CalendarEventTone
+  /** Not moved or resized, even with `onEventChange`. */
+  readOnly?: boolean
 }
 
 const hour = 60 * 60_000

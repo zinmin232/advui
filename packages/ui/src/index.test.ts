@@ -79,6 +79,7 @@ describe('@advui/core public API', () => {
       // Deprecated alias of useParentForm.
       'useFormStatus',
       'useRipple',
+      'useScrollLock',
     ])
       expect(core).toHaveProperty(name)
   })

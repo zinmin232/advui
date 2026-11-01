@@ -35,6 +35,34 @@ one version.
   base `update` merges against. `pnpm registry:build` writes the folder for
   the current version once and leaves it alone afterwards, so it keeps what
   was released while the latest files move on with `main`.
+- **`useScrollLock`** (core): stops the ScrollAreas and AppShell Main around a
+  component on iOS and Android while a finger drags something in them, and
+  returns the release. Call it when the drag starts, before the finger moves.
+- **Kanban: `onItemDragStart` and `onItemDragEnd`**, called when a card is
+  picked up and when it is dropped or put back.
+- **Event Calendar: moving events.** With `onEventChange`, timed events in
+  the week and day views move to another time or day by dragging (a long
+  press first on touch screens), and their bottom edge changes when they end.
+  Times snap to `snapMinutes` (default 15). The arrow keys do the same on web
+  (Shift with Up and Down for the end), and screen reader actions on iOS and
+  Android ("Move 15 minutes later", "Move to Thursday"); each change is
+  announced. `readOnly` on an event keeps it in place. Called with
+  `{ event, start, end }` (`CalendarEventChange`).
+- **Event Calendar: a current-time line** across today in the week and day
+  views, moved each minute. It is drawn after the first render, so server
+  markup matches; `now` holds it at a fixed time.
+- **Time Picker: `min` and `max`** (`"HH:mm"`): earlier and later options are
+  disabled, and a pick that leaves the time outside them moves it to the
+  nearest one allowed. **Date Time Picker**'s `min` and `max` now limit the
+  times on their days as well as the days.
+- **Heatmap: a diverging scale.** `scale="diverging"` shades `negativeColor`
+  (default `chart2`) below `midpoint` (default 0) and `color` above it,
+  darker further away, in round steps that are the same on both sides.
+- **Virtual List: rows that size themselves.** Leave out `itemHeight` and
+  rows are measured as they are drawn, with `estimatedItemHeight` (default
+  48) until then; on web, when a row above the view changes height, the list
+  scrolls by as much, so what is in view stays put. On iOS and Android,
+  FlatList measures the rows.
 
 ### Changed
 
@@ -43,6 +71,17 @@ one version.
   near the bottom of Main was hidden behind the keyboard on Android. Turn it
   off with `avoidKeyboard={false}` if your app already avoids the keyboard
   around the shell.
+- **Kanban: a quick first move drags the card** on iOS and Android. Picking a
+  card up now stops the ScrollArea or AppShell around the board, so the
+  screen no longer takes the gesture and cancels the drag. Stop any other
+  scroll view around the board in `onItemDragStart`.
+- **Heatmap legends with negative values** read "-20 to -10" instead of
+  "-20–-10".
+- **Every style transition names the properties it animates** (Accordion,
+  Dialog, Alert Dialog and Drawer overlays, the sheets' overlays, Snackbar,
+  Meter, Progress), so none animates border widths, which React Native's
+  native animation driver does not take. Only the sheets' position spring
+  still takes a preset.
 
 ## [0.14.0] - 2026-10-31
 

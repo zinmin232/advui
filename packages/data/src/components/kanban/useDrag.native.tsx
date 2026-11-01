@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { type GestureResponderEvent, type LayoutChangeEvent, PanResponder } from 'react-native'
+import { useScrollLock } from '@advui/core'
 import { type DragOptions, type DragOverlay, type Rect, placeAt } from './place'
 
 type Measurable = { measure?: (callback: (...rect: number[]) => void) => void }
@@ -14,8 +15,12 @@ const measureColumn = (node: Measurable | undefined, done: (rect: Rect) => void)
 /**
  * Native: a long press picks the card up. From then on the board claims each
  * move before the card or a scroll view can (as Color Picker's guard does),
- * until the finger lifts. Columns are measured in the window when the drag
- * starts; cards report their place in their column as they lay out.
+ * until the finger lifts. It claims a move only after Android's native scroll
+ * views have seen it, so a quick first move would scroll the screen and cancel
+ * the drag: the pickup also stops the Adv UI scroll views around the board
+ * (useScrollLock) before the finger moves. Columns are measured in the window
+ * when the drag starts; cards report their place in their column as they lay
+ * out.
  */
 export function useDrag(options: DragOptions) {
   const handlers = useRef(options)
@@ -23,6 +28,8 @@ export function useDrag(options: DragOptions) {
   const [overlay, setOverlay] = useState<DragOverlay | null>(null)
   const active = useRef<{ itemId: string; overlay: DragOverlay } | null>(null)
   const claimed = useRef(false)
+  const lockScroll = useScrollLock()
+  const releaseScroll = useRef<(() => void) | null>(null)
   const columnRects = useRef(new Map<string, Rect>())
   const cardLayouts = useRef(new Map<string, Rect>())
   // The card that lists each card: its place is relative to that column.
@@ -39,6 +46,8 @@ export function useDrag(options: DragOptions) {
     if (!active.current) return
     active.current = null
     claimed.current = false
+    releaseScroll.current?.()
+    releaseScroll.current = null
     setOverlay(null)
     if (drop) handlers.current.onDrop()
     else handlers.current.onCancel()
@@ -75,6 +84,7 @@ export function useDrag(options: DragOptions) {
   useEffect(
     () => () => {
       active.current = null
+      releaseScroll.current?.()
     },
     [],
   )
@@ -107,6 +117,7 @@ export function useDrag(options: DragOptions) {
         const width = cardLayouts.current.get(itemId)?.width ?? 0
         const next = { x: pageX, y: pageY, dx: locationX, dy: locationY, width }
         active.current = { itemId, overlay: next }
+        releaseScroll.current = lockScroll()
         handlers.current.onStart(itemId)
         setOverlay(next)
       },

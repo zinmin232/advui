@@ -49,6 +49,18 @@ export default defineMeta({
           description: 'Minutes between options.',
         },
         {
+          name: 'min',
+          type: 'string | null',
+          description:
+            'Earliest `"HH:mm"` that can be picked. Earlier options are disabled, and a pick that leaves the time earlier moves it to the first one allowed.',
+        },
+        {
+          name: 'max',
+          type: 'string | null',
+          description:
+            'Latest `"HH:mm"` that can be picked, on the same day as `min` (no ranges past midnight).',
+        },
+        {
           name: 'id',
           type: 'string',
           description: 'Goes on the hour select, so a Field’s label targets it.',

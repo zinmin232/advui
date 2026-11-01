@@ -53,7 +53,11 @@ const Content = forwardRef<TamaguiElement, AlertDialogContentProps>(function Ale
           a plain component, and a styled wrapper keeps it mounted after it
           closes; on native a styled wrapper also drops enter and exit values,
           so nothing animated. */}
-      <TamaguiAlertDialog.Overlay key="overlay" {...overlayStyle} transition={transition} />
+      <TamaguiAlertDialog.Overlay
+        key="overlay"
+        {...overlayStyle}
+        transition={transformOpacity(transition)}
+      />
       <TamaguiAlertDialog.Content
         key="content"
         ref={ref}

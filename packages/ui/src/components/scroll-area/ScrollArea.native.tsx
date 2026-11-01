@@ -11,6 +11,7 @@ import {
 } from 'react'
 import { ScrollView, type TamaguiElement, useComposedRefs, validStyles } from 'tamagui/unstyled'
 import { KeyboardAvoidanceContext, useKeyboardAvoidance } from '../../hooks/useKeyboardAvoidance'
+import { ScrollLockContext, useScrollLockState } from '../../hooks/useScrollLock'
 import { Sticky, type StickyProps } from '../sticky/Sticky'
 import type { ScrollAreaProps } from './ScrollArea'
 
@@ -70,35 +71,40 @@ export const ScrollArea = forwardRef<TamaguiElement, ScrollAreaProps>(function S
   const scrollRef = useRef<TamaguiElement>(null)
   const composedRef = useComposedRefs(ref, scrollRef)
   const keyboard = useKeyboardAvoidance(scrollRef, avoidKeyboard)
+  const scrollLock = useScrollLockState()
   return (
     // Around the ScrollView, not its children, which sticky headers index.
     <KeyboardAvoidanceContext.Provider value={keyboard.context}>
-      <ScrollView
-        ref={composedRef as never}
-        horizontal={horizontal}
-        showsHorizontalScrollIndicator={horizontal}
-        showsVerticalScrollIndicator={!horizontal}
-        // Android: without it, a ScrollArea inside a scrolling screen never
-        // scrolls; the screen takes every vertical drag.
-        nestedScrollEnabled
-        // React Native maps aria-label on View only; its ScrollView drops it.
-        accessibilityLabel={label}
-        {...(pinned && {
-          stickyHeaderIndices: pinned.indices,
-          contentContainerStyle: pinned.style,
-        })}
-        {...(keyboard.avoid && {
-          // iOS insets the content by the keyboard and scrolls the focused field into view.
-          automaticallyAdjustKeyboardInsets: true,
-          // A tap on a button while the keyboard is up presses it, not only closes the keyboard.
-          keyboardShouldPersistTaps: 'handled' as const,
-        })}
-        {...(props as object)}
-        // Android: ends where the keyboard starts (useKeyboardAvoidance).
-        {...(keyboard.inset > 0 && { marginBottom: keyboard.inset })}
-      >
-        {pinned ? pinned.inner : children}
-      </ScrollView>
+      <ScrollLockContext.Provider value={scrollLock.lock}>
+        <ScrollView
+          ref={composedRef as never}
+          horizontal={horizontal}
+          showsHorizontalScrollIndicator={horizontal}
+          showsVerticalScrollIndicator={!horizontal}
+          // Android: without it, a ScrollArea inside a scrolling screen never
+          // scrolls; the screen takes every vertical drag.
+          nestedScrollEnabled
+          // React Native maps aria-label on View only; its ScrollView drops it.
+          accessibilityLabel={label}
+          {...(pinned && {
+            stickyHeaderIndices: pinned.indices,
+            contentContainerStyle: pinned.style,
+          })}
+          {...(keyboard.avoid && {
+            // iOS insets the content by the keyboard and scrolls the focused field into view.
+            automaticallyAdjustKeyboardInsets: true,
+            // A tap on a button while the keyboard is up presses it, not only closes the keyboard.
+            keyboardShouldPersistTaps: 'handled' as const,
+          })}
+          {...(props as object)}
+          // Android: ends where the keyboard starts (useKeyboardAvoidance).
+          {...(keyboard.inset > 0 && { marginBottom: keyboard.inset })}
+          // Something inside is being dragged (useScrollLock).
+          {...(scrollLock.locked && { scrollEnabled: false })}
+        >
+          {pinned ? pinned.inner : children}
+        </ScrollView>
+      </ScrollLockContext.Provider>
     </KeyboardAvoidanceContext.Provider>
   )
 })

@@ -20,6 +20,7 @@ import {
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { transformOpacity } from '../../utils/transition'
 import { IconButton } from '../icon-button/IconButton'
 import { Text, type TextProps } from '../typography/Text'
 import { SheetHandle } from './SheetHandle'
@@ -175,7 +176,7 @@ function SheetContent({
       <TamaguiSheet.Overlay
         backgroundColor="overlay"
         opacity="enter:0 exit:0"
-        transition={reducedMotion ? undefined : 'quick'}
+        transition={transformOpacity(reducedMotion ? undefined : 'quick')}
       />
       <SheetHandle />
       <TamaguiSheet.Container paddingTop="6" paddingRight="6" paddingLeft="6" paddingBottom="8">

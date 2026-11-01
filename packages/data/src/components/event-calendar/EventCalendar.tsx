@@ -4,6 +4,7 @@ import { type GetProps, type TamaguiElement, View, XStack, styled } from 'tamagu
 import { Button, IconButton, Text, ToggleGroup, useControllableState } from '@advui/core'
 import { AgendaView } from './AgendaView'
 import { addDays, addMonths, isSameDay, startOfDay, weekDays } from './dates'
+import type { CalendarEventChange } from './editing'
 import { type CalendarEvent, eventEnd } from './events'
 import { MonthView } from './MonthView'
 import {
@@ -41,6 +42,17 @@ export interface EventCalendarProps extends Omit<
   /** Makes events buttons. */
   onEventPress?: (event: CalendarEvent) => void
   /**
+   * Makes timed events in the week and day views movable: by dragging (a long
+   * press first on touch screens), by their bottom edge to change when they
+   * end, with the arrow keys, or with screen reader actions. Called with the
+   * new times; update `events` with them.
+   */
+  onEventChange?: (change: CalendarEventChange) => void
+  /** Minutes that moved times snap to. Default 15. */
+  snapMinutes?: number
+  /** The time on the current-time line across today. Default: the clock, each minute. */
+  now?: Date
+  /**
    * Called when a day is pressed: a month day's number, or a week day's
    * heading. With the day view among `views`, that day opens there too.
    */
@@ -75,6 +87,9 @@ export const EventCalendar = forwardRef<TamaguiElement, EventCalendarProps>(func
     defaultDate,
     onDateChange,
     onEventPress,
+    onEventChange,
+    snapMinutes = 15,
+    now,
     onDatePress,
     weekStartsOn = 0,
     locale,
@@ -137,6 +152,9 @@ export const EventCalendar = forwardRef<TamaguiElement, EventCalendarProps>(func
     openDay,
     onEventPress: onEventPress ?? null,
     eventLabel,
+    onEventChange: onEventChange ?? null,
+    snapMinutes,
+    now,
   }
 
   const week = weekDays(date, weekStartsOn)

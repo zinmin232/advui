@@ -18,6 +18,7 @@ import { useRipple } from '../../hooks/useRipple'
 import { Text } from '../typography/Text'
 import { ariaState } from '../../utils/ariaState'
 import { flatValue } from '../../utils/responsive'
+import { namedTransition, transformOpacity } from '../../utils/transition'
 import { isTextContent } from '../../utils/isTextContent'
 
 export type AccordionVariant = 'default' | 'card'
@@ -145,7 +146,7 @@ const AccordionTrigger = forwardRef<TamaguiElement, AccordionTriggerProps>(
             <View
               aria-hidden
               rotate={open ? '180deg' : '0deg'}
-              transition={reducedMotion ? undefined : 'quick'}
+              transition={transformOpacity(reducedMotion ? undefined : 'quick')}
             >
               <ChevronDownIcon size={16} color="mutedForeground" />
             </View>
@@ -180,7 +181,9 @@ const AccordionContent = forwardRef<TamaguiElement, AccordionContentProps>(
     const reducedMotion = useReducedMotion()
     const { contentId } = useContext(ItemContext)
     return (
-      <TamaguiAccordion.HeightAnimator transition={reducedMotion ? undefined : 'medium'}>
+      <TamaguiAccordion.HeightAnimator
+        transition={namedTransition(reducedMotion ? undefined : 'medium', 'height')}
+      >
         <TamaguiAccordion.Content
           ref={ref as never}
           id={contentId}
@@ -188,7 +191,7 @@ const AccordionContent = forwardRef<TamaguiElement, AccordionContentProps>(
           paddingBottom="4"
           paddingHorizontal={variant === 'card' ? '4' : '1'}
           opacity="exit:0"
-          transition={reducedMotion ? undefined : 'medium'}
+          transition={transformOpacity(reducedMotion ? undefined : 'medium')}
           {...props}
         >
           {isTextContent(children) ? <Text size="sm">{children}</Text> : children}

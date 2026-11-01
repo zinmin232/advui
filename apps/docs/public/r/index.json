@@ -220,7 +220,8 @@
       "status": "beta",
       "package": "@advui/data",
       "dependencies": [
-        "@advui/icons"
+        "@advui/icons",
+        "@advui/theme"
       ],
       "registryDependencies": [
         "button",
@@ -1450,7 +1451,9 @@
       "status": "beta",
       "package": "@advui/core",
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [
+        "utils"
+      ]
     },
     {
       "name": "multi-select",
@@ -1616,7 +1619,9 @@
       "status": "stable",
       "package": "@advui/core",
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [
+        "utils"
+      ]
     },
     {
       "name": "radio-group",
@@ -1763,7 +1768,8 @@
       "registryDependencies": [
         "hooks",
         "icon-button",
-        "typography"
+        "typography",
+        "utils"
       ]
     },
     {
@@ -1837,7 +1843,8 @@
         "@advui/theme"
       ],
       "registryDependencies": [
-        "hooks"
+        "hooks",
+        "utils"
       ]
     },
     {

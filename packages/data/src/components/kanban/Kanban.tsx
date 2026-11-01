@@ -125,6 +125,14 @@ export interface KanbanProps<T extends KanbanItem = KanbanItem> extends Omit<
   onItemMove?: (move: KanbanMove) => void
   /** Makes cards open on a press (or Enter). */
   onItemPress?: (item: T) => void
+  /**
+   * Called when a card is picked up. On iOS and Android, a board inside a
+   * scroll view that is not Adv UI's (ScrollArea, AppShell) should stop it
+   * here (`scrollEnabled={false}`), or a quick first move scrolls the screen.
+   */
+  onItemDragStart?: (item: T) => void
+  /** Called when a picked-up card is dropped or put back. */
+  onItemDragEnd?: (item: T) => void
   /** Draws a card's content. Default: its title and description. */
   renderItem?: (item: T) => ReactNode
   /** Width of each column. Default `72`. */
@@ -145,6 +153,8 @@ export function Kanban<T extends KanbanItem = KanbanItem>({
   onValueChange,
   onItemMove,
   onItemPress,
+  onItemDragStart,
+  onItemDragEnd,
   renderItem,
   columnWidth = '72',
   'aria-label': label,
@@ -223,6 +233,7 @@ export function Kanban<T extends KanbanItem = KanbanItem>({
     dragRef.current = next
     draggingId.current = itemId
     setDrag(next)
+    onItemDragStart?.(found.item)
     if (mode === 'keyboard') announce(labels.pickedUp(found.item.title, ...place(from, columns)))
   }
 
@@ -264,6 +275,7 @@ export function Kanban<T extends KanbanItem = KanbanItem>({
     const to = { columnId: current.columnId, index: current.index }
     const next = commit(current.itemId, current.from, to)
     const item = findItem(next, current.itemId)!.item
+    onItemDragEnd?.(item)
     announce(labels.dropped(item.title, ...place(to, next)))
     focusAfter.current = { id: current.itemId, scroll: current.mode === 'keyboard' }
   }
@@ -273,7 +285,9 @@ export function Kanban<T extends KanbanItem = KanbanItem>({
     if (!current) return
     dragRef.current = null
     setDrag(null)
-    announce(labels.cancelled(findItem(columns, current.itemId)!.item.title))
+    const item = findItem(columns, current.itemId)!.item
+    onItemDragEnd?.(item)
+    announce(labels.cancelled(item.title))
     if (current.columnId !== current.from.columnId) {
       focusAfter.current = { id: current.itemId, scroll: current.mode === 'keyboard' }
     }

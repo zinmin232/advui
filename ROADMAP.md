@@ -82,8 +82,8 @@ Notes for whoever picks these up:
 - **Date Time Picker** landed as a Date Picker and a Time Picker side by
   side rather than one panel with a calendar and time selects, so no
   overlay opens inside another (a sheet inside a sheet on phones). Its
-  `min` and `max` limit the days only: limiting the times on those days
-  needs a `min` and `max` on Time Picker first.
+  `min` and `max` limit the days, and the times on those two days through
+  Time Picker's own `min` and `max`.
 - **Tour** is built on Portal rather than Popover: it needs a dimmed
   screen with a hole at the target, and Popover becomes a bottom sheet on
   phones. Steps point at elements with refs. On iOS and Android targets are
@@ -100,26 +100,39 @@ Notes for whoever picks these up:
   radial bars and gauges (`variant`), rather than two. **Heatmap** takes the
   same wide rows as Bar Chart (one column per series) and shades one palette
   color in round steps rather than a gradient, so the legend can name each
-  shade's range; it has no diverging scale for negative values yet.
+  shade's range. `scale="diverging"` shades two colors away from a
+  `midpoint`, for changes, in steps that are the same on both sides.
   **Scatter Chart**'s points are found by distance, so a tap on a phone
   must land within about 16px of one. None was checked on a phone yet.
 - **Virtual List** takes known row heights (`itemHeight`, a number or a
   function of the index) rather than measuring rows, so FlatList can place
-  them without layout passes and web can size the scrollbar. Rows that size
-  themselves would need measuring first.
+  them without layout passes and web can size the scrollbar. Without
+  `itemHeight`, rows size themselves: web measures them as they are drawn
+  (an estimate until then) and keeps the view in place when a row above it
+  grows; FlatList measures them on iOS and Android.
 - **Infinite Scroll** wraps its items in a ScrollArea rather than watching
   the window, since iOS and Android have no page to scroll. For thousands of
   rows, Virtual List's `onEndReached` and `footer` do the same work.
 - **Event Calendar** has month, week, day and agenda views. A month day
   lists its events rather than drawing bars across days; on phones it shows
   dots, and the agenda suits phones best. Days and events are reached with
-  Tab, not arrow keys. It has no drag to move or resize events, and no
-  current-time line.
+  Tab, not arrow keys. With `onEventChange`, timed events in the week and
+  day views move by dragging, by their bottom edge, with the arrow keys or
+  with screen reader actions, as Kanban's cards do. A month day's events do
+  not move, and on iOS and Android a drag does not scroll the hours, so it
+  reaches the hours in view. A line marks the current time across today.
 - **Kanban** is `experimental`: dragging on iOS and Android (long press,
-  then the board claims the finger) works on an Android phone when the
-  finger starts slowly; a quick first move lets a screen that scrolls
-  around the board take the gesture and cancel the drag (Phase 10), as
-  React Native cannot stop it there without a gesture library. Screen
+  then the board claims the finger) worked on an Android phone only when the
+  finger started slowly: a quick first move let the screen's scroll view
+  take the gesture and cancel the drag. **Decided** on 2026-11-01: block the
+  screen's scrolling rather than take a gesture library. React Native's JS
+  responder claims a move only after Android's native scroll view has seen
+  it, but a scroll view whose `scrollEnabled` is off never takes it, and the
+  board's own ScrollArea already turned it off at pickup. So the pickup now
+  stops every ScrollArea and AppShell Main around the board as well
+  (`useScrollLock`), before the finger moves; apps with another scroll view
+  stop it in `onItemDragStart`. A gesture library would be a native
+  dependency and a root view every app must add, for one component. Screen
   readers move cards with actions on native and with the keyboard on web.
 
 ## Phase 10: open checks and decisions
@@ -192,8 +205,13 @@ flings and a color mode switch takes twice as long.
       so it never uses the native driver. Passing `useNativeDriver: true` to
       `createAnimations` would take these springs off the JS thread, but
       the native driver throws on styles it does not support (border
-      widths), so every `transition` must name its properties first; report
-      the check upstream.
+      widths), so every `transition` must name its properties first. Done
+      on 2026-11-01: every style transition names them (`namedTransition`,
+      `utils/transition.ts`); only the sheets' position spring takes a
+      preset. Left: turn on `useNativeDriver` and check the motion on a
+      phone (Jest cannot: native-driven values never move there), and report
+      the detection upstream, with `useAnimatedNumber`, which ignores the
+      option and moves the sheets.
 - [ ] **Visually Hidden: TalkBack by ear.** Seen on 2026-10-25 in light
       and dark mode: nothing shows where the hidden words are, after a fix
       (Android drew them in the text's color, since it reads `transparent`
@@ -232,9 +250,9 @@ flings and a color mode switch takes twice as long.
       more than Android's touch slop (about 8dp) before the board claims it
       lets the screen's ScrollView take the gesture, and the drag is
       cancelled: `adb` moves of 15px kept the drag, 27px and more lost it.
-      Decide whether to block the screen's scrolling (React Native's JS
-      responder only does it once the board is granted, which is too late)
-      or take a gesture library. Virtual List: no blank rows while flinging
+      Fixed on 2026-11-01 by stopping the screen's scrolling at pickup (see
+      Kanban above); check a quick first move again on the phone, and an
+      `adb` move of 27px and more. Virtual List: no blank rows while flinging
       through the ten thousand rows on a production bundle, and Load more
       at the end loads pages up to “All 150 orders”. Infinite Scroll: pages
       load at the end up to the end message, and the failing page loads on
@@ -251,6 +269,12 @@ flings and a color mode switch takes twice as long.
       a status bar too high, Table of Contents kept “current” on the item
       before, and Transfer List's long list names pushed the count out: all
       fixed.
+- [ ] **Event Calendar: moving events.** Long-press an event in the week
+      view and drag it to another time and day, and near its bottom edge to
+      change its end; the screen and the hours must not scroll meanwhile.
+      Then TalkBack's Move actions on an event, by ear. Also Virtual List's
+      Rows that size themselves example (no blank rows or jumps while
+      scrolling up), and Time Picker's disabled options in its sheet.
 - [ ] **A phone with the stock font.** The TECNO's system font replaces
       monospace in every app, so Code Block, `Text mono` and Kbd were never
       seen monospaced on Android.

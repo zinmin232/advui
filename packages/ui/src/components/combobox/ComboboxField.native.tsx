@@ -10,6 +10,7 @@ import { SheetHandle } from '../sheet/SheetHandle'
 import { Text } from '../typography/Text'
 import { type ComboboxFieldProps, type ComboboxOption, defaultFilter } from './options'
 import { ariaState } from '../../utils/ariaState'
+import { transformOpacity } from '../../utils/transition'
 
 const FieldBox = styled(XStack, {
   displayName: 'ComboboxField',
@@ -198,7 +199,7 @@ export const ComboboxField = forwardRef<TamaguiElement, ComboboxFieldProps>(
             <Sheet.Overlay
               backgroundColor="overlay"
               opacity="enter:0 exit:0"
-              transition={reducedMotion ? undefined : 'quick'}
+              transition={transformOpacity(reducedMotion ? undefined : 'quick')}
             />
             <SheetHandle />
             <Sheet.Container padding="4" gap="3">

@@ -30,6 +30,7 @@ import {
 } from '../../hooks/useAppShell'
 import { useControllableState } from '../../hooks/useControllableState'
 import { KeyboardAvoidanceContext, useKeyboardAvoidance } from '../../hooks/useKeyboardAvoidance'
+import { ScrollLockContext, useScrollLockState } from '../../hooks/useScrollLock'
 import { visuallyHidden } from '../../utils/visuallyHidden'
 import { Drawer } from '../drawer/Drawer'
 import { IconButton, type IconButtonProps } from '../icon-button/IconButton'
@@ -232,6 +233,7 @@ const AppShellMain = forwardRef<TamaguiElement, AppShellMainProps>(function AppS
   const { scrollingHeader, hasFooter, insets, avoidKeyboard } = useContext(AreaContext)
   const scrollRef = useRef<TamaguiElement>(null)
   const keyboard = useKeyboardAvoidance(scrollRef, avoidKeyboard)
+  const scrollLock = useScrollLockState()
   const main = (
     <MainFrame ref={ref} render="main" {...props}>
       {children}
@@ -247,24 +249,28 @@ const AppShellMain = forwardRef<TamaguiElement, AppShellMainProps>(function AppS
   }
   return (
     <KeyboardAvoidanceContext.Provider value={keyboard.context}>
-      <ScrollView
-        ref={scrollRef as never}
-        flex={1}
-        // Android: still scrolls when the shell sits inside a scrolling screen.
-        nestedScrollEnabled
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: hasFooter ? 0 : insets.bottom }}
-        {...(keyboard.avoid && {
-          // iOS insets the content by the keyboard and scrolls the focused field into view.
-          automaticallyAdjustKeyboardInsets: true,
-          // A tap on a button while the keyboard is up presses it, not only closes the keyboard.
-          keyboardShouldPersistTaps: 'handled' as const,
-        })}
-        // Android: ends where the keyboard starts; the footer stays under it, as on iOS.
-        {...(keyboard.inset > 0 && { marginBottom: keyboard.inset })}
-      >
-        {scrollingHeader}
-        {main}
-      </ScrollView>
+      <ScrollLockContext.Provider value={scrollLock.lock}>
+        <ScrollView
+          ref={scrollRef as never}
+          flex={1}
+          // Android: still scrolls when the shell sits inside a scrolling screen.
+          nestedScrollEnabled
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: hasFooter ? 0 : insets.bottom }}
+          {...(keyboard.avoid && {
+            // iOS insets the content by the keyboard and scrolls the focused field into view.
+            automaticallyAdjustKeyboardInsets: true,
+            // A tap on a button while the keyboard is up presses it, not only closes the keyboard.
+            keyboardShouldPersistTaps: 'handled' as const,
+          })}
+          // Android: ends where the keyboard starts; the footer stays under it, as on iOS.
+          {...(keyboard.inset > 0 && { marginBottom: keyboard.inset })}
+          // Something inside is being dragged (useScrollLock).
+          {...(scrollLock.locked && { scrollEnabled: false })}
+        >
+          {scrollingHeader}
+          {main}
+        </ScrollView>
+      </ScrollLockContext.Provider>
     </KeyboardAvoidanceContext.Provider>
   )
 })

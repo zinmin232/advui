@@ -1,9 +1,9 @@
 import { forwardRef, useContext, useId, useState } from 'react'
 import { type GetProps, type TamaguiElement, View, isWeb, styled } from 'tamagui/unstyled'
 import { FieldContext, useFieldControl } from '../../hooks/useFieldControl'
-import { startOfDay } from '../calendar/dates'
+import { isSameDay, startOfDay } from '../calendar/dates'
 import { DatePicker, type DatePickerProps } from '../date-picker/DatePicker'
-import { TimePicker, type TimePickerProps } from '../time-picker/TimePicker'
+import { TimePicker, type TimePickerProps, clampTime } from '../time-picker/TimePicker'
 
 const DateTimePickerFrame = styled(View, {
   displayName: 'DateTimePicker',
@@ -17,13 +17,18 @@ type Parts = { date: Date | null; time: string | null }
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
+const timeOf = (value: Date) => `${pad(value.getHours())}:${pad(value.getMinutes())}`
+
 function toParts(value: Date | null | undefined): Parts {
   if (!value) return { date: null, time: null }
-  return {
-    date: startOfDay(value),
-    time: `${pad(value.getHours())}:${pad(value.getMinutes())}`,
-  }
+  return { date: startOfDay(value), time: timeOf(value) }
 }
+
+/** The times that can be picked on a day: limited on the days of `min` and `max`. */
+const timeLimits = (date: Date | null, min?: Date, max?: Date) => ({
+  min: date && min && isSameDay(date, min) ? timeOf(min) : undefined,
+  max: date && max && isSameDay(date, max) ? timeOf(max) : undefined,
+})
 
 function toValue({ date, time }: Parts) {
   if (!date || !time) return null
@@ -130,6 +135,12 @@ export const DateTimePicker = forwardRef<TamaguiElement, DateTimePickerProps>(
 
     const update = (patch: Partial<Parts>) => {
       const next = { ...parts, ...patch }
+      // A time picked on another day can be outside the limits of the day of
+      // `min` or `max`: move it in, as Time Picker does.
+      if (next.time) {
+        next.time =
+          clampTime(next.time, { ...timeLimits(next.date, min, max), minuteStep }) ?? next.time
+      }
       setParts(next)
       const nextValue = toValue(next)
       if (!sameInstant(nextValue, toValue(parts))) onValueChange?.(nextValue)
@@ -179,6 +190,7 @@ export const DateTimePicker = forwardRef<TamaguiElement, DateTimePickerProps>(
             accessibilityHint={accessibilityHint}
             value={parts.time}
             onValueChange={(time) => update({ time })}
+            {...timeLimits(parts.date, min, max)}
             {...{ hourCycle, minuteStep, hourLabel, minuteLabel, periodLabel }}
           />
         </FieldContext.Provider>

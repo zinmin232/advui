@@ -106,7 +106,7 @@ function PopoverRoot({
               <Sheet.Overlay
                 backgroundColor="overlay"
                 opacity="enter:0 exit:0"
-                transition={reducedMotion ? undefined : 'quick'}
+                transition={transformOpacity(reducedMotion ? undefined : 'quick')}
               />
               <SheetHandle />
               <Sheet.Container

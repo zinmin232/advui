@@ -81,16 +81,29 @@ describe('Kanban', () => {
 
   it('puts a card back on Escape', async () => {
     const onItemMove = vi.fn()
+    const onItemDragStart = vi.fn()
+    const onItemDragEnd = vi.fn()
     const { user } = renderWithProvider(
-      <Kanban aria-label="Sprint" defaultValue={board()} onItemMove={onItemMove} />,
+      <Kanban
+        aria-label="Sprint"
+        defaultValue={board()}
+        onItemMove={onItemMove}
+        onItemDragStart={onItemDragStart}
+        onItemDragEnd={onItemDragEnd}
+      />,
     )
     screen.getByRole('button', { name: /^Write the report/ }).focus()
-    await user.keyboard(' {ArrowRight}{ArrowRight}')
+    await user.keyboard(' ')
+    expect(onItemDragStart).toHaveBeenCalledWith(expect.objectContaining({ id: 'a' }))
+    expect(onItemDragEnd).not.toHaveBeenCalled()
+    await user.keyboard('{ArrowRight}{ArrowRight}')
     expect(titles(/^Done/)).toEqual(['Write the reportDue Friday.', 'Kickoff'])
     await user.keyboard('{Escape}')
     expect(status()).toHaveTextContent('Write the report is back where it was.')
     expect(titles(/^To do/)).toEqual(['Write the reportDue Friday.', 'Clean the data'])
     expect(onItemMove).not.toHaveBeenCalled()
+    expect(onItemDragEnd).toHaveBeenCalledTimes(1)
+    expect(onItemDragEnd).toHaveBeenCalledWith(expect.objectContaining({ id: 'a' }))
     expect(screen.getByRole('button', { name: /^Write the report/ })).toHaveFocus()
   })
 

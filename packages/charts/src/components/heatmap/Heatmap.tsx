@@ -19,6 +19,28 @@ import {
 const GAP = 2
 const ROW_HEIGHT = 32
 
+/** Round edges from low to high, with the first count that gives `min` to `max` shades. */
+function stepEdges(low: number, high: number, [min, max]: [number, number]) {
+  return (
+    [min + 2, min + 3, min + 4, min + 5]
+      .map((count) => niceTicks(low, high, count))
+      .find((ticks) => ticks.length > min && ticks.length <= max + 1) ??
+    niceTicks(low, high, min + 2)
+  )
+}
+
+/** The step a value falls in: the top edge itself belongs to the last one. */
+function stepOf(edges: readonly number[], value: number) {
+  const above = edges.findIndex((edge) => value < edge)
+  return above === -1 ? edges.length - 2 : Math.max(0, above - 1)
+}
+
+// "−20 to −10" rather than "-20–-10", which reads as one number.
+const range = (from: number, to: number) =>
+  from < 0 || to < 0
+    ? `${formatCompact(from)} to ${formatCompact(to)}`
+    : `${formatCompact(from)}–${formatCompact(to)}`
+
 export type HeatmapColor =
   'chart1' | 'chart2' | 'chart3' | 'chart4' | 'chart5' | 'chart6' | 'chart7' | 'chart8'
 
@@ -38,8 +60,18 @@ export interface HeatmapProps<T extends object = Record<string, unknown>> {
   indexLabel?: string
   /** The numeric fields, one column of cells each. */
   series: readonly ChartSeries<NoInfer<keyof T & string>>[]
-  /** The palette color the steps are shades of. Default: `chart1`. */
+  /** The palette color the steps are shades of (above `midpoint` when diverging). Default: `chart1`. */
   color?: HeatmapColor
+  /**
+   * `sequential` shades one color, darker for more. `diverging` shades
+   * `negativeColor` below `midpoint` and `color` above it, darker further from
+   * it, for changes or values around a target. Default: `sequential`.
+   */
+  scale?: 'sequential' | 'diverging'
+  /** Diverging: the value where the two colors meet. Default: 0. */
+  midpoint?: number
+  /** Diverging: the palette color below `midpoint`. Default: `chart2`. */
+  negativeColor?: HeatmapColor
   /** Height in pixels. Default: 32 per row, plus the column labels. */
   height?: number
   /** Fixed width; by default the chart fills its container. */
@@ -53,7 +85,8 @@ export interface HeatmapProps<T extends object = Record<string, unknown>> {
 
 /**
  * Values across two categories as a grid of shaded cells, darker for more:
- * where activity concentrates by place and sector, or by day and hour. The
+ * where activity concentrates by place and sector, or by day and hour. A
+ * diverging scale shades two colors away from a midpoint, for changes. The
  * legend gives each shade's range; the tooltip (hover, tap or arrow keys in
  * two directions) and the table view give exact values.
  */
@@ -65,6 +98,9 @@ export function Heatmap<T extends object>({
   indexLabel = index,
   series,
   color = 'chart1',
+  scale = 'sequential',
+  midpoint = 0,
+  negativeColor = 'chart2',
   height: heightProp,
   width,
   valueFormatter = formatFull,
@@ -72,7 +108,8 @@ export function Heatmap<T extends object>({
   labels,
 }: HeatmapProps<T>) {
   const text = { noData: 'No data', ...textProp }
-  const fill = useChartColors()[Number(color.slice(5)) - 1] ?? 'currentColor'
+  const palette = useChartColors()
+  const colorOf = (key: HeatmapColor) => palette[Number(key.slice(5)) - 1] ?? 'currentColor'
   const ink = useChartInk('background')
   const outline = useIconColor('foreground') ?? 'currentColor'
   const rows = data.length
@@ -81,20 +118,44 @@ export function Heatmap<T extends object>({
   const values = data.map((row) => series.map((s) => numberAt(row, s.key)))
   const all = values.flat().filter((v): v is number => v != null)
 
-  // Shades step at round values (0–10, 10–20…): the first step that gives four to six.
-  const [low, high] = [Math.min(0, ...all), Math.max(0, ...all)]
-  const edges =
-    [6, 7, 8, 9]
-      .map((count) => niceTicks(low, high, count))
-      .find((ticks) => ticks.length >= 5 && ticks.length <= 7) ?? niceTicks(low, high, 6)
-  const shades = edges.length - 1
-  const shadeOf = (value: number) => {
-    const above = edges.findIndex((edge) => value < edge)
-    // The top edge itself belongs to the last shade.
-    return above === -1 ? shades - 1 : Math.max(0, above - 1)
-  }
-  // The top shade is the full color; the lightest stays visible on the surface.
-  const opacityOf = (value: number) => 0.2 + (0.8 * shadeOf(value)) / Math.max(1, shades - 1)
+  // Shades step at round values (0–10, 10–20…). Sequential: four to six steps
+  // from the lowest value (or 0) to the highest. Diverging: two to four steps
+  // of the distance from the midpoint, the same on both sides.
+  const diverging = scale === 'diverging'
+  const edges = diverging
+    ? stepEdges(0, Math.max(0, ...all.map((v) => Math.abs(v - midpoint))), [2, 4])
+    : stepEdges(Math.min(0, ...all), Math.max(0, ...all), [4, 6])
+  const steps = edges.length - 1
+  // The top step is the full color; the lightest stays visible on the surface.
+  const opacityAt = (step: number) => 0.2 + (0.8 * step) / Math.max(1, steps - 1)
+  const fill = colorOf(color)
+  const negativeFill = colorOf(negativeColor)
+  const shadeOf = (value: number) =>
+    diverging
+      ? {
+          fill: value < midpoint ? negativeFill : fill,
+          opacity: opacityAt(stepOf(edges, Math.abs(value - midpoint))),
+        }
+      : { fill, opacity: opacityAt(stepOf(edges, value)) }
+  const legendSteps = diverging
+    ? [
+        // From the strongest below the midpoint to the strongest above it.
+        ...Array.from({ length: steps }, (_, i) => steps - 1 - i).map((step) => ({
+          label: range(midpoint - edges[step + 1]!, midpoint - edges[step]!),
+          color: negativeFill,
+          opacity: opacityAt(step),
+        })),
+        ...Array.from({ length: steps }, (_, step) => ({
+          label: range(midpoint + edges[step]!, midpoint + edges[step + 1]!),
+          color: fill,
+          opacity: opacityAt(step),
+        })),
+      ]
+    : Array.from({ length: steps }, (_, step) => ({
+        label: range(edges[step]!, edges[step + 1]!),
+        color: fill,
+        opacity: opacityAt(step),
+      }))
 
   const labelWidth = Math.min(160, Math.max(1, ...names.map((name) => name.length)) * 7 + 12)
   const pad = { top: 0, right: 0, bottom: 24, left: labelWidth }
@@ -112,12 +173,7 @@ export function Heatmap<T extends object>({
       title={title}
       description={description}
       legend={[
-        ...Array.from({ length: shades }, (_, shade) => ({
-          label: `${formatCompact(edges[shade]!)}–${formatCompact(edges[shade + 1]!)}`,
-          color: fill,
-          opacity: opacityOf(edges[shade]!),
-          shape: 'square' as const,
-        })),
+        ...legendSteps.map((step) => ({ ...step, shape: 'square' as const })),
         ...(missing ? [{ label: text.noData, color: ink.grid, shape: 'square' as const }] : []),
       ]}
       height={height}
@@ -147,8 +203,8 @@ export function Heatmap<T extends object>({
             {
               label: series[c]!.label,
               value: format(value),
-              color: value == null ? ink.grid : fill,
-              opacity: value == null ? undefined : opacityOf(value),
+              color: value == null ? ink.grid : shadeOf(value).fill,
+              opacity: value == null ? undefined : shadeOf(value).opacity,
               shape: 'square',
             },
           ],
@@ -175,8 +231,8 @@ export function Heatmap<T extends object>({
                   width={Math.max(0, cw - GAP)}
                   height={Math.max(0, ch - GAP)}
                   rx={radius}
-                  fill={value == null ? ink.grid : fill}
-                  fillOpacity={value == null ? 1 : opacityOf(value)}
+                  fill={value == null ? ink.grid : shadeOf(value).fill}
+                  fillOpacity={value == null ? 1 : shadeOf(value).opacity}
                 />
               )),
             )}

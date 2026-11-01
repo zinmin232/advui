@@ -1,14 +1,28 @@
-import { type ReactNode, type Ref, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  type ReactNode,
+  type Ref,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { type TamaguiElement, View } from 'tamagui/unstyled'
 import { ScrollArea, type ScrollAreaProps } from '@advui/core'
 import { type ItemHeight, heightOf, indexAt, itemOffsets } from './offsets'
 
 export interface VirtualListProps<T> extends Omit<ScrollAreaProps, 'children' | 'orientation'> {
   data: readonly T[]
-  /** Draws one row. It gets the row's height, so keep its content to that height. */
+  /** Draws one row. With `itemHeight` it gets that height, so keep its content to it. */
   renderItem: (item: T, index: number) => ReactNode
-  /** Row height in pixels: one number for every row, or a function of the index. */
-  itemHeight: ItemHeight
+  /**
+   * Row height in pixels: one number for every row, or a function of the
+   * index. Leave it out for rows that size themselves: they are measured once
+   * drawn, with `estimatedItemHeight` until then.
+   */
+  itemHeight?: ItemHeight
+  /** Rows that size themselves: the height of a row not yet measured. Default 48. */
+  estimatedItemHeight?: number
   /** A stable key per row, such as its id. Default: the index. */
   getItemKey?: (item: T, index: number) => string | number
   /** Rows drawn above and below the visible ones, so fast scrolling shows no gap. Web only. */
@@ -28,15 +42,20 @@ export interface VirtualListProps<T> extends Omit<ScrollAreaProps, 'children' | 
 
 type ScrollEvent = { currentTarget: HTMLElement }
 
+type Row = { key: string | number; index: number }
+
 /**
  * A long list that draws only the rows in view, so thousands of rows scroll
  * smoothly. Web windows the rows itself in a ScrollArea; iOS and Android use
- * React Native's FlatList.
+ * React Native's FlatList. Rows that size themselves are measured as they
+ * are drawn; when one above the view changes height, the list scrolls by as
+ * much, so what is in view stays put.
  */
 export function VirtualList<T>({
   data,
   renderItem,
   itemHeight,
+  estimatedItemHeight = 48,
   getItemKey,
   overscan = 4,
   initialCount = 10,
@@ -49,7 +68,24 @@ export function VirtualList<T>({
   ...props
 }: VirtualListProps<T>) {
   const count = data.length
-  const offsets = useMemo(() => itemOffsets(count, itemHeight), [count, itemHeight])
+  const keyOf = (index: number) => (getItemKey ? getItemKey(data[index]!, index) : index)
+  const measuring = itemHeight === undefined
+  // Rows that size themselves: their heights by key, so they survive rows
+  // added above, and a version that moves the rows when one changes.
+  const measured = useRef(new Map<string | number, number>())
+  const [measuredVersion, setMeasuredVersion] = useState(0)
+  const offsets = useMemo(
+    () =>
+      itemOffsets(
+        count,
+        itemHeight ?? ((index) => measured.current.get(keyOf(index)) ?? estimatedItemHeight),
+      ),
+    // keyOf reads data and getItemKey.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [count, itemHeight, estimatedItemHeight, measuredVersion, data, getItemKey],
+  )
+  const offsetsRef = useRef(offsets)
+  offsetsRef.current = offsets
   const scrollRef = useRef<HTMLElement | null>(null)
   const rowRefs = useRef(new Map<number, HTMLElement>())
   // Unknown until measured, after the first render (and on the server).
@@ -83,6 +119,45 @@ export function VirtualList<T>({
     // `count` too: new rows may still leave the end in view, so ask for more.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [count])
+
+  // Each drawn row's key and index, for the observer that measures them.
+  const rows = useRef(new Map<Element, Row>())
+  const shift = useRef(0)
+  const observer = useRef<ResizeObserver | null>(null)
+  useEffect(() => {
+    if (!measuring) return
+    const resized = new ResizeObserver((entries) => {
+      const top = scrollRef.current?.scrollTop ?? 0
+      let changed = false
+      for (const entry of entries) {
+        const row = rows.current.get(entry.target)
+        if (!row) continue
+        const height = entry.borderBoxSize?.[0]?.blockSize ?? entry.contentRect.height
+        const before = measured.current.get(row.key)
+        if (before !== undefined && Math.abs(before - height) < 0.5) continue
+        measured.current.set(row.key, height)
+        changed = true
+        // A row that starts above the view: what is in view moves with it.
+        if ((offsetsRef.current[row.index] ?? 0) < top) {
+          shift.current += height - (before ?? estimatedItemHeight)
+        }
+      }
+      if (changed) setMeasuredVersion((version) => version + 1)
+    })
+    observer.current = resized
+    for (const node of rows.current.keys()) resized.observe(node)
+    return () => {
+      resized.disconnect()
+      observer.current = null
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [measuring])
+  useLayoutEffect(() => {
+    const node = scrollRef.current
+    if (!shift.current || !node) return
+    node.scrollTop += shift.current
+    shift.current = 0
+  }, [measuredVersion])
 
   let start = 0
   let end = Math.min(count, initialCount)
@@ -131,10 +206,21 @@ export function VirtualList<T>({
           >
             {indices.map((index) => (
               <View
-                key={getItemKey ? getItemKey(data[index]!, index) : index}
+                key={keyOf(index)}
                 ref={(node: TamaguiElement | null) => {
-                  if (node) rowRefs.current.set(index, node as unknown as HTMLElement)
-                  else rowRefs.current.delete(index)
+                  const element = node as unknown as HTMLElement | null
+                  if (element) {
+                    rowRefs.current.set(index, element)
+                    if (measuring && !rows.current.has(element)) observer.current?.observe(element)
+                    rows.current.set(element, { key: keyOf(index), index })
+                  } else {
+                    const old = rowRefs.current.get(index)
+                    rowRefs.current.delete(index)
+                    if (old) {
+                      observer.current?.unobserve(old)
+                      rows.current.delete(old)
+                    }
+                  }
                 }}
                 role="listitem"
                 // The list holds only the drawn rows: these tell screen
@@ -145,7 +231,7 @@ export function VirtualList<T>({
                 top={offsets[index]}
                 left={0}
                 right={0}
-                height={heightOf(itemHeight, index)}
+                {...(itemHeight !== undefined && { height: heightOf(itemHeight, index) })}
               >
                 {renderItem(data[index]!, index)}
               </View>

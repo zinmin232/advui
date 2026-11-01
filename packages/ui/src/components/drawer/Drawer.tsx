@@ -153,7 +153,7 @@ const Content = forwardRef<TamaguiElement, DrawerContentProps>(function DrawerCo
         key="overlay"
         {...overlayStyle}
         {...overlayPress}
-        transition={reducedMotion ? null : 'quick'}
+        transition={transformOpacity(reducedMotion ? null : 'quick')}
       />
       <TamaguiDialog.Content
         key="content"

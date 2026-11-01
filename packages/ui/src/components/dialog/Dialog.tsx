@@ -67,7 +67,7 @@ const Content = forwardRef<TamaguiElement, DialogContentProps>(function DialogCo
         key="overlay"
         {...overlayStyle}
         {...overlayPress}
-        transition={transition}
+        transition={transformOpacity(transition)}
       />
       <TamaguiDialog.Content
         key="content"
