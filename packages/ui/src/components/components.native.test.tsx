@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, jest } from '@jest/globals'
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { HomeIcon, PlusIcon, SearchIcon } from '@advui/icons'
 import { createThemeColors, createUniversalConfig, themePresets, zIndex } from '@advui/theme'
@@ -128,6 +128,7 @@ import { VisuallyHidden } from './visually-hidden/VisuallyHidden'
 import { Text } from './typography/Text'
 import { useBreakpoint } from '../hooks/useBreakpoint'
 import { useScrollLock } from '../hooks/useScrollLock'
+import { setRouter } from '../hooks/useFollowHref'
 import { UniversalProvider } from '../provider/UniversalProvider'
 
 // These run the React Native code path (react-native + Tamagui native builds,
@@ -1165,7 +1166,8 @@ describe('native rendering', () => {
     expect(onValueChange).toHaveBeenLastCalledWith('left')
   })
 
-  it('Breadcrumb items are links only with onPress; the current page says so', async () => {
+  it('Breadcrumb items are links only with onPress or a router; the current page says so', async () => {
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {})
     const onPress = jest.fn()
     await renderNative(
       <Breadcrumb>
@@ -1175,6 +1177,10 @@ describe('native rendering', () => {
       </Breadcrumb>,
     )
     expect(screen.queryByRole('link', { name: 'Home' })).toBeNull()
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('Breadcrumb.Item: "/" needs a router'),
+    )
+    warn.mockRestore()
     await fireEvent.press(screen.getByRole('link', { name: 'Projects' }))
     expect(onPress).toHaveBeenCalledTimes(1)
     await fireEvent(screen.getByRole('link', { name: 'Projects' }), 'accessibilityAction', {
@@ -1184,7 +1190,7 @@ describe('native rendering', () => {
     expect(screen.getByLabelText('Atlas, current page')).toBeOnTheScreen()
   })
 
-  it('Link opens URLs with the system; a path needs onPress', async () => {
+  it('Link opens URLs with the system; a path needs a router or onPress', async () => {
     const openURL = jest.spyOn(Linking, 'openURL').mockResolvedValue(true)
     const warn = jest.spyOn(console, 'warn').mockImplementation(() => {})
     const onPress = jest.fn()
@@ -1210,7 +1216,7 @@ describe('native rendering', () => {
     expect(openURL).toHaveBeenLastCalledWith('mailto:team@example.com')
 
     expect(screen.queryByRole('link', { name: 'Docs' })).toBeNull()
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('router.push("/docs")'))
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('Link: "/docs" needs a router'))
     await fireEvent.press(screen.getByRole('link', { name: 'Settings' }))
     expect(onPress).toHaveBeenCalledTimes(1)
     expect(openURL).toHaveBeenCalledTimes(2)
@@ -3465,6 +3471,113 @@ describe('Keyboard avoidance on native', () => {
     expect(scrollViewOf('Checkout').props.keyboardShouldPersistTaps).toBe('handled')
     expect(screen.getByLabelText('Items').props.automaticallyAdjustKeyboardInsets).toBeUndefined()
     expect(scrollViewOf('Reports').props.automaticallyAdjustKeyboardInsets).toBeUndefined()
+  })
+})
+
+describe('Router adapter on native', () => {
+  let warn: ReturnType<typeof jest.spyOn>
+  beforeEach(() => {
+    warn = jest.spyOn(console, 'warn').mockImplementation(() => {})
+  })
+  afterEach(async () => {
+    // The tree is still mounted here, so its links re-render, and warn,
+    // without a router: let that finish before console.warn is restored.
+    await act(() => setRouter(undefined))
+    jest.restoreAllMocks()
+  })
+
+  it('Link sends a path to the router, also one registered after the first render', async () => {
+    let prevented = false
+    await renderNative(
+      <>
+        <Link href="/pricing">Pricing</Link>
+        <Link href="#plans">Plans</Link>
+        <Link href="/help" onPress={(event) => event.preventDefault()}>
+          Help
+        </Link>
+      </>,
+    )
+    expect(screen.queryByRole('link', { name: 'Pricing' })).toBeNull()
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('Link: "/pricing" needs a router'))
+
+    const push = jest.fn()
+    await act(() => setRouter({ push }))
+    await fireEvent.press(screen.getByRole('link', { name: 'Pricing' }))
+    expect(push).toHaveBeenLastCalledWith('/pricing')
+    // As on web, preventDefault in onPress keeps the link from navigating.
+    await fireEvent.press(screen.getByRole('link', { name: 'Help' }), {
+      preventDefault: () => {
+        prevented = true
+      },
+      isDefaultPrevented: () => prevented,
+    })
+    expect(push).toHaveBeenCalledTimes(1)
+    // A fragment has no page to scroll to on native: never a link, never a warning.
+    expect(screen.queryByRole('link', { name: 'Plans' })).toBeNull()
+    expect(warn).not.toHaveBeenCalledWith(expect.stringContaining('#plans'))
+  })
+
+  it('Breadcrumb, Sidebar, Navigation Menu, Menu and List Item follow their href', async () => {
+    const push = jest.fn()
+    setRouter({ push })
+    const openURL = jest.spyOn(Linking, 'openURL').mockResolvedValue(true)
+    await renderNative(
+      <>
+        <Breadcrumb>
+          <Breadcrumb.Item href="/projects">Projects</Breadcrumb.Item>
+          <Breadcrumb.Item href="/projects/atlas">Atlas</Breadcrumb.Item>
+        </Breadcrumb>
+        <Sidebar aria-label="App">
+          <Sidebar.Group label="Workspace">
+            <Sidebar.Item href="/inbox">Inbox</Sidebar.Item>
+            <Sidebar.Item href="/archive" disabled>
+              Archive
+            </Sidebar.Item>
+            <Sidebar.Item href="https://example.com/help">Help</Sidebar.Item>
+          </Sidebar.Group>
+        </Sidebar>
+        <NavigationMenu>
+          <NavigationMenu.Link href="/maps">Maps</NavigationMenu.Link>
+        </NavigationMenu>
+        <Menu aria-label="Account">
+          <Menu.Item href="/profile">Profile</Menu.Item>
+          <Menu.Item href="/billing" disabled>
+            Billing
+          </Menu.Item>
+        </Menu>
+        <ListItem title="Reports" href="/reports" />
+      </>,
+    )
+    await fireEvent.press(screen.getByRole('link', { name: 'Projects' }))
+    expect(push).toHaveBeenLastCalledWith('/projects')
+    // The last item is the current page, not a link.
+    expect(screen.queryByRole('link', { name: /Atlas/ })).toBeNull()
+
+    await fireEvent.press(screen.getByRole('link', { name: 'Inbox' }))
+    expect(push).toHaveBeenLastCalledWith('/inbox')
+    await fireEvent.press(screen.getByRole('link', { name: 'Archive' }))
+    await fireEvent.press(screen.getByRole('link', { name: 'Help' }))
+    expect(openURL).toHaveBeenLastCalledWith('https://example.com/help')
+
+    await fireEvent.press(screen.getByRole('link', { name: 'Maps' }))
+    expect(push).toHaveBeenLastCalledWith('/maps')
+
+    // TalkBack's double-tap arrives as the activate action.
+    await fireEvent(screen.getByRole('menuitem', { name: 'Profile' }), 'accessibilityAction', {
+      nativeEvent: { actionName: 'activate' },
+    })
+    expect(push).toHaveBeenLastCalledWith('/profile')
+    await fireEvent.press(screen.getByRole('menuitem', { name: 'Billing' }))
+
+    await fireEvent.press(screen.getByRole('link', { name: 'Reports' }))
+    expect(push).toHaveBeenLastCalledWith('/reports')
+    expect(push.mock.calls).toEqual([
+      ['/projects'],
+      ['/inbox'],
+      ['/maps'],
+      ['/profile'],
+      ['/reports'],
+    ])
   })
 })
 

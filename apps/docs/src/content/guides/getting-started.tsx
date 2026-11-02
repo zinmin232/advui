@@ -118,6 +118,7 @@ export const installationToc: TocItem[] = [
   { id: 'config', title: 'Create a config' },
   { id: 'nextjs', title: 'Next.js' },
   { id: 'expo', title: 'Expo' },
+  { id: 'links', title: 'Links (native)' },
   { id: 'file-picker', title: 'File picking (native)' },
   { id: 'first-component', title: 'Use a component' },
 ]
@@ -228,6 +229,27 @@ export default function RootLayout() {
         No custom native code is required: icons use react-native-svg (bundled with Expo) and
         animations use React Native Animated.
       </Callout>
+      <H2 id="links">Links (native)</H2>
+      <P>
+        Link, Breadcrumb, Sidebar, Navigation Menu, Menu and List Item take an <C>href</C>. On web
+        it is a real <C>{'<a>'}</C>; pass <C>render</C> with your router's link for client-side
+        routing. iOS and Android have no <C>{'<a>'}</C>, so register your router once, at start, and
+        a path in <C>href</C> navigates there too. Absolute URLs (<C>https:</C>, <C>mailto:</C>)
+        open with the system either way.
+      </P>
+      <Code
+        title="app/_layout.tsx"
+        code={`import { setRouter } from '@advui/core'
+import { router } from 'expo-router'
+
+setRouter(router)`}
+      />
+      <P>
+        A router that comes from a hook, such as React Navigation's <C>useLinkTo</C>, is registered
+        from an effect: <C>{'useEffect(() => setRouter({ push: linkTo }), [linkTo])'}</C>. Once a
+        router is registered, drop any <C>{'onPress={() => router.push(href)}'}</C> beside an{' '}
+        <C>href</C>, or the link navigates twice.
+      </P>
       <H2 id="file-picker">File picking (native)</H2>
       <P>
         File Upload and File Dropzone use the browser's dialog on web. Core ships no native file

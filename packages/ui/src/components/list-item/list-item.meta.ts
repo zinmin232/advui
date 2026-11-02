@@ -108,7 +108,7 @@ import { ChevronRightIcon, LockIcon } from '@advui/icons'
           name: 'href',
           type: 'string',
           description:
-            'Web: the content is a link (`<a>`). On iOS and Android navigate in `onPress` (e.g. `router.push`).',
+            'The content is a link (`<a>` on web). On iOS and Android a path goes to the router registered with `setRouter`, and an absolute URL opens with the system.',
         },
         {
           name: 'selected',
@@ -278,7 +278,7 @@ import { ChevronRightIcon, LockIcon } from '@advui/icons'
   ],
   platformNotes: {
     web: 'A pressable item is a `<button>`, or an `<a>` with `href`. `actions` are siblings of it.',
-    ios: 'A pressable item is one accessible button; VoiceOver reads all of its text. `href` is web-only: navigate in `onPress`.',
+    ios: 'A pressable item is one accessible button, or a link with `href`; VoiceOver reads all of its text. A path in `href` goes to the router registered with `setRouter` (since 0.15.0; before, `href` was web only).',
     android:
       'Same as iOS; a selectable item is a toggle button. Pressable items show the ripple when the config has `androidRipple`.',
   },

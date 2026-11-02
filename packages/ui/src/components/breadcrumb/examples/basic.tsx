@@ -1,7 +1,7 @@
 import { Breadcrumb, toast } from '@advui/core'
 
-// In an app, pass `href` (web) and/or `onPress` with your router, e.g.
-// onPress={() => router.push('/projects')}.
+// In an app, pass `href="/projects"`; on iOS and Android register your router
+// once with setRouter (see Getting Started).
 const go = (page: string) => () => toast(`Go to ${page}`)
 
 export default function BreadcrumbBasic() {

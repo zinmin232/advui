@@ -10,6 +10,7 @@ import {
 } from 'tamagui/unstyled'
 import { AppShellContext, AppShellSlotContext } from '../../hooks/useAppShell'
 import { useControllableState } from '../../hooks/useControllableState'
+import { useFollowHref } from '../../hooks/useFollowHref'
 import { useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
 import { IconButton } from '../icon-button/IconButton'
@@ -201,7 +202,7 @@ export interface SidebarItemProps extends Omit<GetProps<typeof View>, 'children'
   /** The label. */
   children: ReactNode
   icon?: ReactNode
-  /** Link target on web. On iOS/Android pass `onPress` (e.g. `router.push`). */
+  /** Link target. On iOS/Android a path needs `setRouter` (or navigate in `onPress`). */
   href?: string
   /** Render your router's link instead of `<a>`. */
   render?: GetProps<typeof View>['render']
@@ -220,6 +221,7 @@ const SidebarItem = forwardRef<TamaguiElement, SidebarItemProps>(function Sideba
   const { collapsed } = useContext(SidebarContext)
   const shell = useContext(AppShellContext)
   const inDrawer = useContext(AppShellSlotContext) === 'drawer'
+  const target = useFollowHref(disabled ? undefined : href, 'Sidebar.Item', onPress !== undefined)
   const ripple = useRipple({
     color: 'foreground',
     radius: { borderRadius: 'md', ...props },
@@ -250,6 +252,7 @@ const SidebarItem = forwardRef<TamaguiElement, SidebarItemProps>(function Sideba
         onPress={(event) => {
           if (disabled) return
           onPress?.(event)
+          target.follow(event)
           // Following a link from an AppShell's phone drawer closes the drawer.
           if (inDrawer) shell?.setSidebarOpen(false)
         }}
