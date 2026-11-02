@@ -1,7 +1,14 @@
-import { UniversalProvider, setClipboard, setFilePicker, useColorMode, useTheme } from '@advui/core'
+import {
+  UniversalProvider,
+  setClipboard,
+  setFilePicker,
+  setRouter,
+  useColorMode,
+  useTheme,
+} from '@advui/core'
 import * as Clipboard from 'expo-clipboard'
 import * as DocumentPicker from 'expo-document-picker'
-import { Stack } from 'expo-router'
+import { Stack, router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { registerMedia } from '../media'
@@ -28,6 +35,9 @@ setFilePicker(async ({ multiple, accept }) => {
 
 // Copy Button and Code Block copy with expo-clipboard on iOS and Android.
 setClipboard(Clipboard.setStringAsync)
+
+// A path in href (Link, Sidebar, Menu…) opens that screen on iOS and Android.
+setRouter(router)
 
 // Video and Audio Player use expo-video and expo-audio on iOS and Android.
 registerMedia()

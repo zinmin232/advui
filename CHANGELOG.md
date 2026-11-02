@@ -38,6 +38,15 @@ one version.
 - **`useScrollLock`** (core): stops the ScrollAreas and AppShell Main around a
   component on iOS and Android while a finger drags something in them, and
   returns the release. Call it when the drag starts, before the finger moves.
+- **`setRouter`** (core): register your app's router once, e.g.
+  `setRouter(router)` with Expo Router, and a path in `href` navigates on iOS
+  and Android in Link, Breadcrumb, Sidebar, Navigation Menu, Menu and List
+  Item. It takes any `{ push(href) }`, so Expo Router, Solito and React
+  Navigation (`useLinkTo`) all fit, and core depends on none of them. It is
+  module state rather than context, so links in native portals (sheets,
+  toasts) reach it too, and links rendered before it is set become links
+  when it is. `useFollowHref` gives components built on core the same
+  behavior. Web still follows the `<a>`, or your `render`.
 - **Kanban: `onItemDragStart` and `onItemDragEnd`**, called when a card is
   picked up and when it is dropped or put back.
 - **Event Calendar: moving events.** With `onEventChange`, timed events in
@@ -59,8 +68,7 @@ one version.
   (default `chart2`) below `midpoint` (default 0) and `color` above it,
   darker further away, in round steps that are the same on both sides.
 - **Virtual List: rows that size themselves.** Leave out `itemHeight` and
-  rows are measured as they are drawn, with `estimatedItemHeight` (default
-  48) until then; on web, when a row above the view changes height, the list
+  rows are measured as they are drawn, with `estimatedItemHeight` (default 48) until then; on web, when a row above the view changes height, the list
   scrolls by as much, so what is in view stays put. On iOS and Android,
   FlatList measures the rows.
 
@@ -75,6 +83,15 @@ one version.
   card up now stops the ScrollArea or AppShell around the board, so the
   screen no longer takes the gesture and cancels the drag. Stop any other
   scroll view around the board in `onItemDragStart`.
+- **`href` on iOS and Android** in Breadcrumb, Sidebar, Navigation Menu,
+  Menu and List Item: an absolute URL (`https:`, `mailto:`, `tel:`) opens
+  with the system, as Link's already did, and a path goes to the router from
+  `setRouter`, after the item's `onPress` (`event.preventDefault()` there
+  stops it, as on web). Before, these components ignored `href` on native.
+  Once you register a router, drop `onPress={() => router.push(href)}` beside
+  an `href`, or the press navigates twice. A fragment (`#plans`) is never
+  followed on native. A path that nothing can follow warns once in
+  development, now for every one of these components, not only Link.
 - **Heatmap legends with negative values** read "-20 to -10" instead of
   "-20–-10".
 - **Every style transition names the properties it animates** (Accordion,

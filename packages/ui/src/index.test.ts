@@ -80,6 +80,8 @@ describe('@advui/core public API', () => {
       'useFormStatus',
       'useRipple',
       'useScrollLock',
+      'setRouter',
+      'useFollowHref',
     ])
       expect(core).toHaveProperty(name)
   })

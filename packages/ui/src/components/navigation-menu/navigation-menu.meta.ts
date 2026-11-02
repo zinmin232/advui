@@ -58,13 +58,14 @@ export default defineMeta({
         {
           name: 'href',
           type: 'string',
-          platforms: ['web'],
-          description: 'Link target. On iOS and Android, navigate in `onPress`.',
+          description:
+            'Link target. On iOS and Android a path goes to the router registered with `setRouter`, and an absolute URL opens with the system.',
         },
         {
           name: 'onPress',
           type: '(event) => void',
-          description: 'Navigate with your router (needed on iOS and Android).',
+          description:
+            'Called before the `href` is followed; `event.preventDefault()` stops it. Without an `href`, navigate here.',
         },
         {
           name: 'render',
@@ -123,7 +124,7 @@ export default defineMeta({
     'The bar wraps when it runs out of room. On phones, prefer a Sidebar in a Drawer for long navigation.',
   platformNotes: {
     web: 'Panels float under their button (`zIndex.dropdown`).',
-    ios: 'The open panel shows under the bar instead of floating, so it never covers the screen.',
+    ios: 'The open panel shows under the bar instead of floating, so it never covers the screen. A path in `href` goes to the router registered with `setRouter` (since 0.15.0; before, links navigated only in `onPress`).',
     android: 'Same as iOS; the back button closes an open panel.',
   },
   related: ['sidebar', 'breadcrumb', 'dropdown-menu', 'navigation-bar'],

@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { renderWithProvider, screen } from '../../../test/utils'
+import { setRouter } from '../../hooks/useFollowHref'
 import { Text } from '../typography/Text'
 import { Link } from './Link'
 
@@ -94,6 +95,26 @@ describe('Link', () => {
     expect(style.color).toBe(sentence.color)
     expect(style.fontSize).toBe(sentence.fontSize)
     expect(style.fontFamily).toBe(sentence.fontFamily)
+  })
+
+  it('leaves a path to the browser on web, even with a router registered', async () => {
+    const push = vi.fn()
+    setRouter({ push })
+    try {
+      const { user } = renderWithProvider(
+        // preventDefault keeps happy-dom on the page; the browser would follow the <a>.
+        <Link href="/docs" onPress={(event) => event.preventDefault()}>
+          Docs
+        </Link>,
+      )
+      const link = screen.getByRole('link', { name: 'Docs' })
+      expect(link.tagName).toBe('A')
+      expect(link).toHaveAttribute('href', '/docs')
+      await user.click(link)
+      expect(push).not.toHaveBeenCalled()
+    } finally {
+      setRouter(undefined)
+    }
   })
 
   it('underlines on hover only when asked', () => {

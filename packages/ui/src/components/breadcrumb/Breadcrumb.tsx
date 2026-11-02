@@ -8,7 +8,9 @@ import {
   useContext,
   useState,
 } from 'react'
+import type { GestureResponderEvent } from 'react-native'
 import { type GetProps, Text, View, isWeb, withStaticProperties } from 'tamagui/unstyled'
+import { useFollowHref } from '../../hooks/useFollowHref'
 
 type ItemState = { current: boolean; separator: ReactNode }
 
@@ -111,7 +113,7 @@ function ListItem({ children }: { children: ReactNode }) {
 
 export interface BreadcrumbItemProps extends Omit<GetProps<typeof Text>, 'children'> {
   children: ReactNode
-  /** Link target on web. On iOS/Android pass `onPress` (e.g. `router.push`). */
+  /** Link target. On iOS/Android a path needs `setRouter` (or navigate in `onPress`). */
   href?: string
   /** Render your router's link instead of `<a>`, e.g. `render={<Link href="/docs" />}`. */
   render?: GetProps<typeof Text>['render']
@@ -129,10 +131,17 @@ function BreadcrumbItem({
 }: BreadcrumbItemProps) {
   const context = useContext(ItemContext)
   const current = currentProp ?? context.current
-  // Native apps navigate with their router, so there an item is a link only
-  // with onPress; an href alone would be a dead link.
+  const target = useFollowHref(current ? undefined : href, 'Breadcrumb.Item', onPress !== undefined)
+  // On native an href that nothing can follow (a path without a router)
+  // would be a dead link, so the item is a link only with onPress then.
   const isLink =
-    !current && (onPress !== undefined || (isWeb && (href !== undefined || render !== undefined)))
+    !current &&
+    (onPress !== undefined ||
+      (isWeb ? href !== undefined || render !== undefined : target.navigable))
+  const press = (event: GestureResponderEvent) => {
+    onPress?.(event)
+    target.follow(event)
+  }
 
   return (
     <ListItem>
@@ -146,7 +155,7 @@ function BreadcrumbItem({
             // TalkBack's double-tap on text arrives as the "activate" action.
             accessibilityActions: [{ name: 'activate' }],
             onAccessibilityAction: (event: { nativeEvent: { actionName: string } }) => {
-              if (event.nativeEvent.actionName === 'activate') onPress?.(event as never)
+              if (event.nativeEvent.actionName === 'activate') press(event as never)
             },
           })}
           padding={0}
@@ -166,7 +175,7 @@ function BreadcrumbItem({
           borderRadius="focus-visible:sm"
           {...props}
           role="link"
-          onPress={onPress}
+          onPress={press}
         >
           {children}
         </Text>

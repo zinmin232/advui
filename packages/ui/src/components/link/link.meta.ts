@@ -12,15 +12,18 @@ export default defineMeta({
   exports: ['Link'],
   files: ['components/link/Link.tsx', 'components/link/index.ts'],
   keywords: ['anchor', 'hyperlink', 'a', 'href', 'external', 'url', 'text link'],
-  usage: `import { Link, Text } from '@advui/core'
+  usage: `import { Link, Text, setRouter } from '@advui/core'
+import { router } from 'expo-router'
 import NextLink from 'next/link'
+
+// iOS and Android: once at app start, so a path in href navigates.
+setRouter(router)
 
 <Text>
   Read the <Link href="/docs">docs</Link> first.
 </Text>
 <Link href="https://tamagui.dev" external>Tamagui</Link>
-<Link render={<NextLink href="/pricing" />}>Pricing</Link>
-<Link onPress={() => router.push('/pricing')}>Pricing</Link>`,
+<Link render={<NextLink href="/pricing" />}>Pricing</Link>`,
   parts: [
     {
       name: 'Link',
@@ -30,13 +33,13 @@ import NextLink from 'next/link'
           name: 'href',
           type: 'string',
           description:
-            'Where the link goes. On web it renders an `<a>`. On iOS and Android an absolute URL (`https:`, `mailto:`, `tel:`) opens with the system; a path in your app needs `onPress`.',
+            'Where the link goes. On web it renders an `<a>`. On iOS and Android an absolute URL (`https:`, `mailto:`, `tel:`) opens with the system, and a path goes to the router registered with `setRouter` (or navigate in `onPress`).',
         },
         {
           name: 'onPress',
           type: '(event) => void',
           description:
-            'Navigate with your router, e.g. `router.push(…)` in Expo Router. Without an `href` the link is a `<button>` on web. Call `event.preventDefault()` to stop the `href` from opening.',
+            'Called before the `href` is followed; call `event.preventDefault()` to stop it. Without an `href` the link is a `<button>` on web.',
         },
         {
           name: 'render',
@@ -144,9 +147,9 @@ import NextLink from 'next/link'
     'Inside text the link wraps with the sentence; the external icon stays on the line of the last word. On its own in a stack it stretches to the stack’s width, and so does the area that takes a press; give it `alignSelf="flex-start"` to keep that area on its text.',
   platformNotes: {
     web: 'Renders `<a href>`; pass `render` for client-side routing (Next.js, React Router). `onPress` runs before the browser follows the `href`.',
-    ios: 'An absolute `href` opens with `Linking.openURL`. A path needs `onPress`: without it the link is not announced as a link and does nothing, and a warning says so in development.',
+    ios: 'An absolute `href` opens with `Linking.openURL`. A path goes to the router registered with `setRouter` (since 0.15.0), e.g. Expo Router’s `router`; without a router or `onPress` the link is not announced as a link and does nothing, and a warning says so in development. A fragment (`#plans`) is never followed, since there is no page to scroll.',
     android:
-      'An absolute `href` opens with `Linking.openURL`. A path needs `onPress`: without it the link is not announced as a link and does nothing, and a warning says so in development.',
+      'An absolute `href` opens with `Linking.openURL`. A path goes to the router registered with `setRouter` (since 0.15.0), e.g. Expo Router’s `router`; without a router or `onPress` the link is not announced as a link and does nothing, and a warning says so in development. A fragment (`#plans`) is never followed, since there is no page to scroll.',
   },
   related: ['button', 'breadcrumb', 'typography', 'navigation-menu'],
 })

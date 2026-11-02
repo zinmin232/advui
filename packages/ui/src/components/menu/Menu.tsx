@@ -11,6 +11,7 @@ import {
   withStaticProperties,
 } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
+import { useFollowHref } from '../../hooks/useFollowHref'
 import { useRipple } from '../../hooks/useRipple'
 import { Text } from '../typography/Text'
 import { ariaState } from '../../utils/ariaState'
@@ -97,7 +98,7 @@ export interface MenuItemProps extends Omit<GetProps<typeof View>, 'children'> {
   /** Style as a dangerous action (delete, sign out…). */
   destructive?: boolean
   disabled?: boolean
-  /** Link target on web. On iOS/Android use `onSelect` (e.g. `router.push`). */
+  /** Link target. On iOS/Android a path needs `setRouter` (or navigate in `onSelect`). */
   href?: string
   /** Web: render your router's link, e.g. `render={<Link href="/inbox" />}`. */
   render?: GetProps<typeof View>['render']
@@ -127,6 +128,11 @@ const MenuItem = forwardRef<TamaguiElement, MenuItemProps>(function MenuItem(
   const menu = useMenu()
   const selected = selectedProp ?? (value !== undefined && menu.value === value)
   const isLink = isWeb && (href !== undefined || render !== undefined)
+  const target = useFollowHref(
+    disabled ? undefined : href,
+    'Menu.Item',
+    onSelect !== undefined || onPress !== undefined,
+  )
   const color = selected
     ? 'secondaryForeground'
     : destructive
@@ -140,9 +146,10 @@ const MenuItem = forwardRef<TamaguiElement, MenuItemProps>(function MenuItem(
     onPressOut,
   })
 
-  const activate = () => {
+  const activate = (event?: { isDefaultPrevented?: () => boolean }) => {
     onSelect?.()
     if (value !== undefined) menu.select(value)
+    target.follow(event)
   }
 
   const semantics = isWeb
@@ -202,7 +209,7 @@ const MenuItem = forwardRef<TamaguiElement, MenuItemProps>(function MenuItem(
           return
         }
         onPress?.(event)
-        activate()
+        activate(event)
       }}
     >
       {/* The selected fill is always painted and faded in, because Android

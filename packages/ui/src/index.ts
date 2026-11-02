@@ -21,6 +21,7 @@ export { useBreakpoint, useBreakpointValue } from './hooks/useBreakpoint'
 export { useReducedMotion } from './hooks/useReducedMotion'
 export { useRipple, type Ripple, type RippleOptions } from './hooks/useRipple'
 export { useScrollLock, type ScrollLock } from './hooks/useScrollLock'
+export { setRouter, useFollowHref, type AppRouter, type FollowHref } from './hooks/useFollowHref'
 // For components built on core (the other @advui packages, or your own).
 export { ariaState } from './utils/ariaState'
 export { isTextContent } from './utils/isTextContent'

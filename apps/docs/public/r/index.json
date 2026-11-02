@@ -6,7 +6,7 @@
       "name": "hooks",
       "title": "Hooks",
       "type": "registry:lib",
-      "description": "Shared hooks: controllable state, reduced-motion detection, the Android press ripple, Android back-button handling for overlays, keyboard avoidance for scroll views, the surrounding Form’s status, the window’s breakpoint and the AppShell drawer state.",
+      "description": "Shared hooks: controllable state, reduced-motion detection, the Android press ripple, Android back-button handling for overlays, keyboard avoidance for scroll views, following `href` with the app’s router (`setRouter`), the surrounding Form’s status, the window’s breakpoint and the AppShell drawer state.",
       "dependencies": [
         "@advui/theme"
       ],
@@ -618,7 +618,9 @@
       "dependencies": [
         "@advui/icons"
       ],
-      "registryDependencies": []
+      "registryDependencies": [
+        "hooks"
+      ]
     },
     {
       "name": "button-group",
@@ -1341,6 +1343,7 @@
         "@advui/icons"
       ],
       "registryDependencies": [
+        "hooks",
         "typography",
         "visually-hidden"
       ]

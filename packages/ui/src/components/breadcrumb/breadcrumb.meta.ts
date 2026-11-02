@@ -18,7 +18,7 @@ import Link from 'next/link'
 <Breadcrumb>
   <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
   <Breadcrumb.Item render={<Link href="/projects" />}>Projects</Breadcrumb.Item>
-  <Breadcrumb.Item onPress={() => router.push('/projects/atlas')}>Atlas</Breadcrumb.Item>
+  <Breadcrumb.Item href="/projects/atlas">Atlas</Breadcrumb.Item>
   <Breadcrumb.Item>Settings</Breadcrumb.Item>
 </Breadcrumb>`,
   parts: [
@@ -55,9 +55,8 @@ import Link from 'next/link'
         {
           name: 'href',
           type: 'string',
-          platforms: ['web'],
           description:
-            'Link target on web. Ignored on iOS/Android, where apps navigate with `onPress`.',
+            'Link target. On iOS and Android a path goes to the router registered with `setRouter`, and an absolute URL opens with the system.',
         },
         {
           name: 'render',
@@ -68,7 +67,8 @@ import Link from 'next/link'
         {
           name: 'onPress',
           type: '() => void',
-          description: 'Navigate with your router, e.g. `router.push(…)` in Expo Router.',
+          description:
+            'Called when the item is pressed, before its `href` is followed. Without an `href`, navigate here, e.g. `router.push(…)` in Expo Router.',
         },
         {
           name: 'current',
@@ -103,8 +103,9 @@ import Link from 'next/link'
     'Items wrap to a new line when space runs out; long titles are cut to one line. Use `maxItems` for deep paths on phones.',
   platformNotes: {
     web: 'Items with `href` render real `<a>` links; pass `render` for client-side routing.',
-    ios: 'Items are links only when they have `onPress`.',
-    android: 'Items are links only when they have `onPress`.',
+    ios: 'Items are links when they have `onPress`, or an `href` they can follow: an absolute URL, or a path once a router is registered with `setRouter` (since 0.15.0).',
+    android:
+      'Items are links when they have `onPress`, or an `href` they can follow: an absolute URL, or a path once a router is registered with `setRouter` (since 0.15.0).',
   },
   related: ['tabs', 'dropdown-menu'],
 })

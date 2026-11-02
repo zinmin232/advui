@@ -10,6 +10,7 @@ import {
   styled,
 } from 'tamagui/unstyled'
 import { useControllableState } from '../../hooks/useControllableState'
+import { useFollowHref } from '../../hooks/useFollowHref'
 import { useRipple } from '../../hooks/useRipple'
 import { ariaState } from '../../utils/ariaState'
 import { isTextContent } from '../../utils/isTextContent'
@@ -231,7 +232,7 @@ export interface ListItemProps extends Omit<
   color?: ColorTokens
   /** Makes the item one button (or a link with `href`). */
   onPress?: RowProps['onPress']
-  /** Web: the item is a link. On iOS and Android navigate in `onPress` instead. */
+  /** The item is a link. On iOS and Android a path needs `setRouter` (or navigate in `onPress`). */
   href?: string
   /**
    * Highlights the item. On a pressable item it is the current one
@@ -291,6 +292,7 @@ export const ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListI
   })
 
   const isLink = href !== undefined && !selectable
+  const target = useFollowHref(isLink && !disabled ? href : undefined, 'ListItem', !!onPress)
   const interactive = selectable || isLink || !!onPress
   const ripple = useRipple({
     color: 'foreground',
@@ -425,6 +427,7 @@ export const ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListI
               }
               onPress?.(event)
               if (selectable) setSelected(!selected)
+              target.follow(event)
             }}
             {...spacing}
             {...(ripple.active && { backgroundColor: 'press:transparent' })}

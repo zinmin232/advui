@@ -22,6 +22,7 @@ import {
 } from 'tamagui/unstyled'
 import { useBackToClose } from '../../hooks/useBackToClose'
 import { useControllableState } from '../../hooks/useControllableState'
+import { useFollowHref } from '../../hooks/useFollowHref'
 import { useRipple } from '../../hooks/useRipple'
 import { isTextContent } from '../../utils/isTextContent'
 import { Text } from '../typography/Text'
@@ -186,7 +187,7 @@ export interface NavigationMenuLinkProps extends Omit<
   'children' | 'render'
 > {
   children: ReactNode
-  /** Link target on web. On iOS/Android pass `onPress` (e.g. `router.push`). */
+  /** Link target. On iOS/Android a path needs `setRouter` (or navigate in `onPress`). */
   href?: string
   /** Render your router's link instead of `<a>`, e.g. `render={<Link href="/maps" />}`. */
   render?: GetProps<typeof View>['render']
@@ -206,6 +207,7 @@ const NavigationMenuLink = forwardRef<TamaguiElement, NavigationMenuLinkProps>(
   ) {
     const inPanel = useContext(InPanel)
     const { setOpen } = useContext(MenuContext)
+    const target = useFollowHref(href, 'NavigationMenu.Link', onPress !== undefined)
     const ripple = useRipple({ color: 'foreground', radius: { borderRadius: 'md', ...props } })
     const Frame = inPanel ? PanelLinkFrame : TopLevelFrame
     const title = (
@@ -235,6 +237,7 @@ const NavigationMenuLink = forwardRef<TamaguiElement, NavigationMenuLinkProps>(
               })}
           onPress={(event) => {
             onPress?.(event)
+            target.follow(event)
             // Following a link closes the panel it was in.
             setOpen(null)
           }}

@@ -80,8 +80,8 @@ export default defineMeta({
         {
           name: 'href',
           type: 'string',
-          platforms: ['web'],
-          description: 'Render a link. On iOS and Android, navigate in `onSelect`.',
+          description:
+            'Render a link. On iOS and Android a path goes to the router registered with `setRouter`, and an absolute URL opens with the system.',
         },
         {
           name: 'render',
@@ -136,7 +136,7 @@ export default defineMeta({
     'Fills its container’s width. Rows grow to finger size on touch screens; long labels are truncated.',
   platformNotes: {
     web: 'Items render as buttons, or as links with `href` / `render`.',
-    ios: 'Rows are 48pt tall. Navigate with your router in `onSelect`, since `href` is web-only.',
+    ios: 'Rows are 48pt tall. An item with `href` follows it after `onSelect`: a path through the router registered with `setRouter` (since 0.15.0; before, `href` was web only).',
     android:
       'Same as iOS. With `androidRipple` (on in `material()`), presses show the native ripple.',
   },

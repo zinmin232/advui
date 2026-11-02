@@ -98,13 +98,14 @@ import { HomeIcon } from '@advui/icons'
         {
           name: 'href',
           type: 'string',
-          platforms: ['web'],
-          description: 'Link target. On iOS and Android, navigate in `onPress`.',
+          description:
+            'Link target. On iOS and Android a path goes to the router registered with `setRouter`, and an absolute URL opens with the system.',
         },
         {
           name: 'onPress',
           type: '(event) => void',
-          description: 'Navigate with your router (needed on iOS and Android).',
+          description:
+            'Called before the `href` is followed; `event.preventDefault()` stops it. Without an `href`, navigate here.',
         },
         { name: 'render', type: 'ReactElement', description: 'Your router’s link element.' },
         {
@@ -163,7 +164,7 @@ import { HomeIcon } from '@advui/icons'
     'Give it the full height of the layout. In an AppShell, put it in `AppShell.Sidebar`: below the breakpoint it moves into the shell’s drawer, where it fills the width, does not collapse, and closes the drawer when an item is pressed. Elsewhere, hide it on phones (`display="max-md:none"`) and put the same items in a Drawer.',
   platformNotes: {
     web: '`Sidebar.Content` scrolls when the items overflow.',
-    ios: 'Wrap long content in a ScrollArea to scroll it.',
+    ios: 'Wrap long content in a ScrollArea to scroll it. A path in `href` goes to the router registered with `setRouter` (since 0.15.0; before, items navigated only in `onPress`).',
     android: 'Same as iOS, with the ripple when the config has `androidRipple`.',
   },
   related: ['app-shell', 'drawer', 'navigation-menu', 'menu', 'navigation-bar'],

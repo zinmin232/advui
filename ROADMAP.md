@@ -361,18 +361,26 @@ avoidance and `advui diff` / `update` (Release 0.15.0 above); the parts of
 it that were already built (safe areas, `add` resolving dependencies, layout
 examples, web visual tests) are not listed.
 
-- [ ] **A router adapter, so `href` works on native.** Link, Breadcrumb,
-      Sidebar, Navigation Menu, Menu and List Item take `href` (Navigation
-      Bar takes `render`), but on iOS and Android a path does nothing
-      without `onPress={() => router.push(href)}`, and Link warns. Register
-      the app's router once, `setRouter({ push })`, as `setFilePicker` and
-      `setVideoView` work, and have these components push their `href`
-      through it. It must be module-level configuration rather than React
-      context, since native portals drop context and a link may render in
-      one (a sheet or a toast). Expo Router, Solito and React Navigation all fit `push(href)`,
-      so Adv UI depends on none of them. On web nothing changes: `render`
-      still takes the app's own link (`<NextLink />`). Add a native test per
-      component and update the metadata that tells apps to pass `onPress`.
+- [x] **A router adapter, so `href` works on native.** Done on 2026-11-02
+      (in 0.15.0). Link, Breadcrumb, Sidebar, Navigation Menu, Menu and List
+      Item took `href`, but on iOS and Android a path did nothing without
+      `onPress={() => router.push(href)}`. Now the app registers its router
+      once, `setRouter(router)` with Expo Router, as `setFilePicker` works,
+      and these components push a path through it after their `onPress`; an
+      absolute URL opens with the system, and a fragment (`#plans`) is never
+      followed. It is module state rather than React context, since native
+      portals drop context and a link may render in one (a sheet or a
+      toast), and components subscribe to it, so a router registered from an
+      effect still reaches links already on screen. Expo Router, Solito and
+      React Navigation (`useLinkTo`) all fit `push(href)`, so Adv UI depends
+      on none of them. On web nothing changes: `render` still takes the
+      app's own link (`<NextLink />`). Navigation Bar takes `value` and
+      `render`, not `href`, so it is unchanged. Checked on 2026-11-02 on an
+      Android 16 emulator (Medium Phone API 36, Expo Go 57) with the
+      playground's `setRouter(router)`: a Link inside text, a Breadcrumb
+      item, a Sidebar item, a Navigation Menu link, a Menu item and a List
+      Item each opened their screen, so did a Link inside a Drawer (a
+      portal), and a `#plans` link did nothing. Left: the same on iOS.
 - [ ] **A starter app.** `create-advui-app` (or `advui init --template`)
       makes a working Expo Router and Next.js app with the provider, theme
       and a few screens from `examples/src`. CI creates and builds it on

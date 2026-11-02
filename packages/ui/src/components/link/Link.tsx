@@ -1,6 +1,6 @@
 import { ExternalLinkIcon } from '@advui/icons'
 import { type CSSProperties, type ReactNode, forwardRef } from 'react'
-import { type GestureResponderEvent, Linking } from 'react-native'
+import type { GestureResponderEvent } from 'react-native'
 import {
   type GetProps,
   type TamaguiTextElement,
@@ -8,6 +8,7 @@ import {
   isWeb,
   styled,
 } from 'tamagui/unstyled'
+import { useFollowHref } from '../../hooks/useFollowHref'
 import { type TextSize, textSizes, textWeights } from '../typography/Text'
 import { VisuallyHidden } from '../visually-hidden/VisuallyHidden'
 
@@ -20,12 +21,6 @@ export interface LinkLabels {
 }
 
 const defaultLabels: LinkLabels = { external: '(opens in a new tab)' }
-
-// Bundlers replace `process.env.NODE_ENV`; this types it for apps without Node's types.
-declare const process: { env: { NODE_ENV?: string } }
-
-/** A scheme such as `https:`, `mailto:` or `tel:`: iOS and Android can open it themselves. */
-const ABSOLUTE_URL = /^[a-z][a-z\d+.-]*:/i
 
 // The external icon follows the text size; without a size it suits body text.
 const iconSizes: Record<TextSize, number> = {
@@ -40,9 +35,6 @@ const iconSizes: Record<TextSize, number> = {
   '5xl': 32,
   '6xl': 36,
 }
-
-// Warn once per path, not on every render.
-const warnedPaths = new Set<string>()
 
 const LinkText = styled(TamaguiText, {
   displayName: 'Link',
@@ -94,8 +86,9 @@ export interface LinkProps extends Omit<
   children: ReactNode
   /**
    * Where the link goes. On web it renders an `<a>`. On iOS and Android an
-   * absolute URL (`https:`, `mailto:`, `tel:`) opens with the system; for a
-   * path in your app, navigate in `onPress`.
+   * absolute URL (`https:`, `mailto:`, `tel:`) opens with the system, and a
+   * path goes to the router registered with `setRouter` (or navigate in
+   * `onPress`).
    */
   href?: string
   /** Web: render your router's link instead of `<a>`, e.g. `render={<NextLink href="/docs" />}`. */
@@ -132,31 +125,17 @@ export const Link = forwardRef<TamaguiTextElement, LinkProps>(function Link(
   ref,
 ) {
   const labels = { ...defaultLabels, ...labelsProp }
-  const opensUrl = href !== undefined && ABSOLUTE_URL.test(href)
-  // Native apps navigate with their router, so there a path only works with
-  // onPress; without it the link would do nothing.
+  const target = useFollowHref(href, 'Link', onPress !== undefined)
+  // On native a path without a router, and without onPress, would do
+  // nothing, so it stays text.
   const isLink = isWeb
     ? href !== undefined || render !== undefined || onPress !== undefined
-    : onPress !== undefined || opensUrl
-
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    !isWeb &&
-    !isLink &&
-    href !== undefined &&
-    !warnedPaths.has(href)
-  ) {
-    warnedPaths.add(href)
-    console.warn(`Link: "${href}" needs onPress on iOS and Android, e.g. router.push("${href}").`)
-  }
+    : onPress !== undefined || target.navigable
 
   const press = (event: GestureResponderEvent) => {
     onPress?.(event)
     // Web follows the <a> itself. Calling preventDefault in onPress stops both.
-    if (!isWeb && opensUrl && !event?.isDefaultPrevented?.()) {
-      // No app may handle the scheme (tel: on a tablet); there is nothing to show then.
-      Linking.openURL(href).catch(() => {})
-    }
+    target.follow(event)
   }
 
   const isButton = href === undefined && render === undefined
