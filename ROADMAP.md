@@ -3,7 +3,9 @@
 Components still to be built are listed in
 [`packages/catalog/src/roadmap.ts`](packages/catalog/src/roadmap.ts); the docs
 show them as "Planned". Phases 1 to 9 are done, so the list is empty. Phase
-10, at the end of this file, holds the checks and decisions still open.
+10 holds the checks and decisions still open, and Phase 11, at the end of
+this file, the work planned beyond components: routing on native, getting
+started, and checks that run without a person.
 
 ## Phases 1–5 (built)
 
@@ -161,6 +163,13 @@ native.
       that blocks scripts runs npm and pnpm as `npm.cmd` and `pnpm.cmd`;
       publishing asks for npm's two-factor approval in the browser, once,
       within a few minutes.
+- [ ] **Release 0.15.0.** Unreleased on `main` (see the CHANGELOG): Scroll
+      Area's `avoidKeyboard` and App Shell Main avoiding the keyboard,
+      `advui diff` and `advui update`, `useScrollLock` and Kanban's quick
+      drags, moving events in Event Calendar, Time Picker's `min` and `max`, Heatmap's
+      diverging scale, and Virtual List rows that size themselves. The
+      registry keeps each release's files from 0.14.0 on, the base `update`
+      merges against; components added by an older CLI must be named.
 
 ### Decision
 
@@ -169,6 +178,12 @@ native.
       WYSIWYG editor that saves HTML: TipTap on web, and TipTap in a WebView
       (TenTap) on iOS and Android. It is `experimental` until it is checked
       on a phone (below).
+- [ ] **What 1.0 means.** Nothing says yet when Adv UI is stable enough to
+      build a product on. A proposal: every iOS check below passed, Rich
+      Text Editor and Kanban out of `experimental`, the router adapter
+      (Phase 11) in, and a written policy for breaking changes: how long a
+      deprecated prop stays, and how `advui update` carries a change into
+      copied source.
 
 ### Android
 
@@ -284,6 +299,14 @@ flings and a color mode switch takes twice as long.
       no blank rows or jumps after a fling down and back up. Left: the same
       drags on a phone with a finger, and TalkBack's Move actions on an
       event, by ear.
+- [x] **Keyboard avoidance.** Checked on 2026-10-31 on an Android 16
+      emulator (Medium Phone API 36, Expo Go 57) with the hardware keyboard
+      turned off, so Gboard docked at the bottom: App Shell Main, and a
+      ScrollArea with `avoidKeyboard` under the playground's navigation
+      header, both ended at the keyboard's top, with no offset passed; the
+      focused field scrolled fully into view, and Main took back its height
+      when the keyboard closed. Not covered: a keyboard that changes height
+      while open (Gboard's emoji panel), which only the native test covers.
 - [ ] **A phone with the stock font.** The TECNO's system font replaces
       monospace in every app, so Code Block, `Text mono` and Kbd were never
       seen monospaced on Android.
@@ -322,3 +345,70 @@ checked on an iPhone yet.
       Button, Tags Input and Carousel announcements, a labelled Separator,
       named Sections, AppShell's drawer, List rows, focus after a chip is
       removed, and Video and Audio Player's sound.
+- [ ] **Keyboard avoidance.** In App Shell Main and a ScrollArea with
+      `avoidKeyboard` (the playground's form screens), the focused field
+      stays above the keyboard (`automaticallyAdjustKeyboardInsets`), also
+      under the large title header, a button takes the first tap while the
+      keyboard is up, and the content moves with the keyboard when it
+      changes height (the emoji keyboard).
+
+## Phase 11: planned work
+
+Work beyond components, in order. Unlike Phase 10, AI agents can do most of
+it; the phone preview needs the maintainer's Expo account. It comes from a
+review of an outside proposal on 2026-10-31, which also led to keyboard
+avoidance and `advui diff` / `update` (Release 0.15.0 above); the parts of
+it that were already built (safe areas, `add` resolving dependencies, layout
+examples, web visual tests) are not listed.
+
+- [ ] **A router adapter, so `href` works on native.** Link, Breadcrumb,
+      Sidebar, Navigation Menu, Menu and List Item take `href` (Navigation
+      Bar takes `render`), but on iOS and Android a path does nothing
+      without `onPress={() => router.push(href)}`, and Link warns. Register
+      the app's router once, `setRouter({ push })`, as `setFilePicker` and
+      `setVideoView` work, and have these components push their `href`
+      through it. It must be module-level configuration rather than React
+      context, since native portals drop context and a link may render in
+      one (a sheet or a toast). Expo Router, Solito and React Navigation all fit `push(href)`,
+      so Adv UI depends on none of them. On web nothing changes: `render`
+      still takes the app's own link (`<NextLink />`). Add a native test per
+      component and update the metadata that tells apps to pass `onPress`.
+- [ ] **A starter app.** `create-advui-app` (or `advui init --template`)
+      makes a working Expo Router and Next.js app with the provider, theme
+      and a few screens from `examples/src`. CI creates and builds it on
+      every PR, so it cannot fall behind the packages.
+- [ ] **`init` edits `next.config`.** It writes `advui.json` and
+      `tamagui.config.ts` but only prints the Next.js changes; apply them
+      when the file has the usual shape, and keep printing them when it does
+      not.
+- [ ] **Guides.** The docs have two (Getting Started and Foundations). Add
+      forms and the keyboard (Field, Form, `avoidKeyboard`), navigation with
+      Expo Router and with Next.js (after the router adapter), and moving
+      from Tamagui's default skin and from shadcn/ui. NativeBase is
+      deprecated and NativeWind styles with `className`, so guides from
+      those would reach fewer people.
+- [ ] **A master–detail screen** in `examples/src`, the one common layout
+      missing beside dashboard, admin, settings, mobile, product and login:
+      a list beside its detail on wide screens, and a list that pushes the
+      detail on phones.
+- [ ] **Phone preview.** Publish the Expo playground with EAS Update, and
+      give each component page a QR code that opens that component's screen
+      in Expo Go. Snack was ruled out: it would mean a second copy of every
+      example, and it tends to lag new Expo SDKs.
+- [ ] **Nightly native screenshots.** A Maestro flow on an Android emulator
+      that opens each playground screen in light and dark mode and compares
+      screenshots, run nightly rather than on every PR (Detox or Appium per
+      PR would cost more than it finds). It catches layout breaks, not what
+      TalkBack reads.
+- [ ] **A timing check.** A script that switches color mode and mounts a
+      heavy screen on a production bundle and reports the time and the
+      number of springs, so a regression like the 462 springs (Phase 10)
+      shows up in numbers rather than by hand.
+
+Not planned, from the same review: native controls by default (a native
+iOS switch takes only track and thumb colors; the opt-in material preset
+and `androidRipple` cover platform feel), replacing Tamagui's Sheet with
+@gorhom/bottom-sheet or iOS sheets (it would reopen Select, Dropdown Menu,
+the back button and screen reader hiding, and iOS sheets need a native
+module, which ends Expo Go support), and a Tamagui compiler audit (neither
+app uses the compiler).
