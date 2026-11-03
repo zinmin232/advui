@@ -364,6 +364,27 @@ describe('native rendering', () => {
     expect(screen.getByRole('checkbox', { name: 'All' }).props['aria-busy']).toBe(false)
   })
 
+  it('Checkbox fills with primary when checked or mixed, controlled or not', async () => {
+    const { light } = createThemeColors(themePresets.indigo.colors)
+    await renderNative(
+      <>
+        <Checkbox aria-label="Terms" />
+        <Checkbox aria-label="News" defaultChecked />
+        <Checkbox aria-label="All" checked="indeterminate" />
+      </>,
+    )
+    const colors = (name: string) => {
+      const style = StyleSheet.flatten(screen.getByRole('checkbox', { name }).props.style)
+      return [processColor(style.backgroundColor), processColor(style.borderTopColor)]
+    }
+    const filled = [processColor(light.primary), processColor(light.primary)]
+    expect(colors('Terms')).toEqual([processColor(light.background), processColor(light.input)])
+    expect(colors('News')).toEqual(filled)
+    expect(colors('All')).toEqual(filled)
+    await fireEvent.press(screen.getByRole('checkbox', { name: 'Terms' }))
+    expect(colors('Terms')).toEqual(filled)
+  })
+
   it('RadioGroup names items by their labels and reads the group as their hint', async () => {
     const onValueChange = jest.fn()
     await renderNative(

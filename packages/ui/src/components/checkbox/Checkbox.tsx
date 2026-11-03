@@ -1,5 +1,4 @@
 import { CheckIcon, MinusIcon } from '@advui/icons'
-import { style } from '@tamagui/core'
 import { forwardRef } from 'react'
 import {
   isWeb,
@@ -8,6 +7,7 @@ import {
   type TamaguiElement,
   styled,
 } from 'tamagui/unstyled'
+import { useControllableState } from '../../hooks/useControllableState'
 import { useFieldControl } from '../../hooks/useFieldControl'
 import { ariaState } from '../../utils/ariaState'
 
@@ -75,8 +75,10 @@ export interface CheckboxProps extends Omit<
 const nativeA11y = (disabled: boolean | undefined) =>
   isWeb ? null : { accessible: true, 'aria-disabled': ariaState(disabled), 'aria-busy': false }
 
-// Tamagui 3 applies `activeStyle` as a style piece, which resolves the tokens.
-const checkedStyle = style({ backgroundColor: 'primary', borderColor: 'primary' })
+// A checked or mixed box fills with primary. Tamagui's `activeStyle` needs a
+// style piece, and style() warns on iOS and Android, where Expo Router loads
+// this module while it renders, so the box holds its state and sets the colors.
+const checkedColors = { backgroundColor: 'primary', borderColor: 'primary' } as const
 
 /**
  * Binary (or indeterminate) choice. Pair with `<Label htmlFor>` using the same `id`.
@@ -84,7 +86,19 @@ const checkedStyle = style({ backgroundColor: 'primary', borderColor: 'primary' 
  */
 export const Checkbox = forwardRef<TamaguiElement, CheckboxProps>(
   function Checkbox(checkboxProps, ref) {
-    const { size = 'md', invalid, ...props } = useFieldControl(checkboxProps)
+    const {
+      size = 'md',
+      invalid,
+      checked: checkedProp,
+      defaultChecked = false,
+      onCheckedChange,
+      ...props
+    } = useFieldControl(checkboxProps)
+    const [checked, setChecked] = useControllableState<CheckedState>({
+      value: checkedProp,
+      defaultValue: defaultChecked,
+      onChange: onCheckedChange,
+    })
     const iconSize = size === 'sm' ? 12 : 14
     return (
       <BaseCheckbox
@@ -93,11 +107,13 @@ export const Checkbox = forwardRef<TamaguiElement, CheckboxProps>(
         {...nativeA11y(props.disabled)}
         aria-invalid={invalid || undefined}
         {...(invalid ? { borderColor: 'error' as const } : null)}
-        activeStyle={checkedStyle}
         {...(props as TamaguiCheckboxProps)}
+        checked={checked}
+        onCheckedChange={setChecked}
+        {...(checked !== false && checkedColors)}
       >
         <Indicator>
-          {props.checked === 'indeterminate' ? (
+          {checked === 'indeterminate' ? (
             <MinusIcon size={iconSize} color="primaryForeground" strokeWidth={3} />
           ) : (
             <CheckIcon size={iconSize} color="primaryForeground" strokeWidth={3} />
