@@ -1,3 +1,4 @@
+import { CheckIcon, MinusIcon } from '@advui/icons'
 import { useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { renderWithProvider, screen } from '../../../test/utils'
@@ -35,6 +36,30 @@ describe('Checkbox', () => {
     }
     renderWithProvider(<Controlled />)
     expect(screen.getByRole('checkbox')).toHaveAttribute('aria-checked', 'mixed')
+  })
+
+  it('shows a dash while an uncontrolled box is mixed, then a check', async () => {
+    const shape = (element: Element | null) =>
+      [...(element?.querySelectorAll('path, line, polyline') ?? [])].map((part) =>
+        part.outerHTML.replace(/ (stroke|fill)[a-z-]*="[^"]*"/g, ''),
+      )
+    const { user } = renderWithProvider(
+      <>
+        <Checkbox aria-label="All" defaultChecked="indeterminate" />
+        <div data-testid="minus">
+          <MinusIcon />
+        </div>
+        <div data-testid="check">
+          <CheckIcon />
+        </div>
+      </>,
+    )
+    const box = screen.getByRole('checkbox', { name: 'All' })
+    expect(box).toHaveAttribute('aria-checked', 'mixed')
+    expect(shape(box)).toEqual(shape(screen.getByTestId('minus')))
+    await user.click(box)
+    expect(box).toHaveAttribute('aria-checked', 'true')
+    expect(shape(box)).toEqual(shape(screen.getByTestId('check')))
   })
 
   it('ignores interaction when disabled and exposes aria-invalid', async () => {

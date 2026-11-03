@@ -100,6 +100,18 @@ one version.
   native animation driver does not take. Only the sheets' position spring
   still takes a preset.
 
+### Fixed
+
+- **No "style() was called during render" warning on iOS and Android.**
+  Checkbox made its checked colors with Tamagui's `style()` at module scope,
+  and Expo Router loads an app's modules while it renders, so every app
+  showed the warning on its first screen in development. Checkbox now keeps
+  its checked state and sets the colors from it, and ESLint forbids
+  importing `style` in the component packages.
+- **Checkbox with `defaultChecked="indeterminate"`** shows a dash, as a
+  controlled mixed box does. Before, it showed a check while it read as
+  mixed.
+
 ## [0.14.0] - 2026-10-31
 
 ### Breaking: Tamagui 3

@@ -730,8 +730,7 @@
       "status": "stable",
       "package": "@advui/core",
       "dependencies": [
-        "@advui/icons",
-        "@tamagui/core"
+        "@advui/icons"
       ],
       "registryDependencies": [
         "hooks",

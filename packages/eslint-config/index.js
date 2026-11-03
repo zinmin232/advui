@@ -68,6 +68,14 @@ export const library = tseslint.config(...base, {
         selector: 'Literal[value=/^(rgb|rgba|hsl|hsla)[(]/]',
         message: 'Do not hard-code colors in components. Use a theme token such as "$primary".',
       },
+      {
+        // Expo Router loads an app's modules while it renders, so on iOS and
+        // Android even a style piece made at module scope warns in development.
+        selector:
+          "ImportDeclaration[source.value=/^@?tamagui/] > ImportSpecifier[imported.name='style']",
+        message:
+          "Do not use Tamagui's style(): it warns on iOS and Android when Expo Router loads the module. Set the styles as props from state (see Checkbox).",
+      },
     ],
   },
 })

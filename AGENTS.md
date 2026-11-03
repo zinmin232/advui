@@ -295,8 +295,12 @@ each edit.
   Pressability measures `currentTarget` and persists the event, so native
   tests fire responder events built with `touchAt()` (`test/native-utils`),
   not bare objects (see `press.native.test.tsx`).
-- **Tamagui `activeStyle`** is not applied on native; derive active styles from
-  state.
+- **Tamagui `activeStyle`** is not applied on native (Toggle, Tabs), and
+  Checkbox's takes only a style piece from `style()`, which warns in
+  development on iOS and Android whenever it runs during a render. Expo
+  Router loads an app's modules while it renders, so a piece made at module
+  scope warns too. Derive active styles from state and set them as props
+  (Checkbox, Tabs); ESLint forbids importing `style`.
 - **Tamagui `asChild` drops `onFocus`** (web): `<View asChild onFocus>` never
   calls it, so Tamagui triggers that learn their element on focus miss
   keyboard-only users. Keep your own ref instead (see Popover's trigger ref).
