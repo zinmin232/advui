@@ -4,7 +4,7 @@ Start an Adv UI app, or copy component source into your project, shadcn-style.
 
 ```bash
 npx advui create my-app --template next   # or expo: a new app, set up and installed
-npx advui init                      # detect framework, write config, install base packages
+npx advui init                      # detect framework, write config, set up next.config, install base packages
 npx advui add button dialog         # add components (dependencies resolved)
 npx advui add --all
 npx advui diff                      # compare your copies with the registry
@@ -37,6 +37,19 @@ examples:
 - **expo**: Expo Router, runs in Expo Go. `app/_layout.tsx` renders the
   provider with the safe-area insets, calls `setRouter(router)` and themes the
   tabs. Screens: Home, Dashboard, Settings.
+
+## Setting up an app
+
+`init` detects the framework and package manager, writes `advui.json` and a
+`tamagui.config.ts`, and installs the theme, icons, utils, core and Tamagui
+packages. In a Next.js app it also edits `next.config` (`.js`, `.mjs`, `.ts`
+or `.mts`, or a new `next.config.ts`): it adds the Adv UI packages and React
+Native Web to `transpilePackages`, and points `react-native` at React Native
+Web with `.web` files first under `turbopack`. It keeps what the file
+already has, adds `@advui/data`, `@advui/charts` and `@advui/editor` once
+they are installed, and changes nothing on a second run. When the config is
+not an object it can read (a function, a list held in a variable, a spread
+of another config), it leaves the file as it is and prints what to add.
 
 ## Keeping copies up to date
 

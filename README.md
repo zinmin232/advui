@@ -178,7 +178,8 @@ export default config
 Wrap your app in `<UniversalProvider config={config}>`. The other component
 packages render inside it, so there is one provider for all of them. Next.js
 also needs `transpilePackages` (with each `@advui/*` package you use) and a
-`react-native` → `react-native-web` alias. The
+`react-native` → `react-native-web` alias, which `npx advui init` adds to
+`next.config`. The
 Installation page of the docs site (`/docs/installation`) has the full Next.js
 and Expo setup. [THEMING.md](THEMING.md) covers colors, radius, fonts and
 runtime themes.

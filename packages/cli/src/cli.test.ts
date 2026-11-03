@@ -118,6 +118,38 @@ describe('init + add against the local registry', () => {
     }
   })
 
+  it("sets up a Next.js app's next.config, or says what to add when it cannot", async () => {
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ dependencies: { next: '16.4.1' } }))
+    writeFileSync(join(dir, 'tsconfig.json'), '{}')
+    await initCommand(options())
+    expect(logs).toContain('Created next.config.ts')
+    const created = readFileSync(join(dir, 'next.config.ts'), 'utf8')
+    expect(created).toMatch(
+      /^import type \{ NextConfig \} from 'next'\n\nconst nextConfig: NextConfig = \{\n {2}transpilePackages: \[\n {4}'@advui\/core',/,
+    )
+
+    const file = join(dir, 'next.config.mjs')
+    rmSync(join(dir, 'next.config.ts'))
+    writeFileSync(file, 'export default { reactStrictMode: true }\n')
+    logs.length = 0
+    await initCommand(options())
+    expect(logs).toContain('Updated next.config.mjs: transpilePackages, turbopack')
+    expect(readFileSync(file, 'utf8')).toContain(
+      "resolveAlias: { 'react-native': 'react-native-web' }",
+    )
+    logs.length = 0
+    await initCommand(options())
+    expect(logs.join('\n')).not.toMatch(/next\.config/)
+
+    writeFileSync(file, 'export default (phase) => ({})\n')
+    logs.length = 0
+    await initCommand(options())
+    expect(readFileSync(file, 'utf8')).toBe('export default (phase) => ({})\n')
+    expect(logs.join('\n')).toContain(
+      "advui could not edit next.config.mjs, as its config is not an object literal. Add to its config:\n  transpilePackages: [\n    '@advui/core',",
+    )
+  })
+
   it('does not overwrite existing files unless asked', async () => {
     await addCommand(['badge'], options())
     const file = join(dir, 'ui/components/badge/Badge.tsx')

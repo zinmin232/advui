@@ -16,6 +16,7 @@ Usage
   npx ${CLI_NAME} list
 
 create makes a new app with the provider, the theme and a few screens.
+init sets up an existing app; in a Next.js app it also edits next.config.
 diff compares your copies with the registry; update merges upstream changes
 into them. Both cover every component in advui.json unless you name some.
 

@@ -42,6 +42,19 @@ one version.
   typechecks and builds them (`next build`, `expo export` for Android and
   iOS), so the starter apps cannot fall behind the packages. Run it locally
   with `pnpm starter:check next` or `expo`.
+- **`advui init` edits `next.config`** in a Next.js app instead of printing
+  the changes: it adds the Adv UI packages and React Native Web to
+  `transpilePackages`, and the `react-native` alias and `.web` extensions to
+  `turbopack`, or creates `next.config.ts` when there is none. It keeps the
+  file's settings, quotes and indentation, merges into lists and objects it
+  already has (`.web` extensions go before the ones they stand in for), adds
+  `@advui/data`, `@advui/charts` and `@advui/editor` once they are
+  installed, and changes nothing on a second run. A config it cannot read
+  as an object (a function, a list in a variable, a spread of another
+  config) is left as it is, and `init` prints what to add and why. The
+  printed settings now also list `@advui/core` and `.web.js`, which the
+  starter app and the docs already had. The CLI still has no runtime
+  dependencies.
 - **Registry**: each file has a `sha256`, and each release stays in a
   version folder (`/r/<version>/<name>.json`, `registry/<version>/`), the
   base `update` merges against. `pnpm registry:build` writes the folder for
