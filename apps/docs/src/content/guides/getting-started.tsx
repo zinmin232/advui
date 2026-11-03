@@ -182,7 +182,10 @@ export const config = createUniversalConfig({
 export default config`}
       />
       <H2 id="nextjs">Next.js</H2>
-      <P>Alias React Native to React Native Web and transpile the packages:</P>
+      <P>
+        Alias React Native to React Native Web and transpile the packages (
+        <C>npx {siteConfig.cliName} init</C> writes this for you):
+      </P>
       <Code
         title="next.config.ts"
         code={`import type { NextConfig } from 'next'
@@ -380,7 +383,15 @@ export async function Cli() {
           Writes <C>advui.json</C> (target folder, registry) and a <C>tamagui.config.ts</C>.
         </LI>
         <LI>
-          Installs the theme, icons, utils and Tamagui packages, and prints framework setup notes.
+          In a Next.js app, adds the packages to compile and the React Native Web alias to{' '}
+          <C>next.config</C> (or creates <C>next.config.ts</C>), keeping what the file already has.
+          When the config is not an object it can read, such as a function, it leaves the file as it
+          is and prints what to add. Run it again after installing <C>@advui/data</C>,{' '}
+          <C>@advui/charts</C> or <C>@advui/editor</C> to add them.
+        </LI>
+        <LI>
+          Installs the theme, icons, utils, core and Tamagui packages, and prints the remaining
+          setup for your framework.
         </LI>
       </UL>
       <H2 id="add">add</H2>

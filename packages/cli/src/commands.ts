@@ -17,6 +17,7 @@ import {
   PRODUCT_NAME,
 } from './constants.js'
 import { unifiedDiff } from './diff.js'
+import { setUpNextConfig } from './nextConfig.js'
 import { type Framework, type ProjectInfo, detectProject, installCommand } from './project.js'
 import {
   type RegistryIndex,
@@ -45,12 +46,10 @@ const frameworkPeers: Record<Framework, string[]> = {
   unknown: [],
 }
 
+const nextProvider = `wrap your root layout in a 'use client' provider that renders <UniversalProvider config={config}>.`
+
 const setupNotes: Record<Framework, string> = {
-  next: `Next.js: add to next.config.ts
-  transpilePackages: ['${PACKAGE_SCOPE}/theme', '${PACKAGE_SCOPE}/icons', '${PACKAGE_SCOPE}/utils', 'react-native-web'],
-  turbopack: { resolveAlias: { 'react-native': 'react-native-web' },
-    resolveExtensions: ['.web.tsx', '.web.ts', '.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'] }
-and wrap your root layout in a 'use client' provider that renders <UniversalProvider config={config}>.`,
+  next: `Next.js: ${nextProvider}`,
   expo: `Expo: no Metro changes needed (SDK 52+). Wrap app/_layout.tsx in <UniversalProvider config={config}>.`,
   'react-native': `React Native: wrap your root component in <UniversalProvider config={config}>.`,
   vite: `Vite: alias 'react-native' to 'react-native-web' and prefer '.web.tsx' extensions in vite.config.ts.`,
@@ -95,6 +94,15 @@ export default config
     options.log(`Created ${config.tamaguiConfig}`)
   }
 
+  let notes = setupNotes[framework]
+  if (framework === 'next') {
+    const next = setUpNextConfig(options.cwd, project.typescript, project.dependencies)
+    if (next.status === 'created') options.log(`Created ${next.file}`)
+    if (next.status === 'updated') options.log(`Updated ${next.file}: ${next.changed.join(', ')}`)
+    if (next.status === 'skipped')
+      notes = `Next.js: ${CLI_NAME} could not edit ${next.file}, as ${next.reason}. Add to its config:\n${next.settings}\nThen ${nextProvider}`
+  }
+
   const packages = [
     ...BASE_DEPENDENCIES,
     `${PACKAGE_SCOPE}/core`,
@@ -106,7 +114,7 @@ export default config
     else options.log(`Install dependencies:\n  ${command}`)
   }
   options.log(
-    `\n${setupNotes[framework]}\n\n${PRODUCT_NAME} is ready. Add components with: npx ${CLI_NAME} add button`,
+    `\n${notes}\n\n${PRODUCT_NAME} is ready. Add components with: npx ${CLI_NAME} add button`,
   )
 }
 

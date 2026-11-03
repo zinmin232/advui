@@ -165,7 +165,8 @@ native.
       within a few minutes.
 - [ ] **Release 0.15.0.** Unreleased on `main` (see the CHANGELOG): Scroll
       Area's `avoidKeyboard` and App Shell Main avoiding the keyboard,
-      `advui diff`, `advui update` and `advui create`, `setRouter` (`href`
+      `advui diff`, `advui update` and `advui create`, `advui init` editing
+      `next.config`, `setRouter` (`href`
       on iOS and Android), `useScrollLock` and Kanban's quick drags, moving
       events in Event Calendar, Time Picker's `min` and `max`, Heatmap's
       diverging scale, and Virtual List rows that size themselves. The
@@ -399,10 +400,18 @@ examples, web visual tests) are not listed.
       (every page, client-side navigation, dark mode from the first paint,
       375px wide), and the Expo app in Expo Go 57 on an Android 16 emulator
       (the three tabs, in light and dark mode). Left: the Expo app on iOS.
-- [ ] **`init` edits `next.config`.** It writes `advui.json` and
-      `tamagui.config.ts` but only prints the Next.js changes; apply them
-      when the file has the usual shape, and keep printing them when it does
-      not.
+- [x] **`init` edits `next.config`.** Done on 2026-11-03 (in 0.15.0). It
+      wrote `advui.json` and `tamagui.config.ts` but only printed the
+      Next.js changes. Now it finds the exported config object (directly,
+      through a `const`, or inside a wrapper such as `withMDX(nextConfig)`)
+      with a small scanner rather than a parser, so the CLI keeps no runtime
+      dependencies, and adds `transpilePackages` and `turbopack`'s alias and
+      extensions in the file's own quotes and indentation, merging into what
+      is there. A function, a list held in a variable or a spread of another
+      config is left alone, and the settings are printed with the reason.
+      Tests import each edited config to check what it exports. Checked on
+      2026-11-03 on create-next-app's `next.config.ts`, which then built
+      with `next build`.
 - [ ] **Guides.** The docs have two (Getting Started and Foundations). Add
       forms and the keyboard (Field, Form, `avoidKeyboard`), navigation with
       Expo Router and with Next.js (after the router adapter), and moving
