@@ -27,6 +27,25 @@ jobs:
       - run: pnpm test:native
       - run: pnpm build
 
+  # `advui create` makes each starter app, which is built against this
+  # checkout's packages (packed as npm would publish them).
+  starter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        template: [next, expo]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm starter:check ${{ matrix.template }}
+
   e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 30

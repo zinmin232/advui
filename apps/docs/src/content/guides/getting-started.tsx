@@ -114,6 +114,7 @@ export async function Introduction() {
 }
 
 export const installationToc: TocItem[] = [
+  { id: 'new-app', title: 'Start a new app' },
   { id: 'install', title: 'Install' },
   { id: 'config', title: 'Create a config' },
   { id: 'nextjs', title: 'Next.js' },
@@ -126,6 +127,22 @@ export const installationToc: TocItem[] = [
 export async function Installation() {
   return (
     <>
+      <H2 id="new-app">Start a new app</H2>
+      <P>
+        The CLI makes a Next.js or an Expo Router app with everything below already set up: the
+        packages, a <C>tamagui.config.ts</C>, the provider and, on Expo, <C>setRouter</C>. It
+        includes three screens from the <A href="/examples">app examples</A> to change or delete.
+      </P>
+      <Code
+        lang="bash"
+        code={`npx ${siteConfig.cliName} create my-app --template next   # Next.js App Router
+npx ${siteConfig.cliName} create my-app --template expo   # Expo Router, runs in Expo Go`}
+      />
+      <P>
+        It installs with the package manager you ran it with (<C>pnpm dlx</C>, <C>npx</C>…). Then{' '}
+        <C>npm run dev</C> starts the Next.js app and <C>npm start</C> the Expo one. For an app you
+        already have, read on.
+      </P>
       <H2 id="install">Install</H2>
       <P>
         Install the core package. pnpm and npm 7+ install its peer dependencies (Tamagui and React
@@ -309,6 +326,7 @@ export function ProfileCard() {
 }
 
 export const cliToc: TocItem[] = [
+  { id: 'create', title: 'create' },
   { id: 'init', title: 'init' },
   { id: 'add', title: 'add' },
   { id: 'diff', title: 'diff' },
@@ -324,6 +342,35 @@ export async function Cli() {
         The CLI copies component source into your project so you can change anything. Dependencies
         between components (a Dialog needs IconButton, which needs Button…) are resolved
         automatically.
+      </P>
+      <H2 id="create">create</H2>
+      <Code
+        lang="bash"
+        code={`npx ${siteConfig.cliName} create my-app --template next\nnpx ${siteConfig.cliName} create my-app --template expo`}
+      />
+      <UL>
+        <LI>
+          <C>next</C>: a Next.js App Router app. Its <C>next.config.ts</C> aliases React Native to
+          React Native Web, <C>app/providers.tsx</C> renders the provider and sends React Native
+          Web's styles with the server HTML, and the header's links use <C>next/link</C>. Screens:
+          Dashboard, Settings and Sign in.
+        </LI>
+        <LI>
+          <C>expo</C>: an Expo Router app that runs in Expo Go. <C>app/_layout.tsx</C> renders the
+          provider with the safe-area insets, calls <C>setRouter(router)</C> and themes the tabs.
+          Screens: Home, Dashboard and Settings.
+        </LI>
+        <LI>
+          Both depend on the packages from npm and have a <C>tamagui.config.ts</C>. The folder must
+          be new or empty; the package takes its name.
+        </LI>
+        <LI>
+          It installs with the package manager that ran it. <C>--no-install</C> skips that.
+        </LI>
+      </UL>
+      <P>
+        The screens come from the <A href="/examples">app examples</A> as they were when that CLI
+        version was released, and CI builds both apps against every change to the packages.
       </P>
       <H2 id="init">init</H2>
       <Code lang="bash" code={`npx ${siteConfig.cliName} init`} />

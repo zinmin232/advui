@@ -1,8 +1,9 @@
 # advui (CLI)
 
-Copy Adv UI component source into your project, shadcn-style.
+Start an Adv UI app, or copy component source into your project, shadcn-style.
 
 ```bash
+npx advui create my-app --template next   # or expo: a new app, set up and installed
 npx advui init                      # detect framework, write config, install base packages
 npx advui add button dialog         # add components (dependencies resolved)
 npx advui add --all
@@ -13,11 +14,29 @@ npx advui list
 
 | Option                                       | Description                                                                                 |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `--template next\|expo`                      | `create`: a Next.js App Router app or an Expo Router app                                    |
 | `--registry <url or path>`                   | Registry to read (default: `advui.json`, then https://zinmin232.github.io/advui/r)          |
 | `--cwd <path>`                               | Project directory                                                                           |
 | `--framework next\|expo\|react-native\|vite` | Skip detection in `init`                                                                    |
 | `--no-install`                               | Print the install command instead of running it                                             |
 | `--overwrite`                                | `add`: replace existing files. `update`: replace files whose changes conflict with upstream |
+
+## Starting an app
+
+`create <folder> --template next|expo` copies a starter app into a new (or
+empty) folder, names the package after it and installs it with the package
+manager that ran the CLI (`--no-install` skips that). Both apps depend on
+`@advui/core`, `@advui/theme` and `@advui/icons` from npm, at this CLI's
+version, and have a `tamagui.config.ts` and three screens from the docs'
+examples:
+
+- **next**: Next.js App Router. `next.config.ts` aliases React Native to React
+  Native Web, `app/providers.tsx` renders `UniversalProvider` and sends React
+  Native Web's styles with the server HTML, and the header's links use
+  `next/link`. Screens: Dashboard, Settings, Sign in.
+- **expo**: Expo Router, runs in Expo Go. `app/_layout.tsx` renders the
+  provider with the safe-area insets, calls `setRouter(router)` and themes the
+  tabs. Screens: Home, Dashboard, Settings.
 
 ## Keeping copies up to date
 

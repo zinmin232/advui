@@ -1,7 +1,7 @@
 {
   "name": "advui",
   "version": "0.14.0",
-  "description": "CLI to add Adv UI components to your project (shadcn-style source installation).",
+  "description": "CLI to start an Adv UI app and add components to your project (shadcn-style source installation).",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -24,7 +24,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && node scripts/build-templates.mjs",
     "prepack": "pnpm run build",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",

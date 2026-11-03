@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "advui-expo-app",
+    "slug": "advui-expo-app",
+    "scheme": "advui-expo-app",
+    "version": "0.1.0",
+    "orientation": "default",
+    "userInterfaceStyle": "automatic",
+    "ios": { "supportsTablet": true },
+    "android": { "edgeToEdgeEnabled": true },
+    "plugins": ["expo-router"]
+  }
+}

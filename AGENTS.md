@@ -25,6 +25,7 @@ pnpm test:e2e                # Playwright on a production build of the docs
 pnpm build                   # all packages + docs production build
 pnpm catalog                 # regenerate + validate component metadata
 pnpm registry:build          # regenerate registry JSON
+pnpm starter:check next|expo # create a starter app and build it against these packages
 pnpm create-component <slug> [--package data|charts|editor] # scaffold a component (core by default)
 pnpm verify:component <slug> [--full] [--skip-native]       # check one component (see Definition of done)
 ```
@@ -44,6 +45,9 @@ file: `pnpm --filter @advui/core exec vitest run src/components/button`.
   Guides: `apps/docs/src/content/guides/`
 - Expo screens: `apps/expo/app/`
 - App-level examples shared by docs and Expo: `examples/src/`
+- Starter apps for `advui create`: `packages/cli/templates/`. Their screens
+  are copied from `examples/src` when the CLI is built, and CI's `starter`
+  job builds both apps, so a change to an example reaches them too
 - Checklist for adding or extending a component (order of work, files to
   touch, metadata rules, pitfalls): `.claude/skills/add-component/SKILL.md`
 

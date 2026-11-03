@@ -1,0 +1,13 @@
+node_modules/
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native folders, made by `expo prebuild`
+/ios
+/android
+
+*.log
+.env*.local
+.DS_Store

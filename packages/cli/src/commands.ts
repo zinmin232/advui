@@ -57,7 +57,7 @@ and wrap your root layout in a 'use client' provider that renders <UniversalProv
   unknown: `Wrap your app root in <UniversalProvider config={config}>.`,
 }
 
-function run(command: string, cwd: string, log: (m: string) => void) {
+export function run(command: string, cwd: string, log: (m: string) => void) {
   log(`$ ${command}`)
   execSync(command, { cwd, stdio: 'inherit' })
 }
