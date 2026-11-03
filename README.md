@@ -66,8 +66,8 @@ The same file renders DOM elements in Next.js and native views in Expo.
   rings and reduced motion. Axe checks run in e2e for light and dark mode.
 - **Docs site** — interactive previews, a playground, a live theme customizer,
   ⌘K search and full API tables.
-- **CLI + registry** — `npx advui add dialog` copies source into your app,
-  shadcn-style.
+- **CLI + registry** — `npx advui create` starts a Next.js or Expo app, and
+  `npx advui add dialog` copies source into your app, shadcn-style.
 - **Expo playground** — every component and seven app screens, running in Expo
   Go.
 
@@ -119,6 +119,7 @@ pnpm dev            # docs at http://localhost:3000
 | `pnpm create-component` | Scaffold a component (see [COMPONENT_GUIDELINES.md](COMPONENT_GUIDELINES.md)) |
 | `pnpm verify:component` | Check one component in minutes: its tests, catalog, lint and typecheck        |
 | `pnpm registry:build`   | Regenerate `registry/*.json` from component metadata                          |
+| `pnpm starter:check`    | Create a starter app (`next` or `expo`) and build it against these packages   |
 | `pnpm rename`           | Rename the project, e.g. `pnpm rename --name "Acme UI" --scope @acme`         |
 
 ### Troubleshooting
@@ -147,6 +148,15 @@ instead. It sets up `adb reverse`, starts Metro on `127.0.0.1` and opens the
 app in Expo Go.
 
 ## Using it in an app
+
+To start a new app, `create` makes a Next.js or Expo Router app with the
+provider, the theme and three example screens:
+
+```bash
+npx advui create my-app --template next   # or --template expo
+```
+
+To add it to an app you have:
 
 ```bash
 pnpm add @advui/core @advui/theme @advui/icons tamagui

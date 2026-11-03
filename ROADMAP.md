@@ -165,11 +165,14 @@ native.
       within a few minutes.
 - [ ] **Release 0.15.0.** Unreleased on `main` (see the CHANGELOG): Scroll
       Area's `avoidKeyboard` and App Shell Main avoiding the keyboard,
-      `advui diff` and `advui update`, `useScrollLock` and Kanban's quick
-      drags, moving events in Event Calendar, Time Picker's `min` and `max`, Heatmap's
+      `advui diff`, `advui update` and `advui create`, `setRouter` (`href`
+      on iOS and Android), `useScrollLock` and Kanban's quick drags, moving
+      events in Event Calendar, Time Picker's `min` and `max`, Heatmap's
       diverging scale, and Virtual List rows that size themselves. The
       registry keeps each release's files from 0.14.0 on, the base `update`
-      merges against; components added by an older CLI must be named.
+      merges against; components added by an older CLI must be named. The
+      starter apps ask for `^0.15.0`, so `advui create` works once the
+      packages are published.
 
 ### Decision
 
@@ -381,10 +384,21 @@ examples, web visual tests) are not listed.
       item, a Sidebar item, a Navigation Menu link, a Menu item and a List
       Item each opened their screen, so did a Link inside a Drawer (a
       portal), and a `#plans` link did nothing. Left: the same on iOS.
-- [ ] **A starter app.** `create-advui-app` (or `advui init --template`)
-      makes a working Expo Router and Next.js app with the provider, theme
-      and a few screens from `examples/src`. CI creates and builds it on
-      every PR, so it cannot fall behind the packages.
+- [x] **A starter app.** Done on 2026-11-02 (in 0.15.0), as
+      `advui create <folder> --template next|expo` in the existing CLI, so
+      there is no second package to publish. `next` is a Next.js App Router
+      app (React Native Web's styles in the server HTML, a header whose links
+      use `next/link`; Dashboard, Settings and Sign in), `expo` an Expo
+      Router app (safe-area insets, `setRouter(router)`, themed tabs; Home,
+      Dashboard and Settings). Both depend on the npm packages. The screens
+      are copied from `examples/src` when the CLI is built, and CI's
+      `starter` job packs this checkout's packages, creates both apps, and
+      typechecks and builds them (`next build`; `expo export` for Android
+      and iOS), so they cannot fall behind the packages. Checked on
+      2026-11-02 with `pnpm starter:check`: the Next.js app in a browser
+      (every page, client-side navigation, dark mode from the first paint,
+      375px wide), and the Expo app in Expo Go 57 on an Android 16 emulator
+      (the three tabs, in light and dark mode). Left: the Expo app on iOS.
 - [ ] **`init` edits `next.config`.** It writes `advui.json` and
       `tamagui.config.ts` but only prints the Next.js changes; apply them
       when the file has the usual shape, and keep printing them when it does

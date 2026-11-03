@@ -30,6 +30,18 @@ one version.
   components that an updated one now needs. Without names, both commands
   cover every component in `advui.json`; components added by an older CLI
   can be named. The CLI still has no runtime dependencies.
+- **`advui create <folder> --template next|expo`** starts an app: a Next.js
+  App Router app (the provider, React Native Web's styles in the server
+  HTML, a header whose links use `next/link`, and the Dashboard, Settings
+  and Sign in screens) or an Expo Router app (the provider with safe-area
+  insets, `setRouter(router)`, themed tabs, and the Home, Dashboard and
+  Settings screens). Both have `tamagui.config.ts` and depend on the
+  packages from npm. The screens are copied from the docs' examples when the
+  CLI is built, and CI's new `starter` job creates both apps on every PR,
+  installs this checkout's packages packed as npm would publish them, and
+  typechecks and builds them (`next build`, `expo export` for Android and
+  iOS), so the starter apps cannot fall behind the packages. Run it locally
+  with `pnpm starter:check next` or `expo`.
 - **Registry**: each file has a `sha256`, and each release stays in a
   version folder (`/r/<version>/<name>.json`, `registry/<version>/`), the
   base `update` merges against. `pnpm registry:build` writes the folder for

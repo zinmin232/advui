@@ -2,21 +2,25 @@
 import { parseArgs } from 'node:util'
 import { addCommand, diffCommand, initCommand, listCommand, updateCommand } from './commands.js'
 import { CLI_NAME, DEFAULT_REGISTRY, PRODUCT_NAME } from './constants.js'
+import { createCommand } from './create.js'
 import type { Framework } from './project.js'
 
 const help = `${PRODUCT_NAME} CLI
 
 Usage
+  npx ${CLI_NAME} create <folder> --template next|expo
   npx ${CLI_NAME} init [--framework next|expo|react-native|vite]
   npx ${CLI_NAME} add <component...> [--all] [--overwrite]
   npx ${CLI_NAME} diff [component...]
   npx ${CLI_NAME} update [component...] [--overwrite]
   npx ${CLI_NAME} list
 
+create makes a new app with the provider, the theme and a few screens.
 diff compares your copies with the registry; update merges upstream changes
 into them. Both cover every component in advui.json unless you name some.
 
 Options
+  --template next|expo   create: a Next.js app or an Expo Router app
   --registry <url|path>  Registry to read from (default: from advui.json, else ${DEFAULT_REGISTRY})
   --cwd <path>           Project directory (default: current directory)
   --no-install           Print the install command instead of running it
@@ -32,6 +36,7 @@ async function main(argv: string[]) {
       registry: { type: 'string' },
       cwd: { type: 'string' },
       framework: { type: 'string' },
+      template: { type: 'string' },
       'no-install': { type: 'boolean', default: false },
       overwrite: { type: 'boolean', default: false },
       all: { type: 'boolean', default: false },
@@ -51,6 +56,9 @@ async function main(argv: string[]) {
     log: (message: string) => console.log(message),
   }
   switch (command) {
+    case 'create':
+      await createCommand(rest[0], { ...common, template: values.template })
+      return
     case 'init':
       return initCommand({ ...common, framework: values.framework as Framework | undefined })
     case 'add':
