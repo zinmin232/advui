@@ -147,6 +147,11 @@ describe('ColorPicker', () => {
     expect(onValueCommit).toHaveBeenCalledTimes(2)
   })
 
+  it('reads an oklch() color into hex', () => {
+    renderWithProvider(<ColorPicker inline aria-label="Tint" value="oklch(0.546 0.245 262.881)" />)
+    expect(hexField()).toHaveValue('#155dfc')
+  })
+
   it('shows a whole hex while it is typed, before Enter', async () => {
     const onValueChange = vi.fn()
     const { user } = renderWithProvider(

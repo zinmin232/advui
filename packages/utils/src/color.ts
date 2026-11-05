@@ -10,9 +10,10 @@ export type OKLCH = { l: number; c: number; h: number; a: number }
 const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value))
 
 const HEX_RE = /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i
-const FN_RE = /^(rgba?|hsla?)\(\s*([^)]+)\)$/i
+const FN_RE = /^(rgba?|hsla?|oklch)\(\s*([^)]+)\)$/i
+const NUMBER_RE = /^[+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?$/i
 
-/** Parses hex, rgb[a]() and hsl[a]() strings into 0–255 RGB channels + 0–1 alpha. */
+/** Parses hex, rgb[a](), hsl[a]() and oklch() strings into 0–255 RGB channels + 0–1 alpha. */
 export function parseColor(input: string): RGBA | null {
   const value = input.trim()
   const hex = HEX_RE.exec(value)?.[1]
@@ -31,6 +32,7 @@ export function parseColor(input: string): RGBA | null {
   const fn = FN_RE.exec(value)
   if (!fn) return null
   const kind = fn[1]!.toLowerCase()
+  if (kind === 'oklch') return parseOklch(fn[2]!)
   const parts = fn[2]!
     .split(/[\s,/]+/)
     .filter(Boolean)
@@ -59,6 +61,43 @@ function hslToRgb(h: number, s: number, l: number) {
   const a = s * Math.min(l, 1 - l)
   const f = (n: number) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)))
   return { r: f(0) * 255, g: f(8) * 255, b: f(4) * 255 }
+}
+
+/** A number, a percentage of `whole`, or `none`, which CSS reads as 0. NaN for anything else. */
+function oklchValue(part: string, whole: number) {
+  if (part.toLowerCase() === 'none') return 0
+  const percent = part.endsWith('%')
+  const text = percent ? part.slice(0, -1) : part
+  if (!NUMBER_RE.test(text)) return Number.NaN
+  return percent ? (Number(text) / 100) * whole : Number(text)
+}
+
+const HUE_UNITS: Record<string, number> = { deg: 1, grad: 0.9, rad: 180 / Math.PI, turn: 360 }
+
+/** A hue in degrees, from a number or an angle. A percentage means nothing here, so NaN. */
+function oklchHue(part: string) {
+  const unit = /(?:deg|grad|rad|turn)$/i.exec(part)?.[0]
+  if (!unit) return oklchValue(part, Number.NaN)
+  const amount = part.slice(0, -unit.length)
+  return NUMBER_RE.test(amount) ? Number(amount) * HUE_UNITS[unit.toLowerCase()]! : Number.NaN
+}
+
+// As CSS writes it: `oklch(L C H)` or `oklch(L C H / A)`, with no commas.
+function parseOklch(body: string): RGBA | null {
+  const [channels = '', alpha, ...rest] = body.split('/')
+  const parts = channels.trim().split(/\s+/)
+  if (parts.length !== 3 || rest.length) return null
+  const l = oklchValue(parts[0]!, 1)
+  // CSS takes a chroma of 100% as 0.4, and reads a negative one as 0.
+  const c = Math.max(0, oklchValue(parts[1]!, 0.4))
+  const h = oklchHue(parts[2]!)
+  const a = alpha === undefined ? 1 : oklchValue(alpha.trim(), 1)
+  if ([l, c, h, a].some((value) => Number.isNaN(value))) return null
+  const rad = (h * Math.PI) / 180
+  // Clipped to sRGB, as browsers draw it, so a pasted color stays the one the app shows.
+  // `fromOklch` reduces chroma instead, which suits a generated palette.
+  const rgb = oklabToLinearRgb(clamp(l), c * Math.cos(rad), c * Math.sin(rad))
+  return { ...clipToRgb(rgb), a: clamp(a) }
 }
 
 export function isValidColor(input: string): boolean {
@@ -162,6 +201,13 @@ export function toOklch(color: string | RGBA): OKLCH {
 const inGamut = ({ r, g, b }: { r: number; g: number; b: number }) =>
   [r, g, b].every((v) => v >= -1e-4 && v <= 1 + 1e-4)
 
+/** Gamma-encoded 0–255 channels from linear ones, cut off at the edges of sRGB. */
+const clipToRgb = ({ r, g, b }: { r: number; g: number; b: number }) => ({
+  r: fromLinear(clamp(r)) * 255,
+  g: fromLinear(clamp(g)) * 255,
+  b: fromLinear(clamp(b)) * 255,
+})
+
 /** Converts OKLCH to hex, reducing chroma (keeping lightness + hue) until it fits sRGB. */
 export function fromOklch({
   l,
@@ -185,12 +231,7 @@ export function fromOklch({
     }
     rgb = build(lo)
   }
-  return toHex({
-    r: fromLinear(clamp(rgb.r)) * 255,
-    g: fromLinear(clamp(rgb.g)) * 255,
-    b: fromLinear(clamp(rgb.b)) * 255,
-    a,
-  })
+  return toHex({ ...clipToRgb(rgb), a })
 }
 
 /** Perceptual mix in OKLab. `amount` = 0 returns `a`, 1 returns `b`. */
@@ -206,12 +247,7 @@ export function mix(a: string, b: string, amount: number): string {
     la.A + (lb.A - la.A) * t,
     la.B + (lb.B - la.B) * t,
   )
-  return toHex({
-    r: fromLinear(clamp(rgb.r)) * 255,
-    g: fromLinear(clamp(rgb.g)) * 255,
-    b: fromLinear(clamp(rgb.b)) * 255,
-    a: ca.a + (cb.a - ca.a) * t,
-  })
+  return toHex({ ...clipToRgb(rgb), a: ca.a + (cb.a - ca.a) * t })
 }
 
 /** Shifts OKLCH lightness by `delta` (−1…1). */

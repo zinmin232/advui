@@ -1,4 +1,4 @@
-import { contrastRatio, mix, withAlpha } from '@advui/utils'
+import { contrastRatio, mix, toHex, withAlpha } from '@advui/utils'
 import type { ThemeValues } from './themes'
 
 /**
@@ -95,8 +95,23 @@ export function primarySurfaceTheme(t: ThemeValues): ThemeValues {
   }
 }
 
+/**
+ * Theme values reach the screen as they are written, and React Native cannot
+ * read `oklch()`, so an override or a hand-made theme that uses it becomes hex.
+ */
+function nativeColors<T extends object>(theme: T): T {
+  const entries = Object.entries(theme).map(([key, value]: [string, string]) => [
+    key,
+    /^\s*oklch\(/i.test(value) ? toHex(value) : value,
+  ])
+  return Object.fromEntries(entries) as T
+}
+
 /** Adds the primary and inverse sub-themes to a pair of light and dark themes. */
-export function withSubThemes<T extends ModeThemes>(themes: T): T & SubThemes {
+export function withSubThemes<T extends ModeThemes>(input: T): T & SubThemes {
+  const themes = Object.fromEntries(
+    Object.entries(input).map(([name, theme]) => [name, nativeColors(theme)]),
+  ) as T
   return {
     light_primary: primarySurfaceTheme(themes.light),
     dark_primary: primarySurfaceTheme(themes.dark),

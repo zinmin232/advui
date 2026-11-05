@@ -96,6 +96,12 @@ one version.
   rows are measured as they are drawn, with `estimatedItemHeight` (default 48) until then; on web, when a row above the view changes height, the list
   scrolls by as much, so what is in view stays put. On iOS and Android,
   FlatList measures the rows.
+- **`oklch()` colors** in `parseColor`, so `createUniversalConfig`,
+  `material()`'s `seed`, the docs customizer and Color Picker take them, in the
+  forms CSS allows (`oklch(0.546 0.245 262.881)`, `oklch(62% 0.2 260 / 50%)`).
+  A color outside sRGB is clipped, as browsers draw it, so a value pasted from
+  shadcn/ui stays the color the app shows. In `colors.overrides` and hand-made
+  `themes` it becomes hex, which React Native can read.
 
 ### Changed
 

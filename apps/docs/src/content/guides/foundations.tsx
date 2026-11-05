@@ -36,7 +36,7 @@ export async function ThemeGuide() {
 export const config = createUniversalConfig({
   preset: 'violet',
   colors: {
-    primary: '#7c3aed',   // any hex/rgb/hsl or a scale name ('indigo', 'teal'…)
+    primary: '#7c3aed',   // any hex/rgb/hsl/oklch color or a scale name ('indigo', 'teal'…)
     secondary: 'mauve',
     accent: 'mauve',
     success: 'green',

@@ -95,8 +95,9 @@ library.
 - **a scale name**: `indigo`, `blue`, `violet`, `green`, `teal`, `orange`,
   `amber`, `crimson`, `red`, and the neutrals `gray`, `slate`, `mauve`, `sage`,
   `sand` (Radix Colors, hand-tuned light and dark steps)
-- **any CSS color**: `'#0ea5e9'`, `'rgb(14 165 233)'`, `'hsl(199 89% 48%)'`. A
-  full light and dark scale is generated in OKLCH around it.
+- **any CSS color**: `'#0ea5e9'`, `'rgb(14 165 233)'`, `'hsl(199 89% 48%)'`,
+  `'oklch(0.685 0.169 237)'`. A full light and dark scale is generated in OKLCH
+  around it.
 - **a `ColorScale`** object with your own 12 light and 12 dark steps
 
 Contrast is enforced during generation, so any brand color works:
