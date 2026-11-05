@@ -149,6 +149,9 @@ one version.
 - **Checkbox with `defaultChecked="indeterminate"`** shows a dash, as a
   controlled mixed box does. Before, it showed a check while it read as
   mixed.
+- **List Item's selected bar stays visible on hover.** The row's hover and
+  press fills are opaque and painted over the bar, so a selected item lost its
+  non-color cue under the pointer. The bar now paints above the row.
 
 ## [0.14.0] - 2026-10-31
 

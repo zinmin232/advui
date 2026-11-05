@@ -194,6 +194,16 @@ describe('ListItem', () => {
     expect(link).toHaveAttribute('aria-current', 'page')
   })
 
+  it('keeps the selected bar above the row, whose hover fill is opaque', () => {
+    renderWithProvider(<ListItem title="Dark" selected onPress={() => {}} />)
+    const bar = screen.getByRole('button', { name: 'Dark' }).nextElementSibling as HTMLElement
+    // Happy-dom paints nothing: positioned siblings paint in tree order, so
+    // the bar has to follow the row.
+    expect(style(bar).position).toBe('absolute')
+    expect(style(bar).width).toBe('4px')
+    expect(style(bar).opacity).toBe('1')
+  })
+
   it('does not act when disabled, and a disabled link has no href', async () => {
     const onPress = vi.fn()
     const onSelectedChange = vi.fn()

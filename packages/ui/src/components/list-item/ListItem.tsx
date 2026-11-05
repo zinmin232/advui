@@ -396,21 +396,6 @@ export const ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListI
         backgroundColor="secondary"
         opacity={shown}
       />
-      {/* A shape as well as a fill, so the selected item stands out on every
-          variant and custom background. */}
-      <View
-        aria-hidden
-        pointerEvents="none"
-        position="absolute"
-        left={0}
-        top="2"
-        bottom="2"
-        width="1"
-        borderTopRightRadius="full"
-        borderBottomRightRadius="full"
-        backgroundColor="primary"
-        opacity={shown}
-      />
       <ListContext.Provider size={size}>
         {interactive ? (
           <ListItemRow
@@ -442,6 +427,22 @@ export const ListItem = forwardRef<TamaguiElement, ListItemProps>(function ListI
           </ListItemRow>
         )}
       </ListContext.Provider>
+      {/* A shape as well as a fill, so the selected item stands out on every
+          variant and custom background. It comes after the row, whose hover
+          and press fills are opaque and would hide it. */}
+      <View
+        aria-hidden
+        pointerEvents="none"
+        position="absolute"
+        left={0}
+        top="2"
+        bottom="2"
+        width="1"
+        borderTopRightRadius="full"
+        borderBottomRightRadius="full"
+        backgroundColor="primary"
+        opacity={shown}
+      />
       {actions != null ? (
         <View
           position="relative"
