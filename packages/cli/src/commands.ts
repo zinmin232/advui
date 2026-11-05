@@ -17,7 +17,7 @@ import {
   PRODUCT_NAME,
 } from './constants.js'
 import { unifiedDiff } from './diff.js'
-import { setUpNextConfig } from './nextConfig.js'
+import { cacheComponentsNote, setUpNextConfig } from './nextConfig.js'
 import { type Framework, type ProjectInfo, detectProject, installCommand } from './project.js'
 import {
   type RegistryIndex,
@@ -98,9 +98,13 @@ export default config
   if (framework === 'next') {
     const next = setUpNextConfig(options.cwd, project.typescript, project.dependencies)
     if (next.status === 'created') options.log(`Created ${next.file}`)
-    if (next.status === 'updated') options.log(`Updated ${next.file}: ${next.changed.join(', ')}`)
+    if (next.status === 'updated' && next.changed.length)
+      options.log(`Updated ${next.file}: ${next.changed.join(', ')}`)
+    if (next.removed.length)
+      options.log(`Removed ${next.removed.join(' and ')} from ${next.file}: ${cacheComponentsNote}`)
     if (next.status === 'skipped')
       notes = `Next.js: ${CLI_NAME} could not edit ${next.file}, as ${next.reason}. Add to its config:\n${next.settings}\nThen ${nextProvider}`
+    if (next.warning) notes = `${notes}\n\n${next.warning}`
   }
 
   const packages = [

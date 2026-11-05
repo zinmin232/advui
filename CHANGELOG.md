@@ -51,7 +51,11 @@ one version.
   `@advui/data`, `@advui/charts` and `@advui/editor` once they are
   installed, and changes nothing on a second run. A config it cannot read
   as an object (a function, a list in a variable, a spread of another
-  config) is left as it is, and `init` prints what to add and why. The
+  config) is left as it is, and `init` prints what to add and why. It also
+  removes `cacheComponents` and `partialPrefetching`, which `create-next-app`
+  16.4 can add: Tamagui calls `Math.random()` while it renders, so `next build`
+  fails with them on. A project with a `'use cache'` directive keeps them, and
+  `init` prints its options. The
   printed settings now also list `@advui/core` and `.web.js`, which the
   starter app and the docs already had. The CLI still has no runtime
   dependencies.

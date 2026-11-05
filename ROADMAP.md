@@ -411,7 +411,10 @@ examples, web visual tests) are not listed.
       config is left alone, and the settings are printed with the reason.
       Tests import each edited config to check what it exports. Checked on
       2026-11-03 on create-next-app's `next.config.ts`, which then built
-      with `next build`.
+      with `next build`. Since 2026-11-04 it also removes `cacheComponents`
+      and `partialPrefetching`, which create-next-app 16.4 can add and which
+      fail `next build` at Tamagui's `Math.random()`, unless the project has
+      a `'use cache'` directive; then it keeps them and prints the options.
 - [ ] **Guides.** The docs have two (Getting Started and Foundations). Add
       forms and the keyboard (Field, Form, `avoidKeyboard`), navigation with
       Expo Router and with Next.js (after the router adapter), and moving
