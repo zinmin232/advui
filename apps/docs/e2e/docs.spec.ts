@@ -396,6 +396,34 @@ test('app examples are not clipped in the desktop frame', async ({ page }) => {
   }
 })
 
+test('inbox shows a message beside the list on wide screens', async ({ page }) => {
+  const errors = trackErrors(page)
+  await page.goto('/examples/inbox')
+  await page.waitForLoadState('networkidle')
+  await expect(page.getByRole('heading', { name: 'No message selected' })).toBeVisible()
+
+  // The list scrolls inside its pane, and reading a message keeps focus on the row.
+  const list = page.getByRole('region', { name: 'Messages' })
+  const size = await list.evaluate((el) => ({ scroll: el.scrollHeight, client: el.clientHeight }))
+  expect(size.scroll).toBeGreaterThan(size.client)
+  const row = page.getByRole('button', { name: /Jackson Lee, Invoice/ })
+  await row.focus()
+  await page.keyboard.press('Enter')
+  await expect(page.getByRole('heading', { name: 'Invoice #1042 is overdue' })).toBeVisible()
+  await expect(row).toHaveAttribute('aria-current', 'true')
+  await expect(row).toBeFocused()
+  await expect(page.getByRole('button', { name: 'Back to inbox' })).toBeHidden()
+  expect(await seriousViolations(page)).toEqual([])
+
+  // The button is gone with the message, so focus goes to the list. Undo restores the row.
+  await page.getByRole('button', { name: 'Delete' }).click()
+  await expect(list).toBeFocused()
+  await expect(row).toHaveCount(0)
+  await page.getByRole('button', { name: 'Undo' }).click()
+  await expect(row).toBeVisible()
+  expect(errors).toEqual([])
+})
+
 test('registry JSON is published for the CLI', async ({ request }) => {
   const index = await (await request.get('/r/index.json')).json()
   expect(index.items.map((item: { name: string }) => item.name)).toContain('button')
@@ -521,6 +549,7 @@ for (const path of [
   '/docs/components/form',
   '/docs/components/grid',
   '/examples/login',
+  '/examples/inbox',
 ]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {
     await page.goto(path)

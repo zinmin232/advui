@@ -166,6 +166,30 @@ test('app examples fit a phone', async ({ page }) => {
   }
 })
 
+test('inbox pushes the message over the list and returns to the row', async ({ page }) => {
+  await page.goto('/examples/inbox/frame')
+  await page.waitForLoadState('networkidle')
+  await expect(page.getByRole('heading', { name: 'No message selected' })).toBeHidden()
+
+  const list = page.getByRole('region', { name: 'Messages' })
+  await list.evaluate((el) => {
+    el.scrollTop = 200
+  })
+  const row = page.getByRole('button', { name: /Olivia Martin, Office move/ })
+  await row.click()
+
+  const back = page.getByRole('button', { name: 'Back to inbox' })
+  await expect(back).toBeFocused()
+  await expect(page.getByRole('heading', { name: 'Office move checklist' })).toBeInViewport()
+  // Keyboards and screen readers cannot reach the list behind the message.
+  await expect(list.locator('xpath=..')).toHaveAttribute('inert', '')
+
+  await back.click()
+  await expect(row).toBeFocused()
+  await expect(back).toBeHidden()
+  expect(await list.evaluate((el) => el.scrollTop)).toBeGreaterThan(0)
+})
+
 test('grid stacks an 8 / 4 layout below md', async ({ page }) => {
   await page.goto('/preview/grid/two-column-8-4')
   const [main, side] = await gridCells(page, ['Sprint progress', 'Details'])

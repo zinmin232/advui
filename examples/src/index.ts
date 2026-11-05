@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react'
 import { AdminScreen } from './admin'
 import { DashboardScreen } from './dashboard'
+import { InboxScreen } from './inbox'
 import { LoginScreen } from './login'
 import { type AppExampleMeta, appExamples as meta } from './meta'
 import { MobileHomeScreen, MobileSettingsScreen } from './mobile'
@@ -14,6 +15,7 @@ const screens: Record<string, ComponentType> = {
   dashboard: DashboardScreen,
   admin: AdminScreen,
   settings: ProfileSettingsScreen,
+  inbox: InboxScreen,
   product: ProductScreen,
   'mobile-home': MobileHomeScreen,
   'mobile-settings': MobileSettingsScreen,
@@ -27,6 +29,7 @@ export type { AppExampleMeta }
 export {
   AdminScreen,
   DashboardScreen,
+  InboxScreen,
   LoginScreen,
   MobileHomeScreen,
   MobileSettingsScreen,

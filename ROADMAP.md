@@ -428,10 +428,22 @@ examples, web visual tests) are not listed.
       Adv UI's config, which is why that move is all at once. In a Next.js
       16.4 app with shadcn/ui: both side by side, and the React Hook Form
       example. Left: the same on iOS.
-- [ ] **A master–detail screen** in `examples/src`, the one common layout
-      missing beside dashboard, admin, settings, mobile, product and login:
-      a list beside its detail on wide screens, and a list that pushes the
-      detail on phones.
+- [x] **A master–detail screen.** Done on 2026-11-05 as the Inbox example
+      (`examples/src/inbox.tsx`), the one common layout missing beside
+      dashboard, admin, settings, mobile, product and login: a list beside its
+      detail from `md` up, and on phones a list that the detail covers. Both
+      panes are always in the tree and CSS picks what shows, so the server
+      sends the right layout for every width, and the list stays under the
+      message and keeps its scroll position. For this, `useBackToClose` is now
+      public, and examples have a `fill` option: the docs and Expo give such a
+      screen a height instead of a scroll view. The open message is state,
+      because the screen runs under any router; an app keeps it in the route.
+      Checked on 2026-11-05 in Chrome at 390 and 1280px wide, and on an
+      Android 16 emulator (Medium Phone API 36, Expo Go 57): in portrait the
+      push, the back button, the list hidden from accessibility while covered,
+      the focus events on the Back button and the row, delete with Undo, and a
+      tap on a row with the keyboard up; in landscape (914dp) both panes. Left:
+      iOS, and a pass with TalkBack itself running.
 - [ ] **Phone preview.** Publish the Expo playground with EAS Update, and
       give each component page a QR code that opens that component's screen
       in Expo Go. Snack was ruled out: it would mean a second copy of every

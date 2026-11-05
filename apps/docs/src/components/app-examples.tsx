@@ -127,6 +127,7 @@ export function ExampleViewer({ slug }: { slug: string }) {
             width="100%"
             marginHorizontal="auto"
             backgroundColor="background"
+            {...(example.fill && { height: 720 })}
           >
             <Component />
           </View>
@@ -155,7 +156,12 @@ export function ExampleFrame({ slug }: { slug: string }) {
   if (!example) return null
   const { Component } = example
   return (
-    <View render="main" minHeight="100vh" backgroundColor="background">
+    <View
+      render="main"
+      minHeight="100vh"
+      backgroundColor="background"
+      {...(example.fill && { height: '100vh' })}
+    >
       <Component />
     </View>
   )

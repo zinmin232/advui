@@ -17,6 +17,7 @@ export {
   useFormStatus,
   type FormStatus,
 } from './hooks/useParentForm'
+export { useBackToClose, type BackToCloseOptions } from './hooks/useBackToClose'
 export { useBreakpoint, useBreakpointValue } from './hooks/useBreakpoint'
 export { useReducedMotion } from './hooks/useReducedMotion'
 export { useRipple, type Ripple, type RippleOptions } from './hooks/useRipple'
