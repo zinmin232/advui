@@ -415,12 +415,19 @@ examples, web visual tests) are not listed.
       and `partialPrefetching`, which create-next-app 16.4 can add and which
       fail `next build` at Tamagui's `Math.random()`, unless the project has
       a `'use cache'` directive; then it keeps them and prints the options.
-- [ ] **Guides.** The docs have two (Getting Started and Foundations). Add
+- [x] **Guides.** Done on 2026-11-04, in a new Guides section of the docs:
       forms and the keyboard (Field, Form, `avoidKeyboard`), navigation with
-      Expo Router and with Next.js (after the router adapter), and moving
-      from Tamagui's default skin and from shadcn/ui. NativeBase is
-      deprecated and NativeWind styles with `className`, so guides from
-      those would reach fewer people.
+      Expo Router and with Next.js, and moving from Tamagui's default skin
+      and from shadcn/ui. NativeBase is deprecated and NativeWind styles with
+      `className`, so guides from those would reach fewer people. What they
+      say was tried first. On an Android 16 emulator (Medium Phone API 36,
+      Expo Go 57): the Return key chain, the email keyboard, keyboard
+      avoidance, a Sheet and a Dialog with the keyboard up, links in a Drawer
+      and Navigation Bar as an Expo Router tab bar. On web: double submits
+      from `onSubmitEditing`, `render` on each link, and Tamagui's skin under
+      Adv UI's config, which is why that move is all at once. In a Next.js
+      16.4 app with shadcn/ui: both side by side, and the React Hook Form
+      example. Left: the same on iOS.
 - [ ] **A master–detail screen** in `examples/src`, the one common layout
       missing beside dashboard, admin, settings, mobile, product and login:
       a list beside its detail on wide screens, and a list that pushes the

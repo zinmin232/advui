@@ -131,7 +131,7 @@ export default defineMeta({
     web: 'Renders a native `<input>`, so autofill and password managers work.',
     ios: 'Use `keyboardType`, `textContentType` and `autoComplete` for the right keyboard and autofill.',
     android:
-      'Use `keyboardType` and `autoComplete`; wrap forms in `KeyboardAvoidingView` on small screens.',
+      'Use `keyboardType` and `autoComplete`; put forms in a Scroll Area with `avoidKeyboard`, or in an App Shell.',
   },
   related: ['label', 'field', 'textarea', 'select', 'password-input', 'search'],
 })

@@ -65,7 +65,8 @@ The same file renders DOM elements in Next.js and native views in Expo.
 - **Accessible** — semantic roles on web and native, keyboard support, focus
   rings and reduced motion. Axe checks run in e2e for light and dark mode.
 - **Docs site** — interactive previews, a playground, a live theme customizer,
-  ⌘K search and full API tables.
+  ⌘K search, full API tables, and guides for forms, navigation and moving from
+  Tamagui's default skin or shadcn/ui.
 - **CLI + registry** — `npx advui create` starts a Next.js or Expo app, and
   `npx advui add dialog` copies source into your app, shadcn-style.
 - **Expo playground** — every component and seven app screens, running in Expo

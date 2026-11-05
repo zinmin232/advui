@@ -276,7 +276,8 @@ setRouter(router)`}
         A router that comes from a hook, such as React Navigation's <C>useLinkTo</C>, is registered
         from an effect: <C>{'useEffect(() => setRouter({ push: linkTo }), [linkTo])'}</C>. Once a
         router is registered, drop any <C>{'onPress={() => router.push(href)}'}</C> beside an{' '}
-        <C>href</C>, or the link navigates twice.
+        <C>href</C>, or the link navigates twice. The{' '}
+        <A href="/docs/navigation">Navigation guide</A> has more, for Expo Router and Next.js.
       </P>
       <H2 id="file-picker">File picking (native)</H2>
       <P>

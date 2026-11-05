@@ -100,6 +100,9 @@ one version.
   rows are measured as they are drawn, with `estimatedItemHeight` (default 48) until then; on web, when a row above the view changes height, the list
   scrolls by as much, so what is in view stays put. On iOS and Android,
   FlatList measures the rows.
+- **Guides** in the docs, a new section: forms and the keyboard, navigation
+  with Expo Router and Next.js, and moving from Tamagui's default skin and
+  from shadcn/ui.
 - **`oklch()` colors** in `parseColor`, so `createUniversalConfig`,
   `material()`'s `seed`, the docs customizer and Color Picker take them, in the
   forms CSS allows (`oklch(0.546 0.245 262.881)`, `oklch(62% 0.2 260 / 50%)`).
