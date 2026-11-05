@@ -1,5 +1,5 @@
-import { existsSync, readFileSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
+import { join, relative } from 'node:path'
 import { PACKAGE_SCOPE, PRODUCT_NAME } from './constants.js'
 
 type Setting = string | string[] | { [key: string]: Setting }
@@ -398,10 +398,85 @@ export function editNextConfig(
   return { text: crlf ? text.replace(/\n/g, '\r\n') : text, changed: context.changed }
 }
 
-export type NextConfigResult =
+// Next.js refuses `partialPrefetching` without `cacheComponents`, so the two go together.
+const cacheSettings = ['cacheComponents', 'partialPrefetching']
+
+/** Why `cacheComponents` cannot stay on, in the words `init` prints. */
+export const cacheComponentsNote =
+  'Tamagui calls Math.random() while it renders, which Cache Components rejects, so `next build` fails with it on.'
+
+/** What to cut to remove a member: its line if it has one to itself, else what joins it. */
+function memberSpan(src: string, object: ObjectLiteral, member: Member) {
+  const after = scan(src, member.end).next().value
+  const comma = after && after.start < object.close && src[after.start] === ','
+  const end = comma ? after.end : member.end
+  const start = lineStart(src, member.start)
+  const lineEnd = src.indexOf('\n', end)
+  const alone =
+    lineEnd >= 0 &&
+    !src.slice(start, member.start).trim() &&
+    /^\s*(?:\/\/.*)?\s*$/.test(src.slice(end, lineEnd))
+  if (alone) return { start, end: lineEnd + 1 }
+  if (comma) return { start: member.start, end: end + /^[ \t]*/.exec(src.slice(end))![0].length }
+  const previous = object.members[object.members.indexOf(member) - 1]
+  return { start: previous?.end ?? member.start, end: member.end }
+}
+
+/**
+ * Takes Cache Components out of a Next.js config. `unread` says the config sets it to
+ * something other than `true` or `false`, so it was left.
+ */
+export function removeCacheComponents(source: string) {
+  const unchanged = { text: source, removed: [] as string[], unread: false }
+  const read = configObject(source)
+  if (typeof read === 'string') return unchanged
+  const member = read.members.findLast((m) => m.key === cacheSettings[0])
+  const value = member?.value ? source.slice(member.value.start, member.value.end) : ''
+  if (!member || value === 'false') return unchanged
+  if (value !== 'true') return { ...unchanged, unread: true }
+  let text = source
+  const removed: string[] = []
+  for (const key of cacheSettings) {
+    // Read again after each cut, whose offsets the next one must not depend on.
+    for (;;) {
+      const object = configObject(text) as ObjectLiteral
+      const found = object.members.findLast((m) => m.key === key)
+      if (!found) break
+      const { start, end } = memberSpan(text, object, found)
+      text = text.slice(0, start) + text.slice(end)
+      if (!removed.includes(key)) removed.push(key)
+    }
+  }
+  return { text, removed, unread: false }
+}
+
+/** The first source file with a `'use cache'` directive, which needs Cache Components. */
+function findUseCache(root: string, dir = root): string | undefined {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    if (entry.name.startsWith('.') || entry.name === 'node_modules') continue
+    const path = join(dir, entry.name)
+    if (entry.isDirectory()) {
+      const found = findUseCache(root, path)
+      if (found) return found
+    } else if (
+      /\.(?:[cm]?[jt]s|[jt]sx)$/.test(entry.name) &&
+      /^\s*['"]use cache[:'"]/m.test(readFileSync(path, 'utf8'))
+    )
+      return relative(root, path)
+  }
+  return undefined
+}
+
+export type NextConfigResult = {
+  /** Settings taken out of the config, which `cacheComponentsNote` explains. */
+  removed: string[]
+  /** What the app still has to do about Cache Components. */
+  warning?: string
+} & (
   | { file: string; status: 'created' | 'unchanged' }
   | { file: string; status: 'updated'; changed: string[] }
   | { file: string; status: 'skipped'; reason: string; settings: string }
+)
 
 /** Writes Adv UI's settings into the app's Next.js config, creating one if it has none. */
 export function setUpNextConfig(
@@ -417,15 +492,33 @@ export function setUpNextConfig(
     : typescript
       ? `import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {}\n\nexport default nextConfig\n`
       : `/** @type {import('next').NextConfig} */\nconst nextConfig = {}\n\nexport default nextConfig\n`
-  const result = editNextConfig(source, settings)
+  const cache = removeCacheComponents(source)
+  // The app may rely on it: removing it would only trade this build error for another.
+  const inUse = cache.removed.length ? findUseCache(root) : undefined
+  const reason = inUse
+    ? `${inUse} uses 'use cache'`
+    : cache.unread
+      ? 'its value could not be read'
+      : ''
+  const keptOn = reason
+    ? `Next.js: ${file} keeps cacheComponents, as ${reason}. ${cacheComponentsNote} A <Suspense> around the provider gets the build through, but the server then sends an empty page.`
+    : undefined
+  const removed = reason ? [] : cache.removed
+  const result = editNextConfig(reason ? source : cache.text, settings)
   if ('error' in result) {
     const style = { quote: "'", unit: '  ' }
     const lines = renderMembers(style, Object.entries(settings), '  ', true)
-    return { file, status: 'skipped', reason: result.error, settings: lines }
+    const warning =
+      keptOn ??
+      (source.includes(cacheSettings[0]!)
+        ? `Next.js: remove ${cacheSettings.join(' and ')} from ${file}. ${cacheComponentsNote}`
+        : undefined)
+    return { file, status: 'skipped', reason: result.error, settings: lines, removed: [], warning }
   }
-  if (existing && !result.changed.length) return { file, status: 'unchanged' }
+  if (existing && !result.changed.length && !removed.length)
+    return { file, status: 'unchanged', removed, warning: keptOn }
   writeFileSync(join(root, file), result.text)
   return existing
-    ? { file, status: 'updated', changed: result.changed }
-    : { file, status: 'created' }
+    ? { file, status: 'updated', changed: result.changed, removed, warning: keptOn }
+    : { file, status: 'created', removed }
 }

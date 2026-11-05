@@ -51,7 +51,11 @@ one version.
   `@advui/data`, `@advui/charts` and `@advui/editor` once they are
   installed, and changes nothing on a second run. A config it cannot read
   as an object (a function, a list in a variable, a spread of another
-  config) is left as it is, and `init` prints what to add and why. The
+  config) is left as it is, and `init` prints what to add and why. It also
+  removes `cacheComponents` and `partialPrefetching`, which `create-next-app`
+  16.4 can add: Tamagui calls `Math.random()` while it renders, so `next build`
+  fails with them on. A project with a `'use cache'` directive keeps them, and
+  `init` prints its options. The
   printed settings now also list `@advui/core` and `.web.js`, which the
   starter app and the docs already had. The CLI still has no runtime
   dependencies.
@@ -96,6 +100,15 @@ one version.
   rows are measured as they are drawn, with `estimatedItemHeight` (default 48) until then; on web, when a row above the view changes height, the list
   scrolls by as much, so what is in view stays put. On iOS and Android,
   FlatList measures the rows.
+- **Guides** in the docs, a new section: forms and the keyboard, navigation
+  with Expo Router and Next.js, and moving from Tamagui's default skin and
+  from shadcn/ui.
+- **`oklch()` colors** in `parseColor`, so `createUniversalConfig`,
+  `material()`'s `seed`, the docs customizer and Color Picker take them, in the
+  forms CSS allows (`oklch(0.546 0.245 262.881)`, `oklch(62% 0.2 260 / 50%)`).
+  A color outside sRGB is clipped, as browsers draw it, so a value pasted from
+  shadcn/ui stays the color the app shows. In `colors.overrides` and hand-made
+  `themes` it becomes hex, which React Native can read.
 
 ### Changed
 

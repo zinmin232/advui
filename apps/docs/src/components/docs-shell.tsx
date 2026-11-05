@@ -134,7 +134,7 @@ export function PrevNext({
         <Link href={prev.href} className="plain-link">
           <HStack gap="2" paddingVertical="2">
             <ChevronLeftIcon size={16} color="mutedForeground" />
-            <VStack>
+            <VStack flexShrink={1}>
               <Text size="xs" tone="muted">
                 Previous
               </Text>
@@ -148,11 +148,13 @@ export function PrevNext({
       {next ? (
         <Link href={next.href} className="plain-link">
           <HStack gap="2" paddingVertical="2">
-            <VStack alignItems="flex-end">
+            <VStack alignItems="flex-end" flexShrink={1}>
               <Text size="xs" tone="muted">
                 Next
               </Text>
-              <Text weight="medium">{next.title}</Text>
+              <Text weight="medium" textAlign="right">
+                {next.title}
+              </Text>
             </VStack>
             <ChevronRightIcon size={16} color="mutedForeground" />
           </HStack>

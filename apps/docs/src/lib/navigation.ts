@@ -36,6 +36,7 @@ export interface NavSection {
 /** Guide sections and how the sidebar and breadcrumbs name them. */
 export const guideSectionTitles = {
   'getting-started': 'Getting started',
+  guides: 'Guides',
   foundations: 'Customization',
 } as const
 
@@ -95,6 +96,11 @@ export function buildNavigation(): NavSection[] {
       id: 'getting-started',
       title: guideSectionTitles['getting-started'],
       categories: [{ id: 'getting-started', items: guideLinks('getting-started') }],
+    },
+    {
+      id: 'guides',
+      title: guideSectionTitles.guides,
+      categories: [{ id: 'guides', items: guideLinks('guides') }],
     },
     {
       id: 'customization',

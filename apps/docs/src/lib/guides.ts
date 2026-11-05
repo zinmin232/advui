@@ -4,7 +4,7 @@ export interface GuideMeta {
   slug: string
   title: string
   description: string
-  section: 'getting-started' | 'foundations'
+  section: 'getting-started' | 'guides' | 'foundations'
   keywords?: string[]
 }
 
@@ -50,6 +50,43 @@ export const guides: GuideMeta[] = [
     description: 'Style screens with Tailwind classes from @tamagui/tailwind next to Adv UI.',
     section: 'getting-started',
     keywords: ['tailwindcss', 'classname', 'utility classes', 'css'],
+  },
+  {
+    slug: 'forms',
+    title: 'Forms and the keyboard',
+    description: 'Build and validate forms, and keep fields above the on-screen keyboard.',
+    section: 'guides',
+    keywords: [
+      'field',
+      'validation',
+      'react hook form',
+      'formik',
+      'submit',
+      'return key',
+      'avoidKeyboard',
+      'KeyboardAvoidingView',
+    ],
+  },
+  {
+    slug: 'navigation',
+    title: 'Navigation',
+    description: 'Move between screens with Expo Router and Next.js, using the same components.',
+    section: 'guides',
+    keywords: ['router', 'routing', 'expo router', 'next.js', 'href', 'setRouter', 'links', 'tabs'],
+  },
+  {
+    slug: 'from-tamagui',
+    title: 'From Tamagui’s default skin',
+    description: 'Move a Tamagui 3 app from Tamagui’s styled components to Adv UI, step by step.',
+    section: 'guides',
+    keywords: ['migrate', 'migration', 'createTamagui', 'TamaguiProvider', 'YStack', 'XStack'],
+  },
+  {
+    slug: 'from-shadcn',
+    title: 'From shadcn/ui',
+    description: 'Move a React app from shadcn/ui to Adv UI, one screen at a time.',
+    section: 'guides',
+    keywords: ['migrate', 'migration', 'radix', 'base ui', 'tailwind', 'class names'],
   },
   {
     slug: 'theme',

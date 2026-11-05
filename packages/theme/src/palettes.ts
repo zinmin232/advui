@@ -89,7 +89,7 @@ export type ScaleName = keyof typeof scales
 export const neutralScaleNames = ['gray', 'slate', 'mauve', 'sage', 'sand'] as const
 export type NeutralScaleName = (typeof neutralScaleNames)[number]
 
-/** A named built-in scale, a hex/rgb/hsl color string, or a complete custom scale. */
+/** A named built-in scale, a hex/rgb/hsl/oklch color string, or a complete custom scale. */
 export type ColorSource = ScaleName | (string & {}) | ColorScale
 
 // Target OKLCH lightness per step, and chroma as a fraction of the base chroma.

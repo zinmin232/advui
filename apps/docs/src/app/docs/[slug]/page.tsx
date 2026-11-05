@@ -29,6 +29,16 @@ import {
   platformsToc,
   tailwindToc,
 } from '../../../content/guides/getting-started'
+import {
+  Forms,
+  FromShadcn,
+  FromTamagui,
+  Navigation,
+  formsToc,
+  fromShadcnToc,
+  fromTamaguiToc,
+  navigationToc,
+} from '../../../content/guides/guides'
 import { getGuide, guides } from '../../../lib/guides'
 import { flatPages, guideSectionTitles } from '../../../lib/navigation'
 import { editUrl } from '../../../lib/site'
@@ -40,6 +50,10 @@ const content: Record<string, { Body: ComponentType; toc: TocItem[] }> = {
   accessibility: { Body: Accessibility, toc: accessibilityToc },
   platforms: { Body: Platforms, toc: platformsToc },
   tailwind: { Body: Tailwind, toc: tailwindToc },
+  forms: { Body: Forms, toc: formsToc },
+  navigation: { Body: Navigation, toc: navigationToc },
+  'from-tamagui': { Body: FromTamagui, toc: fromTamaguiToc },
+  'from-shadcn': { Body: FromShadcn, toc: fromShadcnToc },
   theme: { Body: ThemeGuide, toc: themeToc },
   colors: { Body: ColorsGuide, toc: colorsToc },
   typography: { Body: TypographyGuide, toc: typographyToc },
@@ -74,9 +88,7 @@ export default async function GuideRoute({ params }: { params: Promise<{ slug: s
       description={guide.description}
       section={guideSectionTitles[guide.section]}
       toc={page.toc}
-      editUrl={editUrl(
-        `apps/docs/src/content/guides/${guide.section === 'foundations' ? 'foundations' : 'getting-started'}.tsx`,
-      )}
+      editUrl={editUrl(`apps/docs/src/content/guides/${guide.section}.tsx`)}
       prev={index > 0 ? pages[index - 1] : undefined}
       next={index >= 0 && index < pages.length - 1 ? pages[index + 1] : undefined}
     >

@@ -1,4 +1,4 @@
-import { contrastRatio } from '@advui/utils'
+import { contrastRatio, toOklch } from '@advui/utils'
 import { describe, expect, it } from 'vitest'
 import { generateScale, resolveScale, scales } from './palettes'
 import { themePresetNames, themePresets } from './presets'
@@ -58,7 +58,19 @@ describe.each(themePresetNames)('preset "%s"', (name) => {
 
 describe('custom colors', () => {
   it('builds accessible themes from any brand color', () => {
-    for (const brand of ['#ff5a1f', '#0ea5e9', '#a3e635', '#7c3aed', '#111827', '#facc15']) {
+    for (const brand of [
+      '#ff5a1f',
+      '#0ea5e9',
+      '#a3e635',
+      '#7c3aed',
+      '#111827',
+      '#facc15',
+      // shadcn/ui's destructive, then a blue, a green and a yellow.
+      'oklch(0.577 0.245 27.325)',
+      'oklch(0.546 0.245 262.881)',
+      'oklch(0.723 0.219 149.579)',
+      'oklch(0.795 0.184 86.047)',
+    ]) {
       const themes = createThemeColors({ primary: brand })
       for (const mode of ['light', 'dark'] as const) {
         const t = themes[mode]
@@ -87,6 +99,45 @@ describe('custom colors', () => {
     const themes = createThemeColors({ overrides: { dark: { background: '#000000' } } })
     expect(themes.dark.background).toBe('#000000')
     expect(themes.light.background).toBe('#ffffff')
+  })
+
+  it('reads oklch() as the same color in hex', () => {
+    expect(
+      createUniversalConfig({ colors: { primary: 'oklch(0.585 0.233 277.117)' } }),
+    ).toBeTruthy()
+    const hex = '#6366f1'
+    const { l, c, h } = toOklch(hex)
+    expect(createThemeColors({ primary: `oklch(${l} ${c} ${h})` })).toEqual(
+      createThemeColors({ primary: hex }),
+    )
+    expect(() => resolveScale('oklch(0.5 0.1)')).toThrow(/Unknown color/)
+  })
+
+  it('turns oklch() into hex wherever it reaches the theme, for React Native', () => {
+    const overrides = {
+      light: { primary: 'oklch(0.205 0 0)' },
+      dark: { border: 'oklch(1 0 0 / 10%)' },
+    }
+    const themes = createThemeColors({ overrides })
+    expect(themes.light.primary).toBe('#171717')
+    expect(themes.dark.border).toBe('#ffffff1a')
+    expect(themes.light_primary.background).toBe('#171717')
+    expect(themes.light_inverse.border).toBe('#ffffff1a')
+
+    const material = createMaterialThemes({ seed: 'oklch(0.585 0.233 277.117)', overrides })
+    expect(material.dark.border).toBe('#ffffff1a')
+
+    const { light, dark } = createThemeColors()
+    const handMade = createUniversalConfig({
+      themes: { light: { ...light, primary: 'oklch(0.205 0 0)' }, dark },
+    })
+    expect(handMade.themes.light?.primary?.val).toBe('#171717')
+
+    const values = Object.values(themes).flatMap((theme) => Object.values(theme))
+    expect(values.some((value) => /oklch/i.test(value))).toBe(false)
+    expect(() => createThemeColors({ overrides: { light: { border: 'oklch(1)' } } })).toThrow(
+      /Invalid color/,
+    )
   })
 })
 

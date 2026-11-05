@@ -414,6 +414,10 @@ async function seriousViolations(page: Page) {
 for (const path of [
   '/',
   '/docs/introduction',
+  '/docs/forms',
+  '/docs/navigation',
+  '/docs/from-tamagui',
+  '/docs/from-shadcn',
   '/docs/components/button',
   '/docs/components/dialog',
   '/docs/components/accordion',

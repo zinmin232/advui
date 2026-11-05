@@ -150,6 +150,36 @@ describe('init + add against the local registry', () => {
     )
   })
 
+  it("removes Cache Components from a Next.js app, unless the app uses 'use cache'", async () => {
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ dependencies: { next: '16.4.1' } }))
+    const file = join(dir, 'next.config.mjs')
+    const config = 'export default {\n  cacheComponents: true,\n  partialPrefetching: true,\n}\n'
+    writeFileSync(file, config)
+    await initCommand(options())
+    expect(logs.join('\n')).toContain(
+      'Removed cacheComponents and partialPrefetching from next.config.mjs: Tamagui calls Math.random()',
+    )
+    const edited = readFileSync(file, 'utf8')
+    expect(edited).not.toMatch(/cacheComponents|partialPrefetching/)
+    logs.length = 0
+    await initCommand(options())
+    expect(logs.join('\n')).not.toMatch(/next\.config/)
+    expect(readFileSync(file, 'utf8')).toBe(edited)
+
+    mkdirSync(join(dir, 'app'))
+    writeFileSync(join(dir, 'app/data.ts'), "export async function data() {\n  'use cache'\n}\n")
+    writeFileSync(file, config)
+    logs.length = 0
+    await initCommand(options())
+    const kept = readFileSync(file, 'utf8')
+    expect(kept).toContain('cacheComponents: true')
+    expect(kept).toContain('transpilePackages')
+    expect(logs.join('\n')).not.toContain('Removed')
+    expect(logs.join('\n')).toContain(
+      `next.config.mjs keeps cacheComponents, as ${join('app', 'data.ts')} uses 'use cache'.`,
+    )
+  })
+
   it('does not overwrite existing files unless asked', async () => {
     await addCommand(['badge'], options())
     const file = join(dir, 'ui/components/badge/Badge.tsx')

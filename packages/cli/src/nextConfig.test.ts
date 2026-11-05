@@ -1,9 +1,14 @@
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterAll, describe, expect, it } from 'vitest'
-import { editNextConfig, nextSettings } from './nextConfig.js'
+import {
+  editNextConfig,
+  nextSettings,
+  removeCacheComponents,
+  setUpNextConfig,
+} from './nextConfig.js'
 
 const settings = nextSettings({})
 const dir = mkdtempSync(join(tmpdir(), 'aui-next-config-'))
@@ -202,6 +207,149 @@ export default nextConfig
         "export default { turbopack: { resolveAlias: { 'react-native': 'react-native-tvos' } } }",
       ),
     ).toEqual({ error: "turbopack.resolveAlias['react-native'] is set to 'react-native-tvos'" })
+  })
+})
+
+describe('removeCacheComponents', () => {
+  const removed = (source: string) => removeCacheComponents(source).text
+
+  it("takes create-next-app's settings out and keeps the rest of the file", async () => {
+    const source = `import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+  cacheComponents: true,
+  partialPrefetching: true,
+};
+
+export default nextConfig;
+`
+    const result = removeCacheComponents(source)
+    expect(result.removed).toEqual(['cacheComponents', 'partialPrefetching'])
+    expect(result.text).toBe(`import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+export default nextConfig;
+`)
+    const { text, changed } = edit(result.text)
+    expect(changed).toEqual(['transpilePackages', 'turbopack'])
+    expect(await load(text, 'ts')).toEqual(settings)
+  })
+
+  it('leaves neighbours and their commas in a valid config', async () => {
+    const cases: [string, unknown][] = [
+      ['export default { cacheComponents: true }\n', {}],
+      ['export default { cacheComponents: true, }\n', {}],
+      [
+        'export default { cacheComponents: true, reactStrictMode: true }\n',
+        { reactStrictMode: true },
+      ],
+      [
+        'export default { reactStrictMode: true, cacheComponents: true }\n',
+        { reactStrictMode: true },
+      ],
+      [
+        'export default { a: 1, cacheComponents: true, partialPrefetching: true, b: 2 }\n',
+        { a: 1, b: 2 },
+      ],
+      ['export default { a: 1, cacheComponents: true, partialPrefetching: true }\n', { a: 1 }],
+      ['export default {\n  a: 1,\n  cacheComponents: true\n}\n', { a: 1 }],
+      ['export default {\n  cacheComponents: true, // on\n  a: 1,\n}\n', { a: 1 }],
+      ["export default { 'cacheComponents': true, a: 1 }\n", { a: 1 }],
+    ]
+    for (const [source, expected] of cases)
+      expect(await load(removed(source), 'mjs')).toEqual(expected)
+  })
+
+  it('keeps comments beside other members, and Windows line endings', () => {
+    expect(removed('export default {\n  /* keep */ cacheComponents: true,\n}\n')).toContain('keep')
+    expect(removed('export default {\r\n  cacheComponents: true,\r\n  a: 1,\r\n}\r\n')).toBe(
+      'export default {\r\n  a: 1,\r\n}\r\n',
+    )
+  })
+
+  it('removes both only when Cache Components is on', () => {
+    for (const source of [
+      'export default { reactStrictMode: true }\n',
+      'export default { cacheComponents: false, partialPrefetching: false }\n',
+      'export default (phase) => ({ cacheComponents: true })\n',
+    ])
+      expect(removeCacheComponents(source)).toEqual({ text: source, removed: [], unread: false })
+    const source = 'export default { cacheComponents: process.env.CACHE === "1" }\n'
+    expect(removeCacheComponents(source)).toEqual({ text: source, removed: [], unread: true })
+  })
+})
+
+describe('setUpNextConfig', () => {
+  /** A project folder with this config, and these other files. */
+  function project(name: string, config: string, files: Record<string, string> = {}) {
+    const root = join(dir, name)
+    mkdirSync(root, { recursive: true })
+    writeFileSync(join(root, 'next.config.mjs'), config)
+    for (const [path, text] of Object.entries(files)) {
+      mkdirSync(dirname(join(root, path)), { recursive: true })
+      writeFileSync(join(root, path), text)
+    }
+    return root
+  }
+  const on = 'export default { cacheComponents: true, partialPrefetching: true }\n'
+
+  it('updates a config that needs nothing but the removal', () => {
+    const edited = editNextConfig('export default {\n}\n', settings)
+    if ('error' in edited) throw new Error(edited.error)
+    const config = edited.text.replace('{\n', '{\n  cacheComponents: true,\n')
+    const root = project('only-removal', config)
+    expect(setUpNextConfig(root, false, {})).toMatchObject({
+      status: 'updated',
+      changed: [],
+      removed: ['cacheComponents'],
+    })
+    expect(readFileSync(join(root, 'next.config.mjs'), 'utf8')).toBe(edited.text)
+  })
+
+  it("keeps it when the project uses 'use cache', in any form", () => {
+    for (const [name, directive] of [
+      ['plain', `'use cache'`],
+      ['double', `"use cache"`],
+      ['remote', `'use cache: remote'`],
+    ] as const) {
+      const root = project(`uses-${name}`, on, {
+        'src/app/page.tsx': `${directive}\nexport default function Page() {}\n`,
+      })
+      const result = setUpNextConfig(root, false, {})
+      expect(result).toMatchObject({ status: 'updated', removed: [] })
+      expect(result.warning).toContain(`${join('src', 'app', 'page.tsx')} uses 'use cache'`)
+      expect(readFileSync(join(root, 'next.config.mjs'), 'utf8')).toContain('cacheComponents: true')
+    }
+  })
+
+  it("does not take a mention of 'use cache' or a dependency for a use of it", () => {
+    const root = project('not-used', on, {
+      'app/page.tsx': `export const note = "we might 'use cache' later"\n`,
+      'node_modules/lib/index.js': `'use cache'\n`,
+      '.next/server/page.js': `'use cache'\n`,
+    })
+    const result = setUpNextConfig(root, false, {})
+    expect(result).toMatchObject({ removed: ['cacheComponents', 'partialPrefetching'] })
+    expect(result.warning).toBeUndefined()
+  })
+
+  it('warns when it cannot tell, or cannot edit the file', () => {
+    const unread = project('unread', 'export default { cacheComponents: enabled }\n')
+    expect(setUpNextConfig(unread, false, {})).toMatchObject({ status: 'updated', removed: [] })
+    expect(setUpNextConfig(unread, false, {}).warning).toContain(
+      'keeps cacheComponents, as its value could not be read',
+    )
+    const spread = 'export default { ...base, cacheComponents: true }\n'
+    const skipped = setUpNextConfig(project('spread', spread), false, {})
+    expect(skipped).toMatchObject({ status: 'skipped', removed: [] })
+    expect(skipped.warning).toContain('remove cacheComponents and partialPrefetching from')
+    const root = project('function', 'export default () => ({ cacheComponents: true })\n')
+    expect(setUpNextConfig(root, false, {}).warning).toContain('remove cacheComponents')
+    expect(readFileSync(join(root, 'next.config.mjs'), 'utf8')).toContain('cacheComponents: true')
   })
 })
 

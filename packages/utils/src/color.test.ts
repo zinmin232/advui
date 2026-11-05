@@ -27,6 +27,85 @@ describe('parseColor', () => {
     expect(parseColor('not-a-color')).toBeNull()
     expect(isValidColor('#12')).toBe(false)
   })
+
+  describe('oklch()', () => {
+    it("reads the values shadcn/ui's default theme uses", () => {
+      expect(toHex('oklch(1 0 0)')).toBe('#ffffff')
+      expect(toHex('oklch(0.985 0 0)')).toBe('#fafafa')
+      expect(toHex('oklch(0.97 0 0)')).toBe('#f5f5f5')
+      expect(toHex('oklch(0.922 0 0)')).toBe('#e5e5e5')
+      expect(toHex('oklch(0.556 0 0)')).toBe('#737373')
+      expect(toHex('oklch(0.205 0 0)')).toBe('#171717')
+      expect(toHex('oklch(0.145 0 0)')).toBe('#0a0a0a')
+      expect(parseColor('oklch(1 0 0 / 10%)')).toMatchObject({ a: 0.1 })
+    })
+
+    it('agrees with toOklch', () => {
+      for (const color of ['#6366f1', '#16a34a', '#b45309', '#0ea5e9']) {
+        const { l, c, h } = toOklch(color)
+        expect(toHex(`oklch(${l} ${c} ${h})`)).toBe(color)
+      }
+    })
+
+    it('reads the forms CSS allows', () => {
+      const same = (a: string, b: string) => expect(toHex(a)).toBe(toHex(b))
+      same('oklch(62.3% 0.214 259.815)', 'oklch(0.623 0.214 259.815)')
+      same('oklch(0.623 53.5% 259.815)', 'oklch(0.623 0.214 259.815)')
+      same('OKLCH(0.623 0.214 259.815)', 'oklch(0.623 0.214 259.815)')
+      same('  oklch(  0.623   0.214   259.815  )  ', 'oklch(0.623 0.214 259.815)')
+      same('oklch(.623 .214 259.815)', 'oklch(0.623 0.214 259.815)')
+      same('oklch(0.5 0 none)', 'oklch(0.5 0 0)')
+      same('oklch(none none none)', 'oklch(0 0 0)')
+      same('oklch(0.6 0.1 200deg)', 'oklch(0.6 0.1 200)')
+      same('oklch(0.6 0.1 0.5turn)', 'oklch(0.6 0.1 180)')
+      same('oklch(0.6 0.1 200grad)', 'oklch(0.6 0.1 180)')
+      same(`oklch(0.6 0.1 ${Math.PI}rad)`, 'oklch(0.6 0.1 180)')
+      same('oklch(0.6 0.1 -160)', 'oklch(0.6 0.1 200)')
+      expect(parseColor('oklch(0.6 0.1 200 / 0.25)')?.a).toBe(0.25)
+      expect(parseColor('oklch(0.6 0.1 200/25%)')?.a).toBe(0.25)
+    })
+
+    it('clamps what CSS clamps', () => {
+      expect(toHex('oklch(1.5 0 0)')).toBe('#ffffff')
+      expect(toHex('oklch(-1 0 0)')).toBe('#000000')
+      expect(toHex('oklch(0.6 -0.1 200)')).toBe(toHex('oklch(0.6 0 200)'))
+      expect(parseColor('oklch(0.6 0.1 200 / 2)')?.a).toBe(1)
+    })
+
+    // Expected values read back from a browser's canvas. Many of these sit just outside
+    // sRGB, where browsers clip: a pasted color must stay the one the app shows.
+    it('clips colors outside sRGB as a browser draws them', () => {
+      expect(toHex('oklch(0.577 0.245 27.325)')).toBe('#e7000b')
+      expect(toHex('oklch(0.623 0.214 259.815)')).toBe('#2b7fff')
+      expect(toHex('oklch(0.723 0.219 149.579)')).toBe('#00c950')
+      expect(toHex('oklch(0.795 0.184 86.047)')).toBe('#f0b100')
+      expect(toHex('oklch(0.7 0.15 200)')).toBe('#00b9c3')
+      expect(toHex('oklch(0.7 0.4 150)')).toBe('#00d600')
+      expect(toHex('oklch(0.9 0.35 30)')).toBe('#ff3e20')
+    })
+
+    it('rejects what CSS rejects', () => {
+      for (const color of [
+        'oklch()',
+        'oklch(0.5)',
+        'oklch(0.5 0.1)',
+        'oklch(0.5 0.1 200 0.5)',
+        'oklch(0.5, 0.1, 200)',
+        'oklch(0.5 0.1 200 / 0.5 / 0.5)',
+        'oklch(0.5 0.1 200 /)',
+        'oklch(0.5 0.1 abc)',
+        'oklch(0.5 0.1 50%)',
+        'oklch(0.5 0.1 nonedeg)',
+        'oklch(0.5 0.1 deg)',
+        'oklch(0.5abc 0.1 200)',
+        'oklch(0.5 0.1 200',
+        'oklch(from red l c h)',
+        'oklch(calc(0.5) 0.1 200)',
+        'oklch(var(--l) 0.1 200)',
+      ])
+        expect(parseColor(color), color).toBeNull()
+    })
+  })
 })
 
 describe('hsv', () => {

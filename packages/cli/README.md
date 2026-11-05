@@ -51,6 +51,12 @@ they are installed, and changes nothing on a second run. When the config is
 not an object it can read (a function, a list held in a variable, a spread
 of another config), it leaves the file as it is and prints what to add.
 
+It also removes `cacheComponents` and `partialPrefetching`, which
+`create-next-app` can turn on: Tamagui calls `Math.random()` while it renders,
+which Cache Components rejects, so `next build` fails with them. If your code
+has a `'use cache'` directive it keeps them and prints your options, as removing
+them would break that code instead.
+
 ## Keeping copies up to date
 
 `add` records each item's registry version and a sha256 hash of each file in

@@ -201,6 +201,14 @@ const nextConfig: NextConfig = {
 
 export default nextConfig`}
       />
+      <Callout variant="warning" title="Turn off Cache Components">
+        <C>create-next-app</C> 16.4 can add <C>cacheComponents: true</C> and{' '}
+        <C>partialPrefetching: true</C> to <C>next.config</C>. Tamagui calls <C>Math.random()</C>{' '}
+        while it renders, which that mode rejects, so <C>next build</C> fails.{' '}
+        <C>npx {siteConfig.cliName} init</C> removes both lines, unless your code has a{' '}
+        <C>'use cache'</C> directive. A <C>{'<Suspense>'}</C> around the provider also gets the
+        build through, but the server then sends an empty page.
+      </Callout>
       <P>
         Wrap the app in a client provider. Tamagui injects its CSS during SSR through React 19 style
         hoisting — no extra wiring:
@@ -268,7 +276,8 @@ setRouter(router)`}
         A router that comes from a hook, such as React Navigation's <C>useLinkTo</C>, is registered
         from an effect: <C>{'useEffect(() => setRouter({ push: linkTo }), [linkTo])'}</C>. Once a
         router is registered, drop any <C>{'onPress={() => router.push(href)}'}</C> beside an{' '}
-        <C>href</C>, or the link navigates twice.
+        <C>href</C>, or the link navigates twice. The{' '}
+        <A href="/docs/navigation">Navigation guide</A> has more, for Expo Router and Next.js.
       </P>
       <H2 id="file-picker">File picking (native)</H2>
       <P>
@@ -388,6 +397,15 @@ export async function Cli() {
           When the config is not an object it can read, such as a function, it leaves the file as it
           is and prints what to add. Run it again after installing <C>@advui/data</C>,{' '}
           <C>@advui/charts</C> or <C>@advui/editor</C> to add them.
+        </LI>
+        <LI>
+          Removes <C>cacheComponents</C> and <C>partialPrefetching</C> from <C>next.config</C>,
+          which{' '}
+          <A href="/docs/installation#nextjs">
+            stop <C>next build</C>
+          </A>{' '}
+          with Tamagui. If your code has a <C>'use cache'</C> directive, it keeps them and prints
+          your options.
         </LI>
         <LI>
           Installs the theme, icons, utils, core and Tamagui packages, and prints the remaining
