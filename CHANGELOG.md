@@ -64,6 +64,16 @@ one version.
   base `update` merges against. `pnpm registry:build` writes the folder for
   the current version once and leaves it alone afterwards, so it keeps what
   was released while the latest files move on with `main`.
+- **Inbox example**: a master–detail screen, with a list beside its detail
+  from `md` up, and a list that the detail covers on phones. Both panes are
+  always in the tree and CSS picks what shows, so the server renders the right
+  layout for every width, and the list keeps its scroll position under the
+  message. On a phone focus moves to the Back button and returns to the row,
+  and Android's back button returns to the list.
+- **`useBackToClose`** (core): while a panel is open, Android's back button
+  or back gesture closes it instead of going back in the app's navigation.
+  Pass `{ modal: false }` for a panel that opens in place, inside the screen,
+  so screen readers can still reach what is beside it.
 - **`useScrollLock`** (core): stops the ScrollAreas and AppShell Main around a
   component on iOS and Android while a finger drags something in them, and
   returns the release. Call it when the drag starts, before the finger moves.
@@ -149,6 +159,9 @@ one version.
 - **Checkbox with `defaultChecked="indeterminate"`** shows a dash, as a
   controlled mixed box does. Before, it showed a check while it read as
   mixed.
+- **List Item's selected bar stays visible on hover.** The row's hover and
+  press fills are opaque and painted over the bar, so a selected item lost its
+  non-color cue under the pointer. The bar now paints above the row.
 
 ## [0.14.0] - 2026-10-31
 

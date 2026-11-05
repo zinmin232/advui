@@ -5,6 +5,8 @@ export interface AppExampleMeta {
   description: string
   /** Preferred frame in the docs; every example also runs on iOS/Android. */
   device: 'desktop' | 'mobile'
+  /** Fills the height it is given and scrolls inside: give it one, not a scroll view. */
+  fill?: boolean
   components: string[]
 }
 
@@ -37,6 +39,15 @@ export const appExamples: AppExampleMeta[] = [
     description: 'Profile form, notification preferences and a confirmed destructive action.',
     device: 'desktop',
     components: ['Card', 'Grid', 'Select', 'Textarea', 'RadioGroup', 'Switch', 'Dialog', 'Alert'],
+  },
+  {
+    slug: 'inbox',
+    title: 'Inbox',
+    description:
+      'Master–detail: the message list beside the open message on wide screens, and a list that pushes the message on phones.',
+    device: 'desktop',
+    fill: true,
+    components: ['List', 'Search', 'Indicator', 'ScrollArea', 'EmptyState', 'Show', 'Toast'],
   },
   {
     slug: 'product',

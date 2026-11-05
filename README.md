@@ -89,7 +89,7 @@ The same file renders DOM elements in Next.js and native views in Expo.
 | `packages/tsconfig`      | Shared strict TypeScript configs                                               |
 | `apps/docs`              | Next.js 16 documentation site                                                  |
 | `apps/expo`              | Expo Router app (Expo Go compatible)                                           |
-| `examples`               | `@advui/examples`: login, dashboard, admin, settings, product, mobile screens  |
+| `examples`               | `@advui/examples`: full screens (login, dashboard, inbox, product, mobile…)    |
 | `registry`               | Generated registry JSON consumed by the CLI                                    |
 | `scripts`                | Catalog/registry generators, `create-component`, `rename`                      |
 
