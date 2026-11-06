@@ -175,6 +175,8 @@ no flash of the wrong theme.
 - The root layout passes `useSafeAreaInsets()` to `UniversalProvider`, which
   forwards them to Tamagui so toasts and sheets avoid the notch and home
   indicator.
+- `preview/` publishes the app as a self-hosted update that Expo Go opens from
+  the docs' QR codes, served by a Cloudflare Worker (see `apps/expo/README.md`).
 
 ## Registry and CLI
 

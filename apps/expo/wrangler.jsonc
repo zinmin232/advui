@@ -1,0 +1,10 @@
+{
+  // The phone preview. Build it first: `pnpm preview:build`.
+  "name": "advui-preview",
+  "main": "preview/worker.mjs",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "dist-preview",
+    "binding": "ASSETS",
+  },
+}

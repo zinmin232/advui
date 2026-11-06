@@ -44,6 +44,9 @@ file: `pnpm --filter @advui/core exec vitest run src/components/button`.
 - Docs routes: `apps/docs/src/app/`. Docs UI: `apps/docs/src/components/`.
   Guides: `apps/docs/src/content/guides/`
 - Expo screens: `apps/expo/app/`
+- Phone preview, the playground as an update that Expo Go opens from the
+  docs' QR codes: `apps/expo/preview/` (see `apps/expo/README.md`). It deploys
+  from `main`
 - App-level examples shared by docs and Expo: `examples/src/`
 - Starter apps for `advui create`: `packages/cli/templates/`. Their screens
   are copied from `examples/src` when the CLI is built, and CI's `starter`
@@ -341,6 +344,15 @@ each edit.
   which it does not parse: read those properties, not `padding-left`.
 - **pnpm stores scoped packages** as `.pnpm/@scope+name`. The jest
   `transformIgnorePatterns` account for this.
+- **Expo Go opens other people's updates only from your own server.** Since
+  May 2026 it loads an EAS Update project only for that project's members, so
+  the phone preview serves its own update from a Cloudflare Worker. The
+  bundle must be plain JavaScript (`--no-bytecode`), as Expo Go takes Hermes
+  bytecode only from EAS Update. The manifest needs an `expo-protocol-version: 1`
+  response header, without which Expo Go says "Failed to download remote
+  update", and static hosts such as GitHub Pages cannot send one. Expo Go from
+  the store runs one SDK, so the QR codes stop working when it moves to a new
+  SDK, until the playground follows.
 - **Windows + Android emulator**: use
   `pnpm --filter @advui/expo-playground android:emulator` (adb reverse +
   `127.0.0.1` Metro host). Do not start Metro with `CI=1` to keep it

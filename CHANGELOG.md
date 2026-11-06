@@ -9,6 +9,11 @@ one version.
 
 ### Added
 
+- **Phone preview**: component pages in the docs have an **Open on phone**
+  button with a QR code that opens the component's screen in Expo Go, with no
+  dev server. The Expo playground is published as a self-hosted update from a
+  Cloudflare Worker, deployed from `main`, because Expo Go loads an EAS Update
+  project only for that project's members.
 - **Scroll Area: `avoidKeyboard`** (iOS and Android) keeps the focused field
   above the keyboard, for a ScrollArea that fills the screen, and lets taps on
   buttons through while the keyboard is up (`keyboardShouldPersistTaps`). iOS

@@ -43,6 +43,22 @@ test('sidebar is generated from metadata and marks the current page', async ({ p
   await expect(page.getByRole('heading', { level: 1, name: 'Switch' })).toBeVisible()
 })
 
+test('component pages open their screen in Expo Go', async ({ page }) => {
+  await page.goto('/docs/components/button')
+  await page.getByRole('button', { name: 'Open on phone' }).click()
+  await expect(page.getByRole('img', { name: 'QR code for Button in Expo Go' })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Open in Expo Go' })).toHaveAttribute(
+    'href',
+    /^exps:\/\/[^/]+\/--\/components\/button$/,
+  )
+})
+
+test('a component that renders nothing on phones has no phone preview', async ({ page }) => {
+  await page.goto('/docs/components/tooltip')
+  await expect(page.getByRole('heading', { level: 1, name: 'Tooltip' })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Open on phone' })).toHaveCount(0)
+})
+
 test('component pages install the package the component ships in', async ({ page }) => {
   await page.goto('/docs/components/data-table')
   await expect(page.getByLabel('Package: @advui/data')).toBeVisible()

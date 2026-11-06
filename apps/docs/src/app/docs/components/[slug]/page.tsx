@@ -7,6 +7,7 @@ import { ComponentDoc, type ComponentDocData } from '../../../../components/comp
 import { PlannedDoc } from '../../../../components/planned-doc'
 import { highlight } from '../../../../lib/highlight'
 import { flatPages } from '../../../../lib/navigation'
+import { phonePreview } from '../../../../lib/phone-preview'
 import { siteConfig, editUrl } from '../../../../lib/site'
 import { componentFolder, lastUpdated, readExampleSource, repoRoot } from '../../../../lib/source'
 
@@ -92,6 +93,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
     related: (meta.related ?? [])
       .filter((r) => known.has(r))
       .map((r) => ({ slug: r, name: known.get(r)!.name, planned: known.get(r)!.planned })),
+    phonePreview: meta.platforms.some((p) => p !== 'web') ? phonePreview(meta.slug) : undefined,
     lastUpdated: lastUpdated(packageDir, folder, meta.files),
     editUrl: editUrl(`${packageDir}/src/components/${folder}/${meta.slug}.meta.ts`),
     sourceUrl: `${siteConfig.github}/tree/${siteConfig.githubBranch}/${packageDir}/src/${meta.files[0]}`,
