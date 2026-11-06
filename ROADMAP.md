@@ -444,10 +444,22 @@ examples, web visual tests) are not listed.
       the focus events on the Back button and the row, delete with Undo, and a
       tap on a row with the keyboard up; in landscape (914dp) both panes. Left:
       iOS, and a pass with TalkBack itself running.
-- [ ] **Phone preview.** Publish the Expo playground with EAS Update, and
-      give each component page a QR code that opens that component's screen
-      in Expo Go. Snack was ruled out: it would mean a second copy of every
-      example, and it tends to lag new Expo SDKs.
+- [x] **Phone preview.** Done on 2026-11-06: each component page that renders
+      on phones has an **Open on phone** button with a QR code that opens the
+      component's screen in Expo Go. EAS Update was the plan, but since May
+      2026 Expo Go loads such a project only for its own members, so visitors
+      would be refused. The playground is a self-hosted update from a
+      Cloudflare Worker instead (`apps/expo/preview/`), in plain JavaScript,
+      with a manifest header that GitHub Pages cannot send. Snack was ruled
+      out: it would mean a second copy of every example, and it tends to lag
+      new Expo SDKs. Checked at the public address on an Android 16 emulator
+      (Medium Phone API 36, Expo Go 57) with Expo Go's storage cleared and no
+      Expo account, and on a real phone by its address. The codes for Button
+      and for the longest name decoded from screenshots in both color modes,
+      at both widths and at 1x. Left: a camera scan of a code, and iOS if that
+      phone was not an iPhone. Expo could tighten Expo Go again, and the codes
+      stop working when Expo Go moves to a new SDK, until the playground
+      follows.
 - [ ] **Nightly native screenshots.** A Maestro flow on an Android emulator
       that opens each playground screen in light and dark mode and compares
       screenshots, run nightly rather than on every PR (Detox or Appium per

@@ -9,6 +9,8 @@ coverage/
 expo-env.d.ts
 apps/expo/android/
 apps/expo/ios/
+apps/expo/dist-preview/
+.wrangler/
 web-build/
 playwright-report/
 test-results/

@@ -8,6 +8,8 @@ export const ignores = {
   ignores: [
     '**/node_modules/**',
     '**/dist/**',
+    '**/dist-preview/**',
+    '**/.wrangler/**',
     '**/.next/**',
     '**/out/**',
     '**/.expo/**',

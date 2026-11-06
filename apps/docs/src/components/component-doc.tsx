@@ -7,8 +7,10 @@ import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { View } from 'tamagui'
 import { CodeBlock } from './code-block'
+import type { PhonePreview } from '../lib/phone-preview'
 import { ComponentPreview } from './component-preview'
 import { Breadcrumbs, DocPage, PrevNext, type TocItem } from './docs-shell'
+import { PhonePreviewButton } from './phone-preview'
 import { Playground } from './playground'
 import { C, Callout, H2, LI, P, PageHeader, UL } from './prose'
 import { statusMeta } from './sidebar'
@@ -29,6 +31,8 @@ export interface ComponentDocData {
   registryDependencies: string[]
   dependencies: string[]
   related: Array<{ slug: string; name: string; planned: boolean }>
+  /** Left out for a component that renders nothing on iOS and Android. */
+  phonePreview?: PhonePreview
   lastUpdated: string
   editUrl: string
   sourceUrl: string
@@ -231,6 +235,9 @@ export function ComponentDoc({ data }: { data: ComponentDocData }) {
           >
             Source
           </Button>
+          {data.phonePreview ? (
+            <PhonePreviewButton name={meta.name} preview={data.phonePreview} />
+          ) : null}
         </HStack>
       </PageHeader>
 
