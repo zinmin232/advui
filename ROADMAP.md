@@ -454,12 +454,11 @@ examples, web visual tests) are not listed.
       out: it would mean a second copy of every example, and it tends to lag
       new Expo SDKs. Checked at the public address on an Android 16 emulator
       (Medium Phone API 36, Expo Go 57) with Expo Go's storage cleared and no
-      Expo account, and on a real phone by its address. The codes for Button
-      and for the longest name decoded from screenshots in both color modes,
-      at both widths and at 1x. Left: a camera scan of a code, and iOS if that
-      phone was not an iPhone. Expo could tighten Expo Go again, and the codes
-      stop working when Expo Go moves to a new SDK, until the playground
-      follows.
+      Expo account, and on a real Android phone, by its address and from a
+      docs page's QR code. The codes for Button and for the longest name also
+      decoded from screenshots in both color modes, at both widths and at 1x.
+      Left: iOS. Expo could tighten Expo Go again, and the codes stop working
+      when Expo Go moves to a new SDK, until the playground follows.
 - [ ] **Nightly native screenshots.** A Maestro flow on an Android emulator
       that opens each playground screen in light and dark mode and compares
       screenshots, run nightly rather than on every PR (Detox or Appium per
