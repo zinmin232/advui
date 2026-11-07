@@ -1,0 +1,101 @@
+name: Native screenshots
+
+# Opens every playground screen on an Android emulator, in light and dark mode,
+# and compares the screenshots with the approved set (see apps/expo/README.md).
+# The approved set is the `native-screenshots` artifact of the last run that
+# passed on main. After an intended change, run this workflow by hand with
+# `approve` on: that run keeps its screenshots as the new approved set.
+on:
+  schedule:
+    - cron: '17 2 * * *'
+  pull_request:
+    paths:
+      - apps/expo/screenshots/**
+      - .github/workflows/native-screenshots.yml
+  workflow_dispatch:
+    inputs:
+      approve:
+        description: Approve this run's screenshots without comparing them
+        type: boolean
+        default: false
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: native-screenshots-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300 # about two hours on a dev machine; GitHub's limit is 360
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6 # version comes from "packageManager"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @advui/expo-playground preview:build
+
+      - name: Download Expo Go for the playground's SDK
+        run: |
+          sdk="$(node -p "require('./apps/expo/node_modules/expo/package.json').version.split('.')[0]").0.0"
+          url=$(curl -fsSL https://api.expo.dev/v2/versions/latest | jq -r ".data.sdkVersions[\"$sdk\"].androidClientUrl")
+          curl -fsSL -o expo-go.apk "$url"
+
+      - name: Serve the playground
+        run: nohup pnpm --filter @advui/expo-playground preview:dev > preview.log 2>&1 &
+
+      - name: Let the emulator use KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Take the screenshots
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          target: google_apis
+          arch: x86_64
+          ram-size: 4096M
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
+          script: |
+            adb install expo-go.apk
+            pnpm --filter @advui/expo-playground screenshots
+
+      - name: Compare with the approved screenshots
+        if: ${{ !inputs.approve }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          run=$(gh run list --workflow native-screenshots.yml --branch main --status success --limit 1 --json databaseId --jq '.[0].databaseId // empty' || true)
+          if [ -z "$run" ]; then
+            echo 'No approved screenshots yet, so this run approves its own.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          gh run download "$run" --name native-screenshots --dir approved
+          pnpm --filter @advui/expo-playground screenshots:compare "$PWD/approved"
+
+      - name: Show the summary
+        if: ${{ always() && hashFiles('apps/expo/dist-screenshots-report/summary.md') != '' }}
+        run: cat apps/expo/dist-screenshots-report/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      # Kept only when the run passes, so the next run compares with this one.
+      # A run that passes on any branch but main is never read.
+      - uses: actions/upload-artifact@v7
+        with:
+          name: native-screenshots
+          path: apps/expo/dist-screenshots
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v7
+        if: ${{ failure() }}
+        with:
+          name: native-screenshots-changes
+          path: apps/expo/dist-screenshots-report
+          if-no-files-found: ignore

@@ -12,10 +12,12 @@
     "export:android": "expo export --platform android --output-dir dist-android",
     "export:ios": "expo export --platform ios --output-dir dist-ios",
     "android:emulator": "node scripts/android-dev.mjs",
-    "test": "node --test \"preview/*.test.mjs\"",
+    "test": "node --test \"preview/*.test.mjs\" \"screenshots/*.test.mjs\"",
     "preview:build": "node preview/build.mjs",
     "preview:dev": "npx --yes wrangler@4 dev --port 8787",
-    "preview:deploy": "npx --yes wrangler@4 deploy"
+    "preview:deploy": "npx --yes wrangler@4 deploy",
+    "screenshots": "node screenshots/capture.mjs",
+    "screenshots:compare": "node screenshots/compare.mjs"
   },
   "dependencies": {
     "@advui/catalog": "workspace:*",
@@ -50,6 +52,8 @@
     "@advui/tsconfig": "workspace:*",
     "@babel/core": "^7.28.0",
     "@types/react": "~19.2.2",
+    "pixelmatch": "^8.0.0",
+    "pngjs": "^7.0.0",
     "typescript": "~6.0.3"
   }
 }

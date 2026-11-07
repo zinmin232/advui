@@ -47,6 +47,8 @@ file: `pnpm --filter @advui/core exec vitest run src/components/button`.
 - Phone preview, the playground as an update that Expo Go opens from the
   docs' QR codes: `apps/expo/preview/` (see `apps/expo/README.md`). It deploys
   from `main`
+- Nightly screenshots of every playground screen on an Android emulator:
+  `apps/expo/screenshots/` (see `apps/expo/README.md`)
 - App-level examples shared by docs and Expo: `examples/src/`
 - Starter apps for `advui create`: `packages/cli/templates/`. Their screens
   are copied from `examples/src` when the CLI is built, and CI's `starter`
@@ -107,7 +109,9 @@ each edit.
   intentionally. After `pnpm build`, update both the local set
   (`pnpm --filter @advui/docs test:visual:update`) and the Linux set CI uses
   (the "Update visual baselines" workflow; see CONTRIBUTING.md). Skip this
-  when the look did not change.
+  when the look did not change. A change on native also turns the nightly
+  "Native screenshots" workflow red: once it is merged, approve the new look
+  by running that workflow with `approve` on.
 - Report honestly what you ran and what you could not run, such as iOS without
   macOS or a physical device. Never claim a platform works without running it.
 
@@ -281,6 +285,13 @@ each edit.
   later) draws under, while portals and a touch's `pageX`/`pageY` count from
   the root view. Measure what a portal or a finger is compared with by
   `measure`'s `pageX`/`pageY` (Tour's ring, Kanban's columns).
+- **A pinned header and a scroll on mount race on native.** React Native's
+  sticky header works out its position only after its own `onLayout`, so a
+  `scrollTo` from the ScrollView's `onLayout` can land first, and the header
+  scrolls away until the next scroll (8 of 30 opens of Event Calendar on
+  Android). Open at that place with `contentOffset` instead: the ScrollView
+  starts its scroll value there, and Android ignores an equal value on a later
+  render, so it does not undo the user's scroll (`TimeGrid.tsx`).
 - **TenTap (Rich Text Editor on native)**: `editor.setLink(null)` is a
   cancel and does nothing; `''` removes the link. When a React Native field
   takes focus from the WebView, Android collapses the editor's selection,
@@ -353,6 +364,12 @@ each edit.
   update", and static hosts such as GitHub Pages cannot send one. Expo Go from
   the store runs one SDK, so the QR codes stop working when it moves to a new
   SDK, until the playground follows.
+- **Android's status bar moves by itself.** Its icons come and go, even in
+  demo mode, so comparing whole frames finds a change with nothing on screen
+  changing, and a script waiting for the next screen thinks it has arrived.
+  `apps/expo/screenshots` leaves those rows out of each frame. Expo Go's gear
+  also fades a few seconds after its menu closes, and tapping that menu's
+  "Tools button" can hang later `uiautomator dump`s.
 - **Windows + Android emulator**: use
   `pnpm --filter @advui/expo-playground android:emulator` (adb reverse +
   `127.0.0.1` Metro host). Do not start Metro with `CI=1` to keep it

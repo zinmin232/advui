@@ -48,6 +48,60 @@ token template, and `CLOUDFLARE_ACCOUNT_ID`.
 Expo Go from the store runs one Expo SDK, so the QR codes stop working when it
 moves to a new SDK, until the playground is upgraded.
 
+## Native screenshots
+
+The **Native screenshots** workflow runs every night. It opens the playground
+on an Android emulator and takes a screenshot of Home, Theme, each app example
+and each component example, in light and dark mode: over 650 in all. It
+compares them with the approved set and fails when a screen has changed. This
+catches layout breaks, not what TalkBack reads, and only on one Android screen.
+
+The approved set is the `native-screenshots` artifact of the last run that
+passed on `main`, so the repository does not grow by a set each time. A failed
+run keeps the old set, so it stays red until someone looks. Its summary lists
+the screens that changed, and its `native-screenshots-changes` artifact holds
+each one as approved, as it is now and with the difference marked. A screen
+that never holds still, such as Circular Progress's spinning ring, has no one
+frame to compare, so the summary lists it instead.
+
+After an intended change, approve the new look: run the workflow by hand with
+**approve** ticked, and that run's screenshots become the approved set. A new
+or removed screen fails nothing, and arrives in the set with the next pass.
+
+To run it here, you need an emulator with Expo Go and two terminals:
+
+```bash
+pnpm --filter @advui/expo-playground preview:build
+pnpm --filter @advui/expo-playground preview:dev
+```
+
+```bash
+pnpm --filter @advui/expo-playground screenshots before --only button
+pnpm --filter @advui/expo-playground screenshots after --only button
+pnpm --filter @advui/expo-playground screenshots:compare before after
+```
+
+`--only` keeps the screens with that text in their name, and a whole run takes
+about two hours. The script clears Expo Go's data, then sets the emulator up for
+screenshots that repeat, and puts the settings back at the end:
+
+- `?example=<name>` on a component's screen shows that example alone, on a
+  360×1440 dp display, so nearly every example fits without scrolling. Scrolling
+  lands a few pixels differently each time.
+- Animations are off, which React Native reports as reduced motion, so autoplay
+  holds still.
+- Each shot leaves out the status bar, whose icons come and go by themselves,
+  even in Android's demo mode.
+- The network is off, so remote photos fail the same way every time. Expo Go
+  still reaches the update over `adb reverse`.
+- The clock is set to one date in UTC, so a screen that reads today's date looks
+  the same every night.
+
+Screenshots from different emulators or Android versions differ, so only compare
+runs from the same one. Expo Go's gear stays in the corner of each shot. After
+hours of use an emulator can lose the app's window: the screen goes black, taps
+do nothing, and the script stops with `did not show`. Restart the emulator.
+
 ## Fields and the keyboard
 
 The component and example screens scroll in `ScreenScrollView.tsx`, a
