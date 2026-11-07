@@ -487,8 +487,10 @@ examples, web visual tests) are not listed.
       data and memory to spare. Twelve shorter runs traced that to its SwiftShader
       OpenGL mode, which hung on Color Picker in 5 of 8, while ANGLE on SwiftShader
       got through 4 of 4, so the workflow uses that. Color Picker has the only CSS
-      gradients on native, but what exactly hangs is not known. Left: two whole
-      runs on GitHub that match, as a first run approves itself, and iOS.
+      gradients on native, but what exactly hangs is not known. Two whole runs
+      on GitHub with ANGLE, about 1 hour 40 minutes each, then matched byte for
+      byte on all 666 compared shots. Left: the first nightly comparison on
+      `main`, the night after a first run approves itself, and iOS.
 - [ ] **A timing check.** A script that switches color mode and mounts a
       heavy screen on a production bundle and reports the time and the
       number of springs, so a regression like the 462 springs (Phase 10)
