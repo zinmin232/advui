@@ -261,7 +261,7 @@ export default defineMeta({
     'Below `sm` a month day shows dots instead of event titles; the agenda view lists them in full.',
   platformNotes: {
     web: 'The days and the all-day row stay pinned above the hours with `position: sticky`. A mouse drags an event once it moves, a finger after holding still for a moment; near the top or bottom of the hours a drag scrolls them.',
-    ios: 'The week and day views are a ScrollView whose header is pinned (`stickyHeaderIndices`), scrolled to `scrollToHour` once laid out. iOS has no table roles: days and events are buttons. A long press picks an event up (near its bottom edge, its end), and the hours and the ScrollArea around them stop scrolling until the finger lifts, so a drag reaches the hours in view. Not yet checked on a device.',
+    ios: 'The week and day views are a ScrollView whose header is pinned (`stickyHeaderIndices`), opening at `scrollToHour` (`contentOffset`). iOS has no table roles: days and events are buttons. A long press picks an event up (near its bottom edge, its end), and the hours and the ScrollArea around them stop scrolling until the finger lifts, so a drag reaches the hours in view. Not yet checked on a device.',
     android: 'Same as iOS, with the ripple on events when the config has `androidRipple`.',
   },
   related: ['calendar', 'date-picker', 'timeline', 'kanban'],

@@ -27,8 +27,6 @@ const compactMinutes = 45
 
 const percent = (minutes: number): `${number}%` => `${(minutes / minutesPerDay) * 100}%`
 
-type NativeScrollView = { scrollTo: (options: { y: number; animated: boolean }) => void }
-
 /** What the keys, screen reader actions and drags do to an event. */
 type EditAction = 'earlier' | 'later' | 'previousDay' | 'nextDay' | 'endEarlier' | 'endLater'
 
@@ -88,7 +86,6 @@ export interface TimeGridProps extends ViewContext {
 export function TimeGrid({ days, height, scrollToHour, ...context }: TimeGridProps) {
   const { events, formats, labels, onEventPress, eventLabel, onEventChange, snapMinutes } = context
   const scrollRef = useRef<TamaguiElement>(null)
-  const scrolled = useRef(false)
   const hourPixels = getTokenValue(hourHeight as Token, 'size') as number
   // The pinned header sits over the top of the hours, so the hour's offset
   // puts it just below the header. A little less shows its label, which
@@ -102,15 +99,6 @@ export function TimeGrid({ days, height, scrollToHour, ...context }: TimeGridPro
     const node = scrollRef.current as HTMLElement | null
     if (isWeb && node) node.scrollTop = offset
   }, [offset])
-  // Native: a ScrollView scrolls only once it is laid out.
-  const onLayout = () => {
-    if (scrolled.current) return
-    scrolled.current = true
-    ;(scrollRef.current as unknown as NativeScrollView | null)?.scrollTo({
-      y: offset,
-      animated: false,
-    })
-  }
 
   const now = useNow(context.now)
   // Where a dragged event would land: drawn there until it is dropped.
@@ -231,7 +219,9 @@ export function TimeGrid({ days, height, scrollToHour, ...context }: TimeGridPro
         borderWidth={1}
         borderColor="border"
         borderRadius="lg"
-        {...(!isWeb && { onLayout })}
+        // Native: a `scrollTo` once laid out can land before the pinned header has
+        // measured itself, and the header then scrolls away until the next scroll.
+        {...(!isWeb && { contentOffset: { x: 0, y: offset } })}
         // Native: the hours stay put while an event is dragged.
         {...(!isWeb && preview && { scrollEnabled: false })}
       >

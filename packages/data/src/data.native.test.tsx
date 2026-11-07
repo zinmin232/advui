@@ -372,6 +372,25 @@ describe('@advui/data native rendering', () => {
     expect(onEventPress).toHaveBeenCalledWith(expect.objectContaining({ id: 'standup' }))
   })
 
+  it('EventCalendar opens the hours at scrollToHour, which keeps their header pinned', async () => {
+    const day = new Date(2026, 9, 28)
+    await renderNative(
+      <EventCalendar
+        locale="en-US"
+        events={[]}
+        defaultView="week"
+        defaultDate={day}
+        today={day}
+        scrollToHour={8}
+      />,
+    )
+    let node = screen.getByRole('button', { name: /^Wednesday, October 28, 2026/ }).parent
+    while (node && node.type !== 'RCTScrollView') node = node.parent
+    // From the start: a scroll after layout can land before the header has
+    // measured itself, and then the header scrolls away with the hours.
+    expect(node?.props.contentOffset.y).toBeGreaterThan(0)
+  })
+
   it('EventCalendar moves events with screen reader actions, and a long press stops the scrolling', async () => {
     const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility')
     const onEventChange = jest.fn()
