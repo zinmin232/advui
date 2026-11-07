@@ -62,6 +62,7 @@ jobs:
           api-level: 36
           target: google_apis
           arch: x86_64
+          profile: medium_phone # the default, 320x640, is too small for the script's tall display
           ram-size: 4096M
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
           script: |

@@ -82,7 +82,7 @@ pnpm --filter @advui/expo-playground screenshots:compare before after
 ```
 
 `--only` keeps the screens with that text in their name, and a whole run takes
-about two hours here (about one on GitHub). The script clears Expo Go's data,
+about two hours here (over an hour on GitHub). The script clears Expo Go's data,
 then sets the emulator up for screenshots that repeat, and puts the settings
 back at the end:
 
@@ -99,9 +99,12 @@ back at the end:
   the same every night.
 
 Screenshots from different emulators or Android versions differ, so only compare
-runs from the same one. Expo Go's gear stays in the corner of each shot. After
-hours of use an emulator can lose the app's window: the screen goes black, taps
-do nothing, and the script stops with `did not show`. Restart the emulator.
+runs from the same one. The emulator needs a phone-sized screen: Android keeps a
+forced size within three times the real one and reports no error, so the script
+stops if the display is not the one it asked for. Expo Go's gear stays in the
+corner of each shot. After hours of use an emulator can lose the app's window:
+the screen goes black, taps do nothing, and the script stops with `did not show`.
+Restart the emulator.
 
 ## Fields and the keyboard
 

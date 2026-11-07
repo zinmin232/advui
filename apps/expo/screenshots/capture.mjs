@@ -23,7 +23,7 @@ const port = 8787
 const expoGo = 'host.exp.exponent'
 // Tall enough to hold nearly every example, so nothing has to scroll: a scroll
 // lands a few pixels differently each time.
-const display = { size: '720x2880', density: '320' }
+const display = { width: 720, height: 2880, density: '320' }
 /** Rows left out of every frame: the status bar's icons come and go by themselves. */
 const statusBarRows = 64
 const animations = [
@@ -33,14 +33,18 @@ const animations = [
 ]
 /** Every run's date: calendars open on today, which would look like a change each night. */
 const clock = { time: Date.parse('2026-06-17T10:00:00Z'), zone: 'UTC' }
-/** One frame takes about a second, so a screen holds still for two seconds. */
-const stillFrames = 2
-/** Longer for a player: with no network, its error comes up to three seconds after the screen. */
-const playerStillFrames = 6
+/**
+ * How long a screen holds still before its shot. A time, not a number of frames:
+ * a frame takes about a second on a dev machine and 0.4 s on CI.
+ */
+const stillFor = 2_000
+/** Longer for a player: with no network, its error comes seconds after the screen. */
+const playerStillFor = 6_000
 const isPlayer = (name) => /^(audio-player|video)--/.test(name)
 /** Longer for Home: Expo Go's gear stays blue for a few seconds after its menu. */
-const homeStillFrames = 8
-const stillTimeoutPerFrame = 8_000
+const homeStillFor = 8_000
+/** A screen that has not held still after this many of its holds never will. */
+const stillTimeoutHolds = 8
 /** The first screen to open loads every example, which takes seconds. */
 const openTimeout = 120_000
 
@@ -75,7 +79,7 @@ function saveFrame(frame, file) {
 
 function prepareEmulator() {
   adb('reverse', `tcp:${port}`, `tcp:${port}`)
-  shell(`wm size ${display.size}`)
+  shell(`wm size ${display.width}x${display.height}`)
   shell(`wm density ${display.density}`)
   // React Native reports reduced motion at 0, which also holds autoplay still.
   for (const setting of animations) shell(`settings put global ${setting} 0`)
@@ -135,27 +139,36 @@ async function openPlayground() {
   await waitForView('Theme settings')
 }
 
-/** Takes frames from this one until the screen holds still. */
-async function settle(first, frames) {
-  const deadline = Date.now() + frames * stillTimeoutPerFrame
-  let frame = first
-  let still = 0
-  while (still < frames && Date.now() < deadline) {
-    const next = screenshot()
-    still = sameFrame(next, frame) ? still + 1 : 0
-    frame = next
-  }
-  return { frame, settled: still === frames }
+/** Android keeps a forced size within three times the real screen, and reports no error. */
+function checkDisplay() {
+  const { width, height } = PNG.sync.read(screenshot().png)
+  if (width === display.width && height === display.height) return
+  throw new Error(
+    `The display is ${width}x${height}, not ${display.width}x${display.height}: use an emulator with a bigger screen`,
+  )
 }
 
-const settleHome = async () => (await settle(screenshot(), homeStillFrames)).frame
+/** Takes frames from this one until the screen has held still for that long. */
+async function settle(first, holdFor) {
+  const deadline = Date.now() + holdFor * stillTimeoutHolds
+  let frame = first
+  let lastChange = Date.now()
+  while (Date.now() - lastChange < holdFor && Date.now() < deadline) {
+    const next = screenshot()
+    if (!sameFrame(next, frame)) lastChange = Date.now()
+    frame = next
+  }
+  return { frame, settled: Date.now() - lastChange >= holdFor }
+}
 
-async function openScreen(path, home, frames) {
+const settleHome = async () => (await settle(screenshot(), homeStillFor)).frame
+
+async function openScreen(path, home, holdFor) {
   open(path)
   const deadline = Date.now() + openTimeout
   let frame = screenshot()
   while (sameFrame(frame, home) && Date.now() < deadline) frame = screenshot()
-  return settle(frame, frames)
+  return settle(frame, holdFor)
 }
 
 async function reached(home) {
@@ -195,8 +208,8 @@ async function captureMode(mode, screens) {
       continue
     }
     const started = Date.now()
-    const frames = isPlayer(name) ? playerStillFrames : stillFrames
-    const { frame, settled } = await openScreen(path, home, frames)
+    const holdFor = isPlayer(name) ? playerStillFor : stillFor
+    const { frame, settled } = await openScreen(path, home, holdFor)
     saveFrame(frame, file)
     if (!settled) moving.push(`${mode}/${name}.png`)
     home = await backTo(home)
@@ -226,10 +239,16 @@ const zone = shell('getprop persist.sys.timezone')
 prepareEmulator()
 try {
   await openPlayground()
+  checkDisplay()
   const moving = []
   for (const mode of ['light', 'dark']) moving.push(...(await captureMode(mode, screens)))
   writeFileSync(join(out, movingFile), JSON.stringify(moving, null, 2))
   console.log(`${screens.length} screens in 2 modes, written to ${out}`)
 } finally {
-  restoreEmulator(zone)
+  // With the emulator gone this fails too, which must not hide why the run stopped.
+  try {
+    restoreEmulator(zone)
+  } catch (error) {
+    console.error(`Could not put the emulator's settings back: ${error.message}`)
+  }
 }
