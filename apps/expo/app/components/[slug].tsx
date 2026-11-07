@@ -6,7 +6,7 @@ import { ScreenScrollView } from '../../ScreenScrollView'
 
 /** Renders every documented example of a component — the native counterpart of a docs page. */
 export default function ComponentScreen() {
-  const { slug } = useLocalSearchParams<{ slug: string }>()
+  const { slug, example: only } = useLocalSearchParams<{ slug: string; example?: string }>()
   const meta = getComponent(slug)
   if (!meta) return <Text padding="4">Unknown component “{slug}”.</Text>
   const componentExamples = examples[meta.slug] ?? {}
@@ -33,22 +33,24 @@ export default function ComponentScreen() {
             </Text>
           ) : null}
         </VStack>
-        {meta.examples.map((example) => {
-          const Example = componentExamples[example.name]
-          return (
-            <VStack key={example.name} gap="2">
-              <Text weight="semibold">{example.title}</Text>
-              {example.description ? (
-                <Text size="sm" tone="muted">
-                  {example.description}
-                </Text>
-              ) : null}
-              <Card>
-                <Card.Content>{Example ? <Example /> : null}</Card.Content>
-              </Card>
-            </VStack>
-          )
-        })}
+        {meta.examples
+          .filter((example) => !only || example.name === only)
+          .map((example) => {
+            const Example = componentExamples[example.name]
+            return (
+              <VStack key={example.name} gap="2">
+                <Text weight="semibold">{example.title}</Text>
+                {example.description ? (
+                  <Text size="sm" tone="muted">
+                    {example.description}
+                  </Text>
+                ) : null}
+                <Card>
+                  <Card.Content>{Example ? <Example /> : null}</Card.Content>
+                </Card>
+              </VStack>
+            )
+          })}
       </VStack>
     </ScreenScrollView>
   )

@@ -10,6 +10,7 @@ expo-env.d.ts
 apps/expo/android/
 apps/expo/ios/
 apps/expo/dist-preview/
+apps/expo/dist-screenshots*/
 .wrangler/
 web-build/
 playwright-report/

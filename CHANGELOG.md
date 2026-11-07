@@ -9,6 +9,10 @@ one version.
 
 ### Added
 
+- **Nightly native screenshots**: a workflow opens every playground screen on
+  an Android emulator, in light and dark mode, and compares the screenshots
+  with the approved set, which is kept as a workflow artifact. Run it with
+  `approve` on to accept an intended change.
 - **Phone preview**: component pages in the docs have an **Open on phone**
   button with a QR code that opens the component's screen in Expo Go, with no
   dev server. The Expo playground is published as a self-hosted update from a
@@ -155,6 +159,12 @@ one version.
 
 ### Fixed
 
+- **Event Calendar's week and day views keep their header on Android.** The
+  hours scrolled to `scrollToHour` once laid out, which could land before the
+  pinned header had measured itself, so the days scrolled away and stayed
+  hidden until the next scroll: 8 of 30 opens on an Android emulator. The hours
+  now open there from the start (`contentOffset`), on iOS too, where this has
+  not been run.
 - **No "style() was called during render" warning on iOS and Android.**
   Checkbox made its checked colors with Tamagui's `style()` at module scope,
   and Expo Router loads an app's modules while it renders, so every app

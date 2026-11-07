@@ -459,11 +459,36 @@ examples, web visual tests) are not listed.
       decoded from screenshots in both color modes, at both widths and at 1x.
       Left: iOS. Expo could tighten Expo Go again, and the codes stop working
       when Expo Go moves to a new SDK, until the playground follows.
-- [ ] **Nightly native screenshots.** A Maestro flow on an Android emulator
-      that opens each playground screen in light and dark mode and compares
-      screenshots, run nightly rather than on every PR (Detox or Appium per
-      PR would cost more than it finds). It catches layout breaks, not what
-      TalkBack reads.
+- [x] **Nightly native screenshots.** Done on 2026-11-07: the Native
+      screenshots workflow opens every playground screen on an Android
+      emulator in light and dark mode, 668 shots, and compares them with the
+      approved set, nightly rather than on every PR (Detox or Appium per PR
+      would cost more than it finds). A Maestro flow was the plan, but the job
+      only opens a link, waits and takes a screenshot, and Maestro is a 350 MB
+      download that needs Java, so it is a Node script on plain `adb`
+      (`apps/expo/screenshots/`). The approved set is a workflow artifact, as
+      committing it could add about 40 MB to the repository per refresh; running
+      the workflow with `approve` accepts an intended change. Building it found
+      a real bug: Event Calendar's week view lost its header in 8 of 30 opens
+      on Android, and now in none of 30. Checked with three full runs on an
+      Android 16 emulator (Medium Phone API 36, Expo Go 57) of about 1.7 hours
+      each, with no restarts. The last two matched on 663 of 666 compared
+      shots, and the other 3 come from fixes made between them. Circular
+      Progress's ring never holds still, so its 2 shots are listed instead of
+      compared. Event Calendar's week view and the four player screens,
+      opened 15 times in each mode, came out the same every time. It catches
+      layout breaks on one Android screen, not what TalkBack reads. The first
+      run on GitHub, on its PR, took all 668 shots in about an hour, and its
+      images showed two faults a passing run hides: Android cut the tall display
+      down on the emulator's default screen, and a hold counted in frames was
+      too short there, as frames are faster. So the workflow names a phone, the
+      hold is a time, and the script stops if the display is wrong. The emulator
+      then stopped answering on Color Picker in two of four runs, with no crash
+      data and memory to spare. Twelve shorter runs traced that to its SwiftShader
+      OpenGL mode, which hung on Color Picker in 5 of 8, while ANGLE on SwiftShader
+      got through 4 of 4, so the workflow uses that. Color Picker has the only CSS
+      gradients on native, but what exactly hangs is not known. Left: two whole
+      runs on GitHub that match, as a first run approves itself, and iOS.
 - [ ] **A timing check.** A script that switches color mode and mounts a
       heavy screen on a production bundle and reports the time and the
       number of springs, so a regression like the 462 springs (Phase 10)

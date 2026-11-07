@@ -222,6 +222,7 @@ but a file both changed conflicts instead of merging.
 | Component, native | jest-expo (iOS preset) + React Native Testing Library                      | `packages/{ui,data,charts,editor}/src/**/*.native.test.tsx`            |
 | E2E               | Playwright (Chrome): desktop and Pixel 7 viewports, `@axe-core/playwright` | `apps/docs/e2e`                                                        |
 | Visual            | Playwright screenshots of `/visual`, light and dark                        | `apps/docs/e2e/visual.spec.ts`                                         |
+| Visual, native    | Android emulator screenshots of the playground, light and dark, nightly    | `apps/expo/screenshots`                                                |
 
 ## Known platform quirks (and where they are handled)
 

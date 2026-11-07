@@ -47,7 +47,7 @@ export function packageByName(name) {
 export const toPosix = (p) => p.split(sep).join('/')
 
 /** Transpiles a TypeScript module that imports nothing at run time and returns its exports. */
-function loadTsModule(file, localRequire) {
+export function loadTsModule(file, localRequire) {
   const source = readFileSync(file, 'utf8')
   const { outputText } = ts.transpileModule(source, {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
