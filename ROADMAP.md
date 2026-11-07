@@ -477,9 +477,10 @@ examples, web visual tests) are not listed.
       Progress's ring never holds still, so its 2 shots are listed instead of
       compared. Event Calendar's week view and the four player screens,
       opened 15 times in each mode, came out the same every time. It catches
-      layout breaks on one Android screen, not what TalkBack reads. Left: the
-      workflow's first run on GitHub, which has to prove the emulator job and
-      its run time there, and iOS.
+      layout breaks on one Android screen, not what TalkBack reads. The
+      workflow's first run on GitHub, on its PR, took all 668 shots in about an
+      hour. Left: comparing two runs on GitHub, as a first run approves itself,
+      and iOS.
 - [ ] **A timing check.** A script that switches color mode and mounts a
       heavy screen on a production bundle and reports the time and the
       number of springs, so a regression like the 462 springs (Phase 10)

@@ -82,8 +82,9 @@ pnpm --filter @advui/expo-playground screenshots:compare before after
 ```
 
 `--only` keeps the screens with that text in their name, and a whole run takes
-about two hours. The script clears Expo Go's data, then sets the emulator up for
-screenshots that repeat, and puts the settings back at the end:
+about two hours here (about one on GitHub). The script clears Expo Go's data,
+then sets the emulator up for screenshots that repeat, and puts the settings
+back at the end:
 
 - `?example=<name>` on a component's screen shows that example alone, on a
   360×1440 dp display, so nearly every example fits without scrolling. Scrolling
