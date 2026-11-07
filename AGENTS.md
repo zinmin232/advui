@@ -370,6 +370,12 @@ each edit.
   `apps/expo/screenshots` leaves those rows out of each frame. Expo Go's gear
   also fades a few seconds after its menu closes, and tapping that menu's
   "Tools button" can hang later `uiautomator dump`s.
+- **The emulator's SwiftShader OpenGL mode hangs on Color Picker.** On GitHub,
+  `-gpu swiftshader_indirect`, which `auto-no-window` picks too, stopped answering
+  on Color Picker's screens in 7 of 12 runs: adb calls time out, memory is fine
+  and no crash data is left. It has the only CSS gradients on native, though what
+  exactly hangs is not known. `-gpu swangle_indirect` (ANGLE on SwiftShader's
+  Vulkan) got through 4 of 4; `-help-gpu` does not list it.
 - **Windows + Android emulator**: use
   `pnpm --filter @advui/expo-playground android:emulator` (adb reverse +
   `127.0.0.1` Metro host). Do not start Metro with `CI=1` to keep it

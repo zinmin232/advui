@@ -1,8 +1,10 @@
 name: Native screenshots
 
-# TEMPORARY: an experiment on why the emulator dies at Color Picker. Each job
-# takes the light screens up to Color Picker in one graphics mode, and keeps
-# what the emulator and the host left behind. To be reverted.
+# Opens every playground screen on an Android emulator, in light and dark mode,
+# and compares the screenshots with the approved set (see apps/expo/README.md).
+# The approved set is the `native-screenshots` artifact of the last run that
+# passed on main. After an intended change, run this workflow by hand with
+# `approve` on: that run keeps its screenshots as the new approved set.
 on:
   schedule:
     - cron: '17 2 * * *'
@@ -28,12 +30,7 @@ concurrency:
 jobs:
   screenshots:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
-    strategy:
-      fail-fast: false
-      matrix:
-        gpu: [swiftshader_indirect, swangle_indirect, auto-no-window]
-        attempt: [1, 2, 3, 4]
+    timeout-minutes: 300 # about two hours on a dev machine; GitHub's limit is 360
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6 # version comes from "packageManager"
@@ -59,15 +56,6 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Stop after Color Picker, in light mode
-        run: |
-          sed -i "s/^const screens = allScreens().filter.*/const screens = allScreens().slice(0, 143)/" apps/expo/screenshots/capture.mjs
-          sed -i "s/for (const mode of \['light', 'dark'\])/for (const mode of ['light'])/" apps/expo/screenshots/capture.mjs
-          grep -nE "allScreens\(\)\.slice|of \['light'\]" apps/expo/screenshots/capture.mjs
-
-      - name: Watch the host
-        run: nohup sh -c 'while true; do echo "$(date +%T) $(free -m | sed -n 2p) | $(ps -eo rss,pcpu,comm --sort=-rss | sed -n 2p)"; sleep 5; done' > host.log 2>&1 &
-
       - name: Take the screenshots
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -76,28 +64,40 @@ jobs:
           arch: x86_64
           profile: medium_phone # the default, 320x640, is too small for the script's tall display
           ram-size: 4096M
-          emulator-options: -no-window -gpu ${{ matrix.gpu }} -noaudio -no-boot-anim -no-snapshot
+          # Not swiftshader_indirect, which auto-no-window picks too: it hung on Color Picker in 7 of 12 runs.
+          emulator-options: -no-window -gpu swangle_indirect -noaudio -no-boot-anim -no-snapshot
           script: |
             adb install expo-go.apk
-            adb shell dumpsys SurfaceFlinger | grep -m1 GLES
-            nohup adb logcat -v threadtime > logcat.txt 2>&1 &
             pnpm --filter @advui/expo-playground screenshots
 
-      - name: Keep what the emulator left
-        if: ${{ always() }}
+      - name: Compare with the approved screenshots
+        if: ${{ !inputs.approve }}
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p emulator-left
-          cp -r /tmp/android-*/emu-crash-* emulator-left/ || true
-          find /tmp/android-* -type f -newer expo-go.apk > emulator-left/files.txt || true
-          sudo dmesg -T > emulator-left/dmesg.txt || true
-          cp host.log logcat.txt preview.log emulator-left/ || true
-          grep -inE 'out of memory|oom-kill|killed process|segfault|general protection' emulator-left/dmesg.txt || true
-          tail -12 host.log || true
+          run=$(gh run list --workflow native-screenshots.yml --branch main --status success --limit 1 --json databaseId --jq '.[0].databaseId // empty' || true)
+          if [ -z "$run" ]; then
+            echo 'No approved screenshots yet, so this run approves its own.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          gh run download "$run" --name native-screenshots --dir approved
+          pnpm --filter @advui/expo-playground screenshots:compare "$PWD/approved"
+
+      - name: Show the summary
+        if: ${{ always() && hashFiles('apps/expo/dist-screenshots-report/summary.md') != '' }}
+        run: cat apps/expo/dist-screenshots-report/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      # Kept only when the run passes, so the next run compares with this one.
+      # A run that passes on any branch but main is never read.
+      - uses: actions/upload-artifact@v7
+        with:
+          name: native-screenshots
+          path: apps/expo/dist-screenshots
+          if-no-files-found: error
 
       - uses: actions/upload-artifact@v7
-        if: ${{ always() }}
+        if: ${{ failure() }}
         with:
-          name: emulator-left-${{ matrix.gpu }}-${{ matrix.attempt }}
-          path: emulator-left
+          name: native-screenshots-changes
+          path: apps/expo/dist-screenshots-report
           if-no-files-found: ignore
-          retention-days: 3

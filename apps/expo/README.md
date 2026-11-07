@@ -101,8 +101,10 @@ back at the end:
 Screenshots from different emulators or Android versions differ, so only compare
 runs from the same one. The emulator needs a phone-sized screen: Android keeps a
 forced size within three times the real one and reports no error, so the script
-stops if the display is not the one it asked for. Expo Go's gear stays in the
-corner of each shot. After hours of use an emulator can lose the app's window:
+stops if the display is not the one it asked for. On a machine with no GPU, give
+the emulator `-gpu swangle_indirect`, as the workflow does: in its default
+software mode it hung on Color Picker in over half its runs on GitHub. Expo Go's
+gear stays in the corner of each shot. After hours of use an emulator can lose the app's window:
 the screen goes black, taps do nothing, and the script stops with `did not show`.
 Restart the emulator.
 
