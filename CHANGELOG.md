@@ -156,9 +156,25 @@ one version.
   Meter, Progress), so none animates border widths, which React Native's
   native animation driver does not take. Only the sheets' position spring
   still takes a preset.
+- **Animations on iOS and Android run on React Native's native driver**, off
+  the JS thread. Tamagui 3.1 turns it on only when it finds
+  `__nativeFabricUIManager`, which React Native 0.86 no longer sets, so every
+  spring ran on the JS thread, a frame at a time. On an Android phone a color
+  mode switch on the playground's Theme screen now settles in 1.2 seconds
+  instead of 4.4. A view that animates a size or a font metric stays on
+  the JS driver. If your own `transition` is a bare preset, it animates every
+  style, border widths included, which the native driver rejects with an
+  error in development: name its properties instead
+  (`transition={{ preset: 'quick', properties: 'background-color, opacity' }}`).
 
 ### Fixed
 
+- **`useReducedMotion` on iOS and Android answers on a component's first
+  render.** Each hook asked when it mounted and heard back after its first
+  render, so with Reduce Motion or "Remove animations" on, every component
+  that reads it rendered twice. A Tooltip then rendered its trigger again,
+  and the trigger restarted its color springs: 51 more on the Admin example's
+  mount. The hook now asks once, when the app loads.
 - **Event Calendar's week and day views keep their header on Android.** The
   hours scrolled to `scrollToHour` once laid out, which could land before the
   pinned header had measured itself, so the days scrolled away and stayed

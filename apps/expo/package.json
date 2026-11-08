@@ -12,12 +12,14 @@
     "export:android": "expo export --platform android --output-dir dist-android",
     "export:ios": "expo export --platform ios --output-dir dist-ios",
     "android:emulator": "node scripts/android-dev.mjs",
-    "test": "node --test \"preview/*.test.mjs\" \"screenshots/*.test.mjs\"",
+    "test": "node --test \"preview/*.test.mjs\" \"screenshots/*.test.mjs\" \"timing/*.test.mjs\"",
     "preview:build": "node preview/build.mjs",
     "preview:dev": "npx --yes wrangler@4 dev --port 8787",
     "preview:deploy": "npx --yes wrangler@4 deploy",
     "screenshots": "node screenshots/capture.mjs",
-    "screenshots:compare": "node screenshots/compare.mjs"
+    "screenshots:compare": "node screenshots/compare.mjs",
+    "timing": "node timing/run.mjs",
+    "timing:check": "node timing/check.mjs"
   },
   "dependencies": {
     "@advui/catalog": "workspace:*",

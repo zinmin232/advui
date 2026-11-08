@@ -49,6 +49,9 @@ file: `pnpm --filter @advui/core exec vitest run src/components/button`.
   from `main`
 - Nightly screenshots of every playground screen on an Android emulator:
   `apps/expo/screenshots/` (see `apps/expo/README.md`)
+- Nightly timing of a mount and a color mode switch, with each screen's budget
+  of animations: `apps/expo/timing/` and the playground's `/timing` screen (see
+  `apps/expo/README.md`)
 - App-level examples shared by docs and Expo: `examples/src/`
 - Starter apps for `advui create`: `packages/cli/templates/`. Their screens
   are copied from `examples/src` when the CLI is built, and CI's `starter`
@@ -145,6 +148,17 @@ each edit.
   `borderColor` into sides, so the helper names each side. A Sheet root's
   `transition` is its position spring, looked up by preset name: keep it a
   preset.
+- **Animations run on React Native's native driver** (`useNativeDriver` in
+  the theme's `animations.native.ts`): Tamagui 3.1 turns it on only when it
+  finds `__nativeFabricUIManager`, which React Native 0.86 does not set.
+  Tamagui keeps a view on the JS driver while it animates a size or a font
+  metric. Its springs start before React's commit reaches the screen, so in
+  a slow color mode switch the animated fills change before the text and
+  background do. A style the native module cannot animate throws in
+  development builds and Jest only, so a new transition needs a native test
+  that changes it. In Jest, `test/native-setup.js` makes a native animation
+  end at its target after 16 ms, as a device reports it: the frames in
+  between never show there.
 - **A drag on native must stop the scroll views around it at pickup.** The
   JS responder claims a move only after Android's native ScrollView has seen
   it, so a quick first move scrolls the screen and cancels the drag. A

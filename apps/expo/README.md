@@ -108,6 +108,49 @@ gear stays in the corner of each shot. After hours of use an emulator can lose t
 the screen goes black, taps do nothing, and the script stops with `did not show`.
 Restart the emulator.
 
+## Timing
+
+The same nightly workflow opens `/timing`, a screen that nothing links to. It
+mounts Theme and each app example and switches each to dark and back, in a
+production bundle, three rounds a night. The script turns Android's animations
+on, which GitHub's emulator runner turns off: React Native reports that as
+reduced motion, and components that follow it count differently. For each step
+it reports:
+
+- **First frame**: from the change to the first frame after React's commit, the
+  middle of the rounds. This is rendering and the layout effects where Tamagui's
+  driver starts its springs, the JS work that made a mode switch stall for
+  seconds on a phone. What the UI thread does after that is not in it.
+- **Settled**: to the end of the last animation, the middle of the rounds, and
+  at most 30 seconds after the first frame. React Native moves a spring by no
+  more than 64 ms a frame, so on a slow emulator this mostly measures its frame
+  rate. Each step waits for this, as springs left running slow down the next.
+- **Springs** and **timings**: how many animations started, the most of the rounds.
+
+The run's summary shows them all as a table. Only the number of animations can
+fail the run, when a step goes over its screen's number in `timing/budget.json`.
+Times never fail it: an emulator with no GPU is too slow and too uneven for that,
+so read them as a trend: the same step took twice as long from one run to the
+next here. The counts have matched on every step of every run. Each budget is
+about a quarter over the screen's highest count. After an intended change, such
+as a screen with more controls, raise it in the same PR. A new example has no
+number at first, and fails nothing.
+
+To run it here, with an emulator and `preview:dev` as for the screenshots:
+
+```bash
+pnpm --filter @advui/expo-playground timing
+pnpm --filter @advui/expo-playground timing:check
+```
+
+For times that mean something, open `/timing` on a real phone, by the phone
+preview's address with `/--/timing` at the end, and read the numbers from the
+screen. It runs seven rounds there; `?runs=3` changes that, and `--runs` does for
+the script. `timing/measure.ts` counts by replacing `Animated.spring` and
+`Animated.timing` during a measurement, so nothing of it reaches the packages.
+A control's own springs are pinned on every PR by the color mode test in
+`packages/ui/src/components/components.native.test.tsx`.
+
 ## Fields and the keyboard
 
 The component and example screens scroll in `ScreenScrollView.tsx`, a

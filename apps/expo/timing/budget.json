@@ -1,0 +1,11 @@
+{
+  "theme": 100,
+  "login": 20,
+  "dashboard": 25,
+  "admin": 95,
+  "settings": 40,
+  "inbox": 10,
+  "product": 35,
+  "mobile-home": 10,
+  "mobile-settings": 35
+}

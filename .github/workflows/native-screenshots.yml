@@ -5,12 +5,16 @@ name: Native screenshots
 # The approved set is the `native-screenshots` artifact of the last run that
 # passed on main. After an intended change, run this workflow by hand with
 # `approve` on: that run keeps its screenshots as the new approved set.
+# It also times a color mode switch and a mount on the heaviest screens, on the
+# same emulator, and fails when one starts too many animations.
 on:
   schedule:
     - cron: '17 2 * * *'
   pull_request:
     paths:
       - apps/expo/screenshots/**
+      - apps/expo/timing/**
+      - apps/expo/app/timing.tsx
       - .github/workflows/native-screenshots.yml
   workflow_dispatch:
     inputs:
@@ -56,7 +60,9 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Take the screenshots
+      # Timing first, on an emulator that has done nothing yet. A run that fails
+      # must not cost the screenshots: the check at the end finds no report.
+      - name: Take the timings and the screenshots
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 36
@@ -68,6 +74,7 @@ jobs:
           emulator-options: -no-window -gpu swangle_indirect -noaudio -no-boot-anim -no-snapshot
           script: |
             adb install expo-go.apk
+            pnpm --filter @advui/expo-playground timing || true
             pnpm --filter @advui/expo-playground screenshots
 
       - name: Compare with the approved screenshots
@@ -101,3 +108,10 @@ jobs:
           name: native-screenshots-changes
           path: apps/expo/dist-screenshots-report
           if-no-files-found: ignore
+
+      # Last, and not on an `approve` run, which must pass for its screenshots to
+      # count. Only the number of animations can fail: see apps/expo/README.md.
+      - name: Check the timing
+        if: ${{ always() && !inputs.approve }}
+        shell: bash # fails with `check.mjs`, which a pipe would hide without pipefail
+        run: node apps/expo/timing/check.mjs | tee -a "$GITHUB_STEP_SUMMARY"

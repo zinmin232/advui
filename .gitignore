@@ -11,6 +11,7 @@ apps/expo/android/
 apps/expo/ios/
 apps/expo/dist-preview/
 apps/expo/dist-screenshots*/
+apps/expo/dist-timing/
 .wrangler/
 web-build/
 playwright-report/
