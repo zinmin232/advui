@@ -227,10 +227,14 @@ flings and a color mode switch takes twice as long.
       widths), so every `transition` must name its properties first. Done
       on 2026-11-01: every style transition names them (`namedTransition`,
       `utils/transition.ts`); only the sheets' position spring takes a
-      preset. Left: turn on `useNativeDriver` and check the motion on a
-      phone (Jest cannot: native-driven values never move there), and report
-      the detection upstream, with `useAnimatedNumber`, which ignores the
-      option and moves the sheets.
+      preset. Done on 2026-11-08: the theme passes `useNativeDriver: true`
+      (what it changed is under the timing check in Phase 11). React
+      Native's Jest mock ended a native animation without its value, so
+      values never moved in tests; `test/native-setup.js` now sends the
+      target back, as a device does. Checked on the TECNO on the same day
+      (under the timing check in Phase 11). Left: report the detection
+      upstream, with `useAnimatedNumber`, which ignores the option and moves
+      the sheets on the JS driver.
 - [ ] **Visually Hidden: TalkBack by ear.** Seen on 2026-10-25 in light
       and dark mode: nothing shows where the hidden words are, after a fix
       (Android drew them in the text's color, since it reads `transparent`
@@ -491,10 +495,68 @@ examples, web visual tests) are not listed.
       on GitHub with ANGLE, about 1 hour 40 minutes each, then matched byte for
       byte on all 666 compared shots. Left: the first nightly comparison on
       `main`, the night after a first run approves itself, and iOS.
-- [ ] **A timing check.** A script that switches color mode and mounts a
-      heavy screen on a production bundle and reports the time and the
-      number of springs, so a regression like the 462 springs (Phase 10)
-      shows up in numbers rather than by hand.
+- [x] **A timing check.** Done on 2026-11-07: the Native screenshots workflow
+      opens `/timing`, a playground screen that nothing links to, which mounts
+      Theme and each app example and switches each to dark and back, three
+      rounds on a production bundle, and reports the time and the number of
+      springs. It fails when a step goes over its screen's budget of animations
+      (`apps/expo/timing/budget.json`), and never on a time. Checked on an
+      Android 16 emulator (Medium Phone API 36, Expo Go 57) in about 9.5 minutes
+      a run: four runs counted the same on all 27 steps, Theme's 80 springs
+      among them, the number found by hand in Phase 10, while one step's time
+      halved from one run to the next. Putting a bare preset back on Button
+      took Theme to 224 springs and its first frame from about 3.9 to 9.4
+      seconds, and failed the check, with 19 of the 27 steps over. It also
+      failed the color mode test in `components.native.test.tsx`, which now
+      holds three controls to 10 springs on every PR. Springs are counted by
+      replacing `Animated.spring` and `Animated.timing` during a measurement,
+      so nothing of this reaches the packages. It showed one thing nobody had
+      measured: mounting Theme starts the same 80 springs as switching its mode,
+      5 per Button, which takes about 15 seconds to settle on this emulator. The
+      cause is in Tamagui 3.1.3's driver: `update()` starts a spring for every
+      color key on every pass, changed or not, and a first render has no old
+      color, so a Button's background and four border sides spring from a color
+      to itself. None of a mount's 5 changes a color, 1 of a press's 5 does, and
+      none on a mode switch of a default Button, whose fill is the same in both
+      modes. A library cannot change this, so it needs reporting upstream, which
+      has not been done. `useNativeDriver: true` (Phase 10), on since
+      2026-11-08, leaves the count alone but takes the springs off the JS
+      thread: the settled time of all 27 steps went from 174 to 71 seconds and
+      Theme's mount from 14.6 to 1.3, the same in two runs, though not the first
+      frame of a mode switch (63 and 62 seconds in all). It changes how a switch
+      looks on the way: the springs start before React's commit reaches the
+      screen, and a native spring runs at once, where a JS one waits for the JS
+      thread. Frames of Theme's switch on the emulator: on the native driver the
+      animated fills had the new mode 2 to 3 seconds after the tap, while all
+      text and the background kept the old one until 4 to 6 seconds; on the JS
+      driver everything else changed first, at 6 to 8 seconds, and the fills
+      followed over the next seconds. Either way the screen is mixed for a
+      while, and the native driver ends it sooner. One new problem, on a
+      Windows dev machine only so far: with it on, opening Color Picker crashed
+      the emulator itself (a segfault of the emulator process, after its
+      Vulkan setup, with `-gpu swangle_indirect`) in each of 5 boots, within
+      at most 9 opens, with animations on or off. A build with it off opened
+      Color Picker 26 times over 2 boots, 24 of them in 3 screenshot runs,
+      with no crash. The nightly workflow opens it 8 times. With it on, on the
+      emulator, Theme came back pixel for pixel after mode and preset changes, a
+      held press showed and cleared, Dialog, Alert Dialog, Drawer and Sheet
+      opened and were removed on close, and one sweep opened all 128 component
+      pages, Color Picker among them. The color mode test now also fails when
+      one of its springs runs on the JS driver. On a phone (TECNO KM9, Android
+      16, Expo Go 57, `/timing` with 5 rounds), each driver once: the native
+      driver settled all 27 steps in 32 seconds against 52, Theme's mount in
+      0.95 against 3.4 and its switch to dark in 1.2 against 4.4, with first
+      frames a little shorter (24 against 27 seconds in all) and the same
+      counts. The mixed colors show there too, for less: 218 ms after the tap
+      Secondary already had its light fill under a still white label, and all
+      was done by the next frame, at 1.7 seconds, while on the JS driver the
+      fills were still moving 3 seconds after the tap. With the native driver on
+      the phone, Theme came back pixel for pixel after mode and preset changes,
+      a held press showed and cleared, the four overlays opened and were removed
+      on close, and all 128 component pages opened with animations on, Color
+      Picker four more times without a fault. Left: reporting the driver
+      upstream, the first run on GitHub, whether the Color Picker crash happens
+      on GitHub's Linux emulator and what in the page sets it off, and iOS.
 
 Not planned, from the same review: native controls by default (a native
 iOS switch takes only track and thumb colors; the opt-in material preset

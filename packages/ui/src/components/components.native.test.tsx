@@ -229,9 +229,16 @@ describe('native rendering', () => {
       const view = await render(ui('light'))
       spring.mockClear()
       await view.rerender(ui('dark'))
-      const targets = spring.mock.calls.map(([, options]) => (options as { toValue: number }).toValue)
-      expect(targets.length).toBeGreaterThan(0)
+      const calls = spring.mock.calls.map(
+        ([, options]) => options as Animated.SpringAnimationConfig,
+      )
+      const targets = calls.map(({ toValue }) => toValue)
+      // A number, so a control that starts animating one more style shows up
+      // here on a PR. Whole screens are counted on an emulator: apps/expo/timing.
+      expect(targets).toHaveLength(10)
       expect(targets.filter((target) => target !== 0 && target !== 1)).toEqual([])
+      // On the JS driver the Theme screen's switch settled 3.6 times slower on a phone.
+      expect(calls.filter(({ useNativeDriver }) => !useNativeDriver)).toEqual([])
     } finally {
       spring.mockRestore()
     }

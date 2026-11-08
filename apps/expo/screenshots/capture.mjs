@@ -4,14 +4,23 @@
 // Expo Go, and the phone preview on port 8787: `preview:build`, then `preview:dev`.
 // It clears Expo Go's data first, and puts the emulator's settings back at the end.
 // Usage: pnpm --filter @advui/expo-playground screenshots [folder] [--only text]
-import { execFileSync } from 'node:child_process'
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { setTimeout as sleep } from 'node:timers/promises'
 import { parseArgs } from 'node:util'
 import { PNG } from 'pngjs'
 import { movingFile } from './changes.mjs'
-import { allScreens, findView } from './screens.mjs'
+import {
+  adb,
+  checkUpdateServer,
+  expoGo,
+  open,
+  openPlayground,
+  openTimeout,
+  port,
+  shell,
+  waitForView,
+} from './emulator.mjs'
+import { allScreens } from './screens.mjs'
 
 const { values, positionals } = parseArgs({
   allowPositionals: true,
@@ -19,8 +28,6 @@ const { values, positionals } = parseArgs({
 })
 const out = positionals[0] ?? join(import.meta.dirname, '..', 'dist-screenshots')
 
-const port = 8787
-const expoGo = 'host.exp.exponent'
 // Tall enough to hold nearly every example, so nothing has to scroll: a scroll
 // lands a few pixels differently each time.
 const display = { width: 720, height: 2880, density: '320' }
@@ -45,18 +52,8 @@ const isPlayer = (name) => /^(audio-player|video)--/.test(name)
 const homeStillFor = 8_000
 /** A screen that has not held still after this many of its holds never will. */
 const stillTimeoutHolds = 8
-/** The first screen to open loads every example, which takes seconds. */
-const openTimeout = 120_000
 
-const adbPath = process.env.ANDROID_HOME ? `${process.env.ANDROID_HOME}/platform-tools/adb` : 'adb'
-const adb = (...args) =>
-  execFileSync(adbPath, args, { maxBuffer: 64 * 1024 * 1024, timeout: 30_000 })
-const shell = (command) => adb('shell', command).toString().trim()
-
-const open = (path) =>
-  shell(`am start -a android.intent.action.VIEW -d 'exp://127.0.0.1:${port}/--${path}' ${expoGo}`)
-
-const screenshot = () => ({ png: adb('exec-out', 'screencap', '-p') })
+const screenshot =() => ({ png: adb('exec-out', 'screencap', '-p') })
 
 /** A frame below the status bar. Decoding takes most of a second, so only when needed. */
 function decoded(frame) {
@@ -106,37 +103,6 @@ function restoreEmulator(zone) {
   shell('wm density reset')
   shell('wm size reset')
   shell('cmd uimode night no')
-}
-
-/** The views on screen. A dump fails while the screen is busy, so a caller tries again. */
-function dumpViews() {
-  try {
-    return adb('exec-out', 'uiautomator', 'dump', '/dev/tty').toString()
-  } catch {
-    return ''
-  }
-}
-
-async function waitForView(label) {
-  const deadline = Date.now() + openTimeout
-  while (Date.now() < deadline) {
-    const view = findView(dumpViews(), label)
-    if (view) return view
-    await sleep(500)
-  }
-  throw new Error(`"${label}" did not show within ${openTimeout / 1000}s`)
-}
-
-async function openPlayground() {
-  shell(`pm clear ${expoGo}`)
-  shell(`pm grant ${expoGo} android.permission.POST_NOTIFICATIONS`)
-  open('/')
-  // Expo Go shows its developer menu over the first screen it ever opens.
-  for (const label of ['Continue', 'Close']) {
-    const { x, y } = await waitForView(label)
-    shell(`input tap ${x} ${y}`)
-  }
-  await waitForView('Theme settings')
 }
 
 /** Android keeps a forced size within three times the real screen, and reports no error. */
@@ -220,17 +186,7 @@ async function captureMode(mode, screens) {
   return moving
 }
 
-/** Stops here with the fix, rather than on Expo Go's error screen. */
-async function checkUpdateServer() {
-  const headers = { 'expo-platform': 'android' }
-  const answer = await fetch(`http://127.0.0.1:${port}/`, { headers }).catch(() => null)
-  if (answer?.ok) return
-  throw new Error(
-    `Nothing serves the playground on port ${port}: run preview:build, then preview:dev`,
-  )
-}
-
-const screens = allScreens().filter(({ name }) => !values.only || name.includes(values.only))
+const screens =allScreens().filter(({ name }) => !values.only || name.includes(values.only))
 await checkUpdateServer()
 rmSync(out, { recursive: true, force: true })
 mkdirSync(out, { recursive: true })
