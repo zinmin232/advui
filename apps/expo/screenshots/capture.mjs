@@ -11,6 +11,7 @@ import { PNG } from 'pngjs'
 import { movingFile } from './changes.mjs'
 import {
   adb,
+  animationScales,
   checkUpdateServer,
   expoGo,
   open,
@@ -33,11 +34,6 @@ const out = positionals[0] ?? join(import.meta.dirname, '..', 'dist-screenshots'
 const display = { width: 720, height: 2880, density: '320' }
 /** Rows left out of every frame: the status bar's icons come and go by themselves. */
 const statusBarRows = 64
-const animations = [
-  'window_animation_scale',
-  'transition_animation_scale',
-  'animator_duration_scale',
-]
 /** Every run's date: calendars open on today, which would look like a change each night. */
 const clock = { time: Date.parse('2026-06-17T10:00:00Z'), zone: 'UTC' }
 /**
@@ -79,7 +75,7 @@ function prepareEmulator() {
   shell(`wm size ${display.width}x${display.height}`)
   shell(`wm density ${display.density}`)
   // React Native reports reduced motion at 0, which also holds autoplay still.
-  for (const setting of animations) shell(`settings put global ${setting} 0`)
+  for (const setting of animationScales) shell(`settings put global ${setting} 0`)
   shell('settings put global hide_error_dialogs 1')
   shell('settings put global auto_time 0')
   shell('settings put global auto_time_zone 0')
@@ -99,7 +95,7 @@ function restoreEmulator(zone) {
   shell('settings put global auto_time 1')
   shell('settings put global auto_time_zone 1')
   shell('settings put global hide_error_dialogs 0')
-  for (const setting of animations) shell(`settings put global ${setting} 1`)
+  for (const setting of animationScales) shell(`settings put global ${setting} 1`)
   shell('wm density reset')
   shell('wm size reset')
   shell('cmd uimode night no')

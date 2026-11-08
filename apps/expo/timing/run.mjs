@@ -2,7 +2,8 @@
 // Opens the playground's /timing screen on an Android emulator, waits for its
 // numbers and writes them to the report folder for `check.mjs`. It needs an
 // emulator with Expo Go, and the phone preview on port 8787: `preview:build`,
-// then `preview:dev`. It clears Expo Go's data first.
+// then `preview:dev`. It clears Expo Go's data first, and turns Android's
+// animations on.
 // Usage: pnpm --filter @advui/expo-playground timing [folder] [--runs 3]
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -10,6 +11,7 @@ import { setTimeout as sleep } from 'node:timers/promises'
 import { parseArgs } from 'node:util'
 import {
   adb,
+  animationScales,
   checkUpdateServer,
   open,
   openPlayground,
@@ -40,6 +42,10 @@ await checkUpdateServer()
 adb('reverse', `tcp:${port}`, `tcp:${port}`)
 // A just booted emulator can show "Pixel Launcher isn't responding" over Expo Go.
 shell('settings put global hide_error_dialogs 1')
+// Animations on, as on most phones and in the budgets. GitHub's emulator runner
+// turns them off, which React Native reports as reduced motion, and components
+// that follow it render and animate differently.
+for (const setting of animationScales) shell(`settings put global ${setting} 1`)
 try {
   await openPlayground()
   adb('logcat', '-c')

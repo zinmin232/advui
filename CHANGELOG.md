@@ -169,6 +169,12 @@ one version.
 
 ### Fixed
 
+- **`useReducedMotion` on iOS and Android answers on a component's first
+  render.** Each hook asked when it mounted and heard back after its first
+  render, so with Reduce Motion or "Remove animations" on, every component
+  that reads it rendered twice. A Tooltip then rendered its trigger again,
+  and the trigger restarted its color springs: 51 more on the Admin example's
+  mount. The hook now asks once, when the app loads.
 - **Event Calendar's week and day views keep their header on Android.** The
   hours scrolled to `scrollToHour` once laid out, which could land before the
   pinned header had measured itself, so the days scrolled away and stayed

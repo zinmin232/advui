@@ -112,8 +112,10 @@ Restart the emulator.
 
 The same nightly workflow opens `/timing`, a screen that nothing links to. It
 mounts Theme and each app example and switches each to dark and back, in a
-production bundle with animations on, three rounds a night. For each step it
-reports:
+production bundle, three rounds a night. The script turns Android's animations
+on, which GitHub's emulator runner turns off: React Native reports that as
+reduced motion, and components that follow it count differently. For each step
+it reports:
 
 - **First frame**: from the change to the first frame after React's commit, the
   middle of the rounds. This is rendering and the layout effects where Tamagui's

@@ -554,9 +554,20 @@ examples, web visual tests) are not listed.
       the phone, Theme came back pixel for pixel after mode and preset changes,
       a held press showed and cleared, the four overlays opened and were removed
       on close, and all 128 component pages opened with animations on, Color
-      Picker four more times without a fault. Left: reporting the driver
-      upstream, the first run on GitHub, whether the Color Picker crash happens
-      on GitHub's Linux emulator and what in the page sets it off, and iOS.
+      Picker four more times without a fault. The first run on GitHub, on
+      2026-11-08, counted the same as the dev machine on 26 of the 27 steps,
+      and opened Color Picker 8 times with no crash, so that crash belongs to
+      the Windows emulator. Admin's mount started 127 springs, over its budget
+      of 95, against 76 here. GitHub's emulator runner turns Android's
+      animations off, which React Native reports as reduced motion, and
+      `useReducedMotion` gave each component its answer only after its first
+      render. So each of Admin's ten Tooltips rendered again, cloning its
+      IconButton, which started its 5 springs over: users with "Remove
+      animations" on paid that on every mount. The dev machine's emulator also
+      counted 127 with animations off. The hook now keeps one answer for the
+      whole app, and the timing script turns animations on, as the budgets
+      assume. Left: reporting the driver upstream, what in Color Picker sets
+      off the Windows emulator, and iOS.
 
 Not planned, from the same review: native controls by default (a native
 iOS switch takes only track and thumb colors; the opt-in material preset

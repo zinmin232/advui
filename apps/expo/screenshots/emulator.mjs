@@ -6,6 +6,12 @@ export const port = 8787
 export const expoGo = 'host.exp.exponent'
 /** The first screen to open loads every example, which takes seconds. */
 export const openTimeout = 120_000
+/** Android's "Remove animations": React Native reports reduced motion when they are 0. */
+export const animationScales = [
+  'window_animation_scale',
+  'transition_animation_scale',
+  'animator_duration_scale',
+]
 
 const adbPath = process.env.ANDROID_HOME ? `${process.env.ANDROID_HOME}/platform-tools/adb` : 'adb'
 export const adb = (...args) =>
