@@ -7,6 +7,8 @@ one version.
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-11-12
+
 ### Added
 
 - **Nightly native screenshots**: a workflow opens every playground screen on

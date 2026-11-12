@@ -15,7 +15,7 @@ export const siteConfig = {
    */
   unpublishedPackages: [] as string[],
   cliName: 'advui',
-  version: '0.14.0',
+  version: '0.15.0',
   /** The Cloudflare Worker that serves the playground to Expo Go (`apps/expo/preview`). */
   phonePreviewHost: 'advui-preview.advui.workers.dev',
 }
