@@ -163,17 +163,27 @@ native.
       that blocks scripts runs npm and pnpm as `npm.cmd` and `pnpm.cmd`;
       publishing asks for npm's two-factor approval in the browser, once,
       within a few minutes.
-- [ ] **Release 0.15.0.** Unreleased on `main` (see the CHANGELOG): Scroll
-      Area's `avoidKeyboard` and App Shell Main avoiding the keyboard,
-      `advui diff`, `advui update` and `advui create`, `advui init` editing
-      `next.config`, `setRouter` (`href`
-      on iOS and Android), `useScrollLock` and Kanban's quick drags, moving
-      events in Event Calendar, Time Picker's `min` and `max`, Heatmap's
-      diverging scale, and Virtual List rows that size themselves. The
-      registry keeps each release's files from 0.14.0 on, the base `update`
-      merges against; components added by an older CLI must be named. The
-      starter apps ask for `^0.15.0`, so `advui create` works once the
-      packages are published.
+- [ ] **Release 0.15.0** (see the CHANGELOG): Scroll Area's `avoidKeyboard`
+      and App Shell Main avoiding the keyboard, `advui diff`, `advui update`
+      and `advui create`, `advui init` editing `next.config`, `setRouter`
+      (`href` on iOS and Android), `useScrollLock` and Kanban's quick drags,
+      moving events in Event Calendar, Time Picker's `min` and `max`,
+      Heatmap's diverging scale, Virtual List rows that size themselves, and
+      animations on React Native's native driver. The registry keeps each
+      release's files from 0.14.0 on, the base `update` merges against;
+      components added by an older CLI must be named. The starter apps ask
+      for `^0.15.0`, so `advui create` works once the packages are published.
+  - Merge the release pull request with a merge commit, then `git pull` and
+    `git tag v0.15.0 <merge commit> && git push origin v0.15.0`.
+  - `pnpm release:check` must list all eight public packages at 0.15.0. Then
+    `npm login` and `pnpm release`.
+  - Check the packages on the registry with
+    `curl -s https://registry.npmjs.org/@advui%2fcore` (npm may stage a
+    version for a while; don't re-publish on a 409).
+  - Then run `npx advui@0.15.0 create` once from npm, outside the
+    repository: `pnpm starter:check` builds against packed local packages,
+    so this is the first time a starter app installs the published ones.
+    pnpm 11 and later skip a version for its first day.
 
 ### Decision
 
@@ -493,8 +503,10 @@ examples, web visual tests) are not listed.
       got through 4 of 4, so the workflow uses that. Color Picker has the only CSS
       gradients on native, but what exactly hangs is not known. Two whole runs
       on GitHub with ANGLE, about 1 hour 40 minutes each, then matched byte for
-      byte on all 666 compared shots. Left: the first nightly comparison on
-      `main`, the night after a first run approves itself, and iOS.
+      byte on all 666 compared shots. The first nightly run on `main`
+      (2026-11-08) approved its own set, and the runs on the next three
+      nights passed against it; on 2026-11-11 it compared 666 shots with none
+      changed. Left: iOS.
 - [x] **A timing check.** Done on 2026-11-07: the Native screenshots workflow
       opens `/timing`, a playground screen that nothing links to, which mounts
       Theme and each app example and switches each to dark and back, three

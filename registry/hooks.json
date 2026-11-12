@@ -92,8 +92,8 @@
     {
       "path": "hooks/useReducedMotion.native.ts",
       "type": "registry:hook",
-      "sha256": "843f00c6e49f2830fa0e345e399a6236857e5c76731dc16257eb7e2ca5a31a6d",
-      "content": "import { useEffect, useState } from 'react'\nimport { AccessibilityInfo } from 'react-native'\n\n/** `true` when \"Reduce Motion\" (iOS) / \"Remove animations\" (Android) is enabled. */\nexport function useReducedMotion(): boolean {\n  const [reduced, setReduced] = useState(false)\n\n  useEffect(() => {\n    let mounted = true\n    AccessibilityInfo.isReduceMotionEnabled().then((value) => {\n      if (mounted) setReduced(value)\n    })\n    const subscription = AccessibilityInfo.addEventListener('reduceMotionChanged', setReduced)\n    return () => {\n      mounted = false\n      subscription.remove()\n    }\n  }, [])\n\n  return reduced\n}\n"
+      "sha256": "34fcb44a1d2d3c851a653c9a16bdf40a1e6464d33ba72e02ac7e910c086f29c6",
+      "content": "import { useSyncExternalStore } from 'react'\nimport { AccessibilityInfo } from 'react-native'\n\n// One answer for the whole app, asked for when this loads. Each hook used to\n// ask on mount and hear back after its first render, so with \"Remove\n// animations\" on every component that reads it rendered twice: a Tooltip then\n// cloned its trigger again, and the trigger's springs started over (51 more on\n// the Admin example's mount).\nlet reduced = false\nconst listeners = new Set<() => void>()\n\nfunction update(value: boolean) {\n  if (value === reduced) return\n  reduced = value\n  for (const listener of listeners) listener()\n}\n\nAccessibilityInfo.isReduceMotionEnabled().then(update)\nAccessibilityInfo.addEventListener('reduceMotionChanged', update)\n\nfunction subscribe(listener: () => void) {\n  listeners.add(listener)\n  return () => {\n    listeners.delete(listener)\n  }\n}\n\nconst getReduced = () => reduced\n\n/** `true` when \"Reduce Motion\" (iOS) / \"Remove animations\" (Android) is enabled. */\nexport function useReducedMotion(): boolean {\n  return useSyncExternalStore(subscribe, getReduced, getReduced)\n}\n"
     },
     {
       "path": "hooks/useReducedMotion.ts",
@@ -143,5 +143,5 @@
   "registryDependencies": [
     "utils"
   ],
-  "version": "0.14.0"
+  "version": "0.15.0"
 }
